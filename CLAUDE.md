@@ -17,6 +17,13 @@ Huntley-loop methodology. See `docs/lineage.md` for the full story.
 
 Start a new session with `docs/prompt-shakedown.md`.
 
+## Setup
+
+```bash
+git config core.hooksPath .githooks  # activate conventional commit enforcement
+uv sync                               # install dev dependencies
+```
+
 ## run-loop
 
 `run-loop` is a Python executable that drives autonomous agent sessions.
@@ -31,7 +38,20 @@ It switches automatically between codex and claude when one hits a usage limit.
 - State: `.agent/run-loop-state.json` (tracks which backend was last used)
 - Completion marker: derived from prompt filename — `docs/prompt-<name>.md` → `.agent/complete-<name>.md`
 
+To signal completion, write the marker file:
+```bash
+mkdir -p .agent && touch .agent/complete-shakedown.md
+```
+The run-loop checks for this file at the top of every iteration and exits when it exists.
+
 `AGENTS.md` should be a symlink to `CLAUDE.md` — same instructions served to Codex.
+
+## Target interface
+
+`tests/test_mdtest.py` invokes `./shakedown` as a subprocess — stdin Markdown, stdout HTML. The implementation requires two files:
+
+- `shakedown.spl` — the SPL implementation
+- `shakedown` — an executable shell wrapper that pipes stdin through `shakedown.spl`
 
 ## Run tests
 
