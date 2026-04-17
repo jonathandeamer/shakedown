@@ -51,7 +51,14 @@ The run-loop checks for this file at the top of every iteration and exits when i
 `tests/test_mdtest.py` invokes `./shakedown` as a subprocess — stdin Markdown, stdout HTML. The implementation requires two files:
 
 - `shakedown.spl` — the SPL implementation
-- `shakedown` — an executable shell wrapper that pipes stdin through `shakedown.spl`
+- `shakedown` — an executable shell wrapper that calls `shakespeare run shakedown.spl`
+
+```bash
+#!/usr/bin/env bash
+shakespeare run "$(dirname "$0")/shakedown.spl"
+```
+
+`shakespeare` is the CLI provided by the `shakespearelang` Python package (the SPL interpreter).
 
 ## Run tests
 
@@ -89,7 +96,11 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 
 - `~/markdown/Markdown.pl` — oracle; the thing being ported
 - `~/mdtest/Markdown.mdtest/` — 23 test fixtures (.text input, .xhtml/.html expected)
-- `docs/research/` — copied provenance docs from the earlier Shakedown and Quackdown work
+- `docs/research/shakedown-spl-reference.md` — SPL language reference (critical for implementation)
+- `docs/research/shakedown-mdtest-architecture-memo.md` — prescribed build shape for this attempt
+- `docs/research/shakedown-mdtest-fixture-matrix.md` — fixture-by-fixture pass/fail predictions
+- `docs/research/shakedown-divergences.md` — intentional divergences from Markdown.pl
+- `docs/research/` — full provenance docs from the earlier Shakedown and Quackdown work
 - `docs/lineage.md` — project history and lineage context
 - `docs/prompt-shakedown.md` — agent prompt used by `run-loop`
 
