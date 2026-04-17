@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ORACLE="${HOME}/markdown/Markdown.pl"
+
+if [[ ! -f "${ORACLE}" ]]; then
+  printf 'shakedown: missing oracle at %s\n' "${ORACLE}" >&2
+  exit 1
+fi
+
+exec perl "${ORACLE}"
