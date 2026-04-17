@@ -184,8 +184,18 @@ Always operates on the **listener** (the other character on stage).
 Empirically confirmed:
 
 - `Open your mind!` stores `-1` at EOF
-- `Listen to your heart!` reads an integer token and raises a runtime error on EOF
+- `Listen to your heart!` raises a runtime error on EOF
 - `Speak your mind!` raises a runtime error on invalid character codes such as `-1`
+
+Interpreter quirks that matter for Shakedown:
+
+- `Listen to your heart!` accepts a simple unsigned decimal token such as `42`
+- leading whitespace is not skipped
+- leading `+` and `-` signs were rejected in this interpreter
+- newline-delimited repeated reads worked; space- and tab-delimited followup reads did not
+- junk after a successful integer read remains in the stream and can break the next read
+- `Speak your mind!` emits valid code points as Unicode text encoded through Python's UTF-8 stdout, not as raw single bytes
+- code point `10` emits a raw line feed
 
 ### Stack
 
@@ -220,6 +230,34 @@ Multi-character `Enter` and `Exeunt` forms are legal grammar.
 
 Cannot `[Enter]` a character already on stage — runtime error.
 Cannot remove a character not on stage — runtime error.
+
+---
+
+## Grammar Gotchas
+
+Grammar-confirmed from `shakespeare.ebnf`.
+
+- Keywords are case-insensitive in this interpreter grammar.
+- Questions must use the form `be value comparative value?`; the trailing `?` is part of the syntax.
+- `If so,` and `If not,` are the conditional prefixes; the comma is part of the grammar.
+- Assignments target second person only; the grammar does not permit assigning directly to a named character.
+- Gotos target `scene` plus a Roman numeral, and the accepted lead-ins are `Let us`, `We shall`, or `We must` with `proceed to` or `return to`.
+- `Speak your mind!`, `Open your heart!`, `Open your mind!`, and `Listen to your heart!` are possessive-second-person forms in the grammar, not free variations.
+- `Recall ...` accepts essentially any text up to punctuation after `Recall`; the parser does not care about the wording of the memory phrase.
+- Stage directions are exactly `[Enter ...]`, `[Exit ...]`, `[Exeunt ...]`, and `[A pause]`.
+- Character lists in stage directions are either a single name or a comma-separated list ending in `and Name`.
+
+---
+
+## Interpreter Quirks
+
+Empirically confirmed behavior of the local Python interpreter that is easy to miss if you
+read only the grammar:
+
+- `Listen to your heart!` is stricter than a generic "read integer" description suggests: no leading whitespace, no sign prefix, and repeated reads worked with newline-delimited input but not with space- or tab-delimited followups.
+- `Speak your mind!` uses Python text output semantics for valid code points. For example, code point `255` emitted UTF-8 bytes `195 191`, and code point `256` emitted `196 128`.
+- `Speak your mind!` emits a raw newline for code point `10`.
+- Invalid character codes such as `-1` fail immediately instead of being wrapped or truncated.
 
 ---
 

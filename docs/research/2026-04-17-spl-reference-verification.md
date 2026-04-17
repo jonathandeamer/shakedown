@@ -26,7 +26,12 @@ log behind the claims that were previously inferred or overstated.
 | `Open your mind!` returns `-1` at EOF | inferred | `io-open-mind-eof.spl` | Confirmed | Output was `-1` |
 | `Listen to your heart!` raises a runtime error at EOF | inferred | `io-listen-heart.spl` with `/dev/null` | Confirmed | Error was `End of file encountered.` |
 | `Listen to your heart!` reads an integer token | inferred | `io-listen-heart.spl` with `42` | Confirmed | Output was `42` |
+| `Listen to your heart!` does not accept leading whitespace | inferred | `io-listen-heart-two-reads.spl` with leading spaces | Confirmed | Leading spaces produced `No numeric input was given.` |
+| `Listen to your heart!` accepts newline-delimited integers but not space- or tab-delimited followups | inferred | `io-listen-heart-two-reads.spl` | Confirmed | `7\\n12\\n` worked; `7 12` and `7\\t12` failed on the second read |
+| `Listen to your heart!` does not accept `+` or `-` signs in this interpreter | inferred | `io-listen-heart.spl` and `io-listen-heart-two-reads.spl` | Confirmed | `+9` and `-7` both produced `No numeric input was given.` |
 | `Speak your mind!` rejects invalid character codes | inferred | `io-speak-mind-range.spl` | Confirmed | `-1` raised `Invalid character code: -1` |
+| `Speak your mind!` emits Unicode code points encoded as UTF-8 | inferred | `io-speak-mind-bytes.spl` | Confirmed | `255` emitted `195 191`; `256` emitted `196 128` |
+| `Speak your mind!` outputs a raw LF for code point `10` | inferred | `io-speak-mind-newline.spl` | Confirmed | Byte output was `10` |
 | Division truncates toward zero | inferred | `arithmetic-edge-cases.spl` | Confirmed | `-1 / 2` printed `0` |
 | Division by zero is a runtime error | inferred | `arithmetic-edge-cases.spl` | Confirmed | Error was `Cannot divide by zero` |
 | Modulo follows truncation-toward-zero division and can be negative | inferred | `arithmetic-extended-valid.spl` | Confirmed | `-3 mod 2` printed `-1` |
@@ -82,12 +87,44 @@ log behind the claims that were previously inferred or overstated.
   - EOF raised `SPL runtime error: End of file encountered.`
 - Disposition: confirmed
 
+### Integer input tokenization
+
+- Program: `docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+- Commands:
+  - `printf '7\n12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+  - `printf '7 12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+  - `printf '7\t12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+  - `printf '   -7   12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+  - `printf -- '-7\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart.spl`
+  - `printf '+9\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart.spl`
+  - `printf '7x\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+- Observed result:
+  - newline-delimited reads succeeded and produced `7 12`
+  - leading spaces failed with `No numeric input was given.`
+  - leading `+` and `-` failed with `No numeric input was given.`
+  - a space or tab before the second integer caused the second read to fail
+  - trailing junk after a successful first integer caused the next read to fail at that junk
+- Disposition: confirmed that this interpreter reads a stricter unsigned decimal token format than the generic doc wording suggested
+
 ### Character output edge case
 
 - Program: `docs/research/tmp-spl-probes/io-speak-mind-range.spl`
 - Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-speak-mind-range.spl`
 - Observed result: `SPL runtime error: Invalid character code: -1`
 - Disposition: confirmed that invalid character codes are rejected; this matters for HTML emission strategies that use `Speak your mind!`
+
+### Character output encoding
+
+- Programs:
+  - `docs/research/tmp-spl-probes/io-speak-mind-bytes.spl`
+  - `docs/research/tmp-spl-probes/io-speak-mind-newline.spl`
+- Commands:
+  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-speak-mind-bytes.spl | od -An -t u1`
+  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-speak-mind-newline.spl | od -An -t u1`
+- Observed result:
+  - output bytes for code points `8`, `255`, and `256` were `8 195 191 196 128`
+  - output byte for code point `10` was `10`
+- Disposition: confirmed UTF-8 encoded Unicode output for valid code points and raw newline emission for code point `10`
 
 ### Value semantics
 
