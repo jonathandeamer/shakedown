@@ -86,13 +86,10 @@ Grammar-confirmed for the available adjective/noun vocabulary. Empirically confi
 basic value rules below.
 
 Numbers are encoded as noun phrases. The value is:
-- `nothing` → 0
+- `nothing` or `zero` → 0
 - bare positive or neutral noun phrase → `+1`
 - bare negative noun phrase → `-1`
 - each adjective doubles the magnitude
-
-`zero` is grammar-confirmed as an alias for `nothing`, but this pass did not probe it
-separately at runtime.
 
 Adjective count is the total number of adjectives (including neutral ones) before the noun.
 
@@ -151,8 +148,11 @@ Grammar-confirmed for the forms listed below. Empirically confirmed in this pass
 
 - integer division truncates toward zero
 - division by zero is a runtime error
+- modulo follows truncation-toward-zero division and can be negative
+- `square`, `cube`, `square root`, and `factorial` work on valid positive inputs
+- negative `square root` and negative `factorial` raise runtime errors
 
-Other arithmetic forms in the grammar were not re-probed in this pass.
+Large-number and overflow behavior were not re-probed in this pass.
 
 | Operation | Syntax |
 |-----------|--------|
@@ -163,8 +163,8 @@ Other arithmetic forms in the grammar were not re-probed in this pass.
 | Modulo | `the remainder of the quotient between A and B` |
 | Square | `the square of A` |
 | Cube | `the cube of A` |
-| Square root | `the square root of A` |
-| Factorial | `the factorial of A` |
+| Square root | `the square root of A` (errors on negative input) |
+| Factorial | `the factorial of A` (errors on negative input) |
 | Double | `twice A` |
 
 ### I/O
