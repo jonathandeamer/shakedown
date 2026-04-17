@@ -4,7 +4,7 @@ This file provides context for Claude Code sessions working in this repository.
 
 ## What is shakedown?
 
-A port of John Gruber's `Markdown.pl` (v1.0.1) to SPL (Splunk Processing Language).
+A port of John Gruber's `Markdown.pl` (v1.0.1) to SPL (Shakespeare Programming Language).
 Reads Markdown from stdin, writes HTML to stdout. See **Target interface** below.
 
 **Origin:** This project is part of a three-step Markdown.pl porting lineage:
