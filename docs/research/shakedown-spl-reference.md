@@ -89,6 +89,8 @@ Lexicon legality note:
 
 - For generation-oriented palettes and phrase suggestions built from this legal vocabulary, see
   `docs/research/shakedown-spl-style-lexicon.md`.
+- For implementation policy on when Shakedown should preserve or vary recurring value phrases,
+  see `docs/research/shakedown-spl-codegen-style-guide.md`.
 
 Numbers are encoded as noun phrases. The value is:
 - `nothing` or `zero` → 0
