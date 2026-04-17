@@ -1,13 +1,25 @@
 # SPL Language Reference
 
 Quick reference for writing Shakespeare Programming Language programs in Shakedown.
-Interpreter: `shakespearelang` (`shakespeare run play.spl`).
+This reference targets the local Python `shakespearelang` interpreter used in this repo
+(`~/.local/bin/shakespeare` / `shakespeare run play.spl`).
 Full grammar: `~/shakespearelang/shakespearelang/shakespeare.ebnf`.
 Worked examples: `~/spl-1.2.1/examples/`.
+
+Provenance used in this document:
+
+- **Grammar-confirmed**: directly supported by `shakespeare.ebnf`
+- **Empirically confirmed**: verified against the local Python interpreter
+- **Corrected project assumption**: prior project docs overstated or misread a real constraint
+
+For probe programs and observed interpreter behavior, see
+`docs/research/2026-04-17-spl-reference-verification.md`.
 
 ---
 
 ## Program Structure
+
+Grammar-confirmed.
 
 ```
 Title of the Play.
@@ -36,6 +48,8 @@ CharacterName: You are as good as nothing!
 
 ## Characters
 
+Grammar-confirmed for legal names. Empirically confirmed for initial state.
+
 Valid names are exactly the `character` alternatives in the installed grammar. This interpreter accepts:
 
 `Achilles`, `Adonis`, `Adriana`, `Aegeon`, `Aemilia`, `Agamemnon`, `Agrippa`, `Ajax`, `Alonso`, `Andromache`, `Angelo`, `Antiochus`, `Antonio`, `Arthur`, `Autolycus`, `Balthazar`, `Banquo`, `Beatrice`, `Benedick`, `Benvolio`, `Bianca`, `Brabantio`, `Brutus`, `Capulet`, `Cassandra`, `Cassius`, `Christopher Sly`, `Cicero`, `Claudio`, `Claudius`, `Cleopatra`, `Cordelia`, `Cornelius`, `Cressida`, `Cymberline`, `Demetrius`, `Desdemona`, `Dionyza`, `Doctor Caius`, `Dogberry`, `Don John`, `Don Pedro`, `Donalbain`, `Dorcas`, `Duncan`, `Egeus`, `Emilia`, `Escalus`, `Falstaff`, `Fenton`, `Ferdinand`, `Ford`, `Fortinbras`, `Francisca`, `Friar John`, `Friar Laurence`, `Gertrude`, `Goneril`, `Hamlet`, `Hecate`, `Hector`, `Helen`, `Helena`, `Hermia`, `Hermonie`, `Hippolyta`, `Horatio`, `Imogen`, `Isabella`, `John of Gaunt`, `John of Lancaster`, `Julia`, `Juliet`, `Julius Caesar`, `King Henry`, `King John`, `King Lear`, `King Richard`, `Lady Capulet`, `Lady Macbeth`, `Lady Macduff`, `Lady Montague`, `Lennox`, `Leonato`, `Luciana`, `Lucio`, `Lychorida`, `Lysander`, `Macbeth`, `Macduff`, `Malcolm`, `Mariana`, `Mark Antony`, `Mercutio`, `Miranda`, `Mistress Ford`, `Mistress Overdone`, `Mistress Page`, `Montague`, `Mopsa`, `Oberon`, `Octavia`, `Octavius Caesar`, `Olivia`, `Ophelia`, `Orlando`, `Orsino`, `Othello`, `Page`, `Pantino`, `Paris`, `Pericles`, `Pinch`, `Polonius`, `Pompeius`, `Portia`, `Priam`, `Prince Henry`, `Prospero`, `Proteus`, `Publius`, `Puck`, `Queen Elinor`, `Regan`, `Robin`, `Romeo`, `Rosalind`, `Sebastian`, `Shallow`, `Shylock`, `Slender`, `Solinus`, `Stephano`, `Thaisa`, `The Abbot of Westminster`, `The Apothecary`, `The Archbishop of Canterbury`, `The Duke of Milan`, `The Duke of Venice`, `The Ghost`, `Theseus`, `Thurio`, `Timon`, `Titania`, `Titus`, `Troilus`, `Tybalt`, `Ulysses`, `Valentine`, `Venus`, `Vincentio`, `Viola`
@@ -48,27 +62,42 @@ Each character has:
 
 ## Pronouns
 
-`I`, `me`, and `myself` refer to the speaker and work when only the speaker is on stage. `you`, `thou`, `thee`, `yourself`, and `thyself` require exactly one other on-stage character; otherwise evaluation is ambiguous or targets nobody and raises a runtime error.
+Grammar-confirmed for available pronoun forms. Empirically confirmed for resolution behavior.
+
+`I`, `me`, and `myself` refer to the speaker. This was verified in a one-character scene.
+`you`, `thou`, `thee`, `yourself`, and `thyself` require exactly one other on-stage
+character; with three characters on stage, the interpreter raises `Ambiguous second-person
+pronoun`.
+
+Corrected project assumption: this is a pronoun-resolution rule, not a language-level
+"maximum two characters on stage" rule. Multi-character stage directions are legal.
 
 | Pronoun | Refers to |
 |---------|-----------|
 | `I`, `me`, `myself` | the speaker |
 | `you`, `thou`, `thee`, `yourself`, `thyself` | the other character |
-| Character name | that character's current value (even if off stage) |
+| Character name | that character's current value, even if off stage |
 
 ---
 
 ## Encoding Constants
 
+Grammar-confirmed for the available adjective/noun vocabulary. Empirically confirmed for the
+basic value rules below.
+
 Numbers are encoded as noun phrases. The value is:
-- **Positive noun**: `2^(number of adjectives)` — minimum 2 with one adjective
-- **Negative noun**: `-(2^(number of adjectives))`
-- `nothing` or `zero` → 0
+- `nothing` → 0
+- bare positive or neutral noun phrase → `+1`
+- bare negative noun phrase → `-1`
+- each adjective doubles the magnitude
+
+`zero` is grammar-confirmed as an alias for `nothing`, but this pass did not probe it
+separately at runtime.
 
 Adjective count is the total number of adjectives (including neutral ones) before the noun.
 
 **Rule: value = sign × 2^(adjective_count)**
-Bare noun (no adjectives) = ±1. Each adjective doubles.
+Bare noun (no adjectives) = `+1` or `-1`. Each adjective doubles the magnitude.
 
 ```
 nothing             →  0
@@ -106,15 +135,24 @@ twice VALUE         →  VALUE × 2
 
 ### Assignment
 
+Grammar-confirmed for syntax. Empirically confirmed that the speaker assigns to the listener.
+
 ```
 Juliet: You are as good as nothing.          → Romeo = 0
 Juliet: Thou art as lovely as a cat!         → Romeo = 1
 Juliet: You are the sum of a cat and a cat.  → Romeo = 1 + 1 = 2
 ```
 
-The speaker assigns to the listener. `as ADJECTIVE as` before the value is cosmetic.
+`as ADJECTIVE as` before the value is cosmetic.
 
 ### Arithmetic
+
+Grammar-confirmed for the forms listed below. Empirically confirmed in this pass:
+
+- integer division truncates toward zero
+- division by zero is a runtime error
+
+Other arithmetic forms in the grammar were not re-probed in this pass.
 
 | Operation | Syntax |
 |-----------|--------|
@@ -125,13 +163,14 @@ The speaker assigns to the listener. `as ADJECTIVE as` before the value is cosme
 | Modulo | `the remainder of the quotient between A and B` |
 | Square | `the square of A` |
 | Cube | `the cube of A` |
-| Square root | `the square root of A` (truncated; errors on negative) |
-| Factorial | `the factorial of A` (errors on negative) |
+| Square root | `the square root of A` |
+| Factorial | `the factorial of A` |
 | Double | `twice A` |
 
-Division truncates toward zero (not floor division). Division by zero is a runtime error.
-
 ### I/O
+
+Grammar-confirmed for syntax. Empirically confirmed for listener targeting and the edge cases
+below.
 
 ```
 Juliet: Speak your mind!           → print chr(Romeo's value)
@@ -142,7 +181,16 @@ Juliet: Listen to your heart!      → Romeo = next integer from stdin
 
 Always operates on the **listener** (the other character on stage).
 
+Empirically confirmed:
+
+- `Open your mind!` stores `-1` at EOF
+- `Listen to your heart!` reads an integer token and raises a runtime error on EOF
+- `Speak your mind!` raises a runtime error on invalid character codes such as `-1`
+
 ### Stack
+
+Grammar-confirmed for syntax. Empirically confirmed for listener targeting, empty-pop
+failure, and per-character stack independence.
 
 ```
 Juliet: Remember yourself!         → push Romeo's value onto Romeo's stack
@@ -158,6 +206,8 @@ Juliet: Recall your past sins.     → pop from Romeo's stack into Romeo's value
 
 ## Stage Directions
 
+Grammar-confirmed for the forms below. Empirically confirmed for the runtime errors.
+
 ```
 [Enter Romeo and Juliet]           → bring characters on stage
 [Exit Romeo]                       → remove one character
@@ -165,6 +215,8 @@ Juliet: Recall your past sins.     → pop from Romeo's stack into Romeo's value
 [Exeunt]                           → remove all characters
 [A pause]                          → debugger breakpoint
 ```
+
+Multi-character `Enter` and `Exeunt` forms are legal grammar.
 
 Cannot `[Enter]` a character already on stage — runtime error.
 Cannot remove a character not on stage — runtime error.
@@ -174,6 +226,9 @@ Cannot remove a character not on stage — runtime error.
 ## Control Flow
 
 ### Conditional (global boolean)
+
+Grammar-confirmed for syntax. Empirically confirmed that every question overwrites one shared
+global boolean used by later `If so,` / `If not,` sentences.
 
 Questions set the global boolean:
 ```
@@ -191,6 +246,10 @@ Juliet: If not, let us return to scene I.  → only if global_boolean is False
 
 ### Goto
 
+Grammar-confirmed for scene-target syntax. Empirically confirmed that scene lookup is act-local
+at runtime: attempting to jump from one act to a scene number that exists only in another act
+fails as "Scene ... does not exist."
+
 ```
 Juliet: Let us proceed to scene III.
 Juliet: Let us return to scene I.
@@ -204,6 +263,9 @@ Jumping to a non-existent scene = runtime error.
 ---
 
 ## Common Idioms
+
+These are project-oriented idioms built on the verified semantics above, not additional grammar
+rules.
 
 ### Loop (read input until EOF)
 ```
@@ -250,7 +312,7 @@ If true (remainder == 0), Romeo is divisible by Juliet.
 
 ## Critical Constraints
 
-1. **Exactly 2 characters on stage** when using second-person pronouns (`you`, `thou`, etc.) — otherwise runtime error.
+1. **Second-person pronouns need exactly one other on-stage character**. This is a pronoun-resolution rule, not a global two-character stage limit.
 2. **Gotos cannot cross act boundaries** — can only jump to scenes within the current act.
 3. **One global boolean** — every question overwrites it; conditionals always test the most recent question's result.
 4. **Single file** — the entire SPL program is one `.spl` file; there is no import or include mechanism.

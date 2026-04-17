@@ -2,6 +2,10 @@
 
 This note is the canonical correction note for the Shakedown SPL feasibility-study assumptions.
 
+The core stage-capacity and character-budget corrections are now also folded into
+`docs/research/shakedown-spl-reference.md`, which should be the first stop for current SPL
+semantics in this repo.
+
 Use it when relying on SPL semantics for implementation planning, architectural decisions,
 or pass-rate estimates. Several statements about SPL constraints are outdated or too broad
 as written.
@@ -21,7 +25,7 @@ Correct reading:
 - the cited local reference does not support the claimed six-character SPL limit
 
 Sources:
-- docs/shakedown-spl-reference.md lines 37-45
+- docs/research/shakedown-spl-reference.md lines 37-45
 
 ### 2. “Two characters on stage” is a pronoun rule, not a universal stage-capacity rule
 
@@ -40,8 +44,8 @@ Correct reading:
 - it is not the same as a global “maximum two characters on stage” rule
 
 Sources:
-- docs/shakedown-spl-reference.md lines 49-57
-- docs/shakedown-spl-reference.md lines 159-170
+- docs/research/shakedown-spl-reference.md lines 49-57
+- docs/research/shakedown-spl-reference.md lines 159-170
 - /home/ec2-user/shakespearelang/shakespearelang/shakespeare.ebnf lines 442-450
 
 ### 3. “No limit on characters” is also too broad
@@ -57,7 +61,7 @@ Correct reading:
 - SPL still operates within a finite grammar-defined vocabulary of legal character names
 
 Sources:
-- docs/shakedown-spl-reference.md lines 37-45
+- docs/research/shakedown-spl-reference.md lines 37-45
 
 ## Affected Documents
 

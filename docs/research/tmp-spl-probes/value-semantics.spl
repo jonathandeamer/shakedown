@@ -1,0 +1,29 @@
+Value Semantics.
+
+Romeo, a test character.
+Juliet, another test character.
+Hamlet, a third test character.
+
+
+                    Act I: Values.
+
+                    Scene I: Basic values.
+
+[Enter Romeo and Juliet]
+
+Juliet:
+ You are as good as nothing.
+ Open your heart!
+ You are as good as a cat.
+ Open your heart!
+ You are as good as a big cat.
+ Open your heart!
+ You are as good as a pig.
+ Open your heart!
+
+[Exit Romeo]
+[Enter Hamlet]
+
+Hamlet:
+ You are as good as Romeo.
+ Open your heart!
