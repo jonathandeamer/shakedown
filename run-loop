@@ -1,0 +1,357 @@
+#!/usr/bin/env python3
+"""Autonomous agent loop — switches between codex/claude on usage limit."""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import signal
+import subprocess
+import sys
+import threading
+import time
+from io import StringIO
+from pathlib import Path
+
+REPO = Path(__file__).parent
+PROMPT_FILE = REPO / "docs" / "prompt-shakedown.md"
+STATE_FILE = REPO / ".agent" / "run-loop-state.json"
+COMPLETE_MARKER = REPO / ".agent" / "complete-shakedown.md"
+
+
+def derive_complete_marker(prompt_file: Path, repo: Path) -> Path:
+    """Derive completion marker path from prompt filename.
+
+    `docs/prompt-cm.md` -> `.agent/complete-cm.md`
+    `docs/prompt-spl-feasibility.md` -> `.agent/complete-spl-feasibility.md`
+    `docs/foo.md` -> `.agent/complete-foo.md`
+    """
+    stem = prompt_file.stem
+    suffix = stem[len("prompt-") :] if stem.startswith("prompt-") else stem
+    return repo / ".agent" / f"complete-{suffix}.md"
+
+
+def parse_meminfo(text: str) -> dict[str, int | None]:
+    """Extract selected values from /proc/meminfo text."""
+    mem_available_kib: int | None = None
+    for line in text.splitlines():
+        if line.startswith("MemAvailable:"):
+            parts = line.split()
+            if len(parts) >= 2 and parts[1].isdigit():
+                mem_available_kib = int(parts[1])
+    return {"mem_available_kib": mem_available_kib}
+
+
+def has_swap(text: str) -> bool:
+    """Return True when /proc/swaps has at least one configured swap entry."""
+    lines = [line for line in text.splitlines() if line.strip()]
+    return len(lines) > 1
+
+
+def evaluate_claude_preflight(
+    mem_available_kib: int | None,
+    swap_enabled: bool,
+    tmp_total_bytes: int,
+    tmp_used_bytes: int,
+    claude_tmp_bytes: int,
+) -> dict[str, object]:
+    """Return a structured decision for Claude preflight safety."""
+    reasons: list[str] = []
+
+    if mem_available_kib is None or mem_available_kib < CLAUDE_MIN_MEM_AVAILABLE_KIB:
+        reasons.append("low_mem")
+
+    if (
+        mem_available_kib is not None
+        and mem_available_kib < CLAUDE_MARGIN_MEM_AVAILABLE_KIB
+        and not swap_enabled
+    ):
+        reasons.append("no_swap")
+
+    tmp_ratio = tmp_used_bytes / tmp_total_bytes if tmp_total_bytes > 0 else 0.0
+    if (
+        tmp_ratio >= TMP_PRESSURE_USED_RATIO
+        and claude_tmp_bytes >= CLAUDE_TMP_PRESSURE_BYTES
+    ):
+        reasons.append("tmp_pressure")
+
+    return {
+        "ok": not reasons,
+        "reasons": reasons,
+        "mem_available_kib": mem_available_kib,
+        "swap_enabled": swap_enabled,
+        "tmp_total_bytes": tmp_total_bytes,
+        "tmp_used_bytes": tmp_used_bytes,
+        "claude_tmp_bytes": claude_tmp_bytes,
+    }
+
+
+def format_preflight_error(decision: dict[str, object]) -> str:
+    """Format a Claude preflight failure for operator-facing stderr output."""
+    mem_available_kib = decision["mem_available_kib"]
+    mem_mib = (
+        "unknown"
+        if mem_available_kib is None
+        else str(int(mem_available_kib) // 1024)
+    )
+    swap_text = "enabled" if decision["swap_enabled"] else "none"
+    tmp_used_mib = int(decision["tmp_used_bytes"]) // (1024 * 1024)
+    tmp_total_mib = int(decision["tmp_total_bytes"]) // (1024 * 1024)
+    claude_tmp_mib = int(decision["claude_tmp_bytes"]) // (1024 * 1024)
+
+    lines = [
+        "run-loop: refusing to launch Claude due to likely memory pressure.",
+        f"run-loop: MemAvailable: {mem_mib} MiB; swap: {swap_text}.",
+        f"run-loop: /tmp usage: {tmp_used_mib}/{tmp_total_mib} MiB; Claude temp usage: {claude_tmp_mib} MiB under /tmp/claude-*.",
+        "run-loop: remediation: remove stale /tmp/claude-* directories, add swap, then rerun.",
+    ]
+    return "\n".join(lines)
+
+
+def format_resource_failure_error(
+    result: dict[str, object], exit_code: int
+) -> str:
+    """Format a Claude post-exit resource failure diagnostic."""
+    kind = result["kind"]
+    return "\n".join(
+        [
+            "run-loop: Claude terminated due to likely memory pressure.",
+            f"run-loop: exit classification: {kind}; exit code: {exit_code}.",
+            "run-loop: remediation: remove stale /tmp/claude-* directories, add swap, then rerun.",
+        ]
+    )
+
+
+def _has_claude_resource_failure_text(output: str) -> bool:
+    """Return True when output contains specific resource-pressure evidence."""
+    oom_patterns = [
+        r"\bOut of memory\b",
+        r"\bOOM\b",
+        r"\bOOM-kill\b",
+        r"\bKilled process\b.*\bclaude\b",
+    ]
+    return any(re.search(pattern, output, re.IGNORECASE) for pattern in oom_patterns)
+
+
+def classify_claude_resource_failure(exit_code: int, output: str) -> dict[str, object]:
+    """Classify Claude exits that look like resource-pressure failures."""
+    if exit_code < 0 and abs(exit_code) == signal.SIGKILL:
+        if not _has_claude_resource_failure_text(output):
+            return {"is_resource_failure": False, "kind": None}
+        return {"is_resource_failure": True, "kind": "signal"}
+
+    if _has_claude_resource_failure_text(output):
+        return {"is_resource_failure": True, "kind": "oom_text"}
+
+    return {"is_resource_failure": False, "kind": None}
+
+
+def get_tmp_usage_bytes(tmp_path: Path) -> tuple[int, int]:
+    """Return total and used bytes for a filesystem path."""
+    stat = os.statvfs(tmp_path)
+    total_bytes = stat.f_frsize * stat.f_blocks
+    available_bytes = stat.f_frsize * stat.f_bavail
+    used_bytes = total_bytes - available_bytes
+    return total_bytes, used_bytes
+
+
+def _sum_file_bytes(path: Path) -> int:
+    """Return recursive size for a file or directory."""
+    if path.is_symlink():
+        return 0
+    if path.is_file():
+        return path.stat().st_size
+    if path.is_dir():
+        total = 0
+        for child in path.iterdir():
+            total += _sum_file_bytes(child)
+        return total
+    return 0
+
+
+def sum_claude_tmp_bytes(tmp_path: Path) -> int:
+    """Return recursive size of /tmp/claude-* directories."""
+    total = 0
+    for path in tmp_path.iterdir():
+        if path.name.startswith("claude-") and not path.is_symlink():
+            total += _sum_file_bytes(path)
+    return total
+
+
+def gather_claude_host_facts() -> dict[str, object]:
+    """Collect Linux host facts needed for Claude preflight."""
+    meminfo = parse_meminfo(Path("/proc/meminfo").read_text())
+    swap_enabled = has_swap(Path("/proc/swaps").read_text())
+    tmp_total_bytes, tmp_used_bytes = get_tmp_usage_bytes(Path("/tmp"))
+    claude_tmp_bytes = sum_claude_tmp_bytes(Path("/tmp"))
+    return {
+        "mem_available_kib": meminfo["mem_available_kib"],
+        "swap_enabled": swap_enabled,
+        "tmp_total_bytes": tmp_total_bytes,
+        "tmp_used_bytes": tmp_used_bytes,
+        "claude_tmp_bytes": claude_tmp_bytes,
+    }
+
+DEFAULT_STATE = {"last_used": "codex", "both_limited": False}
+
+_LIMIT_PATTERNS = {
+    "codex": re.compile(r"You've hit your usage limit"),
+    "claude": re.compile(r"You've hit your limit"),
+}
+
+CLAUDE_MIN_MEM_AVAILABLE_KIB = 768 * 1024
+CLAUDE_MARGIN_MEM_AVAILABLE_KIB = 1024 * 1024
+TMP_PRESSURE_USED_RATIO = 0.90
+CLAUDE_TMP_PRESSURE_BYTES = 512 * 1024 * 1024
+
+
+def expand_refs(text: str, repo_root: Path) -> str:
+    """Expand @file references, wrapping content in === delimiters."""
+    lines = []
+    for line in text.splitlines():
+        m = re.match(r"^@(.+)$", line)
+        if m:
+            ref = m.group(1)
+            path = repo_root / ref
+            try:
+                if path.is_dir():
+                    entries = sorted(p.name + ("/" if p.is_dir() else "") for p in path.iterdir())
+                    content = "\n".join(entries) if entries else "(empty directory)"
+                else:
+                    content = path.read_text()
+            except FileNotFoundError:
+                content = f"(file not found: {ref})"
+            lines.append(f"=== {ref} ===\n{content}\n=== end {ref} ===")
+        else:
+            lines.append(line)
+    return "\n".join(lines)
+
+
+def is_limit_message(text: str, backend: str) -> bool:
+    """Return True if text contains a usage limit message for backend."""
+    pattern = _LIMIT_PATTERNS.get(backend)
+    return bool(pattern and pattern.search(text))
+
+
+def load_state(path: Path) -> dict:
+    """Load state JSON, returning defaults on missing or corrupt file."""
+    try:
+        return json.loads(path.read_text())
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return DEFAULT_STATE.copy()
+
+
+def save_state(path: Path, state: dict) -> None:
+    """Write state JSON, creating parent directories as needed."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(state, indent=2))
+
+
+def run_backend(backend: str, prompt: str) -> tuple[int, str]:
+    """Run backend subprocess, streaming output to terminal and capturing it."""
+    if backend == "claude":
+        proc = subprocess.Popen(
+            ["claude", "-p", "--dangerously-skip-permissions"],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+        )
+        stdin_thread = threading.Thread(
+            target=lambda: (proc.stdin.write(prompt), proc.stdin.close())
+        )
+        stdin_thread.start()
+    else:
+        proc = subprocess.Popen(
+            ["codex", "exec", "--dangerously-bypass-approvals-and-sandbox", prompt],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+        )
+
+    buf = StringIO()
+    for line in proc.stdout:
+        sys.stdout.write(line)
+        sys.stdout.flush()
+        buf.write(line)
+
+    proc.wait()
+    if backend == "claude":
+        stdin_thread.join()
+    return proc.returncode, buf.getvalue()
+
+
+def main(argv: list[str] | None = None) -> None:
+    def _sigint(sig, frame):
+        print("\nrun-loop: interrupted")
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, _sigint)
+
+    args = sys.argv[1:] if argv is None else argv
+    if args:
+        candidate = Path(args[0])
+        prompt_file = candidate if candidate.is_absolute() else (REPO / candidate).resolve()
+        complete_marker = derive_complete_marker(prompt_file, REPO)
+    else:
+        prompt_file = PROMPT_FILE
+        complete_marker = COMPLETE_MARKER
+
+    while True:
+        if complete_marker.exists():
+            print(f"Completion marker exists: {complete_marker}. Exiting.")
+            sys.exit(0)
+
+        state = load_state(STATE_FILE)
+        backend = state.get("last_used", "codex")
+        both_limited = state.get("both_limited", False)
+
+        if backend == "claude":
+            host_facts = gather_claude_host_facts()
+            decision = evaluate_claude_preflight(
+                host_facts["mem_available_kib"],
+                host_facts["swap_enabled"],
+                host_facts["tmp_total_bytes"],
+                host_facts["tmp_used_bytes"],
+                host_facts["claude_tmp_bytes"],
+            )
+            if not decision["ok"]:
+                print(format_preflight_error(decision), file=sys.stderr)
+                sys.exit(1)
+
+        expanded = expand_refs(prompt_file.read_text(), REPO)
+        print(f"--- run-loop: starting {backend} iteration ---")
+        exit_code, output = run_backend(backend, expanded)
+        if backend == "claude":
+            failure = classify_claude_resource_failure(exit_code, output)
+            if failure["is_resource_failure"]:
+                print(
+                    format_resource_failure_error(failure, exit_code),
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+        if exit_code != 0 and not is_limit_message(output, backend):
+            print(f"--- run-loop: {backend} exited with code {exit_code} ---")
+
+        if is_limit_message(output, backend):
+            if both_limited:
+                print("--- run-loop: both backends limited, sleeping 1 hour ---")
+                time.sleep(3600)
+                state["last_used"] = "claude" if backend == "codex" else "codex"
+                state["both_limited"] = False
+                save_state(STATE_FILE, state)
+            else:
+                other = "claude" if backend == "codex" else "codex"
+                print(f"--- run-loop: {backend} limit hit, switching to {other} ---")
+                state["last_used"] = other
+                state["both_limited"] = True
+                save_state(STATE_FILE, state)
+        else:
+            state["last_used"] = backend
+            state["both_limited"] = False
+            save_state(STATE_FILE, state)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
