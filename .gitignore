@@ -1,0 +1,27 @@
+# Claude Code / agent state
+.agent/
+.codex
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+.venv/
+
+# uv
+.python-version
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# Tools
+.ruff_cache/
+.pytest_cache/
+.pyright/
+
+# Worktrees
+.worktrees/
