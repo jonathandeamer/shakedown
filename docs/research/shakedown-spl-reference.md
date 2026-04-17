@@ -85,6 +85,11 @@ Corrected project assumption: this is a pronoun-resolution rule, not a language-
 Grammar-confirmed for the available adjective/noun vocabulary. Empirically confirmed for the
 basic value rules below.
 
+Lexicon legality note:
+
+- For generation-oriented palettes and phrase suggestions built from this legal vocabulary, see
+  `docs/research/shakedown-spl-style-lexicon.md`.
+
 Numbers are encoded as noun phrases. The value is:
 - `nothing` or `zero` → 0
 - bare positive or neutral noun phrase → `+1`
@@ -125,6 +130,16 @@ twice VALUE         →  VALUE × 2
 
 ### Neutral nouns (sign = +1, used for value-neutral phrasing)
 `animal`, `aunt`, `brother`, `cat`, `chihuahua`, `cousin`, `cow`, `daughter`, `door`, `face`, `father`, `fellow`, `granddaughter`, `grandfather`, `grandmother`, `grandson`, `hair`, `hamster`, `horse`, `lamp`, `lantern`, `mistletoe`, `moon`, `morning`, `mother`, `nephew`, `niece`, `nose`, `purse`, `road`, `roman`, `sister`, `sky`, `son`, `squirrel`, `stone wall`, `thing`, `town`, `tree`, `uncle`, `wind`
+
+### Noun-Phrase Composition Rules
+
+Grammar-confirmed from `shakespeare.ebnf`.
+
+- Positive noun phrases use positive or neutral adjectives with positive or neutral nouns.
+- Negative noun phrases use negative or neutral adjectives with negative nouns.
+- Noun phrases may start with an article or a possessive.
+- `summer's day` and `stone wall` are multi-word nouns in the grammar, not free text.
+- To preserve a numeric value while varying style, keep the noun-sign path and adjective count the same.
 
 ---
 
@@ -275,6 +290,12 @@ Juliet: Am I as good as nothing?           → global_boolean = (Juliet == 0)
 ```
 
 Comparatives: `better`/`bigger`/`more [positive adj]` → `>`; `worse`/`smaller`/`more [negative adj]` → `<`; `as [adj] as` → `==`.
+
+Full comparative vocabulary in the grammar:
+
+- Positive comparisons: `better`, `bigger`, `fresher`, `friendlier`, `nicer`, `jollier`, `more <positive adjective>`
+- Negative comparisons: `worse`, `smaller`, `punier`, `more <negative adjective>`
+- Equality comparisons: `as <negative adjective or positive/neutral adjective> as`
 
 Conditionals use the global boolean:
 ```
