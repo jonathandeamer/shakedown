@@ -5,7 +5,7 @@ This file provides context for Claude Code sessions working in this repository.
 ## What is shakedown?
 
 A port of John Gruber's `Markdown.pl` (v1.0.1) to SPL (Splunk Processing Language).
-Single file: `shakedown.spl` (to be created). Reads Markdown from stdin, writes HTML to stdout.
+Reads Markdown from stdin, writes HTML to stdout. See **Target interface** below.
 
 **Origin:** This project is part of a three-step Markdown.pl porting lineage:
 - `shakedown` — the SPL attempt (this repo)
@@ -44,7 +44,7 @@ mkdir -p .agent && touch .agent/complete-shakedown.md
 ```
 The run-loop checks for this file at the top of every iteration and exits when it exists.
 
-`AGENTS.md` should be a symlink to `CLAUDE.md` — same instructions served to Codex.
+`AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex.
 
 ## Target interface
 
@@ -70,7 +70,6 @@ perl ~/markdown/Markdown.pl < ~/mdtest/Markdown.mdtest/"Test Name.text"
 ## Tooling
 
 ```bash
-uv sync              # install dev dependencies
 uv run ruff check .  # lint Python
 uv run ruff format . # format Python
 uv run pyright       # type-check Python
@@ -83,7 +82,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 
 - **Type hints required** on all function signatures (parameters and return types).
 - **No bare `Any`** without an inline comment explaining why it can't be avoided.
-- **No `print()`** in production code (`run-loop`). Use `logging`.
+- **No `print()`** in library or application code. CLI operator scripts (`run-loop`) may use `print()` for status output.
 - **Mock external calls** in unit tests (subprocesses, file I/O). Integration tests that invoke real backends must be marked `@pytest.mark.integration` and are excluded from the default `uv run pytest` run.
 
 ## Reference materials
@@ -96,8 +95,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 
 ## Git
 
-Conventional commits enforced by `.githooks/commit-msg`.
-Activate with: `git config core.hooksPath .githooks`
+Conventional commits enforced by `.githooks/commit-msg` (activated in Setup above).
 
 ### Commit types
 
