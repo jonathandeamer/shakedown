@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+staged_sh=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(sh)$' || true)
+staged_py=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)
+
+if [ -n "$staged_sh" ]; then
+    echo "$staged_sh" | xargs shellcheck
+fi
+
+# Check run-loop explicitly (extensionless bash script)
+if git diff --cached --name-only --diff-filter=ACM | grep -qx "run-loop"; then
+    shellcheck run-loop
+fi
+
+if [ -n "$staged_py" ]; then
+    echo "$staged_py" | xargs uv run ruff check
+    echo "$staged_py" | xargs uv run ruff format --check
+fi
+
+echo "OK"
