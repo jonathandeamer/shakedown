@@ -25,3 +25,6 @@ build/
 
 # Worktrees
 .worktrees/
+
+# Build artifact — assembled from src/ fragments by scripts/assemble.py
+shakedown.spl
