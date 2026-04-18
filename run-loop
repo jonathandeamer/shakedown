@@ -18,6 +18,8 @@ REPO = Path(__file__).parent
 PROMPT_FILE = REPO / "docs" / "prompt-shakedown.md"
 STATE_FILE = REPO / ".agent" / "run-loop-state.json"
 COMPLETE_MARKER = REPO / ".agent" / "complete-shakedown.md"
+RUN_LOOP_IGNORED_PROGRESS_PREFIXES = (".agent/complete-",)
+RUN_LOOP_IGNORED_PROGRESS_PATHS = {".agent/run-loop-state.json"}
 
 
 def derive_complete_marker(prompt_file: Path, repo: Path) -> Path:
@@ -30,6 +32,52 @@ def derive_complete_marker(prompt_file: Path, repo: Path) -> Path:
     stem = prompt_file.stem
     suffix = stem[len("prompt-") :] if stem.startswith("prompt-") else stem
     return repo / ".agent" / f"complete-{suffix}.md"
+
+
+def _filter_progress_paths(paths: tuple[str, ...]) -> tuple[str, ...]:
+    filtered = []
+    for path in paths:
+        if path in RUN_LOOP_IGNORED_PROGRESS_PATHS:
+            continue
+        if any(path.startswith(prefix) for prefix in RUN_LOOP_IGNORED_PROGRESS_PREFIXES):
+            continue
+        filtered.append(path)
+    return tuple(sorted(filtered))
+
+
+def collect_repo_snapshot(repo_root: Path) -> dict[str, tuple[str, ...]]:
+    result = subprocess.run(
+        ["git", "status", "--short", "--untracked-files=all"],
+        cwd=repo_root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    tracked_paths: list[str] = []
+    untracked_paths: list[str] = []
+    for line in result.stdout.splitlines():
+        if not line:
+            continue
+        status = line[:2]
+        path = line[3:]
+        if status == "??":
+            untracked_paths.append(path)
+        else:
+            tracked_paths.append(path)
+    return {
+        "tracked_paths": tuple(sorted(tracked_paths)),
+        "untracked_paths": tuple(sorted(untracked_paths)),
+    }
+
+
+def has_useful_repo_progress(
+    before: dict[str, tuple[str, ...]], after: dict[str, tuple[str, ...]]
+) -> bool:
+    before_tracked = _filter_progress_paths(before["tracked_paths"])
+    after_tracked = _filter_progress_paths(after["tracked_paths"])
+    before_untracked = _filter_progress_paths(before["untracked_paths"])
+    after_untracked = _filter_progress_paths(after["untracked_paths"])
+    return (before_tracked, before_untracked) != (after_tracked, after_untracked)
 
 
 def parse_meminfo(text: str) -> dict[str, int | None]:

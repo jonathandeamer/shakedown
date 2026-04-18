@@ -1,5 +1,6 @@
 # tests/test_run_loop.py
 import importlib.util
+import subprocess
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 
@@ -293,6 +294,79 @@ class TestStateIO:
         p = tmp_path / "a" / "b" / "state.json"
         save_state(p, {"last_used": "codex", "both_limited": False})
         assert p.exists()
+
+
+class TestRepoProgress:
+    def test_snapshot_counts_tracked_and_untracked_files(self, tmp_path):
+        tracked = tmp_path / "tracked.txt"
+        tracked.write_text("v1")
+        subprocess.run(
+            ["git", "init"],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "test@example.com"],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Test User"],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            ["git", "add", "tracked.txt"],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        subprocess.run(
+            ["git", "commit", "-m", "init"],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
+        tracked.write_text("v2")
+        (tmp_path / "new.txt").write_text("new")
+
+        snapshot = _mod.collect_repo_snapshot(tmp_path)
+
+        assert "tracked.txt" in snapshot["tracked_paths"]
+        assert "new.txt" in snapshot["untracked_paths"]
+
+    def test_has_useful_repo_progress_ignores_run_loop_state_file(self):
+        before = {
+            "tracked_paths": (),
+            "untracked_paths": (),
+        }
+        after = {
+            "tracked_paths": (".agent/run-loop-state.json",),
+            "untracked_paths": (),
+        }
+
+        assert _mod.has_useful_repo_progress(before, after) is False
+
+    def test_has_useful_repo_progress_counts_untracked_repo_file(self):
+        before = {
+            "tracked_paths": (),
+            "untracked_paths": (),
+        }
+        after = {
+            "tracked_paths": (),
+            "untracked_paths": ("notes.txt",),
+        }
+
+        assert _mod.has_useful_repo_progress(before, after) is True
 
 
 class TestMainLoop:
