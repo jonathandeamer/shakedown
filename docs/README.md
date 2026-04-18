@@ -22,6 +22,7 @@ For an agent about to plan the Shakedown architecture:
 | Path | Purpose |
 |---|---|
 | `lineage.md` | Short lineage of the Shakedown / Snarkdown / Quackdown triad. |
+| `ralph-loop.md` | Huntley/Ralph loop methodology reference, with lineage lessons. |
 | `verification-plan.md` | Claim inventory by bucket (A–E). |
 | `spl/` | SPL language reference, style, codegen policy, and verification evidence. |
 | `spl/reference.md` | Verified SPL semantics. |
