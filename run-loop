@@ -459,19 +459,26 @@ def main(argv: list[str] | None = None) -> None:
                 claude_resource_failure = True
 
         if not claude_resource_failure:
-            expanded = expand_refs(prompt_file.read_text(), REPO)
-            print(f"--- run-loop: starting {backend} iteration ---")
-            exit_code, output = run_backend(backend, expanded)
-            if backend == "claude":
-                failure = classify_claude_resource_failure(exit_code, output)
-                if failure["is_resource_failure"]:
-                    print(
-                        format_resource_failure_error(failure, exit_code),
-                        file=sys.stderr,
-                    )
-                    claude_resource_failure = True
-            if exit_code != 0 and not is_limit_message(output, backend):
-                print(f"--- run-loop: {backend} exited with code {exit_code} ---")
+            try:
+                expanded = expand_refs(prompt_file.read_text(), REPO)
+            except OSError as exc:
+                print(f"run-loop: prompt read failed: {exc}", file=sys.stderr)
+                expanded = ""
+                prompt_failure = True
+                exit_code = 1
+            if not prompt_failure:
+                print(f"--- run-loop: starting {backend} iteration ---")
+                exit_code, output = run_backend(backend, expanded)
+                if backend == "claude":
+                    failure = classify_claude_resource_failure(exit_code, output)
+                    if failure["is_resource_failure"]:
+                        print(
+                            format_resource_failure_error(failure, exit_code),
+                            file=sys.stderr,
+                        )
+                        claude_resource_failure = True
+                if exit_code != 0 and not is_limit_message(output, backend):
+                    print(f"--- run-loop: {backend} exited with code {exit_code} ---")
 
         after_snapshot = collect_repo_snapshot(REPO)
         limit_hit = is_limit_message(output, backend)
@@ -486,6 +493,11 @@ def main(argv: list[str] | None = None) -> None:
             prompt_failure=prompt_failure,
         )
         fingerprint = fingerprint_output(output)
+        if (
+            fingerprint == state.get("last_output_fingerprint")
+            and not has_useful_repo_progress(before_snapshot, after_snapshot)
+        ):
+            classification = "recoverable_failure"
 
         if classification == "useful_progress":
             state["last_used"] = backend
