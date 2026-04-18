@@ -1,5 +1,6 @@
 # tests/test_run_loop.py
 import importlib.util
+import json
 import subprocess
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
@@ -477,6 +478,98 @@ class TestRunLoopRecovery:
         assert excinfo.value.code == 0
         assert sleeps == [3600]
         assert saved_states[-1]["consecutive_recoverable_failures"] == 2
+
+
+class TestRunLoopCooldown:
+    def test_second_recoverable_failure_sleeps_and_reloads_state_before_retry(
+        self, monkeypatch
+    ):
+        saved_states = []
+        sleeps = []
+        complete_checks = iter([False, False, True])
+        loaded_states = iter(
+            [
+                {
+                    "last_used": "claude",
+                    "cooldown_until": 0,
+                    "consecutive_recoverable_failures": 1,
+                    "consecutive_claude_resource_failures": 0,
+                    "last_failure_kind": "no_progress",
+                    "last_output_fingerprint": "same",
+                    "unexpected_key": "drop-me",
+                },
+                {
+                    "last_used": "codex",
+                    "cooldown_until": 0,
+                    "consecutive_recoverable_failures": 0,
+                    "consecutive_claude_resource_failures": 0,
+                    "last_failure_kind": None,
+                    "last_output_fingerprint": None,
+                },
+            ]
+        )
+
+        class _Marker:
+            def exists(self) -> bool:
+                return next(complete_checks)
+
+        class _PromptFile:
+            def read_text(self) -> str:
+                return "prompt"
+
+        monkeypatch.setattr(_mod, "COMPLETE_MARKER", _Marker())
+        monkeypatch.setattr(_mod, "PROMPT_FILE", _PromptFile())
+        monkeypatch.setattr(
+            _mod, "derive_complete_marker", lambda prompt_file, repo: _Marker()
+        )
+        monkeypatch.setattr(_mod, "load_state", lambda path: next(loaded_states))
+        monkeypatch.setattr(
+            _mod,
+            "gather_claude_host_facts",
+            lambda: {
+                "mem_available_kib": 1_500 * 1024,
+                "swap_enabled": True,
+                "tmp_total_bytes": 1_000_000_000,
+                "tmp_used_bytes": 100_000_000,
+                "claude_tmp_bytes": 0,
+            },
+        )
+        monkeypatch.setattr(
+            _mod,
+            "collect_repo_snapshot",
+            lambda repo: {"tracked_paths": (), "untracked_paths": ()},
+        )
+        monkeypatch.setattr(_mod, "run_backend", lambda backend, prompt: (0, "same"))
+        monkeypatch.setattr(_mod, "expand_refs", lambda text, repo: text)
+        monkeypatch.setattr(_mod.time, "sleep", lambda seconds: sleeps.append(seconds))
+        monkeypatch.setattr(
+            _mod, "save_state", lambda path, state: saved_states.append(state.copy())
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            _mod.main(argv=["docs/archive/prompt-shakedown.md"])
+
+        assert excinfo.value.code == 0
+        assert sleeps == [3600]
+        assert saved_states[0]["cooldown_until"] > 0
+        assert "unexpected_key" not in saved_states[0]
+
+    def test_load_state_silently_drops_unknown_keys(self, tmp_path):
+        p = tmp_path / "state.json"
+        p.write_text(
+            json.dumps(
+                {
+                    "last_used": "codex",
+                    "both_limited": False,
+                    "unexpected_key": "drop-me",
+                }
+            )
+        )
+
+        loaded = load_state(p)
+
+        assert loaded["last_used"] == "codex"
+        assert "unexpected_key" not in loaded
 
 
 class TestClaudeCleanup:

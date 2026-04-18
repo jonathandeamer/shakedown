@@ -326,7 +326,7 @@ def load_state(path: Path) -> dict:
 def save_state(path: Path, state: dict) -> None:
     """Write state JSON, creating parent directories as needed."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(state, indent=2))
+    path.write_text(json.dumps(normalize_state(state), indent=2))
 
 
 def default_state() -> dict[str, object]:
@@ -345,8 +345,17 @@ def default_state() -> dict[str, object]:
 def normalize_state(state: dict[str, object]) -> dict[str, object]:
     """Backfill new persisted state fields while preserving old ones."""
     normalized = default_state()
-    normalized.update(state)
+    for key in normalized:
+        if key in state:
+            normalized[key] = state[key]
     return normalized
+
+
+def enter_cooldown(state: dict[str, object]) -> None:
+    """Persist cooldown state and sleep for the cooldown interval."""
+    state["cooldown_until"] = int(time.time()) + 3600
+    save_state(STATE_FILE, state)
+    time.sleep(3600)
 
 
 def fingerprint_output(output: str) -> str:
@@ -436,7 +445,7 @@ def main(argv: list[str] | None = None) -> None:
         now = int(time.time())
         if cooldown_until and now < cooldown_until:
             time.sleep(cooldown_until - now)
-            state["cooldown_until"] = 0
+            continue
 
         before_snapshot = collect_repo_snapshot(REPO)
         prompt_failure = False
@@ -536,20 +545,16 @@ def main(argv: list[str] | None = None) -> None:
                 print("--- run-loop: both backends limited, sleeping 1 hour ---")
                 state["last_used"] = other
                 state["both_limited"] = False
-                state["cooldown_until"] = int(time.time()) + 3600
                 state["last_output_fingerprint"] = fingerprint
-                save_state(STATE_FILE, state)
-                time.sleep(3600)
-                sys.exit(0)
+                enter_cooldown(state)
+                continue
 
             if int(state["consecutive_recoverable_failures"]) >= 2:
                 state["last_used"] = other
                 state["both_limited"] = False
-                state["cooldown_until"] = int(time.time()) + 3600
                 state["last_output_fingerprint"] = fingerprint
-                save_state(STATE_FILE, state)
-                time.sleep(3600)
-                sys.exit(0)
+                enter_cooldown(state)
+                continue
 
             state["last_used"] = other
             state["both_limited"] = bool(limit_hit)
