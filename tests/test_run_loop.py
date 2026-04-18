@@ -369,6 +369,113 @@ class TestRepoProgress:
         assert _mod.has_useful_repo_progress(before, after) is True
 
 
+class TestRunLoopRecovery:
+    def test_no_progress_on_first_failure_switches_backend(self, monkeypatch, capsys):
+        saved_states = []
+        complete_checks = iter([False, True])
+
+        class _Marker:
+            def exists(self) -> bool:
+                return next(complete_checks)
+
+        class _PromptFile:
+            def read_text(self) -> str:
+                return "prompt"
+
+        monkeypatch.setattr(_mod, "COMPLETE_MARKER", _Marker())
+        monkeypatch.setattr(_mod, "PROMPT_FILE", _PromptFile())
+        monkeypatch.setattr(
+            _mod,
+            "load_state",
+            lambda path: {
+                "last_used": "codex",
+                "cooldown_until": 0,
+                "consecutive_recoverable_failures": 0,
+                "consecutive_claude_resource_failures": 0,
+                "last_failure_kind": None,
+                "last_output_fingerprint": None,
+            },
+        )
+        monkeypatch.setattr(
+            _mod,
+            "collect_repo_snapshot",
+            lambda repo: {"tracked_paths": (), "untracked_paths": ()},
+        )
+        monkeypatch.setattr(
+            _mod, "run_backend", lambda backend, prompt: (0, "read-only analysis")
+        )
+        monkeypatch.setattr(_mod, "expand_refs", lambda text, repo: text)
+        monkeypatch.setattr(
+            _mod, "save_state", lambda path, state: saved_states.append(state.copy())
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            _mod.main(argv=[])
+
+        assert excinfo.value.code == 0
+        assert saved_states[-1]["last_used"] == "claude"
+        assert saved_states[-1]["consecutive_recoverable_failures"] == 1
+
+    def test_second_consecutive_recoverable_failure_sleeps_for_one_hour(
+        self, monkeypatch
+    ):
+        sleeps = []
+        saved_states = []
+        complete_checks = iter([False, True])
+
+        class _Marker:
+            def exists(self) -> bool:
+                return next(complete_checks)
+
+        class _PromptFile:
+            def read_text(self) -> str:
+                return "prompt"
+
+        monkeypatch.setattr(_mod, "COMPLETE_MARKER", _Marker())
+        monkeypatch.setattr(_mod, "PROMPT_FILE", _PromptFile())
+        monkeypatch.setattr(
+            _mod,
+            "load_state",
+            lambda path: {
+                "last_used": "claude",
+                "cooldown_until": 0,
+                "consecutive_recoverable_failures": 1,
+                "consecutive_claude_resource_failures": 0,
+                "last_failure_kind": "no_progress",
+                "last_output_fingerprint": "same",
+            },
+        )
+        monkeypatch.setattr(
+            _mod,
+            "gather_claude_host_facts",
+            lambda: {
+                "mem_available_kib": 1_500 * 1024,
+                "swap_enabled": True,
+                "tmp_total_bytes": 1_000_000_000,
+                "tmp_used_bytes": 100_000_000,
+                "claude_tmp_bytes": 0,
+            },
+        )
+        monkeypatch.setattr(
+            _mod,
+            "collect_repo_snapshot",
+            lambda repo: {"tracked_paths": (), "untracked_paths": ()},
+        )
+        monkeypatch.setattr(_mod, "run_backend", lambda backend, prompt: (0, "same"))
+        monkeypatch.setattr(_mod, "expand_refs", lambda text, repo: text)
+        monkeypatch.setattr(_mod.time, "sleep", lambda seconds: sleeps.append(seconds))
+        monkeypatch.setattr(
+            _mod, "save_state", lambda path, state: saved_states.append(state.copy())
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            _mod.main(argv=[])
+
+        assert excinfo.value.code == 0
+        assert sleeps == [3600]
+        assert saved_states[-1]["consecutive_recoverable_failures"] == 2
+
+
 class TestMainLoop:
     def test_both_limited_claude_iteration_switches_next_backend_to_codex(
         self, monkeypatch
