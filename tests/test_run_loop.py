@@ -481,12 +481,14 @@ class TestRunLoopRecovery:
 
 
 class TestRunLoopCooldown:
-    def test_second_recoverable_failure_sleeps_and_reloads_state_before_retry(
+    def test_second_recoverable_failure_saves_normalized_state_and_reloads_fresh_state(
         self, monkeypatch
     ):
         saved_states = []
         sleeps = []
-        complete_checks = iter([False, False, True])
+        run_backends = []
+        load_calls = []
+        complete_checks = iter([False, False, False, True])
         loaded_states = iter(
             [
                 {
@@ -500,6 +502,14 @@ class TestRunLoopCooldown:
                 },
                 {
                     "last_used": "codex",
+                    "cooldown_until": 1_000 + 3_600,
+                    "consecutive_recoverable_failures": 0,
+                    "consecutive_claude_resource_failures": 0,
+                    "last_failure_kind": None,
+                    "last_output_fingerprint": None,
+                },
+                {
+                    "last_used": "claude",
                     "cooldown_until": 0,
                     "consecutive_recoverable_failures": 0,
                     "consecutive_claude_resource_failures": 0,
@@ -522,7 +532,23 @@ class TestRunLoopCooldown:
         monkeypatch.setattr(
             _mod, "derive_complete_marker", lambda prompt_file, repo: _Marker()
         )
-        monkeypatch.setattr(_mod, "load_state", lambda path: next(loaded_states))
+        monkeypatch.setattr(_mod.time, "time", lambda: 1_000)
+        monkeypatch.setattr(
+            _mod,
+            "STATE_FILE",
+            Path("/tmp/run-loop-state-test.json"),
+        )
+        real_save_state = save_state
+
+        def _save_state(path, state):
+            real_save_state(path, state)
+            saved_states.append(json.loads(path.read_text()))
+
+        def _load_state(path):
+            load_calls.append(path)
+            return next(loaded_states)
+
+        monkeypatch.setattr(_mod, "load_state", _load_state)
         monkeypatch.setattr(
             _mod,
             "gather_claude_host_facts",
@@ -539,19 +565,28 @@ class TestRunLoopCooldown:
             "collect_repo_snapshot",
             lambda repo: {"tracked_paths": (), "untracked_paths": ()},
         )
-        monkeypatch.setattr(_mod, "run_backend", lambda backend, prompt: (0, "same"))
+        monkeypatch.setattr(
+            _mod,
+            "run_backend",
+            lambda backend, prompt: run_backends.append(backend) or (0, "same"),
+        )
         monkeypatch.setattr(_mod, "expand_refs", lambda text, repo: text)
         monkeypatch.setattr(_mod.time, "sleep", lambda seconds: sleeps.append(seconds))
-        monkeypatch.setattr(
-            _mod, "save_state", lambda path, state: saved_states.append(state.copy())
-        )
+        monkeypatch.setattr(_mod, "save_state", _save_state)
 
         with pytest.raises(SystemExit) as excinfo:
             _mod.main(argv=["docs/archive/prompt-shakedown.md"])
 
         assert excinfo.value.code == 0
-        assert sleeps == [3600]
-        assert saved_states[0]["cooldown_until"] > 0
+        assert load_calls == [
+            Path("/tmp/run-loop-state-test.json"),
+            Path("/tmp/run-loop-state-test.json"),
+            Path("/tmp/run-loop-state-test.json"),
+        ]
+        assert sleeps == [3600, 3600]
+        assert run_backends == ["claude", "claude"]
+        assert saved_states[0]["cooldown_until"] == 1_000 + 3_600
+        assert saved_states[0]["last_used"] == "codex"
         assert "unexpected_key" not in saved_states[0]
 
     def test_load_state_silently_drops_unknown_keys(self, tmp_path):

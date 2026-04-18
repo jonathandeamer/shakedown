@@ -343,7 +343,7 @@ def default_state() -> dict[str, object]:
 
 
 def normalize_state(state: dict[str, object]) -> dict[str, object]:
-    """Backfill new persisted state fields while preserving old ones."""
+    """Return the persisted state schema, dropping unknown keys by design."""
     normalized = default_state()
     for key in normalized:
         if key in state:
