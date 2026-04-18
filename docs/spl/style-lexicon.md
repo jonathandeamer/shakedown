@@ -1,9 +1,9 @@
 # SPL Style Lexicon
 
 This companion doc is for expressive generation, not parser truth and not codegen policy.
-For legality and hard grammar constraints, use `docs/research/shakedown-spl-reference.md`.
+For legality and hard grammar constraints, use `docs/spl/reference.md`.
 For implementation policy on choosing and reusing value phrases, use
-`docs/research/shakedown-spl-codegen-style-guide.md`.
+`docs/spl/codegen-style-guide.md`.
 
 Every token listed here is accepted by the installed interpreter grammar.
 Phrases are labeled as either `example-attested` or `grammar-valid composition`.
