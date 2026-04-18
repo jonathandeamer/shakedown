@@ -4,41 +4,41 @@
 
 **Goal:** Add a focused validation system for the SPL style lexicon and codegen guide so the repo can distinguish mechanically enforceable claims from demonstrable or advisory guidance.
 
-**Architecture:** This implementation has three outputs that should stay loosely coupled: an evidence note in `docs/research/`, a focused interpreter-backed pytest harness under `tests/`, and minimal guide wording edits only where validation changes the confidence level of an existing claim. The harness should exercise representative rule families, not attempt exhaustive combinatorics.
+**Architecture:** This implementation has three outputs that should stay loosely coupled: an evidence note in `docs/spl/`, a focused interpreter-backed pytest harness under `tests/`, and minimal guide wording edits only where validation changes the confidence level of an existing claim. The harness should exercise representative rule families, not attempt exhaustive combinatorics.
 
-**Tech Stack:** Markdown documentation, pytest, subprocess-based execution of the local `shakespearelang` interpreter, existing SPL probe patterns in `docs/research/tmp-spl-probes/`
+**Tech Stack:** Markdown documentation, pytest, subprocess-based execution of the local `shakespearelang` interpreter, existing SPL probe patterns in `docs/spl/probes/`
 
 ---
 
 ## File Structure
 
-- Create: `docs/research/2026-04-17-spl-style-guide-validation.md`
+- Create: `docs/spl/style-guide-validation.md`
   - Evidence ledger for claim classification, probe results, and advisory-versus-enforceable outcomes.
 - Create: `tests/test_spl_style_guide_validation.py`
   - Focused pytest harness for mechanically enforceable claims from the style and codegen guides.
 - Create: `tests/fixtures/spl_style_validation/`
   - Small SPL probe files or fixture inputs if inline program generation becomes unwieldy.
-- Modify: `docs/research/shakedown-spl-style-lexicon.md`
+- Modify: `docs/spl/style-lexicon.md`
   - Tighten wording only if validation reveals overstated or invalid claims.
-- Modify: `docs/research/shakedown-spl-codegen-style-guide.md`
+- Modify: `docs/spl/codegen-style-guide.md`
   - Tighten wording only if validation reveals overstated or invalid claims.
 
 ## Task 1: Map Claims And Prepare Validation Targets
 
 **Files:**
-- Create: `docs/research/2026-04-17-spl-style-guide-validation.md`
-- Reference: `docs/research/shakedown-spl-style-lexicon.md`
-- Reference: `docs/research/shakedown-spl-codegen-style-guide.md`
-- Reference: `docs/research/shakedown-spl-reference.md`
+- Create: `docs/spl/style-guide-validation.md`
+- Reference: `docs/spl/style-lexicon.md`
+- Reference: `docs/spl/codegen-style-guide.md`
+- Reference: `docs/spl/reference.md`
 
 - [ ] **Step 1: Re-read the guides and extract the claim families**
 
 Run:
 
 ```bash
-sed -n '1,320p' docs/research/shakedown-spl-style-lexicon.md
-sed -n '1,360p' docs/research/shakedown-spl-codegen-style-guide.md
-sed -n '90,260p' docs/research/shakedown-spl-reference.md
+sed -n '1,320p' docs/spl/style-lexicon.md
+sed -n '1,360p' docs/spl/codegen-style-guide.md
+sed -n '90,260p' docs/spl/reference.md
 ```
 
 Expected:
@@ -47,7 +47,7 @@ Expected:
 
 - [ ] **Step 2: Draft the validation note with the claim taxonomy**
 
-Create `docs/research/2026-04-17-spl-style-guide-validation.md` with sections shaped like:
+Create `docs/spl/style-guide-validation.md` with sections shaped like:
 
 ```md
 # SPL Style Guide Validation
@@ -55,8 +55,8 @@ Create `docs/research/2026-04-17-spl-style-guide-validation.md` with sections sh
 ## Scope
 
 This note validates claims from:
-- `docs/research/shakedown-spl-style-lexicon.md`
-- `docs/research/shakedown-spl-codegen-style-guide.md`
+- `docs/spl/style-lexicon.md`
+- `docs/spl/codegen-style-guide.md`
 
 ## Claim Matrix
 
@@ -110,8 +110,8 @@ Expected:
 Run:
 
 ```bash
-sed -n '1,260p' docs/research/2026-04-17-spl-style-guide-validation.md
-rg -n "TBD|TODO|FIXME|exhaustive|all combinations|full dramatic tone" docs/research/2026-04-17-spl-style-guide-validation.md
+sed -n '1,260p' docs/spl/style-guide-validation.md
+rg -n "TBD|TODO|FIXME|exhaustive|all combinations|full dramatic tone" docs/spl/style-guide-validation.md
 ```
 
 Expected:
@@ -123,7 +123,7 @@ Expected:
 Run:
 
 ```bash
-git add docs/research/2026-04-17-spl-style-guide-validation.md
+git add docs/spl/style-guide-validation.md
 git commit -m "docs: map SPL style guide validation claims"
 ```
 
@@ -256,9 +256,9 @@ Expected:
 ## Task 3: Record Demonstrations And Tighten Guide Wording
 
 **Files:**
-- Modify: `docs/research/2026-04-17-spl-style-guide-validation.md`
-- Modify: `docs/research/shakedown-spl-style-lexicon.md`
-- Modify: `docs/research/shakedown-spl-codegen-style-guide.md`
+- Modify: `docs/spl/style-guide-validation.md`
+- Modify: `docs/spl/style-lexicon.md`
+- Modify: `docs/spl/codegen-style-guide.md`
 
 - [ ] **Step 1: Add demonstration-only outcomes to the validation note**
 
@@ -300,9 +300,9 @@ Expected:
 Run:
 
 ```bash
-sed -n '1,260p' docs/research/2026-04-17-spl-style-guide-validation.md
-sed -n '1,260p' docs/research/shakedown-spl-style-lexicon.md
-sed -n '1,320p' docs/research/shakedown-spl-codegen-style-guide.md
+sed -n '1,260p' docs/spl/style-guide-validation.md
+sed -n '1,260p' docs/spl/style-lexicon.md
+sed -n '1,320p' docs/spl/codegen-style-guide.md
 ```
 
 Expected:
@@ -315,7 +315,7 @@ Expected:
 Run:
 
 ```bash
-git add docs/research/2026-04-17-spl-style-guide-validation.md docs/research/shakedown-spl-style-lexicon.md docs/research/shakedown-spl-codegen-style-guide.md
+git add docs/spl/style-guide-validation.md docs/spl/style-lexicon.md docs/spl/codegen-style-guide.md
 git commit -m "docs: record SPL style guide validation results"
 ```
 
@@ -325,9 +325,9 @@ Expected:
 ## Task 4: Final Verification And Handoff
 
 **Files:**
-- Verify: `docs/research/2026-04-17-spl-style-guide-validation.md`
-- Verify: `docs/research/shakedown-spl-style-lexicon.md`
-- Verify: `docs/research/shakedown-spl-codegen-style-guide.md`
+- Verify: `docs/spl/style-guide-validation.md`
+- Verify: `docs/spl/style-lexicon.md`
+- Verify: `docs/spl/codegen-style-guide.md`
 - Verify: `tests/test_spl_style_guide_validation.py`
 
 - [ ] **Step 1: Run the focused validation suite**
@@ -358,7 +358,7 @@ Run:
 
 ```bash
 git status --short
-git diff -- docs/research/2026-04-17-spl-style-guide-validation.md docs/research/shakedown-spl-style-lexicon.md docs/research/shakedown-spl-codegen-style-guide.md tests/test_spl_style_guide_validation.py
+git diff -- docs/spl/style-guide-validation.md docs/spl/style-lexicon.md docs/spl/codegen-style-guide.md tests/test_spl_style_guide_validation.py
 ```
 
 Expected:
@@ -391,6 +391,6 @@ Placeholder scan:
 - no `TBD`, `TODO`, or unresolved implementation placeholders appear in the plan steps
 
 Type and naming consistency:
-- evidence note path is consistently `docs/research/2026-04-17-spl-style-guide-validation.md`
+- evidence note path is consistently `docs/spl/style-guide-validation.md`
 - harness path is consistently `tests/test_spl_style_guide_validation.py`
-- guide paths are consistently `docs/research/shakedown-spl-style-lexicon.md` and `docs/research/shakedown-spl-codegen-style-guide.md`
+- guide paths are consistently `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md`
