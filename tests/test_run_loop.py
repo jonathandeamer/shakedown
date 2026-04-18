@@ -382,6 +382,9 @@ class TestRunLoopRecovery:
                 return next(complete_checks)
 
         class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
             def read_text(self) -> str:
                 return "prompt"
 
@@ -431,6 +434,9 @@ class TestRunLoopRecovery:
                 return next(complete_checks)
 
         class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
             def read_text(self) -> str:
                 return "prompt"
 
@@ -536,6 +542,9 @@ class TestRunLoopEdgeHandling:
                 return next(complete_checks)
 
         class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
             def read_text(self) -> str:
                 raise FileNotFoundError("missing prompt")
 
@@ -563,6 +572,9 @@ class TestRunLoopEdgeHandling:
                 return next(complete_checks)
 
         class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
             def read_text(self) -> str:
                 return "prompt"
 
@@ -626,6 +638,9 @@ class TestMainLoop:
                 return next(complete_checks)
 
         class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
             def read_text(self) -> str:
                 return "prompt"
 
@@ -681,6 +696,9 @@ class TestMainLoop:
                 return next(complete_checks)
 
         class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
             def read_text(self) -> str:
                 return "prompt"
 
@@ -726,6 +744,54 @@ class TestMainLoop:
         assert saved_states[-1]["consecutive_recoverable_failures"] == 1
 
 
+class TestRunLoopSuccessResets:
+    def test_useful_progress_resets_claude_resource_failure_streak(self, monkeypatch):
+        saved_states = []
+        complete_checks = iter([False, True])
+        snapshots = iter(
+            [
+                {"tracked_paths": (), "untracked_paths": ()},
+                {"tracked_paths": ("run-loop",), "untracked_paths": ()},
+            ]
+        )
+
+        class _Marker:
+            def exists(self) -> bool:
+                return next(complete_checks)
+
+        monkeypatch.setattr(
+            _mod, "derive_complete_marker", lambda prompt_file, repo: _Marker()
+        )
+        monkeypatch.setattr(Path, "read_text", lambda self: "prompt")
+        monkeypatch.setattr(
+            _mod,
+            "load_state",
+            lambda path: {
+                "last_used": "codex",
+                "cooldown_until": 0,
+                "consecutive_recoverable_failures": 1,
+                "consecutive_claude_resource_failures": 2,
+                "last_failure_kind": "backend_failure",
+                "last_output_fingerprint": None,
+            },
+        )
+        monkeypatch.setattr(_mod, "collect_repo_snapshot", lambda repo: next(snapshots))
+        monkeypatch.setattr(
+            _mod, "run_backend", lambda backend, prompt: (0, "made progress")
+        )
+        monkeypatch.setattr(_mod, "expand_refs", lambda text, repo: text)
+        monkeypatch.setattr(
+            _mod, "save_state", lambda path, state: saved_states.append(state.copy())
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            _mod.main(argv=["docs/archive/prompt-shakedown.md"])
+
+        assert excinfo.value.code == 0
+        assert saved_states[-1]["consecutive_recoverable_failures"] == 0
+        assert saved_states[-1]["consecutive_claude_resource_failures"] == 0
+
+
 class TestClaudeFailFast:
     def test_main_recovers_when_claude_process_dies_from_resource_failure(
         self, monkeypatch, capsys
@@ -738,6 +804,9 @@ class TestClaudeFailFast:
                 return next(complete_checks)
 
         class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
             def read_text(self) -> str:
                 return "prompt"
 

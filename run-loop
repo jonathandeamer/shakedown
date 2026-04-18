@@ -360,6 +360,14 @@ def normalize_state(state: dict[str, object]) -> dict[str, object]:
     return normalized
 
 
+def reset_success_counters(state: dict[str, object]) -> None:
+    """Clear failure streaks after useful progress."""
+    state["both_limited"] = False
+    state["consecutive_recoverable_failures"] = 0
+    state["consecutive_claude_resource_failures"] = 0
+    state["last_failure_kind"] = None
+
+
 def fingerprint_output(output: str) -> str:
     """Return a stable fingerprint of backend output."""
     return hashlib.sha256(output.strip().encode("utf-8")).hexdigest()
@@ -513,9 +521,7 @@ def main(argv: list[str] | None = None) -> None:
 
         if classification == "useful_progress":
             state["last_used"] = backend
-            state["both_limited"] = False
-            state["consecutive_recoverable_failures"] = 0
-            state["last_failure_kind"] = None
+            reset_success_counters(state)
         else:
             state["consecutive_recoverable_failures"] = (
                 int(state.get("consecutive_recoverable_failures", 0)) + 1
