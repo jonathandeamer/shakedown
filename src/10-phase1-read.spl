@@ -1,7 +1,17 @@
                     Act I: Read stdin into a buffer.
 
-                    Scene @READ: Placeholder — replaced in later task.
+                    Scene @OPEN: Cast enters.
 
 [Enter Romeo and Juliet]
+
+                    Scene @READ: Read one character into Romeo and push it.
+
+Juliet: Open your mind!
+Juliet: Are you as good as a pig?
+Juliet: If so, let us proceed to scene @DONE.
+Juliet: Remember yourself!
+Juliet: Let us return to scene @READ.
+
+                    Scene @DONE: End of Act I.
 
 [Exeunt]
