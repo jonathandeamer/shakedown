@@ -13,7 +13,7 @@ Provenance used in this document:
 - **Corrected project assumption**: prior project docs overstated or misread a real constraint
 
 For probe programs and observed interpreter behavior, see
-`docs/research/2026-04-17-spl-reference-verification.md`.
+`docs/spl/verification-evidence.md`.
 
 ---
 
@@ -88,9 +88,9 @@ basic value rules below.
 Lexicon legality note:
 
 - For generation-oriented palettes and phrase suggestions built from this legal vocabulary, see
-  `docs/research/shakedown-spl-style-lexicon.md`.
+  `docs/spl/style-lexicon.md`.
 - For implementation policy on when Shakedown should preserve or vary recurring value phrases,
-  see `docs/research/shakedown-spl-codegen-style-guide.md`.
+  see `docs/spl/codegen-style-guide.md`.
 
 Numbers are encoded as noun phrases. The value is:
 - `nothing` or `zero` → 0
