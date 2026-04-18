@@ -287,6 +287,17 @@ CLAUDE_TMP_PRESSURE_BYTES = 512 * 1024 * 1024
 CLAUDE_TMP_CLEANUP_THRESHOLD_BYTES = 700 * 1024 * 1024
 
 
+def validate_default_prompt_path(prompt_file: Path) -> None:
+    """Fail fast when the repo default prompt is intentionally unavailable."""
+    if prompt_file.exists():
+        return
+    print(
+        "run-loop: default prompt path is unavailable. Pass an explicit prompt path.",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+
+
 def expand_refs(text: str, repo_root: Path) -> str:
     """Expand @file references, wrapping content in === delimiters."""
     lines = []
@@ -423,6 +434,7 @@ def main(argv: list[str] | None = None) -> None:
     else:
         prompt_file = PROMPT_FILE
         complete_marker = COMPLETE_MARKER
+        validate_default_prompt_path(prompt_file)
 
     while True:
         if complete_marker.exists():

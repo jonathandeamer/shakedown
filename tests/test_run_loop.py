@@ -596,6 +596,25 @@ class TestRunLoopEdgeHandling:
 
 
 class TestMainLoop:
+    def test_missing_default_prompt_exits_with_operator_error(
+        self, monkeypatch, capsys
+    ):
+        class _MissingPrompt:
+            def exists(self) -> bool:
+                return False
+
+        monkeypatch.setattr(_mod, "PROMPT_FILE", _MissingPrompt())
+
+        with pytest.raises(SystemExit) as excinfo:
+            _mod.main(argv=[])
+
+        captured = capsys.readouterr()
+        assert excinfo.value.code == 1
+        assert captured.err == (
+            "run-loop: default prompt path is unavailable. "
+            "Pass an explicit prompt path.\n"
+        )
+
     def test_both_limited_claude_iteration_switches_next_backend_to_codex(
         self, monkeypatch
     ):
