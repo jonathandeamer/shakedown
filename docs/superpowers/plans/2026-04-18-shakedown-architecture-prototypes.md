@@ -395,7 +395,7 @@ Expected: all three tests PASS.
 
 ```bash
 git add scripts/assemble.py tests/test_assemble.py
-git commit -m "feat: resolve scene labels to Roman numerals per act"
+git commit -m "chore: resolve scene labels to Roman numerals per act"
 ```
 
 ---
@@ -467,7 +467,7 @@ Expected: exits cleanly, prints two characters to stdout.
 
 ```bash
 git add src/
-git commit -m "feat: add preamble and smoke SPL fragments for build pipeline check"
+git commit -m "chore: add preamble and smoke SPL fragments for build pipeline check"
 ```
 
 ---
@@ -510,7 +510,7 @@ Expected: exits cleanly, prints two characters to stdout.
 
 ```bash
 git add shakedown-dev
-git commit -m "feat: add shakedown-dev prototype wrapper"
+git commit -m "chore: add shakedown-dev prototype wrapper"
 ```
 
 ---
@@ -767,7 +767,7 @@ Expected: exits cleanly, no output (nothing emits yet). If any SPL error appears
 
 ```bash
 git add src/10-phase1-read.spl
-git commit -m "feat(p1): Phase 1 reads stdin into Romeo's stack"
+git commit -m "experiment: P1 Phase 1 reads stdin into Romeo's stack"
 ```
 
 ---
@@ -870,7 +870,7 @@ Success at this step: Hamlet's stack contains a forward-order stream of `[paragr
 
 ```bash
 git add src/00-preamble.spl src/20-phase2-block.spl
-git commit -m "feat(p1): Phase 2 inserts paragraph markers into Hamlet's buffer"
+git commit -m "experiment: P1 Phase 2 inserts paragraph markers into Hamlet's buffer"
 ```
 
 ---
@@ -930,7 +930,7 @@ Expected: all tests pass, including the existing `test_mdtest.py`, `test_binary_
 
 ```bash
 git add src/00-preamble.spl src/30-phase3-inline.spl
-git commit -m "feat(p1): Phase 3 emits HTML for paragraphs and code spans"
+git commit -m "experiment: P1 Phase 3 emits HTML for paragraphs and code spans"
 ```
 
 ---
@@ -1185,7 +1185,7 @@ Iterate until PASS.
 
 ```bash
 git add src/30-phase3-inline.spl
-git commit -m "feat(p2): inline emphasis via toggle state"
+git commit -m "experiment: P2 inline emphasis via toggle state"
 ```
 
 ---
@@ -1227,7 +1227,7 @@ Add a `pytest.mark.xfail` (with a comment naming the candidate divergence) to th
 
 ```bash
 git add src/30-phase3-inline.spl tests/prototype/test_p2.py
-git commit -m "feat(p2): attempt emphasis backtracking; document result"
+git commit -m "experiment: P2 attempt emphasis backtracking; document result"
 ```
 
 ---
@@ -1265,7 +1265,7 @@ Expected: all tests pass (with any `xfail` from Task 17 marked as expected-to-fa
 
 ```bash
 git add src/20-phase2-block.spl src/30-phase3-inline.spl
-git commit -m "feat(p2): emphasis inside blockquote via block markers + inline toggle"
+git commit -m "experiment: P2 emphasis inside blockquote via block markers + inline toggle"
 ```
 
 ---
