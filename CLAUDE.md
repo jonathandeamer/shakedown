@@ -17,6 +17,8 @@ Huntley-loop methodology. See `docs/lineage.md` for the full story.
 
 Start a new session with `docs/README.md` as the entry point for the docs set.
 
+**Intended workflow:** Interactive Claude sessions (with superpowers) are used for bootstrapping, design, and planning. Huntley/run-loop autonomous loops are used for the actual implementation of `shakedown.spl`. The run-loop prompt is an output of implementation planning — it does not exist yet and should not be created until that planning is done.
+
 ## Setup
 
 ```bash
@@ -37,6 +39,7 @@ It switches automatically between codex and claude when one hits a usage limit.
 
 - Current code default: `docs/prompt-shakedown.md`
 - Current docs reality: `docs/prompt-shakedown.md` was archived to `docs/archive/prompt-shakedown.md` and no replacement prompt exists yet
+- **The missing prompt is intentional, not a gap to fill.** It is a planned output of implementation planning — do not create it during design or planning sessions.
 - Practical guidance: start fresh sessions from `docs/README.md`; only use `run-loop` with an explicit prompt path until a new default prompt is written
 - State: `.agent/run-loop-state.json` (tracks which backend was last used)
 - Completion marker: derived from prompt filename — `docs/prompt-<name>.md` → `.agent/complete-<name>.md`
