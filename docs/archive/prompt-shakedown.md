@@ -1,3 +1,7 @@
+> Archived 2026-04-17. This prompt's `@`-stack referenced files now relocated by the docs restructure. A replacement prompt will be written once the architecture-planning phase decides what a new agent should load. Until then, `docs/README.md` is the entry point for a fresh session.
+
+---
+
 @docs/lineage.md
 @docs/research/project-history.md
 @docs/research/shakedown-before-design.md
