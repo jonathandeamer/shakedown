@@ -5,9 +5,9 @@ It is implementation policy, not parser truth.
 
 Use the docs in this order:
 
-1. `docs/research/shakedown-spl-reference.md` for legality and verified semantics
-2. `docs/research/shakedown-spl-style-lexicon.md` for legal expressive vocabulary
-3. `docs/research/shakedown-spl-codegen-style-guide.md` for implementation policy
+1. `docs/spl/reference.md` for legality and verified semantics
+2. `docs/spl/style-lexicon.md` for legal expressive vocabulary
+3. `docs/spl/codegen-style-guide.md` for implementation policy
 
 ## Purpose And Scope
 
