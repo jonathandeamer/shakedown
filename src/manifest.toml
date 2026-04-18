@@ -1,6 +1,8 @@
 # Ordered list of fragments assembled into shakedown.spl.
-# During the prototype phase this manifest evolves as phases are added.
+# During Prototype 1 we have exactly three processing phases plus preamble.
 fragments = [
     "00-preamble.spl",
-    "99-smoke.spl",
+    "10-phase1-read.spl",
+    "20-phase2-block.spl",
+    "30-phase3-inline.spl",
 ]
