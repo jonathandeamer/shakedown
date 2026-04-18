@@ -19,7 +19,20 @@ def _run_shakedown_dev(input_md: str) -> tuple[int, str, str]:
 
 @pytest.mark.parametrize(
     "name",
-    ["p2_emphasis", "p2_backtrack", "p2_blockquote"],
+    [
+        "p2_emphasis",
+        pytest.param(
+            "p2_backtrack",
+            marks=pytest.mark.xfail(
+                reason=(
+                    "Markdown.pl emphasis backtracking produces overlapping "
+                    "<em>/<strong> tags; divergence candidate — "
+                    "see p2 evidence doc"
+                ),
+            ),
+        ),
+        "p2_blockquote",
+    ],
 )
 def test_p2_fixture(name: str) -> None:
     input_md = (FIXTURES / f"{name}_input.md").read_text()
