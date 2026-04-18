@@ -110,7 +110,8 @@ These rules are the bridge between the exhaustive inventories and the expressive
 
 - To preserve sign, keep the noun on the same sign path.
 - To preserve magnitude, keep the adjective count unchanged.
-- Neutral adjectives are the safest stylistic swap when you want to change texture without changing sign.
+- Neutral adjectives are usually the lowest-risk stylistic swap when you want to change texture
+  without changing sign.
 - Swapping a positive noun for a neutral noun preserves positive sign but changes imagery.
 
 ## Semantic Palettes

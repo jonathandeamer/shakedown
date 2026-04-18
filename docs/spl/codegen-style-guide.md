@@ -36,6 +36,7 @@ is chosen.
 
 Not every value needs the same amount of stylistic stability. The implementation should treat
 constants in three categories.
+These categories are codegen policy labels, not interpreter-detectable properties.
 
 ### Critical Constants
 
@@ -136,9 +137,9 @@ Examples:
 
 ### Prefer Low-Risk Texture Changes
 
-Neutral adjectives are the safest way to add or swap texture within a sign path because they do
-not alter sign. They still alter magnitude, so they are safest only when adjective count stays
-fixed.
+Neutral adjectives are usually the lowest-risk way to add or swap texture within a sign path
+because they do not alter sign. They still alter magnitude, so they stay low-risk only when
+adjective count stays fixed.
 
 Examples:
 
