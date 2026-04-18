@@ -387,6 +387,9 @@ class TestRunLoopRecovery:
                 return "prompt"
 
         monkeypatch.setattr(_mod, "COMPLETE_MARKER", _Marker())
+        monkeypatch.setattr(
+            _mod, "derive_complete_marker", lambda prompt_file, repo: _Marker()
+        )
         monkeypatch.setattr(_mod, "PROMPT_FILE", _PromptFile())
         monkeypatch.setattr(
             _mod,
@@ -652,6 +655,67 @@ class TestClaudeCleanup:
         )
 
         assert cleaned is False
+
+
+class TestRunLoopSuccessResets:
+    def test_useful_progress_resets_claude_resource_failure_streak(self, monkeypatch):
+        saved_states = []
+        complete_checks = iter([False, True])
+        snapshot_calls = []
+        snapshots = [
+            {"tracked_paths": (), "untracked_paths": ()},
+            {"tracked_paths": ("run-loop",), "untracked_paths": ()},
+        ]
+
+        class _Marker:
+            def exists(self) -> bool:
+                return next(complete_checks)
+
+        class _PromptFile:
+            def exists(self) -> bool:
+                return True
+
+            def read_text(self) -> str:
+                return "prompt"
+
+        monkeypatch.setattr(_mod, "COMPLETE_MARKER", _Marker())
+        monkeypatch.setattr(
+            _mod, "derive_complete_marker", lambda prompt_file, repo: _Marker()
+        )
+        monkeypatch.setattr(_mod, "PROMPT_FILE", _PromptFile())
+        monkeypatch.setattr(
+            _mod,
+            "load_state",
+            lambda path: {
+                "last_used": "codex",
+                "cooldown_until": 0,
+                "consecutive_recoverable_failures": 1,
+                "consecutive_claude_resource_failures": 2,
+                "last_failure_kind": "backend_failure",
+                "last_output_fingerprint": None,
+            },
+        )
+
+        def _collect_repo_snapshot(repo):
+            snapshot_calls.append(repo)
+            return snapshots[min(len(snapshot_calls) - 1, 1)]
+
+        monkeypatch.setattr(_mod, "collect_repo_snapshot", _collect_repo_snapshot)
+        monkeypatch.setattr(
+            _mod, "run_backend", lambda backend, prompt: (0, "made progress")
+        )
+        monkeypatch.setattr(_mod, "expand_refs", lambda text, repo: text)
+        monkeypatch.setattr(
+            _mod, "save_state", lambda path, state: saved_states.append(state.copy())
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            _mod.main(argv=["docs/archive/prompt-shakedown.md"])
+
+        assert excinfo.value.code == 0
+        assert len(snapshot_calls) >= 2
+        assert saved_states[-1]["consecutive_recoverable_failures"] == 0
+        assert saved_states[-1]["consecutive_claude_resource_failures"] == 0
 
 
 class TestRunLoopEdgeHandling:

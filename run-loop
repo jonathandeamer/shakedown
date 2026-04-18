@@ -358,6 +358,12 @@ def enter_cooldown(state: dict[str, object]) -> None:
     time.sleep(3600)
 
 
+def reset_success_counters(state: dict[str, object]) -> None:
+    """Clear failure streaks after useful progress."""
+    state["consecutive_recoverable_failures"] = 0
+    state["consecutive_claude_resource_failures"] = 0
+
+
 def fingerprint_output(output: str) -> str:
     """Return a stable fingerprint of backend output."""
     return hashlib.sha256(output.strip().encode("utf-8")).hexdigest()
@@ -511,7 +517,7 @@ def main(argv: list[str] | None = None) -> None:
         if classification == "useful_progress":
             state["last_used"] = backend
             state["both_limited"] = False
-            state["consecutive_recoverable_failures"] = 0
+            reset_success_counters(state)
             state["last_failure_kind"] = None
         else:
             state["consecutive_recoverable_failures"] = (
