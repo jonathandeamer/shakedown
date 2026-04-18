@@ -1,3 +1,7 @@
+> Archived 2026-04-17. Mid-session brainstorming snapshot from 2026-04-14; its purpose (resuming a specific feasibility-study session on another machine) was consumed. Consolidated feasibility findings now live in `docs/prior-attempt/feasibility-lessons.md`. Lineage narrative lives in `docs/lineage.md` and `docs/archive/project-history.md`.
+
+---
+
 # Shakedown SPL Feasibility Study — Session Context for Resumption
 
 **Date:** 2026-04-14
