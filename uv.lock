@@ -85,6 +85,15 @@ wheels = [
 ]
 
 [[package]]
+name = "click"
+version = "7.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/27/6f/be940c8b1f1d69daceeb0032fee6c34d7bd70e3e649ccac0951500b4720e/click-7.1.2.tar.gz", hash = "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a", size = 297279, upload-time = "2020-04-27T20:22:45.014Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d2/3d/fa76db83bf75c4f8d338c2fd15c8d33fdd7ad23a9b5e57eb6c5de26b430e/click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc", size = 82780, upload-time = "2020-04-27T20:22:42.629Z" },
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -402,6 +411,9 @@ wheels = [
 name = "shakedown"
 version = "0.0.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "shakespearelang" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -413,6 +425,7 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "shakespearelang", specifier = ">=0.6" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -421,6 +434,28 @@ dev = [
     { name = "pyright", specifier = ">=1.1" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "ruff", specifier = ">=0.9" },
+]
+
+[[package]]
+name = "shakespearelang"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "tatsu" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8e/bd/2ed9bcfeb7a250fb750c3f35e98461d9347a1c24245aa69ea9682f424359/shakespearelang-1.0.0.tar.gz", hash = "sha256:ff631bfcb72965ca2b641219cbb40dbf3b2e9f91aee6ec6b6830624b9480d4fb", size = 45332, upload-time = "2023-11-07T04:51:26.173Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/77/7d/70582155d49e01825726ce64e8014221d011ee130b0a37d823cbcadb1c98/shakespearelang-1.0.0-py3-none-any.whl", hash = "sha256:bba8e433f7a70147742a8ac43494b4073dec60e5f2d0af3aac87fa4dec6bbc02", size = 59293, upload-time = "2023-11-07T04:51:24.581Z" },
+]
+
+[[package]]
+name = "tatsu"
+version = "5.6.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/e3/0b93083623a31ecdc68d077366fdf1e82986d4c9728267a5a789fb6b8481/TatSu-5.6.1.zip", hash = "sha256:6a4f07aa7bfe9dfbee8015824feaf13f0b1a89577e2ee5a4a62c18630c309d4e", size = 192828, upload-time = "2021-03-22T21:16:29.058Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/54/07/1a48c6d8a177bd16630fe32c856ac4fc29122d5a56b1b374f6e961b189a1/TatSu-5.6.1-py2.py3-none-any.whl", hash = "sha256:7cf03e15ab170fd91489b855cd8a4942b6cd1ac5e0eabcb852793a716600dbf0", size = 94626, upload-time = "2021-03-22T21:16:25.392Z" },
 ]
 
 [[package]]
