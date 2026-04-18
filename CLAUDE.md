@@ -30,11 +30,14 @@ uv sync                               # install dev dependencies
 It switches automatically between codex and claude when one hits a usage limit.
 
 ```bash
-./run-loop                            # default: docs/prompt-shakedown.md
+./run-loop                            # currently broken: hard-coded default prompt was archived
 ./run-loop docs/some-other-prompt.md  # alternate prompt
+./run-loop docs/archive/prompt-shakedown.md  # legacy archived prompt, if you explicitly want it
 ```
 
-- Default prompt: `docs/prompt-shakedown.md`
+- Current code default: `docs/prompt-shakedown.md`
+- Current docs reality: `docs/prompt-shakedown.md` was archived to `docs/archive/prompt-shakedown.md` and no replacement prompt exists yet
+- Practical guidance: start fresh sessions from `docs/README.md`; only use `run-loop` with an explicit prompt path until a new default prompt is written
 - State: `.agent/run-loop-state.json` (tracks which backend was last used)
 - Completion marker: derived from prompt filename — `docs/prompt-<name>.md` → `.agent/complete-<name>.md`
 
@@ -103,8 +106,17 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - `docs/prior-attempt/architecture-lessons.md` — why the prior attempt stalled and which trade-offs surfaced
 - `docs/prior-attempt/feasibility-lessons.md` — consolidated feasibility findings; which claims transfer
 - `docs/verification-plan.md` — claim inventory (verified / retrospective / predicted / open)
+- `docs/ralph-loop.md` — Huntley/Ralph loop methodology reference and how it applies here
 - `docs/lineage.md` — short lineage context
 - `docs/archive/` — historical artifacts; prefer live docs unless specifically checking history
+
+## Docs Truth Hierarchy
+
+- Treat `docs/spl/reference.md` as the canonical statement of SPL legality and verified interpreter semantics.
+- Use `docs/spl/verification-evidence.md` for the probe programs and observed outputs behind those claims.
+- Treat `docs/markdown/target.md` plus `~/markdown/Markdown.pl` as the oracle behaviour surface, with intentional exceptions only from `docs/markdown/divergences.md`.
+- Use `docs/verification-plan.md` to distinguish what is verified in this repo from retrospective evidence, predictions, and still-open questions.
+- Treat `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth; until the pending validation plan is executed, some guidance there remains advisory rather than empirically validated.
 
 ## Git
 
