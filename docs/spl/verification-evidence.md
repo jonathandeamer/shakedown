@@ -4,7 +4,7 @@
 **Interpreter target:** local Python `shakespearelang` CLI at `~/.local/bin/shakespeare`
 
 This note records the probe programs used to verify the runtime claims in
-`docs/research/shakedown-spl-reference.md`. It is not the main reference. It is the evidence
+`docs/spl/reference.md`. It is not the main reference. It is the evidence
 log behind the claims that were previously inferred or overstated.
 
 ## Results Table
@@ -47,8 +47,8 @@ log behind the claims that were previously inferred or overstated.
 
 ### Pronoun and stage rules
 
-- Program: `docs/research/tmp-spl-probes/pronoun-stage-rules.spl`
-- Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/pronoun-stage-rules.spl`
+- Program: `docs/spl/probes/pronoun-stage-rules.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/pronoun-stage-rules.spl`
 - Observed result:
   - valid two-character second-person assignment/output succeeded
   - valid one-character first-person question/goto succeeded
@@ -57,31 +57,31 @@ log behind the claims that were previously inferred or overstated.
 
 ### Global boolean overwrite
 
-- Program: `docs/research/tmp-spl-probes/global-boolean-overwrite.spl`
-- Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/global-boolean-overwrite.spl`
+- Program: `docs/spl/probes/global-boolean-overwrite.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/global-boolean-overwrite.spl`
 - Observed result: `1`
 - Disposition: confirmed that the latest question overwrites the global boolean used by `If so,` / `If not,`
 
 ### Goto across acts
 
-- Program: `docs/research/tmp-spl-probes/goto-across-acts.spl`
-- Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/goto-across-acts.spl`
+- Program: `docs/spl/probes/goto-across-acts.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/goto-across-acts.spl`
 - Observed result: `SPL runtime error: Scene II does not exist.`
 - Disposition: confirmed act-local scene lookup in runtime behavior
 
 ### Character input at EOF
 
-- Program: `docs/research/tmp-spl-probes/io-open-mind-eof.spl`
-- Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-open-mind-eof.spl < /dev/null`
+- Program: `docs/spl/probes/io-open-mind-eof.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/io-open-mind-eof.spl < /dev/null`
 - Observed result: `-1`
 - Disposition: confirmed
 
 ### Integer input
 
-- Program: `docs/research/tmp-spl-probes/io-listen-heart.spl`
+- Program: `docs/spl/probes/io-listen-heart.spl`
 - Commands:
-  - `printf '42\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart.spl`
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart.spl < /dev/null`
+  - `printf '42\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart.spl < /dev/null`
 - Observed result:
   - integer token input produced `42`
   - EOF raised `SPL runtime error: End of file encountered.`
@@ -89,15 +89,15 @@ log behind the claims that were previously inferred or overstated.
 
 ### Integer input tokenization
 
-- Program: `docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+- Program: `docs/spl/probes/io-listen-heart-two-reads.spl`
 - Commands:
-  - `printf '7\n12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
-  - `printf '7 12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
-  - `printf '7\t12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
-  - `printf '   -7   12\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
-  - `printf -- '-7\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart.spl`
-  - `printf '+9\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart.spl`
-  - `printf '7x\n' | ~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-listen-heart-two-reads.spl`
+  - `printf '7\n12\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart-two-reads.spl`
+  - `printf '7 12\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart-two-reads.spl`
+  - `printf '7\t12\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart-two-reads.spl`
+  - `printf '   -7   12\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart-two-reads.spl`
+  - `printf -- '-7\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart.spl`
+  - `printf '+9\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart.spl`
+  - `printf '7x\n' | ~/.local/bin/shakespeare run docs/spl/probes/io-listen-heart-two-reads.spl`
 - Observed result:
   - newline-delimited reads succeeded and produced `7 12`
   - leading spaces failed with `No numeric input was given.`
@@ -108,19 +108,19 @@ log behind the claims that were previously inferred or overstated.
 
 ### Character output edge case
 
-- Program: `docs/research/tmp-spl-probes/io-speak-mind-range.spl`
-- Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-speak-mind-range.spl`
+- Program: `docs/spl/probes/io-speak-mind-range.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/io-speak-mind-range.spl`
 - Observed result: `SPL runtime error: Invalid character code: -1`
 - Disposition: confirmed that invalid character codes are rejected; this matters for HTML emission strategies that use `Speak your mind!`
 
 ### Character output encoding
 
 - Programs:
-  - `docs/research/tmp-spl-probes/io-speak-mind-bytes.spl`
-  - `docs/research/tmp-spl-probes/io-speak-mind-newline.spl`
+  - `docs/spl/probes/io-speak-mind-bytes.spl`
+  - `docs/spl/probes/io-speak-mind-newline.spl`
 - Commands:
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-speak-mind-bytes.spl | od -An -t u1`
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/io-speak-mind-newline.spl | od -An -t u1`
+  - `~/.local/bin/shakespeare run docs/spl/probes/io-speak-mind-bytes.spl | od -An -t u1`
+  - `~/.local/bin/shakespeare run docs/spl/probes/io-speak-mind-newline.spl | od -An -t u1`
 - Observed result:
   - output bytes for code points `8`, `255`, and `256` were `8 195 191 196 128`
   - output byte for code point `10` was `10`
@@ -128,8 +128,8 @@ log behind the claims that were previously inferred or overstated.
 
 ### Value semantics
 
-- Program: `docs/research/tmp-spl-probes/value-semantics.spl`
-- Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/value-semantics.spl`
+- Program: `docs/spl/probes/value-semantics.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/value-semantics.spl`
 - Observed result: `012-1-1`
 - Disposition:
   - `nothing` -> `0`
@@ -140,8 +140,8 @@ log behind the claims that were previously inferred or overstated.
 
 ### Arithmetic edge cases
 
-- Program: `docs/research/tmp-spl-probes/arithmetic-edge-cases.spl`
-- Command: `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/arithmetic-edge-cases.spl`
+- Program: `docs/spl/probes/arithmetic-edge-cases.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/arithmetic-edge-cases.spl`
 - Observed result:
   - first output was `0` for `the quotient between a pig and a big cat`
   - second operation failed with `Cannot divide by zero`
@@ -150,13 +150,13 @@ log behind the claims that were previously inferred or overstated.
 ### Extended arithmetic
 
 - Programs:
-  - `docs/research/tmp-spl-probes/arithmetic-extended-valid.spl`
-  - `docs/research/tmp-spl-probes/arithmetic-square-root-negative.spl`
-  - `docs/research/tmp-spl-probes/arithmetic-factorial-negative.spl`
+  - `docs/spl/probes/arithmetic-extended-valid.spl`
+  - `docs/spl/probes/arithmetic-square-root-negative.spl`
+  - `docs/spl/probes/arithmetic-factorial-negative.spl`
 - Commands:
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/arithmetic-extended-valid.spl`
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/arithmetic-square-root-negative.spl`
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/arithmetic-factorial-negative.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/arithmetic-extended-valid.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/arithmetic-square-root-negative.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/arithmetic-factorial-negative.spl`
 - Observed result:
   - valid output was `0-148224`, which corresponds to:
     - `zero` -> `0`
@@ -173,11 +173,11 @@ log behind the claims that were previously inferred or overstated.
 ### Stack behavior
 
 - Programs:
-  - `docs/research/tmp-spl-probes/error-recall-empty-stack.spl`
-  - `docs/research/tmp-spl-probes/stack-independence.spl`
+  - `docs/spl/probes/error-recall-empty-stack.spl`
+  - `docs/spl/probes/stack-independence.spl`
 - Commands:
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/error-recall-empty-stack.spl`
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/stack-independence.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/error-recall-empty-stack.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/stack-independence.spl`
 - Observed result:
   - empty `Recall` failed with `Tried to pop from an empty stack.`
   - pushed value remained on off-stage `Romeo`'s stack and did not appear on `Juliet`'s stack
@@ -186,11 +186,11 @@ log behind the claims that were previously inferred or overstated.
 ### Stage-operation errors
 
 - Programs:
-  - `docs/research/tmp-spl-probes/error-exit-not-on-stage.spl`
-  - `docs/research/tmp-spl-probes/error-enter-already-on-stage.spl`
+  - `docs/spl/probes/error-exit-not-on-stage.spl`
+  - `docs/spl/probes/error-enter-already-on-stage.spl`
 - Commands:
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/error-exit-not-on-stage.spl`
-  - `~/.local/bin/shakespeare run docs/research/tmp-spl-probes/error-enter-already-on-stage.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/error-exit-not-on-stage.spl`
+  - `~/.local/bin/shakespeare run docs/spl/probes/error-enter-already-on-stage.spl`
 - Observed result:
   - `Hamlet is not on stage!`
   - `Romeo is already on stage!`
