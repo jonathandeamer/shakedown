@@ -1,7 +1,74 @@
-                    Act II: Identify blocks from the buffer.
+                    Act II: Identify paragraphs.
 
-                    Scene @BLOCK_START: Placeholder — replaced in later task.
+                    Scene @FLIP_PREP: Romeo and Puck enter; seed Puck's bottom sentinel.
 
-[Enter Romeo and Juliet]
+[Enter Romeo and Puck]
+
+Romeo: You are as good as a pig!
+Romeo: Remember yourself!
+
+                    Scene @FLIP: Pop Romeo, push onto Puck until sentinel.
+
+Puck: Recall your past!
+Puck: Are you as good as a pig?
+Puck: If so, let us proceed to scene @SEED.
+Romeo: You are as good as me!
+Romeo: Remember yourself!
+Puck: Let us return to scene @FLIP.
+
+                    Scene @SEED: Swap Romeo for Hamlet; seed sentinel and paragraph-open marker.
+
+[Exit Romeo]
+[Enter Hamlet]
+
+Puck: You are as good as a pig!
+Puck: Remember yourself!
+Puck: You are as good as a cat!
+Puck: Remember yourself!
+Puck: You are as good as nothing!
+
+                    Scene @CONSUME: Pop Puck, dispatch on value.
+
+Hamlet: Recall your past!
+Hamlet: Are you as good as a pig?
+Hamlet: If so, let us proceed to scene @FINISH.
+Hamlet: Are you as good as the sum of a big big big cat and a big cat?
+Hamlet: If not, let us proceed to scene @NOT_NL.
+
+                    Scene @MAYBE_BOUNDARY: Puck is newline; check Hamlet for deferred newline.
+
+Hamlet: Am I as good as the sum of a big big big cat and a big cat?
+Hamlet: If so, let us proceed to scene @BOUNDARY.
+Puck: You are as good as the sum of a big big big cat and a big cat!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @NOT_NL: Puck is not newline; flush deferred newline if any, push char.
+
+Hamlet: Am I as good as the sum of a big big big cat and a big cat?
+Hamlet: If not, let us proceed to scene @JUST_PUSH.
+Puck: Remember yourself!
+Puck: You are as good as me!
+Puck: Remember yourself!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @JUST_PUSH: Push the current char onto Hamlet.
+
+Puck: You are as good as me!
+Puck: Remember yourself!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @BOUNDARY: Saw two consecutive newlines; push paragraph-close and paragraph-open.
+
+Puck: You are as good as the sum of a cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as a cat!
+Puck: Remember yourself!
+Puck: You are as good as nothing!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @FINISH: End of input; discard any deferred newline, push closing paragraph marker.
+
+Puck: You are as good as the sum of a cat and a cat!
+Puck: Remember yourself!
 
 [Exeunt]

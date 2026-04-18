@@ -1,8 +1,11 @@
                     Act I: Read stdin into a buffer.
 
-                    Scene @OPEN: Cast enters.
+                    Scene @OPEN: Cast enters and sentinel placed.
 
 [Enter Romeo and Juliet]
+
+Juliet: You are as good as a pig!
+Juliet: Remember yourself!
 
                     Scene @READ: Read one character into Romeo and push it.
 
