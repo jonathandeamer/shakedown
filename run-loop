@@ -8,6 +8,7 @@ import hashlib
 import os
 import re
 import signal
+import shutil
 import subprocess
 import sys
 import threading
@@ -228,6 +229,36 @@ def sum_claude_tmp_bytes(tmp_path: Path) -> int:
     return total
 
 
+def find_claude_tmp_paths_for_cleanup(
+    tmp_path: Path, threshold_bytes: int
+) -> tuple[list[Path], bool]:
+    """Return cleanup candidates and whether any Claude temp path crossed the threshold."""
+    paths: list[Path] = []
+    threshold_crossed = False
+    for path in sorted(tmp_path.iterdir()):
+        if path.name.startswith("claude-") and not path.is_symlink():
+            paths.append(path)
+            if _sum_file_bytes(path) > threshold_bytes:
+                threshold_crossed = True
+    return paths, threshold_crossed
+
+
+def cleanup_claude_tmp_if_needed(
+    *, consecutive_claude_resource_failures: int, tmp_path: Path
+) -> bool:
+    """Delete all Claude temp paths after repeated resource failures if threshold is crossed."""
+    if consecutive_claude_resource_failures < 3:
+        return False
+    paths, threshold_crossed = find_claude_tmp_paths_for_cleanup(
+        tmp_path, CLAUDE_TMP_CLEANUP_THRESHOLD_BYTES
+    )
+    if not threshold_crossed:
+        return False
+    for path in paths:
+        shutil.rmtree(path, ignore_errors=False)
+    return True
+
+
 def gather_claude_host_facts() -> dict[str, object]:
     """Collect Linux host facts needed for Claude preflight."""
     meminfo = parse_meminfo(Path("/proc/meminfo").read_text())
@@ -253,6 +284,7 @@ CLAUDE_MIN_MEM_AVAILABLE_KIB = 768 * 1024
 CLAUDE_MARGIN_MEM_AVAILABLE_KIB = 1024 * 1024
 TMP_PRESSURE_USED_RATIO = 0.90
 CLAUDE_TMP_PRESSURE_BYTES = 512 * 1024 * 1024
+CLAUDE_TMP_CLEANUP_THRESHOLD_BYTES = 700 * 1024 * 1024
 
 
 def expand_refs(text: str, repo_root: Path) -> str:
@@ -468,6 +500,16 @@ def main(argv: list[str] | None = None) -> None:
                 state["consecutive_claude_resource_failures"] = (
                     int(state.get("consecutive_claude_resource_failures", 0)) + 1
                 )
+                if cleanup_claude_tmp_if_needed(
+                    consecutive_claude_resource_failures=int(
+                        state["consecutive_claude_resource_failures"]
+                    ),
+                    tmp_path=Path("/tmp"),
+                ):
+                    print(
+                        "run-loop: deleted all /tmp/claude-* after repeated Claude resource failures.",
+                        file=sys.stderr,
+                    )
             elif backend == "claude":
                 state["consecutive_claude_resource_failures"] = 0
 

@@ -476,6 +476,53 @@ class TestRunLoopRecovery:
         assert saved_states[-1]["consecutive_recoverable_failures"] == 2
 
 
+class TestClaudeCleanup:
+    def test_cleanup_trigger_deletes_all_claude_tmp_paths_when_threshold_is_crossed(
+        self, monkeypatch
+    ):
+        removed = []
+
+        monkeypatch.setattr(
+            _mod,
+            "find_claude_tmp_paths_for_cleanup",
+            lambda tmp_path, threshold_bytes: (
+                [Path("/tmp/claude-a"), Path("/tmp/claude-b")],
+                True,
+            ),
+        )
+        monkeypatch.setattr(
+            _mod.shutil,
+            "rmtree",
+            lambda path, ignore_errors=False: removed.append(path),
+        )
+
+        cleaned = _mod.cleanup_claude_tmp_if_needed(
+            consecutive_claude_resource_failures=3,
+            tmp_path=Path("/tmp"),
+        )
+
+        assert cleaned is True
+        assert removed == [Path("/tmp/claude-a"), Path("/tmp/claude-b")]
+
+    def test_cleanup_does_not_run_before_third_consecutive_resource_failure(
+        self, monkeypatch
+    ):
+        monkeypatch.setattr(
+            _mod,
+            "find_claude_tmp_paths_for_cleanup",
+            lambda tmp_path, threshold_bytes: pytest.fail(
+                "should not inspect tmp before threshold"
+            ),
+        )
+
+        cleaned = _mod.cleanup_claude_tmp_if_needed(
+            consecutive_claude_resource_failures=2,
+            tmp_path=Path("/tmp"),
+        )
+
+        assert cleaned is False
+
+
 class TestMainLoop:
     def test_both_limited_claude_iteration_switches_next_backend_to_codex(
         self, monkeypatch
