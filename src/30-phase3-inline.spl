@@ -32,6 +32,10 @@ Juliet: Are you as good as the sum of a cat and a cat?
 Juliet: If so, let us proceed to scene @EMIT_P_CLOSE.
 Juliet: Are you as good as the sum of a big big big big big big cat and a big big big big big cat?
 Juliet: If so, let us proceed to scene @TOGGLE_CODE.
+Juliet: Are you as good as the sum of the sum of a big big big big big cat and a big big big cat and a big cat?
+Juliet: If so, let us proceed to scene @TOGGLE_EM.
+Juliet: Are you as good as the difference between the sum of a big big big big big big cat and a big big big big big cat and a cat?
+Juliet: If so, let us proceed to scene @TOGGLE_EM.
 
                     Scene @EMIT_CHAR: Emit the regular character.
 
@@ -108,6 +112,46 @@ Juliet: Speak your mind!
 Juliet: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and a big big cat!
 Juliet: Speak your mind!
 Juliet: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big big cat and a cat!
+Juliet: Speak your mind!
+Juliet: You are as good as the difference between a big big big big big big cat and a big cat!
+Juliet: Speak your mind!
+Juliet: Let us return to scene @EMIT_LOOP.
+
+                    Scene @TOGGLE_EM: Swap in Mercutio to read and update emphasis state.
+
+[Exit Juliet]
+[Enter Mercutio]
+
+Oberon: Are you as good as nothing?
+Oberon: If so, let us proceed to scene @OPEN_EM.
+
+                    Scene @CLOSE_EM: Mercutio was non-zero; reset and emit </em>.
+
+Oberon: You are as good as nothing!
+[Exit Mercutio]
+[Enter Juliet]
+Juliet: You are as good as the difference between a big big big big big big cat and a big big cat!
+Juliet: Speak your mind!
+Juliet: You are as good as the difference between the sum of a big big big big big cat and a big big big big cat and a cat!
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big big cat and a cat!
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of the sum of a big big big cat and a big big cat and a cat!
+Juliet: Speak your mind!
+Juliet: You are as good as the difference between a big big big big big big cat and a big cat!
+Juliet: Speak your mind!
+Juliet: Let us return to scene @EMIT_LOOP.
+
+                    Scene @OPEN_EM: Mercutio was zero; set and emit <em>.
+
+Oberon: You are as good as a cat!
+[Exit Mercutio]
+[Enter Juliet]
+Juliet: You are as good as the difference between a big big big big big big cat and a big big cat!
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big big cat and a cat!
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of the sum of a big big big cat and a big big cat and a cat!
 Juliet: Speak your mind!
 Juliet: You are as good as the difference between a big big big big big big cat and a big cat!
 Juliet: Speak your mind!

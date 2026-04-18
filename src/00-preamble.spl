@@ -6,3 +6,4 @@ Hamlet, a holder of block-annotated buffer.
 Puck, a helper for buffer reversal.
 Oberon, a helper for buffer reversal.
 Ophelia, a tracker of inline state.
+Mercutio, a tracker of emphasis state.
