@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Prototype wrapper: rebuild shakedown.spl from src/ then execute via uv.
+# This is the shape the final ./shakedown will take. It exists as a
+# separate entry point during the prototype phase so the stub ./shakedown
+# (currently delegating to Markdown.pl) keeps the existing mdtest suite
+# passing.
+set -euo pipefail
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+
+uv run --project "$DIR" python "$DIR/scripts/assemble.py"
+exec uv run --project "$DIR" shakespeare run "$DIR/shakedown.spl"

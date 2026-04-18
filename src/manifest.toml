@@ -1,0 +1,6 @@
+# Ordered list of fragments assembled into shakedown.spl.
+# During the prototype phase this manifest evolves as phases are added.
+fragments = [
+    "00-preamble.spl",
+    "99-smoke.spl",
+]
