@@ -319,6 +319,17 @@ class TestMainLoop:
         )
         monkeypatch.setattr(
             _mod,
+            "gather_claude_host_facts",
+            lambda: {
+                "mem_available_kib": 1_500 * 1024,
+                "swap_enabled": True,
+                "tmp_total_bytes": 1_000_000_000,
+                "tmp_used_bytes": 100_000_000,
+                "claude_tmp_bytes": 0,
+            },
+        )
+        monkeypatch.setattr(
+            _mod,
             "run_backend",
             lambda backend, prompt: (0, "-You've hit your limit · resets 4pm (UTC)"),
         )
