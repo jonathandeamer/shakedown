@@ -1,3 +1,7 @@
+> Archived 2026-04-17. Historical artifact — references `scripts/spl-smoke`, `.worktrees/spl-slice-1`, and a `feature/spl-slice-1` branch that no longer exist in this repository. Interpreter timing numbers are preserved in `docs/prior-attempt/feasibility-lessons.md`. Inner-loop workflow for the new effort is an open architecture-planning question.
+
+---
+
 # Slow-Machine SPL Workflow — 2026-04-09
 
 This workflow assumes the current repository layout:
