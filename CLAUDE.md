@@ -15,7 +15,7 @@ Reads Markdown from stdin, writes HTML to stdout. See **Target interface** below
 All three share the same goal, the same 23 `Markdown.mdtest` test fixtures, and the same
 Huntley-loop methodology. See `docs/lineage.md` for the full story.
 
-Start a new session with `docs/prompt-shakedown.md`.
+Start a new session with `docs/README.md` as the entry point for the docs set.
 
 ## Setup
 
@@ -48,13 +48,13 @@ The run-loop checks for this file at the top of every iteration and exits when i
 
 ## Target interface
 
-`tests/test_mdtest.py` invokes `./shakedown` as a subprocess — stdin Markdown, stdout HTML. Everything else about the shape (single `.spl` file, shell wrapper, Python orchestrator, something else) is a design decision. The feasibility research (`docs/research/`) is evidence from the prior attempt, not a prescription — the design should justify its choice against the current state of the interpreter and machine.
+`tests/test_mdtest.py` invokes `./shakedown` as a subprocess — stdin Markdown, stdout HTML. Everything else about the shape (single `.spl` file, shell wrapper, Python orchestrator, something else) is a design decision. The retrospective research (`docs/prior-attempt/`) is evidence from the prior attempt, not a prescription — the design should justify its choice against the current state of the interpreter and machine.
 
 `shakespeare` is the CLI provided by the `shakespearelang` Python package (the SPL interpreter). Currently at `~/.local/bin/shakespeare` — may not be on PATH in a fresh shell.
 
 ## Interpreter cost (measured)
 
-Prior measurements on this machine: `shakespeare run` on a ~4k-line `.spl` takes 17–26s cold and 2–3s per input thereafter. This is load-bearing context for tooling decisions (inner-loop test command, CI shape, whether to pre-parse) but it does not dictate any particular response — the design chooses how to live with it. See `docs/research/slow-machine-spl-workflow.md` and `docs/research/feasibility-summary.md`.
+Prior measurements on this machine: `shakespeare run` on a ~4k-line `.spl` takes 17–26s cold and 2–3s per input thereafter. This is load-bearing context for tooling decisions (inner-loop test command, CI shape, whether to pre-parse) but it does not dictate any particular response — the design chooses how to live with it. See `docs/archive/slow-machine-spl-workflow.md` and `docs/prior-attempt/feasibility-lessons.md`.
 
 ## Run tests
 
@@ -92,16 +92,19 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 
 - `~/markdown/Markdown.pl` — oracle; the thing being ported
 - `~/mdtest/Markdown.mdtest/` — 23 test fixtures (.text input, .xhtml/.html expected)
-- `docs/research/shakedown-spl-reference.md` — SPL language reference (critical for implementation)
-- `docs/research/shakedown-mdtest-architecture-memo.md` — prior-attempt build shape (evidence, not prescription)
-- `docs/research/shakedown-mdtest-fixture-matrix.md` — fixture-by-fixture pass/fail predictions
-- `docs/research/shakedown-divergences.md` — intentional divergences from Markdown.pl
-- `docs/research/feasibility-summary.md`, `feasibility-summary-2.md` — SPL feasibility experiments and verdicts
-- `docs/research/spl-act-architecture.md` — options considered for SPL act/dispatch layout
-- `docs/research/slow-machine-spl-workflow.md` — interpreter timing measurements and workflow implications
-- `docs/research/` — full provenance docs from the earlier Shakedown and Quackdown work
-- `docs/lineage.md` — project history and lineage context
-- `docs/prompt-shakedown.md` — agent prompt used by `run-loop`
+- `docs/README.md` — entry point for the docs set
+- `docs/spl/reference.md` — SPL language reference (verified)
+- `docs/spl/verification-evidence.md` — probe programs and observed interpreter behaviour
+- `docs/spl/style-lexicon.md` — legal expressive vocabulary
+- `docs/spl/codegen-style-guide.md` — implementation policy for recurring value phrases
+- `docs/markdown/target.md` — Markdown.pl v1.0.1 target surface
+- `docs/markdown/divergences.md` — intentional divergences from the oracle
+- `docs/markdown/fixture-outlook.md` — predictive risk tiers for each of the 23 fixtures
+- `docs/prior-attempt/architecture-lessons.md` — why the prior attempt stalled and which trade-offs surfaced
+- `docs/prior-attempt/feasibility-lessons.md` — consolidated feasibility findings; which claims transfer
+- `docs/verification-plan.md` — claim inventory (verified / retrospective / predicted / open)
+- `docs/lineage.md` — short lineage context
+- `docs/archive/` — historical artifacts; prefer live docs unless specifically checking history
 
 ## Git
 
@@ -141,7 +144,7 @@ Version = progress signal. Cut one when something is demonstrably working, not a
 | First fixture passing end-to-end | `0.1.0` |
 | Each additional fixture, or a coherent group (e.g. all inline elements) | minor bump |
 | Bug fix in a passing fixture, no new capability | patch bump |
-| Every fixture either passes or is documented as an accepted divergence in `docs/research/shakedown-divergences.md` | `1.0.0` |
+| Every fixture either passes or is documented as an accepted divergence in `docs/markdown/divergences.md` | `1.0.0` |
 
 ### How to cut a version
 
