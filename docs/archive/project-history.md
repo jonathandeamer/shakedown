@@ -1,3 +1,7 @@
+> Archived 2026-04-17. Historical artifact from an earlier attempt. See `docs/lineage.md` for current guidance.
+
+---
+
 # Project History: From Shakedown to Quackdown
 
 **Written:** 2026-04-11
