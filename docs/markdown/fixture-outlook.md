@@ -19,7 +19,7 @@ Risk tiers:
 | Fixture | Risk tier | Primary risk | Notes |
 |---|---|---|---|
 | ATX Headers | Low | — | Block-level structure is straightforward in a streaming dispatcher. |
-| Setext Headers | Low | — | Two-line look-behind; manageable with line buffering. |
+| Setext Headers | Low | — | Two-line look-behind is supported by the standalone delayed-line probe. |
 | Paragraphs and Simple Blocks | Low | — | The core flow of the block pipeline. |
 | Horizontal Rules | Low | — | Single-line pattern. |
 | Indented Code Blocks | Low | Interaction with nested blocks | HTML-encoding `<` and `&` inside the code block is routine. |
@@ -28,15 +28,15 @@ Risk tiers:
 | Emphasis | Medium | Markdown.pl backtracking | Simple emphasis is proven in `./shakedown-dev`; exact overlap remains a design choice. |
 | Strong Emphasis | Medium | Same as Emphasis | The prototype does not yet prove full Markdown.pl strong/em overlap parity. |
 | Inline Links | Low | Inline complexity | Bracket/paren state machine plus optional title. |
-| Reference Links | Medium | SPL lookup mechanics | The oracle-stub corpus is green; SPL still needs a reference lookup strategy. |
+| Reference Links | Medium | SPL lookup mechanics | The standalone lookup probe supports a stack-backed linear strategy; full Markdown syntax is still unimplemented. |
 | Inline Images | Low | Same as Inline Links | Structurally equivalent to inline links with a leading `!`. |
-| Reference Images | Medium | Same as Reference Links | Inherits the reference-link lookup risk. |
+| Reference Images | Medium | Same as Reference Links | Inherits the reference-link lookup risk and should reuse the same stack-backed strategy. |
 | Auto Links | Divergence | Email autolink encoding | Plain `<a href="mailto:...">` replaces Markdown.pl's randomised entity obfuscation. See `docs/markdown/divergences.md`. |
 | Backslash Escapes | Low | — | One-byte lookahead. |
 | Inline HTML | Low-Medium | Tag detection accuracy | Passes raw HTML through; boundary detection has edge cases. |
-| Ordered Lists | Medium | Loose-list exactness | The oracle-stub corpus is green; SPL still needs an explicit looseness/nesting strategy. |
+| Ordered Lists | Medium | Loose-list exactness | The standalone list-state probe supports a dedicated looseness carrier; full list syntax is still unimplemented. |
 | Unordered Lists | Medium | Loose-list exactness | Same risk class as Ordered Lists. |
-| Nested Lists | Medium-High | Loose-list x nesting | SPL still needs evidence for nested list state handling. |
+| Nested Lists | Medium | Loose-list x nesting | The standalone list-state probe lowers the mechanics risk; full nested list output remains unimplemented. |
 | HTML Blocks | Low-Medium | Block boundary detection | Distinguishing raw HTML blocks from inline HTML requires careful lookahead. |
 | Ampersands and Angle Brackets | Low | — | Entity encoding at the right points of the pipeline. |
 | Nested Block Structures | High | Exact nested output | Simple blockquote is proven in `./shakedown-dev`; full nested block composition is not. |
@@ -45,8 +45,8 @@ Risk tiers:
 ## What Would Lower These Risks
 
 - **For inline edge cases:** a prototype of the buffered-scan path that can be diff'd against Markdown.pl on representative snippets before committing to the wider implementation.
-- **For Reference Links:** a standalone SPL probe of stack-backed lookup and restoration.
-- **For List risks:** a standalone SPL probe of stack-backed list-frame state, plus an explicit decision on loose-list exactness.
+- **For Reference Links:** a production slice that applies the standalone stack-backed lookup mechanics to real Markdown labels.
+- **For List risks:** a production slice that applies the standalone stack-backed list-frame mechanics to real tight/loose list syntax, plus an explicit decision on exact loose-list parity.
 - **For Nested Block High risks:** a prototype of the recursive-dispatch framing pattern that exercises blockquote-containing-list and blockquote-containing-code, diffed against the oracle.
 
 These are fallback prototypes architecture planning may choose to run, not commitments made here.

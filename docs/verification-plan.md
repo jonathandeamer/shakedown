@@ -111,8 +111,17 @@ Each replay was run once as part of the docs restructure. Results below capture 
 - **Observed:**
   ```
   23 passed in 1.44s
-  ```
+```
 - **Disposition:** Confirmed only for the current `./shakedown` oracle stub. This proves the repo contract and fixture wiring, not SPL implementation coverage. Do not cite this as evidence that `./shakedown-dev` or `shakedown.spl` handles the full mdtest corpus.
+
+### B10 — Pre-design SPL mechanics probes
+
+- **Command:** `uv run pytest tests/test_pre_design_probes.py -q`
+- **Observed:**
+  ```
+  3 passed in 2.93s
+  ```
+- **Disposition:** Confirms the SPL mechanics for stack-backed reference lookup, delayed setext line commitment, and nested list-state push/pop. These probes do not implement full Markdown features; they are architecture evidence for the detailed spec.
 
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
@@ -135,7 +144,7 @@ These are not facts to verify; they are open questions architecture planning mus
 - Milestone sequence for chasing the `Markdown.mdtest` ceiling.
 - Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.
 - Whether the AST-cache mechanism lives in the SPL file, a Python wrapper, or is not used at all.
-- SPL mechanics for reference lookup, setext line buffering, and list looseness/nesting state until covered by standalone probes or the detailed spec.
+- Production implementation of reference lookup, setext line buffering, and list looseness/nesting state. The mechanics are covered by B10, but feature-level Markdown coverage still belongs to implementation.
 - Any remaining policy questions around emphasis backtracking or list exactness.
 
 ## Bucket E — New Claims Introduced During This Restructure
