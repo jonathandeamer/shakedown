@@ -21,8 +21,8 @@
 | Setext lookahead | closed for mechanics | `setext-buffering.spl` | Keep setext recognition in the block phase with delayed line commitment. |
 | List looseness / nesting state | closed for mechanics | `list-state-stack.spl` | Use a dedicated stack-backed list-state carrier. |
 | Emphasis backtracking | not a forced divergence | `tests/prototype` known xfail plus Markdown.pl strong-then-emphasis substitution order | Detailed spec should implement strong before emphasis if Markdown.pl parity remains the target. |
-| Nested blockquote closer quirk | policy decision remains | `docs/markdown/divergences.md` | Detailed spec must choose byte parity or structural validity. |
+| Nested blockquote closer quirk | parity requirement | `docs/markdown/oracle-mechanics.md` plus `docs/markdown/divergences.md` | Detailed spec must reproduce the local Markdown.pl byte sequence when strict parity is required. |
 
 ## Detailed Architecture Go/No-Go
 
-Proceed to detailed architecture only if the spec explicitly carries the two-pass emphasis implementation requirement and the remaining nested blockquote closer policy decision. All other pre-design implementation risks have either executable SPL mechanics evidence or are correctly classified as non-SPL oracle-stub evidence.
+Proceed to detailed architecture only if the spec explicitly carries the two-pass emphasis implementation requirement, strict nested-block parity requirement, and email-autolink entity-normalized exception. All other pre-design implementation risks have either executable SPL mechanics evidence or are correctly classified as non-SPL oracle-stub evidence.

@@ -4,7 +4,7 @@
 
 ## How to Read This File
 
-This is a planning input, not a scorecard. It ranks each of the 23 `Markdown.mdtest` fixtures by expected implementation risk given what is known today about SPL semantics (from `docs/spl/`), the prior attempt's lessons (from `docs/prior-attempt/`), and intentional divergences (from `docs/markdown/divergences.md`).
+This is a planning input, not a scorecard. It ranks each of the 23 `Markdown.mdtest` fixtures by expected implementation risk given what is known today about SPL semantics (from `docs/spl/`), the prior attempt's lessons (from `docs/prior-attempt/`), and the parity exceptions in `docs/markdown/divergences.md`.
 
 As of 2026-04-23, the current `./shakedown` entry point passes all 23 `Markdown.mdtest` fixtures because it delegates to `~/markdown/Markdown.pl`. That is useful contract evidence, but it is not SPL implementation evidence. The tiers below describe residual SPL implementation risk for a fresh build.
 
@@ -12,7 +12,7 @@ Risk tiers:
 - **Low** — no known architectural obstacle; implementation is straightforward once the block/inline pipeline is in place.
 - **Medium** — behaviour-level edge cases in Markdown.pl may be hard to reproduce exactly; core implementation is tractable.
 - **High** — fundamental risk tied to SPL limits or to Markdown.pl quirks that resist reproduction.
-- **Divergence** — will not match oracle; covered by `docs/markdown/divergences.md`.
+- **Parity exception** — byte-identical Markdown.pl behavior is not available in pure SPL; the target must use a documented equivalence rule.
 
 ## Fixture Outlook
 
@@ -31,7 +31,7 @@ Risk tiers:
 | Reference Links | Medium | SPL lookup mechanics | The standalone lookup probe supports a stack-backed linear strategy; full Markdown syntax is still unimplemented. |
 | Inline Images | Low | Same as Inline Links | Structurally equivalent to inline links with a leading `!`. |
 | Reference Images | Medium | Same as Reference Links | Inherits the reference-link lookup risk and should reuse the same stack-backed strategy. |
-| Auto Links | Divergence | Email autolink encoding | Plain `<a href="mailto:...">` replaces Markdown.pl's randomised entity obfuscation. See `docs/markdown/divergences.md`. |
+| Auto Links | Low for mdtest; Parity exception for email autolinks | Email autolink randomization | The mdtest fixture covers URL autolinks only. Email autolinks require entity-normalized equivalence because Markdown.pl randomizes entity choice. |
 | Backslash Escapes | Low | — | One-byte lookahead. |
 | Inline HTML | Low-Medium | Tag detection accuracy | Passes raw HTML through; boundary detection has edge cases. |
 | Ordered Lists | Medium | Loose-list exactness | The standalone list-state probe supports a dedicated looseness carrier; full list syntax is still unimplemented. |
@@ -39,7 +39,7 @@ Risk tiers:
 | Nested Lists | Medium | Loose-list x nesting | The standalone list-state probe lowers the mechanics risk; full nested list output remains unimplemented. |
 | HTML Blocks | Low-Medium | Block boundary detection | Distinguishing raw HTML blocks from inline HTML requires careful lookahead. |
 | Ampersands and Angle Brackets | Low | — | Entity encoding at the right points of the pipeline. |
-| Nested Block Structures | High | Exact nested output | Simple blockquote is proven in `./shakedown-dev`; full nested block composition is not. |
+| Nested Block Structures | High | Exact nested output | Simple blockquote is proven in `./shakedown-dev`; full nested block composition must include Markdown.pl quirks when strict parity is required. |
 | Markdown Documentation - Syntax | High | Combined ceiling risks | The largest fixture is oracle-stub green but not SPL-proven. |
 
 ## What Would Lower These Risks

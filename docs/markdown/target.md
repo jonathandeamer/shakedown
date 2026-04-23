@@ -8,11 +8,11 @@ Shakedown ports John Gruber's `Markdown.pl` v1.0.1 to SPL. This file describes t
 - Version: v1.0.1 (confirmed by the version header in that file).
 - Invocation: `perl ~/markdown/Markdown.pl < input.md > output.html`.
 
-`Markdown.pl` is the single source of truth for correct output. Where its behaviour surprises, the oracle is right and Shakedown must match it — except for the intentional divergences in `docs/markdown/divergences.md`.
+`Markdown.pl` is the single source of truth for correct output. Where its behaviour surprises, the oracle is right and Shakedown must match it. The only exception under an SPL-pure parity goal is nondeterministic email-autolink entity selection, because local `Markdown.pl` uses randomness and SPL has no verified randomness primitive.
 
 ## Test Surface: Markdown.mdtest
 
-The 23 fixtures at `~/mdtest/Markdown.mdtest/` define "done" for Shakedown. Each fixture is a pair: `*.text` input and `*.xhtml` (or `*.html`) expected output generated against Markdown.pl.
+The 23 fixtures at `~/mdtest/Markdown.mdtest/` define the current regression corpus. Each fixture is a pair: `*.text` input and `*.xhtml` (or `*.html`) expected output. `docs/markdown/oracle-fixture-audit.md` records where these checked-in expected files differ from freshly generated local `Markdown.pl` output at the raw-byte level.
 
 Fixture names (alphabetical):
 
@@ -40,7 +40,7 @@ Fixture names (alphabetical):
 - Tabs
 - Tidyness
 
-A Shakedown run is considered correct when its output, normalised through the same whitespace and entity handling the harness uses, matches the oracle's output for each fixture — again with the exceptions in `docs/markdown/divergences.md`.
+The default `tests/test_mdtest.py` contract compares normalized fixture output. A strict local-oracle parity check must compare Shakedown output against freshly generated `perl ~/markdown/Markdown.pl` output for the same input, because two checked-in expected files differ from local oracle raw bytes.
 
 ## Feature Surface
 
@@ -71,7 +71,13 @@ Markdown.pl v1.0.1 implements (at a high level):
 
 ### Intentional divergences from oracle behaviour
 
-See `docs/markdown/divergences.md`. Summary: email autolinks emit plain `mailto:` links (no per-character entity obfuscation; SPL has no randomness primitive); the outer close tag on nested blockquotes emits as a well-formed `</blockquote>` rather than Markdown.pl's `<p></blockquote></p>` quirk.
+See `docs/markdown/divergences.md`. Under the Markdown.pl parity goal, nested blockquote closing is not an accepted divergence; Shakedown should reproduce the oracle quirk when strict parity is required. Email autolinks are nondeterministic in Markdown.pl, so SPL-pure parity means entity-normalized equivalence rather than byte-identical random choices.
+
+## Parity Levels
+
+- **Normalized mdtest contract:** current default regression check. It trims line whitespace, collapses repeated blank lines, and decodes numeric entities only for the Auto links fixture.
+- **Strict local-oracle parity:** compare output against freshly generated `perl ~/markdown/Markdown.pl` output for the same input. This is the architecture target for deterministic Markdown.pl behavior.
+- **Email-autolink equivalence:** compare decoded email auto-link href/text content rather than exact randomized entity choices. This is the SPL-pure target for Markdown.pl's nondeterministic email encoder.
 
 ## Interface
 

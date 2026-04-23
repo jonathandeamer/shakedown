@@ -132,6 +132,18 @@ Each replay was run once as part of the docs restructure. Results below capture 
 - **Observed:** Markdown.pl performs `_DoItalicsAndBold` as two substitutions: strong delimiters first, then emphasis delimiters over the modified buffer. The oracle emits `<p>One <em>foo <strong>bar</em> baz</strong> here.</p>`. The P2 prototype emits `<p>One <em>foo </em><em>bar</em> baz<em></em> here.</p>`.
 - **Disposition:** The XFAIL is a limitation of the P2 single-toggle prototype, not a forced divergence. A parity implementation should model Markdown.pl's strong-before-emphasis order.
 
+### B12 — Strict fixture oracle audit
+
+- **Command:** `uv run python scripts/markdown_pl_parity_audit.py --output docs/markdown/oracle-fixture-audit.md`
+- **Observed:** 23 fixtures audited. Raw-byte mismatches: 2 (`Blockquotes with code blocks`, `Code Blocks`). Normalized-contract mismatches: 0.
+- **Disposition:** The checked-in mdtest expected files are valid for the current normalized test contract, but strict local-oracle parity must compare against freshly generated `Markdown.pl` output.
+
+### B13 — Oracle mechanics map
+
+- **Command:** `rg -n "^sub |^# Main|_RunBlockGamut|_RunSpanGamut|_DoHeaders|_DoLists|_DoCodeBlocks|_DoBlockQuotes|_DoItalicsAndBold|_DoAnchors|_DoImages|_DoAutoLinks|_EncodeAmpsAndAngles|_DoCodeSpans|_EncodeBackslashEscapes|_HashHTMLBlocks|_Detab|_Outdent|_StripLinkDefinitions|_FormParagraphs|_TokenizeHTML" ~/markdown/Markdown.pl`
+- **Observed:** Function anchors recorded in `docs/markdown/oracle-mechanics.md`.
+- **Disposition:** Detailed architecture should treat `docs/markdown/oracle-mechanics.md` as the transform-order checklist for Markdown.pl parity.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.
@@ -154,7 +166,7 @@ These are not facts to verify; they are open questions architecture planning mus
 - Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.
 - Whether the AST-cache mechanism lives in the SPL file, a Python wrapper, or is not used at all.
 - Production implementation of reference lookup, setext line buffering, and list looseness/nesting state. The mechanics are covered by B10, but feature-level Markdown coverage still belongs to implementation.
-- Any remaining policy questions around list exactness. Emphasis backtracking is now classified as a two-pass implementation requirement unless deliberately scoped out.
+- Production details for list exactness and nested block composition. These are implementation risks, not accepted divergence decisions under the Markdown.pl parity goal.
 
 ## Bucket E — New Claims Introduced During This Restructure
 
