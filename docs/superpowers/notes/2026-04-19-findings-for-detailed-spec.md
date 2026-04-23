@@ -76,7 +76,7 @@ P2 uses it for `>` (blockquote). The same pattern applies to:
 - `---`, `***`, `___` → horizontal rule
 - `> ` → blockquote
 
-Canonical pattern: Recall-and-maybe-Remember on the first character of each line. Generalise into a named idiom in the spec so every contributor applies it identically.
+Canonical pattern: Recall-and-restore on the first character of each line. Generalise into a named idiom in the spec so every contributor applies it identically.
 
 ### Scene fall-through is load-bearing
 
@@ -154,7 +154,7 @@ From P1 evidence doc: "Juliet speaks, sets Oberon's value, then tells Oberon to 
 
 ### Line-start peek pattern catalog
 
-Document the Recall-and-maybe-Remember pattern once, with a cast-agnostic template. Every block-start detector (blockquote, list items, headings, HR, code blocks) is a specialisation of this template. Writing it once saves N re-derivations.
+Document the Recall-and-restore pattern once, with a cast-agnostic template. Every block-start detector (blockquote, list items, headings, HR, code blocks) is a specialisation of this template. Writing it once saves N re-derivations.
 
 ## 6. Risks Not Yet Prototyped
 
@@ -171,11 +171,11 @@ Not a wall, but a different Phase 2 pattern than blockquote's single-char peek. 
 `[text][label]` + `[label]: http://example.com` interact across the whole document. Markdown.pl does a pre-pass collecting definitions into a Perl hash keyed by label. SPL has no keyed lookup.
 
 Options:
-- **Linear scan.** On each use, pop through a "references" stack, compare labels, push back. O(n²) but probably fine for mdtest-sized documents.
+- **Linear scan.** On each use, pop through a "references" stack, compare labels, push back. O(n²) but acceptable for mdtest-sized documents unless implementation timing evidence says otherwise.
 - **Two-pass with inline substitution.** Pass 0 scans the input and emits a buffer with reference uses already substituted (if the definition appeared earlier or can be found by scanning forward). Pass 1 is the main block parse.
 - **Defer to emit time.** Phase 2 emits a `REF_LOOKUP(label)` marker; Phase 3 (or a new Phase 4) resolves at emit time by scanning a refs-stack.
 
-All three are plausible; none have been prototyped. This is probably the largest remaining architectural risk and deserves either a dedicated P3 prototype or a heavy spec section with a proof-of-concept.
+All three are plausible; at the time of this note, none had been prototyped. This was the largest remaining architectural risk before the 2026-04-23 pre-design hardening probes.
 
 ### IR inconsistency resolution
 

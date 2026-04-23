@@ -1,6 +1,6 @@
 # Fixture Outlook for a Fresh Build
 
-> This file replaces the prior `shakedown-mdtest-fixture-matrix.md`. The prior matrix assigned "likely pass / uncertain / likely fail" labels based on a 4,311-line block-level implementation that does not exist in this repository. This file reframes the outlook as *risk tiers for a fresh build*.
+> This file replaces the prior `shakedown-mdtest-fixture-matrix.md`. The prior matrix assigned pass-oriented labels based on a 4,311-line block-level implementation that does not exist in this repository. This file reframes the outlook as *risk tiers for a fresh build*.
 
 ## How to Read This File
 
