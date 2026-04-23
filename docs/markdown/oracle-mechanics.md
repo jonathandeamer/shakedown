@@ -22,7 +22,7 @@ This file records the local `~/markdown/Markdown.pl` mechanics that matter for S
 | 3 | `_DoLists` | 760-845 | List parsing happens before code blocks and blockquotes. Ordered and unordered list markers share recursive list-level state. |
 | 4 | `_ProcessListItems` | 848-913 | Tight/loose output depends on leading blank lines and blank lines within each item. Loose items run `_RunBlockGamut`; tight items run `_RunSpanGamut` after nested-list handling. |
 | 5 | `_DoCodeBlocks` | 916-945 | Code blocks are found after list processing. Contents are outdented, encoded, detabbed, stripped of leading/trailing blank lines, then wrapped in `<pre><code>`. |
-| 6 | `_DoBlockQuotes` | 1049-1082 | Blockquotes recursively run `_RunBlockGamut` on stripped quote contents, prefix every output line with two spaces, and then remove that added indent inside embedded `<pre>` blocks before wrapping in `<blockquote>`. That code-block-in-blockquote indent fix is part of strict local-oracle byte parity. |
+| 6 | `_DoBlockQuotes` | 1049-1082 | Blockquotes first strip one level of `>` quoting and recurse through `_RunBlockGamut` on the unquoted text, then prefix the rendered blockquote output with two spaces on every line, and finally remove that added indent from embedded `<pre>` blocks before wrapping the whole result in `<blockquote>`. That code-block-in-blockquote indent fix is part of strict local-oracle byte parity. |
 | 7 | `_FormParagraphs` | 1085-1119 | Unhashed chunks become paragraphs after span processing; hashed HTML blocks are restored without paragraph wrapping. |
 
 ## Span Pipeline
