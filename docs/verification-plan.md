@@ -105,14 +105,14 @@ Each replay was run once as part of the docs restructure. Results below capture 
 - **Unbacked (`?`) claims:** none. Every labelled claim in the reference is covered by either a probe row in `docs/spl/verification-evidence.md`, a rule in `~/shakespearelang/shakespearelang/shakespeare.ebnf`, or an explicit `Corrected project assumption` label.
 - **Disposition:** Clean. No items need to be promoted to bucket D on this pass.
 
-### B9 — Current mdtest corpus pass on the assembled binary
+### B9 — Current oracle-stub mdtest contract pass
 
 - **Command:** `uv run pytest tests/test_mdtest.py -q`
 - **Observed:**
   ```
   23 passed in 1.44s
   ```
-- **Disposition:** Confirmed. The current `./shakedown` / `./shakedown-dev` binary matches all 23 `Markdown.mdtest` fixtures at this checkpoint.
+- **Disposition:** Confirmed only for the current `./shakedown` oracle stub. This proves the repo contract and fixture wiring, not SPL implementation coverage. Do not cite this as evidence that `./shakedown-dev` or `shakedown.spl` handles the full mdtest corpus.
 
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
@@ -135,7 +135,8 @@ These are not facts to verify; they are open questions architecture planning mus
 - Milestone sequence for chasing the `Markdown.mdtest` ceiling.
 - Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.
 - Whether the AST-cache mechanism lives in the SPL file, a Python wrapper, or is not used at all.
-- Any remaining policy questions around emphasis backtracking or list exactness if a future design chooses to reopen them.
+- SPL mechanics for reference lookup, setext line buffering, and list looseness/nesting state until covered by standalone probes or the detailed spec.
+- Any remaining policy questions around emphasis backtracking or list exactness.
 
 ## Bucket E — New Claims Introduced During This Restructure
 
