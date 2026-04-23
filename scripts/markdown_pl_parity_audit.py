@@ -58,9 +58,14 @@ def expected_path_for(text_path: Path) -> Path:
     raise FileNotFoundError(f"No .xhtml or .html expected output for {text_path}")
 
 
-def decode_utf8(text: bytes) -> str:
-    """Decode bytes for human-facing comparisons and reporting."""
+def decode_utf8_for_report(text: bytes) -> str:
+    """Decode bytes for human-facing reporting without raising on bad UTF-8."""
     return text.decode("utf-8", errors="replace")
+
+
+def decode_utf8_for_compare(text: bytes) -> str:
+    """Decode bytes losslessly enough for normalized equality checks."""
+    return text.decode("utf-8", errors="surrogateescape")
 
 
 def first_byte_diff(
@@ -80,15 +85,26 @@ def first_byte_diff(
 
 def unified_text_diff(expected_path: Path, expected: bytes, oracle: bytes) -> str:
     """Render a unified text diff for human audit notes."""
-    expected_text = decode_utf8(expected)
-    oracle_text = decode_utf8(oracle)
-    return "".join(
+    expected_text = decode_utf8_for_report(expected)
+    oracle_text = decode_utf8_for_report(oracle)
+    diff = "".join(
         difflib.unified_diff(
             expected_text.splitlines(keepends=True),
             oracle_text.splitlines(keepends=True),
             fromfile=str(expected_path),
             tofile="local Markdown.pl",
         )
+    )
+    if diff != "":
+        return diff
+
+    return (
+        "--- "
+        f"{expected_path}\n"
+        "+++ local Markdown.pl\n"
+        "@@ byte-diff @@\n"
+        f"- expected bytes: {expected.hex()}\n"
+        f"+ oracle bytes:   {oracle.hex()}\n"
     )
 
 
@@ -111,8 +127,8 @@ def audit_fixture(text_path: Path, markdown_pl: Path) -> FixtureAudit:
     oracle = run_markdown_pl(markdown_pl, input_bytes)
 
     raw_equal = expected == oracle
-    expected_text = decode_utf8(expected)
-    oracle_text = decode_utf8(oracle)
+    expected_text = decode_utf8_for_compare(expected)
+    oracle_text = decode_utf8_for_compare(oracle)
     normalized_equal = normalize_contract(expected_text) == normalize_contract(
         oracle_text
     )
