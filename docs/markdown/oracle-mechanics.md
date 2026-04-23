@@ -6,7 +6,7 @@ This file records the local `~/markdown/Markdown.pl` mechanics that matter for S
 
 | Order | Function | Local lines | Parity requirement |
 |---:|---|---:|---|
-| 1 | `Markdown` setup | 226-271 | Normalize line endings, append `\n\n`, detab via `_Detab`, strip whitespace-only leading/trailing lines, hash block HTML, strip link definitions, run block gamut, unescape special chars. |
+| 1 | `Markdown` setup | 226-271 | Normalize line endings, append `\n\n`, detab via `_Detab`, strip whitespace-only lines, hash block HTML, strip link definitions, run block gamut, unescape special chars. |
 | 2 | `_Detab` | 1307-1318 | Expand tabs to four-column tab stops before most parsing. Code and list behavior depend on this. |
 | 3 | `_HashHTMLBlocks` | 313-419 | Protect block-level HTML before Markdown block processing, then hash new block-level HTML generated during recursion. |
 | 4 | `_StripLinkDefinitions` | 274-311 | Remove reference definitions before block parsing and store case-insensitive URL/title data. |
