@@ -6,7 +6,7 @@ This file records the local `~/markdown/Markdown.pl` mechanics that matter for S
 
 | Order | Function | Local lines | Parity requirement |
 |---:|---|---:|---|
-| 1 | `Markdown` setup | 226-271 | Normalize line endings, replace line-leading spaces with tabs, detab, strip blank leading/trailing lines, hash raw HTML blocks, strip link definitions, run block gamut, unescape special chars. |
+| 1 | `Markdown` setup | 226-271 | Normalize line endings, append `\n\n`, detab via `_Detab`, strip whitespace-only leading/trailing lines, hash block HTML, strip link definitions, run block gamut, unescape special chars. |
 | 2 | `_Detab` | 1307-1318 | Expand tabs to four-column tab stops before most parsing. Code and list behavior depend on this. |
 | 3 | `_HashHTMLBlocks` | 313-419 | Protect block-level HTML before Markdown block processing, then hash new block-level HTML generated during recursion. |
 | 4 | `_StripLinkDefinitions` | 274-311 | Remove reference definitions before block parsing and store case-insensitive URL/title data. |
@@ -22,7 +22,7 @@ This file records the local `~/markdown/Markdown.pl` mechanics that matter for S
 | 3 | `_DoLists` | 760-845 | List parsing happens before code blocks and blockquotes. Ordered and unordered list markers share recursive list-level state. |
 | 4 | `_ProcessListItems` | 848-913 | Tight/loose output depends on leading blank lines and blank lines within each item. Loose items run `_RunBlockGamut`; tight items run `_RunSpanGamut` after nested-list handling. |
 | 5 | `_DoCodeBlocks` | 916-945 | Code blocks are found after list processing. Contents are outdented, encoded, detabbed, stripped of leading/trailing blank lines, then wrapped in `<pre><code>`. |
-| 6 | `_DoBlockQuotes` | 1049-1082 | Blockquotes recursively run `_RunBlockGamut` on stripped quote contents and then prefix every output line with two spaces before wrapping in `<blockquote>`. This indentation is part of strict local-oracle byte parity. |
+| 6 | `_DoBlockQuotes` | 1049-1082 | Blockquotes recursively run `_RunBlockGamut` on stripped quote contents, prefix every output line with two spaces, and then remove that added indent inside embedded `<pre>` blocks before wrapping in `<blockquote>`. That code-block-in-blockquote indent fix is part of strict local-oracle byte parity. |
 | 7 | `_FormParagraphs` | 1085-1119 | Unhashed chunks become paragraphs after span processing; hashed HTML blocks are restored without paragraph wrapping. |
 
 ## Span Pipeline
