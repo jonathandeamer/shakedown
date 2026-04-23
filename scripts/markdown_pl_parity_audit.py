@@ -57,6 +57,11 @@ def expected_path_for(text_path: Path) -> Path:
     raise FileNotFoundError(f"No .xhtml or .html expected output for {text_path}")
 
 
+def decode_utf8(text: bytes) -> str:
+    """Decode bytes for human-facing comparisons and reporting."""
+    return text.decode("utf-8", errors="replace")
+
+
 def first_byte_diff(
     left: bytes, right: bytes
 ) -> tuple[int, int | None, int | None] | None:
@@ -74,8 +79,8 @@ def first_byte_diff(
 
 def unified_text_diff(expected_path: Path, expected: bytes, oracle: bytes) -> str:
     """Render a unified text diff for human audit notes."""
-    expected_text = expected.decode("utf-8")
-    oracle_text = oracle.decode("utf-8")
+    expected_text = decode_utf8(expected)
+    oracle_text = decode_utf8(oracle)
     return "".join(
         difflib.unified_diff(
             expected_text.splitlines(keepends=True),
@@ -105,8 +110,8 @@ def audit_fixture(text_path: Path, markdown_pl: Path) -> FixtureAudit:
     oracle = run_markdown_pl(markdown_pl, input_bytes)
 
     raw_equal = expected == oracle
-    expected_text = expected.decode("utf-8")
-    oracle_text = oracle.decode("utf-8")
+    expected_text = decode_utf8(expected)
+    oracle_text = decode_utf8(oracle)
     normalized_equal = normalize_contract(expected_text) == normalize_contract(
         oracle_text
     )
@@ -137,10 +142,6 @@ def collect_audits(fixtures_dir: Path, markdown_pl: Path) -> list[FixtureAudit]:
     """Audit every fixture with an expected output file."""
     audits: list[FixtureAudit] = []
     for text_path in sorted(fixtures_dir.glob("*.text")):
-        try:
-            expected_path_for(text_path)
-        except FileNotFoundError:
-            continue
         audits.append(audit_fixture(text_path, markdown_pl))
     return audits
 
@@ -245,7 +246,7 @@ def main() -> int:
     if args.output is None:
         print(report, end="")
     else:
-        args.output.write_text(report)
+        args.output.write_text(report, encoding="utf-8")
     return 0
 
 
