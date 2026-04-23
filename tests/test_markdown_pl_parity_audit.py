@@ -10,8 +10,10 @@ from scripts.markdown_pl_parity_audit import (
     collect_audits,
     expected_path_for,
     first_byte_diff,
+    format_report_path,
     normalize_contract,
     render_report,
+    unified_text_diff,
 )
 
 
@@ -61,9 +63,18 @@ def test_expected_path_raises_when_no_expected_file(tmp_path: Path) -> None:
         expected_path_for(text_path)
 
 
+def test_format_report_path_uses_home_relative_paths() -> None:
+    assert format_report_path(Path.home() / "markdown" / "Markdown.pl") == (
+        "~/markdown/Markdown.pl"
+    )
+    assert format_report_path(Path("/var/tmp/output.txt")) == "/var/tmp/output.txt"
+
+
 def test_render_report_summarizes_raw_and_normalized_mismatches(
     tmp_path: Path,
 ) -> None:
+    fixtures_dir = Path.home() / "mdtest" / "Markdown.mdtest"
+    markdown_pl = Path.home() / "markdown" / "Markdown.pl"
     audit = FixtureAudit(
         name="Code Blocks",
         input_path=tmp_path / "Code Blocks.text",
@@ -78,15 +89,16 @@ def test_render_report_summarizes_raw_and_normalized_mismatches(
         diff="--- expected\n+++ oracle\n",
     )
 
-    report = render_report(
-        [audit], tmp_path, Path("/home/ec2-user/markdown/Markdown.pl")
-    )
+    report = render_report([audit], fixtures_dir, markdown_pl)
 
+    assert "- **Fixtures:** `~/mdtest/Markdown.mdtest`" in report
+    assert "- **Oracle:** `~/markdown/Markdown.pl`" in report
     assert "- **Fixture count:** 1" in report
     assert "- **Raw-byte mismatches:** 1" in report
     assert "- **Normalized-contract mismatches:** 0" in report
     assert "| Code Blocks | fail | pass | 312 | 310 | 219 (32 -> 10) |" in report
     assert "## Raw Mismatch Diffs" in report
+    assert "```diff\n--- expected\n+++ oracle\n```" in report
 
 
 def test_collect_audits_raises_when_fixtures_dir_is_missing(tmp_path: Path) -> None:
@@ -145,3 +157,12 @@ def test_audit_fixture_uses_hex_fallback_for_non_text_safe_bytes(
         "- expected bytes: ff\n"
         "+ oracle bytes:   fe\n"
     )
+
+
+def test_unified_text_diff_uses_canonical_home_paths() -> None:
+    expected_path = Path.home() / "mdtest" / "Markdown.mdtest" / "Sample.xhtml"
+
+    diff = unified_text_diff(expected_path, b"alpha\n", b"beta\n")
+
+    assert diff.startswith("--- ~/mdtest/Markdown.mdtest/Sample.xhtml\n")
+    assert "+++ local Markdown.pl\n" in diff
