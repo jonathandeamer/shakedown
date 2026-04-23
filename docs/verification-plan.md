@@ -123,6 +123,15 @@ Each replay was run once as part of the docs restructure. Results below capture 
   ```
 - **Disposition:** Confirms the SPL mechanics for stack-backed reference lookup, delayed setext line commitment, and nested list-state push/pop. These probes do not implement full Markdown features; they are architecture evidence for the detailed spec.
 
+### B11 — Emphasis backtracking review
+
+- **Commands:**
+  - `sed -n '1030,1048p' ~/markdown/Markdown.pl`
+  - `printf 'One *foo **bar* baz** here.\n' | perl ~/markdown/Markdown.pl`
+  - `printf 'One *foo **bar* baz** here.\n' | ./shakedown-dev`
+- **Observed:** Markdown.pl performs `_DoItalicsAndBold` as two substitutions: strong delimiters first, then emphasis delimiters over the modified buffer. The oracle emits `<p>One <em>foo <strong>bar</em> baz</strong> here.</p>`. The P2 prototype emits `<p>One <em>foo </em><em>bar</em> baz<em></em> here.</p>`.
+- **Disposition:** The XFAIL is a limitation of the P2 single-toggle prototype, not a forced divergence. A parity implementation should model Markdown.pl's strong-before-emphasis order.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.
@@ -145,7 +154,7 @@ These are not facts to verify; they are open questions architecture planning mus
 - Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.
 - Whether the AST-cache mechanism lives in the SPL file, a Python wrapper, or is not used at all.
 - Production implementation of reference lookup, setext line buffering, and list looseness/nesting state. The mechanics are covered by B10, but feature-level Markdown coverage still belongs to implementation.
-- Any remaining policy questions around emphasis backtracking or list exactness.
+- Any remaining policy questions around list exactness. Emphasis backtracking is now classified as a two-pass implementation requirement unless deliberately scoped out.
 
 ## Bucket E — New Claims Introduced During This Restructure
 

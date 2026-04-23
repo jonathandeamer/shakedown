@@ -34,7 +34,7 @@ Markdown.pl's behaviour comes from **two sequential regex passes**: strong `(\*\
 
 P2's single-flag toggle (Mercutio = open/closed) can't reproduce overlap. But a **two-pass inline emitter** can: one pass produces a buffer with `<strong>`/`</strong>` tags inserted; a second pass over that buffer inserts `<em>`/`</em>`. Cost: one additional reversal, roughly 40 scene lines. Converts the XFAIL to PASS.
 
-The P2 evidence doc recommended documenting backtracking as an accepted divergence — this finding **contradicts** that recommendation. The two-pass approach is well within the architecture's reach.
+The early P2 framing treated backtracking as a candidate divergence. This review supersedes that framing: the two-pass approach is well within the architecture's reach.
 
 ### Loose-list exactness (prior PARTIAL)
 

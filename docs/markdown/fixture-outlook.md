@@ -25,8 +25,8 @@ Risk tiers:
 | Indented Code Blocks | Low | Interaction with nested blocks | HTML-encoding `<` and `&` inside the code block is routine. |
 | Blockquotes | Low-Medium | Nested composition | Simple blockquote is proven in `./shakedown-dev`; richer nested blockquote composition remains design risk. |
 | Code Spans | Low | — | Streaming inline toggle. |
-| Emphasis | Medium | Markdown.pl backtracking | Simple emphasis is proven in `./shakedown-dev`; exact overlap remains a design choice. |
-| Strong Emphasis | Medium | Same as Emphasis | The prototype does not yet prove full Markdown.pl strong/em overlap parity. |
+| Emphasis | Medium | Markdown.pl backtracking | Simple emphasis is proven in `./shakedown-dev`; exact overlap requires Markdown.pl's strong-then-emphasis order. |
+| Strong Emphasis | Medium | Same as Emphasis | The prototype does not yet prove full Markdown.pl strong/em overlap parity; the detailed spec should use a two-pass inline design. |
 | Inline Links | Low | Inline complexity | Bracket/paren state machine plus optional title. |
 | Reference Links | Medium | SPL lookup mechanics | The standalone lookup probe supports a stack-backed linear strategy; full Markdown syntax is still unimplemented. |
 | Inline Images | Low | Same as Inline Links | Structurally equivalent to inline links with a leading `!`. |

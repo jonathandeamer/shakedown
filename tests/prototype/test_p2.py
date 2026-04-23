@@ -25,9 +25,8 @@ def _run_shakedown_dev(input_md: str) -> tuple[int, str, str]:
             "p2_backtrack",
             marks=pytest.mark.xfail(
                 reason=(
-                    "Markdown.pl emphasis backtracking produces overlapping "
-                    "<em>/<strong> tags; divergence candidate — "
-                    "see p2 evidence doc"
+                    "P2 single-toggle prototype does not implement Markdown.pl's "
+                    "strong-then-emphasis two-pass behavior; see p2 evidence doc"
                 ),
             ),
         ),

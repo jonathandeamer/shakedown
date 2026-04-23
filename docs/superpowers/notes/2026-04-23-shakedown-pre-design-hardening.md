@@ -20,9 +20,9 @@
 | Reference lookup | closed for mechanics | `reference-lookup.spl` | Use document-scoped linear lookup unless a later implementation proves it too slow. |
 | Setext lookahead | closed for mechanics | `setext-buffering.spl` | Keep setext recognition in the block phase with delayed line commitment. |
 | List looseness / nesting state | closed for mechanics | `list-state-stack.spl` | Use a dedicated stack-backed list-state carrier. |
-| Emphasis backtracking | policy decision remains | `tests/prototype` known xfail plus prior two-pass finding | Detailed spec must choose two-pass parity or documented divergence before implementation planning. |
+| Emphasis backtracking | not a forced divergence | `tests/prototype` known xfail plus Markdown.pl strong-then-emphasis substitution order | Detailed spec should implement strong before emphasis if Markdown.pl parity remains the target. |
 | Nested blockquote closer quirk | policy decision remains | `docs/markdown/divergences.md` | Detailed spec must choose byte parity or structural validity. |
 
 ## Detailed Architecture Go/No-Go
 
-Proceed to detailed architecture only if the spec explicitly carries the two remaining policy decisions: emphasis backtracking and nested blockquote closer behavior. All other pre-design implementation risks have either executable SPL mechanics evidence or are correctly classified as non-SPL oracle-stub evidence.
+Proceed to detailed architecture only if the spec explicitly carries the two-pass emphasis implementation requirement and the remaining nested blockquote closer policy decision. All other pre-design implementation risks have either executable SPL mechanics evidence or are correctly classified as non-SPL oracle-stub evidence.
