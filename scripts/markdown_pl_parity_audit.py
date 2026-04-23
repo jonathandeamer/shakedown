@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import difflib
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -140,8 +141,15 @@ def audit_fixture(text_path: Path, markdown_pl: Path) -> FixtureAudit:
 
 def collect_audits(fixtures_dir: Path, markdown_pl: Path) -> list[FixtureAudit]:
     """Audit every fixture with an expected output file."""
+    if not fixtures_dir.is_dir():
+        raise NotADirectoryError(f"Fixtures directory does not exist: {fixtures_dir}")
+
+    text_paths = sorted(fixtures_dir.glob("*.text"))
+    if not text_paths:
+        raise FileNotFoundError(f"No .text fixtures found in {fixtures_dir}")
+
     audits: list[FixtureAudit] = []
-    for text_path in sorted(fixtures_dir.glob("*.text")):
+    for text_path in text_paths:
         audits.append(audit_fixture(text_path, markdown_pl))
     return audits
 
@@ -244,7 +252,7 @@ def main() -> int:
     audits = collect_audits(args.fixtures_dir, args.markdown_pl)
     report = render_report(audits, args.fixtures_dir, args.markdown_pl)
     if args.output is None:
-        print(report, end="")
+        sys.stdout.buffer.write(report.encode("utf-8"))
     else:
         args.output.write_text(report, encoding="utf-8")
     return 0
