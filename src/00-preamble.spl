@@ -1,0 +1,9 @@
+The Shakedown Prototype.
+
+Romeo, a reader of input.
+Juliet, a speaker of output.
+Hamlet, a holder of block-annotated buffer.
+Puck, a helper for buffer reversal.
+Oberon, a helper for buffer reversal.
+Ophelia, a tracker of inline state.
+Mercutio, a tracker of emphasis state.

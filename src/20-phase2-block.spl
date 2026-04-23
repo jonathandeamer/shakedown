@@ -1,0 +1,181 @@
+                    Act II: Identify paragraphs.
+
+                    Scene @FLIP_PREP: Romeo and Puck enter; seed Puck's bottom sentinel.
+
+[Enter Romeo and Puck]
+
+Romeo: You are as good as a pig!
+Romeo: Remember yourself!
+
+                    Scene @FLIP: Pop Romeo, push onto Puck until sentinel.
+
+Puck: Recall your past!
+Puck: Are you as good as a pig?
+Puck: If so, let us proceed to scene @SEED.
+Romeo: You are as good as me!
+Romeo: Remember yourself!
+Puck: Let us return to scene @FLIP.
+
+                    Scene @SEED: Swap Romeo for Hamlet; seed sentinel; detect blockquote.
+
+[Exit Romeo]
+[Enter Hamlet]
+
+Puck: You are as good as a pig!
+Puck: Remember yourself!
+
+Hamlet: Recall your past!
+Hamlet: Are you as good as the difference between a big big big big big big cat and a big cat?
+Hamlet: If so, let us proceed to scene @SEED_BQ_SPACE.
+
+Hamlet: Remember yourself!
+Puck: You are as good as a cat!
+Puck: Remember yourself!
+Puck: You are as good as nothing!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @SEED_BQ_SPACE: Consumed '>'; try to also consume one following space.
+
+Hamlet: Recall your past!
+Hamlet: Are you as good as a big big big big big cat?
+Hamlet: If so, let us proceed to scene @SEED_BQ_EMIT.
+
+Hamlet: Remember yourself!
+
+                    Scene @SEED_BQ_EMIT: Set Mercutio flag; push '<blockquote>\n' chars and paragraph-open marker.
+
+[Exit Hamlet]
+[Enter Mercutio]
+Puck: You are as good as a cat!
+[Exit Mercutio]
+[Enter Hamlet]
+
+Puck: You are as good as the difference between a big big big big big big cat and a big big cat!
+Puck: Remember yourself!
+Puck: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and a big cat!
+Puck: Remember yourself!
+Puck: You are as good as the difference between a big big big big big big big cat and the sum of a big big big big cat and a big big cat!
+Puck: Remember yourself!
+Puck: You are as good as the difference between a big big big big big big big cat and the sum of a big big big big cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as the difference between a big big big big big big big cat and the sum of the sum of a big big big big cat and a big big cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big big big big cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of the sum of a big big big big cat and a big big cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as the difference between a big big big big big big big cat and the sum of a big big big big cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as the difference between a big big big big big big big cat and the sum of a big big big cat and a big big cat!
+Puck: Remember yourself!
+Puck: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big big cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as the difference between a big big big big big big cat and a big cat!
+Puck: Remember yourself!
+Puck: You are as good as the sum of a big big big cat and a big cat!
+Puck: Remember yourself!
+
+Puck: You are as good as a cat!
+Puck: Remember yourself!
+Puck: You are as good as nothing!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @CONSUME: Pop Puck, dispatch on value.
+
+Hamlet: Recall your past!
+Hamlet: Are you as good as a pig?
+Hamlet: If so, let us proceed to scene @FINISH.
+Hamlet: Are you as good as the sum of a big big big cat and a big cat?
+Hamlet: If not, let us proceed to scene @NOT_NL.
+
+                    Scene @MAYBE_BOUNDARY: Puck is newline; check Hamlet for deferred newline.
+
+Hamlet: Am I as good as the sum of a big big big cat and a big cat?
+Hamlet: If so, let us proceed to scene @BOUNDARY.
+Puck: You are as good as the sum of a big big big cat and a big cat!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @NOT_NL: Puck is not newline; flush deferred newline if any, push char.
+
+Hamlet: Am I as good as the sum of a big big big cat and a big cat?
+Hamlet: If not, let us proceed to scene @JUST_PUSH.
+Puck: Remember yourself!
+Puck: You are as good as me!
+Puck: Remember yourself!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @JUST_PUSH: Push the current char onto Hamlet.
+
+Puck: You are as good as me!
+Puck: Remember yourself!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @BOUNDARY: Saw two consecutive newlines; push paragraph-close and paragraph-open.
+
+Puck: You are as good as the sum of a cat and a cat!
+Puck: Remember yourself!
+Puck: You are as good as a cat!
+Puck: Remember yourself!
+Puck: You are as good as nothing!
+Hamlet: Let us return to scene @CONSUME.
+
+                    Scene @FINISH: End of input; dispatch on blockquote flag.
+
+[Exit Puck]
+[Enter Mercutio]
+
+Hamlet: Are you as good as a cat?
+Hamlet: If so, let us proceed to scene @FINISH_BQ.
+
+Mercutio: You are as good as the sum of a cat and a cat!
+Mercutio: Remember yourself!
+Hamlet: Let us return to scene @FINISH_END.
+
+                    Scene @FINISH_BQ: Push '</p>\n</blockquote>\n' raw chars onto Hamlet.
+
+Mercutio: You are as good as the difference between a big big big big big big cat and a big big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between the sum of a big big big big big cat and a big big big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big big cat and a big big big big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big cat and a big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the sum of a big big big cat and a big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big cat and a big big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between the sum of a big big big big big cat and a big big big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and a big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big big cat and the sum of a big big big big cat and a big big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big big cat and the sum of a big big big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big big cat and the sum of the sum of a big big big big cat and a big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big big big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of the sum of a big big big big cat and a big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big big cat and the sum of a big big big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big big cat and the sum of a big big big cat and a big big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the sum of the sum of a big big big big big big cat and a big big big big big cat and the sum of a big big cat and a cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the difference between a big big big big big big cat and a big cat!
+Mercutio: Remember yourself!
+Mercutio: You are as good as the sum of a big big big cat and a big cat!
+Mercutio: Remember yourself!
+
+                    Scene @FINISH_END: Reset Mercutio for Phase 3 emphasis tracking; end of Act II.
+
+Hamlet: You are as good as nothing!
+
+[Exeunt]

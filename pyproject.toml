@@ -3,7 +3,9 @@ name = "shakedown"
 version = "0.0.0"
 description = "A port of John Gruber's Markdown.pl to SPL"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "shakespearelang>=0.6",
+]
 
 [dependency-groups]
 dev = [
@@ -22,6 +24,7 @@ select = ["E", "F", "I", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 
 [tool.commitizen]
 version_provider = "pep621"
