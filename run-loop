@@ -66,7 +66,16 @@ def collect_repo_snapshot(repo_root: Path) -> dict[str, tuple[str, ...]]:
             untracked_paths.append(path)
         else:
             tracked_paths.append(path)
+    head_result = subprocess.run(
+        ["git", "rev-parse", "--verify", "HEAD"],
+        cwd=repo_root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    head = (head_result.stdout.strip(),) if head_result.returncode == 0 else ()
     return {
+        "head": head,
         "tracked_paths": tuple(sorted(tracked_paths)),
         "untracked_paths": tuple(sorted(untracked_paths)),
     }
@@ -75,6 +84,8 @@ def collect_repo_snapshot(repo_root: Path) -> dict[str, tuple[str, ...]]:
 def has_useful_repo_progress(
     before: dict[str, tuple[str, ...]], after: dict[str, tuple[str, ...]]
 ) -> bool:
+    if before.get("head", ()) != after.get("head", ()):
+        return True
     before_tracked = _filter_progress_paths(before["tracked_paths"])
     after_tracked = _filter_progress_paths(after["tracked_paths"])
     before_untracked = _filter_progress_paths(before["untracked_paths"])
@@ -298,6 +309,14 @@ def validate_default_prompt_path(prompt_file: Path) -> None:
     sys.exit(1)
 
 
+def validate_explicit_prompt_path(prompt_file: Path, prompt_arg: str) -> None:
+    """Fail fast when an operator supplied an unavailable prompt path."""
+    if prompt_file.exists():
+        return
+    print(f"run-loop: prompt path is unavailable: {prompt_arg}", file=sys.stderr)
+    sys.exit(1)
+
+
 def expand_refs(text: str, repo_root: Path) -> str:
     """Expand @file references, wrapping content in === delimiters."""
     lines = []
@@ -445,7 +464,10 @@ def main(argv: list[str] | None = None) -> None:
     args = sys.argv[1:] if argv is None else argv
     if args:
         candidate = Path(args[0])
-        prompt_file = candidate if candidate.is_absolute() else (REPO / candidate).resolve()
+        prompt_file = (
+            candidate if candidate.is_absolute() else (REPO / candidate).resolve()
+        )
+        validate_explicit_prompt_path(prompt_file, args[0])
         complete_marker = derive_complete_marker(prompt_file, REPO)
     else:
         prompt_file = PROMPT_FILE

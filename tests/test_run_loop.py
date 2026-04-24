@@ -372,6 +372,20 @@ class TestRepoProgress:
 
         assert _mod.has_useful_repo_progress(before, after) is True
 
+    def test_has_useful_repo_progress_counts_clean_head_change(self):
+        before = {
+            "head": ("abc123",),
+            "tracked_paths": (),
+            "untracked_paths": (),
+        }
+        after = {
+            "head": ("def456",),
+            "tracked_paths": (),
+            "untracked_paths": (),
+        }
+
+        assert _mod.has_useful_repo_progress(before, after) is True
+
 
 class TestRunLoopRecovery:
     def test_no_progress_on_first_failure_switches_backend(self, monkeypatch, capsys):
@@ -817,6 +831,28 @@ class TestMainLoop:
         assert captured.err == (
             "run-loop: default prompt path is unavailable. "
             "Pass an explicit prompt path.\n"
+        )
+
+    def test_missing_explicit_prompt_exits_with_operator_error(
+        self, monkeypatch, capsys, tmp_path
+    ):
+        monkeypatch.setattr(_mod, "run_backend", lambda backend, prompt: pytest.fail())
+        monkeypatch.setattr(_mod, "STATE_FILE", tmp_path / "state.json")
+        monkeypatch.setattr(
+            _mod.time,
+            "sleep",
+            lambda seconds: pytest.fail(
+                "missing explicit prompt should fail before cooldown"
+            ),
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            _mod.main(argv=["docs/missing-prompt.md"])
+
+        captured = capsys.readouterr()
+        assert excinfo.value.code == 1
+        assert captured.err == (
+            "run-loop: prompt path is unavailable: docs/missing-prompt.md\n"
         )
 
     def test_both_limited_claude_iteration_switches_next_backend_to_codex(
