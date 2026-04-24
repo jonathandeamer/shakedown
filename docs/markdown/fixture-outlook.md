@@ -1,10 +1,12 @@
-# Fixture Outlook for a Fresh Build
+# Feature Risk Outlook for a Fresh Build
 
 > This file replaces the prior `shakedown-mdtest-fixture-matrix.md`. The prior matrix assigned pass-oriented labels based on a 4,311-line block-level implementation that does not exist in this repository. This file reframes the outlook as *risk tiers for a fresh build*.
+>
+> The filename is historical. For one row per actual mdtest fixture, use `docs/markdown/fixture-matrix.md`.
 
 ## How to Read This File
 
-This is a planning input, not a scorecard. It ranks each of the 23 `Markdown.mdtest` fixtures by expected implementation risk given what is known today about SPL semantics (from `docs/spl/`), the prior attempt's lessons (from `docs/prior-attempt/`), and the parity exceptions in `docs/markdown/divergences.md`.
+This is a planning input, not a scorecard and not a fixture matrix. It ranks Markdown feature areas by expected implementation risk given what is known today about SPL semantics (from `docs/spl/`), the prior attempt's lessons (from `docs/prior-attempt/`), and the parity exceptions in `docs/markdown/divergences.md`.
 
 As of 2026-04-23, the current `./shakedown` entry point passes all 23 `Markdown.mdtest` fixtures because it delegates to `~/markdown/Markdown.pl`. That is useful contract evidence, but it is not SPL implementation evidence. The tiers below describe residual SPL implementation risk for a fresh build.
 
@@ -14,9 +16,9 @@ Risk tiers:
 - **High** — fundamental risk tied to SPL limits or to Markdown.pl quirks that resist reproduction.
 - **Parity exception** — byte-identical Markdown.pl behavior is not available in pure SPL; the target must use a documented equivalence rule.
 
-## Fixture Outlook
+## Feature Outlook
 
-| Fixture | Risk tier | Primary risk | Notes |
+| Feature area | Risk tier | Primary risk | Notes |
 |---|---|---|---|
 | ATX Headers | Low | — | Block-level structure is straightforward in a streaming dispatcher. |
 | Setext Headers | Low | — | Two-line look-behind is supported by the standalone delayed-line probe. |

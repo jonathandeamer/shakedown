@@ -33,7 +33,7 @@ This file records the local `~/markdown/Markdown.pl` mechanics that matter for S
 | 2 | `_DoCodeSpans` | 950-993 | Code spans run before escapes, links, auto-links, entity encoding, and emphasis. Backtick runs can delimit content containing shorter backtick runs. |
 | 3 | `_EscapeSpecialChars` | 487-513 | HTML tags and backslash escapes are tokenized/hashed before link and emphasis processing. |
 | 4 | `_DoImages` | 613-715 | Image syntax is processed before anchor syntax. Reference image lookup uses stripped link definitions. |
-| 5 | `_DoAnchors` | 516-610 | Inline, full-reference, collapsed-reference, and shortcut-reference links are processed before auto-links and entity encoding. |
+| 5 | `_DoAnchors` | 516-610 | Inline, full-reference, spaced full-reference, and collapsed-reference links are processed before auto-links and entity encoding. Bare `[text]` shortcut links are not active in the local v1.0.1 oracle. |
 | 6 | `_DoAutoLinks` | 1167-1187 | HTTP/HTTPS/FTP auto-links produce literal link text. Email auto-links call `_EncodeEmailAddress`, which is randomized. |
 | 7 | `_EncodeAmpsAndAngles` | 1122-1135 | Ampersands not part of an entity and angle brackets not starting an HTML tag are encoded after links and auto-links. |
 | 8 | `_DoItalicsAndBold` | 1035-1047 | Strong substitutions run before emphasis substitutions. This order is required for Markdown.pl's overlapping `<em>/<strong>` behavior. |

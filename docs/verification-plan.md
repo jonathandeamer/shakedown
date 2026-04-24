@@ -43,7 +43,7 @@ Each replay was run once as part of the docs restructure. Results below capture 
     user	0m4.605s
     sys	0m0.098s
     ```
-- **Disposition:** The `<empty.spl>` probe measures interpreter *startup* only. The older 17–26s / 2–3s numbers are retrospective evidence from a prior real-sized SPL artifact, not current-repo evidence. The current `./shakedown-dev` timings are the best available prototype-scale baseline in this repo. Re-measure on the first realistic production-sized SPL build before making performance-sensitive architecture decisions.
+- **Disposition:** The `<empty.spl>` probe measures interpreter *startup* only. The older 17–26s / 2–3s numbers are retrospective evidence from a prior real-sized SPL artifact, not current-repo evidence. The current `./shakedown-dev` timings are the best available prototype-scale baseline in this repo. Use `docs/performance/budget.md` for benchmark protocol and re-measure on the first realistic production-sized SPL build before making performance-sensitive architecture decisions.
 
 ### B2 — Interpreter identity
 
@@ -155,7 +155,7 @@ Each replay was run once as part of the docs restructure. Results below capture 
 
 - **Command:** `rg -n "^sub |^# Main|_RunBlockGamut|_RunSpanGamut|_DoHeaders|_DoLists|_DoCodeBlocks|_DoBlockQuotes|_DoItalicsAndBold|_DoAnchors|_DoImages|_DoAutoLinks|_EncodeAmpsAndAngles|_DoCodeSpans|_EncodeBackslashEscapes|_HashHTMLBlocks|_Detab|_Outdent|_StripLinkDefinitions|_FormParagraphs|_TokenizeHTML" ~/markdown/Markdown.pl`
 - **Observed:** Function anchors recorded in `docs/markdown/oracle-mechanics.md`.
-- **Disposition:** Detailed architecture should treat `docs/markdown/oracle-mechanics.md` as the transform-order checklist for Markdown.pl parity.
+- **Disposition:** Detailed architecture should treat `docs/markdown/oracle-mechanics.md` as the transform-order checklist for Markdown.pl parity. Expanded canonical notes now live in `docs/markdown/reference-mechanics.md`, `docs/markdown/html-block-boundaries.md`, and `docs/markdown/list-mechanics.md`.
 
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
@@ -173,13 +173,15 @@ These claims describe measurements and behaviours from artifacts that are not pr
 
 These are not facts to verify; they are open questions architecture planning must close. Source: `docs/markdown/fixture-outlook.md` and the open-items section of `docs/prior-attempt/architecture-lessons.md`.
 
-- Build order across risky fixture groups.
+- Build order across risky fixture groups, using `docs/markdown/fixture-matrix.md` as the fixture-level input and `docs/markdown/fixture-outlook.md` as the feature-risk input.
 - Integration boundary between block and inline phases.
 - Milestone sequence for chasing the `Markdown.mdtest` ceiling.
 - Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.
 - Whether the AST-cache mechanism lives in the SPL file, a Python wrapper, or is not used at all.
 - Production implementation of reference lookup, setext line buffering, and list looseness/nesting state. The mechanics are covered by B10, but feature-level Markdown coverage still belongs to implementation.
 - Production details for list exactness and nested block composition. These are implementation risks, not accepted divergence decisions under the Markdown.pl parity goal.
+- Runtime boundary decisions, evaluated against `docs/architecture/runtime-boundary.md` and `docs/architecture/decision-rubric.md`.
+- Encoding and scope decisions beyond the current ASCII-compatible fixture corpus, evaluated against `docs/architecture/encoding-and-scope.md`.
 
 ## Bucket E — New Claims Introduced During This Restructure
 

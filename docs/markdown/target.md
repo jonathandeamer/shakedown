@@ -81,7 +81,7 @@ See `docs/markdown/divergences.md`. Under the Markdown.pl parity goal, nested bl
 
 ## Interface
 
-`./shakedown` is invoked as a subprocess with Markdown on stdin and HTML on stdout. The test harness at `tests/test_mdtest.py` pipes each fixture through it and diffs against the oracle output.
+`./shakedown` is invoked as a subprocess with Markdown on stdin and HTML on stdout. The default test harness at `tests/test_mdtest.py` pipes each fixture through it and compares normalized output against the checked-in `.xhtml` or `.html` expected file for that fixture. It does not regenerate oracle output during the test run.
 
 ## What This Document Does Not Decide
 
