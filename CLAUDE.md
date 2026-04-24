@@ -60,7 +60,16 @@ The run-loop checks for this file at the top of every iteration and exits when i
 
 ## Interpreter cost (measured)
 
-Prior measurements on this machine: `shakespeare run` on a ~4k-line `.spl` takes 17–26s cold and 2–3s per input thereafter. This is load-bearing context for tooling decisions (inner-loop test command, CI shape, whether to pre-parse) but it does not dictate any particular response — the design chooses how to live with it. See `docs/archive/slow-machine-spl-workflow.md` and `docs/prior-attempt/feasibility-lessons.md`.
+Retrospective measurements from the prior SPL attempt on this machine put `shakespeare run` on a
+~4k-line `.spl` at 17–26s cold and 2–3s per input thereafter. Treat those numbers as prior-attempt
+context, not as the current repo baseline.
+
+Current repo-scale measurements are recorded in `docs/verification-plan.md`. On 2026-04-24, the
+current `./shakedown-dev` prototype measured about 5.0s on empty input and 4.8s on
+`tests/prototype/fixtures/p2_blockquote_input.md`. This is still load-bearing context for tooling
+decisions (inner-loop test command, CI shape, whether to pre-parse), but the design chooses how to
+live with it. See `docs/verification-plan.md`, `docs/archive/slow-machine-spl-workflow.md`, and
+`docs/prior-attempt/feasibility-lessons.md`.
 
 ## Run tests
 
@@ -103,8 +112,11 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - `docs/spl/verification-evidence.md` — probe programs and observed interpreter behaviour
 - `docs/spl/style-lexicon.md` — legal expressive vocabulary
 - `docs/spl/codegen-style-guide.md` — implementation policy for recurring value phrases
+- `docs/spl/style-guide-validation.md` — validation status for the style lexicon and codegen guide
 - `docs/markdown/target.md` — Markdown.pl v1.0.1 target surface
 - `docs/markdown/divergences.md` — intentional divergences from the oracle
+- `docs/markdown/oracle-mechanics.md` — Markdown.pl transform order and parity-critical mechanics
+- `docs/markdown/oracle-fixture-audit.md` — strict local-oracle audit of the 23 fixtures
 - `docs/markdown/fixture-outlook.md` — predictive risk tiers for each of the 23 fixtures
 - `docs/prior-attempt/architecture-lessons.md` — why the prior attempt stalled and which trade-offs surfaced
 - `docs/prior-attempt/feasibility-lessons.md` — consolidated feasibility findings; which claims transfer
@@ -119,7 +131,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - Use `docs/spl/verification-evidence.md` for the probe programs and observed outputs behind those claims.
 - Treat `docs/markdown/target.md` plus `~/markdown/Markdown.pl` as the oracle behaviour surface, with intentional exceptions only from `docs/markdown/divergences.md`.
 - Use `docs/verification-plan.md` to distinguish what is verified in this repo from retrospective evidence, predictions, and still-open questions.
-- Treat `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth; until the pending validation plan is executed, some guidance there remains advisory rather than empirically validated.
+- Treat `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth. `docs/spl/style-guide-validation.md` records which representative claims are mechanically enforceable, which are demonstrable only, and which remain advisory policy.
 
 ## Git
 

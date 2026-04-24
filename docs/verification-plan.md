@@ -14,10 +14,10 @@ Summary of what is covered: pronoun stage-resolution rules, character value and 
 
 Each replay was run once as part of the docs restructure. Results below capture the observed state of the environment at restructure time. Re-run before any architecture decision that depends on the specific number.
 
-### B1 — Interpreter cold-start timing
+### B1 — Runtime timing baselines
 
 - **Command:** `time shakespeare run <empty.spl>`
-- **Expected range:** 17–26s cold, 2–3s warm (per prior measurements on this machine).
+- **Retrospective baseline:** 17–26s cold, 2–3s warm on a prior ~4k-line SPL file from the earlier attempt on this machine.
 - **Observed:**
   ```
   # first run
@@ -30,7 +30,20 @@ Each replay was run once as part of the docs restructure. Results below capture 
   user	0m0.079s
   sys	0m0.020s
   ```
-- **Disposition:** Not a drift — the probe used a minimal `[Exeunt]`-only play, which measures interpreter *startup*, not the per-run execution cost of a ~4k-line program. The documented 17–26s figure was measured against a real-sized SPL file. Architecture planning should re-measure against a realistically sized SPL program before leaning on a specific per-run figure.
+- **Current repo-scale measurement (2026-04-24):**
+  - `time ./shakedown-dev < /dev/null`:
+    ```
+    real	0m4.985s
+    user	0m4.595s
+    sys	0m0.061s
+    ```
+  - `time ./shakedown-dev < tests/prototype/fixtures/p2_blockquote_input.md`:
+    ```
+    real	0m4.833s
+    user	0m4.605s
+    sys	0m0.098s
+    ```
+- **Disposition:** The `<empty.spl>` probe measures interpreter *startup* only. The older 17–26s / 2–3s numbers are retrospective evidence from a prior real-sized SPL artifact, not current-repo evidence. The current `./shakedown-dev` timings are the best available prototype-scale baseline in this repo. Re-measure on the first realistic production-sized SPL build before making performance-sensitive architecture decisions.
 
 ### B2 — Interpreter identity
 
@@ -175,15 +188,19 @@ Verified while writing the new docs; results above.
 - Markdown.pl v1.0.1 version header present (see B3).
 - 23 fixtures in `Markdown.mdtest` (see B4 and the full list in `docs/markdown/target.md`).
 
-## Pending Validations Held Elsewhere
+## Style-Guide Validation Status
 
-The style lexicon and codegen style guide have an existing, un-executed validation plan at `docs/superpowers/plans/2026-04-17-spl-style-guide-validation.md`. That plan covers:
+The style lexicon and codegen style guide validation has been executed and the evidence is recorded
+in `docs/spl/style-guide-validation.md`. That note covers:
 
 - Legality validation for representative lexicon phrases and palettes.
 - Runtime validation for representative codegen examples.
-- Classification of codegen-guide statements by testability.
+- Classification of codegen-guide statements as mechanically enforceable, demonstrable, or advisory.
 
-Until that plan is executed, treat claims in `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as bucket A for inventory-backed items (where `docs/spl/lexicon-sources.md` cites a source) and as bucket D for items awaiting empirical validation.
+Treat `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as policy docs whose
+representative claims are summarized by `docs/spl/style-guide-validation.md`. Mechanically
+enforceable examples there are backed by the current pytest harness; demonstrable claims have
+representative support; advisory claims remain non-binding style guidance rather than parser truth.
 
 ## How to Re-Verify
 

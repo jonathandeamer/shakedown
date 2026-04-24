@@ -40,7 +40,7 @@ The two-character wording that appears in the round-1 and round-2 summaries shou
 - The shape of the architectural trade-off between streaming and buffered inline handling.
 - The list-depth bound (2 levels is enough for `Markdown.mdtest` fixtures).
 - The nested-block framing pattern (sentinel-delimited frames on stacks) as a candidate approach.
-- The divergence catalogue: email autolink randomisation is permanently unavailable in SPL (no randomness primitive); nested blockquote closer quirk is acceptable to diverge from (see `docs/markdown/divergences.md`).
+- The divergence catalogue: email autolink randomisation is permanently unavailable in SPL (no randomness primitive); nested blockquote closer output is **not** a forced divergence and should follow the local oracle when parity remains the target (see `docs/markdown/divergences.md`).
 - The Go/No-Go framing: the architecture is viable if PARTIAL verdicts are accepted as real documented trade-offs.
 
 ## What Does Not Transfer
