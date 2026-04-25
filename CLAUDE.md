@@ -124,6 +124,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - `docs/architecture/decision-rubric.md` — optimization target and scoring questions for architecture proposals
 - `docs/architecture/runtime-boundary.md` — runtime boundary and wrapper/SPL ownership questions
 - `docs/architecture/encoding-and-scope.md` — encoding, stdin/stdout, and target-scope assumptions
+- `docs/architecture/inherited-scaffold.md` — prototype scaffold surfacing
 - `docs/performance/budget.md` — benchmark protocol and planning thresholds
 - `docs/prior-attempt/architecture-lessons.md` — why the prior attempt stalled and which trade-offs surfaced
 - `docs/prior-attempt/feasibility-lessons.md` — consolidated feasibility findings; which claims transfer
@@ -139,6 +140,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - Treat `docs/markdown/target.md` plus `~/markdown/Markdown.pl` as the oracle behaviour surface, with intentional exceptions only from `docs/markdown/divergences.md`.
 - Use `docs/markdown/reference-mechanics.md`, `docs/markdown/html-block-boundaries.md`, `docs/markdown/list-mechanics.md`, and `docs/markdown/fixtures.md` as canonical Markdown planning inputs.
 - Use `docs/architecture/decision-rubric.md`, `docs/architecture/runtime-boundary.md`, `docs/architecture/encoding-and-scope.md`, and `docs/performance/budget.md` as canonical architecture-input rubrics, not as a selected architecture.
+- Treat `docs/architecture/inherited-scaffold.md` as inherited prototype state, not as adopted architecture.
 - Use `docs/verification-plan.md` to distinguish what is verified in this repo from retrospective evidence, predictions, and still-open questions.
 - Treat `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth. `docs/spl/style-guide-validation.md` records which representative claims are mechanically enforceable, which are demonstrable only, and which remain advisory policy.
 

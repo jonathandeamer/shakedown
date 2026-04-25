@@ -1197,7 +1197,7 @@ git commit -m "docs: document wrapper toolchain (Python via uv) in runtime-bound
 - Modify: `docs/README.md`
 - Modify: `CLAUDE.md`
 
-- [ ] **Step 1: Create the inherited-scaffold doc**
+- [x] **Step 1: Create the inherited-scaffold doc**
 
 File: `docs/architecture/inherited-scaffold.md`
 
@@ -1243,7 +1243,7 @@ These are architecture decisions. This document exists so planning does not inhe
 `docs/architecture/decision-rubric.md` lists observable correctness, documented parity exceptions, fixture-level verification, SPL ownership of Markdown semantics, maintainability, and runtime cost as the scoring axes. The scaffold does not preempt any of those: any candidate architecture must justify its choices on the rubric, even if it adopts the scaffold as-is.
 ```
 
-- [ ] **Step 2: Link from docs/README.md**
+- [x] **Step 2: Link from docs/README.md**
 
 Modify `docs/README.md`. In the "Reading Order for a New Agent" numbered list, add an entry after item 15 (`architecture/encoding-and-scope.md`):
 
@@ -1265,7 +1265,7 @@ Also add a line to the Canonical Flow of Truth section:
 - **Inherited prototype scaffold:** `architecture/inherited-scaffold.md` documents `./shakedown-dev`, `scripts/assemble.py`, `src/*.spl`, and `shakedown.spl`. These are prototype artifacts, not adopted architecture.
 ```
 
-- [ ] **Step 3: Link from CLAUDE.md**
+- [x] **Step 3: Link from CLAUDE.md**
 
 Modify `CLAUDE.md`. In the "Reference materials" section, after the line for `docs/architecture/encoding-and-scope.md`, add:
 
@@ -1279,7 +1279,7 @@ Also, in the "Docs Truth Hierarchy" section, add a line:
 - Treat `docs/architecture/inherited-scaffold.md` as inherited prototype state, not as adopted architecture.
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add docs/architecture/inherited-scaffold.md docs/README.md CLAUDE.md

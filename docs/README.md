@@ -22,16 +22,17 @@ For an agent about to plan the Shakedown architecture, read the canonical docs i
 12. [`architecture/decision-rubric.md`](architecture/decision-rubric.md) — how to compare future architecture proposals.
 13. [`architecture/runtime-boundary.md`](architecture/runtime-boundary.md) — runtime boundary questions every architecture must answer.
 14. [`architecture/encoding-and-scope.md`](architecture/encoding-and-scope.md) — encoding, stdin/stdout, and target-scope assumptions.
-15. [`performance/budget.md`](performance/budget.md) — benchmark protocol and planning thresholds.
-16. [`prior-attempt/architecture-lessons.md`](prior-attempt/architecture-lessons.md) — why the prior attempt stalled and which trade-offs surfaced.
-17. [`prior-attempt/feasibility-lessons.md`](prior-attempt/feasibility-lessons.md) — what the prior experiments showed and which claims transfer to this repo.
-18. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
+15. [`architecture/inherited-scaffold.md`](architecture/inherited-scaffold.md) — prototype scaffold already in the repo; surfaced so planning engages with it as a choice, not a default.
+16. [`performance/budget.md`](performance/budget.md) — benchmark protocol and planning thresholds.
+17. [`prior-attempt/architecture-lessons.md`](prior-attempt/architecture-lessons.md) — why the prior attempt stalled and which trade-offs surfaced.
+18. [`prior-attempt/feasibility-lessons.md`](prior-attempt/feasibility-lessons.md) — what the prior experiments showed and which claims transfer to this repo.
+19. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
 
 **Optional — read only if architecture planning considers generated SPL:**
 
-19. [`spl/style-lexicon.md`](spl/style-lexicon.md) — legal expressive vocabulary.
-20. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
-21. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
+20. [`spl/style-lexicon.md`](spl/style-lexicon.md) — legal expressive vocabulary.
+21. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
+22. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
 
 Optional historical/supporting context:
 
@@ -50,6 +51,7 @@ Optional historical/supporting context:
 | `architecture/decision-rubric.md` | Optimization target and scoring questions for future architecture proposals. |
 | `architecture/runtime-boundary.md` | Runtime boundary and wrapper/SPL ownership questions. |
 | `architecture/encoding-and-scope.md` | Encoding, stdin/stdout, and target-scope assumptions. |
+| `architecture/inherited-scaffold.md` | Prototype scaffold surfacing (not adopted architecture). |
 | `performance/` | Benchmark protocol and planning thresholds. |
 | `performance/budget.md` | Standard commands and metadata for performance claims. |
 | `spl/` | SPL language reference, style, codegen policy, and verification evidence. |
@@ -87,6 +89,7 @@ Optional historical/supporting context:
 - **High-risk Markdown mechanics:** `markdown/reference-mechanics.md`, `markdown/html-block-boundaries.md`, and `markdown/list-mechanics.md`.
 - **Fixture-level planning:** `markdown/fixtures.md`.
 - **Architecture-input rubrics:** `architecture/decision-rubric.md`, `architecture/runtime-boundary.md`, `architecture/encoding-and-scope.md`, and `performance/budget.md`.
+- **Inherited prototype scaffold:** `architecture/inherited-scaffold.md` documents `./shakedown-dev`, `scripts/assemble.py`, `src/*.spl`, and generated `shakedown.spl`. These are prototype artifacts, not adopted architecture.
 - **What is proven vs retrospective vs open:** `verification-plan.md`.
 - **Historical process artifacts:** `docs/superpowers/` is supporting context only. It may contain proposals, plans, and notes that are useful background, but it is not the source of adopted architecture unless a claim is restated in the canonical docs above.
 
