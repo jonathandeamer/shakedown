@@ -157,6 +157,38 @@ Each replay was run once as part of the docs restructure. Results below capture 
 - **Observed:** Function anchors recorded in `docs/markdown/oracle-mechanics.md`.
 - **Disposition:** Detailed architecture should treat `docs/markdown/oracle-mechanics.md` as the transform-order checklist for Markdown.pl parity. Expanded canonical notes now live in `docs/markdown/reference-mechanics.md`, `docs/markdown/html-block-boundaries.md`, and `docs/markdown/list-mechanics.md`.
 
+### B14 — Current-repo SPL cost at realistic size
+
+- **Command:**
+  ```
+  UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py \
+      docs/spl/probes/pre-design/spl-cost-1k.spl --runs 5
+  UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py \
+      docs/spl/probes/pre-design/spl-cost-4k.spl --runs 5
+  ```
+- **Purpose:** anchor a current-repo SPL cost baseline at realistic port size. The only prior numbers were interpreter startup (~0.1s) and the `./shakedown-dev` prototype (~5s on ~372 lines). The prior attempt's 17-26s cold / 2-3s warm numbers are retrospective evidence from a prior codebase and do not transfer.
+- **Observed (2026-04-25):**
+
+  1k fixture:
+  ```
+  file: docs/spl/probes/pre-design/spl-cost-1k.spl
+  runs: 5
+  first: 3.672s
+  median: 3.303s
+  all: ['3.672', '3.590', '3.296', '3.303', '3.238']
+  ```
+
+  4k fixture:
+  ```
+  file: docs/spl/probes/pre-design/spl-cost-4k.spl
+  runs: 5
+  first: 13.289s
+  median: 13.289s
+  all: ['13.289', '12.967', '14.437', '13.118', '13.463']
+  ```
+
+- **Disposition:** Each subprocess invocation is a fresh interpreter - every run pays cold startup. The first-run and median timings are therefore both cold-run costs. No warm reuse is measured because the SPL CLI has no persistent-process mode (`docs/verification-plan.md` B7). Architecture planning should treat these numbers as the current-repo baseline for shakespeare-run cost at 1k and 4k lines, and should re-measure on the first realistic production-sized SPL build before making performance-sensitive decisions.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.

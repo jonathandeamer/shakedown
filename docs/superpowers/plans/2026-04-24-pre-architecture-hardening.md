@@ -584,7 +584,7 @@ git commit -m "experiment: add reference-lookup scale probe (P4)"
 **Files:**
 - Modify: `docs/verification-plan.md`
 
-- [ ] **Step 1: Run the 1k cold measurement**
+- [x] **Step 1: Run the 1k cold measurement**
 
 Run: `UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py docs/spl/probes/pre-design/spl-cost-1k.spl --runs 5`
 
@@ -600,13 +600,13 @@ all: ['X.XXX', 'X.XXX', ...]
 
 Record all four lines verbatim.
 
-- [ ] **Step 2: Run the 4k cold measurement**
+- [x] **Step 2: Run the 4k cold measurement**
 
 Run: `UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py docs/spl/probes/pre-design/spl-cost-4k.spl --runs 5`
 
 Record output verbatim.
 
-- [ ] **Step 3: Append B14 to verification-plan.md**
+- [x] **Step 3: Append B14 to verification-plan.md**
 
 Modify `docs/verification-plan.md`. After the existing `### B13 — Oracle mechanics map` subsection and before `## Bucket C`, insert a new subsection:
 
@@ -636,7 +636,7 @@ Modify `docs/verification-plan.md`. After the existing `### B13 — Oracle mecha
 - **Disposition:** Each subprocess invocation is a fresh interpreter — every run pays cold startup. The first-run and median timings are therefore both cold-run costs. No warm reuse is measured because the SPL CLI has no persistent-process mode (`docs/verification-plan.md` B7). Architecture planning should treat these numbers as the current-repo baseline for shakespeare-run cost at 1k and 4k lines, and should re-measure on the first realistic production-sized SPL build before making performance-sensitive decisions.
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add docs/verification-plan.md
