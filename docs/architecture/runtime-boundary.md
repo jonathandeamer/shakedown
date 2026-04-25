@@ -52,6 +52,17 @@ SPL program code should be treated as a stdin/stdout transformation engine. `doc
 does not document SPL-level argv access, so user-facing flags belong in `./shakedown` or other
 wrapper code, not inside the SPL play.
 
+## Wrapper Toolchain
+
+The project's existing scripts and test harness use Python 3 via `uv` (see `pyproject.toml` and `./run-loop`). The prototype entry-point `./shakedown-dev` is a bash shim that delegates to `uv run python scripts/assemble.py` and `uv run shakespeare run shakedown.spl`. Any wrapper-assisted architecture shape should use Python via `uv` as the wrapper toolchain unless it has a concrete reason to choose otherwise.
+
+This is documentation of the toolchain already in use, not a new decision. Architecture planning may propose a different toolchain, but must justify the change given:
+
+- existing Python scripts in `scripts/` (assembly, audit, measurement)
+- existing pytest harness at `tests/test_pre_design_probes.py` and `tests/test_mdtest.py`
+- existing `uv` dependency management via `pyproject.toml` and `uv.lock`
+- existing `run-loop` Python entrypoint
+
 ## AST-Cache Feasibility
 
 Prior-attempt round-2 experiment 6 (`docs/prior-attempt/feasibility-lessons.md`) reported that a pre-built AST cache reduced per-test cost from 1.09s to ~0.30s at 8,623 lines. That number is retrospective and does not transfer.

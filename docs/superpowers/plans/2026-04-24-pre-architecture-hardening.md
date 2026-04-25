@@ -1164,7 +1164,7 @@ git commit -m "docs: concretize email auto-link equivalence rule"
 **Files:**
 - Modify: `docs/architecture/runtime-boundary.md`
 
-- [ ] **Step 1: Insert wrapper-toolchain subsection**
+- [x] **Step 1: Insert wrapper-toolchain subsection**
 
 Modify `docs/architecture/runtime-boundary.md`. After "## Interpreter Constraints That Shape the Boundary" and before the "## AST-Cache Feasibility" section added in Task 15, insert:
 
@@ -1181,7 +1181,7 @@ This is documentation of the toolchain already in use, not a new decision. Archi
 - existing `run-loop` Python entrypoint
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/architecture/runtime-boundary.md
