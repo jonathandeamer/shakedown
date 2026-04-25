@@ -60,16 +60,25 @@ The run-loop checks for this file at the top of every iteration and exits when i
 
 ## Interpreter cost (measured)
 
-Retrospective measurements from the prior SPL attempt on this machine put `shakespeare run` on a
-~4k-line `.spl` at 17–26s cold and 2–3s per input thereafter. Treat those numbers as prior-attempt
-context, not as the current repo baseline.
+Current-repo baselines (B14, measured 2026-04-25, fresh subprocess each run):
 
-Current repo-scale measurements are recorded in `docs/verification-plan.md`. On 2026-04-24, the
-current `./shakedown-dev` prototype measured about 5.0s on empty input and 4.8s on
-`tests/prototype/fixtures/p2_blockquote_input.md`. This is still load-bearing context for tooling
-decisions (inner-loop test command, CI shape, whether to pre-parse), but the design chooses how to
-live with it. See `docs/verification-plan.md`, `docs/archive/slow-machine-spl-workflow.md`, and
-`docs/prior-attempt/feasibility-lessons.md`.
+| Fixture | Lines | First run | Median |
+|---|---|---|---|
+| `spl-cost-1k.spl` | ~1255 | 3.67s | 3.30s |
+| `spl-cost-4k.spl` | ~5005 | 13.29s | 13.29s |
+| `scene-count.spl` (200 scenes) | ~2005 | 5.44s | 5.25s |
+| `reference-lookup-scale.spl` (N=20) | — | 1.68s | 1.56s |
+
+Every run pays cold startup — no warm reuse (the interpreter has no persistent-process mode).
+Scene count is not the dominant cost driver at ~200 scenes. See `docs/verification-plan.md` B14,
+B17, B18 for full details and dispositions.
+
+Historical context (prior codebase, does not transfer):
+- Prior attempt's ~4k-line `.spl`: 17–26s cold and 2–3s per input thereafter.
+- `./shakedown-dev` prototype (~372 lines): ~5.0s on empty input, ~4.8s on a small fixture.
+
+See `docs/performance/budget.md`, `docs/verification-plan.md`, and
+`docs/prior-attempt/feasibility-lessons.md` for full context.
 
 ## Run tests
 
