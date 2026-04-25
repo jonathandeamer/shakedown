@@ -1293,13 +1293,13 @@ git commit -m "docs: add inherited-scaffold.md and link from README and CLAUDE"
 **Files:**
 - Read-only checks across the repo
 
-- [ ] **Step 1: Grep for stale fixture-doc references**
+- [x] **Step 1: Grep for stale fixture-doc references**
 
 Run: `rg -n 'fixture-outlook|fixture-matrix' docs/ CLAUDE.md`
 
 Expected: no matches in canonical docs. Matches allowed in `docs/superpowers/plans/`, `docs/archive/`, and older entries in `docs/superpowers/notes/` (historical context).
 
-- [ ] **Step 2: Verify all cross-references resolve**
+- [x] **Step 2: Verify all cross-references resolve**
 
 Run:
 
@@ -1321,17 +1321,17 @@ Or more simply: grep each newly added / modified doc for markdown links, `ls` th
 
 Expected: no `MISSING:` output.
 
-- [ ] **Step 3: Run the full test suite**
+- [x] **Step 3: Run the full test suite**
 
 Run: `uv run pytest -q`
 
 Expected: all previously passing tests still pass. New tests for probes (P2, P3, P4 via the parametrize list) all pass. `tests/test_measure_spl_cost.py` passes.
 
-- [ ] **Step 4: Verify the tier-C audit checklist is covered**
+- [x] **Step 4: Verify the tier-C audit checklist is covered**
 
 Check every row of Appendix A in the spec (`docs/superpowers/specs/2026-04-24-pre-architecture-hardening-design.md`) against the committed changes. For each row, confirm the referenced edit or probe landed. If any row is unaddressed, open a follow-up task rather than closing the plan.
 
-- [ ] **Step 5: Commit any final cleanup**
+- [x] **Step 5: Commit any final cleanup**
 
 If any of steps 1–4 uncover broken links, typos, or missing updates, fix them inline. Commit as:
 
@@ -1348,16 +1348,16 @@ If no cleanup is needed, skip this commit.
 
 After plan execution:
 
-- [ ] All 5 probes (P1 generator + runs, P2, P3, P4, P5) exist under `docs/spl/probes/pre-design/`
-- [ ] `tests/test_pre_design_probes.py` has parametrize entries for P2, P3, P4 and all pass
-- [ ] `docs/verification-plan.md` contains B14, B15, B16, B17, B18 sections with observed numbers
-- [ ] `docs/markdown/fixtures.md` exists and subsumes the old outlook/matrix docs
-- [ ] `docs/architecture/inherited-scaffold.md` exists and is linked from `docs/README.md` + `CLAUDE.md`
-- [ ] `docs/markdown/target.md` normalization is pinned by reference to `_normalize`
-- [ ] `docs/markdown/divergences.md` has the concrete email-equivalence rule
-- [ ] `docs/architecture/runtime-boundary.md` has wrapper-toolchain + AST-cache feasibility subsections
-- [ ] `docs/performance/budget.md` baselines refreshed
-- [ ] `docs/superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md` decision register extended
-- [ ] `docs/README.md` reading order reflects new state, style docs moved to optional
-- [ ] `rg -n 'fixture-outlook|fixture-matrix' docs/ CLAUDE.md` returns only historical matches
-- [ ] `uv run pytest -q` passes
+- [x] All 5 probes (P1 generator + runs, P2, P3, P4, P5) exist under `docs/spl/probes/pre-design/`
+- [x] `tests/test_pre_design_probes.py` has parametrize entries for P2, P3, P4 and all pass
+- [x] `docs/verification-plan.md` contains B14, B15, B16, B17, B18 sections with observed numbers
+- [x] `docs/markdown/fixtures.md` exists and subsumes the old outlook/matrix docs
+- [x] `docs/architecture/inherited-scaffold.md` exists and is linked from `docs/README.md` + `CLAUDE.md`
+- [x] `docs/markdown/target.md` normalization is pinned by reference to `_normalize`
+- [x] `docs/markdown/divergences.md` has the concrete email-equivalence rule
+- [x] `docs/architecture/runtime-boundary.md` has wrapper-toolchain + AST-cache feasibility subsections
+- [x] `docs/performance/budget.md` baselines refreshed
+- [x] `docs/superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md` decision register extended
+- [x] `docs/README.md` reading order reflects new state, style docs moved to optional
+- [x] `rg -n 'fixture-outlook|fixture-matrix' docs/ CLAUDE.md` returns only historical matches
+- [x] `uv run pytest -q` passes
