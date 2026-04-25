@@ -738,7 +738,7 @@ git commit -m "docs: record B17 reference-lookup scale baseline"
 **Files:**
 - Modify: `docs/superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`
 
-- [ ] **Step 1: Append probe rows to decision register**
+- [x] **Step 1: Append probe rows to decision register**
 
 Modify `docs/superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`. Find the "Final Pre-Design Decision Register" table. After the last row, append:
 
@@ -752,7 +752,7 @@ Modify `docs/superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`. Fi
 
 For any row where the observed result is NOT "closed" (e.g., probe fails, timing alarming), change the status cell and rewrite the "Detailed-spec requirement" to reflect the raised risk. This is the honesty rule from the spec: failures surface rather than hide.
 
-- [ ] **Step 2: Add a new section below the register**
+- [x] **Step 2: Add a new section below the register**
 
 After the decision register table, before "## Detailed Architecture Go/No-Go", add:
 
@@ -771,7 +771,7 @@ retrospectives.
 
 Note: B15 and B16 are for P2 and P3 (mechanics assertions, no timing). Those sections still need to exist in verification-plan.md. Add them in Task 13 as part of the stage 2 verification-plan update (they are simple assertion-passed records).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md
