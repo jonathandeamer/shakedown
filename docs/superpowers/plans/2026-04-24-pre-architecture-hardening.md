@@ -963,7 +963,7 @@ git commit -m "docs: refresh budget.md baselines with P1 measurements"
 **Files:**
 - Modify: `docs/verification-plan.md`
 
-- [ ] **Step 1: Append B15 (emphasis two-pass) and B16 (nested-dispatch) records**
+- [x] **Step 1: Append B15 (emphasis two-pass) and B16 (nested-dispatch) records**
 
 Modify `docs/verification-plan.md`. After B14 and before B17, insert:
 
@@ -985,7 +985,7 @@ Modify `docs/verification-plan.md`. After B14 and before B17, insert:
 
 Place these in numeric order: the file's existing B14 → B15 → B16 → B17 → B18 sequence is the target.
 
-- [ ] **Step 2: Move closed items out of bucket D**
+- [x] **Step 2: Move closed items out of bucket D**
 
 Find `## Bucket D — Predictions (Open Items for Architecture Planning)`. Items the new probes closed:
 
@@ -997,7 +997,7 @@ Find `## Bucket D — Predictions (Open Items for Architecture Planning)`. Items
 
 Leave other bucket D items unchanged unless a probe result specifically closes them.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/verification-plan.md

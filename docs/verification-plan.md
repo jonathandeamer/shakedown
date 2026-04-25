@@ -189,6 +189,20 @@ Each replay was run once as part of the docs restructure. Results below capture 
 
 - **Disposition:** Each subprocess invocation is a fresh interpreter - every run pays cold startup. The first-run and median timings are therefore both cold-run costs. No warm reuse is measured because the SPL CLI has no persistent-process mode (`docs/verification-plan.md` B7). Architecture planning should treat these numbers as the current-repo baseline for shakespeare-run cost at 1k and 4k lines, and should re-measure on the first realistic production-sized SPL build before making performance-sensitive decisions.
 
+### B15 — Emphasis two-pass mechanics
+
+- **Command:** `uv run pytest tests/test_pre_design_probes.py -k emphasis -v`
+- **Purpose:** confirm SPL can execute the strong-before-emphasis substitution order on a buffered span - the mechanic Markdown.pl uses to produce overlapping `<em>/<strong>` behaviour.
+- **Observed (2026-04-25):** 1 passed, 5 deselected in 1.42s.
+- **Disposition:** Confirms the two-pass substitution mechanic. Architecture planning may rely on buffer-then-substitute-strong-then-substitute-emphasis as an SPL-supported pattern. Full emphasis-feature parity remains implementation work; the mechanics risk is now closed.
+
+### B16 — Nested-dispatch mechanics
+
+- **Command:** `uv run pytest tests/test_pre_design_probes.py -k nested -v`
+- **Purpose:** confirm a dispatcher can push frame sentinels onto a stack, enter an inner frame while the outer remains active, emit content inside the inner, and pop back cleanly. This is the mechanic prior-attempt architecture memos propose as the fix for the duplicated-blockquote-machinery pressure.
+- **Observed (2026-04-25):** 1 passed, 5 deselected in 1.24s.
+- **Disposition:** Confirms the frame-sentinel nesting mechanic. Architecture planning may rely on recursive-dispatch-with-frame-stack as a supported pattern for nested blockquote/list composition. Full nested-block-composition parity remains implementation work.
+
 ### B17 — Reference-lookup at fixture scale
 
 - **Command:**
@@ -250,7 +264,7 @@ These are not facts to verify; they are open questions architecture planning mus
 - Milestone sequence for chasing the `Markdown.mdtest` ceiling.
 - Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.
 - Whether the AST-cache mechanism lives in the SPL file, a Python wrapper, or is not used at all.
-- Production implementation of reference lookup, setext line buffering, and list looseness/nesting state. The mechanics are covered by B10, but feature-level Markdown coverage still belongs to implementation.
+- Feature-level Markdown implementation for reference lookup (mechanics B10 + scale B17), setext line buffering (mechanics B10), list looseness/nesting (mechanics B10), emphasis (mechanics B15), and nested-block composition (mechanics B16). Mechanics are closed; feature-level coverage still belongs to implementation.
 - Production details for list exactness and nested block composition. These are implementation risks, not accepted divergence decisions under the Markdown.pl parity goal.
 - Runtime boundary decisions, evaluated against `docs/architecture/runtime-boundary.md` and `docs/architecture/decision-rubric.md`.
 - Encoding and scope decisions beyond the current ASCII-compatible fixture corpus, evaluated against `docs/architecture/encoding-and-scope.md`.
