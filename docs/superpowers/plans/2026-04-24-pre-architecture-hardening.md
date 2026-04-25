@@ -923,7 +923,7 @@ git commit -m "docs: reorder style-lexicon group to optional reading position"
 **Files:**
 - Modify: `docs/performance/budget.md`
 
-- [ ] **Step 1: Refresh Current Recorded Baselines section**
+- [x] **Step 1: Refresh Current Recorded Baselines section**
 
 Modify `docs/performance/budget.md`. Find the "## Current Recorded Baselines" section (currently at end of file).
 
@@ -949,7 +949,7 @@ Replace the existing bullets with:
 Re-measure before making a performance-sensitive architecture decision.
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/performance/budget.md

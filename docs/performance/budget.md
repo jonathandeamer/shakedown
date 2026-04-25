@@ -85,10 +85,16 @@ agents will debug failures without waiting on the red path for every edit.
 
 `docs/verification-plan.md` records the current baselines:
 
-- empty interpreter startup probe: about 0.10s;
-- retrospective prior 4k-line SPL run: 17-26s cold and 2-3s warm;
-- current `./shakedown-dev` prototype on 2026-04-24: about 5.0s on empty input and 4.8s on
-  `tests/prototype/fixtures/p2_blockquote_input.md`;
-- current oracle-stub mdtest contract: 23 passing tests in about 1.44s.
+- **Interpreter startup** (empty `.spl`): about 0.10s cold (B1).
+- **Current-repo SPL cost at 1k lines:** first-run and median per B14.
+- **Current-repo SPL cost at 4k lines:** first-run and median per B14.
+- **Current-repo scene-count-per-act (200 scenes):** first-run and median per B18.
+- **Current-repo reference-lookup at fixture scale:** first-run and median per B17.
+- **Current oracle-stub mdtest contract:** 23 passing tests in about 1.44s (B9).
+
+### Historical / retrospective context
+
+- **Prior 4k-line SPL (retrospective):** 17-26s cold and 2-3s warm on a prior codebase not present in this repo. Use B14 for current-repo claims.
+- **`./shakedown-dev` prototype (2026-04-24):** about 5.0s on empty input and 4.8s on `tests/prototype/fixtures/p2_blockquote_input.md`. Prototype-scale only; use B14 for realistic-size claims.
 
 Re-measure before making a performance-sensitive architecture decision.
