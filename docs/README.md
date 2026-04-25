@@ -19,14 +19,19 @@ For an agent about to plan the Shakedown architecture, read the canonical docs i
 9. [`markdown/fixtures.md`](markdown/fixtures.md) — fixture matrix plus feature-risk outlook.
 10. [`spl/reference.md`](spl/reference.md) — the SPL language reference (verified).
 11. [`spl/verification-evidence.md`](spl/verification-evidence.md) — probe outputs behind the SPL reference.
-12. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — completed validation status for the style lexicon and codegen guide.
-13. [`architecture/decision-rubric.md`](architecture/decision-rubric.md) — how to compare future architecture proposals.
-14. [`architecture/runtime-boundary.md`](architecture/runtime-boundary.md) — runtime boundary questions every architecture must answer.
-15. [`architecture/encoding-and-scope.md`](architecture/encoding-and-scope.md) — encoding, stdin/stdout, and target-scope assumptions.
-16. [`performance/budget.md`](performance/budget.md) — benchmark protocol and planning thresholds.
-17. [`prior-attempt/architecture-lessons.md`](prior-attempt/architecture-lessons.md) — why the prior attempt stalled and which trade-offs surfaced.
-18. [`prior-attempt/feasibility-lessons.md`](prior-attempt/feasibility-lessons.md) — what the prior experiments showed and which claims transfer to this repo.
-19. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
+12. [`architecture/decision-rubric.md`](architecture/decision-rubric.md) — how to compare future architecture proposals.
+13. [`architecture/runtime-boundary.md`](architecture/runtime-boundary.md) — runtime boundary questions every architecture must answer.
+14. [`architecture/encoding-and-scope.md`](architecture/encoding-and-scope.md) — encoding, stdin/stdout, and target-scope assumptions.
+15. [`performance/budget.md`](performance/budget.md) — benchmark protocol and planning thresholds.
+16. [`prior-attempt/architecture-lessons.md`](prior-attempt/architecture-lessons.md) — why the prior attempt stalled and which trade-offs surfaced.
+17. [`prior-attempt/feasibility-lessons.md`](prior-attempt/feasibility-lessons.md) — what the prior experiments showed and which claims transfer to this repo.
+18. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
+
+**Optional — read only if architecture planning considers generated SPL:**
+
+19. [`spl/style-lexicon.md`](spl/style-lexicon.md) — legal expressive vocabulary.
+20. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
+21. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
 
 Optional historical/supporting context:
 

@@ -885,7 +885,7 @@ git commit -m "docs: consolidate fixture-outlook and fixture-matrix into fixture
 **Files:**
 - Modify: `docs/README.md`
 
-- [ ] **Step 1: Move style-doc entries later in the reading order**
+- [x] **Step 1: Move style-doc entries later in the reading order**
 
 Modify `docs/README.md`. Find the numbered reading-order list. Locate entries 11 (`spl/reference.md`), 12 (`spl/verification-evidence.md`), and 13 (`spl/style-guide-validation.md`).
 
@@ -905,11 +905,11 @@ N+3. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which 
 
 Renumber the main list so it flows continuously up to the "Optional" marker, then the bottom group uses its own numbering starting at N+1.
 
-- [ ] **Step 2: Verify reading order is coherent**
+- [x] **Step 2: Verify reading order is coherent**
 
 Re-read the modified `docs/README.md` section from top to bottom. Each numbered item should still point at an existing doc (you already verified this in Task 10). The "Optional" group should be clearly marked as conditional.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/README.md
