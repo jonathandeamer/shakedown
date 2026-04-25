@@ -1133,7 +1133,7 @@ git commit -m "docs: pin normalization by reference, add strict-parity sentence"
 **Files:**
 - Modify: `docs/markdown/divergences.md`
 
-- [ ] **Step 1: Expand the email auto-links row with the concrete rule**
+- [x] **Step 1: Expand the email auto-links row with the concrete rule**
 
 Modify `docs/markdown/divergences.md`. Find the active-exception row for "Email auto-links". After the table, insert:
 
@@ -1150,7 +1150,7 @@ If they match, Shakedown passes the email-autolink equivalence check. Because `M
 The mdtest `Auto links` fixture already applies this decoding via the test harness's `_decode_entities` function. Any additional email-autolink parity testing outside that fixture should use the same decoder.
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/markdown/divergences.md
