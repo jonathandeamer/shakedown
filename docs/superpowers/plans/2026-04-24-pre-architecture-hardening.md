@@ -1011,7 +1011,7 @@ git commit -m "docs: record B15, B16 probe results; update bucket D phrasing"
 **Files:**
 - Modify: `docs/markdown/fixtures.md`
 
-- [ ] **Step 1: Adjust emphasis and nested-block risk tiers**
+- [x] **Step 1: Adjust emphasis and nested-block risk tiers**
 
 Modify `docs/markdown/fixtures.md`. In the Feature Risk Outlook table:
 
@@ -1023,7 +1023,7 @@ Modify `docs/markdown/fixtures.md`. In the Feature Risk Outlook table:
 
 If P2 or P3 failed in stage 1, instead update the Notes to record the failure and raise (do not lower) the risk tier. Honesty rule from the spec.
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/markdown/fixtures.md
