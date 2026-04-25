@@ -16,7 +16,7 @@ For an agent about to plan the Shakedown architecture, read the canonical docs i
 6. [`markdown/html-block-boundaries.md`](markdown/html-block-boundaries.md) — raw HTML block boundary rules.
 7. [`markdown/list-mechanics.md`](markdown/list-mechanics.md) — list exactness, nesting, and tight/loose mechanics.
 8. [`markdown/oracle-fixture-audit.md`](markdown/oracle-fixture-audit.md) — where checked-in fixture files differ from fresh local oracle output.
-9. [`markdown/fixture-matrix.md`](markdown/fixture-matrix.md) — one row per actual mdtest fixture.
+9. [`markdown/fixtures.md`](markdown/fixtures.md) — fixture matrix plus feature-risk outlook.
 10. [`spl/reference.md`](spl/reference.md) — the SPL language reference (verified).
 11. [`spl/verification-evidence.md`](spl/verification-evidence.md) — probe outputs behind the SPL reference.
 12. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — completed validation status for the style lexicon and codegen guide.
@@ -26,8 +26,7 @@ For an agent about to plan the Shakedown architecture, read the canonical docs i
 16. [`performance/budget.md`](performance/budget.md) — benchmark protocol and planning thresholds.
 17. [`prior-attempt/architecture-lessons.md`](prior-attempt/architecture-lessons.md) — why the prior attempt stalled and which trade-offs surfaced.
 18. [`prior-attempt/feasibility-lessons.md`](prior-attempt/feasibility-lessons.md) — what the prior experiments showed and which claims transfer to this repo.
-19. [`markdown/fixture-outlook.md`](markdown/fixture-outlook.md) — feature-risk tiers for a fresh build.
-20. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
+19. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
 
 Optional historical/supporting context:
 
@@ -64,8 +63,7 @@ Optional historical/supporting context:
 | `markdown/reference-mechanics.md` | Reference definition, reference link, and reference image mechanics. |
 | `markdown/html-block-boundaries.md` | Raw HTML block hashing and boundary rules. |
 | `markdown/list-mechanics.md` | Markdown.pl list parsing, nesting, and loose/tight mechanics. |
-| `markdown/fixture-matrix.md` | One-row-per-fixture mdtest matrix. |
-| `markdown/fixture-outlook.md` | Predictive feature-risk tiers for a fresh build. |
+| `markdown/fixtures.md` | Canonical fixture matrix plus feature-risk outlook. |
 | `prior-attempt/` | Retrospective evidence from the earlier SPL attempt. |
 | `prior-attempt/feasibility-lessons.md` | Consolidated feasibility findings from round 1 and round 2. |
 | `prior-attempt/architecture-lessons.md` | Consolidated architecture memo and the A/B/C options. |
@@ -82,7 +80,7 @@ Optional historical/supporting context:
 - **Oracle behaviour:** `markdown/target.md` + `Markdown.pl` itself.
 - **Oracle transform order and strict fixture caveats:** `markdown/oracle-mechanics.md` and `markdown/oracle-fixture-audit.md`.
 - **High-risk Markdown mechanics:** `markdown/reference-mechanics.md`, `markdown/html-block-boundaries.md`, and `markdown/list-mechanics.md`.
-- **Fixture-level planning:** `markdown/fixture-matrix.md`.
+- **Fixture-level planning:** `markdown/fixtures.md`.
 - **Architecture-input rubrics:** `architecture/decision-rubric.md`, `architecture/runtime-boundary.md`, `architecture/encoding-and-scope.md`, and `performance/budget.md`.
 - **What is proven vs retrospective vs open:** `verification-plan.md`.
 - **Historical process artifacts:** `docs/superpowers/` is supporting context only. It may contain proposals, plans, and notes that are useful background, but it is not the source of adopted architecture unless a claim is restated in the canonical docs above.

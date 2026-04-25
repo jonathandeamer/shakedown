@@ -793,13 +793,13 @@ Stage 2 runs after stage 1 is complete. Order within stage 2: 2c (consolidation)
 - Modify: `docs/README.md`
 - Modify: `CLAUDE.md`
 
-- [ ] **Step 1: Identify all cross-references**
+- [x] **Step 1: Identify all cross-references**
 
 Run: `rg -n 'fixture-outlook|fixture-matrix' docs/ CLAUDE.md`
 
 Record every match. Categorize each as "active canonical reference" (needs redirecting to `fixtures.md`) or "historical context" (may be left alone, e.g., in archive/ or superpowers/plans/).
 
-- [ ] **Step 2: Create the consolidated document**
+- [x] **Step 2: Create the consolidated document**
 
 File: `docs/markdown/fixtures.md`
 
@@ -837,14 +837,14 @@ Merge content verbatim from the two source docs. Keep both tables intact —
 they convey different information and both are referenced in the audit
 checklist.
 
-- [ ] **Step 3: Delete the old files**
+- [x] **Step 3: Delete the old files**
 
 ```bash
 git rm docs/markdown/fixture-outlook.md
 git rm docs/markdown/fixture-matrix.md
 ```
 
-- [ ] **Step 4: Update docs/README.md**
+- [x] **Step 4: Update docs/README.md**
 
 Modify `docs/README.md`. For every active reference to `fixture-outlook.md` or `fixture-matrix.md`, replace with a single reference to `fixtures.md`.
 
@@ -855,7 +855,7 @@ Specifically:
 - Directory map table: replace the two rows for `fixture-outlook.md` and `fixture-matrix.md` with one row: `markdown/fixtures.md | Canonical fixture matrix plus feature-risk outlook.`
 - Canonical-flow section: replace any mention with "markdown/fixtures.md".
 
-- [ ] **Step 5: Update CLAUDE.md**
+- [x] **Step 5: Update CLAUDE.md**
 
 Modify `CLAUDE.md`. Find the "Reference materials" section. Remove the two bullets for `docs/markdown/fixture-matrix.md` and `docs/markdown/fixture-outlook.md`. Replace with a single bullet:
 
@@ -865,13 +865,13 @@ Modify `CLAUDE.md`. Find the "Reference materials" section. Remove the two bulle
 
 Also check the "Docs Truth Hierarchy" section — if it mentions either old filename, replace with `fixtures.md`.
 
-- [ ] **Step 6: Verify no stale references remain**
+- [x] **Step 6: Verify no stale references remain**
 
 Run: `rg -n 'fixture-outlook|fixture-matrix' docs/ CLAUDE.md`
 
 Expected: no matches in active canonical docs. Matches in `docs/superpowers/plans/`, `docs/archive/`, or `docs/superpowers/notes/` older entries are historical and acceptable.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add docs/markdown/fixtures.md docs/README.md CLAUDE.md

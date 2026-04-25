@@ -243,9 +243,9 @@ These claims describe measurements and behaviours from artifacts that are not pr
 
 ## Bucket D — Predictions (Open Items for Architecture Planning)
 
-These are not facts to verify; they are open questions architecture planning must close. Source: `docs/markdown/fixture-outlook.md` and the open-items section of `docs/prior-attempt/architecture-lessons.md`.
+These are not facts to verify; they are open questions architecture planning must close. Source: `docs/markdown/fixtures.md` and the open-items section of `docs/prior-attempt/architecture-lessons.md`.
 
-- Build order across risky fixture groups, using `docs/markdown/fixture-matrix.md` as the fixture-level input and `docs/markdown/fixture-outlook.md` as the feature-risk input.
+- Build order across risky fixture groups, using `docs/markdown/fixtures.md` as the fixture-level and feature-risk input.
 - Integration boundary between block and inline phases.
 - Milestone sequence for chasing the `Markdown.mdtest` ceiling.
 - Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.

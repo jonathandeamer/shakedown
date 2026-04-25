@@ -120,8 +120,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - `docs/markdown/reference-mechanics.md` — reference definition/link mechanics
 - `docs/markdown/html-block-boundaries.md` — raw HTML block boundary rules
 - `docs/markdown/list-mechanics.md` — list exactness, nesting, and tight/loose mechanics
-- `docs/markdown/fixture-matrix.md` — one-row-per-fixture mdtest matrix
-- `docs/markdown/fixture-outlook.md` — predictive feature-risk tiers for a fresh build
+- `docs/markdown/fixtures.md` — canonical fixture matrix plus feature-risk outlook
 - `docs/architecture/decision-rubric.md` — optimization target and scoring questions for architecture proposals
 - `docs/architecture/runtime-boundary.md` — runtime boundary and wrapper/SPL ownership questions
 - `docs/architecture/encoding-and-scope.md` — encoding, stdin/stdout, and target-scope assumptions
@@ -138,7 +137,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - Treat `docs/spl/reference.md` as the canonical statement of SPL legality and verified interpreter semantics.
 - Use `docs/spl/verification-evidence.md` for the probe programs and observed outputs behind those claims.
 - Treat `docs/markdown/target.md` plus `~/markdown/Markdown.pl` as the oracle behaviour surface, with intentional exceptions only from `docs/markdown/divergences.md`.
-- Use `docs/markdown/reference-mechanics.md`, `docs/markdown/html-block-boundaries.md`, `docs/markdown/list-mechanics.md`, and `docs/markdown/fixture-matrix.md` as canonical Markdown planning inputs.
+- Use `docs/markdown/reference-mechanics.md`, `docs/markdown/html-block-boundaries.md`, `docs/markdown/list-mechanics.md`, and `docs/markdown/fixtures.md` as canonical Markdown planning inputs.
 - Use `docs/architecture/decision-rubric.md`, `docs/architecture/runtime-boundary.md`, `docs/architecture/encoding-and-scope.md`, and `docs/performance/budget.md` as canonical architecture-input rubrics, not as a selected architecture.
 - Use `docs/verification-plan.md` to distinguish what is verified in this repo from retrospective evidence, predictions, and still-open questions.
 - Treat `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth. `docs/spl/style-guide-validation.md` records which representative claims are mechanically enforceable, which are demonstrable only, and which remain advisory policy.
