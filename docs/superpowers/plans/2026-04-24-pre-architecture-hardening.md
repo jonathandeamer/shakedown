@@ -1037,7 +1037,7 @@ git commit -m "docs: cite P2/P3 probe outcomes in fixtures.md risk tiers"
 **Files:**
 - Modify: `docs/architecture/runtime-boundary.md`
 
-- [ ] **Step 1: Append AST-cache feasibility subsection**
+- [x] **Step 1: Append AST-cache feasibility subsection**
 
 Modify `docs/architecture/runtime-boundary.md`. After the existing "## Interpreter Constraints That Shape the Boundary" section and before "## Run-Loop Boundary", add:
 
@@ -1055,7 +1055,7 @@ What does transfer:
 Architecture planning should either demonstrate the cache is worth the wrapper complexity (with a current-repo measurement, not the retrospective 1.09 → 0.30 number) or explicitly defer the cache until a bottleneck forces it.
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/architecture/runtime-boundary.md

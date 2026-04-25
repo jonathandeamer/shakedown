@@ -52,6 +52,18 @@ SPL program code should be treated as a stdin/stdout transformation engine. `doc
 does not document SPL-level argv access, so user-facing flags belong in `./shakedown` or other
 wrapper code, not inside the SPL play.
 
+## AST-Cache Feasibility
+
+Prior-attempt round-2 experiment 6 (`docs/prior-attempt/feasibility-lessons.md`) reported that a pre-built AST cache reduced per-test cost from 1.09s to ~0.30s at 8,623 lines. That number is retrospective and does not transfer.
+
+What does transfer:
+
+- **The bottleneck the cache addressed.** B14 records cold `shakespeare run` cost at 1k and 4k lines in this repo. Compare B14's numbers to B1's 0.10s interpreter startup. The gap between startup and run cost is the parse-plus-execute window; caching can only shrink the parse portion.
+- **The mechanism.** `shakespeare --help` lists no parse-only subcommand (B7). Any cache therefore lives in a Python wrapper. The canonical technique is to import `shakespeare.parser`, parse the `.spl` once, `pickle.dump` the AST to a side file, and on subsequent runs `pickle.load` and feed the AST to the interpreter. This is a Python-wrapper responsibility, not an SPL-level feature.
+- **The decision shape.** Whether to build an AST cache depends on B14's cold-to-re-parse ratio. If cold runs are dominated by parse time (measurable by comparing `shakespeare run` cost to an AST-only parse timing), a cache likely helps. If they are dominated by execution time, a cache is wasted complexity.
+
+Architecture planning should either demonstrate the cache is worth the wrapper complexity (with a current-repo measurement, not the retrospective 1.09 -> 0.30 number) or explicitly defer the cache until a bottleneck forces it.
+
 ## Run-Loop Boundary
 
 The replacement run-loop prompt is intentionally missing until architecture planning decides
