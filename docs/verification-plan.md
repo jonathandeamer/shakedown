@@ -189,6 +189,26 @@ Each replay was run once as part of the docs restructure. Results below capture 
 
 - **Disposition:** Each subprocess invocation is a fresh interpreter - every run pays cold startup. The first-run and median timings are therefore both cold-run costs. No warm reuse is measured because the SPL CLI has no persistent-process mode (`docs/verification-plan.md` B7). Architecture planning should treat these numbers as the current-repo baseline for shakespeare-run cost at 1k and 4k lines, and should re-measure on the first realistic production-sized SPL build before making performance-sensitive decisions.
 
+### B17 — Reference-lookup at fixture scale
+
+- **Command:**
+  ```
+  UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py \
+      docs/spl/probes/pre-design/reference-lookup-scale.spl --runs 5
+  ```
+- **Purpose:** confirm the stack-backed linear scan remains tractable at a reference-definition count scaled to (or exceeding) the largest mdtest fixture. The existing `reference-lookup.spl` probe proves mechanics at small N; B17 proves cost at N = 20, a floor above the largest fixture's 9 reference definitions.
+- **Observed (2026-04-25):**
+
+  ```
+  file: docs/spl/probes/pre-design/reference-lookup-scale.spl
+  runs: 5
+  first: 1.680s
+  median: 1.564s
+  all: ['1.680', '1.674', '1.551', '1.559', '1.564']
+  ```
+
+- **Disposition:** The probe runs below B14's 1k-line baseline (3.303s median), so architecture planning can lean on stack-backed linear reference lookup at fixture scale. Reconsider only if a production implementation grows materially beyond this table size or combines lookup with other expensive per-line work.
+
 ### B18 — Scene-count-per-act baseline
 
 - **Command:**

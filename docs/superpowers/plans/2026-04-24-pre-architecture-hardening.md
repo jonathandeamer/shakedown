@@ -692,13 +692,13 @@ git commit -m "docs: record B18 scene-count-per-act baseline"
 **Files:**
 - Modify: `docs/verification-plan.md`
 
-- [ ] **Step 1: Measure the P4 probe**
+- [x] **Step 1: Measure the P4 probe**
 
 Run: `UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py docs/spl/probes/pre-design/reference-lookup-scale.spl --runs 5`
 
 Record output verbatim.
 
-- [ ] **Step 2: Append B17 to verification-plan.md**
+- [x] **Step 2: Append B17 to verification-plan.md**
 
 Modify `docs/verification-plan.md`. After the B18 subsection, insert (B17 goes after B18 in order here — order is by completion, not numeric; or swap — order numerically for readability):
 
@@ -724,7 +724,7 @@ Insert between B14 and B18 (so they end up B14, B17, B18 in numeric order):
 
 Re-check ordering in the file: after this edit, sections should appear B13, B14, B17, B18, then Bucket C.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/verification-plan.md
