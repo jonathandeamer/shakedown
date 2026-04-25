@@ -456,7 +456,7 @@ git commit -m "experiment: add emphasis two-pass mechanics probe (P2)"
 
 **Expected emit trace:** `BQ-in, LI-in, content, LI-out, BQ-out`, encoded as the 5-byte sequence `(` `[` `.` `]` `)` (ASCII: 40, 91, 46, 93, 41). This is simpler than emitting full HTML tags byte-by-byte and still proves the frame mechanics.
 
-- [ ] **Step 1: Add the failing pytest entry**
+- [x] **Step 1: Add the failing pytest entry**
 
 Modify `tests/test_pre_design_probes.py` parametrize list. Append the new entry after the P2 entry:
 
@@ -465,13 +465,13 @@ Modify `tests/test_pre_design_probes.py` parametrize list. Append the new entry 
         ("nested-dispatch.spl", "nested dispatch: pass\n"),
 ```
 
-- [ ] **Step 2: Run the test — expect xfail**
+- [x] **Step 2: Run the test — expect xfail**
 
 Run: `uv run pytest tests/test_pre_design_probes.py -k nested -v`
 
 Expected: 1 xfailed.
 
-- [ ] **Step 3: Write the probe**
+- [x] **Step 3: Write the probe**
 
 File: `docs/spl/probes/pre-design/nested-dispatch.spl`
 
@@ -504,13 +504,13 @@ Structure:
 
    **Decision:** use the accumulator approach so stdout is exactly `nested dispatch: pass\n`. This keeps the test assertion simple and matches the other probes' convention.
 
-- [ ] **Step 4: Run the test — expect pass**
+- [x] **Step 4: Run the test — expect pass**
 
 Run: `uv run pytest tests/test_pre_design_probes.py -k nested -v`
 
 Expected: 1 passed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add docs/spl/probes/pre-design/nested-dispatch.spl \

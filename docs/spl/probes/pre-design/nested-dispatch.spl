@@ -1,0 +1,178 @@
+Nested Dispatch.
+
+Romeo, a frame stack.
+Juliet, a probe driver.
+Hamlet, an output trace.
+
+
+                    Act I: Nested frame dispatch.
+
+                    Scene I: Open the outer blockquote frame.
+
+[Enter Romeo and Juliet]
+
+Juliet:
+ Remember a cat.
+
+                    Scene II: Record the outer frame entry.
+
+[Exit Romeo]
+[Enter Hamlet]
+
+Juliet:
+ Remember the sum of a big big big big big cat and a big big big cat.
+
+                    Scene III: Open the inner list frame.
+
+[Exit Hamlet]
+[Enter Romeo]
+
+Juliet:
+ Remember a big cat.
+
+                    Scene IV: Record the inner frame entry.
+
+[Exit Romeo]
+[Enter Hamlet]
+
+Juliet:
+ Remember the sum of a big big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+
+                    Scene V: Record content inside both frames.
+
+Juliet:
+ Remember the sum of a big big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
+
+                    Scene VI: Close the inner list frame.
+
+[Exit Hamlet]
+[Enter Romeo]
+
+Juliet:
+ Recall your past.
+ Are you as good as a big cat?
+ If so, let us proceed to scene VII.
+
+[Exeunt]
+
+                    Scene VII: Record the inner frame exit.
+
+[Exit Romeo]
+[Enter Hamlet]
+
+Juliet:
+ Remember the sum of a big big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+
+                    Scene VIII: Close the outer blockquote frame.
+
+[Exit Hamlet]
+[Enter Romeo]
+
+Juliet:
+ Recall your past.
+ Are you as good as a cat?
+ If so, let us proceed to scene IX.
+
+[Exeunt]
+
+                    Scene IX: Record the outer frame exit.
+
+[Exit Romeo]
+[Enter Hamlet]
+
+Juliet:
+ Remember the sum of a big big big big big cat and the sum of a big big big cat and a cat.
+
+                    Scene X: Verify the outer frame exit marker.
+
+Juliet:
+ Recall your past.
+ Are you as good as the sum of a big big big big big cat and the sum of a big big big cat and a cat?
+ If so, let us proceed to scene XI.
+
+[Exeunt]
+
+                    Scene XI: Verify the inner frame exit marker.
+
+Juliet:
+ Recall your past.
+ Are you as good as the sum of a big big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat?
+ If so, let us proceed to scene XII.
+
+[Exeunt]
+
+                    Scene XII: Verify the nested content marker.
+
+Juliet:
+ Recall your past.
+ Are you as good as the sum of a big big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat?
+ If so, let us proceed to scene XIII.
+
+[Exeunt]
+
+                    Scene XIII: Verify the inner frame entry marker.
+
+Juliet:
+ Recall your past.
+ Are you as good as the sum of a big big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat?
+ If so, let us proceed to scene XIV.
+
+[Exeunt]
+
+                    Scene XIV: Verify the outer frame entry marker.
+
+Juliet:
+ Recall your past.
+ Are you as good as the sum of a big big big big big cat and a big big big cat?
+ If so, let us proceed to scene XV.
+
+[Exeunt]
+
+                    Scene XV: Emit pass.
+
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and a big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and a big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as a big big big big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and a big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and a big big big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and a big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and a big big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as a big big big big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and a big big big big cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
+Juliet: Speak your mind!
+Juliet: You are as good as the sum of a big big big cat and a big cat.
+Juliet: Speak your mind!
+
+[Exeunt]
