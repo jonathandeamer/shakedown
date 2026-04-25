@@ -533,7 +533,7 @@ git commit -m "experiment: add nested-dispatch mechanics probe (P3)"
 - Output: `reference lookup scale: pass\n` if all lookups return the expected values.
 - This probe is an assertion probe (pass/fail) but it is also timed by the harness in Task 8 to confirm linear scan is tractable.
 
-- [ ] **Step 1: Add the failing pytest entry**
+- [x] **Step 1: Add the failing pytest entry**
 
 Append to parametrize list:
 
@@ -542,13 +542,13 @@ Append to parametrize list:
         ("reference-lookup-scale.spl", "reference lookup scale: pass\n"),
 ```
 
-- [ ] **Step 2: Run the test — expect xfail**
+- [x] **Step 2: Run the test — expect xfail**
 
 Run: `uv run pytest tests/test_pre_design_probes.py -k scale -v`
 
 Expected: 1 xfailed.
 
-- [ ] **Step 3: Write the probe**
+- [x] **Step 3: Write the probe**
 
 File: `docs/spl/probes/pre-design/reference-lookup-scale.spl`
 
@@ -563,13 +563,13 @@ Structure (model after `reference-lookup.spl`):
    - After each query, restore Romeo's stack from Hamlet.
 5. **Pass emission scene.** Emit `reference lookup scale: pass\n` character-by-character.
 
-- [ ] **Step 4: Run the test — expect pass**
+- [x] **Step 4: Run the test — expect pass**
 
 Run: `uv run pytest tests/test_pre_design_probes.py -k scale -v`
 
 Expected: 1 passed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add docs/spl/probes/pre-design/reference-lookup-scale.spl \
