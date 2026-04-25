@@ -28,7 +28,7 @@
 **Files:**
 - Create: `scripts/count_reference_defs.py`
 
-- [ ] **Step 1: Create the script**
+- [x] **Step 1: Create the script**
 
 File: `scripts/count_reference_defs.py`
 
@@ -70,13 +70,13 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 2: Run it and record the count**
+- [x] **Step 2: Run it and record the count**
 
 Run: `uv run python scripts/count_reference_defs.py`
 
 Expected: a line `Reference definition count: N`, where N is a small positive integer. Record `N` — it is the target table size for P4. If N is below 10, pick a floor of 20 for the probe (we want to stress linear scan, not exactly match the fixture).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add scripts/count_reference_defs.py
@@ -92,7 +92,7 @@ git commit -m "chore: add reference-def counter for P4 probe scaling"
 - Create: `scripts/measure_spl_cost.py`
 - Create: `tests/test_measure_spl_cost.py`
 
-- [ ] **Step 1: Write the generator**
+- [x] **Step 1: Write the generator**
 
 File: `scripts/generate_spl_cost_fixtures.py`
 
@@ -195,7 +195,7 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 2: Write the measurement harness**
+- [x] **Step 2: Write the measurement harness**
 
 File: `scripts/measure_spl_cost.py`
 
@@ -260,7 +260,7 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 3: Write a smoke test for the harness**
+- [x] **Step 3: Write a smoke test for the harness**
 
 File: `tests/test_measure_spl_cost.py`
 
@@ -305,7 +305,7 @@ def test_measure_spl_cost_runs_on_empty_probe(tmp_path: Path) -> None:
     assert "median:" in result.stdout
 ```
 
-- [ ] **Step 4: Run the generator**
+- [x] **Step 4: Run the generator**
 
 Run: `uv run python scripts/generate_spl_cost_fixtures.py`
 
@@ -315,19 +315,19 @@ Check with: `wc -l docs/spl/probes/pre-design/spl-cost-*.spl docs/spl/probes/pre
 
 Expected line counts: roughly 1000, 4000, 1600 (scene-count has trivial body so is ~8 lines/scene × 200 = 1600).
 
-- [ ] **Step 5: Verify generated SPL parses and runs**
+- [x] **Step 5: Verify generated SPL parses and runs**
 
 Run: `uv run shakespeare run docs/spl/probes/pre-design/spl-cost-1k.spl`
 
 Expected: exits 0, prints a single character (the final `Speak your mind!` output).
 
-- [ ] **Step 6: Run the harness smoke test**
+- [x] **Step 6: Run the harness smoke test**
 
 Run: `uv run pytest tests/test_measure_spl_cost.py -q`
 
 Expected: 1 passed.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add scripts/generate_spl_cost_fixtures.py scripts/measure_spl_cost.py \
@@ -354,7 +354,7 @@ git commit -m "chore: add SPL cost generator and measurement harness"
 
 The probe demonstrates the *mechanic* of ordered two-pass substitution over a buffered span. It does not implement the full emphasis feature.
 
-- [ ] **Step 1: Add the failing pytest entry**
+- [x] **Step 1: Add the failing pytest entry**
 
 Modify `tests/test_pre_design_probes.py`:
 
@@ -385,13 +385,13 @@ Replace with:
 )
 ```
 
-- [ ] **Step 2: Run the test — expect xfail**
+- [x] **Step 2: Run the test — expect xfail**
 
 Run: `uv run pytest tests/test_pre_design_probes.py -k emphasis -v`
 
 Expected: 1 xfailed (the existing harness calls `pytest.xfail` when the probe file is missing).
 
-- [ ] **Step 3: Write the probe**
+- [x] **Step 3: Write the probe**
 
 File: `docs/spl/probes/pre-design/emphasis-two-pass.spl`
 
@@ -428,13 +428,13 @@ Structure to follow (model after `docs/spl/probes/pre-design/reference-lookup.sp
 
    Follow `reference-lookup.spl` lines 92-137 as the template for building these expressions.
 
-- [ ] **Step 4: Run the test — expect pass**
+- [x] **Step 4: Run the test — expect pass**
 
 Run: `uv run pytest tests/test_pre_design_probes.py -k emphasis -v`
 
 Expected: 1 passed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add docs/spl/probes/pre-design/emphasis-two-pass.spl \

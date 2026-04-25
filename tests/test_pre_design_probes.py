@@ -15,6 +15,7 @@ PROBE_DIR = ROOT / "docs" / "spl" / "probes" / "pre-design"
         ("reference-lookup.spl", "reference lookup: pass\n"),
         ("setext-buffering.spl", "setext buffering: pass\n"),
         ("list-state-stack.spl", "list state stack: pass\n"),
+        ("emphasis-two-pass.spl", "emphasis two-pass: pass\n"),
     ],
 )
 def test_pre_design_spl_probe(probe_name: str, expected: str) -> None:
