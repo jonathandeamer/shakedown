@@ -650,13 +650,13 @@ git commit -m "docs: record B14 current-repo SPL cost baselines"
 **Files:**
 - Modify: `docs/verification-plan.md`
 
-- [ ] **Step 1: Measure scene-count probe**
+- [x] **Step 1: Measure scene-count probe**
 
 Run: `UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py docs/spl/probes/pre-design/scene-count.spl --runs 5`
 
 Record output verbatim.
 
-- [ ] **Step 2: Append B18 to verification-plan.md**
+- [x] **Step 2: Append B18 to verification-plan.md**
 
 Modify `docs/verification-plan.md`. After the B14 subsection just added, insert:
 
@@ -678,7 +678,7 @@ Modify `docs/verification-plan.md`. After the B14 subsection just added, insert:
 - **Disposition:** Compare to B14's 4k-line cost. If the scene-count probe runs comparably to a 4k-line generated SPL (~1600 lines but 200 scenes), scene count is not the dominant cost driver and ~130-scene prior-attempt architectures had headroom. If it runs materially slower per line, scene count matters and architecture planning should account for it.
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/verification-plan.md

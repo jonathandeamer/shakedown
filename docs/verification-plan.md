@@ -189,6 +189,26 @@ Each replay was run once as part of the docs restructure. Results below capture 
 
 - **Disposition:** Each subprocess invocation is a fresh interpreter - every run pays cold startup. The first-run and median timings are therefore both cold-run costs. No warm reuse is measured because the SPL CLI has no persistent-process mode (`docs/verification-plan.md` B7). Architecture planning should treat these numbers as the current-repo baseline for shakespeare-run cost at 1k and 4k lines, and should re-measure on the first realistic production-sized SPL build before making performance-sensitive decisions.
 
+### B18 — Scene-count-per-act baseline
+
+- **Command:**
+  ```
+  UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py \
+      docs/spl/probes/pre-design/scene-count.spl --runs 5
+  ```
+- **Purpose:** confirm whether scene count within one act is a significant cost driver. The prior attempt reached ~130 scenes in one act; the 200-scene probe provides headroom evidence. Act-local gotos force the main loop into one act, so this number bounds how many distinct dispatch targets a single-act architecture can sustain.
+- **Observed (2026-04-25):**
+
+  ```
+  file: docs/spl/probes/pre-design/scene-count.spl
+  runs: 5
+  first: 5.442s
+  median: 5.252s
+  all: ['5.442', '5.213', '5.232', '5.257', '5.252']
+  ```
+
+- **Disposition:** Compared to B14's 4k-line cost (13.289s median), the 200-scene probe runs faster despite using 200 scenes in one act. This suggests scene count is not the dominant cost driver at this scale, and ~130-scene prior-attempt architectures had scene-count headroom. Re-measure if a future production build materially exceeds this shape.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.
