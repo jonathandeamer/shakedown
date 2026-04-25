@@ -103,3 +103,15 @@ The matrix is fixture-level (one row per mdtest fixture). The outlook is
 feature-level (one row per Markdown feature area). Use the matrix to pick
 fixture-sized milestones and to check strict-oracle caveats; use the outlook
 to understand which features are mechanics-closed vs still open.
+
+## Candidate First-Fixture Milestones
+
+Architecture planning's rubric scores "names the first fixture milestone" as a strong-answer quality. Given the fixture matrix and feature-risk outlook, the candidate first fixtures are:
+
+- **Tidyness** (5 lines, 78 bytes, Low risk). Exercises output blank-line normalization only - the minimum viable "pipeline produces bytes" proof.
+- **Amps and angle encoding** (20 lines, 381 bytes, Low risk). Exercises entity encoding outside code/HTML. A focused first test of the span-encoding stage.
+- **Horizontal rules** (67 lines, 270 bytes, Low risk). Single-line pattern, exercises block-level `<hr/>` recognition.
+
+These are candidates, not a decision. Selecting the first fixture depends on which pipeline slice architecture planning chooses to prove first (block pipeline vs span encoding vs I/O wiring). Any of the three is defensible; all three are below the medium-risk feature threshold.
+
+Do not start with `Markdown Documentation - Basics` or `Markdown Documentation - Syntax` - they are aggregate fixtures and should be used after smaller fixtures have proven their constituent features.

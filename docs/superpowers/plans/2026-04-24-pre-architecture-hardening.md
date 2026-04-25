@@ -1069,7 +1069,7 @@ git commit -m "docs: add AST-cache feasibility subsection to runtime-boundary"
 **Files:**
 - Modify: `docs/markdown/fixtures.md`
 
-- [ ] **Step 1: Append candidate first-fixture shortlist**
+- [x] **Step 1: Append candidate first-fixture shortlist**
 
 Modify `docs/markdown/fixtures.md`. After the "How the Two Views Relate" section, add:
 
@@ -1087,7 +1087,7 @@ These are candidates, not a decision. Selecting the first fixture depends on whi
 Do not start with `Markdown Documentation - Basics` or `Markdown Documentation - Syntax` — they are aggregate fixtures and should be used after smaller fixtures have proven their constituent features.
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add docs/markdown/fixtures.md
