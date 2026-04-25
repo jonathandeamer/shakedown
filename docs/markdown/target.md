@@ -40,7 +40,7 @@ Fixture names (alphabetical):
 - Tabs
 - Tidyness
 
-The default `tests/test_mdtest.py` contract compares normalized fixture output. A strict local-oracle parity check must compare Shakedown output against freshly generated `perl ~/markdown/Markdown.pl` output for the same input, because two checked-in expected files differ from local oracle raw bytes.
+The default `tests/test_mdtest.py` contract compares normalized fixture output. Normalization is defined by `_normalize` in `tests/test_mdtest.py` (see that function for the canonical algorithm). Summary: each line is `.strip()`-ped, consecutive blank lines are collapsed to a single blank line, and the whole result is `.strip()`-ped. The `Auto links` fixture additionally applies `_decode_entities` (decoding `&#NNN;` and `&#xNN;`) to both sides before comparison. A strict local-oracle parity check must compare Shakedown output against freshly generated `perl ~/markdown/Markdown.pl` output for the same input, because two checked-in expected files differ from local oracle raw bytes.
 
 ## Feature Surface
 
@@ -78,6 +78,8 @@ See `docs/markdown/divergences.md`. Under the Markdown.pl parity goal, nested bl
 - **Normalized mdtest contract:** current default regression check. It trims line whitespace, collapses repeated blank lines, and decodes numeric entities only for the Auto links fixture.
 - **Strict local-oracle parity:** compare output against freshly generated `perl ~/markdown/Markdown.pl` output for the same input. This is the architecture target for deterministic Markdown.pl behavior.
 - **Email-autolink equivalence:** compare decoded email auto-link href/text content rather than exact randomized entity choices. This is the SPL-pure target for Markdown.pl's nondeterministic email encoder.
+
+Strict local-oracle parity implies normalized-contract parity: any Shakedown output that is byte-identical to local `Markdown.pl` output also passes the normalized-contract test. The normalized contract is a superset of outputs that includes some non-oracle-identical results; strict parity is a subset.
 
 ## Interface
 

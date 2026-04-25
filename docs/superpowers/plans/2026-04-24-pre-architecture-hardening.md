@@ -1101,7 +1101,7 @@ git commit -m "docs: add candidate first-fixture milestone shortlist"
 **Files:**
 - Modify: `docs/markdown/target.md`
 
-- [ ] **Step 1: Replace normalization description**
+- [x] **Step 1: Replace normalization description**
 
 Modify `docs/markdown/target.md`. Find the paragraph in "## Test Surface: Markdown.mdtest":
 
@@ -1111,7 +1111,7 @@ Replace with:
 
 > The default `tests/test_mdtest.py` contract compares normalized fixture output. Normalization is defined by `_normalize` in `tests/test_mdtest.py` (see that function for the canonical algorithm). Summary: each line is `.strip()`-ped, consecutive blank lines are collapsed to a single blank line, and the whole result is `.strip()`-ped. The `Auto links` fixture additionally applies `_decode_entities` (decoding `&#NNN;` and `&#xNN;`) to both sides before comparison. A strict local-oracle parity check must compare Shakedown output against freshly generated `perl ~/markdown/Markdown.pl` output for the same input, because two checked-in expected files differ from local oracle raw bytes.
 
-- [ ] **Step 2: Add strict-parity⊇normalized-contract sentence**
+- [x] **Step 2: Add strict-parity⊇normalized-contract sentence**
 
 Find the "## Parity Levels" section. Append a new paragraph after the three bullet items:
 
@@ -1119,7 +1119,7 @@ Find the "## Parity Levels" section. Append a new paragraph after the three bull
 Strict local-oracle parity implies normalized-contract parity: any Shakedown output that is byte-identical to local `Markdown.pl` output also passes the normalized-contract test. The normalized contract is a superset of outputs that includes some non-oracle-identical results; strict parity is a subset.
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/markdown/target.md
