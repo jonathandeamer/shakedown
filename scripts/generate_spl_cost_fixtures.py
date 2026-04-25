@@ -39,7 +39,7 @@ SCENE_TEMPLATE = """                    Scene {roman}: Bounded work step {n}.
 
 Juliet: You are as good as the sum of a big cat and a cat.
 Juliet: Remember yourself.
-Romeo: Recall your past.
+Juliet: Recall your past.
 
 [Exeunt]
 
@@ -47,7 +47,7 @@ Romeo: Recall your past.
 
 TAIL_TEMPLATE = """                    Scene {roman}: Terminate.
 
-[Enter Juliet]
+[Enter Romeo and Juliet]
 
 Juliet: You are as good as a cat.
 Juliet: Speak your mind!
