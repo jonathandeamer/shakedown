@@ -51,7 +51,7 @@ Each decision is detailed in its own section below, with reasoning preserved.
 
 **During development:** `./shakedown` is a Python wrapper (`scripts/shakedown_run.py`) that reads stdin, hashes `shakedown.spl`, loads or builds an AST cache (Section 5), invokes `shakespearelang`'s runtime, passes stdout/stderr/exit through.
 
-**At release (pre-`1.0.0`):** `./shakedown` is a bash entry that calls `shakespeare run shakedown.spl < /dev/stdin`. No Python in the path.
+**At release (pre-`1.0.0`):** `./shakedown` is a bash entry that resolves the SPL interpreter through the project's `uv`-managed environment and invokes it on the committed `shakedown.spl`. No wrapper-side Python *logic*. (Full wrapper shown in §5.1.)
 
 ### Plumbing-only constraint (binding)
 
@@ -75,7 +75,7 @@ Hand-written SPL fragments are the source of truth. They live under `src/`, are 
 ```
 src/
   00-preamble.spl         # dramatis personae + Act I header
-  10-act1-preprocess.spl  # detab, normalize, strip link defs, build ref table
+  10-act1-preprocess.spl  # normalize, append \n\n, detab, strip whitespace-only lines, hash HTML blocks, strip link defs
   20-act2-block.spl       # block parse → token stream
   30-act3-span.spl        # span substitution over tokens
   40-act4-emit.spl        # emit HTML
@@ -141,7 +141,7 @@ Each of the four acts has a designated lexicon palette from `docs/spl/style-lexi
 
 | Act | Purpose | Palette | Register |
 |---|---|---|---|
-| I — Pre-process | Detab, normalize, strip link defs, build ref table | Grotesque / catastrophic | Grimy mechanical work; the underworld of the pipeline |
+| I — Pre-process | Normalize, detab, hash HTML blocks, strip link defs (Markdown.pl setup order — see §4.1) | Grotesque / catastrophic | Grimy mechanical work; the underworld of the pipeline |
 | II — Block | Block parse → token stream | Noble / martial | Structural recognition; decisive cuts |
 | III — Span | Span substitution over tokens | Pastoral / celestial | Fine ornament; delicate substitution |
 | IV — Emit | Emit HTML | Formal / declarative | Ceremonial completion; pronouncements |
@@ -194,15 +194,18 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 **Input:** raw Markdown source.
 **Output:** normalized text + reference-definition table on the Librarian's stack + raw HTML hash table on the Custodian's stack.
 
-**Responsibilities:**
-- Detab (tabs → 4 spaces, column-aware).
-- Line ending normalization (`\r\n` and `\r` → `\n`).
-- Strip link reference definitions (`[id]: url "title"`) and capture them as `(id, url, title)` triples on the Librarian's stack.
-- Hash raw HTML blocks (replace with sentinel tokens, store originals on the Custodian's stack).
+**Responsibilities (in Markdown.pl order — see `docs/markdown/oracle-mechanics.md` row 1):**
+
+1. Normalize line endings (`\r\n` and `\r` → `\n`).
+2. Append `\n\n` to the end of input. (Oracle setup; affects EOF-sensitive boundary fixtures.)
+3. Detab (tabs → 4 spaces, column-aware).
+4. Strip whitespace-only lines (replace runs of whitespace-only lines with bare `\n`s; oracle setup).
+5. Hash raw HTML blocks (replace with sentinel tokens, store originals on the Custodian's stack). **This precedes link-def stripping** because HTML blocks may contain reference-definition-shaped text that must not be rewritten.
+6. Strip link reference definitions (`[id]: url "title"`) and capture them as `(id, url, title)` triples on the Librarian's stack.
 
 **Mechanic:** linear scan, line-at-a-time state machine. No nested-structure recognition yet.
 
-**Why pre-process is its own act:** Markdown.pl's transform order is non-negotiable here — link-def stripping must precede block parse, and HTML block hashing must precede inline span work. (See `docs/markdown/oracle-mechanics.md`.)
+**Why pre-process is its own act:** Markdown.pl's transform order is non-negotiable here — HTML block hashing must precede link-def stripping, both must precede the block gamut, and the oracle's setup steps (append, strip-whitespace-only-lines) affect blank-line-sensitive fixtures. Putting these as Act I scenes makes that ordering structural rather than convention.
 
 ### 4.2 Act II — Block Parse
 
@@ -216,13 +219,15 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 - `CODE_BLOCK(text)`
 - `RAW_HTML_HASH(id)` (resolved in Act IV)
 
-**Mechanic:** **multi-pass token-stream dispatcher.** Each pass recognizes one block class:
-1. Pass A: code blocks (4-space indent — Markdown.pl is indent-only).
-2. Pass B: HR.
-3. Pass C: ATX and Setext headers.
-4. Pass D: lists (ordered + unordered, with nesting).
-5. Pass E: blockquotes (with nesting).
-6. Pass F: remaining text → paragraphs.
+**Mechanic:** **multi-pass token-stream dispatcher.** Each pass recognizes one block class. Pass order matches Markdown.pl's `_RunBlockGamut` (see `docs/markdown/oracle-mechanics.md` Block Pipeline):
+
+1. Pass A: Headers — Setext (`===` / `---` underlines) before ATX (`#` prefixes). **Headers run first** so setext underlines are recognized as headers before any other pass can consume them.
+2. Pass B: Horizontal rules — `***`, `---`, `___` (with optional spaces, up to two leading spaces). Runs *after* headers so setext `---` underlines are not misread as rules.
+3. Pass C: Lists — ordered + unordered, with nesting; tight/loose handled per `_ProcessListItems` mechanics (loose items recurse through the block gamut, tight items run only the span gamut). **Lists run before code blocks** so indented content inside list items isn't pulled out as a code block.
+4. Pass D: Code blocks — 4-space indent (Markdown.pl is indent-only).
+5. Pass E: Blockquotes — strip one `>` level, recurse through the block gamut on the unquoted body, then prefix two spaces and strip those from embedded `<pre>` (the indent fix is parity-critical per oracle-mechanics.md row 6).
+6. Pass F: Second `_HashHTMLBlocks` pass — Markdown.pl re-hashes any block-level HTML produced by recursion before paragraph formation (see `docs/markdown/html-block-boundaries.md:8-10`). The Custodian's stack receives any new entries.
+7. Pass G: Paragraph formation — unhashed chunks become `PARA` tokens; previously hashed HTML blocks are restored without paragraph wrapping in Act IV.
 
 **Why multi-pass:** the prior attempt's single-pass dispatcher hit ~4,300 lines on block-only and stalled because every dispatch site duplicated the same recognition prefix. Multi-pass narrows each scene's recognition responsibility and lets the inter-pass token stream act as a contract.
 
@@ -284,12 +289,21 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 
 **Dev mode:** Python wrapper → SHA-256 the SPL → look up `.cache/shakedown-<hash>.pickle` → on hit unpickle the AST and run; on miss parse via `shakespearelang`, pickle the AST, run.
 
-**Release mode (pre-`1.0.0`):** bash entry: `exec shakespeare run shakedown.spl < /dev/stdin`. No Python. No cache. ~10 lines.
+**Release mode (pre-`1.0.0`):** bash entry that resolves the SPL interpreter via the project's declared tooling (`uv`) and invokes it on the committed `shakedown.spl`:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$(cd "$(dirname "$0")" && pwd)"
+exec uv run --directory "$DIR" shakespeare run "$DIR/shakedown.spl"
+```
+
+This resolves `shakespeare` through the project's `uv`-managed environment rather than ambient `PATH`, because CLAUDE.md explicitly notes `~/.local/bin/shakespeare` may not be on PATH in a fresh shell. The prototype's `./shakedown-dev` already uses this approach for the same reason. No wrapper-side Python *logic*, no cache, ~10 lines.
 
 ### 5.2 Why Both
 
 - **Dev needs fast feedback.** Pre-cache cold cost (B14): ~13s for a 4k-line SPL file. 23 fixtures × 13s ≈ 5 minutes per contract run. The Huntley/Ralph loop loses its character at that pace. The cache reduces this to ~ms per run.
-- **Release wants a clean story.** When the work is presented as a finished SPL Markdown port, the entry point should be SPL straight through.
+- **Release wants a clean story.** When the work is presented as a finished SPL Markdown port, the entry point should hand control directly to the SPL interpreter without wrapper-side Markdown or parse-acceleration logic. (Python is still the runtime substrate of `shakespearelang` itself; we accept that, because we don't *write* Python at release.)
 - **Compatible because the cache is Markdown-blind.** The wrapper hashes the SPL, caches the parse, and hands the AST to `shakespearelang`. It never inspects stdin or stdout. Cache and bash entry produce byte-identical HTML for any input.
 
 ### 5.3 Mechanics (Dev Wrapper)
@@ -357,7 +371,7 @@ SPL has no variables: each character has one integer "value" and one stack of in
 
 ### 6.2 Per-Act Workers (5 characters)
 
-- **The Pre-processor (Act I).** Detab / line-end normalize / link-def detection / HTML block detection. Stack as line buffer. Grotesque/catastrophic palette. Witches-from-*Macbeth* territory.
+- **The Pre-processor (Act I).** Line-end normalize, append `\n\n`, detab, strip whitespace-only lines, HTML-block hashing, link-def detection — in Markdown.pl order (see §4.1). Stack as line buffer. Grotesque/catastrophic palette. Witches-from-*Macbeth* territory.
 - **The Block-shaper (Act II).** Runs the block-recognition passes. Stack as region buffer. Noble/martial palette.
 - **The Wit Pair (Act III, two characters).** Span substitution. One pushes candidate substitutions; the other commits final tokens. The two-character pairing enables the strong-then-emphasis mechanic (B15) cleanly. Pastoral/celestial palette. Beatrice-and-Benedick canonical model.
 - **The Emitter (Act IV).** Walks the Dispatcher's token stream, speaks HTML to stdout. The only character who calls SPL's output verbs in production work. Formal/declarative palette. Prospero-from-*Tempest* territory.
@@ -403,7 +417,7 @@ The first fixture. Narrow but walks all four acts.
 - Assembly tooling.
 - HTML-byte codegen for `&amp;`, `&lt;`, `&gt;`, `<p>`, `</p>`.
 - `src/00-preamble.spl` — dramatis personae and Act I header.
-- `src/10-act1-preprocess.spl` — line-end normalize, detab. *No link-def stripping yet, no HTML hashing yet.*
+- `src/10-act1-preprocess.spl` — line-end normalize, append `\n\n`, detab, strip whitespace-only lines. *No link-def stripping yet, no HTML hashing yet — the Amps fixture has neither, and the order constraint between them only matters when both are present.*
 - `src/20-act2-block.spl` — paragraph recognition only. *No headers, no lists, no blockquotes, no code blocks, no HR.*
 - `src/30-act3-span.spl` — `&` / `<` / `>` encoding only. *No code spans, no escapes, no anchors, no images, no autolinks, no italics/bold.*
 - `src/40-act4-emit.spl` — emit `<p>...</p>` with encoded text.
