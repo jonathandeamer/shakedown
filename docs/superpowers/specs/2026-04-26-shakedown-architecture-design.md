@@ -30,14 +30,14 @@ The architecture is the consolidated output of a brainstorming dialogue that ran
 
 | # | Decision | Locked |
 |---|---|---|
-| D1 | Runtime: dev-time Python wrapper with AST cache; release-time bash-only entry | yes |
+| D1 | Runtime: dev-time Python wrapper with cache only after a feasibility spike; release-time bash-only entry | yes |
 | D2 | Source: hand-written SPL fragments + assembler + scoped codegen for forced-byte HTML literals only | yes |
 | D3 | Internal pipeline: four acts (Pre-process / Block / Span / Emit) | yes |
 | D4 | Dispatcher shape: multi-pass token-stream | yes |
-| D5 | AST cache: dev-mode only, removed at release | yes |
+| D5 | Interpreter cache: dev-mode only if proven viable; removed at release | yes |
 | D6 | Cast: ~9 themed Shakespeare characters across the canon, single-responsibility per character | yes |
 | D7 | Per-act aesthetic palette + literary surface tables written before Slice 1 | yes |
-| D8 | Implementation order: Slice 1 (Amps) → Spike A (lists) → Spike B (nested blockquote-in-list) → Slices 2-5 risk-ascending | yes |
+| D8 | Implementation order: Slice 1 (Amps with minimal links) → Spike A (lists) → Spike B (nested blockquote-in-list) → Slices 2-5 risk-ascending | yes |
 
 Each decision is detailed in its own section below, with reasoning preserved.
 
@@ -49,7 +49,7 @@ Each decision is detailed in its own section below, with reasoning preserved.
 
 **`shakedown.spl` is a single, hand-curated SPL file** — the art object. **`./shakedown` is a thin wrapper** that does only plumbing.
 
-**During development:** `./shakedown` is a Python wrapper (`scripts/shakedown_run.py`) that reads stdin, hashes `shakedown.spl`, loads or builds an AST cache (Section 5), invokes `shakespearelang`'s runtime, passes stdout/stderr/exit through.
+**During development:** `./shakedown` is a Python wrapper (`scripts/shakedown_run.py`) that reads stdin, assembles `shakedown.spl`, and invokes `shakespearelang`'s runtime. If the pre-Slice-1 cache spike proves a safe cache target, the wrapper may cache that target as described in Section 5; otherwise it remains a direct assemble-and-run wrapper.
 
 **At release (pre-`1.0.0`):** `./shakedown` is a bash entry that resolves the SPL interpreter through the project's `uv`-managed environment and invokes it on the committed `shakedown.spl`. No wrapper-side Python *logic*. (Full wrapper shown in §5.1.)
 
@@ -61,7 +61,7 @@ The wrapper performs **no Markdown work**. No tokenizing, no normalization beyon
 
 - **Direct SPL** pays cold-start cost on every run with no cache opportunity (B14 measured ~13.3s for a 4k-line SPL file).
 - **Generated SPL** puts the art object behind a code generator and weakens the "SPL owns Markdown" claim from the rubric.
-- **Wrapper-assisted SPL** lets the SPL stay hand-curated and readable, lets us cache the parse, and keeps the rubric's SPL-ownership axis clean.
+- **Wrapper-assisted SPL** lets the SPL stay hand-curated and readable, gives us a place to assemble fragments and, if proven viable, cache interpreter work while keeping the rubric's SPL-ownership axis clean.
 - A single `shakedown.spl` over runtime-loaded fragments: SPL has no import mechanism, the rubric values the art object, and assembly happens at build time anyway.
 
 ---
@@ -197,7 +197,7 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 ### 4.1 Act I — Pre-process
 
 **Input:** raw Markdown source.
-**Output:** normalized text + reference-definition table on the Librarian's stack + raw HTML hash table on the Custodian's stack.
+**Output:** normalized text on the Pre-processor's stack + reference-definition table on the Librarian's stack + raw HTML hash table on the Custodian's stack.
 
 **Responsibilities (in Markdown.pl order — see `docs/markdown/oracle-mechanics.md` row 1):**
 
@@ -210,11 +210,16 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 
 **Mechanic:** linear scan, line-at-a-time state machine. No nested-structure recognition yet.
 
+The normalized-text handoff is explicit: Act I pushes normalized lines or characters onto the
+Pre-processor's stack in reverse read order, so Act II can pop them in original document order.
+The implementation plan may choose line records or character records, but it must preserve that
+ordering invariant before block parsing begins.
+
 **Why pre-process is its own act:** Markdown.pl's transform order is non-negotiable here — HTML block hashing must precede link-def stripping, both must precede the block gamut, and the oracle's setup steps (append, strip-whitespace-only-lines) affect blank-line-sensitive fixtures. Putting these as Act I scenes makes that ordering structural rather than convention.
 
 ### 4.2 Act II — Block Parse
 
-**Input:** normalized text.
+**Input:** normalized text from the Pre-processor's stack, popped in original document order.
 **Output:** ordered token stream representing block structure.
 
 **Token vocabulary (initial; grows with fixtures):**
@@ -245,7 +250,9 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 
 **Responsibilities (in Markdown.pl order — see `docs/markdown/oracle-mechanics.md`):**
 
-1. Code spans (greedy backtick matching).
+1. Code spans: match an opening backtick run with a closing run of the same length, using
+   non-greedy content between the delimiters. This mirrors Markdown.pl's `_DoCodeSpans`
+   behavior and prevents multiple spans on one line from being swallowed as one span.
 2. Backslash escapes.
 3. Images (`![alt](url)` and reference form).
 4. Anchors (`[text](url)` and reference form, using Act I's ref table).
@@ -281,18 +288,22 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 ### 4.6 What Crosses Act Boundaries
 
 - **Reference table** (Act I → Act III): Librarian's stack.
+- **Normalized text** (Act I → Act II): Pre-processor's stack, stored reverse-ordered so Act II
+  consumes the document in original order.
 - **HTML hash table** (Act I → Act IV): Custodian's stack.
 - **Token stream** (Act II → Act III → Act IV): Dispatcher's stack. Two-stack reverse pattern (B-confirmed) at each handover restores stream order.
 
 ---
 
-## Section 5 — Dev-Time AST Cache, Removed at Release
+## Section 5 — Dev-Time Wrapper and Cache Feasibility
 
 ### 5.1 Two Modes, One Art Object
 
 `shakedown.spl` is the same file in both modes; the interface is the same; only the wrapper changes.
 
-**Dev mode:** Python wrapper → SHA-256 the SPL → look up `.cache/shakedown-<hash>.pickle` → on hit unpickle the AST and run; on miss parse via `shakespearelang`, pickle the AST, run.
+**Dev mode:** Python wrapper → assemble `shakedown.spl` → invoke `shakespearelang` and pass
+stdout/stderr/exit code through. A cache is permitted only after the pre-Slice-1 cache spike
+proves a viable cache target in the installed interpreter.
 
 **Release mode (pre-`1.0.0`):** bash entry that resolves the SPL interpreter via the project's declared tooling (`uv`) and invokes it on the committed `shakedown.spl`:
 
@@ -307,31 +318,61 @@ This resolves `shakespeare` through the project's `uv`-managed environment rathe
 
 ### 5.2 Why Both
 
-- **Dev needs fast feedback.** Pre-cache cold cost (B14): ~13s for a 4k-line SPL file. 23 fixtures × 13s ≈ 5 minutes per contract run. The Huntley/Ralph loop loses its character at that pace. The cache reduces this to ~ms per run.
+- **Dev needs repeatable assembly and fast feedback.** Cold cost (B14): ~13s for a 4k-line SPL file. 23 fixtures × 13s ≈ 5 minutes per contract run. The Huntley/Ralph loop loses its character at that pace, so cache work is worth investigating.
 - **Release wants a clean story.** When the work is presented as a finished SPL Markdown port, the entry point should hand control directly to the SPL interpreter without wrapper-side Markdown or parse-acceleration logic. (Python is still the runtime substrate of `shakespearelang` itself; we accept that, because we don't *write* Python at release.)
-- **Compatible because the cache is Markdown-blind.** The wrapper hashes the SPL, caches the parse, and hands the AST to `shakespearelang`. It never inspects stdin or stdout. Cache and bash entry produce byte-identical HTML for any input.
+- **Compatible if cache is proven Markdown-blind.** Any cache target must depend only on the SPL
+  source and interpreter environment, never on stdin/stdout or Markdown content. Cache and direct
+  run must produce byte-identical HTML for every input.
 
 ### 5.3 Mechanics (Dev Wrapper)
 
 The dev wrapper's per-invocation flow:
 
 1. **Assemble.** Run `scripts/assemble.py` to refresh `shakedown.spl` from `src/*.spl`. Assembly is fast (concat + label resolution); doing it on every invocation guarantees the cache key reflects current fragment state without developers remembering to assemble.
-2. **Hash.** SHA-256 the resulting `shakedown.spl`.
-3. **Cache lookup.** Read `.cache/shakedown-<hash>.pickle` if present.
-4. **Hit:** unpickle the AST and execute. **Miss:** parse `shakedown.spl` via `shakespearelang`, pickle the AST, then execute.
-5. **Pass through** stdout, stderr, and exit code.
+2. **Run.** Invoke `uv run shakespeare run shakedown.spl`.
+3. **Pass through** stdin, stdout, stderr, and exit code.
+
+If the cache spike succeeds, the flow may become:
+
+1. Assemble.
+2. Hash the resulting `shakedown.spl` plus cache-environment metadata.
+3. Read a cache artifact from `.cache/` if present.
+4. Execute via the proven cache path; on a miss, build the cache artifact and execute.
+5. Pass through stdin, stdout, stderr, and exit code.
 
 Other mechanics:
 
-- **Cache shape:** `pickle.dumps()` of the `shakespearelang`-produced AST.
-- **Cache location:** `.cache/shakedown-<hash>.pickle`, gitignored.
+- **Cache shape:** not specified until the spike proves one. Current evidence says pickling the
+  parsed AST and passing it back into `Shakespeare(...)` is not viable in the installed
+  interpreter because parse metadata is not restored; pickling the preprocessed `Play` is also
+  not viable if operation lambdas are present.
+- **Cache location:** `.cache/`, gitignored.
 - **Cache safety:** local-only. Pickle's untrusted-input fragility doesn't apply.
-- **Pinning:** `shakespearelang` is pinned in `pyproject.toml`; AST shape changes only on intentional version bumps.
+- **Cache key:** if a cache is added, it must include at least the SPL hash, Python version,
+  `shakespearelang` package version, and the cache-shape version.
 - **Wrapper line budget:** ≤100 lines of Python during development.
 
-### 5.3a `shakedown.spl` Is Committed
+### 5.3a Pre-Slice-1 Cache Spike
+
+Before Slice 1, run a cache feasibility spike with the installed `shakespearelang` and current
+Python version. The spike must demonstrate all of:
+
+1. A cached representation can be built and later executed without parse-metadata loss.
+2. Cached execution is byte-identical to direct `shakespeare run` on at least one fixture input.
+3. The wrapper overhead is measured separately from SPL execution.
+4. Cache invalidation includes the metadata listed above.
+
+If the spike fails or the measured gain is not worth the wrapper complexity, the architecture
+falls back to direct assemble-and-run dev mode. That fallback does not change SPL ownership; it
+only makes the inner loop slower until another proven acceleration exists.
+
+### 5.3b `shakedown.spl` Is Committed
 
 `shakedown.spl` is tracked in git (not gitignored), because the release-mode bash entry runs it directly with no assembly step. CI runs `assemble.py` and verifies the committed `shakedown.spl` matches the assembled output; a mismatch fails the build. A pre-commit hook may enforce the same locally. This keeps the art object always in a publishable state without requiring Python at release.
+
+The current repo still ignores `shakedown.spl`. A pre-Slice-1 tooling step must update
+`.gitignore` policy: remove the `shakedown.spl` ignore or force-add the assembled artifact
+deliberately. Local cache files belong under `.cache/`, which is ignored.
 
 ### 5.4 Release Transition (pre-`1.0.0`)
 
@@ -344,11 +385,12 @@ The transition must happen *before* `1.0.0`, not after.
 
 ### 5.5 Performance Expectation
 
-- **Dev mode, post-warm:** Python startup + unpickle + execute. Predicted single-digit ms unpickle on our AST size; few hundred ms total per fixture.
-- **Dev mode, cold (cache miss):** ~13s per representative SPL. One-time per SPL edit.
+- **Dev mode, no proven cache:** same interpreter execution cost as release mode, plus assembly and Python wrapper overhead.
+- **Dev mode, proven cache:** performance expectation comes from the pre-Slice-1 cache spike, not prediction.
 - **Release mode:** ~13s per fixture. Acceptable because release-mode runs are ceremonial.
 
-**B19 (new):** measure dev-mode unpickle + execute time on a representative `shakedown.spl` ≥ 2k lines once the wrapper exists. Threshold: ≤100ms wrapper overhead.
+**B19 (new):** measure dev-mode cache execution on a representative `shakedown.spl` ≥ 2k lines
+only if the cache spike succeeds. Threshold: ≤100ms wrapper/cache overhead beyond SPL execution.
 
 ---
 
@@ -410,24 +452,26 @@ SPL has a single global boolean: most-recent question result. Every scene that a
 1. `src/literary.toml` schema and initial Slice 1 entries, following `docs/spl/literary-spec.md`.
 2. Stable Utility families for 1, 0, −1, and small token codes selected from verified legal vocabulary.
 3. **Token-code allocation table** — explicit assignments (e.g., `PARA = 1`, `HEADER = 2`, `LIST_OPEN = 3`, …) committed before any SPL references them.
-4. Wrapper skeleton (`scripts/shakedown_run.py`) and assembler (`scripts/assemble.py`) usable but empty of content.
-5. Codegen (`scripts/codegen_html.py`) with a unit test that verifies one byte literal round-trips.
+4. **Cache feasibility spike** — prove a cache target or explicitly choose direct assemble-and-run dev mode for Slice 1.
+5. **Generated-artifact policy** — update `.gitignore`/git tracking so `shakedown.spl` is intentionally committed for release checks and `.cache/` is ignored.
+6. Wrapper skeleton (`scripts/shakedown_run.py`) and assembler (`scripts/assemble.py`) usable but empty of content.
+7. Codegen (`scripts/codegen_html.py`) with a unit test that verifies one byte literal round-trips.
 
 ### 7.2 Slice 1 — Amps and Angle Encoding
 
 The first fixture. Narrow but walks all four acts.
 
 **Delivers:**
-- Wrapper (dev mode, with AST cache).
+- Wrapper (dev mode; cache only if the pre-Slice-1 spike proves it).
 - Assembly tooling.
-- HTML-byte codegen for `&amp;`, `&lt;`, `&gt;`, `<p>`, `</p>`.
+- HTML-byte codegen for `&amp;`, `&lt;`, `&gt;`, `<p>`, `</p>`, `<a href="...">`, and `</a>`.
 - `src/00-preamble.spl` — dramatis personae and Act I header.
-- `src/10-act1-preprocess.spl` — line-end normalize, append `\n\n`, detab, strip whitespace-only lines. *No link-def stripping yet, no HTML hashing yet — the Amps fixture has neither, and the order constraint between them only matters when both are present.*
+- `src/10-act1-preprocess.spl` — line-end normalize, append `\n\n`, detab, strip whitespace-only lines, and strip/capture the two reference definitions used by the fixture. Raw HTML hashing may remain stubbed because this fixture has no raw HTML blocks, but the code path must preserve the future ordering invariant: hash HTML before stripping link definitions.
 - `src/20-act2-block.spl` — paragraph recognition only. *No headers, no lists, no blockquotes, no code blocks, no HR.*
-- `src/30-act3-span.spl` — `&` / `<` / `>` encoding only. *No code spans, no escapes, no anchors, no images, no autolinks, no italics/bold.*
-- `src/40-act4-emit.spl` — emit `<p>...</p>` with encoded text.
+- `src/30-act3-span.spl` — `&` / `<` / `>` encoding plus the minimal anchor machinery required by this fixture: inline links and full reference links with optional titles. *No code spans, escapes, images, autolinks, italics, or bold yet.*
+- `src/40-act4-emit.spl` — emit `<p>...</p>` and `<a>` HTML for the fixture's links.
 
-**Why this fixture first:** lowest-risk fixture in the suite that still requires the full four-act pipeline. Establishes architecture, build flow, the first `src/literary.toml` surfaces, and the dev wrapper, all on a fixture where Markdown.pl's behavior is straightforwardly machine-checkable.
+**Why this fixture first:** it is still small, but not link-free. Keeping it as Slice 1 deliberately proves the full four-act handoff plus the smallest useful reference-table path. A truly link-free target such as `Tidyness` would be an easier walking skeleton, but it would not exercise Act I's reference handoff or Act III's anchor emission.
 
 **Definition of done:** `uv run pytest tests/test_mdtest.py -k "Amps and angle"` passes; output byte-identical to Markdown.pl; first ~6 characters have spoken lines that follow `docs/spl/literary-spec.md` and draw from checked-in `src/literary.toml` surfaces.
 
@@ -437,13 +481,15 @@ Immediately after Slice 1.
 
 **Goal:** validate the multi-pass dispatcher and frame-sentinel nesting.
 
-**Scope:** flat unordered list (3 items, bare paragraphs); flat ordered list (3 items); one nesting level (one ordered inside one unordered, or vice versa).
+**Scope:** flat unordered list (3 tight items); flat ordered list (3 tight items); one nesting level (one ordered inside one unordered, or vice versa); one loose list item with a second paragraph; one list item with an indented continuation/code-block candidate.
 
-**Not in spike:** tight vs loose lists, list-with-paragraphs, list-with-blockquotes, list-with-code-blocks. Those wait for Slice 4.
+**Not in spike:** full `Ordered and unordered lists` fixture coverage, all marker-family variants, list-with-blockquotes, and every nested loose-list combination. Those wait for Slice 4. The spike still exercises the token-shape decisions for tight vs loose and indented continuation/code because those are expensive to change later.
 
 **Outcomes:**
 - ✅ Spike passes — frame-sentinel pattern confirmed at fixture-relevant scope.
 - ❌ Spike struggles — revisit dispatcher shape *now*. Cost of pivot is bounded.
+
+**Verification harness:** add dedicated snippet fixtures under `tests/fixtures/architecture_spikes/lists/` and a pytest parametrization that compares `./shakedown` output to `perl ~/markdown/Markdown.pl` for each snippet. These snippets are part of the no-regression gate after Spike A.
 
 ### 7.4 Spike B — Nested Blockquote-Inside-List at Minimum Viable Scope
 
@@ -454,6 +500,8 @@ Immediately after Spike A.
 **Scope:** a two-item list where one item contains a single-line blockquote; a two-line blockquote that contains one bullet item.
 
 **Outcomes:** same shape as Spike A.
+
+**Verification harness:** add dedicated snippet fixtures under `tests/fixtures/architecture_spikes/nested_blocks/` and include them in the same spike pytest parametrization. These snippets are part of the no-regression gate after Spike B.
 
 ### 7.5 Slice 2 — Remaining Low-Risk Fixtures
 
@@ -473,7 +521,37 @@ Nested blockquotes (full fixture); Ordered and unordered lists (full fixture); a
 
 ### 7.8 Slice 5 — Documentation Aggregates
 
-The three `Markdown Documentation - X` fixtures. Pull every feature together at scale. Run last because they reveal interactions, not capabilities.
+The `Markdown Documentation - X` fixtures. Pull every feature together at scale. Run last because they reveal interactions, not capabilities.
+
+### 7.8a Fixture-to-Slice Inventory
+
+Every `Markdown.mdtest` fixture has an explicit route:
+
+| Fixture | Slice / gate | Why here |
+|---|---|---|
+| Amps and angle encoding | Slice 1 | First full pipeline proof; includes entity encoding plus minimal inline/reference links. |
+| Tidyness | Slice 2 | Low-risk output blank-line normalization. |
+| Horizontal rules | Slice 2 | Low-risk block pass after headers are in place. |
+| Code Blocks | Slice 2 | Low-risk indented-code block pass. |
+| Code Spans | Slice 2 | Low-risk span feature; uses same-run non-greedy delimiter matching. |
+| Backslash escapes | Slice 2 | Low-risk span escape table. |
+| Auto links | Slice 2 | URL autolinks only for mdtest; email randomized parity remains documented divergence. |
+| Tabs | Slice 2 | Detab is already required by Act I; fixture proves tab-sensitive interactions. |
+| Hard-wrapped paragraphs with list-like lines | Slice 3 | Depends on paragraph/list ambiguity after Spike A list-shape decisions. |
+| Links, inline style | Slice 3 | Expands the minimal Slice 1 anchor machinery. |
+| Links, reference style | Slice 3 | Expands Act I reference table and Act III lookup. |
+| Links, shortcut references | Slice 3 | Reference-link lookup edge form. |
+| Images | Slice 3 | Reuses link/reference machinery with image emission and alt/title escaping. |
+| Literal quotes in titles | Slice 3 | Link/image title escaping edge case. |
+| Strong and em together | Slice 3 | Uses B15 strong-then-emphasis mechanics. |
+| Inline HTML comments | Slice 3 | Smallest raw HTML block/comment boundary fixture. |
+| Inline HTML (Simple) | Slice 3 | Simple raw/inline HTML pass-through and paragraph interaction. |
+| Inline HTML (Advanced) | Slice 4 | Higher-risk nested/attributed raw HTML boundaries. |
+| Blockquotes with code blocks | Slice 3 | Medium-risk blockquote recursion plus code-block indent repair. |
+| Nested blockquotes | Slice 4 | High-risk nested block composition. |
+| Ordered and unordered lists | Slice 4 | Full tight/loose/nested/multi-paragraph list fixture after Spike A. |
+| Markdown Documentation - Basics | Slice 5 | Aggregate interaction fixture. |
+| Markdown Documentation - Syntax | Slice 5 | Largest aggregate interaction fixture. |
 
 ### 7.9 Per-Slice Discipline
 
@@ -487,12 +565,12 @@ Every slice ends with: target fixture(s) passing; all prior fixtures still passi
 
 Every slice and spike must clear all four:
 
-1. **Fixture pass** — `uv run pytest tests/test_mdtest.py -k "<name>"` passes.
-2. **Byte-identical to oracle** — output matches `perl ~/markdown/Markdown.pl < fixture.text` byte-for-byte. Any divergence is documented in `docs/markdown/divergences.md` *before* merge.
-3. **No regression** — all prior slices' fixtures still pass.
+1. **Fixture/snippet pass** — mdtest slices run `uv run pytest tests/test_mdtest.py -k "<name>"`; architecture spikes run the dedicated `tests/test_architecture_spikes.py` parametrization over snippet files.
+2. **Byte-identical to oracle** — output matches `perl ~/markdown/Markdown.pl < fixture.text` or the corresponding spike snippet byte-for-byte. Any divergence is documented in `docs/markdown/divergences.md` *before* merge.
+3. **No regression** — all prior slices' mdtest fixtures and all prior spike snippets still pass.
 4. **No oracle stub** — the SPL owns the work for that fixture. Bash-fallback-to-`Markdown.pl` is removed before Slice 1 cuts `0.1.0`.
 
-The strict-oracle audit (`scripts/markdown_pl_parity_audit.py`) is the canonical comparison tool. Slice merges are blocked on a clean audit for claimed fixtures.
+The strict-oracle audit (`scripts/markdown_pl_parity_audit.py`) is the canonical comparison tool for mdtest fixtures. Spike snippets use the same comparison principle through a dedicated pytest harness because they are custom scopes, not named mdtest fixtures.
 
 ### 8.2 Architecture Validation Gates
 
@@ -503,14 +581,15 @@ Conditions under which we **halt and redesign:**
 | Spike A fails | Multi-pass dispatcher needs revision | Revisit Section 4's pass decomposition |
 | Spike B fails | Frame-sentinel composition needs revision | Revisit per-character stack partitioning |
 | Slice 1 assembled `shakedown.spl` exceeds ~600 lines | Act granularity wrong; duplication pressure showing | Revisit four-act split |
-| Dev-mode unpickle exceeds 100ms (B19) | Serialization choice needs revision | Investigate alternatives |
+| Cache spike fails | Current interpreter cannot safely reuse the proposed cache target | Use direct assemble-and-run dev mode until a new cache target is proven |
+| Dev-mode cache overhead exceeds 100ms (B19, if cache exists) | Serialization choice needs revision | Investigate alternatives or disable cache |
 | Aesthetic drift detected in review | Lexicon use degrading toward "big big cat" | Re-anchor on `docs/spl/literary-spec.md` and `src/literary.toml`; merge blocker |
 
 Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt-now-and-redesign is the right answer to architectural surprise.
 
 ### 8.3 Performance Verification
 
-- **B19 (new):** dev-mode unpickle + execute on representative `shakedown.spl` ≥ 2k lines. Threshold: ≤100ms wrapper overhead.
+- **B19 (new):** if the cache spike succeeds, measure dev-mode cache execution on representative `shakedown.spl` ≥ 2k lines. Threshold: ≤100ms wrapper/cache overhead beyond SPL execution.
 - **B14 re-measurement:** before `1.0.0`, re-measure cold release-mode runtime on the final `shakedown.spl` against representative fixtures. Compare to `docs/performance/budget.md`.
 - **Slice 5 budget check:** Documentation aggregates is the worst case; release-mode runtime there is the headline number for `1.0.0`.
 
