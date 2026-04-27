@@ -214,6 +214,79 @@ def test_representative_comparison_examples_parse_and_run() -> None:
     assert negative.stdout.strip() == "-4"
 
 
+def test_reflexive_pronouns_target_different_characters() -> None:
+    first_person = _run_spl(
+        _program(
+            "Romeo: You are as good as a cat.",
+            "Juliet: You are as good as a big cat.",
+            "Juliet: You are as good as myself.",
+            "Juliet: Open your heart!",
+        )
+    )
+    second_person = _run_spl(
+        _program(
+            "Romeo: You are as good as a cat.",
+            "Juliet: You are as good as a big cat.",
+            "Juliet: You are as good as yourself.",
+            "Juliet: Open your heart!",
+        )
+    )
+    archaic_second_person = _run_spl(
+        _program(
+            "Romeo: Thou art as good as a cat.",
+            "Juliet: Thou art as good as a big cat.",
+            "Juliet: Thou art as good as thyself.",
+            "Juliet: Open thy heart!",
+        )
+    )
+
+    assert first_person.returncode == 0, first_person.stderr
+    assert second_person.returncode == 0, second_person.stderr
+    assert archaic_second_person.returncode == 0, archaic_second_person.stderr
+    assert first_person.stdout.strip() == "1"
+    assert second_person.stdout.strip() == "2"
+    assert archaic_second_person.stdout.strip() == "2"
+
+
+def test_comparison_forms_are_operation_specific() -> None:
+    _assert_program_output(
+        _program(
+            "Juliet: You are as good as a big cat.",
+            "Juliet: Are you bigger than a cat?",
+            "Juliet: If so, Open your heart!",
+        ),
+        "2",
+    )
+    _assert_program_output(
+        _program(
+            "Juliet: You are as good as a cat.",
+            "Juliet: Are you smaller than a big cat?",
+            "Juliet: If so, Open your heart!",
+        ),
+        "1",
+    )
+    _assert_program_output(
+        _program(
+            "Juliet: You are as good as a big cat.",
+            "Juliet: Are you as good as a big cat?",
+            "Juliet: If so, Open your heart!",
+        ),
+        "2",
+    )
+
+    equality_used_for_greater_than = _run_spl(
+        _program(
+            "Juliet: You are as good as a big cat.",
+            "Juliet: Are you as good as a cat?",
+            "Juliet: If so, Open your heart!",
+        )
+    )
+    assert equality_used_for_greater_than.returncode == 0, (
+        equality_used_for_greater_than.stderr
+    )
+    assert equality_used_for_greater_than.stdout == ""
+
+
 def test_codegen_assignment_examples_match_documented_values() -> None:
     _assert_program_output(
         _program(
@@ -242,6 +315,30 @@ def test_codegen_assignment_examples_match_documented_values() -> None:
             "Juliet: Open your heart!",
         ),
         "0",
+    )
+
+
+def test_compound_dispatch_expressions_match_documented_values() -> None:
+    _assert_program_output(
+        _program(
+            "Juliet: You are as good as the sum of a big cat and a cat.",
+            "Juliet: Open your heart!",
+        ),
+        "3",
+    )
+    _assert_program_output(
+        _program(
+            "Juliet: You are as good as the sum of a big big cat and a cat.",
+            "Juliet: Open your heart!",
+        ),
+        "5",
+    )
+    _assert_program_output(
+        _program(
+            "Juliet: You are as good as the sum of a big big cat and a big big cat.",
+            "Juliet: Open your heart!",
+        ),
+        "8",
     )
 
 

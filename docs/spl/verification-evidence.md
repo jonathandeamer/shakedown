@@ -14,6 +14,7 @@ log behind the claims that were previously inferred or overstated.
 | Second-person pronouns require exactly one other on-stage character | inferred | `pronoun-stage-rules.spl` | Confirmed | Three on-stage characters raise `Ambiguous second-person pronoun` |
 | First-person pronouns work with only the speaker on stage | inferred | `pronoun-stage-rules.spl` | Confirmed | The one-character first-person check completed and reached the later failing scene |
 | "Two characters on stage" is not a universal stage-capacity rule | corrected assumption | grammar + `pronoun-stage-rules.spl` | Confirmed | Multi-character entrance is accepted; ambiguity comes from pronoun resolution, not a global cap |
+| Three-character scenes are legal when they avoid second-person dialogue | inferred | `three-character-safe-envelope.spl` | Confirmed | Three on-stage characters can run a first-person check, then exit back to two characters for normal dialogue |
 | Character values start at `0` and stacks start empty | inferred | runtime error state dumps | Confirmed | Error states consistently showed `0` and empty stacks for untouched characters |
 | Off-stage character values remain addressable | inferred | `value-semantics.spl` | Confirmed | Off-stage `Romeo` was read as `-1` |
 | `nothing` maps to `0` | inferred | `value-semantics.spl` | Confirmed | Printed `0` |
@@ -54,6 +55,15 @@ log behind the claims that were previously inferred or overstated.
   - valid one-character first-person question/goto succeeded
   - three-character second-person assignment failed with `Ambiguous second-person pronoun`
 - Disposition: confirmed and used to correct the over-broad "two characters on stage" wording
+
+### Three-character safe envelope
+
+- Program: `docs/spl/probes/three-character-safe-envelope.spl`
+- Command: `~/.local/bin/shakespeare run docs/spl/probes/three-character-safe-envelope.spl`
+- Observed result: `1`
+- Disposition: confirmed that 3+ character scenes are valid when they avoid second-person
+  dialogue and use only movement, first-person checks, or gotos before returning to a
+  two-character scene for normal listener-targeting operations
 
 ### Global boolean overwrite
 
