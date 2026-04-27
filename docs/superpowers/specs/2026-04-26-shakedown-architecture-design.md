@@ -456,11 +456,12 @@ SPL has a single global boolean: most-recent question result. Every scene that a
 
 1. `src/literary.toml` schema and initial Slice 1 entries, following `docs/spl/literary-spec.md`.
 2. Stable Utility families for 1, 0, −1, and small token codes selected from verified legal vocabulary.
-3. **Token-code allocation table** — explicit assignments (e.g., `PARA = 1`, `HEADER = 2`, `LIST_OPEN = 3`, …) committed before any SPL references them.
+3. **Token-code allocation table** — explicit assignments (e.g., `PARA = 1`, `HEADER = 2`, `LIST_OPEN = 3`, …) committed before any SPL references them. Each code must satisfy the literary-spec §10 #6 constraint: small positive integer expressible as a short SPL value expression with 2–4-word target / 6-word max atom cap, single-atom forms preferred when legal. If a mechanical requirement demands a code that violates the constraint, the conflict is resolved here per literary-spec §10 #6.
 4. **Cache feasibility spike** — prove a cache target or explicitly choose direct assemble-and-run dev mode for Slice 1.
 5. **Generated-artifact policy** — update `.gitignore`/git tracking so `shakedown.spl` is intentionally committed for release checks and `.cache/` is ignored.
 6. Wrapper skeleton (`scripts/shakedown_run.py`) and assembler (`scripts/assemble.py`) usable but empty of content.
 7. Codegen (`scripts/codegen_html.py`) with a unit test that verifies one byte literal round-trips.
+8. **Iconic-moment assignments** — scene-title iconic-moment map (≤12 entries, per literary-spec §7.2) and Recall echo iconic-moment map (4–8 entries, per literary-spec §7.5.1), respecting the ≤20 combined ceiling and the §7.5.1 single-surface rule (each Shakespeare phrase appears in exactly one iconic surface).
 
 ### 7.2 Slice 1 — Amps and Angle Encoding
 

@@ -750,14 +750,16 @@ Reasoning:
 The literary dimension comes from titles, descriptions, and Recall pools
 — naming doesn't need to carry the full load.
 
-**File naming.** The inherited scaffold splits source as
-`00-preamble.spl` / `10-phase1-read.spl` / `20-phase2-block.spl` /
-`30-phase3-inline.spl`. That's a phase-split scheme tied to one
-architecture choice. File-naming convention is **deferred to architecture
-spec finalisation**: if the file split is per-act, names take a literary
-tilt (`01-cauldron.spl`, `02-keeping.spl`, …); if it stays phase-split,
-mechanical names are appropriate. This spec records "file naming follows
-the file split decided by architecture spec" as an open hand-off.
+**File naming.** ✅ Resolved by the architecture spec
+(`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`
+§7.2). The chosen split is per-act with mechanical role suffix:
+`src/00-preamble.spl`, `src/10-act1-preprocess.spl`,
+`src/20-act2-block.spl`, `src/30-act3-span.spl`,
+`src/40-act4-emit.spl`. Mechanical-with-act-prefix was preferred over a
+fully-literary tilt (`01-cauldron.spl`, …) for the same reason scene
+names use the hybrid `@ROLE_MECHANICAL` format above: greppability
+survives refactors, while the literary tilt comes from titles,
+dramatis personae, and decorative surfaces inside each file.
 
 ### 7.7 Source layout: Folio-style speech blocks
 
@@ -940,17 +942,23 @@ implementation planning) that consume the policies in this spec. They are
 *not* gaps in this spec; they are downstream products that depend on
 upstream decisions still in progress.
 
-1. **Final Critical token list.** Architecture spec produces the
-   enumerated Critical values; literary review validates against §4 and
-   §8.2.
+1. **Final Critical token-code allocation table.** Architecture spec
+   produces the enumerated dispatch token codes (the
+   `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`
+   §7.1 #3 *Token-code allocation table*); literary review validates the
+   chosen integers against §4, §8.2, and the §10 #6 atom-cap constraint.
 2. **Final per-character Stable Utility surface table.** Once Critical
    values are pinned, the §4.4 sketch table becomes a concrete table in
    `src/literary.toml`, written before Slice 1 of implementation begins.
 3. **Iconic-moment scene assignments.** Map of symbolic scene name →
    iconic-moment phrase, ≤12 entries, written during implementation
    planning. (§7.2)
-4. **Source file-naming convention.** Decided when architecture spec
-   finalises the source file split. (§7.6)
+4. **Source file-naming convention.** ✅ Resolved by the architecture
+   spec at
+   `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`
+   §7.2: `src/00-preamble.spl`, `src/10-act1-preprocess.spl`,
+   `src/20-act2-block.spl`, `src/30-act3-span.spl`,
+   `src/40-act4-emit.spl`. (§7.6)
 5. **`src/literary.toml` schema.** Concrete TOML keys, types, and example
    entries. Deliverable of the implementation plan's pre-Slice-1 task
    list. Schema must accommodate: per-character Stable Utility cells
