@@ -11,16 +11,20 @@ Those numbers are useful only when the measured command and environment are clea
 
 ## Required Metadata
 
-Every timing claim should record:
+Every timing claim records this minimum core:
 
 - date;
-- git commit or `git status --short` state;
-- command;
+- command (exact);
 - input fixture or input size;
-- whether the run uses `./shakedown`, `./shakedown-dev`, `shakespeare run`, or the oracle;
-- `which shakespeare` output when SPL execution is involved;
-- `UV_CACHE_DIR` when `uv run` is involved;
 - run count and whether the reported value is first run, median, min, or max.
+
+Add the following only when they might have varied across the runs being
+compared:
+
+- git commit or `git status --short` state;
+- which shakedown variant (`./shakedown`, `./shakedown-dev`, `shakespeare run`, or oracle) — required if more than one is in scope;
+- `which shakespeare` output — required if interpreter version drift is plausible;
+- `UV_CACHE_DIR` — required if a run deviates from the pinned `/tmp/uv-cache` in Standard Commands.
 
 Do not compare timings that omit the command or measured target.
 
@@ -78,8 +82,8 @@ requirements:
 | Single large fixture | <= 30s | <= 120s | > 120s |
 | Full 23-fixture contract | <= 5m | <= 15m | > 15m |
 
-A red result does not automatically reject an architecture, but the design must explain how
-agents will debug failures without waiting on the red path for every edit.
+A red result does not automatically reject an architecture; it triggers a conversation about
+whether the cost is debuggable in the run-loop.
 
 ## Current Recorded Baselines
 
