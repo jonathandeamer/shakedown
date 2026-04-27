@@ -1,12 +1,12 @@
 # Shakedown Docs
 
-Starting point for new agents. These docs support architecture planning and implementation for a Shakespeare Programming Language port of `Markdown.pl` v1.0.1 against the 23 `Markdown.mdtest` fixtures.
+Starting point for new agents. These docs support implementation planning and execution for a Shakespeare Programming Language port of `Markdown.pl` v1.0.1 against the 23 `Markdown.mdtest` fixtures.
 
 The repo root `CLAUDE.md` covers working conventions, tooling, and commit policy. This README maps the docs themselves.
 
 ## Reading Order for a New Agent
 
-For an agent about to plan the Shakedown architecture, read the canonical docs in this order:
+For an agent about to plan Shakedown implementation work, read the canonical docs in this order:
 
 1. [`lineage.md`](lineage.md) — one-minute lineage and why this repo exists.
 2. [`markdown/target.md`](markdown/target.md) — the Markdown.pl surface Shakedown targets.
@@ -19,26 +19,27 @@ For an agent about to plan the Shakedown architecture, read the canonical docs i
 9. [`markdown/fixtures.md`](markdown/fixtures.md) — fixture matrix plus feature-risk outlook.
 10. [`spl/reference.md`](spl/reference.md) — the SPL language reference (verified).
 11. [`spl/verification-evidence.md`](spl/verification-evidence.md) — probe outputs behind the SPL reference.
-12. [`architecture/decision-rubric.md`](architecture/decision-rubric.md) — how to compare future architecture proposals.
-13. [`architecture/runtime-boundary.md`](architecture/runtime-boundary.md) — runtime boundary questions every architecture must answer.
-14. [`architecture/encoding-and-scope.md`](architecture/encoding-and-scope.md) — encoding, stdin/stdout, and target-scope assumptions.
-15. [`architecture/inherited-scaffold.md`](architecture/inherited-scaffold.md) — prototype scaffold already in the repo; surfaced so planning engages with it as a choice, not a default.
-16. [`performance/budget.md`](performance/budget.md) — benchmark protocol and planning thresholds.
-17. [`prior-attempt/architecture-lessons.md`](prior-attempt/architecture-lessons.md) — why the prior attempt stalled and which trade-offs surfaced.
-18. [`prior-attempt/feasibility-lessons.md`](prior-attempt/feasibility-lessons.md) — what the prior experiments showed and which claims transfer to this repo.
-19. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
+12. [`architecture/selected-architecture.md`](architecture/selected-architecture.md) — pointer to the adopted architecture spec.
+13. [`architecture/decision-rubric.md`](architecture/decision-rubric.md) — how the selected architecture was evaluated.
+14. [`architecture/runtime-boundary.md`](architecture/runtime-boundary.md) — runtime boundary inputs and cache caveats.
+15. [`architecture/encoding-and-scope.md`](architecture/encoding-and-scope.md) — encoding, stdin/stdout, and target-scope assumptions.
+16. [`architecture/inherited-scaffold.md`](architecture/inherited-scaffold.md) — prototype scaffold already in the repo; surfaced so planning engages with it as a choice, not a default.
+17. [`performance/budget.md`](performance/budget.md) — benchmark protocol and planning thresholds.
+18. [`prior-attempt/architecture-lessons.md`](prior-attempt/architecture-lessons.md) — why the prior attempt stalled and which trade-offs surfaced.
+19. [`prior-attempt/feasibility-lessons.md`](prior-attempt/feasibility-lessons.md) — what the prior experiments showed and which claims transfer to this repo.
+20. [`verification-plan.md`](verification-plan.md) — what is verified, what is retrospective, what is predicted, what is open.
 
-**Optional — read only if architecture planning considers generated SPL:**
+**SPL style and literary policy for implementation planning:**
 
-20. [`spl/style-lexicon.md`](spl/style-lexicon.md) — legal expressive vocabulary.
-21. [`spl/literary-spec.md`](spl/literary-spec.md) — canonical literary policy for character voice, per-act palettes, and future `src/literary.toml` surfaces.
-22. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
-23. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
+21. [`spl/style-lexicon.md`](spl/style-lexicon.md) — legal expressive vocabulary.
+22. [`spl/literary-spec.md`](spl/literary-spec.md) — canonical literary policy for character voice, per-act palettes, and future `src/literary.toml` surfaces.
+23. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
+24. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
 
 Optional historical/supporting context:
 
 - [`superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`](superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md) — latest pre-design synthesis. Useful context, not canonical truth.
-- [`superpowers/specs/`](superpowers/specs/) — proposed design/spec artifacts from earlier interactive planning. Historical context only unless a conclusion is restated in the canonical docs above.
+- [`superpowers/specs/`](superpowers/specs/) — proposed design/spec artifacts from earlier interactive planning. The selected architecture spec is the one active exception and is linked from `architecture/selected-architecture.md`; other specs are historical context unless restated in canonical docs.
 - [`superpowers/plans/`](superpowers/plans/) — implementation plans and process artifacts from prior sessions. Historical context only.
 
 ## Directory Map
@@ -48,7 +49,8 @@ Optional historical/supporting context:
 | `lineage.md` | Short lineage of the Shakedown / Snarkdown / Quackdown triad. |
 | `ralph-loop.md` | Huntley/Ralph loop methodology reference, with lineage lessons. |
 | `verification-plan.md` | Claim inventory by bucket (A–E). |
-| `architecture/` | Architecture planning inputs, rubrics, and runtime boundaries; no selected architecture. |
+| `architecture/` | Selected architecture pointer plus architecture inputs, rubrics, and runtime boundaries. |
+| `architecture/selected-architecture.md` | Canonical pointer to the adopted architecture spec. |
 | `architecture/decision-rubric.md` | Optimization target and scoring questions for future architecture proposals. |
 | `architecture/runtime-boundary.md` | Runtime boundary and wrapper/SPL ownership questions. |
 | `architecture/encoding-and-scope.md` | Encoding, stdin/stdout, and target-scope assumptions. |
@@ -77,7 +79,7 @@ Optional historical/supporting context:
 | `prior-attempt/feasibility-lessons.md` | Consolidated feasibility findings from round 1 and round 2. |
 | `prior-attempt/architecture-lessons.md` | Consolidated architecture memo and the A/B/C options. |
 | `archive/` | Historical artifacts preserved for context, not current guidance. |
-| `superpowers/specs/` | Historical proposed design/spec artifacts from earlier planning sessions; not canonical design truth. |
+| `superpowers/specs/` | Historical proposed design/spec artifacts from earlier planning sessions, except the selected architecture spec linked from `architecture/selected-architecture.md`. |
 | `superpowers/plans/` | Historical implementation-plan/process artifacts; not canonical design truth. |
 
 ## Canonical Flow of Truth
@@ -92,15 +94,15 @@ Optional historical/supporting context:
 - **Oracle transform order and strict fixture caveats:** `markdown/oracle-mechanics.md` and `markdown/oracle-fixture-audit.md`.
 - **High-risk Markdown mechanics:** `markdown/reference-mechanics.md`, `markdown/html-block-boundaries.md`, and `markdown/list-mechanics.md`.
 - **Fixture-level planning:** `markdown/fixtures.md`.
+- **Selected architecture:** `architecture/selected-architecture.md` points to the adopted architecture spec. It overrides architecture-input docs where the selected design has closed a choice.
 - **Architecture-input rubrics:** `architecture/decision-rubric.md`, `architecture/runtime-boundary.md`, `architecture/encoding-and-scope.md`, and `performance/budget.md`.
 - **Inherited prototype scaffold:** `architecture/inherited-scaffold.md` documents `./shakedown-dev`, `scripts/assemble.py`, `src/*.spl`, and generated `shakedown.spl`. These are prototype artifacts, not adopted architecture.
 - **What is proven vs retrospective vs open:** `verification-plan.md`.
-- **Historical process artifacts:** `docs/superpowers/` is supporting context only. It may contain proposals, plans, and notes that are useful background, but it is not the source of adopted architecture unless a claim is restated in the canonical docs above.
+- **Historical process artifacts:** `docs/superpowers/` is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
 
 ## What This Docs Set Does Not Do
 
-- It does not commit to a Shakedown architecture. Architecture planning is the next step after reading these docs.
-- It does not choose a runtime boundary, wrapper strategy, generated-SPL strategy, or fixture implementation order.
+- It does not include an implementation plan. That is the next step after the selected architecture.
 - It does not treat the prior attempt's feasibility verdicts as facts about this repository. They are retrospective evidence from a prior checkout; see `prior-attempt/feasibility-lessons.md` and `verification-plan.md` bucket C.
-- It does not treat `docs/superpowers/specs/` or `docs/superpowers/plans/` as adopted architecture. Those files are historical or proposed process artifacts unless their conclusions are restated in the canonical docs above.
-- It does not include a loop prompt. The replacement for the archived `docs/prompt-shakedown.md` will be written once architecture planning decides what a new agent should load.
+- It does not treat `docs/superpowers/plans/` as adopted architecture. It treats only the selected architecture spec linked from `architecture/selected-architecture.md` as adopted design.
+- It does not include a loop prompt. The replacement for the archived `docs/prompt-shakedown.md` will be written during implementation planning.

@@ -1,8 +1,8 @@
 # Inherited Scaffold
 
-This document describes the prototype scaffold already present in the repository when architecture planning begins. Its purpose is to surface the inherited state so planning engages with it as a surfaced choice, not as an invisible default.
+This document describes the prototype scaffold that was present in the repository before the selected architecture. Its purpose is to surface the inherited state so implementation planning engages with it as a deliberate input, not as an invisible default.
 
-**Important:** this is prototype shape, not adopted architecture. Architecture planning may keep, revise, or replace any element of the scaffold without constraint.
+**Important:** this is prototype shape, not adopted architecture. The selected architecture may keep, revise, or replace any element of the scaffold without constraint.
 
 ## The Scaffold
 
@@ -10,7 +10,7 @@ The prototype scaffold consists of:
 
 - **`./shakedown`** - the production entry-point. Currently a bash stub that delegates to `~/markdown/Markdown.pl` via `perl`. This is the oracle stub; all 23 mdtest fixtures pass because Markdown.pl is the oracle. This is deliberate: the stub keeps the contract green while the SPL implementation is built up.
 
-- **`./shakedown-dev`** - the prototype entry-point. A bash wrapper that runs `uv run python scripts/assemble.py` (to rebuild `shakedown.spl` from `src/*.spl`) then `uv run shakespeare run shakedown.spl`. Its own comment states "This is the shape the final ./shakedown will take." Treat that comment as aspirational, not decided: architecture planning may choose that shape, choose a different shape, or choose to assemble differently.
+- **`./shakedown-dev`** - the prototype entry-point. A bash wrapper that runs `uv run python scripts/assemble.py` (to rebuild `shakedown.spl` from `src/*.spl`) then `uv run shakespeare run shakedown.spl`. Its own comment states "This is the shape the final ./shakedown will take." Treat that comment as aspirational, not decided: follow the selected architecture rather than the prototype comment where they differ.
 
 - **`scripts/assemble.py`** - a Python script that concatenates `src/*.spl` into the single `shakedown.spl` file and resolves symbolic scene labels to act-local Roman numerals. SPL has no import mechanism, so assembly is one way to keep source readable while complying with the single-file constraint.
 
@@ -20,7 +20,7 @@ The prototype scaffold consists of:
   - `20-phase2-block.spl` - phase 2 (block) scenes
   - `30-phase3-inline.spl` - phase 3 (inline) scenes
 
-  The three-phase split (read / block / inline) is a design choice, not a verified requirement. Architecture planning may reorganize, flatten, or replace this split.
+  The three-phase split (read / block / inline) is a prototype design choice, not a verified requirement. Follow the selected architecture for the implementation source layout.
 
 - **`src/manifest.toml`** - the ordered fragment list consumed by `scripts/assemble.py`.
 
@@ -34,7 +34,7 @@ The prototype scaffold consists of:
 - Whether an AST cache exists between assembly and interpreter run.
 - Whether SPL execution happens every invocation or once per cached parse.
 
-These are architecture decisions. This document exists so planning does not inherit them tacitly.
+These were architecture decisions. This document exists so implementation planning does not inherit prototype details tacitly.
 
 ## Relationship to the Architecture Rubric
 

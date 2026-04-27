@@ -123,6 +123,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - `docs/spl/literary-spec.md` — canonical literary policy for character voice, act palettes, decorative surfaces, and future `src/literary.toml`
 - `docs/spl/codegen-style-guide.md` — implementation policy for recurring value phrases
 - `docs/spl/style-guide-validation.md` — validation status for the style lexicon and codegen guide
+- `docs/architecture/selected-architecture.md` — pointer to the adopted architecture spec
 - `docs/markdown/target.md` — Markdown.pl v1.0.1 target surface
 - `docs/markdown/divergences.md` — intentional divergences from the oracle
 - `docs/markdown/oracle-mechanics.md` — Markdown.pl transform order and parity-critical mechanics
@@ -149,7 +150,8 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - Use `docs/spl/verification-evidence.md` for the probe programs and observed outputs behind those claims.
 - Treat `docs/markdown/target.md` plus `~/markdown/Markdown.pl` as the oracle behaviour surface, with intentional exceptions only from `docs/markdown/divergences.md`.
 - Use `docs/markdown/reference-mechanics.md`, `docs/markdown/html-block-boundaries.md`, `docs/markdown/list-mechanics.md`, and `docs/markdown/fixtures.md` as canonical Markdown planning inputs.
-- Use `docs/architecture/decision-rubric.md`, `docs/architecture/runtime-boundary.md`, `docs/architecture/encoding-and-scope.md`, and `docs/performance/budget.md` as canonical architecture-input rubrics, not as a selected architecture.
+- Use `docs/architecture/selected-architecture.md` as the canonical pointer to the adopted architecture spec.
+- Use `docs/architecture/decision-rubric.md`, `docs/architecture/runtime-boundary.md`, `docs/architecture/encoding-and-scope.md`, and `docs/performance/budget.md` as architecture-input rubrics and supporting rationale.
 - Treat `docs/architecture/inherited-scaffold.md` as inherited prototype state, not as adopted architecture.
 - Use `docs/verification-plan.md` to distinguish what is verified in this repo from retrospective evidence, predictions, and still-open questions.
 - Treat `docs/spl/style-lexicon.md`, `docs/spl/literary-spec.md`, and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth. `docs/spl/literary-spec.md` is the canonical source for voice and palette policy; `docs/spl/style-guide-validation.md` records which representative claims are mechanically enforceable, which are demonstrable only, and which remain advisory policy.

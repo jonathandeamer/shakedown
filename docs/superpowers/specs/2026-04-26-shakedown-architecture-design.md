@@ -459,9 +459,11 @@ SPL has a single global boolean: most-recent question result. Every scene that a
 3. **Token-code allocation table** — explicit assignments (e.g., `PARA = 1`, `HEADER = 2`, `LIST_OPEN = 3`, …) committed before any SPL references them. Each code must satisfy the literary-spec §10 #6 constraint: small positive integer expressible as a short SPL value expression with 2–4-word target / 6-word max atom cap, single-atom forms preferred when legal. If a mechanical requirement demands a code that violates the constraint, the conflict is resolved here per literary-spec §10 #6.
 4. **Cache feasibility spike** — prove a cache target or explicitly choose direct assemble-and-run dev mode for Slice 1.
 5. **Generated-artifact policy** — update `.gitignore`/git tracking so `shakedown.spl` is intentionally committed for release checks and `.cache/` is ignored.
-6. Wrapper skeleton (`scripts/shakedown_run.py`) and assembler (`scripts/assemble.py`) usable but empty of content.
-7. Codegen (`scripts/codegen_html.py`) with a unit test that verifies one byte literal round-trips.
-8. **Iconic-moment assignments** — scene-title iconic-moment map (≤12 entries, per literary-spec §7.2) and Recall echo iconic-moment map (4–8 entries, per literary-spec §7.5.1), respecting the ≤20 combined ceiling and the §7.5.1 single-surface rule (each Shakespeare phrase appears in exactly one iconic surface).
+6. **Strict Shakedown-vs-Markdown.pl parity harness** — add a script/test path that runs `./shakedown` on claimed fixture inputs and compares byte-for-byte to fresh `perl ~/markdown/Markdown.pl` output. `scripts/markdown_pl_parity_audit.py` remains only the checked-in-expected-vs-oracle audit; it is not sufficient for implementation claims.
+7. Wrapper skeleton (`scripts/shakedown_run.py`) and assembler (`scripts/assemble.py`) usable but empty of content.
+8. Codegen (`scripts/codegen_html.py`) with a unit test that verifies one byte literal round-trips.
+9. **Run-loop prompt deliverable** — implementation planning writes `docs/prompt-shakedown.md`, confirms `run-loop`'s default path, and documents the prompt-derived completion marker (`docs/prompt-<name>.md` → `.agent/complete-<name>.md`).
+10. **Iconic-moment assignments** — scene-title iconic-moment map (≤12 entries, per literary-spec §7.2) and Recall echo iconic-moment map (4–8 entries, per literary-spec §7.5.1), respecting the ≤20 combined ceiling and the §7.5.1 single-surface rule (each Shakespeare phrase appears in exactly one iconic surface).
 
 ### 7.2 Slice 1 — Amps and Angle Encoding
 
@@ -561,7 +563,7 @@ Every `Markdown.mdtest` fixture has an explicit route:
 
 ### 7.9 Per-Slice Discipline
 
-Every slice ends with: target fixture(s) passing; all prior fixtures still passing; commit per slice (or sub-fixture) following conventional-commits; version bump per CLAUDE.md (first fixture → 0.1.0; coherent group → minor; bug fix → patch).
+Every slice ends with: target fixture(s) passing; all prior fixtures still passing; commit per slice (or sub-fixture) following conventional commits. Version bumps and tags follow CLAUDE.md's milestone policy, but autonomous run-loop agents must not run `cz bump`, create tags, or push release artifacts unless explicitly authorized by the human/operator.
 
 ---
 
@@ -576,7 +578,7 @@ Every slice and spike must clear all four:
 3. **No regression** — all prior slices' mdtest fixtures and all prior spike snippets still pass.
 4. **No oracle stub** — the SPL owns the work for that fixture. Bash-fallback-to-`Markdown.pl` is removed before Slice 1 cuts `0.1.0`.
 
-The strict-oracle audit (`scripts/markdown_pl_parity_audit.py`) is the canonical comparison tool for mdtest fixtures. Spike snippets use the same comparison principle through a dedicated pytest harness because they are custom scopes, not named mdtest fixtures.
+The strict Shakedown-vs-Markdown.pl harness from §7.1 is the canonical comparison tool for claimed implemented fixtures. `scripts/markdown_pl_parity_audit.py` remains useful for auditing checked-in mdtest expected files against the local oracle, but it does not run `./shakedown` and must not be cited as implementation parity evidence. Spike snippets use the same comparison principle through a dedicated pytest harness because they are custom scopes, not named mdtest fixtures.
 
 ### 8.2 Architecture Validation Gates
 
@@ -607,7 +609,7 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 | Stdin transport: temp file vs pipe | Slice 1 implementation step |
 | Token encoding details | Slice 1 implementation; Spike A may force revision |
 | Whether structural helper folds into another character | After Spike A — actual stack pressure known by then |
-| Run-loop prompt content | Output of writing-plans, not architecture |
+| Run-loop prompt content | Explicit deliverable of implementation planning before autonomous implementation begins |
 | Exact line-budgets per slice | Set during writing-plans |
 
 ### 8.5 Risks and Mitigations

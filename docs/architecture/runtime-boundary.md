@@ -1,7 +1,8 @@
 # Runtime Boundary
 
-This document defines the runtime questions every architecture must answer. It does
-not choose an architecture.
+This document defines the runtime questions the selected architecture and implementation
+plan must answer. It is architecture input; `docs/architecture/selected-architecture.md`
+points to the chosen design.
 
 ## Current External Contract
 
@@ -15,9 +16,9 @@ not choose an architecture.
 No command-line flags, input file paths, network access, or persistent service are part of
 the current target interface.
 
-## Boundary Shapes Still Open
+## Boundary Shapes Considered
 
-Architecture planning may consider several runtime shapes:
+The selected architecture may be compared against several runtime shapes:
 
 | Shape | Boundary to document |
 |---|---|
@@ -56,7 +57,7 @@ wrapper code, not inside the SPL play.
 
 The project's existing scripts and test harness use Python 3 via `uv` (see `pyproject.toml` and `./run-loop`). The prototype entry-point `./shakedown-dev` is a bash shim that delegates to `uv run python scripts/assemble.py` and `uv run shakespeare run shakedown.spl`. Any wrapper-assisted architecture shape should use Python via `uv` as the wrapper toolchain unless it has a concrete reason to choose otherwise.
 
-This is documentation of the toolchain already in use, not a new decision. Architecture planning may propose a different toolchain, but must justify the change given:
+This is documentation of the toolchain already in use, not a new decision. Future implementation plans may propose a different toolchain, but must justify the change given:
 
 - existing Python scripts in `scripts/` (assembly, audit, measurement)
 - existing pytest harness at `tests/test_pre_design_probes.py` and `tests/test_mdtest.py`
@@ -70,13 +71,13 @@ Prior-attempt round-2 experiment 6 (`docs/prior-attempt/feasibility-lessons.md`)
 What does transfer:
 
 - **The bottleneck the cache addressed.** B14 records cold `shakespeare run` cost at 1k and 4k lines in this repo. Compare B14's numbers to B1's 0.10s interpreter startup. The gap between startup and run cost is the parse-plus-execute window; caching can only shrink the parse portion.
-- **The mechanism.** `shakespeare --help` lists no parse-only subcommand (B7). Any cache therefore lives in a Python wrapper. The canonical technique is to import `shakespeare.parser`, parse the `.spl` once, `pickle.dump` the AST to a side file, and on subsequent runs `pickle.load` and feed the AST to the interpreter. This is a Python-wrapper responsibility, not an SPL-level feature.
-- **The decision shape.** Whether to build an AST cache depends on B14's cold-to-re-parse ratio. If cold runs are dominated by parse time (measurable by comparing `shakespeare run` cost to an AST-only parse timing), a cache likely helps. If they are dominated by execution time, a cache is wasted complexity.
+- **The mechanism is not settled.** `shakespeare --help` lists no parse-only subcommand (B7). Any cache therefore lives in a Python wrapper. Earlier notes described pickling the parsed AST as the obvious candidate, but the selected architecture records current evidence that this exact target is not yet viable: parsed AST pickles lose metadata needed by `Shakespeare(...)`, while preprocessed `Play` objects contain operation lambdas that do not pickle cleanly.
+- **The decision shape.** Whether to build any cache depends on a pre-Slice-1 feasibility spike. The spike must prove a cache target, byte-identical execution against direct `shakespeare run`, and a cache key containing SPL hash, Python version, `shakespearelang` version, and cache-shape version. If it fails, dev mode remains direct assemble-and-run.
 
-Architecture planning should either demonstrate the cache is worth the wrapper complexity (with a current-repo measurement, not the retrospective 1.09 -> 0.30 number) or explicitly defer the cache until a bottleneck forces it.
+The selected architecture treats cache acceleration as optional and evidence-gated, not as an assumed mechanism.
 
 ## Run-Loop Boundary
 
-The replacement run-loop prompt is intentionally missing until architecture planning decides
-what a new implementation agent should load. This document does not create that prompt and does
-not choose the files it should reference.
+The replacement run-loop prompt is intentionally missing until implementation planning writes
+the selected-architecture prompt. This document does not create that prompt; the implementation
+plan must define the prompt inputs and completion marker.

@@ -101,7 +101,7 @@ Each replay was run once as part of the docs restructure. Results below capture 
 
 - **Purpose:** sanity-check the round-2 Exp-6 "cached-AST" claim has a plausible CLI surface in this interpreter.
 - **Observed:** `shakespeare --help` lists only three commands: `console`, `debug`, `run`. There is no parse-only subcommand. `shakespeare run` accepts `--input-style` and `--output-style` but no separate parse step.
-- **Disposition:** Any AST-caching strategy would live in a Python wrapper, not the CLI. This is a useful input for architecture planning.
+- **Disposition:** Any AST-caching strategy would live in a Python wrapper, not the CLI. This remains useful input for the selected architecture's cache feasibility spike.
 
 ### B8 — Reference claim coverage sweep
 
@@ -221,7 +221,7 @@ Each replay was run once as part of the docs restructure. Results below capture 
   all: ['1.680', '1.674', '1.551', '1.559', '1.564']
   ```
 
-- **Disposition:** The probe runs below B14's 1k-line baseline (3.303s median), so architecture planning can lean on stack-backed linear reference lookup at fixture scale. Reconsider only if a production implementation grows materially beyond this table size or combines lookup with other expensive per-line work.
+- **Disposition:** The probe runs below B14's 1k-line baseline (3.303s median), so implementation planning can lean on stack-backed linear reference lookup at fixture scale. Reconsider only if a production implementation grows materially beyond this table size or combines lookup with other expensive per-line work.
 
 ### B18 — Scene-count-per-act baseline
 
@@ -255,18 +255,25 @@ These claims describe measurements and behaviours from artifacts that are not pr
 - The "~91–96% pass ceiling" estimate.
 - "Already implemented in Slice 1" claims for specific block-level fixtures.
 
-## Bucket D — Predictions (Open Items for Architecture Planning)
+## Bucket D — Predictions, Selected-Architecture Decisions, And Remaining Risks
 
-These are not facts to verify; they are open questions architecture planning must close. Source: `docs/markdown/fixtures.md` and the open-items section of `docs/prior-attempt/architecture-lessons.md`.
+These are not facts to verify. Some were open architecture questions when this document was
+written and have since been closed by the selected architecture; others remain implementation
+risks.
 
-- Build order across risky fixture groups, using `docs/markdown/fixtures.md` as the fixture-level and feature-risk input.
-- Integration boundary between block and inline phases.
-- Milestone sequence for chasing the `Markdown.mdtest` ceiling.
-- Decision among prior Options A / B / C (or a fourth shape) for dispatcher architecture.
-- Whether the AST-cache mechanism lives in the SPL file, a Python wrapper, or is not used at all.
+### Closed by selected architecture
+
+- Build order across risky fixture groups: closed by the fixture-to-slice inventory in `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`.
+- Integration boundary between block and inline phases: closed by the four-act Pre-process / Block / Span / Emit architecture.
+- Milestone sequence for chasing the `Markdown.mdtest` ceiling: closed by Slice 1 through Slice 5 and the architecture-validation spikes.
+- Decision among prior Options A / B / C: closed by the selected multi-pass token-stream dispatcher with frame-sentinel nesting.
+- Runtime boundary: closed as dev-time wrapper plus release-time bash entry, with cache optional and gated by a pre-Slice-1 spike.
+
+### Still implementation-risk
+
+- Whether a cache target is feasible in the installed `shakespearelang`; selected architecture requires a pre-Slice-1 cache spike and falls back to direct assemble-and-run if it fails.
 - Feature-level Markdown implementation for reference lookup (mechanics B10 + scale B17), setext line buffering (mechanics B10), list looseness/nesting (mechanics B10), emphasis (mechanics B15), and nested-block composition (mechanics B16). Mechanics are closed; feature-level coverage still belongs to implementation.
 - Production details for list exactness and nested block composition. These are implementation risks, not accepted divergence decisions under the Markdown.pl parity goal.
-- Runtime boundary decisions, evaluated against `docs/architecture/runtime-boundary.md` and `docs/architecture/decision-rubric.md`.
 - Encoding and scope decisions beyond the current ASCII-compatible fixture corpus, evaluated against `docs/architecture/encoding-and-scope.md`.
 
 ## Bucket E — New Claims Introduced During This Restructure

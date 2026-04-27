@@ -1,7 +1,7 @@
 # Encoding and Scope
 
-This document fixes the input/output scope that architecture planning should assume.
-It does not decide implementation structure.
+This document fixes the input/output scope that the selected architecture and implementation
+planning should assume. It does not decide implementation structure.
 
 ## Encoding Facts
 
@@ -22,8 +22,7 @@ Shakedown targets John Gruber's `Markdown.pl` v1.0.1 behaviour for the 23
 In scope:
 
 - Markdown.pl block and span behaviour needed by the fixture corpus.
-- Strict local-oracle parity for deterministic behaviour when architecture planning adopts
-  that verification level.
+- Strict local-oracle parity for deterministic behaviour claimed by the selected architecture.
 - Entity-normalized email auto-link equivalence under an SPL-pure target.
 
 Out of scope unless a future architecture explicitly expands it:

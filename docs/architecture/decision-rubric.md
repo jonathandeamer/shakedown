@@ -1,7 +1,7 @@
 # Architecture Decision Rubric
 
-This rubric defines how to compare future Shakedown architecture proposals. It is an
-input to architecture planning, not an architecture choice.
+This rubric defines how Shakedown architecture proposals were compared. It is architecture
+input and supporting rationale, not the selected architecture itself.
 
 ## Non-Negotiable Gates
 
@@ -57,4 +57,5 @@ For each candidate architecture, answer these questions explicitly:
 - Fixture implementation order.
 - Whether any future non-SPL helper is acceptable for a specific purpose.
 
-Those remain architecture decisions.
+Those are resolved by the selected architecture unless explicitly reopened by a later accepted
+design or implementation plan.
