@@ -120,6 +120,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - `docs/spl/reference.md` — SPL language reference (verified)
 - `docs/spl/verification-evidence.md` — probe programs and observed interpreter behaviour
 - `docs/spl/style-lexicon.md` — legal expressive vocabulary
+- `docs/spl/literary-spec.md` — canonical literary policy for character voice, act palettes, decorative surfaces, and future `src/literary.toml`
 - `docs/spl/codegen-style-guide.md` — implementation policy for recurring value phrases
 - `docs/spl/style-guide-validation.md` — validation status for the style lexicon and codegen guide
 - `docs/markdown/target.md` — Markdown.pl v1.0.1 target surface
@@ -151,7 +152,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - Use `docs/architecture/decision-rubric.md`, `docs/architecture/runtime-boundary.md`, `docs/architecture/encoding-and-scope.md`, and `docs/performance/budget.md` as canonical architecture-input rubrics, not as a selected architecture.
 - Treat `docs/architecture/inherited-scaffold.md` as inherited prototype state, not as adopted architecture.
 - Use `docs/verification-plan.md` to distinguish what is verified in this repo from retrospective evidence, predictions, and still-open questions.
-- Treat `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth. `docs/spl/style-guide-validation.md` records which representative claims are mechanically enforceable, which are demonstrable only, and which remain advisory policy.
+- Treat `docs/spl/style-lexicon.md`, `docs/spl/literary-spec.md`, and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth. `docs/spl/literary-spec.md` is the canonical source for voice and palette policy; `docs/spl/style-guide-validation.md` records which representative claims are mechanically enforceable, which are demonstrable only, and which remain advisory policy.
 
 ## Git
 

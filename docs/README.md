@@ -31,8 +31,9 @@ For an agent about to plan the Shakedown architecture, read the canonical docs i
 **Optional — read only if architecture planning considers generated SPL:**
 
 20. [`spl/style-lexicon.md`](spl/style-lexicon.md) — legal expressive vocabulary.
-21. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
-22. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
+21. [`spl/literary-spec.md`](spl/literary-spec.md) — canonical literary policy for character voice, per-act palettes, and future `src/literary.toml` surfaces.
+22. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
+23. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
 
 Optional historical/supporting context:
 
@@ -57,6 +58,7 @@ Optional historical/supporting context:
 | `spl/` | SPL language reference, style, codegen policy, and verification evidence. |
 | `spl/reference.md` | Verified SPL semantics. |
 | `spl/style-lexicon.md` | Legal expressive vocabulary and phrase patterns. |
+| `spl/literary-spec.md` | Canonical literary policy for cast voice, per-act palettes, decorative surfaces, and future `src/literary.toml` authoring. |
 | `spl/codegen-style-guide.md` | Implementation policy for recurring value phrases. |
 | `spl/style-guide-validation.md` | Completed validation status for representative style-guide claims. |
 | `spl/verification-evidence.md` | Probe programs and observed interpreter behaviour. |
@@ -82,6 +84,8 @@ Optional historical/supporting context:
 
 - **Legality and verified semantics:** `spl/reference.md` (evidence: `spl/verification-evidence.md`).
 - **Expressive vocabulary:** `spl/style-lexicon.md` (sources: `spl/lexicon-sources.md`).
+- **Literary policy:** `spl/literary-spec.md` governs character voice, act palettes, decorative
+  surfaces, and the future `src/literary.toml` data file.
 - **Implementation policy for constants:** `spl/codegen-style-guide.md`.
 - **Style-guide validation status:** `spl/style-guide-validation.md`.
 - **Oracle behaviour:** `markdown/target.md` + `Markdown.pl` itself.

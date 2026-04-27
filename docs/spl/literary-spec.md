@@ -837,58 +837,22 @@ upstream decisions still in progress.
 
 ## 11. Doc-update Follow-ups
 
-Adopting this spec implies edits to other docs. These are deliverables
-of a single follow-up PR after this spec lands; not prerequisites.
+Adopting this spec implied integration edits to the rest of the docs set.
+Those edits landed on 2026-04-27:
 
-> **Known divergence — literary spec is canonical for the palette map.**
-> The currently-checked-in architecture spec
-> (`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`
-> §3.3) uses non-lexicon palette labels and assigns *different* palettes
-> to Acts II and IV than this document:
->
-> | Act | Architecture spec (stale) | Literary spec (canonical) |
-> |---|---|---|
-> | I | Grotesque / catastrophic | Grotesque/Abusive |
-> | II | Noble / martial | Martial/Catastrophic |
-> | III | Pastoral / celestial | Pastoral/Natural |
-> | IV | Formal / declarative | Noble/Radiant |
->
-> This is *not* a naming difference — Acts II and IV genuinely shift palette
-> under this spec (e.g., Noble moves from Act II to Act IV, matching the
-> emit-as-benediction framing). The literary-spec mapping is the authoritative
-> one going forward; the architecture-spec table is stale and is rewritten by
-> follow-up #7 below. Implementers reading both docs before that follow-up
-> lands should treat this spec's table (§3) as canonical.
-
-1. **`codegen-style-guide.md` — "Palette By Purpose" section.** Currently
-   advises noble/domestic/pastoral for stable state, grotesque/catastrophic
-   for error/poison-adjacent (a value-purpose-driven rule from before
-   architecture was chosen). Update to: act palette inflects ambient
-   texture; Critical override at value level; palette-by-purpose advisory
-   now lives at the *value* level via the per-character Stable Utility
-   surfaces, not at the *line* level.
-2. **`codegen-style-guide.md` — "Deferred Guidance" section.** Currently
-   defers character/role/voice until architecture chosen. Architecture is
-   chosen and this spec resolves the deferral. Replace with forward
-   pointer to this document.
-3. **`codegen-style-guide.md` — Precedence stub.** Add a short section
-   pointing to §6 of this spec for the full precedence cascade.
-4. **`style-lexicon.md`** — Top-of-file pointer: "For per-character voice
-   and per-act palette assignment, see `literary-spec.md`." The lexicon
-   itself stays as-is (it remains the inventory).
-5. **`style-guide-validation.md`** — Add a row noting literary-spec
-   policies are advisory authoring policy enforced by review checklist
-   (this doc §9), not mechanically by parser.
-6. **`CLAUDE.md`**:
-    - Reference materials list: add `docs/spl/literary-spec.md`.
-    - Docs Truth Hierarchy section: literary spec joins
-      codegen-style-guide as a generation/policy doc.
-7. **Architecture spec
-   (`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`)** —
-   Replace pre-lexicon palette names ("celestial", "formal/declarative")
-   with lexicon-canonical names (Grotesque/Abusive, Martial/Catastrophic,
-   Pastoral/Natural, Noble/Radiant, Domestic/Familial). Reference this
-   spec by path where the architecture spec mentions `docs/literary/`.
+1. `docs/spl/codegen-style-guide.md` points here for character voice,
+   per-act palettes, literary precedence, and future `src/literary.toml`
+   data.
+2. `docs/spl/style-lexicon.md` identifies itself as legal vocabulary
+   inventory, not the source of per-character voice assignment.
+3. `docs/spl/style-guide-validation.md` records literary-spec policies as
+   review-enforced authoring policy, with phrase legality still backed by
+   reference/lexicon validation.
+4. `CLAUDE.md` and `docs/README.md` include this document in the reference
+   materials and truth hierarchy.
+5. `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`
+   now uses the lexicon-canonical palette map from this spec and points to
+   `src/literary.toml` as the future operational surface table.
 
 ## 12. References
 

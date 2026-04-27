@@ -20,7 +20,7 @@ The architecture is the consolidated output of a brainstorming dialogue that ran
 
 ## Non-goals
 
-- This spec does not pre-decide character names. Specific Shakespeare-character picks per role happen in the cast bible (a pre-implementation deliverable, written before Slice 1 begins).
+- This spec does not require a separate cast-bible document. Specific Shakespeare-character picks and voice policy are now captured in `docs/spl/literary-spec.md`; concrete surface tables belong in the future `src/literary.toml`, written before Slice 1 begins.
 - This spec does not produce the implementation plan. That is the next skill's output (`superpowers:writing-plans`).
 - This spec does not produce the run-loop prompt. That is an output of the writing-plans phase, not architecture.
 - This spec does not modify `shakedown.spl`, `src/*.spl`, or any production code path. Those are implementation work.
@@ -36,7 +36,7 @@ The architecture is the consolidated output of a brainstorming dialogue that ran
 | D4 | Dispatcher shape: multi-pass token-stream | yes |
 | D5 | AST cache: dev-mode only, removed at release | yes |
 | D6 | Cast: ~9 themed Shakespeare characters across the canon, single-responsibility per character | yes |
-| D7 | Per-act aesthetic palette + cast bible written before Slice 1 | yes |
+| D7 | Per-act aesthetic palette + literary surface tables written before Slice 1 | yes |
 | D8 | Implementation order: Slice 1 (Amps) → Spike A (lists) → Spike B (nested blockquote-in-list) → Slices 2-5 risk-ascending | yes |
 
 Each decision is detailed in its own section below, with reasoning preserved.
@@ -108,9 +108,9 @@ scripts/
 
 This section codifies how we make `shakedown.spl` read as a coherent work of literature, not as code that happens to compile under SPL. Without these commitments, the literary quality won't happen by accident.
 
-### 3.1 Cast Bible (committed doc, written before any production SPL)
+### 3.1 Literary Spec And Surfaces (committed policy, data written before production SPL)
 
-`docs/literary/cast.md` specifies for each named character:
+`docs/spl/literary-spec.md` specifies for each named character:
 
 - The Shakespeare play they are drawn from.
 - Their canonical dramatic register (e.g. courtly, grotesque, pastoral, mercantile).
@@ -118,7 +118,11 @@ This section codifies how we make `shakedown.spl` read as a coherent work of lit
 - Why that play-character pairing makes sense for that responsibility.
 - The lexicon palette they typically draw from.
 
-**Reasoning:** A character's voice has to be predictable for the work to feel coherent. Without a fixed reference, by the time we're writing Act III we will have forgotten the register we used for the same character in Act II, and lines will drift toward generic-Shakespearean-sounding-text. The cast bible is the artifact that makes character voice legible across thousands of lines. It is the reviewable handle for literary quality: if a generated speech feels off, the question is "does this match the bible's voice for this character," not "does this sound vaguely Shakespearean."
+The future `src/literary.toml` file supplies the hand-authored surfaces that codegen may select:
+per-character Stable Utility phrases, soft-variation pools, Recall pools, scene titles, iconic
+moments, and short character blurbs.
+
+**Reasoning:** A character's voice has to be predictable for the work to feel coherent. Without a fixed reference, by the time we're writing Act III we will have forgotten the register we used for the same character in Act II, and lines will drift toward generic-Shakespearean-sounding-text. The literary spec is the reviewable policy; `src/literary.toml` is the operational handle. If a generated speech feels off, the question is "does this match the spec and the curated surface table for this character," not "does this sound vaguely Shakespearean."
 
 ### 3.2 Cross-Canon, Not Single-Play
 
@@ -131,28 +135,29 @@ Characters are drawn from across the Shakespeare canon, not from a single play.
 - **Beatrice and Benedick from *Much Ado About Nothing*** for span substitution — wit and wordplay are their canonical mode.
 - **A herald or messenger figure** for dispatch — announce-and-route.
 
-These are illustrative; specific final picks happen in the cast bible. The architectural commitment is the principle: voice fit > play-of-origin tidiness.
+These are illustrative; specific final picks are governed by `docs/spl/literary-spec.md`. The architectural commitment is the principle: voice fit > play-of-origin tidiness.
 
 **Trade-off accepted:** the work won't read as a coherent retelling of any one play. It reads as a Shakespeare-canon ensemble cast, not as one play.
 
 ### 3.3 Per-Act Aesthetic Palette
 
-Each of the four acts has a designated lexicon palette from `docs/spl/style-lexicon.md`.
+Each of the four acts has a designated literary palette governed by `docs/spl/literary-spec.md`
+and selected from the legal vocabulary inventory in `docs/spl/style-lexicon.md`.
 
 | Act | Purpose | Palette | Register |
 |---|---|---|---|
-| I — Pre-process | Normalize, detab, hash HTML blocks, strip link defs (Markdown.pl setup order — see §4.1) | Grotesque / catastrophic | Grimy mechanical work; the underworld of the pipeline |
-| II — Block | Block parse → token stream | Noble / martial | Structural recognition; decisive cuts |
-| III — Span | Span substitution over tokens | Pastoral / celestial | Fine ornament; delicate substitution |
-| IV — Emit | Emit HTML | Formal / declarative | Ceremonial completion; pronouncements |
+| I — Pre-process | Normalize, detab, hash HTML blocks, strip link defs (Markdown.pl setup order — see §4.1) | Grotesque/Abusive | Grimy mechanical work; the underworld of the pipeline |
+| II — Block | Block parse → token stream | Martial/Catastrophic | Structural recognition; decisive cuts |
+| III — Span | Span substitution over tokens | Pastoral/Natural | Fine ornament; delicate substitution |
+| IV — Emit | Emit HTML | Noble/Radiant | Ceremonial completion; pronouncements |
 
-**Reasoning:** Without per-act palettes, lexicon choice becomes decorative — applied unevenly, with no logic the reader can follow. Per-act palettes let the reader (and any future contributor) predict the register of any new line: *"this is Act II, so this should sound noble/martial; if it sounds pastoral, something's off."* This pairs naturally with the cast bible.
+**Reasoning:** Without per-act palettes, lexicon choice becomes decorative — applied unevenly, with no logic the reader can follow. Per-act palettes let the reader (and any future contributor) predict the register of any new line: *"this is Act II, so this should sound noble/martial; if it sounds pastoral, something's off."* This pairs naturally with the literary spec and the curated `src/literary.toml` tables.
 
 **Trade-off accepted:** characters whose canonical register doesn't match their act's palette can't appear in that act.
 
 ### 3.4 What Still Waits for Implementation
 
-- Specific name picks per role (the cast bible is *written* before implementation; the picks are its first task).
+- Concrete `src/literary.toml` surfaces for each implementation slice.
 - Scene-by-scene aesthetic choices (which adjectives, which similes).
 - Monologue-level language.
 - Cross-act thematic resonances or callbacks (if any).
@@ -165,9 +170,9 @@ Each of the four acts has a designated lexicon palette from `docs/spl/style-lexi
 
 ### 3.6 Where This Lives in the Repo
 
-- `docs/literary/cast.md` — cast bible (pre-Slice 1).
-- `docs/literary/palettes.md` — per-act palette definitions cross-referencing `docs/spl/style-lexicon.md`.
-- This spec records the commitments above.
+- `docs/spl/literary-spec.md` — adopted literary policy.
+- `src/literary.toml` — future hand-authored surface data, created before Slice 1.
+- This architecture spec records why those commitments are load-bearing.
 
 ### 3.7 How We Avoid Mechanical Monotony ("big big cat")
 
@@ -392,9 +397,9 @@ SPL has a single global boolean: most-recent question result. Every scene that a
 
 ### 6.6 What This Section Does *Not* Decide
 
-- Specific name assignments per role (cast bible).
+- Concrete `src/literary.toml` surface assignments for each role.
 - Exact encoding details for ref table, hash table, token stream stacks (implementation choices made when each act is written; the design commits to *which character holds the stack*, not exactly how triples are interleaved).
-- Whether the Wit Pair are gendered or named in any specific way (cast bible).
+- Whether the Lyrical Pair need additional implementation-time surface overrides beyond `docs/spl/literary-spec.md`.
 
 ---
 
@@ -402,8 +407,8 @@ SPL has a single global boolean: most-recent question result. Every scene that a
 
 ### 7.1 Pre-Implementation Deliverables (before Slice 1)
 
-1. `docs/literary/cast.md` — full cast bible.
-2. `docs/literary/palettes.md` — per-act palettes; Stable Utility families for 1, 0, −1, small token codes.
+1. `src/literary.toml` schema and initial Slice 1 entries, following `docs/spl/literary-spec.md`.
+2. Stable Utility families for 1, 0, −1, and small token codes selected from verified legal vocabulary.
 3. **Token-code allocation table** — explicit assignments (e.g., `PARA = 1`, `HEADER = 2`, `LIST_OPEN = 3`, …) committed before any SPL references them.
 4. Wrapper skeleton (`scripts/shakedown_run.py`) and assembler (`scripts/assemble.py`) usable but empty of content.
 5. Codegen (`scripts/codegen_html.py`) with a unit test that verifies one byte literal round-trips.
@@ -422,9 +427,9 @@ The first fixture. Narrow but walks all four acts.
 - `src/30-act3-span.spl` — `&` / `<` / `>` encoding only. *No code spans, no escapes, no anchors, no images, no autolinks, no italics/bold.*
 - `src/40-act4-emit.spl` — emit `<p>...</p>` with encoded text.
 
-**Why this fixture first:** lowest-risk fixture in the suite that still requires the full four-act pipeline. Establishes architecture, build flow, cast bible's first roles, and the dev wrapper, all on a fixture where Markdown.pl's behavior is straightforwardly machine-checkable.
+**Why this fixture first:** lowest-risk fixture in the suite that still requires the full four-act pipeline. Establishes architecture, build flow, the first `src/literary.toml` surfaces, and the dev wrapper, all on a fixture where Markdown.pl's behavior is straightforwardly machine-checkable.
 
-**Definition of done:** `uv run pytest tests/test_mdtest.py -k "Amps and angle"` passes; output byte-identical to Markdown.pl; first ~6 cast-bible characters have spoken lines and an established voice.
+**Definition of done:** `uv run pytest tests/test_mdtest.py -k "Amps and angle"` passes; output byte-identical to Markdown.pl; first ~6 characters have spoken lines that follow `docs/spl/literary-spec.md` and draw from checked-in `src/literary.toml` surfaces.
 
 ### 7.3 Spike A — Lists at Minimum Viable Scope
 
@@ -499,7 +504,7 @@ Conditions under which we **halt and redesign:**
 | Spike B fails | Frame-sentinel composition needs revision | Revisit per-character stack partitioning |
 | Slice 1 assembled `shakedown.spl` exceeds ~600 lines | Act granularity wrong; duplication pressure showing | Revisit four-act split |
 | Dev-mode unpickle exceeds 100ms (B19) | Serialization choice needs revision | Investigate alternatives |
-| Aesthetic drift detected in review | Lexicon use degrading toward "big big cat" | Re-anchor on cast bible / palette doc; merge blocker |
+| Aesthetic drift detected in review | Lexicon use degrading toward "big big cat" | Re-anchor on `docs/spl/literary-spec.md` and `src/literary.toml`; merge blocker |
 
 Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt-now-and-redesign is the right answer to architectural surprise.
 
@@ -513,7 +518,7 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 
 | Question | Where resolved |
 |---|---|
-| Specific Shakespeare-character name picks per role | Cast bible (pre-Slice 1) |
+| Concrete Slice 1 literary surfaces | `src/literary.toml` before Slice 1 |
 | Stdin transport: temp file vs pipe | Slice 1 implementation step |
 | Token encoding details | Slice 1 implementation; Spike A may force revision |
 | Whether structural helper folds into another character | After Spike A — actual stack pressure known by then |
@@ -523,7 +528,7 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 ### 8.5 Risks and Mitigations
 
 - **Markdown.pl divergences accumulate silently.** *Mitigation:* every byte-divergence documented in `divergences.md` before merge; audit is a merge gate.
-- **Aesthetic discipline drifts as implementation pressure mounts.** *Mitigation:* cast bible and palette doc are reference artifacts checked in code review; lexicon use is a review axis.
+- **Aesthetic discipline drifts as implementation pressure mounts.** *Mitigation:* `docs/spl/literary-spec.md` is the reference policy, `src/literary.toml` is checked-in authored data, and lexicon use is a review axis.
 - **A fixture requires Markdown.pl behavior we haven't seen.** *Mitigation:* `~/markdown/Markdown.pl` is ground truth; unexpected behavior is investigated against the binary, not against documentation.
 - **A spike succeeds at minimum scope but fails at full fixture scope in Slice 4.** *Mitigation:* spikes establish a floor, not a ceiling; Slice 4 has its own design step.
 
@@ -532,7 +537,7 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 - All 23 mdtest fixtures either pass or are documented divergences.
 - Strict-oracle audit clean for every claimed fixture.
 - Release-mode wrapper in place; dev wrapper moved to `scripts/dev/`.
-- Cast bible and palette doc match the shipped SPL.
+- `docs/spl/literary-spec.md` and `src/literary.toml` match the shipped SPL.
 - Performance budget met for representative fixtures.
 - `1.0.0` tag cut per CLAUDE.md's version policy.
 
@@ -547,6 +552,7 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 - `docs/spl/reference.md` — SPL language reference.
 - `docs/spl/codegen-style-guide.md` — Critical / Stable Utility / Incidental partition.
 - `docs/spl/style-lexicon.md` — palette source.
+- `docs/spl/literary-spec.md` — character voice, per-act palettes, decorative surfaces, and future `src/literary.toml` policy.
 - `docs/markdown/oracle-mechanics.md` — Markdown.pl pipeline order.
 - `docs/markdown/fixtures.md` — fixture risk matrix.
 - `docs/performance/budget.md` — benchmark protocol and thresholds.

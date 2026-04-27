@@ -7,13 +7,15 @@ Use the docs in this order:
 
 1. `docs/spl/reference.md` for legality and verified semantics
 2. `docs/spl/style-lexicon.md` for legal expressive vocabulary
-3. `docs/spl/codegen-style-guide.md` for implementation policy
+3. `docs/spl/literary-spec.md` for character voice, per-act palettes, and decorative surfaces
+4. `docs/spl/codegen-style-guide.md` for implementation policy on recurring value phrases
 
 ## Purpose And Scope
 
 This guide exists to keep generated SPL both colorful and operationally legible.
 It is concerned with how Shakedown should phrase values that recur in real code, not with
 describing the whole language and not with choosing a full dramatic voice for the final play.
+Full-program voice policy lives in `docs/spl/literary-spec.md`.
 
 In scope:
 
@@ -29,8 +31,8 @@ Out of scope:
 - architecture-specific naming of implementation roles
 - full-program dramatic voice
 
-Those remain architecture-dependent and should be documented later, once the SPL program shape
-is chosen.
+Those are governed by `docs/spl/literary-spec.md` and the future hand-authored
+`src/literary.toml` data file. This guide remains the lower-level numeric policy.
 
 ## Constant Strategy
 
@@ -159,7 +161,9 @@ Examples:
 ## Palette By Purpose
 
 Palette guidance is advisory. It should support readability and tone, not override constant
-discipline.
+discipline. For production Shakedown SPL, `docs/spl/literary-spec.md` supplies the act palette,
+character voice, and precedence cascade. This section remains lower-level fallback guidance for
+choosing safe value phrases inside that literary policy.
 
 ### Stable Or Benign State
 
@@ -211,6 +215,19 @@ Examples:
 - `nothing`
 
 In dense utility code, clarity outranks flourish.
+
+## Literary Precedence
+
+When this guide and the literary spec both apply, use the precedence cascade in
+`docs/spl/literary-spec.md`:
+
+- SPL grammar legality comes first.
+- Sign and magnitude preservation come next.
+- Critical canonical surfaces override decorative variety.
+- Per-act palette and per-character voice inflect only the surfaces that remain safe to vary.
+
+In practice, this means codegen may add variety only by selecting a pre-authored legal surface
+that preserves the intended value and matches the current character/use-site policy.
 
 ## Reuse And Consistency Rules
 
@@ -356,6 +373,6 @@ Why it is bad:
 
 ## Deferred Guidance
 
-Character naming, role assignment, and full dramatic voice are intentionally deferred until
-the SPL architecture is chosen. This guide should not be treated as approval to invent those
-policies early.
+The concrete `src/literary.toml` tables remain deferred until implementation planning, before
+Slice 1. They should be selected from verified legal vocabulary and should follow
+`docs/spl/literary-spec.md`; this guide should not be used to invent character voice policy.

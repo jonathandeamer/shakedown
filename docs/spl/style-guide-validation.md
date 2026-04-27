@@ -6,6 +6,7 @@ This note validates claims from:
 
 - `docs/spl/style-lexicon.md`
 - `docs/spl/codegen-style-guide.md`
+- `docs/spl/literary-spec.md`
 
 It separates three kinds of guidance:
 
@@ -17,6 +18,9 @@ It separates three kinds of guidance:
 
 `docs/spl/reference.md` remains the canonical source for verified SPL legality and runtime
 semantics.
+`docs/spl/literary-spec.md` is literary policy, not parser truth; its voice and palette
+constraints are review-enforced unless a specific phrase is separately covered by SPL legality
+probes.
 
 ## Claim Matrix
 
@@ -32,6 +36,7 @@ semantics.
 | Stack-adjacent examples | `codegen-style-guide.md` | `Remember nothing.` remains semantically coherent | mechanically enforceable | stack probe |
 | Sentinel consistency examples | `codegen-style-guide.md` | nearby repeated sentinel phrasing stays recognizable | demonstrable | evidence note example |
 | Palette-by-purpose guidance | `style-lexicon.md`, `codegen-style-guide.md` | noble, pastoral, grotesque, and plain palettes support the intended tone | demonstrable | representative examples in note |
+| Character voice and literary surfaces | `literary-spec.md` | per-character surfaces, soft-variation pools, Recall pools, scene titles, and `src/literary.toml` quarantine govern authored variety | advisory | review-enforced policy; individual phrases still rely on lexicon/reference legality |
 | Controlled variation when recognition does not matter | `codegen-style-guide.md` | distant one-off values may vary safely | advisory | documented as policy only |
 | `clarity outranks flourish` | `codegen-style-guide.md` | dense mechanics should use plainer wording | advisory | documented as policy only |
 | Local consistency over global ornament | `codegen-style-guide.md` | dense regions should keep repeated values uniform | advisory | documented as policy only |
@@ -68,6 +73,9 @@ semantics.
 - Palette-by-purpose guidance is demonstrable through representative valid phrases, but the choice
   of noble, domestic, grotesque, or plain wording remains a codegen preference rather than a
   parser invariant.
+- Literary-spec voice policy is review-enforced because "sounds like this character" is not a
+  parser property. The enforceable layer is that selected phrases remain legal SPL and preserve
+  sign, magnitude, and scene grammar.
 
 ## Observed Representative Outcomes
 
@@ -96,10 +104,13 @@ semantics.
 - broad ornament-versus-legibility preferences
 - local consistency versus global novelty tradeoffs
 - when variation is acceptable because recognition supposedly does not matter
+- per-character voice fit, motif selection, and decorative-surface quality from
+  `docs/spl/literary-spec.md`
 
 ## Scope Review
 
 - The first harness pass stays representative and intentionally bounded.
 - This note stays within lexicon legality, magnitude/sign preservation, comparisons, and codegen
   examples.
-- It does not attempt full architecture validation or dramatic-voice policy.
+- It records that dramatic-voice policy is review-enforced; it does not attempt to mechanically
+  validate literary quality.

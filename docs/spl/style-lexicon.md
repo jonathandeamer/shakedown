@@ -2,6 +2,8 @@
 
 This companion doc is for expressive generation, not parser truth and not codegen policy.
 For legality and hard grammar constraints, use `docs/spl/reference.md`.
+For character voice, per-act palettes, decorative surfaces, and the future `src/literary.toml`
+authoring policy, use `docs/spl/literary-spec.md`.
 For implementation policy on choosing and reusing value phrases, use
 `docs/spl/codegen-style-guide.md`.
 
@@ -15,8 +17,10 @@ Use the sections in this order:
 1. **Inventories**: find the complete set of legal comparatives, adjectives, and nouns.
 2. **Construction Rules**: verify which classes can be combined legally.
 3. **Phrasebook**: choose an attested phrase or a grammar-valid pattern.
-4. **Palettes**: pick a surface texture if you want a particular tone.
-5. **Agent Patterns**: vary expression while preserving sign and magnitude.
+4. **Palettes**: identify representative surface textures.
+5. **Literary Spec**: choose character-specific subsets and decorative surfaces from
+   `docs/spl/literary-spec.md` and, later, `src/literary.toml`.
+6. **Agent Patterns**: vary expression while preserving sign and magnitude.
 
 To keep this document closer to MECE:
 
@@ -116,7 +120,9 @@ These rules are the bridge between the exhaustive inventories and the expressive
 
 ## Semantic Palettes
 
-These palettes are representative subsets, not exhaustive lists.
+These palettes are representative subsets, not exhaustive lists. They are vocabulary inventory
+helpers; `docs/spl/literary-spec.md` is the source of truth for assigning palettes to acts,
+characters, and recurring literary surfaces.
 
 ### Noble / Radiant
 
