@@ -152,7 +152,12 @@ The three hybrid styles, per character:
 - **Rosalind (broadest range).** Noun usually home (Pastoral) with visited-act
   adjectives; full noun-borrow allowed for in-character moments where she
   steps fully into a Martial or Noble register. Range across registers IS
-  canonically Rosalind.
+  canonically Rosalind. **Implementation:** the full-noun-borrow case is
+  *author-tagged* in `src/literary.toml` — each Rosalind Stable Utility
+  entry or Recall pool entry that opts into full-noun-borrow carries an
+  explicit `register: full-borrow` (or equivalent) tag. Codegen never
+  decides on its own when Rosalind "feels in-character"; the tag is the
+  trigger. Default behaviour stays adjective-borrow only.
 
 These three rules compose with the per-act palette and per-character Stable
 Utility surfaces below — they aren't separate machinery, they're how cross-act
@@ -187,7 +192,19 @@ the palettes' actual word inventories. Some palettes lack one sign:
 | Martial/Catastrophic | `hero`, `kingdom` | many (`war`, `death`, `wolf`, `curse`, `famine`) |
 | Pastoral/Natural | many (`rose`, `flower`, `summer's day`, `morning`, `tree`, `wind`) | none — must borrow |
 | Noble/Radiant | many (`hero`, `Lord`, `King`, `angel`, `kingdom`, `Heaven`) | none — must borrow |
-| Domestic/Familial | none directly — kin nouns (`brother`, `mother`, `son`) classified neutral | none |
+| Domestic/Familial | none directly — kin nouns (`brother`, `mother`, `son`) are SPL `neutral_noun`s | none |
+
+**Note on "neutral" terminology.** SPL grammar (`shakespeare.ebnf`) classifies
+nouns into `positive_noun`, `neutral_noun`, and `negative_noun`. A
+`positive_noun_phrase` admits `positive_or_neutral_noun` heads (so
+`a cat`, `a tree`, `a brother` all parse as positive_noun_phrases) and
+contributes sign `+1` in arithmetic. A `negative_noun_phrase` admits only
+`negative_noun` heads and contributes sign `−1`. So "neutral" in this
+spec means *the noun is in the SPL `neutral_noun` category* — the noun
+parses inside positive noun phrases and contributes sign `+1`. It does
+**not** mean sign-zero. Domestic/Familial kin nouns (`brother`, `mother`,
+`son`) are in `neutral_noun`, so a phrase like `a happy brother` parses
+as a positive_noun_phrase and evaluates to `+2`.
 
 When an act needs a value of opposite-sign-from-its-palette, it borrows from a
 neighbouring palette. Concrete fallbacks:
@@ -222,15 +239,25 @@ This is the same rule that drives the §2.4 cross-act voice strategy.
 ## 4. Stable Utility — Per-Character Surfaces
 
 Stable Utility values are the recurring infrastructure constants that appear
-hundreds of times: small positive integers (`+1`, `+2`, `+3`), zero, small
-negatives (`-1`, `-2`), and small token codes used in dispatch. The
+hundreds of times in *arithmetic and state-update use-sites*: small positive
+integers (`+1`, `+2`, `+3`), small negatives (`-1`, `-2`), used as operands when
+incrementing counters, comparing magnitudes, or threading state. The
 codegen-style-guide (`docs/spl/codegen-style-guide.md`) classifies these as
 "Stable Utility" — distinguishable from Critical sentinels (which require one
 canonical phrase repo-wide) and Incidental values (free per-line).
 
+**Use-site, not value, decides classification.** The integer `1` is Stable
+Utility when used as an arithmetic operand (`state ← state + 1`), but Critical
+when used as a *dispatch code* (e.g., the block-token meaning "paragraph"). A
+character incrementing a counter says `the sum of state and a hero`
+(per-character surface for `+1`); the same character pushing the
+"paragraph" dispatch code uses the Critical canonical (per §8.2 recipe).
+Codegen knows which use-site is which.
+
 This spec adopts **per-character Stable Utility surfaces** (Option C in the
 brainstorm). Each of the nine characters has their own preferred surface phrase
-for each Stable Utility value they actively use.
+for each Stable Utility value they actively use *as an arithmetic operand*.
+Dispatch codes are governed by §8.2 (Critical), not by this section.
 
 ### 4.1 Why per-character
 
@@ -259,11 +286,22 @@ deliberately. Reasoning:
 
 ### 4.2 Mitigations for the three known costs
 
-**Many surfaces (9 × N values).** Bounded. N is small (~6–10 Stable Utility
-values total: `+1`, `+2`, `+3`, `-1`, `-2`, `0`, plus a handful of small
-counters). Each character actively uses only a 3–5 value subset. Total
-surface count: ~30–45 entries in `src/literary.toml`. Codegen handles the
-lookup; humans review the table once.
+**Many surfaces (9 × N values, plus per-act variation for cross-act
+characters).** Bounded but slightly larger than a single-act calculation
+suggests. N is small (~5–8 Stable Utility values per character: `+1`, `+2`,
+`+3`, `-1`, `-2`, plus a handful of small counters). Six act-bound
+characters × ~5 values = ~30 cells. Three cross-act characters need
+per-act surfaces because the Hybrid voice strategy (§2.4) varies adjective
+(Puck, Rosalind) or doesn't (Horatio) across visited acts. If denormalised
+fully — one phrase per `(character, value, act)` cell — Puck and Rosalind
+each contribute ~3 acts × ~5 values = ~15 cells, Horatio (who refuses to
+modulate) contributes one set of ~5. Total: ~30 + ~15 + ~15 + ~5 ≈ **65
+cells** in `src/literary.toml`. The literal-cell count can be reduced by
+decomposing the table along the (character → noun) and (act, magnitude →
+adjective) axes, but the choice of representation is a `literary.toml`
+schema decision deferred to implementation planning (§10 hand-off #5).
+Either way, the table is data the codegen tool reads; humans review it
+once.
 
 **Same value differs between speakers in the same scene.** Mitigated by
 documented legend in this spec (§4.4 sketch table), sign-path proximity
@@ -293,7 +331,7 @@ re-assembly. No SPL hand-editing.
 |---|---|---|---|---|
 | Hecate | `a cat` (neutral fallback) | `a big cat` | `a toad` | `nothing` (Critical) |
 | Lady Macbeth | `a hero` | `a noble hero` | `a wolf` | `nothing` |
-| Macbeth | `a kingdom` | `a foul kingdom` | `a curse` | `nothing` |
+| Macbeth | `a kingdom` | `a proud kingdom` | `a curse` | `nothing` |
 | Romeo | `a summer's day` | `a sunny summer's day` | `a wolf` (borrowed Martial) | `nothing` |
 | Juliet | `a rose` | `a sweet rose` | `a wolf` (borrowed Martial) | `nothing` |
 | Prospero | `an angel` | `a noble angel` | `a curse` (borrowed Martial) | `nothing` |
@@ -312,7 +350,16 @@ Notes on the sketch:
   are witch-familiars, so the neutral fallback reads natural in setting.
 - Lady M and Macbeth share Martial sign path but diverge: Lady M is the
   `hero` voice (clean martial); Macbeth is the `kingdom`/`curse` voice
-  (martial-with-dread). Both lawful in lexicon.
+  (martial-with-dread). For positive Stable Utility (`+1`, `+2`),
+  Macbeth's dread comes from noun choice (`kingdom` over `hero`) and from
+  positive-but-tragic adjective (`proud kingdom` — pride-before-the-fall)
+  rather than from a negative adjective. SPL grammar's
+  `positive_noun_phrase` (line 376 of `shakespeare.ebnf`) admits only
+  `positive_or_neutral_adjective`s, so a phrase like `a foul kingdom`
+  would be a parser-level rejection — the negative-tinted dread must
+  come from the negative-sign Stable Utility entries (`a curse` for
+  `-1`) and from soft-variation comparatives, not from sign-mixing
+  inside positive noun phrases.
 - Romeo and Juliet share Pastoral sign path but diverge along the
   sun/night axis: Romeo's `summer's day`, Juliet's `rose`.
 - Sign-path borrows are explicit annotations (`borrowed Martial`) so the
@@ -331,11 +378,17 @@ character-voice signal.
 
 | Variation point | Legal options | Effect |
 |---|---|---|
-| Positive comparatives | `better`, `bigger`, `fresher`, `friendlier`, `nicer`, `jollier`, `more <adj>` | Same boolean test; different speech |
-| Negative comparatives | `worse`, `smaller`, `punier`, `more <adj>` | Same test; different character voice |
-| Equality form | `as <any adjective> as` (full lexicon) | Massive expressive room |
+| Positive comparatives | `better`, `bigger`, `fresher`, `friendlier`, `nicer`, `jollier`, `more <positive_adjective>` | Same boolean test; different speech |
+| Negative comparatives | `worse`, `smaller`, `punier`, `more <negative_adjective>` | Same test; different character voice |
+| Equality form | `as <any adjective> as` (any positive, neutral, or negative adjective per `neutral_comparative`) | Massive expressive room |
 | Possessive / pronoun | `your`/`thy`, `you`/`thou`, `myself`/`thyself` | Period flavour dial |
-| Goto verb | `Let us proceed to` / `Let us return to` / `We shall proceed to` / `We must return to` | Free synonyms; can mark forward/back jumps |
+| Goto verb | `Let us proceed to` / `Let us return to` / `We shall proceed to` / `We shall return to` / `We must proceed to` / `We must return to` (six legal combos; spec uses four below) | Free synonyms; can mark forward/back jumps |
+
+Bare comparatives (`bolder than`, `sweeter than`, `gentler than`, `nobler than`)
+are NOT legal — `positive_comparative` is a fixed allowlist (the six bare forms
+above plus `more <adj>`). Use `more bold than`, `more sweet than`, etc., for any
+positive adjective not in the bare allowlist. Same allowlist semantics for
+negatives: `worse`, `smaller`, `punier`, plus `more <adj>` is the full rule.
 
 Conditional joiners (`If so` / `If not`) are already varied by branch
 polarity, so policy is moot.
@@ -348,11 +401,11 @@ to feel like that character; large enough to avoid mechanical repetition.
 | Character | Comparative pool (positive / negative) | Pronoun tilt | Goto verb tilt |
 |---|---|---|---|
 | Hecate | `as cursed as`, `as rotten as`, `as horrid as` / `worse than`, `more cursed than`, `more foul than` | `thy`/`thou` (most archaic) | `We must return to` |
-| Lady Macbeth | `bolder than`, `bigger than`, `as mighty as`, `as bold as` / `worse than`, `as villainous as` | `you`/`your` | `Let us proceed to` |
+| Lady Macbeth | `more bold than`, `bigger than`, `as mighty as`, `as bold as` / `worse than`, `as villainous as` | `you`/`your` | `Let us proceed to` |
 | Macbeth | same pool as Lady M, biased to negative variants (`worse than`, `more foul than`, `as villainous as`) | `you`/`your` | `Let us proceed to` |
-| Romeo | `sweeter than`, `as sunny as`, `as golden as`, `as fair as` | `you`/`your` (tilts `thy`/`thou` for love-spoken lines) | `Let us proceed to` |
-| Juliet | `gentler than`, `as fair as`, `as gentle as`, `as sweet as` | `thy`/`thou` (more period than Romeo) | `Let us proceed to` |
-| Prospero | `nobler than`, `more peaceful than`, `as honest as`, `as noble as` | `thy`/`thou` globally | `We shall proceed to` |
+| Romeo | `more sweet than`, `as sunny as`, `as golden as`, `as fair as` | `you`/`your` (tilts `thy`/`thou` for love-spoken lines) | `Let us proceed to` |
+| Juliet | `more gentle than`, `as fair as`, `as gentle as`, `as sweet as` | `thy`/`thou` (more period than Romeo) | `Let us proceed to` |
+| Prospero | `more noble than`, `more peaceful than`, `as honest as`, `as noble as` | `thy`/`thou` globally | `We shall proceed to` |
 | Rosalind | broadest range — `friendlier`, `jollier`, `nicer`, plus palette-borrowed variants when on tour | mixed; flexes per scene | `Let us proceed to` |
 | Horatio | `friendlier than`, `as warm as`, `as healthy as`, `as happy as` | `you`/`your` (plain-spoken) | `Let us proceed to` |
 | Puck | `jollier than`, `nicer than`, `friendlier than` at home; borrows visiting acts' pools when on tour | mixed; tilts archaic | `Let us proceed to` |
@@ -360,6 +413,14 @@ to feel like that character; large enough to avoid mechanical repetition.
 The pools are small. Variety within a single character's lines is achieved
 by the codegen tool rotating through the pool, not by hand-authored
 selection.
+
+**Rotation algorithm.** Cyclic by occurrence-order in source: the codegen
+tool maintains a per-`(character, variation-point)` cursor that advances by
+one each time that variation point is emitted for that character, modulo
+the pool size. This is fully deterministic, requires no RNG seed, and
+produces stable diffs — re-running codegen on unchanged source produces
+byte-identical output. The same rule applies to Recall pool selection
+(§7.5).
 
 ## 6. Precedence Rule
 
@@ -541,11 +602,12 @@ thing SPL has to in-line decorative text.
   high-drama moments where the narrative gloss earns its keep, but the
   default is atmospheric.
 - **Frequency / reuse:** per-character pool of 5–8 phrases in
-  `src/literary.toml`, codegen rotates cyclically (or random with fixed
-  seed for reproducibility). Avoids both per-Recall identical (dull) and
-  every-Recall unique (hundreds of authored lines for a possibly-large
-  pop count). Cross-act characters (Puck/Horatio/Rosalind) get one flat
-  pool each — their hybrid voice already handles act-by-act flex.
+  `src/literary.toml`, codegen rotates cyclically by occurrence-order
+  in source (same rule as §5.2). Avoids both per-Recall identical (dull)
+  and every-Recall unique (hundreds of authored lines for a
+  possibly-large pop count). Cross-act characters (Puck/Horatio/Rosalind)
+  get one flat pool each — their hybrid voice already handles
+  act-by-act flex.
 
 Per the data principle, pools are hand-authored data; codegen selects
 but never invents.
@@ -718,12 +780,39 @@ upstream decisions still in progress.
    finalises the source file split. (§7.6)
 5. **`src/literary.toml` schema.** Concrete TOML keys, types, and example
    entries. Deliverable of the implementation plan's pre-Slice-1 task
-   list.
+   list. Schema must accommodate: per-character Stable Utility cells
+   keyed by `(character, value)`; per-`(character, value, act)` overrides
+   for cross-act characters under the §2.4 Hybrid voice strategy;
+   per-character soft-variation pools (§5.2); per-character Recall pools
+   (§7.5); a `register: full-borrow` (or equivalent) opt-in tag for
+   Rosalind's full-noun-borrow case (§2.4); scene titles keyed by
+   symbolic scene name (§7.2); iconic-moment phrase assignments (§7.2);
+   dramatis personae blurbs (§7.3).
+6. **Architecture-spec inbound demand: dispatch token codes.** §8.1
+   asserts a *constraint* on the dispatch token codes that architecture
+   spec produces (small positive integers expressible in 2–4 word
+   Stable Utility noun phrases, range 1–~32). This is a hand-off in the
+   reverse direction — architecture spec must honour the constraint, or
+   negotiate a relaxation. If architecture spec has already pinned codes
+   that violate this constraint when this document is reviewed, the
+   conflict must be resolved at architecture-spec finalisation time
+   (literary spec yields if mechanical reasons demand it; otherwise
+   architecture spec adjusts).
 
 ## 11. Doc-update Follow-ups
 
 Adopting this spec implies edits to other docs. These are deliverables
 of a single follow-up PR after this spec lands; not prerequisites.
+
+> **Known temporary divergence.** Until the follow-up PR lands, the
+> architecture spec
+> (`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`)
+> uses pre-lexicon palette names (`celestial`, `formal/declarative`)
+> while this spec uses lexicon-canonical names (Grotesque/Abusive,
+> Martial/Catastrophic, Pastoral/Natural, Noble/Radiant,
+> Domestic/Familial). Item 7 below resolves the divergence; until then
+> both sets of names refer to the same five palettes from
+> `docs/spl/style-lexicon.md`.
 
 1. **`codegen-style-guide.md` — "Palette By Purpose" section.** Currently
    advises noble/domestic/pastoral for stable state, grotesque/catastrophic
