@@ -382,7 +382,7 @@ character-voice signal.
 | Negative comparatives | `worse`, `smaller`, `punier`, `more <negative_adjective>` | Same test; different character voice |
 | Equality form | `as <any adjective> as` (any positive, neutral, or negative adjective per `neutral_comparative`) | Massive expressive room |
 | Possessive / pronoun | `your`/`thy`, `you`/`thou`, `myself`/`thyself` | Period flavour dial |
-| Goto verb | `Let us proceed to` / `Let us return to` / `We shall proceed to` / `We shall return to` / `We must proceed to` / `We must return to` (six legal combos; spec uses four below) | Free synonyms; can mark forward/back jumps |
+| Goto verb | `Let us proceed to` / `Let us return to` / `We shall proceed to` / `We shall return to` / `We must proceed to` / `We must return to` (six legal combos; the §5.2 pools below assign three of them — `Let us proceed to`, `We shall proceed to` (Prospero), `We must return to` (Hecate); the other three remain available as soft-variation room for plan-time refinement) | Free synonyms; can mark forward/back jumps |
 
 Bare comparatives (`bolder than`, `sweeter than`, `gentler than`, `nobler than`)
 are NOT legal — `positive_comparative` is a fixed allowlist (the six bare forms
@@ -575,15 +575,17 @@ brackets. The literary choice is *which characters are on stage when, and
 how scene transitions look.*
 
 **Cast size per scene.** Default 2 (one speaker + one addressee — the SPL
-idiom, since assignment, question, push/pop, and I/O all require a
-second person on stage). Occasional 3+ for council/transition moments.
-Single-character scenes are *legal* (verified in
-`docs/spl/verification-evidence.md` — first-person question and goto
-succeed with only the speaker on stage), but their utility is narrow:
-no assignment, no I/O, no Remember/Recall — only first-person questions
-about the speaker's own value and conditional gotos. Use them sparingly,
-for pure-dispatch scenes that branch on internal state without touching
-the stage.
+idiom, since assignment, second-person question, push/pop, and I/O all
+require a second person on stage). Occasional 3+ for council/transition
+moments. Single-character scenes are *legal* (verified in
+`docs/spl/verification-evidence.md` — a one-character first-person
+question followed by a plain goto succeeds with only the speaker on
+stage), but their utility is narrow. What works: first-person questions
+about the speaker's own value (`Am I as good as ...?`), and gotos (plain
+or conditional). What does not: assignment, second-person questions,
+I/O, and Remember/Recall — all need a second person on stage. Use
+single-character scenes sparingly, for pure-dispatch scenes that branch
+on internal state without touching the stage.
 
 **Named pairings.** Some cast units enter together when both are needed:
 
@@ -821,14 +823,17 @@ upstream decisions still in progress.
    dramatis personae blurbs (§7.3).
 6. **Architecture-spec inbound demand: dispatch token codes.** §8.1
    asserts a *constraint* on the dispatch token codes that architecture
-   spec produces (small positive integers expressible in 2–4 word
-   Stable Utility noun phrases, range 1–~32). This is a hand-off in the
-   reverse direction — architecture spec must honour the constraint, or
-   negotiate a relaxation. If architecture spec has already pinned codes
-   that violate this constraint when this document is reviewed, the
-   conflict must be resolved at architecture-spec finalisation time
-   (literary spec yields if mechanical reasons demand it; otherwise
-   architecture spec adjusts).
+   spec produces: small positive integers in roughly the 1–32 range,
+   each expressible as a short SPL value expression whose component
+   noun phrases are 2–4 words target / 6 words max (the *atom* cap),
+   with compound expressions via `the sum of … and …` uncapped and
+   single-atom forms preferred when legal. This is a hand-off in the
+   reverse direction — architecture spec must honour the constraint,
+   or negotiate a relaxation. If architecture spec has already pinned
+   codes that violate this constraint when this document is reviewed,
+   the conflict must be resolved at architecture-spec finalisation
+   time (literary spec yields if mechanical reasons demand it;
+   otherwise architecture spec adjusts).
 
 ## 11. Doc-update Follow-ups
 
