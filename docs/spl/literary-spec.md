@@ -499,7 +499,17 @@ patterns can blend.
 6. **Locale-evocation** (short, atmospheric) — *"At the cauldron's edge."* /
    *"Within the keep, the kingdom is shaped."*
 
-**Length:** 6–12 words. Drop-first rule applies for iambic.
+**Length by pattern.** Different patterns have different natural lengths;
+one cap doesn't fit. Drop-first rule applies for iambic in all cases.
+
+| Pattern | Length |
+|---|---|
+| 1 — Wherein-clause | 6–12 words |
+| 2 — Bare poetic statement | 4–10 words (e.g., *"A horizontal rule is laid."* at 5 words) |
+| 3 — Scene-of-character | 5–10 words |
+| 4 — Iconic-moment echo | 3–8 words (these are quotes from Shakespeare; whatever Shakespeare wrote) |
+| 5 — Cross-character narration | 6–14 words |
+| 6 — Locale-evocation | 3–7 words (intentionally brief atmospheric — *"At the cauldron's edge."* at 4 words) |
 
 **Voice:** narrator's voice (the play's), inflected by the act's palette —
 not any single character's voice.
@@ -565,8 +575,15 @@ brackets. The literary choice is *which characters are on stage when, and
 how scene transitions look.*
 
 **Cast size per scene.** Default 2 (one speaker + one addressee — the SPL
-idiom, since Speak/Listen need an addressee). Occasional 3+ for
-council/transition moments. Single-character scenes are not viable.
+idiom, since assignment, question, push/pop, and I/O all require a
+second person on stage). Occasional 3+ for council/transition moments.
+Single-character scenes are *legal* (verified in
+`docs/spl/verification-evidence.md` — first-person question and goto
+succeed with only the speaker on stage), but their utility is narrow:
+no assignment, no I/O, no Remember/Recall — only first-person questions
+about the speaker's own value and conditional gotos. Use them sparingly,
+for pure-dispatch scenes that branch on internal state without touching
+the stage.
 
 **Named pairings.** Some cast units enter together when both are needed:
 
@@ -658,22 +675,35 @@ The architecture spec produces a list of dispatch token codes (block-token,
 inline-token, character-class). The literary spec asserts a constraint on
 what those codes shall be:
 
-**Dispatch token codes shall be small positive integers expressible in 2–4
-word Stable Utility noun phrases**, so dispatch lines read as character
-speech, not as machine codes.
+**Dispatch token codes shall be small positive integers expressible as
+short SPL value expressions built from Stable Utility noun phrases**, so
+dispatch lines read as character speech, not as machine codes.
 
 - No floats, no negatives (signed only when sign is meaningful), no large
   primes.
 - Range 1–~32 covers all plausible dispatch tables.
-- 2–4 words per phrase target; never exceed 6.
+- **Atom-phrase target: each component noun phrase 2–4 words; never
+  exceed 6** (so `a big big cat` at 4 words is fine; `a kingdom` at
+  2 words is fine). Compound expressions built from those atoms via
+  `the sum of ... and ...` are inherently longer (8+ words for two
+  atoms, 12+ for two 4-word atoms) — that compound length is not capped
+  here, only the atoms are. Atoms stay readable; compounds are
+  recognised as recipe expansions of small values.
+- **Direct-atom preferred when legal.** A bare positive_noun_phrase like
+  `a big big cat` (`+4`) is preferred over `the sum of a big cat and a
+  big cat` (also `+4`) when the value can be expressed as one atom.
+  Compounds appear only when the value can't be reached by adjective
+  doubling.
 
 Example mappings (illustrative — actual codes pinned by architecture
 spec):
 
 - `1` → `a cat`
-- `2` → `the sum of a cat and a cat`
-- `3` → `the sum of a big cat and a cat`
-- `8` → `the sum of a big big cat and a big big cat`
+- `2` → `a big cat` (atom; doubled adjective)
+- `3` → `the sum of a big cat and a cat` (no single-atom expression)
+- `4` → `a big big cat` (atom; double-doubled)
+- `8` → `a big big big cat` (atom) *or* `the sum of a big big cat and
+  a big big cat` (compound) — both legal; atom preferred
 
 Architecture spec picks the actual codes; the *constraint* lives here.
 
@@ -738,8 +768,9 @@ section above.
    goto verb stay within the character's pool. (§5)
 4. **Scene title coverage.** Every symbolic scene name has a title key in
    `literary.toml`. No missing keys, no orphan titles. (§7.2, §7.6)
-5. **Title rules.** Each scene title 6–12 words; legal punctuation only
-   (no mid-title `.` or `!`); voice inflected by act palette. (§7.2)
+5. **Title rules.** Each scene title within its pattern's length range
+   (§7.2 length-by-pattern table); legal punctuation only (no mid-title
+   `.` or `!`); voice inflected by act palette. (§7.2)
 6. **Iconic-moment alignment.** 4–12 iconic-moment echoes used; each
    lands on a scene whose mechanical work earns the echo. (§7.2)
 7. **Act titles.** Wherein-clause format; the four locked titles; palette
@@ -804,15 +835,25 @@ upstream decisions still in progress.
 Adopting this spec implies edits to other docs. These are deliverables
 of a single follow-up PR after this spec lands; not prerequisites.
 
-> **Known temporary divergence.** Until the follow-up PR lands, the
-> architecture spec
-> (`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`)
-> uses pre-lexicon palette names (`celestial`, `formal/declarative`)
-> while this spec uses lexicon-canonical names (Grotesque/Abusive,
-> Martial/Catastrophic, Pastoral/Natural, Noble/Radiant,
-> Domestic/Familial). Item 7 below resolves the divergence; until then
-> both sets of names refer to the same five palettes from
-> `docs/spl/style-lexicon.md`.
+> **Known divergence — literary spec is canonical for the palette map.**
+> The currently-checked-in architecture spec
+> (`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`
+> §3.3) uses non-lexicon palette labels and assigns *different* palettes
+> to Acts II and IV than this document:
+>
+> | Act | Architecture spec (stale) | Literary spec (canonical) |
+> |---|---|---|
+> | I | Grotesque / catastrophic | Grotesque/Abusive |
+> | II | Noble / martial | Martial/Catastrophic |
+> | III | Pastoral / celestial | Pastoral/Natural |
+> | IV | Formal / declarative | Noble/Radiant |
+>
+> This is *not* a naming difference — Acts II and IV genuinely shift palette
+> under this spec (e.g., Noble moves from Act II to Act IV, matching the
+> emit-as-benediction framing). The literary-spec mapping is the authoritative
+> one going forward; the architecture-spec table is stale and is rewritten by
+> follow-up #7 below. Implementers reading both docs before that follow-up
+> lands should treat this spec's table (§3) as canonical.
 
 1. **`codegen-style-guide.md` — "Palette By Purpose" section.** Currently
    advises noble/domestic/pastoral for stable state, grotesque/catastrophic
