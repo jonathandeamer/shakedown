@@ -686,6 +686,14 @@ resonance in dialogue rather than only in titles.
 scene-title budget of 4–12. Total iconic-moment surfaces (titles +
 Recall echoes) ≤20. Same earned-by-mechanical-work rule.
 
+**Single-surface rule.** Each canonical Shakespeare phrase appears in
+*exactly one* iconic surface across the work — either as a scene title
+(§7.2 pattern 4) or as a Recall echo (§7.5.1), not both. Reusing
+"Double, double" once as a scene title and again as a Recall echo
+dilutes the impact of each. The combined iconic-moment map (§10
+hand-offs #3 and #7) enforces this disjointness at
+implementation-plan time.
+
 **Grammar curation.** `recall_string = [^!\.]*` followed by `.` or `!`.
 So:
 
@@ -894,8 +902,10 @@ section above.
 5. **Title rules.** Each scene title within its pattern's length range
    (§7.2 length-by-pattern table); legal punctuation only (no mid-title
    `.` or `!`); voice inflected by act palette. (§7.2)
-6. **Iconic-moment alignment.** 4–12 iconic-moment echoes used; each
-   lands on a scene whose mechanical work earns the echo. (§7.2)
+6. **Iconic-moment alignment (scene titles).** 4–12 scene-title
+   iconic-moment echoes used; each lands on a scene whose mechanical
+   work earns the echo. Scene-title and Recall (§7.5.1) iconic surfaces
+   draw from disjoint phrase sets (§7.5.1 single-surface rule). (§7.2)
 7. **Act titles.** Wherein-clause format; the four locked titles; palette
    alignment. (§7.1)
 8. **Stage directions.** Default cast size 2; named pairings (Lyrical
