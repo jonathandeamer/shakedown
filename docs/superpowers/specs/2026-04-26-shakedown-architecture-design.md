@@ -130,10 +130,11 @@ Characters are drawn from across the Shakespeare canon, not from a single play.
 
 **Reasoning:** A single-play cast (e.g., everyone from *Hamlet*) would force assignments that violate canonical voice — *Hamlet* has no character whose canonical register is "delicate ornament," and forcing Polonius or Horatio into that role would defeat the purpose of using named Shakespeare characters at all. Cross-canon casting lets us select voices on register fit:
 
-- **Witches from *Macbeth*** for the grimy parsing/normalization work — incantatory, grotesque, mechanical.
+- **Hecate from *Macbeth*** for the grimy parsing/normalization work — incantatory, grotesque, mechanical, and grammar-legal where plural Witches are not.
+- **Lady Macbeth and Macbeth from *Macbeth*** for block shaping — martial, decisive, and naturally paired as Mason and Apprentice.
+- **Romeo and Juliet from *Romeo and Juliet*** for span substitution — lyrical ornament, light/night imagery, and paired line work.
 - **Prospero from *The Tempest*** for the emitter — formal, declarative, ceremonial.
-- **Beatrice and Benedick from *Much Ado About Nothing*** for span substitution — wit and wordplay are their canonical mode.
-- **A herald or messenger figure** for dispatch — announce-and-route.
+- **Puck from *A Midsummer Night's Dream*** for dispatch — messenger movement and palette-chameleonic transitions.
 
 These are illustrative; specific final picks are governed by `docs/spl/literary-spec.md`. The architectural commitment is the principle: voice fit > play-of-origin tidiness.
 
@@ -197,7 +198,7 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 ### 4.1 Act I — Pre-process
 
 **Input:** raw Markdown source.
-**Output:** normalized text on the Pre-processor's stack + reference-definition table on the Librarian's stack + raw HTML hash table on the Custodian's stack.
+**Output:** normalized text on the Sorter's stack + reference-definition table on the Librarian's stack + raw HTML hash table on the Steward's stack.
 
 **Responsibilities (in Markdown.pl order — see `docs/markdown/oracle-mechanics.md` row 1):**
 
@@ -205,13 +206,13 @@ SPL expresses integers as a noun (sign) modified by adjectives (each adjective d
 2. Append `\n\n` to the end of input. (Oracle setup; affects EOF-sensitive boundary fixtures.)
 3. Detab (tabs → 4 spaces, column-aware).
 4. Strip whitespace-only lines (replace runs of whitespace-only lines with bare `\n`s; oracle setup).
-5. Hash raw HTML blocks (replace with sentinel tokens, store originals on the Custodian's stack). **This precedes link-def stripping** because HTML blocks may contain reference-definition-shaped text that must not be rewritten.
+5. Hash raw HTML blocks (replace with sentinel tokens, store originals on the Steward's stack). **This precedes link-def stripping** because HTML blocks may contain reference-definition-shaped text that must not be rewritten.
 6. Strip link reference definitions (`[id]: url "title"`) and capture them as `(id, url, title)` triples on the Librarian's stack.
 
 **Mechanic:** linear scan, line-at-a-time state machine. No nested-structure recognition yet.
 
 The normalized-text handoff is explicit: Act I pushes normalized lines or characters onto the
-Pre-processor's stack in reverse read order, so Act II can pop them in original document order.
+Sorter's stack in reverse read order, so Act II can pop them in original document order.
 The implementation plan may choose line records or character records, but it must preserve that
 ordering invariant before block parsing begins.
 
@@ -219,7 +220,7 @@ ordering invariant before block parsing begins.
 
 ### 4.2 Act II — Block Parse
 
-**Input:** normalized text from the Pre-processor's stack, popped in original document order.
+**Input:** normalized text from the Sorter's stack, popped in original document order.
 **Output:** ordered token stream representing block structure.
 
 **Token vocabulary (initial; grows with fixtures):**
@@ -236,7 +237,7 @@ ordering invariant before block parsing begins.
 3. Pass C: Lists — ordered + unordered, with nesting; tight/loose handled per `_ProcessListItems` mechanics (loose items recurse through the block gamut, tight items run only the span gamut). **Lists run before code blocks** so indented content inside list items isn't pulled out as a code block.
 4. Pass D: Code blocks — 4-space indent (Markdown.pl is indent-only).
 5. Pass E: Blockquotes — strip one `>` level, recurse through the block gamut on the unquoted body, then prefix two spaces and strip those from embedded `<pre>` (the indent fix is parity-critical per oracle-mechanics.md row 6).
-6. Pass F: Second `_HashHTMLBlocks` pass — Markdown.pl re-hashes any block-level HTML produced by recursion before paragraph formation (see `docs/markdown/html-block-boundaries.md:8-10`). The Custodian's stack receives any new entries.
+6. Pass F: Second `_HashHTMLBlocks` pass — Markdown.pl re-hashes any block-level HTML produced by recursion before paragraph formation (see `docs/markdown/html-block-boundaries.md:8-10`). The Steward's stack receives any new entries.
 7. Pass G: Paragraph formation — unhashed chunks become `PARA` tokens; previously hashed HTML blocks are restored without paragraph wrapping in Act IV.
 
 **Why multi-pass:** the prior attempt's single-pass dispatcher hit ~4,300 lines on block-only and stalled because every dispatch site duplicated the same recognition prefix. Multi-pass narrows each scene's recognition responsibility and lets the inter-pass token stream act as a contract.
@@ -288,10 +289,10 @@ ordering invariant before block parsing begins.
 ### 4.6 What Crosses Act Boundaries
 
 - **Reference table** (Act I → Act III): Librarian's stack.
-- **Normalized text** (Act I → Act II): Pre-processor's stack, stored reverse-ordered so Act II
+- **Normalized text** (Act I → Act II): Sorter's stack, stored reverse-ordered so Act II
   consumes the document in original order.
-- **HTML hash table** (Act I → Act IV): Custodian's stack.
-- **Token stream** (Act II → Act III → Act IV): Dispatcher's stack. Two-stack reverse pattern (B-confirmed) at each handover restores stream order.
+- **HTML hash table** (Act I → Act IV): Steward's stack.
+- **Token stream** (Act II → Act III → Act IV): Herald's stack. Two-stack reverse pattern (B-confirmed) at each handover restores stream order.
 
 ---
 
@@ -400,38 +401,42 @@ SPL has no variables: each character has one integer "value" and one stack of in
 
 ### 6.1 Cross-Act State Holders (3 characters)
 
-**The Librarian — reference table.**
+**Rosalind, the Librarian — reference table.**
 - Built up in Act I; consulted in Act III.
 - Stack: serialized `(id, url, title)` triples with sentinel separators.
-- Voice: archival, scholarly. Neutral palette in Act I; pastoral in Act III when paired with the wit pair.
+- Voice: witty, agile, and cross-register. Home palette Pastoral/Natural; borrows visited-act color when needed.
 
-**The Custodian — raw HTML block hash table.**
+**Horatio, the Steward — raw HTML block hash table and steady cross-act state.**
 - Built up in Act I; consulted in Act IV.
 - Stack: serialized `(id, html_bytes)` pairs.
-- Voice: caretaker, formal. Aligns with Act IV's formal/declarative palette.
+- Voice: plain-spoken keeper and witness. Home palette Domestic/Familial even when visiting other acts.
 
-**The Dispatcher — token stream.**
+**Puck, the Herald — token stream and dispatch.**
 - Built in Act II; transformed in Act III; consumed in Act IV.
 - The "spine" character of the work.
 - Stack: tokens as integer codes with optional payloads.
-- Voice: martial in Act II; measured in Act III; ceremonial in Act IV.
+- Voice: chameleonic messenger. Home palette Pastoral/Natural; borrows visited-act adjectives as he routes work across acts.
 
-### 6.2 Per-Act Workers (5 characters)
+### 6.2 Per-Act Workers (6 characters)
 
-- **The Pre-processor (Act I).** Line-end normalize, append `\n\n`, detab, strip whitespace-only lines, HTML-block hashing, link-def detection — in Markdown.pl order (see §4.1). Stack as line buffer. Grotesque/catastrophic palette. Witches-from-*Macbeth* territory.
-- **The Block-shaper (Act II).** Runs the block-recognition passes. Stack as region buffer. Noble/martial palette.
-- **The Wit Pair (Act III, two characters).** Span substitution. One pushes candidate substitutions; the other commits final tokens. The two-character pairing enables the strong-then-emphasis mechanic (B15) cleanly. Pastoral/celestial palette. Beatrice-and-Benedick canonical model.
-- **The Emitter (Act IV).** Walks the Dispatcher's token stream, speaks HTML to stdout. The only character who calls SPL's output verbs in production work. Formal/declarative palette. Prospero-from-*Tempest* territory.
+- **Hecate, the Sorter (Act I).** Line-end normalize, append `\n\n`, detab, strip whitespace-only lines, HTML-block hashing, link-def detection — in Markdown.pl order (see §4.1). Stack as line buffer. Grotesque/Abusive palette.
+- **Lady Macbeth, the Mason (Act II).** Runs the block-recognition passes and makes structural cuts. Stack as region buffer. Martial/Catastrophic palette.
+- **Macbeth, the Apprentice (Act II).** Supports the Mason in block-shaping scenes where a two-character SPL dialogue pair is required. Martial/Catastrophic palette, with a more doubt-shadowed voice than Lady Macbeth.
+- **Romeo and Juliet, the Lyrical Pair (Act III).** Span substitution. One pushes candidate substitutions; the other commits final tokens. The two-character pairing enables the strong-then-emphasis mechanic (B15) cleanly. Pastoral/Natural palette.
+- **Prospero, the Scribe (Act IV).** Walks the Herald's token stream, speaks HTML to stdout. The only act-bound character who calls SPL's output verbs in production work. Noble/Radiant palette.
 
-### 6.3 Helper: Structural Helper (1 character)
+### 6.3 Structural Stack Responsibility
 
-Holds the open-block sentinel stack in Act II for frame-sentinel nesting (B16). Serves as reverse-stack partner during act handovers.
-
-**Recommendation:** dedicated character, not folded into a worker. Single responsibility is clear; folding risks state collisions.
+Open-block sentinels for frame-sentinel nesting (B16) are owned by the Act II block-shaping pair,
+with Puck as Herald carrying dispatch transitions across later acts. The implementation plan must
+assign exact sentinel ownership before Spike A; it should not add a tenth character unless Spike A
+shows the nine-character partition is too cramped.
 
 ### 6.4 Cast Total
 
-**9 characters:** 3 cross-act state holders + 5 per-act workers + 1 structural helper. Slightly over the original ~6-8 estimate but is what the partitioning naturally produces. Folding the Structural Helper into the Pre-processor would compress to 8 at the cost of single-responsibility clarity; we lean toward the cleaner 9.
+**9 characters:** 3 cross-act state holders + 6 act-bound workers. This matches
+`docs/spl/literary-spec.md` and keeps the cast large enough for clear state ownership without
+adding a purely mechanical helper role.
 
 ### 6.5 The One-Global-Boolean Implication
 
