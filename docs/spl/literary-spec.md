@@ -378,10 +378,11 @@ character-voice signal.
 
 | Variation point | Legal options | Effect |
 |---|---|---|
-| Positive comparatives | `better`, `bigger`, `fresher`, `friendlier`, `nicer`, `jollier`, `more <positive_adjective>` | Same boolean test; different speech |
-| Negative comparatives | `worse`, `smaller`, `punier`, `more <negative_adjective>` | Same test; different character voice |
-| Equality form | `as <any adjective> as` (any positive, neutral, or negative adjective per `neutral_comparative`) | Massive expressive room |
-| Possessive / pronoun | `your`/`thy`, `you`/`thou`, `myself`/`thyself` | Period flavour dial |
+| Greater-than comparatives | `better`, `bigger`, `fresher`, `friendlier`, `nicer`, `jollier`, `more <positive_adjective>` | Same greater-than operation; different speech |
+| Less-than comparatives | `worse`, `smaller`, `punier`, `more <negative_adjective>` | Same less-than operation; different character voice |
+| Equality form | `as <any adjective> as` (any positive, neutral, or negative adjective per `neutral_comparative`) | Same equality operation; massive expressive room |
+| Possessive / second-person pronoun | `your`/`thy`, `you`/`thou`, `yourself`/`thyself` | Period flavour dial for references to the listener |
+| First-person reflexive | `myself` | Not a style variant of second person; refers to the speaker |
 | Goto verb | `Let us proceed to` / `Let us return to` / `We shall proceed to` / `We shall return to` / `We must proceed to` / `We must return to` (six legal combos; the §5.2 pools below assign three of them — `Let us proceed to`, `We shall proceed to` (Prospero), `We must return to` (Hecate); the other three remain available as soft-variation room for plan-time refinement) | Free synonyms; can mark forward/back jumps |
 
 Bare comparatives (`bolder than`, `sweeter than`, `gentler than`, `nobler than`)
@@ -393,22 +394,28 @@ negatives: `worse`, `smaller`, `punier`, plus `more <adj>` is the full rule.
 Conditional joiners (`If so` / `If not`) are already varied by branch
 polarity, so policy is moot.
 
+Codegen must choose from the comparison pool for the required operation.
+A greater-than branch may vary only within the greater-than pool, a
+less-than branch only within the less-than pool, and an equality branch
+only within the equality pool. Equality forms such as `as fair as` are
+not stylistic variants of greater-than or less-than tests.
+
 ### 5.2 Per-character soft-variation pools
 
 Each character draws from a small consistent pool. The pool is small enough
 to feel like that character; large enough to avoid mechanical repetition.
 
-| Character | Comparative pool (positive / negative) | Pronoun tilt | Goto verb tilt |
-|---|---|---|---|
-| Hecate | `as cursed as`, `as rotten as`, `as horrid as` / `worse than`, `more cursed than`, `more foul than` | `thy`/`thou` (most archaic) | `We must return to` |
-| Lady Macbeth | `more bold than`, `bigger than`, `as mighty as`, `as bold as` / `worse than`, `as villainous as` | `you`/`your` | `Let us proceed to` |
-| Macbeth | same pool as Lady M, biased to negative variants (`worse than`, `more foul than`, `as villainous as`) | `you`/`your` | `Let us proceed to` |
-| Romeo | `more sweet than`, `as sunny as`, `as golden as`, `as fair as` | `you`/`your` (tilts `thy`/`thou` for love-spoken lines) | `Let us proceed to` |
-| Juliet | `more gentle than`, `as fair as`, `as gentle as`, `as sweet as` | `thy`/`thou` (more period than Romeo) | `Let us proceed to` |
-| Prospero | `more noble than`, `more peaceful than`, `as honest as`, `as noble as` | `thy`/`thou` globally | `We shall proceed to` |
-| Rosalind | broadest range — `friendlier`, `jollier`, `nicer`, plus palette-borrowed variants when on tour | mixed; flexes per scene | `Let us proceed to` |
-| Horatio | `friendlier than`, `as warm as`, `as healthy as`, `as happy as` | `you`/`your` (plain-spoken) | `Let us proceed to` |
-| Puck | `jollier than`, `nicer than`, `friendlier than` at home; borrows visiting acts' pools when on tour | mixed; tilts archaic | `Let us proceed to` |
+| Character | Greater-than pool | Less-than pool | Equality pool | Pronoun tilt | Goto verb tilt |
+|---|---|---|---|---|---|
+| Hecate | `bigger than`, `fresher than` | `worse than`, `smaller than`, `punier than`, `more cursed than`, `more foul than` | `as cursed as`, `as rotten as`, `as horrid as` | second-person `thy`/`thou`/`thyself`; first-person `myself` | `We must return to` |
+| Lady Macbeth | `more bold than`, `bigger than` | `worse than`, `more villainous than` | `as mighty as`, `as bold as`, `as villainous as` | second-person `you`/`your`/`yourself`; first-person `myself` | `Let us proceed to` |
+| Macbeth | `more bold than`, `bigger than` | `worse than`, `more foul than` | `as mighty as`, `as villainous as` | second-person `you`/`your`/`yourself`; first-person `myself` | `Let us proceed to` |
+| Romeo | `more sweet than`, `nicer than` | `smaller than`, `punier than` | `as sunny as`, `as golden as`, `as fair as` | second-person `you`/`your`/`yourself`, tilting `thy`/`thou`/`thyself` for love-spoken lines; first-person `myself` | `Let us proceed to` |
+| Juliet | `more gentle than`, `friendlier than` | `smaller than`, `punier than` | `as fair as`, `as gentle as`, `as sweet as` | second-person `thy`/`thou`/`thyself`; first-person `myself` | `Let us proceed to` |
+| Prospero | `more noble than`, `more peaceful than` | `smaller than`, `punier than` | `as honest as`, `as noble as` | second-person `thy`/`thou`/`thyself`; first-person `myself` | `We shall proceed to` |
+| Rosalind | `friendlier than`, `jollier than`, `nicer than`, plus palette-borrowed greater-than variants when on tour | visiting-act less-than variants when needed | visiting-act equality variants when needed | second-person flexes per scene; first-person `myself` | `Let us proceed to` |
+| Horatio | `friendlier than`, `nicer than` | `smaller than`, `punier than` | `as warm as`, `as healthy as`, `as happy as` | second-person `you`/`your`/`yourself`; first-person `myself` | `Let us proceed to` |
+| Puck | `jollier than`, `nicer than`, `friendlier than` at home; borrows visiting acts' greater-than pools when on tour | visiting-act less-than variants when needed | visiting-act equality variants when needed | second-person mixed, tilts archaic; first-person `myself` | `Let us proceed to` |
 
 The pools are small. Variety within a single character's lines is achieved
 by the codegen tool rotating through the pool, not by hand-authored
@@ -577,7 +584,14 @@ how scene transitions look.*
 **Cast size per scene.** Default 2 (one speaker + one addressee — the SPL
 idiom, since assignment, second-person question, push/pop, and I/O all
 require a second person on stage). Occasional 3+ for council/transition
-moments. Single-character scenes are *legal* (verified in
+moments, but 3+ scenes must not contain ordinary second-person dialogue:
+with more than one possible listener, `you`, `thou`, `yourself`, and
+`thyself` are ambiguous. Use 3+ scenes only for movement, ceremonial
+stage pictures, plain gotos, conditional gotos that consume a result
+already produced in a two-character scene, or first-person checks that do
+not refer to another character. Exit back to exactly two characters
+before assignment, I/O, `Remember`/`Recall`, or any question that names
+the listener. Single-character scenes are *legal* (verified in
 `docs/spl/verification-evidence.md` — a one-character first-person
 question followed by a plain goto succeeds with only the speaker on
 stage), but their utility is narrow. What works: first-person questions
@@ -635,15 +649,18 @@ but never invents.
 
 Symbolic scene names live in source files only —
 `scripts/assemble.py` resolves them to act-local Roman numerals in the
-assembled `shakedown.spl`. They appear in goto targets (`Let us proceed
-to mason_block_quote_open.`) and as keys in `src/literary.toml`. So this
+assembled `shakedown.spl`. The assembler-compatible syntax is
+`Scene @MASON_BLOCK_QUOTE_OPEN:` for declarations and
+`Let us proceed to scene @MASON_BLOCK_QUOTE_OPEN.` for references. The
+same symbolic names appear as keys in `src/literary.toml`, where the TOML
+keys may use lowercase if the schema chooses to normalize them. So this
 is internal-facing literary surface: source files themselves read like a
 play even before assembly.
 
-**Convention: hybrid `<role>_<mechanical>` format.**
+**Convention: hybrid `@ROLE_MECHANICAL` format in SPL source.**
 
-Examples: `mason_block_quote_open`, `apprentice_pre_scan_setup`,
-`hecate_sort_hash_blocks`, `prospero_emit_paragraph_close`. The prefix
+Examples: `@MASON_BLOCK_QUOTE_OPEN`, `@APPRENTICE_PRE_SCAN_SETUP`,
+`@HECATE_SORT_HASH_BLOCKS`, `@PROSPERO_EMIT_PARAGRAPH_CLOSE`. The prefix
 may be either the *role* (`mason`, `apprentice`) or the *character name*
 (`hecate`, `prospero`); pick whichever reads more recognisable for the
 scene.
@@ -729,7 +746,10 @@ this recipe.
   monotony.
 - Same canonical phrase used by every speaker for that value (this is
   what makes it Critical).
-- 2–4 words per phrase target; never exceed 6.
+- Single noun-phrase atoms target 2–4 words and must not exceed 6 words.
+  Compound expressions such as `the sum of a big cat and a cat` are
+  exempt from the whole-phrase cap; each component atom still obeys the
+  atom cap. Prefer a single atom when legal.
 
 Final phrase list is produced as a deliverable of the architecture spec /
 implementation plan, validated against this recipe and against the
