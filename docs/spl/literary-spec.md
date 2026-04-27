@@ -614,6 +614,36 @@ literary device for high-drama beats — act boundaries, character
 introductions, phase handoffs. Budget: ≤6 mid-scene movements across the
 whole work.
 
+### 7.4.1 Theatrical death/exit beats
+
+The §7.4 mid-scene movement budget (≤6 across the work) absorbs three
+named dramatic beats, allocated as earned dramatic exits:
+
+1. **Hecate's Final Exit** — late Act I. Her last `[Exit Hecate]` reads
+   as the cauldron's last word; she leaves before Lady Macbeth takes
+   Act II.
+2. **Lady Macbeth's Death Exit** — late Act II. The last
+   `[Exit Lady Macbeth]` of the act, when state hand-off to Act III
+   completes; reads as her death.
+3. **The Lyrical Pair as One** — late Act III. Final
+   `[Exeunt Romeo and Juliet]` reads as the lovers exiting united.
+
+These consume 3 of the ≤6 budget; the remaining 3 stay free for other
+dramatic needs.
+
+**Constraint inherited from §7.4.** A character's mid-scene exit leaves
+the remaining cast on stage. If only one character remains, the
+post-exit period of the scene can only do first-person work (questions
+about own value, plain or conditional gotos) — no assignment,
+second-person dialogue, I/O, or Remember/Recall. Codegen must honour
+this when allocating mechanical work after a dramatic exit.
+
+**Implementation.** The three dramatic exits are tagged in
+`src/literary.toml` (e.g., `dramatic_exit: true` on the relevant scene's
+exit event) so hand-authored scene titles can align with the beat. Per
+drop-first (§1), the framing is aesthetic — codegen drops the dramatic
+gloss if grammar, sign, or mechanical work demands.
+
 ### 7.5 Recall description convention
 
 Recall is `Recall recall_string ("!" | ".")` where `recall_string` is
@@ -644,6 +674,41 @@ thing SPL has to in-line decorative text.
 
 Per the data principle, pools are hand-authored data; codegen selects
 but never invents.
+
+### 7.5.1 Iconic-moment Recall echoes
+
+Recall strings widen the §7.2 iconic-moment device beyond scene titles.
+Selected Recall calls — those whose popped value's role coincides with
+a canonical Shakespeare image — carry hidden quotes, surfacing iconic
+resonance in dialogue rather than only in titles.
+
+**Budget.** 4–8 echoes across the work, separate from the §7.2
+scene-title budget of 4–12. Total iconic-moment surfaces (titles +
+Recall echoes) ≤20. Same earned-by-mechanical-work rule.
+
+**Grammar curation.** `recall_string = [^!\.]*` followed by `.` or `!`.
+So:
+
+- Multi-sentence quotes with internal `.` or `!` ("A horse, a horse! my
+  kingdom for a horse!") cannot fit as a single Recall.
+- Question-mark closes ("What light through yonder window breaks?")
+  must close with `.` or `!` — accept the small trim ("Recall what
+  light through yonder line breaks!").
+- Comma- and em-dash-bearing quotes fit clean.
+
+**Implementation.** Recall pool entries opt in via an `iconic: true`
+flag in `src/literary.toml` (parallel to Rosalind's
+`register: full-borrow` from §2.4). Codegen emits the iconic surface
+for those entries; non-iconic Recall entries rotate cyclically through
+the per-character pool (§7.5 base rule).
+
+**Illustrative examples** (final assignments produced at
+implementation-plan time):
+
+- *"Recall the spot — out, damned spot!"* (Lady Macbeth, Act II)
+- *"Recall the cauldron — double, double!"* (Hecate, Act I)
+- *"Recall our revels now are ended."* (Prospero, Act IV)
+- *"Recall what light through yonder line breaks!"* (Romeo, Act III)
 
 ### 7.6 Branch / scene naming
 
@@ -685,6 +750,42 @@ spec finalisation**: if the file split is per-act, names take a literary
 tilt (`01-cauldron.spl`, `02-keeping.spl`, …); if it stays phase-split,
 mechanical names are appropriate. This spec records "file naming follows
 the file split decided by architecture spec" as an open hand-off.
+
+### 7.7 Source layout: Folio-style speech blocks
+
+The assembled `shakedown.spl` file is itself a literary surface. The
+codegen tool emits source whose page-look approximates a First Folio
+speech-block layout, so reading the .spl in a text editor reads like
+reading a play.
+
+**Conventions:**
+
+- **One blank line between events** within a scene (between dialogue
+  lines, stage directions, etc.).
+- **Two blank lines between scenes** within an act.
+- **Three blank lines between acts.**
+- **Speaker name on its own line.** SPL canonical form already does
+  this; the convention is that codegen does not collapse speaker +
+  first dialogue line onto one source line.
+- **Hanging indent for long value expressions.** Where a value
+  expression exceeds ~80 characters, codegen breaks at conjunction
+  points (`the sum of … and …`) with the continuation indented under
+  the dialogue-start column.
+
+**Validation.** Pure source-formatting, no parser impact. Empirically
+validated by existing fixtures: `scripts/generate_spl_cost_fixtures.py`
+emits blank-line-separated events that parse and run on
+shakespearelang.
+
+**Caveat.** `shakespearelang`'s canonical-form printer may not preserve
+verbose layout. Since codegen owns source emission for `shakedown.spl`,
+this convention applies only to codegen-emitted source — not to
+anything routed through the canonical-form printer.
+
+**Implementation.** Layout rules are codegen-config values (e.g.,
+`layout.event_blank_lines = 1`, `layout.scene_blank_lines = 2`,
+`layout.line_length_target = 80`), not hand-coded. Keeps "literary
+surface is data" intact.
 
 ## 8. Mechanical Decisions
 
@@ -812,6 +913,15 @@ section above.
     the choice is defensible if questioned. (§1)
 12. **Codegen quarantine.** No literary prose in codegen output that
     wasn't read from `literary.toml`. (§1, §4.3)
+13. **Iconic-moment Recall echoes.** 4–8 echoes used; each lands on a
+    scene whose work earns the echo; total iconic surfaces (titles +
+    Recall) ≤20. (§7.5.1)
+14. **Theatrical death/exit beats.** Three named beats placed; mid-scene
+    movement budget honoured (≤6 total, 3 consumed by named beats).
+    (§7.4.1)
+15. **Folio source layout.** Blank-line counts respected; speaker on
+    own line; long values broken at conjunction with hanging indent.
+    (§7.7)
 
 ## 10. Open Hand-offs
 
@@ -854,6 +964,11 @@ upstream decisions still in progress.
    the conflict must be resolved at architecture-spec finalisation
    time (literary spec yields if mechanical reasons demand it;
    otherwise architecture spec adjusts).
+7. **Iconic-moment Recall echo assignments.** Map of (Recall-pool entry
+   → iconic Shakespeare phrase), 4–8 entries, written during
+   implementation planning. Composes with #3 (scene-title iconic
+   moments); combined map respects the ≤20 total iconic-surface
+   ceiling. (§7.5.1)
 
 ## 11. Doc-update Follow-ups
 
