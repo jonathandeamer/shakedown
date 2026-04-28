@@ -124,6 +124,7 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - `docs/spl/codegen-style-guide.md` — implementation policy for recurring value phrases
 - `docs/spl/style-guide-validation.md` — validation status for the style lexicon and codegen guide
 - `docs/architecture/selected-architecture.md` — pointer to the adopted architecture spec
+- `docs/superpowers/plans/plan-roadmap.md` — staged implementation-plan ladder; live status of each plan
 - `docs/markdown/target.md` — Markdown.pl v1.0.1 target surface
 - `docs/markdown/divergences.md` — intentional divergences from the oracle
 - `docs/markdown/oracle-mechanics.md` — Markdown.pl transform order and parity-critical mechanics
