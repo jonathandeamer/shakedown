@@ -1,0 +1,113 @@
+# src/literary.toml - hand-authored literary surface data
+#
+# Plan 1 ships home stable_utility for every character. Per-act variants for
+# hybrid-voice cross-act characters are deferred to Slice 1 because act-site
+# context dictates the exact phrase.
+
+[characters.rosalind]
+play = "As You Like It"
+role = "librarian"
+palette = "pastoral_natural"
+voice_register = "witty_agile_cross_register"
+blurb = "Rosalind, keeper of references, agile of tongue across the Forest of Arden."
+[characters.rosalind.stable_utility]
+v1 = "a tree"
+v2 = "a green tree"
+vneg1 = "a wolf"
+v0 = "nothing"
+
+[characters.horatio]
+play = "Hamlet"
+role = "steward"
+palette = "domestic_familial"
+voice_register = "plain_spoken_keeper"
+blurb = "Horatio, plain witness of the household, holder of secrets."
+[characters.horatio.stable_utility]
+v1 = "a brother"
+v2 = "a happy brother"
+vneg1 = "a beggar"
+v0 = "nothing"
+
+[characters.puck]
+play = "A Midsummer Night's Dream"
+role = "herald"
+palette = "pastoral_natural"
+voice_register = "chameleonic_messenger"
+blurb = "Puck, swift messenger, whose adjectives change with the room he visits."
+[characters.puck.stable_utility]
+v1 = "a flower"
+v2 = "a sweet flower"
+vneg1 = "a wolf"
+v0 = "nothing"
+
+[characters.hecate]
+play = "Macbeth"
+role = "sorter"
+palette = "grotesque_abusive"
+voice_register = "incantatory_grimy"
+blurb = "Hecate, witch-queen, who scours the underbelly of the page."
+[characters.hecate.stable_utility]
+v1 = "a cat"
+v2 = "a big cat"
+vneg1 = "a toad"
+v0 = "nothing"
+
+[characters.lady_macbeth]
+play = "Macbeth"
+role = "mason"
+palette = "martial_catastrophic"
+voice_register = "decisive_clean_martial"
+blurb = "Lady Macbeth, mason of the block, who cuts the page into rooms."
+[characters.lady_macbeth.stable_utility]
+v1 = "a hero"
+v2 = "a noble hero"
+vneg1 = "a wolf"
+v0 = "nothing"
+
+[characters.macbeth]
+play = "Macbeth"
+role = "apprentice"
+palette = "martial_catastrophic"
+voice_register = "doubt_shadowed_martial"
+blurb = "Macbeth, apprentice mason, who pairs with the Lady though dread shadows him."
+[characters.macbeth.stable_utility]
+v1 = "a kingdom"
+v2 = "a proud kingdom"
+vneg1 = "a curse"
+v0 = "nothing"
+
+[characters.romeo]
+play = "Romeo and Juliet"
+role = "lyric_a"
+palette = "pastoral_natural"
+voice_register = "lyrical_sun_imagery"
+blurb = "Romeo, who pushes candidate substitutions like sunlit petals."
+[characters.romeo.stable_utility]
+v1 = "a summer's day"
+v2 = "a sunny summer's day"
+vneg1 = "a wolf"
+v0 = "nothing"
+
+[characters.juliet]
+play = "Romeo and Juliet"
+role = "lyric_b"
+palette = "pastoral_natural"
+voice_register = "lyrical_night_imagery"
+blurb = "Juliet, who commits final tokens like petals laid on stone."
+[characters.juliet.stable_utility]
+v1 = "a rose"
+v2 = "a sweet rose"
+vneg1 = "a wolf"
+v0 = "nothing"
+
+[characters.prospero]
+play = "The Tempest"
+role = "scribe"
+palette = "noble_radiant"
+voice_register = "ceremonial_declarative"
+blurb = "Prospero, scribe and emitter, whose pronouncements close the work."
+[characters.prospero.stable_utility]
+v1 = "an angel"
+v2 = "a noble angel"
+vneg1 = "a curse"
+v0 = "nothing"
