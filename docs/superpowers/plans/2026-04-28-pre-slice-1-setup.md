@@ -44,7 +44,7 @@
 - `tests/test_token_codes.py` — token-code atom-cap validator.
 
 **Modified:**
-- `.gitignore` — remove `shakedown.spl` ignore; confirm `.cache/` ignored.
+- `.gitignore` — unignore `.agent/blockers.md`; remove `shakedown.spl` ignore; confirm `.cache/` ignored.
 - `CLAUDE.md` — add `.agent/blockers.md` convention paragraph; add `cz bump` operator-only note (cross-link to architecture §7.9).
 - `docs/superpowers/plans/plan-roadmap.md` — at end of plan, status of plan 1 → `shipped`.
 
@@ -58,9 +58,21 @@
 
 **Files:**
 - Create: `.agent/blockers.md`
+- Modify: `.gitignore` (unignore `.agent/blockers.md` while keeping other agent state ignored)
 - Modify: `CLAUDE.md` (add blockers.md convention paragraph; mark `cz bump` operator-only)
 
-- [ ] **Step 1.1: Create `.agent/blockers.md` with the convention header**
+- [ ] **Step 1.1: Unignore `.agent/blockers.md`**
+
+Edit `.gitignore`. Replace the current `.agent/` entry with:
+
+```gitignore
+.agent/*
+!.agent/blockers.md
+```
+
+This keeps transient run-loop state ignored while allowing the operator halt-switch file to be tracked normally. Do this before creating `.agent/blockers.md`; otherwise `git add .agent/blockers.md` is rejected on a clean checkout.
+
+- [ ] **Step 1.2: Create `.agent/blockers.md` with the convention header**
 
 ```markdown
 # Blockers
@@ -78,7 +90,7 @@ blocker mid-run. The operator removes the line when the block is resolved.
 Non-blocking notes (no halt) use `- NOTE:` instead.
 ```
 
-- [ ] **Step 1.2: Add blockers.md convention paragraph to CLAUDE.md**
+- [ ] **Step 1.3: Add blockers.md convention paragraph to CLAUDE.md**
 
 In `CLAUDE.md`, insert a new section after the existing `## run-loop` section and before `## Target interface`:
 
@@ -93,7 +105,7 @@ removes it. Non-blocking notes use `- NOTE:`. See
 convention.
 ```
 
-- [ ] **Step 1.3: Mark `cz bump` operator-only in CLAUDE.md**
+- [ ] **Step 1.4: Mark `cz bump` operator-only in CLAUDE.md**
 
 In `CLAUDE.md`, locate the `### How to cut a version` block (the section containing `uv run cz bump # computes bump from commits, updates pyproject.toml, commits + tags`). Insert the following paragraph **immediately above** that block:
 
@@ -104,10 +116,10 @@ plan step explicitly authorises it. Version cuts are operator decisions per
 architecture spec §7.9.
 ```
 
-- [ ] **Step 1.4: Commit**
+- [ ] **Step 1.5: Commit**
 
 ```bash
-git add .agent/blockers.md CLAUDE.md
+git add .gitignore .agent/blockers.md CLAUDE.md
 git commit -m "chore: document operator halt switch and operator-only cz bump"
 ```
 
@@ -126,9 +138,10 @@ Expected `git status`: clean.
 cat .gitignore
 ```
 
-Confirm the file contains both:
+Confirm the file contains:
 - `.cache/` (already ignored — keep)
 - `shakedown.spl` under "Build artifact — assembled from src/ fragments..." (must remove for §5.3b)
+- `.agent/*` and `!.agent/blockers.md` from Task 1 (must keep)
 
 - [ ] **Step 2.2: Remove the `shakedown.spl` ignore**
 
@@ -1048,7 +1061,8 @@ def parse_value_phrase(phrase: str) -> int:
         )
     if not _PHRASE_RE.match(text):
         raise ValueError(f"unrecognised atom: {phrase!r}")
-    bigs = text.count(" big ")
+    tokens = text.split()
+    bigs = tokens[1:-1].count("big")
     return 1 << bigs
 
 
@@ -1122,6 +1136,9 @@ SPL_FIXTURE = REPO / "src"  # use existing prototype src for spike input
 ASSEMBLED = REPO / ".cache" / "spike-shakedown.spl"
 CACHE_DIR = REPO / ".cache"
 VERDICT_DOC = REPO / "docs" / "architecture" / "cache-spike.md"
+
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
 
 CACHE_SHAPE_VERSION = 1
 
@@ -1223,13 +1240,12 @@ def main() -> int:
     direct_out, direct_time = run_direct(spl_path, stdin_bytes)
     pickle_ok, pickle_diag = attempt_pickle_play(spl_path)
 
-    if pickle_ok:
-        # Future spike work would prove byte-identity here. We stop short
-        # because the architecture lists pickling as expected-not-viable;
-        # if a future runner finds it works, expand the spike then.
-        decision = "cache_proven"
-    else:
-        decision = "direct_assemble_and_run"
+    # Pickling alone is not enough to prove a usable cache. The architecture
+    # requires later cached execution, byte identity against direct execution,
+    # and wrapper-overhead measurement. This spike only attempts the known
+    # pickle candidate, so even a surprising pickle success falls back until
+    # those criteria are implemented and pass.
+    decision = "direct_assemble_and_run"
 
     verdict = {
         "cache_key_inputs": {
@@ -1241,6 +1257,8 @@ def main() -> int:
         "direct_run_seconds": round(direct_time, 3),
         "direct_run_stdout_bytes": len(direct_out),
         "pickle_path_outcome": pickle_diag,
+        "pickle_candidate_succeeded": pickle_ok,
+        "cache_proven_reason": "not proven; byte-identity and overhead criteria were not exercised",
         "decision": decision,
     }
     write_verdict(verdict)
@@ -1394,6 +1412,9 @@ from pathlib import Path
 REPO = Path(__file__).parent.parent
 ASSEMBLED = REPO / "shakedown.spl"
 SPIKE_DOC = REPO / "docs" / "architecture" / "cache-spike.md"
+
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
 
 
 def _assemble() -> Path:
@@ -1723,7 +1744,7 @@ git commit -m "feat: add strict shakedown-vs-Markdown.pl parity harness"
 **Files:**
 - Create: `docs/prompt-shakedown.md`
 
-Authored against `docs/superpowers/specs/2026-04-27-loop-prompt-design.md` decisions: plan-driven shape (Ralph #2), one step per iteration, eight `@file` university references, ~200-word standing-instructions body, blockers.md cooperation, no autonomous `cz bump`.
+Authored against `docs/superpowers/specs/2026-04-27-loop-prompt-design.md` decisions: plan-driven shape (Ralph #2), one step per iteration, concrete active-plan `@file` reference, ~200-word standing-instructions body, blockers.md cooperation, no autonomous `cz bump`.
 
 The completion-marker convention (`docs/prompt-<name>.md` → `.agent/complete-<name>.md`) is already encoded in `run-loop`. Confirm by reading the relevant code in `run-loop` once before authoring.
 
@@ -1740,6 +1761,7 @@ Expected: at least one match showing the default prompt path is `docs/prompt-sha
 ```markdown
 @docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md
 @docs/superpowers/plans/plan-roadmap.md
+@docs/superpowers/plans/2026-04-28-pre-slice-1-setup.md
 @docs/spl/literary-spec.md
 @docs/spl/reference.md
 @docs/markdown/target.md
@@ -1752,9 +1774,10 @@ iteration of a continuous run-loop driven by `run-loop` at the repo root.
 
 Your job, this iteration:
 
-1. Read the current implementation plan (the plan file referenced from the
-   `plan-roadmap.md` whose status is *in flight*; if multiple are in flight,
-   the lowest-numbered one).
+1. Read the current implementation plan. For this prompt revision, the active
+   plan is `@docs/superpowers/plans/2026-04-28-pre-slice-1-setup.md`. A later
+   operator-authored prompt revision may replace this `@` reference with the
+   next concrete plan file after the roadmap marks that plan `in flight`.
 2. Find the **first unchecked step** in the **first task** with any unchecked
    step. Complete that step as written. One step. No batching.
 3. If the step changes code or data, run the tests the step specifies and
@@ -1853,7 +1876,7 @@ Expected: `ok`.
 grep -E '^"decision"|"decision":' docs/architecture/cache-spike.md
 ```
 
-Expected: a line containing either `"cache_proven"` or `"direct_assemble_and_run"`. Anything else is a bug; re-run the spike.
+Expected: `"direct_assemble_and_run"` for this one-shot spike. A future `"cache_proven"` result is valid only if the spike has first been expanded to prove all architecture §5.3a criteria: reusable cached representation, byte-identical cached execution, wrapper-overhead measurement, and versioned invalidation key.
 
 - [ ] **Step 11.5: Confirm run-loop prompt resolves and references its universities**
 
@@ -1861,7 +1884,7 @@ Expected: a line containing either `"cache_proven"` or `"direct_assemble_and_run
 head -10 docs/prompt-shakedown.md
 ```
 
-Expected: eight `@`-prefixed lines listing the universities, in the order from the design note.
+Expected: nine `@`-prefixed lines: the design-note universities plus the concrete active plan file.
 
 - [ ] **Step 11.6: Lint and type-check the new Python**
 
