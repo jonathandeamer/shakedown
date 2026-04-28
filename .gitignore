@@ -28,5 +28,7 @@ build/
 # Worktrees
 .worktrees/
 
-# Build artifact — assembled from src/ fragments by scripts/assemble.py
-shakedown.spl
+# shakedown.spl is INTENTIONALLY tracked. The release-mode bash entry runs
+# the committed file directly with no assembly step. CI verifies the
+# committed shakedown.spl matches scripts/assemble.py output. See
+# docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md §5.3b.
