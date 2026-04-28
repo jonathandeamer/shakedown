@@ -52,6 +52,15 @@ The run-loop checks for this file at the top of every iteration and exits when i
 
 `AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex.
 
+## Operator halt switch (`.agent/blockers.md`)
+
+The autonomous agent reads `.agent/blockers.md` on every iteration via the
+`@.agent/blockers.md` university reference in `docs/prompt-shakedown.md`. Any
+line starting with `- BLOCK:` halts plan advancement until the operator
+removes it. Non-blocking notes use `- NOTE:`. See
+`docs/superpowers/specs/2026-04-27-loop-prompt-design.md` §5 for the full
+convention.
+
 ## Target interface
 
 `tests/test_mdtest.py` invokes `./shakedown` as a subprocess — stdin Markdown, stdout HTML. Everything else about the shape (single `.spl` file, shell wrapper, Python orchestrator, something else) is a design decision. The retrospective research (`docs/prior-attempt/`) is evidence from the prior attempt, not a prescription — the design should justify its choice against the current state of the interpreter and machine.
@@ -196,6 +205,11 @@ Version = progress signal. Cut one when something is demonstrably working, not a
 | Each additional fixture, or a coherent group (e.g. all inline elements) | minor bump |
 | Bug fix in a passing fixture, no new capability | patch bump |
 | Every fixture either passes or is documented as an accepted divergence in `docs/markdown/divergences.md` | `1.0.0` |
+
+**Operator-only.** Autonomous run-loop agents must NOT run `cz bump`,
+`git tag`, `git push --tags`, or update `CHANGELOG.md` unless the current
+plan step explicitly authorises it. Version cuts are operator decisions per
+architecture spec §7.9.
 
 ### How to cut a version
 

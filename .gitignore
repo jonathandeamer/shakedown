@@ -1,5 +1,6 @@
 # Claude Code / agent state
-.agent/
+.agent/*
+!.agent/blockers.md
 .codex
 
 # Python
