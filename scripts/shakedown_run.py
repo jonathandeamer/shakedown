@@ -8,7 +8,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).parent.parent
-ASSEMBLED = REPO / "shakedown.spl"
+DEV_ASSEMBLED = REPO / ".cache" / "shakedown-dev.spl"
+RELEASE_ASSEMBLED = REPO / "shakedown.spl"
 SPIKE_DOC = REPO / "docs" / "architecture" / "cache-spike.md"
 
 if str(REPO) not in sys.path:
@@ -18,12 +19,13 @@ if str(REPO) not in sys.path:
 def _assemble() -> Path:
     from scripts.assemble import assemble
 
+    DEV_ASSEMBLED.parent.mkdir(exist_ok=True)
     assemble(
         src_dir=REPO / "src",
         manifest=REPO / "src" / "manifest.toml",
-        output=ASSEMBLED,
+        output=DEV_ASSEMBLED,
     )
-    return ASSEMBLED
+    return DEV_ASSEMBLED
 
 
 def _read_mode() -> str:

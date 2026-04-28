@@ -80,12 +80,46 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--shakedown", type=Path, default=DEFAULT_SHAKEDOWN)
     parser.add_argument("--markdown-pl", type=Path, default=DEFAULT_ORACLE)
     parser.add_argument("--fixtures-dir", type=Path, default=DEFAULT_FIXTURES)
+    parser.add_argument(
+        "fixtures",
+        nargs="*",
+        help=(
+            "Optional fixture names to compare, with or without .text. "
+            "Defaults to every *.text fixture."
+        ),
+    )
     return parser.parse_args()
+
+
+def select_fixtures(fixtures_dir: Path, names: list[str]) -> list[Path]:
+    """Return requested fixture paths, or all fixture paths when none requested."""
+    if not names:
+        return sorted(fixtures_dir.glob("*.text"))
+
+    selected: list[Path] = []
+    missing: list[str] = []
+    for name in names:
+        path = fixtures_dir / name
+        if path.suffix != ".text":
+            path = path.with_suffix(".text")
+        if path.exists():
+            selected.append(path)
+        else:
+            missing.append(name)
+    if missing:
+        raise FileNotFoundError(
+            f"fixture(s) not found in {fixtures_dir}: {', '.join(missing)}"
+        )
+    return selected
 
 
 def main() -> int:
     args = parse_args()
-    fixtures = sorted(args.fixtures_dir.glob("*.text"))
+    try:
+        fixtures = select_fixtures(args.fixtures_dir, args.fixtures)
+    except FileNotFoundError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
     if not fixtures:
         print(f"no fixtures in {args.fixtures_dir}", file=sys.stderr)
         return 2

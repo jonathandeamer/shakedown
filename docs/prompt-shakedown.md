@@ -1,6 +1,5 @@
 @docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md
 @docs/superpowers/plans/plan-roadmap.md
-@docs/superpowers/plans/2026-04-28-pre-slice-1-setup.md
 @docs/spl/literary-spec.md
 @docs/spl/reference.md
 @docs/markdown/target.md
@@ -13,10 +12,11 @@ iteration of a continuous run-loop driven by `run-loop` at the repo root.
 
 Your job, this iteration:
 
-1. Read the current implementation plan. For this prompt revision, the active
-   plan is `@docs/superpowers/plans/2026-04-28-pre-slice-1-setup.md`. A later
-   operator-authored prompt revision may replace this `@` reference with the
-   next concrete plan file after the roadmap marks that plan `in flight`.
+1. Read `@docs/superpowers/plans/plan-roadmap.md` and find the lowest-numbered
+   plan whose status is `in flight`. If no plan is `in flight`, write
+   `.agent/complete-shakedown.md` and exit cleanly without modifying anything
+   else. The operator must revise this prompt to add the concrete active
+   plan's `@` reference before autonomous implementation continues.
 2. Find the first unchecked step in the first task with any unchecked step.
    Complete that step as written. One step. No batching.
 3. If the step changes code or data, run the tests the step specifies and

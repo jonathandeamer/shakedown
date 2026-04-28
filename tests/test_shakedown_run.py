@@ -31,8 +31,9 @@ def test_wrapper_assembles_before_running() -> None:
         check=True,
     )
     out = result.stdout.decode().strip()
-    assert out.endswith("shakedown.spl"), out
+    assert out.endswith(".cache/shakedown-dev.spl"), out
     assert Path(out).exists(), out
+    assert not (REPO / "shakedown.spl").exists()
 
 
 def test_wrapper_honours_cache_decision() -> None:
