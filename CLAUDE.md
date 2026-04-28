@@ -17,7 +17,7 @@ Huntley-loop methodology. See `docs/lineage.md` for the full story.
 
 Start a new session with `docs/README.md` as the entry point for the docs set.
 
-**Intended workflow:** Interactive Claude sessions (with superpowers) are used for bootstrapping, design, and planning. Huntley/run-loop autonomous loops are used for the actual implementation of `shakedown.spl`. The run-loop prompt is an output of implementation planning — it does not exist yet and should not be created until that planning is done.
+**Intended workflow:** Interactive Claude sessions (with superpowers) are used for bootstrapping, design, and planning. Huntley/run-loop autonomous loops are used for the actual implementation of `shakedown.spl` once a concrete plan is marked in flight in `docs/superpowers/plans/plan-roadmap.md`.
 
 ## Setup
 
@@ -32,15 +32,14 @@ uv sync                               # install dev dependencies
 It switches automatically between codex and claude when one hits a usage limit.
 
 ```bash
-./run-loop                            # currently broken: hard-coded default prompt was archived
+./run-loop                            # use the active default prompt
 ./run-loop docs/some-other-prompt.md  # alternate prompt
 ./run-loop docs/archive/prompt-shakedown.md  # legacy archived prompt, if you explicitly want it
 ```
 
 - Current code default: `docs/prompt-shakedown.md`
-- Current docs reality: `docs/prompt-shakedown.md` was archived to `docs/archive/prompt-shakedown.md` and no replacement prompt exists yet
-- **The missing prompt is intentional, not a gap to fill.** It is a planned output of implementation planning — do not create it during design or planning sessions.
-- Practical guidance: start fresh sessions from `docs/README.md`; only use `run-loop` with an explicit prompt path until a new default prompt is written
+- Current docs reality: `docs/prompt-shakedown.md` is plan-driven and should point at the current in-flight plan
+- Practical guidance: use `./run-loop` only when the roadmap has an in-flight implementation plan and the prompt references that exact plan; otherwise start fresh interactive sessions from `docs/README.md`
 - State: `.agent/run-loop-state.json` (tracks which backend was last used)
 - Completion marker: derived from prompt filename — `docs/prompt-<name>.md` → `.agent/complete-<name>.md`
 
