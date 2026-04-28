@@ -263,22 +263,27 @@ git commit -m "feat: establish four-act SPL source layout"
 
 - [ ] **Step 3.1: Add failing tests for SPL speech generation**
 
-Append to `tests/test_codegen_html.py`:
+Add `emit_speak_lines` to the existing top-level import in `tests/test_codegen_html.py`:
 
 ```python
-from scripts.codegen_html import emit_speak_lines
+from scripts.codegen_html import (
+    emit_byte,
+    emit_literal,
+    emit_speak_lines,
+    parse_value_phrase,
+)
+```
 
+Then append this test below the existing literal tests:
 
+```python
 def test_emit_speak_lines_for_literal() -> None:
     lines = emit_speak_lines(b"<p>", speaker="Prospero")
-    assert lines == [
-        "Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.",
-        "Prospero: Speak your mind!",
-        "Prospero: You are as good as the sum of a big big big big big big cat and the sum of a big big big big cat and a big big big big cat.",
-        "Prospero: Speak your mind!",
-        "Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.",
-        "Prospero: Speak your mind!",
-    ]
+    expected: list[str] = []
+    for phrase in emit_literal(b"<p>"):
+        expected.append(f"Prospero: You are as good as {phrase}.")
+        expected.append("Prospero: Speak your mind!")
+    assert lines == expected
 ```
 
 - [ ] **Step 3.2: Run the test and confirm it fails**
@@ -331,22 +336,37 @@ git commit -m "feat: generate SPL speech lines for HTML byte literals"
 
 - [ ] **Step 4.1: Replace Act IV with a single paragraph literal smoke**
 
-Temporarily make Act IV emit `<p></p>\n` so byte emission is proven before parser state is added. Replace `src/40-act4-emit.spl` with:
+Temporarily make Act IV emit `<p></p>\n` so byte emission is proven before parser state is added. Generate the Prospero speech lines from the helper added in Task 3, not by hand:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run python - <<'PY'
+from scripts.codegen_html import emit_speak_lines
+
+for line in emit_speak_lines(b"<p></p>\n", speaker="Prospero"):
+    print(line)
+PY
+```
+
+Replace `src/40-act4-emit.spl` with this scene, using the generated lines shown here:
 
 ```spl
                     Scene @ACT_IV_START: Prospero speaks an empty paragraph.
 
 [Enter Prospero and Juliet]
 
-Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
 Prospero: Speak your mind!
-Prospero: You are as good as the sum of a big big big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat.
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
 Prospero: Speak your mind!
-Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
 Prospero: Speak your mind!
-Prospero: You are as good as the sum of a big big big big cat and a big big cat.
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
 Prospero: Speak your mind!
-Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
 Prospero: Speak your mind!
 Prospero: You are as good as the sum of a big big big cat and a big cat.
 Prospero: Speak your mind!
