@@ -337,7 +337,7 @@ Record the output in `docs/verification-plan.md` as a new dated bucket after B19
 - all five run times;
 - current commit SHA.
 
-- [ ] **Step 5.4: Update roadmap and run-loop prompt**
+- [x] **Step 5.4: Update roadmap and run-loop prompt**
 
 Edit `docs/superpowers/plans/plan-roadmap.md`:
 
