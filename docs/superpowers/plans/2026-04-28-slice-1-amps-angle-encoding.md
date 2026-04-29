@@ -452,7 +452,7 @@ Replace the Act I fragment with scenes that:
 
 Use one-question-per-scene discipline: every character comparison must branch immediately before another question. Preserve the ordering invariant from architecture §4.1: Act II must pop normalized content in original document order.
 
-- [ ] **Step 6.2: Add an Act I probe scene for reference lookup**
+- [x] **Step 6.2: Add an Act I probe scene for reference lookup**
 
 Add a temporary terminal scene that outputs `12` through `Open your heart!` when both reference records have been seeded. This probe is removed in Task 8 after Act III consumes the records.
 
