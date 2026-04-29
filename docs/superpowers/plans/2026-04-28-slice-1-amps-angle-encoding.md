@@ -524,7 +524,7 @@ Add span scenes that transform paragraph text payloads:
 - `>` is preserved for this fixture, matching Markdown.pl output for `6 > 5.`;
 - all other characters pass through unchanged.
 
-- [ ] **Step 8.2: Implement minimal reference links**
+- [x] **Step 8.2: Implement minimal reference links**
 
 Add reference-link scenes for exactly the fixture forms:
 
