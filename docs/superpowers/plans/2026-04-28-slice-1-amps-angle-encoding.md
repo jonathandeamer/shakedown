@@ -415,7 +415,7 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 exec uv run --directory "$DIR" shakespeare run "$DIR/shakedown.spl"
 ```
 
-- [ ] **Step 5.2: Verify the no-oracle-stub test now passes**
+- [x] **Step 5.2: Verify the no-oracle-stub test now passes**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py::test_shakedown_entrypoint_no_longer_delegates_to_markdown_pl -q
