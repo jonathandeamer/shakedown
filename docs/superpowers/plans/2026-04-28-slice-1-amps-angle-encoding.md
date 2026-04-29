@@ -542,7 +542,7 @@ Add inline-link scenes for exactly the fixture forms:
 
 Both emit `<a href="/script?foo=1&amp;bar=2">link</a>`.
 
-- [ ] **Step 8.4: Verify transformed paragraph payloads with a temporary probe**
+- [x] **Step 8.4: Verify transformed paragraph payloads with a temporary probe**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py

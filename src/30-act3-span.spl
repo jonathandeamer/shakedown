@@ -65,13 +65,13 @@ Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
 Romeo: Recall the inline path's first gate.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a cat and a cat?
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat?
 Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_DIRECT_DESTINATION.
 Puck: If not, let us proceed to scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION.
 
                     Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: The path asks for its silver bracket.
 
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big big cat?
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat?
 Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_BRACKETED_DESTINATION.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
@@ -213,7 +213,7 @@ Puck: Remember the sum of a big big big big cat and the sum of a big big big big
 Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
 Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
 Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
 Juliet: Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
                     Scene @LYRIC_REFERENCE_ONE_POP_LABEL: Rosalind's first bargain is named.
@@ -479,7 +479,7 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT.
 
                     Scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT: The broken and is gilded.
 
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
 Puck: Remember yourself.
 Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
 Puck: Remember yourself.
@@ -502,7 +502,7 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT.
 
                     Scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT: The old name remains whole.
 
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
 Puck: Remember yourself.
 Puck: You are as fair as myself.
 Puck: Remember yourself.
@@ -517,13 +517,13 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT.
 
                     Scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT: The sharp angle turns to light.
 
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
 Puck: Remember yourself.
 Puck: You are as fair as myself.
 Puck: Remember yourself.
@@ -556,7 +556,7 @@ Romeo: Let us return to scene @LYRIC_SCAN_CHECK.
 [Exit Puck]
 [Enter Juliet]
 
-Juliet: You are as fair as the sum of a big big big big big big big big cat and the sum of a big big big big big big cat and the sum of a big big big big cat and a big cat.
+Juliet: You are as fair as the sum of a big big big big big big big big cat and the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big cat and a big cat.
 Romeo: Let us proceed to scene @LYRIC_REVERSE_CHECK.
 
                     Scene @LYRIC_REVERSE_CHECK: The evening counts the garden home.
@@ -592,6 +592,27 @@ Puck: Let us proceed to scene @LYRIC_RETURN_TO_REVERSE.
 Romeo: Let us return to scene @LYRIC_REVERSE_CHECK.
 
                     Scene @ACT_III_DONE: The third act yields.
+
+[Exit Romeo]
+[Enter Puck]
+
+Puck: You are as fair as the sum of a big big big big big big big big cat and the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big cat and a big cat.
+Juliet: Let us proceed to scene @LYRIC_PROBE_CHECK.
+
+                    Scene @LYRIC_PROBE_CHECK: The finished line is shown.
+
+Puck: Are you as fair as nothing?
+Juliet: If so, let us proceed to scene @LYRIC_PROBE_DONE.
+Juliet: If not, let us proceed to scene @LYRIC_PROBE_POP.
+
+                    Scene @LYRIC_PROBE_POP: The herald speaks one finished glyph.
+
+Juliet: Recall the transformed word.
+Juliet: Speak your mind!
+Puck: You are as fair as the difference between Juliet and a cat.
+Puck: Let us return to scene @LYRIC_PROBE_CHECK.
+
+                    Scene @LYRIC_PROBE_DONE: The third act truly yields.
 
 [Exeunt]
 
