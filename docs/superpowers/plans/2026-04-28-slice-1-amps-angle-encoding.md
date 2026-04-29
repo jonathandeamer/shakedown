@@ -616,7 +616,7 @@ git diff --exit-code shakedown.spl
 
 Expected: no diff. If there is a diff, inspect it, then commit the refreshed `shakedown.spl` with the relevant source change.
 
-- [ ] **Step 10.2: Run Slice 1 gate**
+- [x] **Step 10.2: Run Slice 1 gate**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py -v
