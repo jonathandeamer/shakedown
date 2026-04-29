@@ -200,7 +200,7 @@ Remove both fixed-length scenes:
 
 Use fresh scene labels with the `@LYRIC_INLINE_DEST_` prefix.
 
-- [ ] **Step 3.2: Assemble and run the structural gate**
+- [x] **Step 3.2: Assemble and run the structural gate**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
