@@ -160,7 +160,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py::te
 
 Expected: the structural tests still fail for Act III labels/fragments, but no longer report `@HECATE_CUT_REFERENCE_TAIL` or `Recall the bargain glyph 65`.
 
-- [ ] **Step 2.3: Verify Act I still feeds the fixture through the pipeline**
+- [x] **Step 2.3: Verify Act I still feeds the fixture through the pipeline**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "Amps and angle encoding"
