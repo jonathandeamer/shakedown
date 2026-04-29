@@ -53,7 +53,168 @@ Romeo: Recall the link's following air.
 Puck: You are as fair as the difference between Romeo and a cat.
 Romeo: Are you as fair as the sum of a big big big big cat and a big big big big cat?
 Puck: If so, let us proceed to scene @LYRIC_REFERENCE_ONE_POP_LABEL.
+Puck: If not, let us proceed to scene @LYRIC_LINK_TEST_INLINE_OPEN.
+
+                    Scene @LYRIC_LINK_TEST_INLINE_OPEN: The small link seeks an inline gate.
+
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat?
+Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_FIRST_DESTINATION.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
+
+                    Scene @LYRIC_INLINE_POP_FIRST_DESTINATION: The garden path opens.
+
+Romeo: Recall the inline path's first gate.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a cat and a cat?
+Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_DIRECT_DESTINATION.
+Puck: If not, let us proceed to scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION.
+
+                    Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: The path asks for its silver bracket.
+
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big big cat?
+Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_BRACKETED_DESTINATION.
+Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
+
+                    Scene @LYRIC_INLINE_POP_DIRECT_DESTINATION: The bare path is swallowed.
+
+Romeo: Recall the inline path glyph 1.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 2.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 3.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 4.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 5.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 6.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 7.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 8.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 9.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 10.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 11.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 12.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 13.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 14.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 15.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 16.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 17.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 18.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the inline path glyph 19.
+Puck: You are as fair as the difference between Romeo and a cat.
+Puck: Let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
+
+                    Scene @LYRIC_INLINE_POP_BRACKETED_DESTINATION: The bracketed path is swallowed.
+
+Romeo: Recall the bracketed path glyph 1.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 2.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 3.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 4.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 5.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 6.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 7.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 8.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 9.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 10.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 11.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 12.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 13.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 14.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 15.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 16.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 17.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 18.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 19.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 20.
+Puck: You are as fair as the difference between Romeo and a cat.
+Romeo: Recall the bracketed path glyph 21.
+Puck: You are as fair as the difference between Romeo and a cat.
+Puck: Let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
+
+                    Scene @LYRIC_OPEN_OUTPUT_INLINE_LINK: Juliet receives the inline anchor.
+
+[Exit Romeo]
+[Enter Juliet]
+
+Juliet: Let us proceed to scene @LYRIC_OUTPUT_INLINE_LINK.
+
+                    Scene @LYRIC_OUTPUT_INLINE_LINK: The inline path becomes a bright path.
+
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and a big big big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Juliet: Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
                     Scene @LYRIC_REFERENCE_ONE_POP_LABEL: Rosalind's first bargain is named.
 

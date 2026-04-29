@@ -533,7 +533,7 @@ Add reference-link scenes for exactly the fixture forms:
 
 The scenes must consume Rosalind's reference table records rather than hardcoding full output in Act IV. The labels may be matched as numeric label ids `1` and `2`.
 
-- [ ] **Step 8.3: Implement minimal inline links**
+- [x] **Step 8.3: Implement minimal inline links**
 
 Add inline-link scenes for exactly the fixture forms:
 
