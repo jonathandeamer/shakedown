@@ -277,7 +277,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "A
 
 Expected: `summary: 1/1 byte-identical`.
 
-- [ ] **Step 4.4: Commit reusable anchor emission**
+- [x] **Step 4.4: Commit reusable anchor emission**
 
 ```bash
 git add src/30-act3-span.spl src/40-act4-emit.spl shakedown.spl docs/spl/token-codes.md tests/test_token_codes.py
