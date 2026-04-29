@@ -245,7 +245,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run shakespeare run shakedown.spl < /dev/null
 
 Expected: both commands exit 0. The program may emit no stdout.
 
-- [ ] **Step 2.6: Commit the four-act skeleton**
+- [x] **Step 2.6: Commit the four-act skeleton**
 
 ```bash
 git add src/00-preamble.spl src/10-act1-preprocess.spl src/20-act2-block.spl src/30-act3-span.spl src/40-act4-emit.spl src/manifest.toml
