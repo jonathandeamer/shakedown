@@ -389,7 +389,7 @@ Expected stdout:
 <p></p>
 ```
 
-- [ ] **Step 4.3: Commit**
+- [x] **Step 4.3: Commit**
 
 ```bash
 git add src/40-act4-emit.spl shakedown.spl
