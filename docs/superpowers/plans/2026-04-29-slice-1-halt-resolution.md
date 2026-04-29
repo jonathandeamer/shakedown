@@ -129,7 +129,7 @@ git commit -m "test: guard Slice 1 against fixture-specific unrolling"
 - Modify: `src/10-act1-preprocess.spl`
 - Modify: `shakedown.spl`
 
-- [ ] **Step 2.1: Replace exact tail stripping with line-buffered reference recognition**
+- [x] **Step 2.1: Replace exact tail stripping with line-buffered reference recognition**
 
 Edit `src/10-act1-preprocess.spl` so Act I uses this shape:
 
