@@ -403,7 +403,7 @@ git commit -m "feat: prove Act IV byte-literal emission"
 **Files:**
 - Modify: `./shakedown`
 
-- [ ] **Step 5.1: Replace `./shakedown`**
+- [x] **Step 5.1: Replace `./shakedown`**
 
 Edit `./shakedown`:
 
