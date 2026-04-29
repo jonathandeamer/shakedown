@@ -1,8 +1,9 @@
 # Ordered list of fragments assembled into shakedown.spl.
-# During Prototype 1 we have exactly three processing phases plus preamble.
+# Slice 1 establishes the selected four-act architecture.
 fragments = [
     "00-preamble.spl",
-    "10-phase1-read.spl",
-    "20-phase2-block.spl",
-    "30-phase3-inline.spl",
+    "10-act1-preprocess.spl",
+    "20-act2-block.spl",
+    "30-act3-span.spl",
+    "40-act4-emit.spl",
 ]

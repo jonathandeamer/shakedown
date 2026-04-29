@@ -130,7 +130,7 @@ git commit -m "test: add Slice 1 strict parity gate"
 - Create: `src/10-act1-preprocess.spl`, `src/20-act2-block.spl`, `src/30-act3-span.spl`, `src/40-act4-emit.spl`
 - Modify: `src/manifest.toml`
 
-- [ ] **Step 2.1: Replace the manifest with the four-act fragment order**
+- [x] **Step 2.1: Replace the manifest with the four-act fragment order**
 
 Edit `src/manifest.toml`:
 
