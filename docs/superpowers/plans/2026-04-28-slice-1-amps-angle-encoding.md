@@ -286,7 +286,7 @@ def test_emit_speak_lines_for_literal() -> None:
     assert lines == expected
 ```
 
-- [ ] **Step 3.2: Run the test and confirm it fails**
+- [x] **Step 3.2: Run the test and confirm it fails**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py::test_emit_speak_lines_for_literal -v
