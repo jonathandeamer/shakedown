@@ -456,7 +456,7 @@ Use one-question-per-scene discipline: every character comparison must branch im
 
 Add a temporary terminal scene that outputs `12` through `Open your heart!` when both reference records have been seeded. This probe is removed in Task 8 after Act III consumes the records.
 
-- [ ] **Step 6.3: Verify the Act I probe**
+- [x] **Step 6.3: Verify the Act I probe**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
