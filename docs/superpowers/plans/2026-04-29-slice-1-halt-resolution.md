@@ -209,7 +209,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py::te
 
 Expected: the structural tests still fail only for the full anchor-output scenes. They must no longer report the two fixed inline destination labels or the 19/21 glyph fragments.
 
-- [ ] **Step 3.3: Verify inline links still match the oracle**
+- [x] **Step 3.3: Verify inline links still match the oracle**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "Amps and angle encoding"
