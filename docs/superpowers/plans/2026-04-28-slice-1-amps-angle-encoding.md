@@ -230,7 +230,7 @@ Prospero: Let us proceed to scene @ACT_IV_DONE.
 [Exeunt]
 ```
 
-- [ ] **Step 2.4: Remove prototype fragments**
+- [x] **Step 2.4: Remove prototype fragments**
 
 ```bash
 rm src/10-phase1-read.spl src/20-phase2-block.spl src/30-phase3-inline.spl
