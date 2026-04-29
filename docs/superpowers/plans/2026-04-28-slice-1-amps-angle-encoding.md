@@ -312,7 +312,7 @@ def emit_speak_lines(literal: bytes, speaker: str) -> list[str]:
     return lines
 ```
 
-- [ ] **Step 3.4: Run codegen tests**
+- [x] **Step 3.4: Run codegen tests**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py -q
