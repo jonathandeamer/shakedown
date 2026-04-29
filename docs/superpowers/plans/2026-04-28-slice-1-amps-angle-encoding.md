@@ -565,7 +565,7 @@ git commit -m "feat: add Slice 1 span substitutions"
 **Files:**
 - Modify: `src/40-act4-emit.spl`
 
-- [ ] **Step 9.1: Replace the smoke emitter with token-stream emission**
+- [x] **Step 9.1: Replace the smoke emitter with token-stream emission**
 
 Replace the temporary `<p></p>` emitter with a token-stream walk:
 

@@ -593,27 +593,6 @@ Romeo: Let us return to scene @LYRIC_REVERSE_CHECK.
 
                     Scene @ACT_III_DONE: The third act yields.
 
-[Exit Romeo]
-[Enter Puck]
-
-Puck: You are as fair as the sum of a big big big big big big big big cat and the sum of a big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big cat and a big cat.
-Juliet: Let us proceed to scene @LYRIC_PROBE_CHECK.
-
-                    Scene @LYRIC_PROBE_CHECK: The finished line is shown.
-
-Puck: Are you as fair as nothing?
-Juliet: If so, let us proceed to scene @LYRIC_PROBE_DONE.
-Juliet: If not, let us proceed to scene @LYRIC_PROBE_POP.
-
-                    Scene @LYRIC_PROBE_POP: The herald speaks one finished glyph.
-
-Juliet: Recall the transformed word.
-Juliet: Speak your mind!
-Puck: You are as fair as the difference between Juliet and a cat.
-Puck: Let us return to scene @LYRIC_PROBE_CHECK.
-
-                    Scene @LYRIC_PROBE_DONE: The third act truly yields.
-
 [Exeunt]
 
                     Act IV: The ceremony of emission.
