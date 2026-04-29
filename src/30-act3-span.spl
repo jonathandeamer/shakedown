@@ -66,102 +66,48 @@ Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 Romeo: Recall the inline path's first gate.
 Puck: You are as fair as the difference between Romeo and a cat.
 Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat?
-Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_DIRECT_DESTINATION.
+Puck: If so, let us proceed to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
 Puck: If not, let us proceed to scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION.
 
                     Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: The path asks for its silver bracket.
 
 Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat?
-Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_BRACKETED_DESTINATION.
+Puck: If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
-                    Scene @LYRIC_INLINE_POP_DIRECT_DESTINATION: The bare path is swallowed.
+                    Scene @LYRIC_INLINE_DEST_DIRECT_CHECK: The bare path seeks its close.
 
-Romeo: Recall the inline path glyph 1.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 2.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 3.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 4.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 5.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 6.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 7.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 8.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 9.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 10.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 11.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 12.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 13.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 14.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 15.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 16.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 17.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 18.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the inline path glyph 19.
-Puck: You are as fair as the difference between Romeo and a cat.
-Puck: Let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat?
+Puck: If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
+Puck: If not, let us proceed to scene @LYRIC_INLINE_DEST_DIRECT_KEEP.
 
-                    Scene @LYRIC_INLINE_POP_BRACKETED_DESTINATION: The bracketed path is swallowed.
+                    Scene @LYRIC_INLINE_DEST_DIRECT_KEEP: One bare path glyph is kept.
 
-Romeo: Recall the bracketed path glyph 1.
+Puck: Remember me.
+Romeo: Recall the inline path's next gate.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 2.
+Puck: Let us return to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
+
+                    Scene @LYRIC_INLINE_DEST_BRACKETED_POP: The bracketed path yields a glyph.
+
+Romeo: Recall the bracketed path's next gate.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 3.
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat?
+Puck: If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_CLOSE.
+Puck: If not, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_KEEP.
+
+                    Scene @LYRIC_INLINE_DEST_BRACKETED_KEEP: One bracketed path glyph is kept.
+
+Puck: Remember me.
+Puck: Let us return to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
+
+                    Scene @LYRIC_INLINE_DEST_BRACKETED_CLOSE: The bracketed path seeks its round seal.
+
+Romeo: Recall the bracketed path's round seal.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 4.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 5.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 6.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 7.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 8.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 9.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 10.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 11.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 12.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 13.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 14.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 15.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 16.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 17.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 18.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 19.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 20.
-Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Recall the bracketed path glyph 21.
-Puck: You are as fair as the difference between Romeo and a cat.
-Puck: Let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
+Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat?
+Puck: If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
+Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
                     Scene @LYRIC_OPEN_OUTPUT_INLINE_LINK: Juliet receives the inline anchor.
 

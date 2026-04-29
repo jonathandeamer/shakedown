@@ -183,7 +183,7 @@ git commit -m "refactor: scan Slice 1 references by delimiter"
 - Modify: `src/30-act3-span.spl`
 - Modify: `shakedown.spl`
 
-- [ ] **Step 3.1: Replace fixed-length inline destination popping**
+- [x] **Step 3.1: Replace fixed-length inline destination popping**
 
 Edit `src/30-act3-span.spl` so inline link parsing consumes destinations by delimiters:
 
