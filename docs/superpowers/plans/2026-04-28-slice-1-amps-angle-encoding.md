@@ -334,7 +334,7 @@ git commit -m "feat: generate SPL speech lines for HTML byte literals"
 **Files:**
 - Modify: `src/40-act4-emit.spl`
 
-- [ ] **Step 4.1: Replace Act IV with a single paragraph literal smoke**
+- [x] **Step 4.1: Replace Act IV with a single paragraph literal smoke**
 
 Temporarily make Act IV emit `<p></p>\n` so byte emission is proven before parser state is added. Generate the Prospero speech lines from the helper added in Task 3, not by hand:
 
