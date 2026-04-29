@@ -1,0 +1,11 @@
+                    Scene @ACT_II_START: The mason sees the first shape.
+
+[Enter Lady Macbeth and Macbeth]
+
+Macbeth: Let us proceed to scene @ACT_II_DONE.
+
+                    Scene @ACT_II_DONE: The second act yields.
+
+[Exeunt]
+
+                    Act III: The ornament of spans.

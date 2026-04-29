@@ -166,7 +166,7 @@ Prospero, scribe and emitter, whose pronouncements close the work.
                     Act I: The underworld of preparation.
 ```
 
-- [ ] **Step 2.3: Create empty runnable act fragments**
+- [x] **Step 2.3: Create empty runnable act fragments**
 
 Create `src/10-act1-preprocess.spl`:
 
