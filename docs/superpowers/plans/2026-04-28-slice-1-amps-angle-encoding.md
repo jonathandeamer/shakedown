@@ -113,7 +113,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py -v
 
 Expected: failure because `./shakedown` still delegates to `Markdown.pl` and/or `shakedown.spl` is not committed.
 
-- [ ] **Step 1.3: Commit the failing gate**
+- [x] **Step 1.3: Commit the failing gate**
 
 ```bash
 git add tests/test_slice1_amps_angle.py
