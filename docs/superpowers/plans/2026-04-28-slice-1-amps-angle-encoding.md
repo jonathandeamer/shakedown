@@ -294,7 +294,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py::test_em
 
 Expected: import failure for `emit_speak_lines`.
 
-- [ ] **Step 3.3: Implement `emit_speak_lines`**
+- [x] **Step 3.3: Implement `emit_speak_lines`**
 
 Append to `scripts/codegen_html.py` above `main()`:
 

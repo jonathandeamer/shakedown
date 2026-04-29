@@ -43,6 +43,19 @@ def emit_literal(literal: bytes) -> list[str]:
     return [emit_byte(b) for b in literal]
 
 
+def emit_speak_lines(literal: bytes, speaker: str) -> list[str]:
+    """Return SPL assignment/output lines for a byte literal.
+
+    The speaker assigns each byte value to the listener, then speaks the
+    listener's character value with `Speak your mind!`.
+    """
+    lines: list[str] = []
+    for phrase in emit_literal(literal):
+        lines.append(f"{speaker}: You are as good as {phrase}.")
+        lines.append(f"{speaker}: Speak your mind!")
+    return lines
+
+
 _PHRASE_RE = re.compile(r"^a(?: big)*(?: cat)$")
 
 
