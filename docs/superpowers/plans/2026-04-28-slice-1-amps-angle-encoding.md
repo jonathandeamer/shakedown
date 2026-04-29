@@ -515,7 +515,7 @@ git commit -m "feat: add Slice 1 paragraph token stream"
 **Files:**
 - Modify: `src/30-act3-span.spl`
 
-- [ ] **Step 8.1: Implement raw text encoding**
+- [x] **Step 8.1: Implement raw text encoding**
 
 Add span scenes that transform paragraph text payloads:
 
