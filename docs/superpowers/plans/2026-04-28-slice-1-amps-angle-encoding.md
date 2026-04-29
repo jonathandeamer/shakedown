@@ -490,7 +490,7 @@ Replace the Act II fragment with paragraph-only tokenization:
 
 No headers, lists, blockquotes, code blocks, horizontal rules, or raw HTML tokens are allowed in this slice.
 
-- [ ] **Step 7.2: Verify paragraph count with a temporary probe**
+- [x] **Step 7.2: Verify paragraph count with a temporary probe**
 
 Add a temporary Act II terminal probe that outputs the number of `PARA` tokens for the fixture.
 
