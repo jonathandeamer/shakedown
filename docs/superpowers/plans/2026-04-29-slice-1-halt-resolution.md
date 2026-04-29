@@ -106,7 +106,7 @@ def test_slice1_avoids_known_fixed_length_glyph_consumption() -> None:
     assert not present, f"fixed-length fixture consumption remains: {present}"
 ```
 
-- [ ] **Step 1.2: Run the structural gate and confirm it fails**
+- [x] **Step 1.2: Run the structural gate and confirm it fails**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py -q
