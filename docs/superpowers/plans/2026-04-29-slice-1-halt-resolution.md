@@ -311,7 +311,7 @@ Expected:
 - Strict parity reports `summary: 1/1 byte-identical`.
 - The selected mdtest fixture passes.
 
-- [ ] **Step 5.2: Run setup/unit no-regression checks**
+- [x] **Step 5.2: Run setup/unit no-regression checks**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_token_codes.py tests/test_iconic_moments.py tests/test_literary_toml_schema.py tests/test_codegen_html.py tests/test_shakedown_run.py tests/test_strict_parity_harness.py -q
