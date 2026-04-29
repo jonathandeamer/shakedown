@@ -11,3 +11,5 @@ cannot resolve from the universities (`@file` references in
 blocker mid-run. The operator removes the line when the block is resolved.
 
 Non-blocking notes (no halt) use `- NOTE:` instead.
+
+- BLOCK: Slice 1 shakedown.spl exceeds architecture line-budget halt trigger
