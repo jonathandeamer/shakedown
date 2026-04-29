@@ -233,7 +233,7 @@ git commit -m "refactor: parse Slice 1 inline destinations by delimiter"
 - Modify: `src/40-act4-emit.spl`
 - Modify: `shakedown.spl`
 
-- [ ] **Step 4.1: Move full anchor literals out of Act III**
+- [x] **Step 4.1: Move full anchor literals out of Act III**
 
 Edit `src/30-act3-span.spl` and `src/40-act4-emit.spl` to use reusable anchor pieces:
 

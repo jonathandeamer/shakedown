@@ -2,8 +2,8 @@
 
 [Enter Puck and Prospero]
 
-Puck: You are as noble as the sum of a big big big big big big big big cat and the sum of a big big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big cat.
-Prospero: Let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_OPEN.
+Puck: You are as noble as the sum of a big big big big big big big big cat and the sum of a big big big big big big big cat and the sum of a big cat and a cat.
+Prospero: Let us proceed to scene @SCRIBE_STREAM_CHECK.
 
                     Scene @SCRIBE_STREAM_CHECK: The cell measures the remaining words.
 
@@ -23,10 +23,98 @@ Puck: If not, let us proceed to scene @SCRIBE_TEST_PARAGRAPH_CLOSE.
 
 Prospero: Are you as noble as nothing?
 Puck: If so, let us proceed to scene @SCRIBE_TEST_FINAL_CLOSE.
+Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_OPEN.
+
+                    Scene @SCRIBE_TEST_ANCHOR_OPEN: Prospero tests an anchor gate.
+
+Prospero: Are you as noble as the sum of a big big big cat and the sum of a big cat and a cat?
+Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_OPEN.
+Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TITLE.
+
+                    Scene @SCRIBE_TEST_ANCHOR_TITLE: Prospero tests a title gate.
+
+Prospero: Are you as noble as the sum of a big big big cat and a big big cat?
+Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TITLE.
+Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TEXT.
+
+                    Scene @SCRIBE_TEST_ANCHOR_TEXT: Prospero tests a text gate.
+
+Prospero: Are you as noble as the sum of a big big big cat and the sum of a big big cat and a cat?
+Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TEXT.
+Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_CLOSE.
+
+                    Scene @SCRIBE_TEST_ANCHOR_CLOSE: Prospero tests an anchor seal.
+
+Prospero: Are you as noble as the sum of a big big big cat and the sum of a big big cat and a big cat?
+Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_CLOSE.
 Puck: If not, let us proceed to scene @SCRIBE_EMIT_PAYLOAD.
 
                     Scene @SCRIBE_EMIT_PAYLOAD: One glyph is released.
 
+Prospero: Speak your mind!
+Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+
+                    Scene @SCRIBE_EMIT_ANCHOR_OPEN: Prospero opens an anchor.
+
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and a big big big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Prospero: Speak your mind!
+Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+
+                    Scene @SCRIBE_EMIT_ANCHOR_TITLE: Prospero opens an anchor title.
+
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and a big big big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Prospero: Speak your mind!
+Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+
+                    Scene @SCRIBE_EMIT_ANCHOR_TEXT: Prospero opens anchor text.
+
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Prospero: Speak your mind!
+Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+
+                    Scene @SCRIBE_EMIT_ANCHOR_CLOSE: Prospero closes an anchor.
+
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Prospero: Speak your mind!
+Prospero: You are as good as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
 Prospero: Speak your mind!
 Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
 

@@ -23,6 +23,15 @@ Utility variation does not apply to these.
 | CODE_BLOCK | 9 | `the sum of a big big big cat and a cat` |
 | RAW_HTML_HASH | 10 | `the sum of a big big big cat and a big cat` |
 
+## Inline-marker allocation
+
+| Name | Code | Canonical SPL phrase |
+|---|---:|---|
+| ANCHOR_OPEN | 11 | `the sum of a big big big cat and the sum of a big cat and a cat` |
+| ANCHOR_TITLE | 12 | `the sum of a big big big cat and a big big cat` |
+| ANCHOR_TEXT | 13 | `the sum of a big big big cat and the sum of a big big cat and a cat` |
+| ANCHOR_CLOSE | 14 | `the sum of a big big big cat and the sum of a big big cat and a big cat` |
+
 **Atoms used:** `a cat` (1, 2 words), `a big cat` (2, 3 words),
 `a big big cat` (4, 4 words), `a big big big cat` (8, 5 words).
 All atoms are at most 6 words.
