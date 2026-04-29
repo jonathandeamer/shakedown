@@ -269,7 +269,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py::te
 
 Expected: both structural tests pass.
 
-- [ ] **Step 4.3: Verify strict Slice 1 parity**
+- [x] **Step 4.3: Verify strict Slice 1 parity**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "Amps and angle encoding"
