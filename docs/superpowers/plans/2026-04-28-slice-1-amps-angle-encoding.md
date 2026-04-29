@@ -551,7 +551,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run shakespeare run shakedown.spl < ~/mdtest/M
 
 Expected: probe output includes `AT&amp;T`, `4 &lt; 5.`, and the four expected `<a href=` forms.
 
-- [ ] **Step 8.5: Commit**
+- [x] **Step 8.5: Commit**
 
 ```bash
 git add src/30-act3-span.spl shakedown.spl
