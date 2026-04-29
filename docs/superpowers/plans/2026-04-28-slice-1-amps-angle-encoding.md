@@ -261,7 +261,7 @@ git commit -m "feat: establish four-act SPL source layout"
 - Modify: `scripts/codegen_html.py`
 - Modify: `tests/test_codegen_html.py`
 
-- [ ] **Step 3.1: Add failing tests for SPL speech generation**
+- [x] **Step 3.1: Add failing tests for SPL speech generation**
 
 Add `emit_speak_lines` to the existing top-level import in `tests/test_codegen_html.py`:
 

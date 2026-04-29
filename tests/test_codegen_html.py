@@ -4,7 +4,12 @@ from __future__ import annotations
 
 import pytest
 
-from scripts.codegen_html import emit_byte, emit_literal, parse_value_phrase
+from scripts.codegen_html import (
+    emit_byte,
+    emit_literal,
+    emit_speak_lines,
+    parse_value_phrase,
+)
 
 
 @pytest.mark.parametrize(
@@ -43,6 +48,15 @@ def test_emit_literal_for_open_p_tag() -> None:
     bytes_ = emit_literal(b"<p>")
     parsed = [parse_value_phrase(p) for p in bytes_]
     assert parsed == [ord("<"), ord("p"), ord(">")]
+
+
+def test_emit_speak_lines_for_literal() -> None:
+    lines = emit_speak_lines(b"<p>", speaker="Prospero")
+    expected: list[str] = []
+    for phrase in emit_literal(b"<p>"):
+        expected.append(f"Prospero: You are as good as {phrase}.")
+        expected.append("Prospero: Speak your mind!")
+    assert lines == expected
 
 
 def test_atom_cap_on_emitted_atoms() -> None:
