@@ -61,7 +61,7 @@ The implementation must satisfy all of these before the blocker can be removed:
 **Files:**
 - Modify: `tests/test_slice1_amps_angle.py`
 
-- [ ] **Step 1.1: Add the failing structural checks**
+- [x] **Step 1.1: Add the failing structural checks**
 
 Append these tests to `tests/test_slice1_amps_angle.py`:
 
