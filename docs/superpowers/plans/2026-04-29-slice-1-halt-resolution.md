@@ -260,7 +260,7 @@ Remove these Act III scenes entirely:
 - `@LYRIC_OUTPUT_REFERENCE_TWO`
 - `@LYRIC_OUTPUT_INLINE_LINK`
 
-- [ ] **Step 4.2: Assemble and run the structural gate**
+- [x] **Step 4.2: Assemble and run the structural gate**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
