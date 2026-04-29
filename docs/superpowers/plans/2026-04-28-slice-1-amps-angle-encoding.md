@@ -105,7 +105,7 @@ def test_amps_and_angle_encoding_strict_parity() -> None:
     assert "summary: 1/1 byte-identical" in result.stdout
 ```
 
-- [ ] **Step 1.2: Run the new gate and confirm it fails for the right reason**
+- [x] **Step 1.2: Run the new gate and confirm it fails for the right reason**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py -v
