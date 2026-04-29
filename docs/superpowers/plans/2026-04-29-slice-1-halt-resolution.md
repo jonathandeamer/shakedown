@@ -297,7 +297,7 @@ If `docs/spl/token-codes.md` and `tests/test_token_codes.py` did not change, lea
 - Modify: `docs/superpowers/plans/plan-roadmap.md`
 - Modify: `docs/prompt-shakedown.md`
 
-- [ ] **Step 5.1: Run the full Slice 1 gate**
+- [x] **Step 5.1: Run the full Slice 1 gate**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py -q
