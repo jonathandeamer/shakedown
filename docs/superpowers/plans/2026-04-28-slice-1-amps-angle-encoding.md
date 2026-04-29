@@ -607,7 +607,7 @@ git commit -m "feat: emit Slice 1 paragraph HTML"
 **Files:**
 - Modify: `shakedown.spl` if assembly output is stale
 
-- [ ] **Step 10.1: Reassemble release artifact**
+- [x] **Step 10.1: Reassemble release artifact**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
