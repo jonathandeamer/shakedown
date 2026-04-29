@@ -437,7 +437,7 @@ git commit -m "feat: route shakedown entrypoint to SPL artifact"
 **Files:**
 - Modify: `src/10-act1-preprocess.spl`
 
-- [ ] **Step 6.1: Implement the Slice 1 Act I read loop**
+- [x] **Step 6.1: Implement the Slice 1 Act I read loop**
 
 Replace the Act I fragment with scenes that:
 
