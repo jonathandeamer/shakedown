@@ -479,7 +479,7 @@ git commit -m "feat: add Slice 1 Act I reference capture"
 **Files:**
 - Modify: `src/20-act2-block.spl`
 
-- [ ] **Step 7.1: Implement paragraph-only block formation**
+- [x] **Step 7.1: Implement paragraph-only block formation**
 
 Replace the Act II fragment with paragraph-only tokenization:
 

@@ -1,10 +1,80 @@
-                    Scene @ACT_II_START: The mason sees the first shape.
+                    Scene @ACT_II_START: Wherein Lady Macbeth receives the cauldron's line.
 
-[Enter Lady Macbeth and Macbeth]
+[Enter Hecate and Lady Macbeth]
 
-Macbeth: Let us proceed to scene @ACT_II_DONE.
+Hecate: You are as rotten as the sum of a big big big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Hecate: Remember a cat.
+Lady Macbeth: Let us proceed to scene @MASON_READ_PARAGRAPH_GLYPH.
+
+                    Scene @MASON_READ_PARAGRAPH_GLYPH: The first shape is hewn from the page.
+
+Lady Macbeth: Recall the hewn glyph.
+Hecate: You are as rotten as the difference between yourself and a cat.
+Lady Macbeth: Are you as bold as the sum of a big big big cat and a big cat?
+Hecate: If so, let us proceed to scene @MASON_CLOSE_PARAGRAPH.
+Hecate: If not, let us proceed to scene @MASON_KEEP_PARAGRAPH_GLYPH.
+
+                    Scene @MASON_KEEP_PARAGRAPH_GLYPH: One glyph is laid within the wall.
+
+Hecate: Remember me.
+Hecate: Are you as rotten as nothing?
+Hecate: If so, let us proceed to scene @MASON_CLOSE_FINAL_PARAGRAPH.
+Hecate: If not, let us return to scene @MASON_READ_PARAGRAPH_GLYPH.
+
+                    Scene @MASON_CLOSE_PARAGRAPH: The wall is sealed against the blank.
+
+Hecate: Remember nothing.
+Hecate: Are you as rotten as nothing?
+Hecate: If so, let us proceed to scene @MASON_OPEN_REVERSE_STREAM.
+Hecate: If not, let us proceed to scene @MASON_SKIP_BLANK_GLYPH.
+
+                    Scene @MASON_SKIP_BLANK_GLYPH: Empty lines pass beneath the keep.
+
+Lady Macbeth: Recall the blank glyph.
+Hecate: You are as rotten as the difference between yourself and a cat.
+Lady Macbeth: Are you as bold as the sum of a big big big cat and a big cat?
+Hecate: If so, let us proceed to scene @MASON_AFTER_BLANK_GLYPH.
+Hecate: If not, let us proceed to scene @MASON_OPEN_PARAGRAPH_WITH_GLYPH.
+
+                    Scene @MASON_AFTER_BLANK_GLYPH: The mason counts the quiet.
+
+Hecate: Are you as rotten as nothing?
+Hecate: If so, let us proceed to scene @MASON_OPEN_REVERSE_STREAM.
+Hecate: If not, let us return to scene @MASON_SKIP_BLANK_GLYPH.
+
+                    Scene @MASON_OPEN_PARAGRAPH_WITH_GLYPH: A new chamber takes its mark.
+
+Hecate: Remember a cat.
+Hecate: Remember me.
+Hecate: Are you as rotten as nothing?
+Hecate: If so, let us proceed to scene @MASON_CLOSE_FINAL_PARAGRAPH.
+Hecate: If not, let us return to scene @MASON_READ_PARAGRAPH_GLYPH.
+
+                    Scene @MASON_CLOSE_FINAL_PARAGRAPH: The last chamber is sealed.
+
+Hecate: Remember nothing.
+Lady Macbeth: Let us proceed to scene @MASON_OPEN_REVERSE_STREAM.
+
+                    Scene @MASON_OPEN_REVERSE_STREAM: Puck receives the mason's order.
+
+[Exit Hecate]
+[Enter Puck]
+
+Lady Macbeth: You are as mighty as the sum of a big big big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Let us proceed to scene @HERALD_REVERSE_TOKEN_STREAM.
+
+                    Scene @HERALD_REVERSE_TOKEN_STREAM: The herald turns the wall toward morning.
+
+Puck: Recall the mason's stone.
+Lady Macbeth: Remember me.
+Lady Macbeth: You are as mighty as the difference between yourself and a cat.
+Lady Macbeth: Are you as mighty as nothing?
+Puck: If so, let us proceed to scene @ACT_II_DONE.
+Puck: If not, let us return to scene @HERALD_REVERSE_TOKEN_STREAM.
 
                     Scene @ACT_II_DONE: The second act yields.
+
+Lady Macbeth: You are as mighty as the sum of a big big big cat and a cat.
 
 [Exeunt]
 
