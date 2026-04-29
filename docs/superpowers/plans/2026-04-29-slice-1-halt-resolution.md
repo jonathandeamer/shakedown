@@ -321,7 +321,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pyright scripts/codegen_html.py scripts/sh
 
 Expected: all tests/checks pass.
 
-- [ ] **Step 5.3: Measure and record Slice 1 runtime**
+- [x] **Step 5.3: Measure and record Slice 1 runtime**
 
 Run:
 

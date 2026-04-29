@@ -243,6 +243,25 @@ Each replay was run once as part of the docs restructure. Results below capture 
 
 - **Disposition:** Compared to B14's 4k-line cost (13.289s median), the 200-scene probe runs faster despite using 200 scenes in one act. This suggests scene count is not the dominant cost driver at this scale, and ~130-scene prior-attempt architectures had scene-count headroom. Re-measure if a future production build materially exceeds this shape.
 
+### B19 — Slice 1 halt-resolution runtime
+
+- **Command:**
+  ```
+  env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/measure_spl_cost.py shakedown.spl --stdin ~/mdtest/Markdown.mdtest/"Amps and angle encoding.text" --runs 5
+  ```
+- **Purpose:** record the runtime of the Slice 1 halt-resolution SPL artifact after replacing the known fixture-specific unrolling and full hardcoded anchor-output scenes. This is the timing gate required by `docs/superpowers/plans/2026-04-29-slice-1-halt-resolution.md` Step 5.3.
+- **Observed (2026-04-29, commit `61f72fc`):**
+
+  ```
+  file: shakedown.spl
+  runs: 5
+  first: 10.474s
+  median: 10.474s
+  all: ['10.474', '10.278', '10.345', '12.933', '10.576']
+  ```
+
+- **Disposition:** The Slice 1 fixture is just over the green threshold for a single small fixture (`<= 10s`) and remains in the yellow zone (`<= 30s`) from `docs/performance/budget.md`. Continue to treat fixture-runtime cost as architecture-relevant evidence during Spike A and later dispatcher work.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.
