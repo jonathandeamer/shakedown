@@ -271,6 +271,53 @@ class TestIsLimitMessage:
         assert not is_limit_message("You've hit your limit", "gpt4")
 
 
+class TestRunBackend:
+    def test_codex_prompt_is_sent_on_stdin_not_argv(self, monkeypatch):
+        calls = {}
+        prompt = "x" * 200_000
+
+        class _Pipe:
+            def __iter__(self):
+                return iter(["ok\n"])
+
+        class _Stdin:
+            def write(self, text):
+                calls["stdin_text"] = text
+
+            def close(self):
+                calls["stdin_closed"] = True
+
+        class _Proc:
+            stdout = _Pipe()
+            stdin = _Stdin()
+            returncode = 0
+
+            def wait(self):
+                return 0
+
+        def fake_popen(args, **kwargs):
+            calls["args"] = args
+            calls["kwargs"] = kwargs
+            return _Proc()
+
+        monkeypatch.setattr(subprocess, "Popen", fake_popen)
+
+        exit_code, output = _mod.run_backend("codex", prompt)
+
+        assert exit_code == 0
+        assert output == "ok\n"
+        assert calls["args"] == [
+            "codex",
+            "exec",
+            "--dangerously-bypass-approvals-and-sandbox",
+            "-",
+        ]
+        assert prompt not in calls["args"]
+        assert calls["kwargs"]["stdin"] is subprocess.PIPE
+        assert calls["stdin_text"] == prompt
+        assert calls["stdin_closed"] is True
+
+
 class TestStateIO:
     def test_missing_file_returns_defaults(self, tmp_path):
         state = load_state(tmp_path / "nonexistent.json")

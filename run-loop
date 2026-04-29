@@ -3,12 +3,12 @@
 
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import os
 import re
-import signal
 import shutil
+import signal
 import subprocess
 import sys
 import threading
@@ -41,7 +41,9 @@ def _filter_progress_paths(paths: tuple[str, ...]) -> tuple[str, ...]:
     for path in paths:
         if path in RUN_LOOP_IGNORED_PROGRESS_PATHS:
             continue
-        if any(path.startswith(prefix) for prefix in RUN_LOOP_IGNORED_PROGRESS_PREFIXES):
+        if any(
+            path.startswith(prefix) for prefix in RUN_LOOP_IGNORED_PROGRESS_PREFIXES
+        ):
             continue
         filtered.append(path)
     return tuple(sorted(filtered))
@@ -152,9 +154,7 @@ def format_preflight_error(decision: dict[str, object]) -> str:
     """Format a Claude preflight failure for operator-facing stderr output."""
     mem_available_kib = decision["mem_available_kib"]
     mem_mib = (
-        "unknown"
-        if mem_available_kib is None
-        else str(int(mem_available_kib) // 1024)
+        "unknown" if mem_available_kib is None else str(int(mem_available_kib) // 1024)
     )
     swap_text = "enabled" if decision["swap_enabled"] else "none"
     tmp_used_mib = int(decision["tmp_used_bytes"]) // (1024 * 1024)
@@ -164,22 +164,29 @@ def format_preflight_error(decision: dict[str, object]) -> str:
     lines = [
         "run-loop: refusing to launch Claude due to likely memory pressure.",
         f"run-loop: MemAvailable: {mem_mib} MiB; swap: {swap_text}.",
-        f"run-loop: /tmp usage: {tmp_used_mib}/{tmp_total_mib} MiB; Claude temp usage: {claude_tmp_mib} MiB under /tmp/claude-*.",
-        "run-loop: remediation: remove stale /tmp/claude-* directories, add swap, then rerun.",
+        (
+            f"run-loop: /tmp usage: {tmp_used_mib}/{tmp_total_mib} MiB; "
+            f"Claude temp usage: {claude_tmp_mib} MiB under /tmp/claude-*."
+        ),
+        (
+            "run-loop: remediation: remove stale /tmp/claude-* directories, "
+            "add swap, then rerun."
+        ),
     ]
     return "\n".join(lines)
 
 
-def format_resource_failure_error(
-    result: dict[str, object], exit_code: int
-) -> str:
+def format_resource_failure_error(result: dict[str, object], exit_code: int) -> str:
     """Format a Claude post-exit resource failure diagnostic."""
     kind = result["kind"]
     return "\n".join(
         [
             "run-loop: Claude terminated due to likely memory pressure.",
             f"run-loop: exit classification: {kind}; exit code: {exit_code}.",
-            "run-loop: remediation: remove stale /tmp/claude-* directories, add swap, then rerun.",
+            (
+                "run-loop: remediation: remove stale /tmp/claude-* directories, "
+                "add swap, then rerun."
+            ),
         ]
     )
 
@@ -243,7 +250,7 @@ def sum_claude_tmp_bytes(tmp_path: Path) -> int:
 def find_claude_tmp_paths_for_cleanup(
     tmp_path: Path, threshold_bytes: int
 ) -> tuple[list[Path], bool]:
-    """Return cleanup candidates and whether any Claude temp path crossed the threshold."""
+    """Return cleanup candidates and whether a Claude temp path crossed the limit."""
     paths: list[Path] = []
     threshold_crossed = False
     for path in sorted(tmp_path.iterdir()):
@@ -257,7 +264,7 @@ def find_claude_tmp_paths_for_cleanup(
 def cleanup_claude_tmp_if_needed(
     *, consecutive_claude_resource_failures: int, tmp_path: Path
 ) -> bool:
-    """Delete all Claude temp paths after repeated resource failures if threshold is crossed."""
+    """Delete Claude temp paths after repeated failures if threshold is crossed."""
     if consecutive_claude_resource_failures < 3:
         return False
     paths, threshold_crossed = find_claude_tmp_paths_for_cleanup(
@@ -283,6 +290,7 @@ def gather_claude_host_facts() -> dict[str, object]:
         "tmp_used_bytes": tmp_used_bytes,
         "claude_tmp_bytes": claude_tmp_bytes,
     }
+
 
 DEFAULT_STATE = {"last_used": "codex", "both_limited": False}
 
@@ -327,7 +335,9 @@ def expand_refs(text: str, repo_root: Path) -> str:
             path = repo_root / ref
             try:
                 if path.is_dir():
-                    entries = sorted(p.name + ("/" if p.is_dir() else "") for p in path.iterdir())
+                    entries = sorted(
+                        p.name + ("/" if p.is_dir() else "") for p in path.iterdir()
+                    )
                     content = "\n".join(entries) if entries else "(empty directory)"
                 else:
                     content = path.read_text()
@@ -380,6 +390,7 @@ def normalize_state(state: dict[str, object]) -> dict[str, object]:
             normalized[key] = state[key]
     return normalized
 
+
 def reset_success_counters(state: dict[str, object]) -> None:
     """Clear failure streaks after useful progress."""
     state["both_limited"] = False
@@ -422,6 +433,7 @@ def classify_iteration(
 
 def run_backend(backend: str, prompt: str) -> tuple[int, str]:
     """Run backend subprocess, streaming output to terminal and capturing it."""
+    stdin_thread = None
     if backend == "claude":
         proc = subprocess.Popen(
             ["claude", "-p", "--dangerously-skip-permissions"],
@@ -436,11 +448,16 @@ def run_backend(backend: str, prompt: str) -> tuple[int, str]:
         stdin_thread.start()
     else:
         proc = subprocess.Popen(
-            ["codex", "exec", "--dangerously-bypass-approvals-and-sandbox", prompt],
+            ["codex", "exec", "--dangerously-bypass-approvals-and-sandbox", "-"],
+            stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
         )
+        stdin_thread = threading.Thread(
+            target=lambda: (proc.stdin.write(prompt), proc.stdin.close())
+        )
+        stdin_thread.start()
 
     buf = StringIO()
     for line in proc.stdout:
@@ -449,7 +466,7 @@ def run_backend(backend: str, prompt: str) -> tuple[int, str]:
         buf.write(line)
 
     proc.wait()
-    if backend == "claude":
+    if stdin_thread is not None:
         stdin_thread.join()
     return proc.returncode, buf.getvalue()
 
@@ -543,10 +560,9 @@ def main(argv: list[str] | None = None) -> None:
             prompt_failure=prompt_failure,
         )
         fingerprint = fingerprint_output(output)
-        if (
-            fingerprint == state.get("last_output_fingerprint")
-            and not has_useful_repo_progress(before_snapshot, after_snapshot)
-        ):
+        if fingerprint == state.get(
+            "last_output_fingerprint"
+        ) and not has_useful_repo_progress(before_snapshot, after_snapshot):
             classification = "recoverable_failure"
 
         if classification == "useful_progress":
@@ -567,7 +583,10 @@ def main(argv: list[str] | None = None) -> None:
                     tmp_path=Path("/tmp"),
                 ):
                     print(
-                        "run-loop: deleted all /tmp/claude-* after repeated Claude resource failures.",
+                        (
+                            "run-loop: deleted all /tmp/claude-* after "
+                            "repeated Claude resource failures."
+                        ),
                         file=sys.stderr,
                     )
             elif backend == "claude":
@@ -576,7 +595,9 @@ def main(argv: list[str] | None = None) -> None:
             state["last_failure_kind"] = (
                 "limit"
                 if limit_hit
-                else "no_progress" if exit_code == 0 else "backend_failure"
+                else "no_progress"
+                if exit_code == 0
+                else "backend_failure"
             )
             other = "claude" if backend == "codex" else "codex"
 
