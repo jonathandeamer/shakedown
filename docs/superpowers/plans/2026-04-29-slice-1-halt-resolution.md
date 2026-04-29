@@ -168,7 +168,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "A
 
 Expected: this may fail while Act III/IV are still in the old shape, but it must not crash the interpreter. If it fails, the output should show normal Markdown text still flowing to later acts rather than an empty output or SPL runtime error.
 
-- [ ] **Step 2.4: Commit Act I replacement**
+- [x] **Step 2.4: Commit Act I replacement**
 
 ```bash
 git add src/10-act1-preprocess.spl shakedown.spl
