@@ -465,7 +465,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run shakespeare run shakedown.spl < ~/mdtest/M
 
 Expected: stdout contains the probe value `12` and no runtime error.
 
-- [ ] **Step 6.4: Commit**
+- [x] **Step 6.4: Commit**
 
 ```bash
 git add src/10-act1-preprocess.spl shakedown.spl
