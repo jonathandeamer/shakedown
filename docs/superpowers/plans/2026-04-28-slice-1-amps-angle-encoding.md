@@ -236,7 +236,7 @@ Prospero: Let us proceed to scene @ACT_IV_DONE.
 rm src/10-phase1-read.spl src/20-phase2-block.spl src/30-phase3-inline.spl
 ```
 
-- [ ] **Step 2.5: Verify assembly and interpreter parse**
+- [x] **Step 2.5: Verify assembly and interpreter parse**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
