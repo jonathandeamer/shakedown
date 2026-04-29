@@ -151,7 +151,7 @@ Remove the entire `@HECATE_CUT_REFERENCE_TAIL` scene and all `Recall the bargain
 
 Use fresh scene labels with the `@HECATE_LINE_` prefix. Do not reuse the forbidden label from Task 1.
 
-- [ ] **Step 2.2: Assemble and run the structural gate**
+- [x] **Step 2.2: Assemble and run the structural gate**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
