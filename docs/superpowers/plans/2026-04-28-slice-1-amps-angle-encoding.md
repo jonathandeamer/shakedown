@@ -593,7 +593,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "A
 
 Expected: `summary: 1/1 byte-identical`.
 
-- [ ] **Step 9.4: Commit**
+- [x] **Step 9.4: Commit**
 
 ```bash
 git add src/40-act4-emit.spl shakedown.spl
