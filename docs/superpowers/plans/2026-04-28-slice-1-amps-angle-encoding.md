@@ -501,7 +501,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run shakespeare run shakedown.spl < ~/mdtest/M
 
 Expected: probe output confirms 9 paragraphs.
 
-- [ ] **Step 7.3: Commit**
+- [x] **Step 7.3: Commit**
 
 ```bash
 git add src/20-act2-block.spl shakedown.spl
