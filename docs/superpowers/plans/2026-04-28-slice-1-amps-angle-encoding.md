@@ -624,7 +624,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py -v
 
 Expected: all tests pass.
 
-- [ ] **Step 10.3: Run setup/unit no-regression tests**
+- [x] **Step 10.3: Run setup/unit no-regression tests**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_token_codes.py tests/test_iconic_moments.py tests/test_literary_toml_schema.py tests/test_codegen_html.py tests/test_shakedown_run.py tests/test_strict_parity_harness.py -q
