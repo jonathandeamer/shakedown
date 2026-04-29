@@ -320,7 +320,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py -q
 
 Expected: all codegen tests pass.
 
-- [ ] **Step 3.5: Commit**
+- [x] **Step 3.5: Commit**
 
 ```bash
 git add scripts/codegen_html.py tests/test_codegen_html.py
