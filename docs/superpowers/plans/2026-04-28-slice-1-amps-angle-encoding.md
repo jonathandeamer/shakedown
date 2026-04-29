@@ -53,7 +53,7 @@
 **Files:**
 - Create: `tests/test_slice1_amps_angle.py`
 
-- [ ] **Step 1.1: Write the failing Slice 1 gate**
+- [x] **Step 1.1: Write the failing Slice 1 gate**
 
 Create `tests/test_slice1_amps_angle.py`:
 
