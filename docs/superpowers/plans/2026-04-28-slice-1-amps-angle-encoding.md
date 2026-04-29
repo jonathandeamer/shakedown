@@ -146,7 +146,7 @@ fragments = [
 ]
 ```
 
-- [ ] **Step 2.2: Replace the preamble with the selected cast**
+- [x] **Step 2.2: Replace the preamble with the selected cast**
 
 Edit `src/00-preamble.spl`:
 
