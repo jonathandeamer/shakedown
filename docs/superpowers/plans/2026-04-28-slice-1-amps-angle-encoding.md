@@ -376,7 +376,7 @@ Prospero: Speak your mind!
 [Exeunt]
 ```
 
-- [ ] **Step 4.2: Verify assembly output contains `<p></p>`**
+- [x] **Step 4.2: Verify assembly output contains `<p></p>`**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
