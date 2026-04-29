@@ -114,7 +114,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_slice1_amps_angle.py -q
 
 Expected: the existing parity tests pass, and the new structural tests fail with labels/fragments from the current implementation.
 
-- [ ] **Step 1.3: Commit the failing structural gate**
+- [x] **Step 1.3: Commit the failing structural gate**
 
 ```bash
 git add tests/test_slice1_amps_angle.py
