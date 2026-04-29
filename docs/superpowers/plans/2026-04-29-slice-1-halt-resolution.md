@@ -217,7 +217,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "A
 
 Expected: strict parity may still fail until Task 4 moves anchor emission, but the two inline-link paragraphs must appear in the output with `<a href="/script?foo=1&amp;bar=2">link</a>`.
 
-- [ ] **Step 3.4: Commit delimiter-driven inline parsing**
+- [x] **Step 3.4: Commit delimiter-driven inline parsing**
 
 ```bash
 git add src/30-act3-span.spl shakedown.spl
