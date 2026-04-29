@@ -585,7 +585,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_mdtest.py -k "Amps and a
 
 Expected: one selected mdtest passes.
 
-- [ ] **Step 9.3: Verify strict byte parity**
+- [x] **Step 9.3: Verify strict byte parity**
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/strict_parity_harness.py "Amps and angle encoding"
