@@ -182,7 +182,6 @@ recall_pool = [
   "Recall the second shelf's number.",
   "Recall the second shelf's close mark.",
   "Recall the morning's next cut.",
-  "Recall the morning's next cut.",
   "Recall the rose's kept word.",
 ]
 [characters.romeo.stable_utility]

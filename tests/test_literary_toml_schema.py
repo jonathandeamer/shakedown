@@ -181,3 +181,4 @@ def test_character_soft_variation_and_recall_pools_exist() -> None:
         recall_pool = section.get("recall_pool")
         assert isinstance(recall_pool, list), name
         assert all(isinstance(value, str) for value in recall_pool), name
+        assert len(recall_pool) == len(set(recall_pool)), name
