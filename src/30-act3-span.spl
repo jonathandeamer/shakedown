@@ -2,7 +2,7 @@
 
 [Enter Puck and Romeo]
 
-Puck: You are as fair as the sum of a big big big big big big big big cat and the sum of a big big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: You are as fair as the sum of the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower and the sum of the sum of a rural little green sweet flower and a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
 Romeo: Let us proceed to scene @LYRIC_SCAN_CHECK.
 
                     Scene @LYRIC_SCAN_CHECK: The morning counts each glyph.
@@ -15,13 +15,13 @@ Puck: If not, let us proceed to scene @LYRIC_POP_GLYPH.
 
 Romeo: Recall the morning's first cut.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and the sum of a big cat and a cat?
 Puck: If so, let us proceed to scene @LYRIC_REFERENCE_POP_AFTER_OPEN.
 Puck: If not, let us proceed to scene @LYRIC_TEST_AMPERSAND.
 
                     Scene @LYRIC_TEST_AMPERSAND: The ampersand asks after its name.
 
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big cat and a big cat?
 Puck: If so, let us proceed to scene @LYRIC_AMP_POP_NEXT.
 Puck: If not, let us proceed to scene @LYRIC_TEST_LEFT_ANGLE.
 
@@ -29,13 +29,13 @@ Puck: If not, let us proceed to scene @LYRIC_TEST_LEFT_ANGLE.
 
 Romeo: Recall the bracket's first petal.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and a big big cat?
 Puck: If so, let us proceed to scene @LYRIC_REFERENCE_LINK_POP_BODY.
 Puck: If not, let us proceed to scene @LYRIC_REFERENCE_TEST_ATT_TEXT.
 
                     Scene @LYRIC_REFERENCE_TEST_ATT_TEXT: The rose tests the ampersand house.
 
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and a cat?
 Puck: If so, let us proceed to scene @LYRIC_REFERENCE_ATT_POP_BODY.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_REFERENCE_FALLBACK.
 
@@ -51,13 +51,13 @@ Romeo: Recall the link's closing petal.
 Puck: You are as fair as the difference between Romeo and a cat.
 Romeo: Recall the link's following air.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and a big big big big cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and a warm fair golden sunny summer's day?
 Puck: If so, let us proceed to scene @LYRIC_REFERENCE_ONE_POP_LABEL.
 Puck: If not, let us proceed to scene @LYRIC_LINK_TEST_INLINE_OPEN.
 
                     Scene @LYRIC_LINK_TEST_INLINE_OPEN: The small link seeks an inline gate.
 
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and a big big big cat?
 Puck: If so, let us proceed to scene @LYRIC_INLINE_POP_FIRST_DESTINATION.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
@@ -65,19 +65,19 @@ Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
 Romeo: Recall the inline path's first gate.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat?
 Puck: If so, let us proceed to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
 Puck: If not, let us proceed to scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION.
 
                     Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: The path asks for its silver bracket.
 
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and a big big cat?
 Puck: If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
                     Scene @LYRIC_INLINE_DEST_DIRECT_CHECK: The bare path seeks its close.
 
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and a cat?
 Puck: If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
 Puck: If not, let us proceed to scene @LYRIC_INLINE_DEST_DIRECT_KEEP.
 
@@ -92,7 +92,7 @@ Puck: Let us return to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
 
 Romeo: Recall the bracketed path's next gate.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and the sum of a big big cat and a big cat?
 Puck: If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_CLOSE.
 Puck: If not, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_KEEP.
 
@@ -105,7 +105,7 @@ Puck: Let us return to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
 
 Romeo: Recall the bracketed path's round seal.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and a cat?
 Puck: If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
@@ -119,34 +119,34 @@ Juliet: Let us proceed to scene @LYRIC_ANCHOR_INLINE.
                     Scene @LYRIC_ANCHOR_INLINE: The inline path becomes a reusable bright path.
 
 Puck: Remember the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big cat.
 Puck: Remember the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
 Puck: Remember the sum of a big big big cat and the sum of a big big cat and a big cat.
 Juliet: Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -204,46 +204,46 @@ Juliet: Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_ONE.
                     Scene @LYRIC_ANCHOR_REFERENCE_ONE: The first shelf becomes a reusable bright path.
 
 Puck: Remember the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big cat.
 Puck: Remember the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
 Puck: Remember the sum of a big big big cat and the sum of a big big cat and a big cat.
 Juliet: Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -271,39 +271,39 @@ Juliet: Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_TWO.
                     Scene @LYRIC_ANCHOR_REFERENCE_TWO: The second shelf keeps a reusable title.
 
 Puck: Remember the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat.
 Puck: Remember the sum of a big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
 Puck: Remember the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
 Puck: Remember the sum of a big big big cat and the sum of a big big cat and a big cat.
 Juliet: Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -316,12 +316,12 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_LINK_FALLBACK.
 
                     Scene @LYRIC_OUTPUT_LINK_FALLBACK: The unripe link returns unchanged.
 
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a big cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and a big big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a big cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big big cat.
 Juliet: Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
                     Scene @LYRIC_OPEN_REFERENCE_FALLBACK: Juliet receives a lone bracket.
@@ -333,13 +333,13 @@ Juliet: Let us proceed to scene @LYRIC_REFERENCE_FALLBACK.
 
                     Scene @LYRIC_REFERENCE_FALLBACK: The stray bracket returns to the line.
 
-Puck: Remember the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
 Puck: Remember myself.
 Juliet: Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
                     Scene @LYRIC_TEST_LEFT_ANGLE: The line looks for a bracketed shadow.
 
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and a big big cat?
 Puck: If so, let us proceed to scene @LYRIC_LEFT_ANGLE_POP_NEXT.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_CURRENT.
 
@@ -347,7 +347,7 @@ Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_CURRENT.
 
 Romeo: Recall the morning's next cut.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and a cat?
 Puck: If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_AMP_ENTITY_CURRENT.
 
@@ -355,7 +355,7 @@ Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_AMP_ENTITY_CURRENT.
 
 Romeo: Recall the morning's next cut.
 Puck: You are as fair as the difference between Romeo and a cat.
-Romeo: Are you as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat?
+Romeo: Are you as fair as the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and the sum of a big big big cat and the sum of a big big cat and the sum of a big cat and a cat?
 Puck: If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_LITERAL_LEFT_CURRENT.
 Puck: If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT.
 
@@ -381,15 +381,15 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT.
 
                     Scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT: The broken and is gilded.
 
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big big cat and a cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big big cat and a cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big big big cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
 Puck: Remember yourself.
 Puck: You are as fair as myself.
 Puck: Remember yourself.
@@ -404,7 +404,7 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT.
 
                     Scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT: The old name remains whole.
 
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
 Puck: Remember yourself.
 Puck: You are as fair as myself.
 Puck: Remember yourself.
@@ -419,13 +419,13 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT.
 
                     Scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT: The sharp angle turns to light.
 
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big cat and a big cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big cat and a big cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big big cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and a big big cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a big big cat.
 Puck: Remember yourself.
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and the sum of a big cat and a cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and the sum of a big cat and a cat.
 Puck: Remember yourself.
 Puck: You are as fair as myself.
 Puck: Remember yourself.
@@ -440,7 +440,7 @@ Juliet: Let us proceed to scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT.
 
                     Scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT: The path keeps its gate.
 
-Puck: You are as fair as the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big big cat and the sum of a big big big cat and a big big cat.
+Puck: You are as fair as the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a big big big cat and a big big cat.
 Puck: Remember yourself.
 Puck: You are as fair as myself.
 Puck: Remember yourself.
@@ -458,7 +458,7 @@ Romeo: Let us return to scene @LYRIC_SCAN_CHECK.
 [Exit Puck]
 [Enter Juliet]
 
-Juliet: You are as fair as the sum of a big big big big big big big big cat and the sum of a big big big big big big big cat and the sum of a big cat and a cat.
+Juliet: You are as fair as the sum of the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and a beautiful gentle fair sweet rose and the sum of the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and a beautiful gentle fair sweet rose and the sum of a big cat and a cat.
 Romeo: Let us proceed to scene @LYRIC_REVERSE_CHECK.
 
                     Scene @LYRIC_REVERSE_CHECK: The evening counts the garden home.
