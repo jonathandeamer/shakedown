@@ -73,11 +73,23 @@ If a spike or slice triggers a halt (architecture §8.2):
 
 Halting is cheap. Continuing on a wrong floor is expensive.
 
+## Source notes
+
+- Literary prevention is already designed and planned. After this cleanup is
+  reviewed and integrated, use
+  `docs/superpowers/specs/2026-04-30-literary-prevention-design.md` and
+  `docs/superpowers/plans/2026-04-30-literary-prevention-rails.md` to teach the
+  assembler/codegen path to consume `src/literary.toml` and to enforce the SPL
+  literary protocol in future run-loop prompts. Do not start a new design phase
+  for that same scope unless the approved prevention plan is superseded.
+
 ## References
 
 - `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` — the durable plan that this roadmap stages execution against.
 - `docs/superpowers/specs/2026-04-27-loop-prompt-design.md` — design for `docs/prompt-shakedown.md`, produced by plan 1.
 - `docs/superpowers/specs/2026-04-29-slice-1-halt-resolution-design.md` — accepted design for resolving the Slice 1 line-budget halt.
+- `docs/superpowers/specs/2026-04-30-literary-prevention-design.md` — approved design for TOML-backed assembler/codegen and prompt-author prevention rails.
+- `docs/superpowers/plans/2026-04-30-literary-prevention-rails.md` — implementation plan for the approved literary prevention rails.
 - `docs/spl/literary-spec.md` — voice, palette, decorative-surface policy.
 - `docs/ralph-loop.md` — Huntley/Ralph loop methodology and `@file` university pattern.
 - `CLAUDE.md` — commit conventions, version cadence, target interface, `run-loop` contract.
