@@ -56,7 +56,7 @@ Puck:
                     Scene @SCRIBE_TEST_ANCHOR_OPEN: Prospero tests an anchor gate.
 
 Prospero:
- Are you as noble as the sum of a big big big cat and the sum of a big cat and a cat?
+ Are you as noble as the sum of a little furry black cat and the sum of a black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_OPEN.
@@ -68,7 +68,7 @@ Puck:
                     Scene @SCRIBE_TEST_ANCHOR_TITLE: Prospero tests a title gate.
 
 Prospero:
- Are you as noble as the sum of a big big big cat and a big big cat?
+ Are you as noble as the sum of a little furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TITLE.
@@ -80,7 +80,7 @@ Puck:
                     Scene @SCRIBE_TEST_ANCHOR_TEXT: Prospero tests a text gate.
 
 Prospero:
- Are you as noble as the sum of a big big big cat and the sum of a big big cat and a cat?
+ Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TEXT.
@@ -92,7 +92,7 @@ Puck:
                     Scene @SCRIBE_TEST_ANCHOR_CLOSE: Prospero tests an anchor seal.
 
 Prospero:
- Are you as noble as the sum of a big big big cat and the sum of a big big cat and a big
+ Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and a black
   cat?
 
 Puck:
@@ -378,13 +378,13 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as good as the sum of a big big big cat and a big cat.
+ You are as good as the sum of a little furry black cat and a black cat.
 
 Prospero:
  Speak your mind!
 
 Prospero:
- You are as good as the sum of a big big big cat and a big cat.
+ You are as good as the sum of a little furry black cat and a black cat.
 
 Prospero:
  Speak your mind!
@@ -425,7 +425,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as good as the sum of a big big big cat and a big cat.
+ You are as good as the sum of a little furry black cat and a black cat.
 
 Prospero:
  Speak your mind!

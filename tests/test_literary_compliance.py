@@ -21,6 +21,11 @@ SCENE_RE = re.compile(r"Scene\s+@(?P<label>[A-Z_][A-Z0-9_]*)\s*:\s*(?P<title>.+)
 RECALL_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):\s*Recall\s+(?P<body>.+)$")
 SPEAKER_ONLY_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):$")
 BAD_BIG_CAT_RE = re.compile(r"\ba big(?: big){3,} cat\b")
+VALUE_ATOM_RE = re.compile(
+    r"\b(?:a|an)\s+(?P<adjectives>[a-z][a-z' -]*?)\s+"
+    r"(?P<noun>cat|flower|day|rose|hero|angel|tree|brother)\b",
+    re.IGNORECASE,
+)
 ACT_ROMAN = {"act1": "I", "act2": "II", "act3": "III", "act4": "IV"}
 HIGH_VALUE_ATOMS = (
     "a normal little furry black cat",
@@ -139,6 +144,12 @@ def test_recall_phrases_are_in_speaker_pools() -> None:
 def test_no_production_big_big_big_big_cat_atoms() -> None:
     source = _production_source()
     assert not BAD_BIG_CAT_RE.search(source)
+
+
+def test_value_atoms_do_not_repeat_adjectives() -> None:
+    for match in VALUE_ATOM_RE.finditer(_production_source()):
+        adjectives = match["adjectives"].lower().split()
+        assert len(adjectives) == len(set(adjectives)), match.group(0)
 
 
 def test_no_repeated_high_value_atom_chains() -> None:
