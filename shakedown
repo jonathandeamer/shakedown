@@ -2,4 +2,20 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
-exec uv run --directory "$DIR" shakespeare run "$DIR/shakedown.spl"
+stderr_file="$(mktemp)"
+trap 'rm -f "$stderr_file"' EXIT
+
+set +e
+uv run --directory "$DIR" shakespeare run "$DIR/shakedown.spl" 2>"$stderr_file"
+rc=$?
+set -e
+
+cat "$stderr_file" >&2
+
+if [ "$rc" -ne 0 ]; then
+  exit "$rc"
+fi
+
+if grep -q '^SPL runtime error:' "$stderr_file"; then
+  exit 1
+fi
