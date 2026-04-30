@@ -19,7 +19,6 @@ ACT_TITLES = {
 
 SCENE_RE = re.compile(r"Scene\s+@(?P<label>[A-Z_][A-Z0-9_]*)\s*:\s*(?P<title>.+)")
 RECALL_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):\s*Recall\s+(?P<body>.+)$")
-SPEAKER_RE = re.compile(r"^[A-Z][A-Za-z ]+:")
 SPEAKER_ONLY_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):$")
 BAD_BIG_CAT_RE = re.compile(r"\ba big(?: big){3,} cat\b")
 ACT_ROMAN = {"act1": "I", "act2": "II", "act3": "III", "act4": "IV"}
@@ -44,6 +43,11 @@ def _production_source() -> str:
 def _literary() -> dict[str, object]:
     with LITERARY_TOML.open("rb") as f:
         return tomllib.load(f)
+
+
+def _is_inline_character_dialogue(line: str) -> bool:
+    speaker, separator, _body = line.strip().partition(":")
+    return bool(separator) and speaker in CHARACTER_KEY
 
 
 def test_locked_play_title_and_act_titles() -> None:
@@ -127,5 +131,7 @@ def test_speaker_colon_layout_is_removed_when_supported() -> None:
     assert isinstance(layout_exceptions, dict)
     if "speaker_colon_inline" in layout_exceptions:
         return
-    offenders = [line for line in source.splitlines() if SPEAKER_RE.match(line.strip())]
+    offenders = [
+        line for line in source.splitlines() if _is_inline_character_dialogue(line)
+    ]
     assert not offenders[:10]
