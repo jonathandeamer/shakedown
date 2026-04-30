@@ -123,9 +123,14 @@ recipe selection for larger values:
 - generated phrases must remain parser-accepted
 - decomposition is deterministic
 - repeated same-atom sum chains are forbidden for large values
+- repeated adjectives inside a single atom, such as `big big`, are forbidden;
+  value atoms must use varied legal descriptors from the lexicon instead
 - compact verified arithmetic forms such as `the square of A` and
   `the product of A and B` are preferred over repeated addition when they reduce
   repetition without changing value
+- compactness is measured per logical statement, not only per atom: generated
+  recipes must stay under a small arithmetic-operator budget and a bounded
+  logical-statement length
 - `parse_value_phrase` understands the configured atom phrases so tests can
   still round-trip generated values and compact arithmetic recipes
 
@@ -188,8 +193,12 @@ Assembler/codegen gates:
 - configured atom families round-trip through `emit_byte` and
   `parse_value_phrase`.
 - production source has no oversized `big ... cat` atom.
+- generated and production value atoms do not repeat adjectives inside a single
+  noun phrase.
 - generated and production value recipes do not repeat the same high-value atom
   more than a small fixed limit in a single statement.
+- generated and production value recipes stay within fixed per-statement
+  budgets for arithmetic operator count and logical statement length.
 - generated large values use compact verified recipes for representative values
   such as 38, 65, 97, 256, and the current Slice 1 output length.
 

@@ -277,10 +277,10 @@ detab_cauldron = "Recall the cauldron dreg."
 [value_atoms.default]
 v0 = "nothing"
 v1 = "a cat"
-v2 = "a big cat"
-v4 = "a big big cat"
-v8 = "a fine big big cat"
-v16 = "a noble fine big big cat"
+v2 = "a black cat"
+v4 = "a furry black cat"
+v8 = "a little furry black cat"
+v16 = "a normal little furry black cat"
 """,
     )
 
@@ -293,7 +293,7 @@ v16 = "a noble fine big big cat"
         surfaces.resolve("characters.hecate.recall.detab_cauldron")
         == "Recall the cauldron dreg."
     )
-    assert surfaces.value_atoms("default")[16] == "a noble fine big big cat"
+    assert surfaces.value_atoms("default")[16] == "a normal little furry black cat"
 
 
 def test_unknown_key_raises_clear_error(tmp_path: Path) -> None:
@@ -612,10 +612,10 @@ Add this section to `src/literary.toml`:
 [value_atoms.default]
 v0 = "nothing"
 v1 = "a cat"
-v2 = "a big cat"
-v4 = "a big big cat"
-v8 = "a fine big big cat"
-v16 = "a noble fine big big cat"
+v2 = "a black cat"
+v4 = "a furry black cat"
+v8 = "a little furry black cat"
+v16 = "a normal little furry black cat"
 ```
 
 - [ ] **Step 2: Update codegen tests for TOML-loaded atoms and compact recipes**
@@ -624,7 +624,7 @@ In `tests/test_codegen_html.py`, change the atom expectation for `16` by adding
 this case to `test_emit_byte_atom_forms`:
 
 ```python
-(16, "a noble fine big big cat"),
+(16, "a normal little furry black cat"),
 ```
 
 Add `emit_value` to the import from `scripts.codegen_html`.
@@ -633,7 +633,7 @@ Add these tests:
 
 ```python
 def test_emit_byte_uses_toml_value_atoms() -> None:
-    assert emit_byte(16) == "a noble fine big big cat"
+    assert emit_byte(16) == "a normal little furry black cat"
     assert "big big big big cat" not in emit_byte(16)
 
 
@@ -647,10 +647,10 @@ def test_emit_value_uses_compact_large_value_recipes(value: int) -> None:
 
 
 def test_parse_value_phrase_understands_compact_arithmetic() -> None:
-    assert parse_value_phrase("the square of a noble fine big big cat") == 256
+    assert parse_value_phrase("the square of a normal little furry black cat") == 256
     assert (
         parse_value_phrase(
-            "the product of a noble fine big big cat and a big big cat"
+            "the product of a normal little furry black cat and a furry black cat"
         )
         == 64
     )
@@ -659,6 +659,22 @@ def test_parse_value_phrase_understands_compact_arithmetic() -> None:
 def _max_atom_repetition(phrase: str) -> int:
     atoms = _atoms(phrase)
     return max((atoms.count(atom) for atom in set(atoms)), default=0)
+```
+
+Also add a failing test that rejects repeated adjectives inside one generated
+atom:
+
+```python
+def test_emit_byte_atoms_do_not_repeat_adjectives() -> None:
+    for value in [1, 2, 4, 8, 16]:
+        phrase = emit_byte(value)
+        adjectives = _atom_adjectives(phrase)
+        assert len(adjectives) == len(set(adjectives)), phrase
+
+
+def _atom_adjectives(phrase: str) -> list[str]:
+    words = phrase.split()
+    return words[1:-1]
 ```
 
 - [ ] **Step 3: Run tests to verify they fail before implementation**
@@ -788,6 +804,8 @@ these properties:
 
 - no generated phrase for representative large values repeats the same atom more
   than three times
+- no generated atom repeats an adjective inside one noun phrase, such as
+  `big big`, `fine fine`, or `noble noble`
 - 256 is expressed with `the square of ...`, not sixteen repeated 16-value atoms
 - values with several 16-value chunks use `the product of ... and ...`
 - every generated phrase round-trips through `parse_value_phrase`
@@ -829,6 +847,19 @@ git commit -m "feat: drive byte value atoms from literary data"
 Append to `tests/test_literary_compliance.py`:
 
 ```python
+VALUE_ATOM_RE = re.compile(
+    r"\b(?:a|an)\s+(?P<adjectives>[a-z][a-z' -]*?)\s+"
+    r"(?P<noun>cat|flower|day|rose|hero|angel|tree|brother)\b",
+    re.IGNORECASE,
+)
+
+
+def test_value_atoms_do_not_repeat_adjectives() -> None:
+    for match in VALUE_ATOM_RE.finditer(_production_source()):
+        adjectives = match["adjectives"].lower().split()
+        assert len(adjectives) == len(set(adjectives)), match.group(0)
+
+
 def test_controlled_surfaces_use_literary_placeholders_in_source() -> None:
     source = _production_source()
     assert "@LIT.play.title" in source
