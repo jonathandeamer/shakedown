@@ -3,17 +3,9 @@
 [Enter Puck and Romeo]
 
 Puck:
- You are as fair as the sum of the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower and the sum of the sum of a rural little green sweet flower and
-  a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a sweet flower and a flower.
+ You are as fair as the sum of the square of a rural little green sweet flower and
+  the sum of the product of a rural little green sweet flower and the sum of a sweet flower and
+  a flower and the sum of a little green sweet flower and the sum of a sweet flower and a flower.
 
 Romeo:
  Let us proceed to scene @LYRIC_SCAN_CHECK.
@@ -40,10 +32,10 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
-  the sum of a fair golden sunny summer's day and the sum of a sunny summer's day and a summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  the sum of a golden sunny summer's day and a summer's day and
+  the sum of a fair golden sunny summer's day and the sum of a sunny summer's day and
+  a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_POP_AFTER_OPEN.
@@ -55,9 +47,8 @@ Puck:
                     Scene @LYRIC_TEST_AMPERSAND: The ampersand asks after its name.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a golden sunny summer's day and
-  a sunny summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  a sunny summer's day and the sum of a golden sunny summer's day and a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AMP_POP_NEXT.
@@ -75,11 +66,9 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a fair golden sunny summer's day and
-  a golden sunny summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  the sum of a golden sunny summer's day and a sunny summer's day and
+  the sum of a fair golden sunny summer's day and a golden sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_LINK_POP_BODY.
@@ -91,9 +80,8 @@ Puck:
                     Scene @LYRIC_REFERENCE_TEST_ATT_TEXT: The rose tests the ampersand house.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and a summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  a golden sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_ATT_POP_BODY.
@@ -135,8 +123,8 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  a warm fair golden sunny summer's day?
+ Are you as fair as the product of a warm fair golden sunny summer's day and
+  a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_ONE_POP_LABEL.
@@ -148,8 +136,8 @@ Puck:
                     Scene @LYRIC_LINK_TEST_INLINE_OPEN: The small link seeks an inline gate.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and a fair golden sunny summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  a sunny summer's day and a fair golden sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_POP_FIRST_DESTINATION.
@@ -167,8 +155,8 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a fair golden sunny summer's day and
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  a sunny summer's day and the sum of a fair golden sunny summer's day and
   the sum of a golden sunny summer's day and the sum of a sunny summer's day and a summer's day?
 
 Puck:
@@ -181,8 +169,8 @@ Puck:
                     Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: The path asks for its silver bracket.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  the sum of a sunny summer's day and a summer's day and
   the sum of a fair golden sunny summer's day and a golden sunny summer's day?
 
 Puck:
@@ -195,9 +183,8 @@ Puck:
                     Scene @LYRIC_INLINE_DEST_DIRECT_CHECK: The bare path seeks its close.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a fair golden sunny summer's day and
-  a summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  a sunny summer's day and the sum of a fair golden sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
@@ -230,8 +217,8 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  the sum of a sunny summer's day and a summer's day and
   the sum of a fair golden sunny summer's day and the sum of a golden sunny summer's day and
   a sunny summer's day?
 
@@ -260,9 +247,8 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a fair golden sunny summer's day and
-  a summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  a sunny summer's day and the sum of a fair golden sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
@@ -287,160 +273,131 @@ Puck:
  Remember the sum of a big big big cat and the sum of a big cat and a cat.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a little green sweet flower and the sum of a green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
+  a green sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
   the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a green sweet flower and a sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
-  the sum of a green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a green sweet flower and a sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a green sweet flower and
   a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
   the sum of a green sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
+  the sum of a green sweet flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a flower.
+
+Puck:
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
  Remember the sum of a big big big cat and the sum of a big big cat and a cat.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
  Remember the sum of a big big big cat and the sum of a big big cat and a big cat.
@@ -568,228 +525,188 @@ Puck:
  Remember the sum of a big big big cat and the sum of a big cat and a cat.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a little green sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
+  a green sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
+  a green sweet flower.
+
+Puck:
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  a sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
+  the sum of a little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
+  the sum of a little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a green sweet flower and
+  a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
   a little green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
-  a sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
   the sum of a green sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a little green sweet flower.
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a green sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a green sweet flower and
   a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a little green sweet flower and the sum of a green sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
   the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a green sweet flower and a sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
   the sum of a green sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a green sweet flower and a sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
+  the sum of a little green sweet flower and the sum of a green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a green sweet flower and
   a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
   the sum of a green sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
+  the sum of a green sweet flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a flower.
+
+Puck:
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
  Remember the sum of a big big big cat and the sum of a big big cat and a cat.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
  Remember the sum of a big big big cat and the sum of a big big cat and a big cat.
@@ -839,87 +756,72 @@ Puck:
  Remember the sum of a big big big cat and the sum of a big cat and a cat.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a little green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a little green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
+  a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
+  a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
   a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a little green sweet flower and the sum of a green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a little green sweet flower and the sum of a green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
+  a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
+  a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a little green sweet flower and the sum of a green sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and
-  the sum of a sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a little green sweet flower and the sum of a green sweet flower and
   the sum of a sweet flower and a flower.
 
@@ -927,91 +829,75 @@ Puck:
  Remember the sum of a big big big cat and a big big cat.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a green sweet flower and
   a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a flower and a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a green sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a flower and a green sweet flower.
 
 Puck:
  Remember the sum of a big big big cat and the sum of a big big cat and a cat.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a green sweet flower and
   a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a flower and a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   the sum of a green sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  a rural little green sweet flower.
-
-Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the product of a rural little green sweet flower and the sum of a green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
+
+Puck:
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a flower and a green sweet flower.
 
 Puck:
  Remember the sum of a big big big cat and the sum of a big big cat and a big cat.
@@ -1033,37 +919,32 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LINK_FALLBACK: The unripe link returns unchanged.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a flower and the sum of a little green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a green sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a green sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a green sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a sweet flower and a flower.
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and a sweet flower and
   a little green sweet flower.
 
 Juliet:
@@ -1083,9 +964,8 @@ Juliet:
                     Scene @LYRIC_REFERENCE_FALLBACK: The stray bracket returns to the line.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ Remember the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a flower and the sum of a little green sweet flower and
   the sum of a sweet flower and a flower.
 
 Puck:
@@ -1098,8 +978,8 @@ Juliet:
                     Scene @LYRIC_TEST_LEFT_ANGLE: The line looks for a bracketed shadow.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  the sum of a sunny summer's day and a summer's day and
   the sum of a fair golden sunny summer's day and a golden sunny summer's day?
 
 Puck:
@@ -1118,10 +998,8 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and a summer's day?
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  the sum of a golden sunny summer's day and a sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT.
@@ -1139,8 +1017,8 @@ Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Are you as fair as the sum of a warm fair golden sunny summer's day and
-  the sum of a warm fair golden sunny summer's day and the sum of a fair golden sunny summer's day and
+ Are you as fair as the sum of the product of a warm fair golden sunny summer's day and
+  a sunny summer's day and the sum of a fair golden sunny summer's day and
   the sum of a golden sunny summer's day and the sum of a sunny summer's day and a summer's day?
 
 Puck:
@@ -1185,44 +1063,38 @@ Juliet:
                     Scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT: The broken and is gilded.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a green sweet flower and a sweet flower.
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  a sweet flower and the sum of a green sweet flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a flower.
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and a flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
   the sum of a green sweet flower and a flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and a rural little green sweet flower.
+ You are as fair as the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a sweet flower and a flower.
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
  Remember yourself.
@@ -1250,8 +1122,8 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT: The old name remains whole.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a green sweet flower and a sweet flower.
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  a sweet flower and the sum of a green sweet flower and a sweet flower.
 
 Puck:
  Remember yourself.
@@ -1279,36 +1151,32 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT: The sharp angle turns to light.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a green sweet flower and a sweet flower.
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  a sweet flower and the sum of a green sweet flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a little green sweet flower and
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
   a green sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  the sum of a green sweet flower and the sum of a sweet flower and a flower and
   a green sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and the sum of a sweet flower and a flower.
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  the sum of a sweet flower and a flower.
 
 Puck:
  Remember yourself.
@@ -1336,9 +1204,9 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT: The path keeps its gate.
 
 Puck:
- You are as fair as the sum of a rural little green sweet flower and
-  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
-  the sum of a little green sweet flower and a green sweet flower.
+ You are as fair as the sum of the product of a rural little green sweet flower and
+  the sum of a sweet flower and a flower and the sum of a little green sweet flower and
+  a green sweet flower.
 
 Puck:
  Remember yourself.
@@ -1370,19 +1238,9 @@ Romeo:
 [Enter Juliet]
 
 Juliet:
- You are as fair as the sum of the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  a beautiful gentle fair sweet rose and the sum of the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  the sum of a beautiful gentle fair sweet rose and the sum of a beautiful gentle fair sweet rose and
-  a beautiful gentle fair sweet rose and the sum of a sweet rose and a rose.
+ You are as fair as the sum of the square of a beautiful gentle fair sweet rose and
+  the sum of the product of a beautiful gentle fair sweet rose and a gentle fair sweet rose and
+  the sum of a sweet rose and a rose.
 
 Romeo:
  Let us proceed to scene @LYRIC_REVERSE_CHECK.

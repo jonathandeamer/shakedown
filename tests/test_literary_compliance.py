@@ -22,6 +22,14 @@ RECALL_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):\s*Recall\s+(?P<body>.+)$
 SPEAKER_ONLY_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):$")
 BAD_BIG_CAT_RE = re.compile(r"\ba big(?: big){3,} cat\b")
 ACT_ROMAN = {"act1": "I", "act2": "II", "act3": "III", "act4": "IV"}
+HIGH_VALUE_ATOMS = (
+    "a normal little furry black cat",
+    "a rural little green sweet flower",
+    "a warm fair golden sunny summer's day",
+    "a proud mighty bold noble hero",
+    "a warm fine golden noble angel",
+)
+MAX_REPEATED_HIGH_VALUE_ATOM = 3
 
 CHARACTER_KEY = {
     "Hecate": "hecate",
@@ -123,6 +131,17 @@ def test_recall_phrases_are_in_speaker_pools() -> None:
 def test_no_production_big_big_big_big_cat_atoms() -> None:
     source = _production_source()
     assert not BAD_BIG_CAT_RE.search(source)
+
+
+def test_no_repeated_high_value_atom_chains() -> None:
+    statements = re.split(r"\n\s*\n", _production_source())
+    for statement in statements:
+        compact = " ".join(statement.split())
+        for atom in HIGH_VALUE_ATOMS:
+            assert compact.count(atom) <= MAX_REPEATED_HIGH_VALUE_ATOM, (
+                atom,
+                compact,
+            )
 
 
 def test_speaker_colon_layout_is_removed_when_supported() -> None:
