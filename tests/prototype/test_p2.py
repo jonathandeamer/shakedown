@@ -6,6 +6,10 @@ import pytest
 
 from tests.prototype.conftest import FIXTURES, WRAPPER, normalize
 
+pytestmark = pytest.mark.skip(
+    reason="obsolete prototype scaffold; production roadmap uses ./shakedown"
+)
+
 
 def _run_shakedown_dev(input_md: str) -> tuple[int, str, str]:
     result = subprocess.run(
