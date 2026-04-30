@@ -30,6 +30,14 @@ HIGH_VALUE_ATOMS = (
     "a warm fine golden noble angel",
 )
 MAX_REPEATED_HIGH_VALUE_ATOM = 3
+ARITHMETIC_OPERATORS = (
+    "the sum of",
+    "the product of",
+    "the square of",
+    "the difference between",
+)
+MAX_ARITHMETIC_OPERATORS_PER_STATEMENT = 4
+MAX_LOGICAL_STATEMENT_CHARS = 220
 
 CHARACTER_KEY = {
     "Hecate": "hecate",
@@ -142,6 +150,15 @@ def test_no_repeated_high_value_atom_chains() -> None:
                 atom,
                 compact,
             )
+
+
+def test_numeric_recipe_complexity_stays_bounded() -> None:
+    statements = re.split(r"\n\s*\n", _production_source())
+    for statement in statements:
+        compact = " ".join(statement.split())
+        operator_count = sum(compact.count(op) for op in ARITHMETIC_OPERATORS)
+        assert operator_count <= MAX_ARITHMETIC_OPERATORS_PER_STATEMENT, compact
+        assert len(compact) <= MAX_LOGICAL_STATEMENT_CHARS, compact
 
 
 def test_speaker_colon_layout_is_removed_when_supported() -> None:
