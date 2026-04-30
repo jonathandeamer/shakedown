@@ -4,17 +4,43 @@
 # hybrid-voice cross-act characters are deferred to Slice 1 because act-site
 # context dictates the exact phrase.
 
+[play]
+title = "Shakedown: A Most Excellent Tragicomedy of Glyph and Line."
+
+[acts.act1]
+title = "Wherein the witches sort raw matter into shelves and seals."
+
+[acts.act2]
+title = "Wherein the kingdom of blocks is shaped, and each form named."
+
+[acts.act3]
+title = "Wherein the lovers gild the line with light and rose."
+
+[acts.act4]
+title = "Wherein Prospero, his work done, inscribes and releases all."
+
+[iconic_moments]
+
+[dramatic_moments]
+
 [characters.rosalind]
 play = "As You Like It"
 role = "librarian"
 palette = "pastoral_natural"
 voice_register = "witty_agile_cross_register"
 blurb = "Rosalind, keeper of references, agile of tongue across the Forest of Arden."
+recall_pool = []
 [characters.rosalind.stable_utility]
 v1 = "a tree"
 v2 = "a green tree"
 vneg1 = "a wolf"
 v0 = "nothing"
+[characters.rosalind.soft_variation]
+greater_than = ["friendlier than", "jollier than", "nicer than"]
+less_than = ["smaller than", "punier than"]
+equality = ["as fair as", "as warm as", "as happy as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
 
 [characters.horatio]
 play = "Hamlet"
@@ -22,11 +48,18 @@ role = "steward"
 palette = "domestic_familial"
 voice_register = "plain_spoken_keeper"
 blurb = "Horatio, plain witness of the household, holder of secrets."
+recall_pool = []
 [characters.horatio.stable_utility]
 v1 = "a brother"
 v2 = "a happy brother"
 vneg1 = "a beggar"
 v0 = "nothing"
+[characters.horatio.soft_variation]
+greater_than = ["friendlier than", "nicer than"]
+less_than = ["smaller than", "punier than"]
+equality = ["as warm as", "as healthy as", "as happy as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
 
 [characters.puck]
 play = "A Midsummer Night's Dream"
@@ -34,11 +67,26 @@ role = "herald"
 palette = "pastoral_natural"
 voice_register = "chameleonic_messenger"
 blurb = "Puck, swift messenger, whose adjectives change with the room he visits."
+recall_pool = [
+  "Recall the mason's stone.",
+  "Recall the first forest seal.",
+  "Recall the first forest path.",
+  "Recall the first forest name.",
+  "Recall the second forest seal.",
+  "Recall the second forest path.",
+  "Recall the second forest name.",
+]
 [characters.puck.stable_utility]
 v1 = "a flower"
 v2 = "a sweet flower"
 vneg1 = "a wolf"
 v0 = "nothing"
+[characters.puck.soft_variation]
+greater_than = ["jollier than", "nicer than", "friendlier than"]
+less_than = ["smaller than", "punier than"]
+equality = ["as fair as", "as noble as", "as rotten as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
 
 [characters.hecate]
 play = "Macbeth"
@@ -46,11 +94,22 @@ role = "sorter"
 palette = "grotesque_abusive"
 voice_register = "incantatory_grimy"
 blurb = "Hecate, witch-queen, who scours the underbelly of the page."
+recall_pool = [
+  "Recall the sealed second shelf.",
+  "Recall the sealed first shelf.",
+  "Recall the cauldron dreg.",
+]
 [characters.hecate.stable_utility]
 v1 = "a cat"
 v2 = "a big cat"
 vneg1 = "a toad"
 v0 = "nothing"
+[characters.hecate.soft_variation]
+greater_than = ["bigger than", "fresher than"]
+less_than = ["worse than", "smaller than", "punier than", "more cursed than", "more foul than"]
+equality = ["as cursed as", "as rotten as", "as horrid as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["We must return to"]
 
 [characters.lady_macbeth]
 play = "Macbeth"
@@ -58,11 +117,21 @@ role = "mason"
 palette = "martial_catastrophic"
 voice_register = "decisive_clean_martial"
 blurb = "Lady Macbeth, mason of the block, who cuts the page into rooms."
+recall_pool = [
+  "Recall the hewn glyph.",
+  "Recall the blank glyph.",
+]
 [characters.lady_macbeth.stable_utility]
 v1 = "a hero"
 v2 = "a noble hero"
 vneg1 = "a wolf"
 v0 = "nothing"
+[characters.lady_macbeth.soft_variation]
+greater_than = ["more bold than", "bigger than"]
+less_than = ["worse than", "more villainous than"]
+equality = ["as mighty as", "as bold as", "as villainous as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
 
 [characters.macbeth]
 play = "Macbeth"
@@ -70,11 +139,18 @@ role = "apprentice"
 palette = "martial_catastrophic"
 voice_register = "doubt_shadowed_martial"
 blurb = "Macbeth, apprentice mason, who pairs with the Lady though dread shadows him."
+recall_pool = []
 [characters.macbeth.stable_utility]
 v1 = "a kingdom"
 v2 = "a proud kingdom"
 vneg1 = "a curse"
 v0 = "nothing"
+[characters.macbeth.soft_variation]
+greater_than = ["more bold than", "bigger than"]
+less_than = ["worse than", "more foul than"]
+equality = ["as mighty as", "as villainous as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
 
 [characters.romeo]
 play = "Romeo and Juliet"
@@ -82,11 +158,44 @@ role = "lyric_a"
 palette = "pastoral_natural"
 voice_register = "lyrical_sun_imagery"
 blurb = "Romeo, who pushes candidate substitutions like sunlit petals."
+recall_pool = [
+  "Recall the morning's first cut.",
+  "Recall the bracket's first petal.",
+  "Recall the link's second petal.",
+  "Recall the link's third petal.",
+  "Recall the link's fourth petal.",
+  "Recall the link's closing petal.",
+  "Recall the link's following air.",
+  "Recall the inline path's first gate.",
+  "Recall the inline path's next gate.",
+  "Recall the bracketed path's next gate.",
+  "Recall the bracketed path's round seal.",
+  "Recall the first shelf's open mark.",
+  "Recall the first shelf's number.",
+  "Recall the first shelf's close mark.",
+  "Recall the house's second petal.",
+  "Recall the house's ampersand.",
+  "Recall the house's last petal.",
+  "Recall the house's closing petal.",
+  "Recall the house's following air.",
+  "Recall the second shelf's open mark.",
+  "Recall the second shelf's number.",
+  "Recall the second shelf's close mark.",
+  "Recall the morning's next cut.",
+  "Recall the morning's next cut.",
+  "Recall the rose's kept word.",
+]
 [characters.romeo.stable_utility]
 v1 = "a summer's day"
 v2 = "a sunny summer's day"
 vneg1 = "a wolf"
 v0 = "nothing"
+[characters.romeo.soft_variation]
+greater_than = ["more sweet than", "nicer than"]
+less_than = ["smaller than", "punier than"]
+equality = ["as sunny as", "as golden as", "as fair as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
 
 [characters.juliet]
 play = "Romeo and Juliet"
@@ -94,11 +203,18 @@ role = "lyric_b"
 palette = "pastoral_natural"
 voice_register = "lyrical_night_imagery"
 blurb = "Juliet, who commits final tokens like petals laid on stone."
+recall_pool = []
 [characters.juliet.stable_utility]
 v1 = "a rose"
 v2 = "a sweet rose"
 vneg1 = "a wolf"
 v0 = "nothing"
+[characters.juliet.soft_variation]
+greater_than = ["more gentle than", "friendlier than"]
+less_than = ["smaller than", "punier than"]
+equality = ["as fair as", "as gentle as", "as sweet as"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
 
 [characters.prospero]
 play = "The Tempest"
@@ -106,8 +222,385 @@ role = "scribe"
 palette = "noble_radiant"
 voice_register = "ceremonial_declarative"
 blurb = "Prospero, scribe and emitter, whose pronouncements close the work."
+recall_pool = [
+  "Recall the herald's present word.",
+]
 [characters.prospero.stable_utility]
 v1 = "an angel"
 v2 = "a noble angel"
 vneg1 = "a curse"
 v0 = "nothing"
+[characters.prospero.soft_variation]
+greater_than = ["more noble than", "more peaceful than"]
+less_than = ["smaller than", "punier than"]
+equality = ["as honest as", "as noble as"]
+goto_forward = ["We shall proceed to"]
+goto_backward = ["We shall return to"]
+
+[scenes.ACT_I_START]
+title = "Hecate shelves the known bargains."
+pattern = "scene_of_character"
+
+[scenes.HECATE_READ_INPUT]
+title = "The cauldron drinks each glyph."
+pattern = "bare_statement"
+
+[scenes.HECATE_LINE_STRIP_SECOND_REFERENCE]
+title = "The second shelf is read to its seal."
+pattern = "bare_statement"
+
+[scenes.HECATE_LINE_STRIP_FIRST_REFERENCE]
+title = "The first shelf is read to its seal."
+pattern = "bare_statement"
+
+[scenes.HECATE_LINE_RESTORE_BOUNDARY]
+title = "The page keeps its blank boundary."
+pattern = "bare_statement"
+
+[scenes.HECATE_HAND_COUNT_TO_HORATIO]
+title = "Horatio keeps the tally beside the pot."
+pattern = "scene_of_character"
+
+[scenes.HECATE_REVERSE_CHECK]
+title = "The witness tests whether the dregs remain."
+pattern = "scene_of_character"
+
+[scenes.HECATE_OPEN_REVERSE_POP]
+title = "Puck returns to lift one glyph."
+pattern = "scene_of_character"
+
+[scenes.HECATE_REVERSE_POP]
+title = "One glyph crosses from trickster to witch."
+pattern = "cross_character"
+
+[scenes.HECATE_OPEN_COUNT_DECREMENT]
+title = "Horatio marks the shrinking heap."
+pattern = "scene_of_character"
+
+[scenes.ACT_I_DONE]
+title = "The first act yields."
+pattern = "bare_statement"
+
+[scenes.ACT_II_START]
+title = "Wherein Lady Macbeth receives the cauldron's line."
+pattern = "wherein"
+
+[scenes.MASON_READ_PARAGRAPH_GLYPH]
+title = "The first shape is hewn from the page."
+pattern = "bare_statement"
+
+[scenes.MASON_KEEP_PARAGRAPH_GLYPH]
+title = "One glyph is laid within the wall."
+pattern = "bare_statement"
+
+[scenes.MASON_CLOSE_PARAGRAPH]
+title = "The wall is sealed against the blank."
+pattern = "bare_statement"
+
+[scenes.MASON_SKIP_BLANK_GLYPH]
+title = "Empty lines pass beneath the keep."
+pattern = "bare_statement"
+
+[scenes.MASON_AFTER_BLANK_GLYPH]
+title = "The mason counts the quiet."
+pattern = "scene_of_character"
+
+[scenes.MASON_OPEN_PARAGRAPH_WITH_GLYPH]
+title = "A new chamber takes its mark."
+pattern = "bare_statement"
+
+[scenes.MASON_CLOSE_FINAL_PARAGRAPH]
+title = "The last chamber is sealed."
+pattern = "bare_statement"
+
+[scenes.MASON_OPEN_REVERSE_STREAM]
+title = "Puck receives the mason's order."
+pattern = "cross_character"
+
+[scenes.HERALD_REVERSE_TOKEN_STREAM]
+title = "The herald turns the wall toward morning."
+pattern = "scene_of_character"
+
+[scenes.ACT_II_DONE]
+title = "The second act yields."
+pattern = "bare_statement"
+
+[scenes.ACT_III_START]
+title = "The lovers begin their substitutions."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_SCAN_CHECK]
+title = "The morning counts each glyph."
+pattern = "bare_statement"
+
+[scenes.LYRIC_POP_GLYPH]
+title = "Puck hands one mark to the sun."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_TEST_AMPERSAND]
+title = "The ampersand asks after its name."
+pattern = "bare_statement"
+
+[scenes.LYRIC_REFERENCE_POP_AFTER_OPEN]
+title = "The rose tests the named shelf."
+pattern = "bare_statement"
+
+[scenes.LYRIC_REFERENCE_TEST_ATT_TEXT]
+title = "The rose tests the ampersand house."
+pattern = "bare_statement"
+
+[scenes.LYRIC_REFERENCE_LINK_POP_BODY]
+title = "The small link name is gathered."
+pattern = "bare_statement"
+
+[scenes.LYRIC_LINK_TEST_INLINE_OPEN]
+title = "The small link seeks an inline gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_INLINE_POP_FIRST_DESTINATION]
+title = "The garden path opens."
+pattern = "locale"
+
+[scenes.LYRIC_INLINE_TEST_BRACKETED_DESTINATION]
+title = "The path asks for its silver bracket."
+pattern = "bare_statement"
+
+[scenes.LYRIC_INLINE_DEST_DIRECT_CHECK]
+title = "The bare path seeks its close."
+pattern = "bare_statement"
+
+[scenes.LYRIC_INLINE_DEST_DIRECT_KEEP]
+title = "One bare path glyph is kept."
+pattern = "bare_statement"
+
+[scenes.LYRIC_INLINE_DEST_BRACKETED_POP]
+title = "The bracketed path yields a glyph."
+pattern = "bare_statement"
+
+[scenes.LYRIC_INLINE_DEST_BRACKETED_KEEP]
+title = "One bracketed path glyph is kept."
+pattern = "bare_statement"
+
+[scenes.LYRIC_INLINE_DEST_BRACKETED_CLOSE]
+title = "The bracketed path seeks its round seal."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_OUTPUT_INLINE_LINK]
+title = "Juliet receives the inline anchor."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ANCHOR_INLINE]
+title = "The inline path becomes a reusable bright path."
+pattern = "bare_statement"
+
+[scenes.LYRIC_REFERENCE_ONE_POP_LABEL]
+title = "Rosalind's first bargain is named."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REFERENCE_ATT_POP_BODY]
+title = "The house name keeps its ampersand."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_CONSULT_REFERENCE_ONE]
+title = "Rosalind opens the first shelf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CONSULT_REFERENCE_ONE]
+title = "The forest yields the first bargain."
+pattern = "locale"
+
+[scenes.LYRIC_OPEN_OUTPUT_REFERENCE_ONE]
+title = "Juliet receives the first anchor."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ANCHOR_REFERENCE_ONE]
+title = "The first shelf becomes a reusable bright path."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_CONSULT_REFERENCE_TWO]
+title = "Rosalind opens the second shelf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CONSULT_REFERENCE_TWO]
+title = "The forest yields the second bargain."
+pattern = "locale"
+
+[scenes.LYRIC_OPEN_OUTPUT_REFERENCE_TWO]
+title = "Juliet receives the titled anchor."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ANCHOR_REFERENCE_TWO]
+title = "The second shelf keeps a reusable title."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_OUTPUT_LINK_FALLBACK]
+title = "Juliet receives an unfinished inline link."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OUTPUT_LINK_FALLBACK]
+title = "The unripe link returns unchanged."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_REFERENCE_FALLBACK]
+title = "Juliet receives a lone bracket."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REFERENCE_FALLBACK]
+title = "The stray bracket returns to the line."
+pattern = "bare_statement"
+
+[scenes.LYRIC_TEST_LEFT_ANGLE]
+title = "The line looks for a bracketed shadow."
+pattern = "bare_statement"
+
+[scenes.LYRIC_AMP_POP_NEXT]
+title = "The ampersand tests its old name."
+pattern = "bare_statement"
+
+[scenes.LYRIC_LEFT_ANGLE_POP_NEXT]
+title = "The angle asks whether a path follows."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_OUTPUT_CURRENT]
+title = "Juliet receives the plain mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OUTPUT_CURRENT]
+title = "One untouched glyph is laid in the garden."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_OUTPUT_AMP_ENTITY_CURRENT]
+title = "Juliet receives the named ampersand."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OUTPUT_AMP_ENTITY_CURRENT]
+title = "The broken and is gilded."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT]
+title = "Juliet receives the old ampersand."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OUTPUT_LITERAL_AMP_CURRENT]
+title = "The old name remains whole."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT]
+title = "Juliet receives the softened angle."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OUTPUT_LT_ENTITY_CURRENT]
+title = "The sharp angle turns to light."
+pattern = "bare_statement"
+
+[scenes.LYRIC_OPEN_OUTPUT_LITERAL_LEFT_CURRENT]
+title = "Juliet receives the path angle."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OUTPUT_LITERAL_LEFT_CURRENT]
+title = "The path keeps its gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_RETURN_TO_SCAN]
+title = "Romeo resumes the count."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OPEN_REVERSE]
+title = "The rose turns the line back to Puck."
+pattern = "cross_character"
+
+[scenes.LYRIC_REVERSE_CHECK]
+title = "The evening counts the garden home."
+pattern = "bare_statement"
+
+[scenes.LYRIC_REVERSE_POP]
+title = "Juliet lifts one brightened glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_OPEN_PUSH_BACK]
+title = "Puck takes the brightened word."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_PUSH_BACK]
+title = "The herald carries the gilded stream."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RETURN_TO_REVERSE]
+title = "Romeo counts the remaining roses."
+pattern = "scene_of_character"
+
+[scenes.ACT_III_DONE]
+title = "The third act yields."
+pattern = "bare_statement"
+
+[scenes.ACT_IV_START]
+title = "Prospero receives the herald's stream."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_STREAM_CHECK]
+title = "The cell measures the remaining words."
+pattern = "locale"
+
+[scenes.SCRIBE_POP_TOKEN]
+title = "The herald yields one bright word."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_PARAGRAPH_CLOSE]
+title = "The scribe weighs a seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_ANCHOR_OPEN]
+title = "Prospero tests an anchor gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_ANCHOR_TITLE]
+title = "Prospero tests a title gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_ANCHOR_TEXT]
+title = "Prospero tests a text gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_ANCHOR_CLOSE]
+title = "Prospero tests an anchor seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_PAYLOAD]
+title = "One glyph is released."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_EMIT_ANCHOR_OPEN]
+title = "Prospero opens an anchor."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ANCHOR_TITLE]
+title = "Prospero opens an anchor title."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ANCHOR_TEXT]
+title = "Prospero opens anchor text."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ANCHOR_CLOSE]
+title = "Prospero closes an anchor."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_PARAGRAPH_OPEN]
+title = "Prospero opens a paragraph."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_FINAL_CLOSE]
+title = "Prospero tests the last seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_PARAGRAPH_CLOSE]
+title = "Prospero closes a paragraph."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE]
+title = "Prospero closes the last paragraph."
+pattern = "scene_of_character"
+
+[scenes.ACT_IV_DONE]
+title = "The work rests."
+pattern = "bare_statement"

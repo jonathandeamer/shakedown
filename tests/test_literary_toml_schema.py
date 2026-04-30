@@ -124,3 +124,60 @@ def test_critical_zero_is_nothing() -> None:
                 assert surfaces["v0"] == "nothing", (
                     f"{name}.{surface_set}.v0 must be 'nothing' (Critical)"
                 )
+
+
+def test_current_surface_sections_exist() -> None:
+    data = load()
+
+    play = data.get("play")
+    assert isinstance(play, dict)
+    assert isinstance(play.get("title"), str)
+
+    acts = data.get("acts")
+    assert isinstance(acts, dict)
+    assert set(acts) == {"act1", "act2", "act3", "act4"}
+    for key, section in acts.items():
+        assert isinstance(section, dict), key
+        assert isinstance(section.get("title"), str), key
+
+    scenes = data.get("scenes")
+    assert isinstance(scenes, dict)
+    assert scenes
+    for label, scene in scenes.items():
+        assert isinstance(scene, dict), label
+        assert isinstance(scene.get("title"), str), label
+        assert scene.get("pattern") in {
+            "wherein",
+            "bare_statement",
+            "scene_of_character",
+            "iconic_echo",
+            "cross_character",
+            "locale",
+        }
+
+    assert isinstance(data.get("iconic_moments"), dict)
+    assert isinstance(data.get("dramatic_moments"), dict)
+
+
+def test_character_soft_variation_and_recall_pools_exist() -> None:
+    data = load()
+    characters = data["characters"]
+    assert isinstance(characters, dict)
+    for name, section in characters.items():
+        assert isinstance(section, dict), name
+        soft = section.get("soft_variation")
+        assert isinstance(soft, dict), name
+        for key in (
+            "greater_than",
+            "less_than",
+            "equality",
+            "goto_forward",
+            "goto_backward",
+        ):
+            values = soft.get(key)
+            assert isinstance(values, list), (name, key)
+            assert values, (name, key)
+            assert all(isinstance(value, str) for value in values), (name, key)
+        recall_pool = section.get("recall_pool")
+        assert isinstance(recall_pool, list), name
+        assert all(isinstance(value, str) for value in recall_pool), name
