@@ -46,8 +46,8 @@ def _literary() -> dict[str, object]:
 
 
 def _is_inline_character_dialogue(line: str) -> bool:
-    speaker, separator, _body = line.strip().partition(":")
-    return bool(separator) and speaker in CHARACTER_KEY
+    speaker, separator, body = line.strip().partition(":")
+    return bool(separator) and speaker in CHARACTER_KEY and bool(body.strip())
 
 
 def test_locked_play_title_and_act_titles() -> None:
