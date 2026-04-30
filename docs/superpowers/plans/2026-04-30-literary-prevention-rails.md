@@ -279,8 +279,8 @@ v0 = "nothing"
 v1 = "a cat"
 v2 = "a big cat"
 v4 = "a big big cat"
-v8 = "the sum of a big big cat and a big big cat"
-v16 = "the square of a big big cat"
+v8 = "a fine big big cat"
+v16 = "a noble fine big big cat"
 """,
     )
 
@@ -293,7 +293,7 @@ v16 = "the square of a big big cat"
         surfaces.resolve("characters.hecate.recall.detab_cauldron")
         == "Recall the cauldron dreg."
     )
-    assert surfaces.value_atoms("default")[16] == "the square of a big big cat"
+    assert surfaces.value_atoms("default")[16] == "a noble fine big big cat"
 
 
 def test_unknown_key_raises_clear_error(tmp_path: Path) -> None:
@@ -597,7 +597,7 @@ git commit -m "feat: resolve literary placeholders in assembler"
 
 ---
 
-## Task 4: Move Codegen Value Atoms Into TOML
+## Task 4: Move Codegen Value Atoms Into TOML And Compact Recipes
 
 **Files:**
 - Modify: `src/literary.toml`
@@ -614,25 +614,51 @@ v0 = "nothing"
 v1 = "a cat"
 v2 = "a big cat"
 v4 = "a big big cat"
-v8 = "the sum of a big big cat and a big big cat"
-v16 = "the square of a big big cat"
+v8 = "a fine big big cat"
+v16 = "a noble fine big big cat"
 ```
 
-- [ ] **Step 2: Update codegen tests for TOML-loaded atoms**
+- [ ] **Step 2: Update codegen tests for TOML-loaded atoms and compact recipes**
 
 In `tests/test_codegen_html.py`, change the atom expectation for `16` by adding
 this case to `test_emit_byte_atom_forms`:
 
 ```python
-(16, "the square of a big big cat"),
+(16, "a noble fine big big cat"),
 ```
 
-Add this test:
+Add `emit_value` to the import from `scripts.codegen_html`.
+
+Add these tests:
 
 ```python
 def test_emit_byte_uses_toml_value_atoms() -> None:
-    assert emit_byte(16) == "the square of a big big cat"
+    assert emit_byte(16) == "a noble fine big big cat"
     assert "big big big big cat" not in emit_byte(16)
+
+
+@pytest.mark.parametrize("value", [38, 65, 97, 256, 505])
+def test_emit_value_uses_compact_large_value_recipes(value: int) -> None:
+    phrase = emit_value(value)
+
+    assert parse_value_phrase(phrase) == value
+    assert "the product of" in phrase or "the square of" in phrase
+    assert _max_atom_repetition(phrase) <= 3
+
+
+def test_parse_value_phrase_understands_compact_arithmetic() -> None:
+    assert parse_value_phrase("the square of a noble fine big big cat") == 256
+    assert (
+        parse_value_phrase(
+            "the product of a noble fine big big cat and a big big cat"
+        )
+        == 64
+    )
+
+
+def _max_atom_repetition(phrase: str) -> int:
+    atoms = _atoms(phrase)
+    return max((atoms.count(atom) for atom in set(atoms)), default=0)
 ```
 
 - [ ] **Step 3: Run tests to verify they fail before implementation**
@@ -643,8 +669,8 @@ Run:
 env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py -q
 ```
 
-Expected: `test_emit_byte_uses_toml_value_atoms` fails because codegen still uses
-hardcoded atoms.
+Expected: the new TOML and compact-recipe tests fail because codegen still uses
+hardcoded atoms and repeated largest-atom subtraction.
 
 - [ ] **Step 4: Implement TOML-backed atoms**
 
@@ -665,11 +691,63 @@ _LITERARY_TOML = _ROOT / "src" / "literary.toml"
 _ATOM_BY_VALUE = load_literary_surfaces(_LITERARY_TOML).value_atoms("default")
 ```
 
-Keep the existing `emit_byte`, `_decompose`, `emit_literal`, and
-`emit_speak_lines` functions. Replace `_PHRASE_RE` and `parse_value_phrase` with:
+Add `emit_value`, then replace `emit_byte`, `_decompose`, and
+`parse_value_phrase` with compact recipe-aware versions. Keep `emit_literal` and
+`emit_speak_lines` as callers of `emit_byte`:
 
 ```python
 _ATOM_TO_VALUE = {phrase: value for value, phrase in _ATOM_BY_VALUE.items()}
+
+
+def emit_value(value: int) -> str:
+    """Return the canonical SPL value phrase for a non-negative integer."""
+    if value < 0 or value > 1024:
+        raise ValueError(f"value out of supported range: {value}")
+    if value in _ATOM_BY_VALUE:
+        return _ATOM_BY_VALUE[value]
+    return _decompose(value)
+
+
+def emit_byte(value: int) -> str:
+    """Return the canonical SPL value phrase for an integer byte."""
+    if value < 0 or value > 255:
+        raise ValueError(f"byte value out of range: {value}")
+    return emit_value(value)
+
+
+def _decompose(value: int) -> str:
+    terms: list[str] = []
+    if value >= 256:
+        count = value // 256
+        terms.extend([f"the square of {_ATOM_BY_VALUE[16]}"] * count)
+        value %= 256
+
+    sixteens = value // 16
+    if sixteens == 1:
+        terms.append(_ATOM_BY_VALUE[16])
+    elif sixteens > 1:
+        terms.append(
+            f"the product of {_ATOM_BY_VALUE[16]} and {emit_value(sixteens)}"
+        )
+    value %= 16
+
+    for atom_value in sorted(_ATOM_BY_VALUE, reverse=True):
+        if atom_value == 0:
+            continue
+        if atom_value <= value:
+            terms.append(_ATOM_BY_VALUE[atom_value])
+            value -= atom_value
+
+    return _sum_terms(terms)
+
+
+def _sum_terms(terms: list[str]) -> str:
+    if not terms:
+        return _ATOM_BY_VALUE[0]
+    phrase = terms[-1]
+    for term in reversed(terms[:-1]):
+        phrase = f"the sum of {term} and {phrase}"
+    return phrase
 
 
 def parse_value_phrase(phrase: str) -> int:
@@ -677,17 +755,42 @@ def parse_value_phrase(phrase: str) -> int:
     text = phrase.strip()
     if text in _ATOM_TO_VALUE:
         return _ATOM_TO_VALUE[text]
-    prefix = "the sum of "
-    if text.lower().startswith(prefix):
-        rest = text[len(prefix) :]
-        idx = rest.find(" and ")
-        if idx == -1:
-            raise ValueError(f"malformed compound: {phrase!r}")
-        return parse_value_phrase(rest[:idx]) + parse_value_phrase(
-            rest[idx + len(" and ") :]
-        )
+    if text.lower().startswith("the square of "):
+        inner = text[len("the square of ") :]
+        value = parse_value_phrase(inner)
+        return value * value
+    if text.lower().startswith("the product of "):
+        rest = text[len("the product of ") :]
+        left, right = _split_binary(rest, phrase)
+        return parse_value_phrase(left) * parse_value_phrase(right)
+    if text.lower().startswith("the sum of "):
+        rest = text[len("the sum of ") :]
+        left, right = _split_binary(rest, phrase)
+        return parse_value_phrase(left) + parse_value_phrase(right)
     raise ValueError(f"unrecognised atom: {phrase!r}")
+
+
+def _split_binary(rest: str, phrase: str) -> tuple[str, str]:
+    for match in reversed(list(re.finditer(r" and ", rest))):
+        left = rest[: match.start()]
+        right = rest[match.end() :]
+        try:
+            parse_value_phrase(left)
+            parse_value_phrase(right)
+        except ValueError:
+            continue
+        return left, right
+    raise ValueError(f"malformed binary expression: {phrase!r}")
 ```
+
+The exact implementation may factor helpers differently, but it must preserve
+these properties:
+
+- no generated phrase for representative large values repeats the same atom more
+  than three times
+- 256 is expressed with `the square of ...`, not sixteen repeated 16-value atoms
+- values with several 16-value chunks use `the product of ... and ...`
+- every generated phrase round-trips through `parse_value_phrase`
 
 - [ ] **Step 5: Run codegen checks**
 
