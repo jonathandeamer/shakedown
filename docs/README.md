@@ -40,7 +40,8 @@ Optional historical/supporting context:
 
 - [`superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`](superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md) — latest pre-design synthesis. Useful context, not canonical truth.
 - [`superpowers/specs/`](superpowers/specs/) — proposed design/spec artifacts from earlier interactive planning. The selected architecture spec is the one active exception and is linked from `architecture/selected-architecture.md`; other specs are historical context unless restated in canonical docs.
-- [`superpowers/plans/`](superpowers/plans/) — implementation plans and process artifacts from prior sessions. Historical context only.
+- [`superpowers/plans/`](superpowers/plans/) — implementation plans and process artifacts. Use `superpowers/plans/plan-roadmap.md` for live plan status.
+- [`prompt-shakedown.md`](prompt-shakedown.md) — active `run-loop` prompt; currently exits when the roadmap has no plan marked `in flight`.
 
 ## Directory Map
 
@@ -80,7 +81,7 @@ Optional historical/supporting context:
 | `prior-attempt/architecture-lessons.md` | Consolidated architecture memo and the A/B/C options. |
 | `archive/` | Historical artifacts preserved for context, not current guidance. |
 | `superpowers/specs/` | Historical proposed design/spec artifacts from earlier planning sessions, except the selected architecture spec linked from `architecture/selected-architecture.md`. |
-| `superpowers/plans/` | Historical implementation-plan/process artifacts; not canonical design truth. |
+| `superpowers/plans/` | Operational implementation plans and live roadmap; not canonical design truth. |
 
 ## Canonical Flow of Truth
 
@@ -98,11 +99,11 @@ Optional historical/supporting context:
 - **Architecture-input rubrics:** `architecture/decision-rubric.md`, `architecture/runtime-boundary.md`, `architecture/encoding-and-scope.md`, and `performance/budget.md`.
 - **Inherited prototype scaffold:** `architecture/inherited-scaffold.md` documents `./shakedown-dev`, `scripts/assemble.py`, `src/*.spl`, and generated `shakedown.spl`. These are prototype artifacts, not adopted architecture.
 - **What is proven vs retrospective vs open:** `verification-plan.md`.
-- **Historical process artifacts:** `docs/superpowers/` is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
+- **Operational process artifacts:** `docs/superpowers/plans/plan-roadmap.md` tracks live plan status, and `docs/prompt-shakedown.md` is the active run-loop prompt. Other `docs/superpowers/` content is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
 
 ## What This Docs Set Does Not Do
 
-- It does not include an implementation plan. That is the next step after the selected architecture.
+- It does not treat implementation plans as architecture truth. Plans are operational checklists tracked through `superpowers/plans/plan-roadmap.md`.
 - It does not treat the prior attempt's feasibility verdicts as facts about this repository. They are retrospective evidence from a prior checkout; see `prior-attempt/feasibility-lessons.md` and `verification-plan.md` bucket C.
 - It does not treat `docs/superpowers/plans/` as adopted architecture. It treats only the selected architecture spec linked from `architecture/selected-architecture.md` as adopted design.
-- It does not include a loop prompt. The replacement for the archived `docs/prompt-shakedown.md` will be written during implementation planning.
+- It does not treat the loop prompt as a design spec. `docs/prompt-shakedown.md` is operational run-loop input and should follow the roadmap's active-plan state.

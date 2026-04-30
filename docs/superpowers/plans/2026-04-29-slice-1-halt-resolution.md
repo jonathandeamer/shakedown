@@ -350,7 +350,7 @@ Edit `docs/prompt-shakedown.md`:
 - remove `@docs/superpowers/plans/2026-04-29-slice-1-halt-resolution.md`;
 - restore the idle wording that exits when no plan is `in flight`, unless the operator has already written and marked Spike A as in flight.
 
-- [ ] **Step 5.5: Remove the blocker**
+- [x] **Step 5.5: Remove the blocker**
 
 Edit `.agent/blockers.md` and remove only this line:
 
@@ -360,7 +360,7 @@ Edit `.agent/blockers.md` and remove only this line:
 
 Do not remove unrelated future `- BLOCK:` lines.
 
-- [ ] **Step 5.6: Commit halt resolution**
+- [x] **Step 5.6: Commit halt resolution**
 
 ```bash
 git add docs/performance/budget.md docs/verification-plan.md .agent/blockers.md docs/superpowers/plans/2026-04-29-slice-1-halt-resolution.md docs/superpowers/plans/plan-roadmap.md docs/prompt-shakedown.md

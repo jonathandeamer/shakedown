@@ -12,17 +12,16 @@ iteration of a continuous run-loop driven by `run-loop` at the repo root.
 
 Your job, this iteration:
 
-1. Read `@docs/superpowers/plans/plan-roadmap.md` and find the lowest-numbered
-   plan whose status is `in flight`. If no plan is `in flight`, write
-   `.agent/complete-shakedown.md` and exit cleanly without modifying anything
-   else. The operator must revise this prompt to add the concrete active
-   plan's `@` reference before autonomous implementation continues.
-2. Find the first unchecked step in the first task with any unchecked step.
-   Complete that step as written. One step. No batching.
-3. If the step changes code or data, run the tests the step specifies and
+1. Read `@docs/superpowers/plans/plan-roadmap.md`.
+2. If no plan is marked `in flight`, write `.agent/complete-shakedown.md`
+   and exit cleanly without modifying anything else.
+3. If a plan is marked `in flight`, use the plan file named by the roadmap
+   and find the first unchecked step in the first task with any unchecked
+   step. Complete that step as written. One step. No batching.
+4. If the step changes code or data, run the tests the step specifies and
    confirm they pass before proceeding.
-4. Check the step's checkbox in the plan file.
-5. Commit using a conventional-commit prefix matching the change type
+5. Check the step's checkbox in the plan file.
+6. Commit using a conventional-commit prefix matching the change type
    (`.githooks/commit-msg` enforces this; do not bypass with `--no-verify`).
 
 Standing rules:
@@ -34,10 +33,8 @@ Standing rules:
 - No autonomous version bumps. Do not run `cz bump`, create tags, push tags, or
   update `CHANGELOG.md` unless the current plan step explicitly authorises it.
 - Respect `.agent/blockers.md`. If any line begins with `- BLOCK:`, address it
-  first; if the only block is the Slice 1 line-budget halt, address it by
-  following the active halt-resolution plan without removing the block until the
-  plan's final acceptance task. If you cannot address an open block, exit
-  cleanly without modifying code.
+  first. If you cannot address an open block, exit cleanly without modifying
+  code.
 - Stuck? Append `- BLOCK: <one-line reason>` to `.agent/blockers.md` and exit.
 
 Completion: when every step in the active plan is checked and the slice's
