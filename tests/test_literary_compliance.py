@@ -51,7 +51,9 @@ def test_locked_play_title_and_act_titles() -> None:
     data = _literary()
 
     assert assembled.splitlines()[0] == PLAY_TITLE
-    assert data["play"]["title"] == PLAY_TITLE
+    play = data["play"]
+    assert isinstance(play, dict)
+    assert play["title"] == PLAY_TITLE
 
     acts = data["acts"]
     assert isinstance(acts, dict)
@@ -121,7 +123,9 @@ def test_no_production_big_big_big_big_cat_atoms() -> None:
 
 def test_speaker_colon_layout_is_removed_when_supported() -> None:
     source = _production_source()
-    if "speaker_colon_inline" in _literary().get("layout_exceptions", {}):
+    layout_exceptions = _literary().get("layout_exceptions", {})
+    assert isinstance(layout_exceptions, dict)
+    if "speaker_colon_inline" in layout_exceptions:
         return
     offenders = [line for line in source.splitlines() if SPEAKER_RE.match(line.strip())]
     assert not offenders[:10]
