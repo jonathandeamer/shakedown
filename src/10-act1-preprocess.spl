@@ -2,93 +2,198 @@
 
 [Enter Hecate and Rosalind]
 
-Hecate: You are as rotten as a cat.
-Hecate: Remember yourself.
-Hecate: You are as rotten as the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a furry black cat and a cat.
-Hecate: Remember yourself.
-Hecate: You are as rotten as nothing.
-Hecate: Remember yourself.
-Hecate: You are as rotten as a big cat.
-Hecate: Remember yourself.
-Hecate: You are as rotten as the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a furry black cat and a black cat.
-Hecate: Remember yourself.
-Hecate: You are as rotten as the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a normal little furry black cat and the sum of a little furry black cat and a cat.
-Hecate: Remember yourself.
+Hecate:
+ You are as rotten as a cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a furry black cat and a cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as nothing.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as a big cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a furry black cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a normal little furry black cat and
+  the sum of a normal little furry black cat and the sum of a little furry black cat and a cat.
+
+Hecate:
+ Remember yourself.
 
 [Exit Rosalind]
+
 [Enter Puck]
 
-Hecate: Let us proceed to scene @HECATE_READ_INPUT.
+Hecate:
+ Let us proceed to scene @HECATE_READ_INPUT.
+
 
                     Scene @HECATE_READ_INPUT: The cauldron drinks each glyph.
 
-Hecate: Open your mind!
-Hecate: Are you as rotten as a pig?
-Puck: If so, let us proceed to scene @HECATE_LINE_STRIP_SECOND_REFERENCE.
-Hecate: Remember yourself.
-Puck: You are as rotten as the sum of Hecate and a cat.
-Puck: Let us return to scene @HECATE_READ_INPUT.
+Hecate:
+ Open your mind!
+
+Hecate:
+ Are you as rotten as a pig?
+
+Puck:
+ If so, let us proceed to scene @HECATE_LINE_STRIP_SECOND_REFERENCE.
+
+Hecate:
+ Remember yourself.
+
+Puck:
+ You are as rotten as the sum of Hecate and a cat.
+
+Puck:
+ Let us return to scene @HECATE_READ_INPUT.
+
 
                     Scene @HECATE_LINE_STRIP_SECOND_REFERENCE: The second shelf is read to its seal.
 
-Hecate: Recall the sealed second shelf.
-Puck: You are as rotten as the difference between Hecate and a cat.
-Hecate: Are you as rotten as the sum of a big big big cat and a big cat?
-Puck: If so, let us proceed to scene @HECATE_LINE_STRIP_FIRST_REFERENCE.
-Puck: If not, let us return to scene @HECATE_LINE_STRIP_SECOND_REFERENCE.
+Hecate:
+ Recall the sealed second shelf.
+
+Puck:
+ You are as rotten as the difference between Hecate and a cat.
+
+Hecate:
+ Are you as rotten as the sum of a big big big cat and a big cat?
+
+Puck:
+ If so, let us proceed to scene @HECATE_LINE_STRIP_FIRST_REFERENCE.
+
+Puck:
+ If not, let us return to scene @HECATE_LINE_STRIP_SECOND_REFERENCE.
+
 
                     Scene @HECATE_LINE_STRIP_FIRST_REFERENCE: The first shelf is read to its seal.
 
-Hecate: Recall the sealed first shelf.
-Puck: You are as rotten as the difference between Hecate and a cat.
-Hecate: Are you as rotten as the sum of a big big big cat and a big cat?
-Puck: If so, let us proceed to scene @HECATE_LINE_RESTORE_BOUNDARY.
-Puck: If not, let us return to scene @HECATE_LINE_STRIP_FIRST_REFERENCE.
+Hecate:
+ Recall the sealed first shelf.
+
+Puck:
+ You are as rotten as the difference between Hecate and a cat.
+
+Hecate:
+ Are you as rotten as the sum of a big big big cat and a big cat?
+
+Puck:
+ If so, let us proceed to scene @HECATE_LINE_RESTORE_BOUNDARY.
+
+Puck:
+ If not, let us return to scene @HECATE_LINE_STRIP_FIRST_REFERENCE.
+
 
                     Scene @HECATE_LINE_RESTORE_BOUNDARY: The page keeps its blank boundary.
 
-Hecate: Remember yourself.
-Puck: You are as rotten as the sum of Hecate and a cat.
-Puck: Let us proceed to scene @HECATE_HAND_COUNT_TO_HORATIO.
+Hecate:
+ Remember yourself.
+
+Puck:
+ You are as rotten as the sum of Hecate and a cat.
+
+Puck:
+ Let us proceed to scene @HECATE_HAND_COUNT_TO_HORATIO.
+
 
                     Scene @HECATE_HAND_COUNT_TO_HORATIO: Horatio keeps the tally beside the pot.
 
 [Exit Puck]
+
 [Enter Horatio]
 
-Hecate: You are as rotten as myself.
-Hecate: Let us proceed to scene @HECATE_REVERSE_CHECK.
+Hecate:
+ You are as rotten as myself.
+
+Hecate:
+ Let us proceed to scene @HECATE_REVERSE_CHECK.
+
 
                     Scene @HECATE_REVERSE_CHECK: The witness tests whether the dregs remain.
 
-Hecate: Are you as rotten as nothing?
-Horatio: If so, let us proceed to scene @ACT_I_DONE.
-Horatio: If not, let us proceed to scene @HECATE_OPEN_REVERSE_POP.
+Hecate:
+ Are you as rotten as nothing?
+
+Horatio:
+ If so, let us proceed to scene @ACT_I_DONE.
+
+Horatio:
+ If not, let us proceed to scene @HECATE_OPEN_REVERSE_POP.
+
 
                     Scene @HECATE_OPEN_REVERSE_POP: Puck returns to lift one glyph.
 
 [Exit Horatio]
+
 [Enter Puck]
 
-Hecate: Let us proceed to scene @HECATE_REVERSE_POP.
+Hecate:
+ Let us proceed to scene @HECATE_REVERSE_POP.
+
 
                     Scene @HECATE_REVERSE_POP: One glyph crosses from trickster to witch.
 
-Hecate: Recall the cauldron dreg.
-Puck: You are as rotten as myself.
-Puck: Remember yourself.
-Puck: Let us proceed to scene @HECATE_OPEN_COUNT_DECREMENT.
+Hecate:
+ Recall the cauldron dreg.
+
+Puck:
+ You are as rotten as myself.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ Let us proceed to scene @HECATE_OPEN_COUNT_DECREMENT.
+
 
                     Scene @HECATE_OPEN_COUNT_DECREMENT: Horatio marks the shrinking heap.
 
 [Exit Puck]
+
 [Enter Horatio]
 
-Hecate: You are as rotten as the difference between yourself and a cat.
-Horatio: Let us return to scene @HECATE_REVERSE_CHECK.
+Hecate:
+ You are as rotten as the difference between yourself and a cat.
+
+Horatio:
+ Let us return to scene @HECATE_REVERSE_CHECK.
+
 
                     Scene @ACT_I_DONE: The first act yields.
 
 [Exeunt]
+
+
 
                     Act II: Wherein the kingdom of blocks is shaped, and each form named.

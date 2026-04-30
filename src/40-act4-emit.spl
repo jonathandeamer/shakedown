@@ -2,167 +2,485 @@
 
 [Enter Puck and Prospero]
 
-Puck: You are as noble as the sum of the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower and the sum of the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and a rural little green sweet flower and the sum of a sweet flower and a flower.
-Prospero: We shall proceed to scene @SCRIBE_STREAM_CHECK.
+Puck:
+ You are as noble as the sum of the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  a rural little green sweet flower and the sum of the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  the sum of a rural little green sweet flower and the sum of a rural little green sweet flower and
+  a rural little green sweet flower and the sum of a sweet flower and a flower.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_STREAM_CHECK: The cell measures the remaining words.
 
-Prospero: Am I as noble as nothing?
-Puck: If so, let us proceed to scene @ACT_IV_DONE.
-Puck: If not, let us proceed to scene @SCRIBE_POP_TOKEN.
+Prospero:
+ Am I as noble as nothing?
+
+Puck:
+ If so, let us proceed to scene @ACT_IV_DONE.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_POP_TOKEN.
+
 
                     Scene @SCRIBE_POP_TOKEN: The herald yields one bright word.
 
-Prospero: Recall the herald's present word.
-Puck: You are as noble as the difference between Prospero and a cat.
-Prospero: Are you as noble as a cat?
-Puck: If so, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_OPEN.
-Puck: If not, let us proceed to scene @SCRIBE_TEST_PARAGRAPH_CLOSE.
+Prospero:
+ Recall the herald's present word.
+
+Puck:
+ You are as noble as the difference between Prospero and a cat.
+
+Prospero:
+ Are you as noble as a cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_OPEN.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_TEST_PARAGRAPH_CLOSE.
+
 
                     Scene @SCRIBE_TEST_PARAGRAPH_CLOSE: The scribe weighs a seal.
 
-Prospero: Are you as noble as nothing?
-Puck: If so, let us proceed to scene @SCRIBE_TEST_FINAL_CLOSE.
-Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_OPEN.
+Prospero:
+ Are you as noble as nothing?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_TEST_FINAL_CLOSE.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_OPEN.
+
 
                     Scene @SCRIBE_TEST_ANCHOR_OPEN: Prospero tests an anchor gate.
 
-Prospero: Are you as noble as the sum of a big big big cat and the sum of a big cat and a cat?
-Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_OPEN.
-Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TITLE.
+Prospero:
+ Are you as noble as the sum of a big big big cat and the sum of a big cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_OPEN.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TITLE.
+
 
                     Scene @SCRIBE_TEST_ANCHOR_TITLE: Prospero tests a title gate.
 
-Prospero: Are you as noble as the sum of a big big big cat and a big big cat?
-Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TITLE.
-Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TEXT.
+Prospero:
+ Are you as noble as the sum of a big big big cat and a big big cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TITLE.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TEXT.
+
 
                     Scene @SCRIBE_TEST_ANCHOR_TEXT: Prospero tests a text gate.
 
-Prospero: Are you as noble as the sum of a big big big cat and the sum of a big big cat and a cat?
-Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TEXT.
-Puck: If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_CLOSE.
+Prospero:
+ Are you as noble as the sum of a big big big cat and the sum of a big big cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_TEXT.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_CLOSE.
+
 
                     Scene @SCRIBE_TEST_ANCHOR_CLOSE: Prospero tests an anchor seal.
 
-Prospero: Are you as noble as the sum of a big big big cat and the sum of a big big cat and a big cat?
-Puck: If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_CLOSE.
-Puck: If not, let us proceed to scene @SCRIBE_EMIT_PAYLOAD.
+Prospero:
+ Are you as noble as the sum of a big big big cat and the sum of a big big cat and a big cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_CLOSE.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_EMIT_PAYLOAD.
+
 
                     Scene @SCRIBE_EMIT_PAYLOAD: One glyph is released.
 
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_EMIT_ANCHOR_OPEN: Prospero opens an anchor.
 
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and a warm fine golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a fine golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a golden noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and a warm fine golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a fine golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a golden noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and the sum of a golden noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_EMIT_ANCHOR_TITLE: Prospero opens an anchor title.
 
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and a warm fine golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a golden noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and a warm fine golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and
+  a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a golden noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and the sum of a golden noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_EMIT_ANCHOR_TEXT: Prospero opens anchor text.
 
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_EMIT_ANCHOR_CLOSE: Prospero closes an anchor.
 
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and the sum of a noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and
+  the sum of a golden noble angel and the sum of a noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_EMIT_PARAGRAPH_OPEN: Prospero opens a paragraph.
 
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a warm fine golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a warm fine golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_TEST_FINAL_CLOSE: Prospero tests the last seal.
 
-Prospero: Am I as noble as nothing?
-Puck: If so, let us proceed to scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE.
-Puck: If not, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_CLOSE.
+Prospero:
+ Am I as noble as nothing?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_CLOSE.
+
 
                     Scene @SCRIBE_EMIT_PARAGRAPH_CLOSE: Prospero closes a paragraph.
 
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and the sum of a noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a warm fine golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a big big big cat and a big cat.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a big big big cat and a big cat.
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and
+  the sum of a golden noble angel and the sum of a noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a warm fine golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a big big big cat and a big cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a big big big cat and a big cat.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE: Prospero closes the last paragraph.
 
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and a golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and the sum of a noble angel and an angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and a warm fine golden noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
-Prospero: Speak your mind!
-Prospero: You are as good as the sum of a big big big cat and a big cat.
-Prospero: Speak your mind!
-Puck: Let us return to scene @SCRIBE_STREAM_CHECK.
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and a golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a fine golden noble angel and
+  the sum of a golden noble angel and the sum of a noble angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and a warm fine golden noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a warm fine golden noble angel and
+  the sum of a warm fine golden noble angel and the sum of a warm fine golden noble angel and
+  the sum of a fine golden noble angel and the sum of a golden noble angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as good as the sum of a big big big cat and a big cat.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @SCRIBE_STREAM_CHECK.
+
 
                     Scene @ACT_IV_DONE: The work rests.
 
