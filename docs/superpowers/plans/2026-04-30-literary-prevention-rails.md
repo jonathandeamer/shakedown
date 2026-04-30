@@ -1,0 +1,927 @@
+# Literary Prevention Rails Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Teach assembler/codegen and future prompt authors to route controlled SPL literary surfaces through `src/literary.toml`.
+
+**Architecture:** Keep production SPL fragments readable, but allow explicit `@LIT.<section>.<key>[.<field>]` placeholders for controlled prose. Add a shared `scripts/literary_surfaces.py` loader, have `assemble.py` resolve placeholders, have `codegen_html.py` load numeric atom families from TOML, and add prompt compliance tests that force future run-loop prompts and plans to include the SPL literary protocol.
+
+**Tech Stack:** Python 3.12, `tomllib`, pytest, pyright, ruff, existing SPL assembler/codegen scripts.
+
+---
+
+## Prerequisite
+
+Run this plan only after the literary compliance cleanup branch has landed and
+`src/literary.toml` contains the cleaned play, act, scene, Recall, and
+soft-variation ledger. Starting from the cleaned source matters because this
+plan makes that ledger operational.
+
+## File Structure
+
+- `docs/superpowers/notes/spl-literary-protocol.md`: reusable prompt block for SPL-changing prompts and plans.
+- `CLAUDE.md`: repo-level rule telling prompt authors to use the protocol block.
+- `docs/prompt-shakedown.md`: active run-loop prompt loads the protocol block.
+- `tests/test_prompt_literary_protocol.py`: structural prompt/plan enforcement.
+- `scripts/literary_surfaces.py`: TOML loader and typed access helpers.
+- `tests/test_literary_surfaces.py`: loader validation and failure tests.
+- `scripts/assemble.py`: placeholder resolution before scene-label resolution.
+- `tests/test_assemble.py`: placeholder success/failure tests.
+- `src/literary.toml`: add `value_atoms.default` and any missing key structure needed by the loader.
+- `scripts/codegen_html.py`: load value atoms from TOML instead of hardcoded Python constants.
+- `tests/test_codegen_html.py`: TOML-backed atom and round-trip tests.
+- `src/*.spl`: replace controlled title, scene-title, Recall, and recurring value surfaces with `@LIT.` placeholders where readability remains good.
+- `shakedown.spl`: regenerated assembled output.
+
+---
+
+## Task 1: Add Prompt Literary Protocol
+
+**Files:**
+- Create: `docs/superpowers/notes/spl-literary-protocol.md`
+- Create: `tests/test_prompt_literary_protocol.py`
+- Modify: `CLAUDE.md`
+- Modify: `docs/prompt-shakedown.md`
+
+- [ ] **Step 1: Write failing prompt protocol tests**
+
+Create `tests/test_prompt_literary_protocol.py`:
+
+```python
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+REPO = Path(__file__).parent.parent
+PROTOCOL = REPO / "docs" / "superpowers" / "notes" / "spl-literary-protocol.md"
+ACTIVE_PROMPT = REPO / "docs" / "prompt-shakedown.md"
+CLAUDE = REPO / "CLAUDE.md"
+ROADMAP = REPO / "docs" / "superpowers" / "plans" / "plan-roadmap.md"
+PLANS = REPO / "docs" / "superpowers" / "plans"
+
+REQUIRED_DOCS = {
+    "docs/spl/literary-spec.md",
+    "docs/spl/style-lexicon.md",
+    "docs/spl/codegen-style-guide.md",
+    "src/literary.toml",
+}
+
+SPL_TOUCH_RE = re.compile(
+    r"(src/\*\.spl|src/[^`\s]+\.spl|scripts/assemble\.py|codegen)",
+    re.IGNORECASE,
+)
+
+
+def _read(path: Path) -> str:
+    return path.read_text()
+
+
+def _active_plan_paths() -> list[Path]:
+    text = _read(ROADMAP)
+    paths: list[Path] = []
+    for match in re.finditer(
+        r"`(?P<path>docs/superpowers/plans/[^`]+\.md)`[^|\n]*\|\s*in flight",
+        text,
+    ):
+        paths.append(REPO / match["path"])
+    for match in re.finditer(
+        r"\|\s*[^|\n]+?\|\s*[^|\n]+?\|\s*[^|\n]+?\|\s*[^|\n]+?\|\s*in flight",
+        text,
+    ):
+        row = match.group(0)
+        for candidate in PLANS.glob("*.md"):
+            if candidate.name in row and candidate not in paths:
+                paths.append(candidate)
+    return paths
+
+
+def test_protocol_note_exists_and_names_required_inputs() -> None:
+    text = _read(PROTOCOL)
+    for required in REQUIRED_DOCS:
+        assert required in text
+    assert "Classify new prose" in text
+    assert "Critical" in text
+    assert "Stable Utility" in text
+    assert "Recall" in text
+
+
+def test_active_prompt_loads_protocol_note() -> None:
+    text = _read(ACTIVE_PROMPT)
+    assert "@docs/superpowers/notes/spl-literary-protocol.md" in text
+
+
+def test_claude_tells_prompt_authors_to_use_protocol() -> None:
+    text = _read(CLAUDE)
+    assert "docs/superpowers/notes/spl-literary-protocol.md" in text
+    assert "SPL-changing prompts" in text
+
+
+def test_in_flight_spl_plans_reference_protocol_or_required_docs() -> None:
+    for path in _active_plan_paths():
+        text = _read(path)
+        if not SPL_TOUCH_RE.search(text):
+            continue
+        has_protocol = "docs/superpowers/notes/spl-literary-protocol.md" in text
+        has_docs = all(required in text for required in REQUIRED_DOCS)
+        assert has_protocol or has_docs, path
+        assert "test_literary_compliance.py" in text or "literary compliance" in text
+```
+
+- [ ] **Step 2: Run tests to verify they fail**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_prompt_literary_protocol.py -q
+```
+
+Expected: failures because the protocol note does not exist and the active
+prompt does not load it.
+
+- [ ] **Step 3: Create the reusable protocol note**
+
+Create `docs/superpowers/notes/spl-literary-protocol.md`:
+
+```markdown
+# SPL Literary Protocol
+
+Use this block in any run-loop prompt or implementation plan that asks an agent
+to edit `src/*.spl`, `scripts/assemble.py`, `scripts/codegen_html.py`, or any
+future SPL code generator.
+
+Before editing, read:
+
+- `docs/spl/literary-spec.md`
+- `docs/spl/style-lexicon.md`
+- `docs/spl/codegen-style-guide.md`
+- `src/literary.toml`
+
+Rules:
+
+- Classify new prose before writing it: Critical, Stable Utility, Incidental,
+  Recall, title, scene title, or dramatic tag.
+- Controlled surfaces belong in `src/literary.toml` and are referenced from SPL
+  or codegen by key.
+- Do not invent recurring literary surfaces inline when TOML already owns the
+  category.
+- Use `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` for
+  Incidental prose that remains hand-authored.
+- Run the active plan's literary compliance tests after changing SPL,
+  assembler, or codegen behavior.
+```
+
+- [ ] **Step 4: Update active prompt to load the protocol**
+
+In `docs/prompt-shakedown.md`, add this university reference after
+`@docs/spl/literary-spec.md`:
+
+```markdown
+@docs/superpowers/notes/spl-literary-protocol.md
+```
+
+Then replace the existing standing rule:
+
+```markdown
+- Aesthetic policy lives in `@docs/spl/literary-spec.md`. Reach for it before
+  writing any decorative surface.
+```
+
+with:
+
+```markdown
+- SPL literary policy lives in `@docs/superpowers/notes/spl-literary-protocol.md`.
+  Follow it before editing SPL, assembler, codegen, or literary surface data.
+```
+
+- [ ] **Step 5: Update CLAUDE.md for prompt authors**
+
+In `CLAUDE.md`, add this section after "run-loop" and before "Operator halt
+switch":
+
+```markdown
+## SPL literary protocol for prompts and plans
+
+Any SPL-changing prompt or implementation plan must use
+`docs/superpowers/notes/spl-literary-protocol.md`. This includes work that edits
+`src/*.spl`, `scripts/assemble.py`, `scripts/codegen_html.py`, or future SPL
+generators. Prompt authors must include the protocol block or load it by
+university reference, and SPL-changing plans must name the literary compliance
+tests they expect the implementation agent to run.
+```
+
+- [ ] **Step 6: Run tests**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_prompt_literary_protocol.py -q
+```
+
+Expected: all tests pass.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add docs/superpowers/notes/spl-literary-protocol.md tests/test_prompt_literary_protocol.py CLAUDE.md docs/prompt-shakedown.md
+git commit -m "docs: add SPL literary prompt protocol"
+```
+
+---
+
+## Task 2: Add Literary Surface Loader
+
+**Files:**
+- Create: `scripts/literary_surfaces.py`
+- Create: `tests/test_literary_surfaces.py`
+
+- [ ] **Step 1: Write failing loader tests**
+
+Create `tests/test_literary_surfaces.py`:
+
+```python
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from scripts.literary_surfaces import (
+    LiterarySurfaces,
+    load_literary_surfaces,
+)
+
+
+def _write_literary(tmp_path: Path, text: str) -> Path:
+    path = tmp_path / "literary.toml"
+    path.write_text(text)
+    return path
+
+
+def test_resolve_known_literary_keys(tmp_path: Path) -> None:
+    path = _write_literary(
+        tmp_path,
+        """
+[play]
+title = "Shakedown."
+
+[acts.act1]
+title = "Wherein the first act begins."
+
+[scenes.DETAB_RAW]
+title = "The cauldron is stirred."
+
+[characters.hecate.recall]
+detab_cauldron = "Recall the cauldron dreg."
+
+[value_atoms.default]
+v0 = "nothing"
+v1 = "a cat"
+v2 = "a big cat"
+v4 = "a big big cat"
+v8 = "the sum of a big big cat and a big big cat"
+v16 = "the square of a big big cat"
+""",
+    )
+
+    surfaces = load_literary_surfaces(path)
+
+    assert surfaces.resolve("play.title") == "Shakedown."
+    assert surfaces.resolve("acts.act1.title") == "Wherein the first act begins."
+    assert surfaces.resolve("scenes.DETAB_RAW.title") == "The cauldron is stirred."
+    assert (
+        surfaces.resolve("characters.hecate.recall.detab_cauldron")
+        == "Recall the cauldron dreg."
+    )
+    assert surfaces.value_atoms("default")[16] == "the square of a big big cat"
+
+
+def test_unknown_key_raises_clear_error(tmp_path: Path) -> None:
+    path = _write_literary(tmp_path, "[play]\ntitle = \"Shakedown.\"\n")
+    surfaces = load_literary_surfaces(path)
+
+    with pytest.raises(KeyError, match="play.subtitle"):
+        surfaces.resolve("play.subtitle")
+
+
+def test_value_atoms_require_integer_keys(tmp_path: Path) -> None:
+    path = _write_literary(
+        tmp_path,
+        """
+[value_atoms.default]
+v0 = "nothing"
+v1 = "a cat"
+bad = "a cat"
+""",
+    )
+
+    with pytest.raises(ValueError, match="value_atoms.default.bad"):
+        load_literary_surfaces(path)
+
+
+def test_value_atoms_reject_overlong_atoms(tmp_path: Path) -> None:
+    path = _write_literary(
+        tmp_path,
+        """
+[value_atoms.default]
+v0 = "nothing"
+v1 = "a big big big big big big cat"
+""",
+    )
+
+    with pytest.raises(ValueError, match="exceeds 6 words"):
+        load_literary_surfaces(path)
+
+
+def test_literary_surfaces_type_is_constructible() -> None:
+    surfaces = LiterarySurfaces(data={"play": {"title": "Shakedown."}})
+    assert surfaces.resolve("play.title") == "Shakedown."
+```
+
+- [ ] **Step 2: Run tests to verify they fail**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_literary_surfaces.py -q
+```
+
+Expected: import failure because `scripts/literary_surfaces.py` does not exist.
+
+- [ ] **Step 3: Implement the loader**
+
+Create `scripts/literary_surfaces.py`:
+
+```python
+"""Load and resolve TOML-backed SPL literary surfaces."""
+
+from __future__ import annotations
+
+import re
+import tomllib
+from dataclasses import dataclass
+from pathlib import Path
+from typing import cast
+
+ATOM_WORD_MAX = 6
+_VALUE_KEY_RE = re.compile(r"^v(?P<value>0|[1-9][0-9]*)$")
+
+
+@dataclass(frozen=True)
+class LiterarySurfaces:
+    """Resolved access to `src/literary.toml`."""
+
+    data: dict[str, object]
+
+    def resolve(self, key: str) -> str:
+        current: object = self.data
+        for part in key.split("."):
+            if not isinstance(current, dict) or part not in current:
+                raise KeyError(key)
+            current = current[part]
+        if not isinstance(current, str):
+            raise KeyError(key)
+        return current
+
+    def value_atoms(self, family: str = "default") -> dict[int, str]:
+        value_atoms = self.data.get("value_atoms")
+        if not isinstance(value_atoms, dict):
+            raise KeyError("value_atoms")
+        raw_family = value_atoms.get(family)
+        if not isinstance(raw_family, dict):
+            raise KeyError(f"value_atoms.{family}")
+        atoms: dict[int, str] = {}
+        for key, phrase in raw_family.items():
+            if not isinstance(key, str) or not isinstance(phrase, str):
+                raise ValueError(f"value_atoms.{family}.{key}")
+            match = _VALUE_KEY_RE.match(key)
+            if match is None:
+                raise ValueError(f"value_atoms.{family}.{key}")
+            _validate_atom_phrase(f"value_atoms.{family}.{key}", phrase)
+            atoms[int(match["value"])] = phrase
+        return atoms
+
+
+def load_literary_surfaces(path: Path) -> LiterarySurfaces:
+    with path.open("rb") as f:
+        data = tomllib.load(f)
+    surfaces = LiterarySurfaces(data=cast(dict[str, object], data))
+    if "value_atoms" in data:
+        value_atoms = data["value_atoms"]
+        if isinstance(value_atoms, dict):
+            for family in value_atoms:
+                if isinstance(family, str):
+                    surfaces.value_atoms(family)
+    return surfaces
+
+
+def _validate_atom_phrase(key: str, phrase: str) -> None:
+    for atom in _atoms_in(phrase):
+        words = atom.split()
+        if len(words) > ATOM_WORD_MAX:
+            raise ValueError(
+                f"{key}: atom {atom!r} exceeds {ATOM_WORD_MAX} words"
+            )
+
+
+def _atoms_in(phrase: str) -> list[str]:
+    text = phrase.strip()
+    prefix = "the sum of "
+    if text.lower().startswith(prefix):
+        rest = text[len(prefix) :]
+        idx = rest.find(" and ")
+        if idx == -1:
+            return [text]
+        return _atoms_in(rest[:idx]) + _atoms_in(rest[idx + len(" and ") :])
+    return [text]
+```
+
+- [ ] **Step 4: Run tests and type checks**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_literary_surfaces.py -q
+env UV_CACHE_DIR=/tmp/uv-cache uv run ruff check scripts/literary_surfaces.py tests/test_literary_surfaces.py
+env UV_CACHE_DIR=/tmp/uv-cache uv run pyright scripts/literary_surfaces.py tests/test_literary_surfaces.py
+```
+
+Expected: all pass.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/literary_surfaces.py tests/test_literary_surfaces.py
+git commit -m "feat: load literary surface data"
+```
+
+---
+
+## Task 3: Resolve Literary Placeholders In Assembler
+
+**Files:**
+- Modify: `scripts/assemble.py`
+- Modify: `tests/test_assemble.py`
+
+- [ ] **Step 1: Add failing assembler placeholder tests**
+
+Append to `tests/test_assemble.py`:
+
+```python
+def test_assemble_resolves_literary_placeholders(tmp_path: Path) -> None:
+    from scripts.assemble import assemble
+
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "fragment.spl").write_text(
+        "@LIT.play.title\n"
+        "Act I: @LIT.acts.act1.title\n"
+        "Scene @START: @LIT.scenes.START.title\n"
+    )
+    (src / "manifest.toml").write_text('fragments = ["fragment.spl"]\n')
+    (src / "literary.toml").write_text(
+        """
+[play]
+title = "Shakedown."
+
+[acts.act1]
+title = "Wherein the first act begins."
+
+[scenes.START]
+title = "The page awakens."
+"""
+    )
+
+    output = tmp_path / "out.spl"
+    assemble(src_dir=src, manifest=src / "manifest.toml", output=output)
+
+    assert output.read_text() == (
+        "Shakedown.\n"
+        "Act I: Wherein the first act begins.\n"
+        "Scene I: The page awakens.\n"
+    )
+
+
+def test_assemble_unknown_literary_placeholder_raises(tmp_path: Path) -> None:
+    from scripts.assemble import assemble
+
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "fragment.spl").write_text("@LIT.play.subtitle\n")
+    (src / "manifest.toml").write_text('fragments = ["fragment.spl"]\n')
+    (src / "literary.toml").write_text("[play]\ntitle = \"Shakedown.\"\n")
+
+    output = tmp_path / "out.spl"
+    with pytest.raises(KeyError, match="play.subtitle"):
+        assemble(src_dir=src, manifest=src / "manifest.toml", output=output)
+```
+
+- [ ] **Step 2: Run tests to verify they fail**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_assemble.py -q
+```
+
+Expected: the new placeholder test fails because placeholders are not resolved.
+
+- [ ] **Step 3: Implement placeholder resolution**
+
+Modify `scripts/assemble.py`:
+
+```python
+import re
+import tomllib
+from pathlib import Path
+
+from scripts.literary_surfaces import load_literary_surfaces
+```
+
+Add:
+
+```python
+_LIT_RE = re.compile(r"@LIT\.([A-Za-z0-9_.]+)")
+
+
+def _resolve_literary_placeholders(source: str, literary_path: Path) -> str:
+    if "@LIT." not in source:
+        return source
+    surfaces = load_literary_surfaces(literary_path)
+
+    def replace(match: re.Match[str]) -> str:
+        return surfaces.resolve(match.group(1))
+
+    resolved = _LIT_RE.sub(replace, source)
+    if "@LIT." in resolved:
+        raise ValueError("unresolved @LIT placeholder")
+    return resolved
+```
+
+In `assemble`, replace:
+
+```python
+combined = "".join((src_dir / name).read_text() for name in fragments)
+resolved = _resolve_scene_labels(combined)
+```
+
+with:
+
+```python
+combined = "".join((src_dir / name).read_text() for name in fragments)
+with_literary = _resolve_literary_placeholders(
+    combined,
+    src_dir / "literary.toml",
+)
+resolved = _resolve_scene_labels(with_literary)
+```
+
+- [ ] **Step 4: Run assembler checks**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_assemble.py tests/test_literary_surfaces.py -q
+env UV_CACHE_DIR=/tmp/uv-cache uv run ruff check scripts/assemble.py scripts/literary_surfaces.py tests/test_assemble.py
+env UV_CACHE_DIR=/tmp/uv-cache uv run pyright scripts/assemble.py scripts/literary_surfaces.py tests/test_assemble.py
+```
+
+Expected: all pass.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/assemble.py tests/test_assemble.py
+git commit -m "feat: resolve literary placeholders in assembler"
+```
+
+---
+
+## Task 4: Move Codegen Value Atoms Into TOML
+
+**Files:**
+- Modify: `src/literary.toml`
+- Modify: `scripts/codegen_html.py`
+- Modify: `tests/test_codegen_html.py`
+
+- [ ] **Step 1: Add default value atom family to TOML**
+
+Add this section to `src/literary.toml`:
+
+```toml
+[value_atoms.default]
+v0 = "nothing"
+v1 = "a cat"
+v2 = "a big cat"
+v4 = "a big big cat"
+v8 = "the sum of a big big cat and a big big cat"
+v16 = "the square of a big big cat"
+```
+
+- [ ] **Step 2: Update codegen tests for TOML-loaded atoms**
+
+In `tests/test_codegen_html.py`, change the atom expectation for `16` by adding
+this case to `test_emit_byte_atom_forms`:
+
+```python
+(16, "the square of a big big cat"),
+```
+
+Add this test:
+
+```python
+def test_emit_byte_uses_toml_value_atoms() -> None:
+    assert emit_byte(16) == "the square of a big big cat"
+    assert "big big big big cat" not in emit_byte(16)
+```
+
+- [ ] **Step 3: Run tests to verify they fail before implementation**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py -q
+```
+
+Expected: `test_emit_byte_uses_toml_value_atoms` fails because codegen still uses
+hardcoded atoms.
+
+- [ ] **Step 4: Implement TOML-backed atoms**
+
+Modify `scripts/codegen_html.py`:
+
+```python
+"""HTML byte-literal codegen."""
+
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+from scripts.literary_surfaces import load_literary_surfaces
+
+_ROOT = Path(__file__).parent.parent
+_LITERARY_TOML = _ROOT / "src" / "literary.toml"
+_ATOM_BY_VALUE = load_literary_surfaces(_LITERARY_TOML).value_atoms("default")
+```
+
+Keep the existing `emit_byte`, `_decompose`, `emit_literal`, and
+`emit_speak_lines` functions. Replace `_PHRASE_RE` and `parse_value_phrase` with:
+
+```python
+_ATOM_TO_VALUE = {phrase: value for value, phrase in _ATOM_BY_VALUE.items()}
+
+
+def parse_value_phrase(phrase: str) -> int:
+    """Reverse `emit_byte`; used by round-trip tests."""
+    text = phrase.strip()
+    if text in _ATOM_TO_VALUE:
+        return _ATOM_TO_VALUE[text]
+    prefix = "the sum of "
+    if text.lower().startswith(prefix):
+        rest = text[len(prefix) :]
+        idx = rest.find(" and ")
+        if idx == -1:
+            raise ValueError(f"malformed compound: {phrase!r}")
+        return parse_value_phrase(rest[:idx]) + parse_value_phrase(
+            rest[idx + len(" and ") :]
+        )
+    raise ValueError(f"unrecognised atom: {phrase!r}")
+```
+
+- [ ] **Step 5: Run codegen checks**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py tests/test_literary_surfaces.py -q
+env UV_CACHE_DIR=/tmp/uv-cache uv run ruff check scripts/codegen_html.py scripts/literary_surfaces.py tests/test_codegen_html.py
+env UV_CACHE_DIR=/tmp/uv-cache uv run pyright scripts/codegen_html.py scripts/literary_surfaces.py tests/test_codegen_html.py
+```
+
+Expected: all pass.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/literary.toml scripts/codegen_html.py tests/test_codegen_html.py
+git commit -m "feat: drive byte value atoms from literary data"
+```
+
+---
+
+## Task 5: Convert Production Controlled Surfaces To Placeholders
+
+**Files:**
+- Modify: `src/00-preamble.spl`
+- Modify: `src/10-act1-preprocess.spl`
+- Modify: `src/20-act2-block.spl`
+- Modify: `src/30-act3-span.spl`
+- Modify: `src/40-act4-emit.spl`
+- Modify: `shakedown.spl`
+- Modify: `tests/test_literary_compliance.py`
+
+- [ ] **Step 1: Add source-placeholder coverage test**
+
+Append to `tests/test_literary_compliance.py`:
+
+```python
+def test_controlled_surfaces_use_literary_placeholders_in_source() -> None:
+    source = _production_source()
+    assert "@LIT.play.title" in source
+    for act in ACT_TITLES:
+        assert f"@LIT.acts.{act}.title" in source
+    assert "@LIT.scenes." in source
+    assert "@LIT.characters." in source
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_literary_compliance.py::test_controlled_surfaces_use_literary_placeholders_in_source -q
+```
+
+Expected: fails because production source still contains direct prose.
+
+- [ ] **Step 3: Replace play and act titles**
+
+In `src/00-preamble.spl`, replace the literal play title line with:
+
+```spl
+@LIT.play.title
+```
+
+In each act fragment, replace locked act title text with:
+
+```spl
+Act I: @LIT.acts.act1.title
+Act II: @LIT.acts.act2.title
+Act III: @LIT.acts.act3.title
+Act IV: @LIT.acts.act4.title
+```
+
+- [ ] **Step 4: Replace scene titles**
+
+For each scene declaration of the form:
+
+```spl
+Scene @LABEL: Existing title.
+```
+
+replace only the title text:
+
+```spl
+Scene @LABEL: @LIT.scenes.LABEL.title
+```
+
+Use the exact symbolic label already present in the scene declaration.
+
+- [ ] **Step 5: Replace Recall phrases with character keys**
+
+For each production Recall phrase that exists in
+`src/literary.toml` under `[characters.<character>.recall]`, replace:
+
+```spl
+Speaker:
+ Recall existing phrase.
+```
+
+with:
+
+```spl
+Speaker:
+ @LIT.characters.<character>.recall.<key>
+```
+
+For inline Recall forms, replace:
+
+```spl
+Speaker: Recall existing phrase.
+```
+
+with:
+
+```spl
+Speaker: @LIT.characters.<character>.recall.<key>
+```
+
+Use the existing TOML key for the exact phrase. If the cleanup ledger currently
+stores Recall pools as arrays, first convert those pools to keyed tables while
+preserving the same phrase strings.
+
+- [ ] **Step 6: Assemble and run focused checks**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_assemble.py tests/test_literary_compliance.py tests/test_mdtest.py -k 'Amps and angle' -q
+```
+
+Expected: assembler tests pass, the Slice 1 fixture still passes, and any
+remaining literary compliance failure names a prevention-specific gate introduced
+by this task rather than a pre-existing cleanup issue.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add src/*.spl shakedown.spl tests/test_literary_compliance.py src/literary.toml
+git commit -m "refactor: reference literary surfaces by key"
+```
+
+---
+
+## Task 6: Add Prompt/Plan Gate To Roadmap Workflow
+
+**Files:**
+- Modify: `docs/superpowers/plans/plan-roadmap.md`
+- Modify: `tests/test_prompt_literary_protocol.py`
+
+- [ ] **Step 1: Add roadmap source note**
+
+In `docs/superpowers/plans/plan-roadmap.md`, add this source note:
+
+```markdown
+- SPL-changing plans must use `docs/superpowers/notes/spl-literary-protocol.md`
+  or explicitly reference its required docs and literary compliance tests.
+```
+
+- [ ] **Step 2: Add test that roadmap names the protocol**
+
+Append to `tests/test_prompt_literary_protocol.py`:
+
+```python
+def test_roadmap_names_spl_literary_protocol() -> None:
+    assert "docs/superpowers/notes/spl-literary-protocol.md" in _read(ROADMAP)
+```
+
+- [ ] **Step 3: Run prompt protocol tests**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_prompt_literary_protocol.py -q
+```
+
+Expected: all pass.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add docs/superpowers/plans/plan-roadmap.md tests/test_prompt_literary_protocol.py
+git commit -m "docs: require literary protocol in SPL plans"
+```
+
+---
+
+## Task 7: Final Verification
+
+**Files:**
+- No new files
+
+- [ ] **Step 1: Run full verification**
+
+Run:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
+bash -n shakedown
+env UV_CACHE_DIR=/tmp/uv-cache uv run pyright
+env UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .
+```
+
+Expected: all pass, except any existing repository-wide skips already present in
+the baseline.
+
+- [ ] **Step 2: Confirm generated output has no unresolved placeholders**
+
+Run:
+
+```bash
+rg -n '@LIT\\.' shakedown.spl && exit 1 || true
+```
+
+Expected: no output and exit status 0.
+
+- [ ] **Step 3: Confirm source still uses placeholders**
+
+Run:
+
+```bash
+rg -n '@LIT\\.' src/*.spl
+```
+
+Expected: matches for title, scene-title, Recall, or recurring value surfaces.
+
+- [ ] **Step 4: Commit any verification-only plan checkbox changes**
+
+If executing through the run-loop and this plan file is being checked off, commit
+the checked boxes:
+
+```bash
+git add docs/superpowers/plans/2026-04-30-literary-prevention-rails.md
+git commit -m "chore: complete literary prevention rails plan"
+```
