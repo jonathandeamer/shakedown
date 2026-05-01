@@ -56,6 +56,10 @@ def test_claude_tells_prompt_authors_to_use_protocol() -> None:
     text = _read(CLAUDE)
     assert "docs/superpowers/notes/spl-literary-protocol.md" in text
     assert "SPL-changing prompts" in text
+    assert "Controlled SPL prose belongs in `src/literary.toml`" in text
+    assert "`@LIT.` placeholders" in text
+    assert "Do not hand-edit" in text
+    assert "`shakedown.spl` for literary surface changes" in text
 
 
 def test_in_flight_roadmap_row_names_exact_plan_path() -> None:

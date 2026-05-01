@@ -73,6 +73,14 @@ generators. Prompt authors must include the protocol block or load it by
 university reference, and SPL-changing plans must name the exact literary
 compliance tests they expect the implementation agent to run.
 
+Controlled SPL prose belongs in `src/literary.toml`. Source fragments should
+refer to controlled titles, scene surfaces, Recall lines, and recurring
+literary values with `@LIT.` placeholders that `scripts/assemble.py` resolves
+when rebuilding `shakedown.spl`. Codegen should load configured value atoms
+from the same TOML instead of hardcoding adjective chains. Do not hand-edit
+`shakedown.spl` for literary surface changes; edit `src/*.spl` and
+`src/literary.toml`, then rebuild with `uv run python scripts/assemble.py`.
+
 ## Operator halt switch (`.agent/blockers.md`)
 
 The autonomous agent reads `.agent/blockers.md` on every iteration via the
