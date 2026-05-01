@@ -220,7 +220,7 @@ entry must be used by production source.
 Do not commit ledger-only scene entries. Add each `[scenes.LABEL]` entry in the
 same commit as the corresponding `Scene @LABEL:` source change.
 
-- [ ] **Step 2: Reserve Act II and Act IV scene labels for this spike**
+- [x] **Step 2: Reserve Act II and Act IV scene labels for this spike**
 
 Use these Act II labels unless implementation proves one is unnecessary:
 
