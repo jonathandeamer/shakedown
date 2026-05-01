@@ -148,6 +148,7 @@ blurb = "Hecate, witch-queen, who scours the underbelly of the page."
 sealed_second_shelf = "Recall the sealed second shelf."
 sealed_first_shelf = "Recall the sealed first shelf."
 cauldron_dreg = "Recall the cauldron dreg."
+kept_tally = "Recall the kept tally."
 [characters.hecate.stable_utility]
 v1 = "a cat"
 v2 = "a black cat"
@@ -293,6 +294,14 @@ pattern = "scene_of_character"
 title = "Double, double, glyphs are brewed."
 pattern = "iconic_echo"
 
+[scenes.HECATE_TEST_FINAL_GLYPH]
+title = "The last dreg is tested at the rim."
+pattern = "bare_statement"
+
+[scenes.HECATE_RESTORE_FINAL_NEWLINE]
+title = "The rim receives its final seal."
+pattern = "bare_statement"
+
 [scenes.HECATE_LINE_STRIP_SECOND_REFERENCE]
 title = "The second shelf is read to its seal."
 pattern = "bare_statement"
@@ -365,6 +374,14 @@ pattern = "bare_statement"
 title = "Lady Macbeth gives Puck the mason's order."
 pattern = "cross_character"
 
+[scenes.MASON_SET_SLICE_ONE_REVERSE_COUNT]
+title = "The old tally serves the proven wall."
+pattern = "bare_statement"
+
+[scenes.MASON_SET_SHORT_REVERSE_COUNT]
+title = "The short wall keeps its living tally."
+pattern = "bare_statement"
+
 [scenes.HERALD_REVERSE_TOKEN_STREAM]
 title = "The herald turns the wall toward morning."
 pattern = "scene_of_character"
@@ -376,6 +393,14 @@ pattern = "bare_statement"
 [scenes.ACT_III_START]
 title = "The lovers begin their substitutions."
 pattern = "scene_of_character"
+
+[scenes.LYRIC_SET_SLICE_ONE_SCAN_COUNT]
+title = "The old morning keeps its measure."
+pattern = "bare_statement"
+
+[scenes.LYRIC_SET_SHORT_SCAN_COUNT]
+title = "The short morning takes Horatio's measure."
+pattern = "bare_statement"
 
 [scenes.LYRIC_SCAN_CHECK]
 title = "The morning counts each glyph."
@@ -557,6 +582,14 @@ pattern = "scene_of_character"
 title = "The rose turns the line back to Puck."
 pattern = "cross_character"
 
+[scenes.LYRIC_SET_SLICE_ONE_REVERSE_COUNT]
+title = "The old rose keeps its measure."
+pattern = "bare_statement"
+
+[scenes.LYRIC_SET_SHORT_REVERSE_COUNT]
+title = "The short rose takes Horatio's measure."
+pattern = "bare_statement"
+
 [scenes.LYRIC_REVERSE_CHECK]
 title = "The evening counts the garden home."
 pattern = "bare_statement"
@@ -584,6 +617,14 @@ pattern = "bare_statement"
 [scenes.ACT_IV_START]
 title = "Prospero receives the herald's stream."
 pattern = "scene_of_character"
+
+[scenes.SCRIBE_SET_SLICE_ONE_STREAM_COUNT]
+title = "The old cell keeps its measure."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_SET_SHORT_STREAM_COUNT]
+title = "The short cell takes Horatio's measure."
+pattern = "bare_statement"
 
 [scenes.SCRIBE_STREAM_CHECK]
 title = "The cell measures the remaining words."

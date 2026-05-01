@@ -11,5 +11,3 @@ cannot resolve from the universities (`@file` references in
 blocker mid-run. The operator removes the line when the block is resolved.
 
 Non-blocking notes (no halt) use `- NOTE:` instead.
-
-- BLOCK: Spike A Task 3 Step 1 assumes Act II receives full normalized list input, but current Act I still unconditionally strips two trailing reference-definition-shaped lines for Slice 1, so list snippets without reference definitions are truncated before Act II can emit list tokens.

@@ -59,7 +59,7 @@ Hecate:
  Are you as rotten as a pig?
 
 Puck:
- If so, let us proceed to scene @HECATE_LINE_STRIP_SECOND_REFERENCE.
+ If so, let us proceed to scene @HECATE_TEST_FINAL_GLYPH.
 
 Hecate:
  Remember yourself.
@@ -69,6 +69,42 @@ Puck:
 
 Puck:
  Let us return to scene @HECATE_READ_INPUT.
+
+
+                    Scene @HECATE_TEST_FINAL_GLYPH: @LIT.scenes.HECATE_TEST_FINAL_GLYPH.title
+
+Hecate:
+ @LIT.characters.hecate.recall.cauldron_dreg
+
+Puck:
+ You are as rotten as the difference between Hecate and a cat.
+
+Hecate:
+ Are you as rotten as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @HECATE_RESTORE_FINAL_NEWLINE.
+
+Puck:
+ If not, let us proceed to scene @HECATE_LINE_STRIP_SECOND_REFERENCE.
+
+
+                    Scene @HECATE_RESTORE_FINAL_NEWLINE: @LIT.scenes.HECATE_RESTORE_FINAL_NEWLINE.title
+
+Hecate:
+ Remember yourself.
+
+Puck:
+ You are as rotten as the sum of Hecate and a cat.
+
+Hecate:
+ Remember yourself.
+
+Puck:
+ You are as rotten as the sum of Hecate and a cat.
+
+Puck:
+ Let us proceed to scene @HECATE_HAND_COUNT_TO_HORATIO.
 
 
                     Scene @HECATE_LINE_STRIP_SECOND_REFERENCE: @LIT.scenes.HECATE_LINE_STRIP_SECOND_REFERENCE.title
@@ -129,6 +165,9 @@ Hecate:
  You are as rotten as myself.
 
 Hecate:
+ Remember yourself.
+
+Hecate:
  Let us proceed to scene @HECATE_REVERSE_CHECK.
 
 
@@ -183,6 +222,9 @@ Horatio:
 
 
                     Scene @ACT_I_DONE: @LIT.scenes.ACT_I_DONE.title
+
+Hecate:
+ @LIT.characters.hecate.recall.kept_tally
 
 [Exeunt]
 

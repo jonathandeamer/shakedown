@@ -3,8 +3,30 @@
 [Enter Puck and Romeo]
 
 Puck:
+ Is Horatio friendlier than the product of a little green sweet flower and a rural little
+  green sweet flower?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_SET_SLICE_ONE_SCAN_COUNT.
+
+Romeo:
+ If not, let us proceed to scene @LYRIC_SET_SHORT_SCAN_COUNT.
+
+
+                    Scene @LYRIC_SET_SLICE_ONE_SCAN_COUNT: @LIT.scenes.LYRIC_SET_SLICE_ONE_SCAN_COUNT.title
+
+Puck:
  You are as fair as the product of the sum of a flower and a green sweet flower and the
   difference between the square of a little green sweet flower and a flower.
+
+Romeo:
+ Let us proceed to scene @LYRIC_SCAN_CHECK.
+
+
+                    Scene @LYRIC_SET_SHORT_SCAN_COUNT: @LIT.scenes.LYRIC_SET_SHORT_SCAN_COUNT.title
+
+Puck:
+ You are as fair as Horatio.
 
 Romeo:
  Let us proceed to scene @LYRIC_SCAN_CHECK.
@@ -1169,8 +1191,30 @@ Romeo:
 [Enter Juliet]
 
 Juliet:
+ Is Horatio friendlier than the product of a little green sweet flower and a rural little
+  green sweet flower?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_SET_SLICE_ONE_REVERSE_COUNT.
+
+Romeo:
+ If not, let us proceed to scene @LYRIC_SET_SHORT_REVERSE_COUNT.
+
+
+                    Scene @LYRIC_SET_SLICE_ONE_REVERSE_COUNT: @LIT.scenes.LYRIC_SET_SLICE_ONE_REVERSE_COUNT.title
+
+Juliet:
  You are as fair as the product of the sum of a rose and a sweet rose and the sum of a rose
   and the product of a gentle fair sweet rose and a beautiful gentle fair sweet rose.
+
+Romeo:
+ Let us proceed to scene @LYRIC_REVERSE_CHECK.
+
+
+                    Scene @LYRIC_SET_SHORT_REVERSE_COUNT: @LIT.scenes.LYRIC_SET_SHORT_REVERSE_COUNT.title
+
+Juliet:
+ You are as fair as Horatio.
 
 Romeo:
  Let us proceed to scene @LYRIC_REVERSE_CHECK.

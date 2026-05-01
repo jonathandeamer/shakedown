@@ -3,8 +3,7 @@
 [Enter Hecate and Lady Macbeth]
 
 Hecate:
- You are as rotten as the difference between the square of the sum of a black cat and a
-  normal little furry black cat and a little furry black cat.
+ You are as rotten as Horatio.
 
 Hecate:
  Remember a cat.
@@ -125,8 +124,30 @@ Lady Macbeth:
 [Enter Puck]
 
 Lady Macbeth:
+ Is Horatio more bold than the product of a little furry black cat and a normal little furry
+  black cat?
+
+Puck:
+ If so, let us proceed to scene @MASON_SET_SLICE_ONE_REVERSE_COUNT.
+
+Puck:
+ If not, let us proceed to scene @MASON_SET_SHORT_REVERSE_COUNT.
+
+
+                    Scene @MASON_SET_SLICE_ONE_REVERSE_COUNT: @LIT.scenes.MASON_SET_SLICE_ONE_REVERSE_COUNT.title
+
+Lady Macbeth:
  You are as mighty as the product of the sum of a hero and a bold noble hero and the
   difference between the square of a mighty bold noble hero and a hero.
+
+Puck:
+ Let us proceed to scene @HERALD_REVERSE_TOKEN_STREAM.
+
+
+                    Scene @MASON_SET_SHORT_REVERSE_COUNT: @LIT.scenes.MASON_SET_SHORT_REVERSE_COUNT.title
+
+Lady Macbeth:
+ You are as mighty as Horatio.
 
 Puck:
  Let us proceed to scene @HERALD_REVERSE_TOKEN_STREAM.

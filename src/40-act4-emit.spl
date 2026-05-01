@@ -3,9 +3,31 @@
 [Enter Puck and Prospero]
 
 Puck:
+ Is Horatio jollier than the product of a little green sweet flower and a rural little green
+  sweet flower?
+
+Prospero:
+ If so, let us proceed to scene @SCRIBE_SET_SLICE_ONE_STREAM_COUNT.
+
+Prospero:
+ If not, let us proceed to scene @SCRIBE_SET_SHORT_STREAM_COUNT.
+
+
+                    Scene @SCRIBE_SET_SLICE_ONE_STREAM_COUNT: @LIT.scenes.SCRIBE_SET_SLICE_ONE_STREAM_COUNT.title
+
+Puck:
  You are as noble as the product of the sum of a flower and a sweet flower and the sum of a
   flower and the product of a little green sweet flower and a rural little green sweet
   flower.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_STREAM_CHECK.
+
+
+                    Scene @SCRIBE_SET_SHORT_STREAM_COUNT: @LIT.scenes.SCRIBE_SET_SHORT_STREAM_COUNT.title
+
+Puck:
+ You are as noble as Horatio.
 
 Prospero:
  We shall proceed to scene @SCRIBE_STREAM_CHECK.
