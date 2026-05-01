@@ -50,7 +50,7 @@ Hecate:
  Let us proceed to scene @HECATE_READ_INPUT.
 
 
-                    Scene @HECATE_READ_INPUT: The cauldron drinks each glyph.
+                    Scene @HECATE_READ_INPUT: Double, double, glyphs are brewed.
 
 Hecate:
  Open your mind!
@@ -107,7 +107,7 @@ Puck:
  If not, let us return to scene @HECATE_LINE_STRIP_FIRST_REFERENCE.
 
 
-                    Scene @HECATE_LINE_RESTORE_BOUNDARY: The page keeps its blank boundary.
+                    Scene @HECATE_LINE_RESTORE_BOUNDARY: Out, damned blank boundary.
 
 Hecate:
  Remember yourself.

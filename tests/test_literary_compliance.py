@@ -20,6 +20,7 @@ ACT_TITLES = {
 SCENE_RE = re.compile(r"Scene\s+@(?P<label>[A-Z_][A-Z0-9_]*)\s*:\s*(?P<title>.+)")
 RECALL_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):\s*Recall\s+(?P<body>.+)$")
 SPEAKER_ONLY_RE = re.compile(r"^(?P<speaker>[A-Z][A-Za-z ]+):$")
+PROSPERO_EQUALITY_RE = re.compile(r"\bYou are (as [a-z-]+ as)\b")
 BAD_BIG_CAT_RE = re.compile(r"\ba big(?: big){3,} cat\b")
 VALUE_ATOM_RE = re.compile(
     r"\b(?:a|an)\s+(?P<adjectives>[a-z][a-z' -]*?)\s+"
@@ -43,6 +44,14 @@ ARITHMETIC_OPERATORS = (
 )
 MAX_ARITHMETIC_OPERATORS_PER_STATEMENT = 4
 MAX_LOGICAL_STATEMENT_CHARS = 220
+SCENE_TITLE_WORD_LIMITS = {
+    "wherein": (6, 12),
+    "bare_statement": (4, 10),
+    "scene_of_character": (5, 10),
+    "iconic_echo": (3, 8),
+    "cross_character": (6, 14),
+    "locale": (3, 7),
+}
 
 CHARACTER_KEY = {
     "Hecate": "hecate",
@@ -69,6 +78,10 @@ def _literary() -> dict[str, object]:
 def _is_inline_character_dialogue(line: str) -> bool:
     speaker, separator, body = line.strip().partition(":")
     return bool(separator) and speaker in CHARACTER_KEY and bool(body.strip())
+
+
+def _word_count(text: str) -> int:
+    return len(re.findall(r"[A-Za-z0-9']+", text))
 
 
 def test_locked_play_title_and_act_titles() -> None:
@@ -112,6 +125,19 @@ def test_scene_titles_have_toml_entries_and_match_source() -> None:
         }
 
 
+def test_scene_titles_fit_declared_pattern_lengths() -> None:
+    scenes = _literary()["scenes"]
+    assert isinstance(scenes, dict)
+    for label, scene in scenes.items():
+        assert isinstance(scene, dict)
+        pattern = scene["pattern"]
+        title = scene["title"]
+        assert isinstance(pattern, str)
+        assert isinstance(title, str)
+        low, high = SCENE_TITLE_WORD_LIMITS[pattern]
+        assert low <= _word_count(title) <= high, (label, pattern, title)
+
+
 def test_recall_phrases_are_in_speaker_pools() -> None:
     data = _literary()
     characters = data["characters"]
@@ -139,6 +165,31 @@ def test_recall_phrases_are_in_speaker_pools() -> None:
         pool = characters[key].get("recall_pool", [])
         assert isinstance(pool, list)
         assert recall in pool, f"{speaker} missing recall pool entry {recall!r}"
+
+
+def test_prospero_assignment_equalities_use_his_pool() -> None:
+    data = _literary()
+    characters = data["characters"]
+    assert isinstance(characters, dict)
+    prospero = characters["prospero"]
+    assert isinstance(prospero, dict)
+    soft = prospero["soft_variation"]
+    assert isinstance(soft, dict)
+    equality_pool = soft["equality"]
+    assert isinstance(equality_pool, list)
+
+    current_speaker: str | None = None
+    for line in _production_source().splitlines():
+        stripped = line.strip()
+        speaker_only = SPEAKER_ONLY_RE.match(stripped)
+        if speaker_only:
+            current_speaker = speaker_only["speaker"]
+            continue
+        if current_speaker != "Prospero":
+            continue
+        match = PROSPERO_EQUALITY_RE.search(stripped)
+        if match:
+            assert match.group(1) in equality_pool, stripped
 
 
 def test_no_production_big_big_big_big_cat_atoms() -> None:

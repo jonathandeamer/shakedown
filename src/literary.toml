@@ -19,9 +19,45 @@ title = "Wherein the lovers gild the line with light and rose."
 [acts.act4]
 title = "Wherein Prospero, his work done, inscribes and releases all."
 
-[iconic_moments]
+[iconic_moments.double_double]
+surface = "scene_title"
+scene = "HECATE_READ_INPUT"
+phrase = "Double, double, toil and trouble"
 
-[dramatic_moments]
+[iconic_moments.out_damned_spot]
+surface = "scene_title"
+scene = "HECATE_LINE_RESTORE_BOUNDARY"
+phrase = "Out, damned spot"
+
+[iconic_moments.once_more_breach]
+surface = "scene_title"
+scene = "MASON_READ_PARAGRAPH_GLYPH"
+phrase = "Once more unto the breach"
+
+[iconic_moments.rose_by_any_other_name]
+surface = "scene_title"
+scene = "LYRIC_TEST_AMPERSAND"
+phrase = "A rose by any other name"
+
+[iconic_moments.revels_ended]
+surface = "scene_title"
+scene = "ACT_IV_DONE"
+phrase = "Our revels now are ended"
+
+[dramatic_moments.hecate_final_exit]
+scene = "ACT_I_DONE"
+character = "Hecate"
+kind = "phase_exit"
+
+[dramatic_moments.lady_macbeth_death_exit]
+scene = "MASON_OPEN_REVERSE_STREAM"
+character = "Lady Macbeth"
+kind = "phase_handoff"
+
+[dramatic_moments.lyrical_pair_as_one]
+scene = "ACT_III_DONE"
+character = "Romeo and Juliet"
+kind = "united_exit"
 
 [characters.rosalind]
 play = "As You Like It"
@@ -101,7 +137,10 @@ recall_pool = [
 ]
 [characters.hecate.stable_utility]
 v1 = "a cat"
-v2 = "a big cat"
+v2 = "a black cat"
+v4 = "a furry black cat"
+v8 = "a little furry black cat"
+v16 = "a normal little furry black cat"
 vneg1 = "a toad"
 v0 = "nothing"
 [characters.hecate.soft_variation]
@@ -241,8 +280,8 @@ title = "Hecate shelves the known bargains."
 pattern = "scene_of_character"
 
 [scenes.HECATE_READ_INPUT]
-title = "The cauldron drinks each glyph."
-pattern = "bare_statement"
+title = "Double, double, glyphs are brewed."
+pattern = "iconic_echo"
 
 [scenes.HECATE_LINE_STRIP_SECOND_REFERENCE]
 title = "The second shelf is read to its seal."
@@ -253,8 +292,8 @@ title = "The first shelf is read to its seal."
 pattern = "bare_statement"
 
 [scenes.HECATE_LINE_RESTORE_BOUNDARY]
-title = "The page keeps its blank boundary."
-pattern = "bare_statement"
+title = "Out, damned blank boundary."
+pattern = "iconic_echo"
 
 [scenes.HECATE_HAND_COUNT_TO_HORATIO]
 title = "Horatio keeps the tally beside the pot."
@@ -285,8 +324,8 @@ title = "Wherein Lady Macbeth receives the cauldron's line."
 pattern = "wherein"
 
 [scenes.MASON_READ_PARAGRAPH_GLYPH]
-title = "The first shape is hewn from the page."
-pattern = "bare_statement"
+title = "Once more unto the breach."
+pattern = "iconic_echo"
 
 [scenes.MASON_KEEP_PARAGRAPH_GLYPH]
 title = "One glyph is laid within the wall."
@@ -313,7 +352,7 @@ title = "The last chamber is sealed."
 pattern = "bare_statement"
 
 [scenes.MASON_OPEN_REVERSE_STREAM]
-title = "Puck receives the mason's order."
+title = "Puck bears the mason's order toward morning."
 pattern = "cross_character"
 
 [scenes.HERALD_REVERSE_TOKEN_STREAM]
@@ -337,8 +376,8 @@ title = "Puck hands one mark to the sun."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_TEST_AMPERSAND]
-title = "The ampersand asks after its name."
-pattern = "bare_statement"
+title = "A rose by any other name."
+pattern = "iconic_echo"
 
 [scenes.LYRIC_REFERENCE_POP_AFTER_OPEN]
 title = "The rose tests the named shelf."
@@ -501,7 +540,7 @@ title = "The path keeps its gate."
 pattern = "bare_statement"
 
 [scenes.LYRIC_RETURN_TO_SCAN]
-title = "Romeo resumes the count."
+title = "Romeo resumes the morning count."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_OPEN_REVERSE]
@@ -569,7 +608,7 @@ title = "One glyph is released."
 pattern = "bare_statement"
 
 [scenes.SCRIBE_EMIT_ANCHOR_OPEN]
-title = "Prospero opens an anchor."
+title = "Prospero opens an anchor gate."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_ANCHOR_TITLE]
@@ -577,15 +616,15 @@ title = "Prospero opens an anchor title."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_ANCHOR_TEXT]
-title = "Prospero opens anchor text."
+title = "Prospero opens the anchor text."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_ANCHOR_CLOSE]
-title = "Prospero closes an anchor."
+title = "Prospero closes the anchor seal."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_PARAGRAPH_OPEN]
-title = "Prospero opens a paragraph."
+title = "Prospero opens a paragraph chamber."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_FINAL_CLOSE]
@@ -593,7 +632,7 @@ title = "Prospero tests the last seal."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_PARAGRAPH_CLOSE]
-title = "Prospero closes a paragraph."
+title = "Prospero closes the paragraph chamber."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE]
@@ -601,5 +640,5 @@ title = "Prospero closes the last paragraph."
 pattern = "scene_of_character"
 
 [scenes.ACT_IV_DONE]
-title = "The work rests."
-pattern = "bare_statement"
+title = "Our revels now are ended."
+pattern = "iconic_echo"

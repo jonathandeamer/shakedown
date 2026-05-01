@@ -22,6 +22,13 @@ CHARACTERS = {
 
 REQUIRED_STABLE_UTILITY_VALUES = {1, 2, -1, 0}
 ATOM_WORD_MAX = 6
+REQUIRED_HECATE_VALUE_ATOMS = {
+    "v1": "a cat",
+    "v2": "a black cat",
+    "v4": "a furry black cat",
+    "v8": "a little furry black cat",
+    "v16": "a normal little furry black cat",
+}
 
 
 def _atoms_in(phrase: str) -> list[str]:
@@ -182,3 +189,25 @@ def test_character_soft_variation_and_recall_pools_exist() -> None:
         assert isinstance(recall_pool, list), name
         assert all(isinstance(value, str) for value in recall_pool), name
         assert len(recall_pool) == len(set(recall_pool)), name
+
+
+def test_hecate_value_atoms_match_cleaned_cat_family() -> None:
+    data = load()
+    characters = data["characters"]
+    assert isinstance(characters, dict)
+    hecate = characters["hecate"]
+    assert isinstance(hecate, dict)
+    stable = hecate["stable_utility"]
+    assert isinstance(stable, dict)
+    for key, phrase in REQUIRED_HECATE_VALUE_ATOMS.items():
+        assert stable[key] == phrase
+
+
+def test_iconic_and_dramatic_moment_ledgers_are_populated() -> None:
+    data = load()
+    iconic = data.get("iconic_moments")
+    dramatic = data.get("dramatic_moments")
+    assert isinstance(iconic, dict)
+    assert isinstance(dramatic, dict)
+    assert len(iconic) >= 4
+    assert len(dramatic) >= 3

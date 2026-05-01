@@ -42,7 +42,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_TEST_AMPERSAND.
 
 
-                    Scene @LYRIC_TEST_AMPERSAND: The ampersand asks after its name.
+                    Scene @LYRIC_TEST_AMPERSAND: A rose by any other name.
 
 Romeo:
  Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
@@ -1152,7 +1152,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_RETURN_TO_SCAN: Romeo resumes the count.
+                    Scene @LYRIC_RETURN_TO_SCAN: Romeo resumes the morning count.
 
 [Exit Juliet]
 
