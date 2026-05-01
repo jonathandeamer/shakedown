@@ -276,7 +276,7 @@ uv run pytest tests/test_prompt_literary_protocol.py -q
 Expected: pass. This confirms the active in-flight plan includes the required
 SPL literary protocol and exact compliance-test references.
 
-- [ ] **Step 4: Commit the literary-surface planning checkpoint**
+- [x] **Step 4: Commit the literary-surface planning checkpoint**
 
 Run:
 
