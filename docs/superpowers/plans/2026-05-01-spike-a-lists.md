@@ -127,7 +127,7 @@ Here is a wrapped paragraph
 8. Oops this stays paragraph text.
 ```
 
-- [ ] **Step 2: Add the failing architecture spike harness**
+- [x] **Step 2: Add the failing architecture spike harness**
 
 Create `tests/test_architecture_spikes.py`:
 
