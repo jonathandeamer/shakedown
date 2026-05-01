@@ -67,7 +67,6 @@ PROTOCOL = REPO / "docs" / "superpowers" / "notes" / "spl-literary-protocol.md"
 ACTIVE_PROMPT = REPO / "docs" / "prompt-shakedown.md"
 CLAUDE = REPO / "CLAUDE.md"
 ROADMAP = REPO / "docs" / "superpowers" / "plans" / "plan-roadmap.md"
-PLANS = REPO / "docs" / "superpowers" / "plans"
 
 REQUIRED_DOCS = {
     "docs/spl/literary-spec.md",
@@ -87,21 +86,13 @@ def _read(path: Path) -> str:
 
 
 def _active_plan_paths() -> list[Path]:
-    text = _read(ROADMAP)
     paths: list[Path] = []
-    for match in re.finditer(
-        r"`(?P<path>docs/superpowers/plans/[^`]+\.md)`[^|\n]*\|\s*in flight",
-        text,
-    ):
-        paths.append(REPO / match["path"])
-    for match in re.finditer(
-        r"\|\s*[^|\n]+?\|\s*[^|\n]+?\|\s*[^|\n]+?\|\s*[^|\n]+?\|\s*in flight",
-        text,
-    ):
-        row = match.group(0)
-        for candidate in PLANS.glob("*.md"):
-            if candidate.name in row and candidate not in paths:
-                paths.append(candidate)
+    for line in _read(ROADMAP).splitlines():
+        if not re.search(r"\|\s*in flight\s*(?:\||$)", line):
+            continue
+        path_matches = re.findall(r"`(docs/superpowers/plans/[^`]+\.md)`", line)
+        assert path_matches, f"in-flight roadmap row lacks exact plan path: {line}"
+        paths.extend(REPO / path for path in path_matches)
     return paths
 
 
@@ -126,6 +117,12 @@ def test_claude_tells_prompt_authors_to_use_protocol() -> None:
     assert "SPL-changing prompts" in text
 
 
+def test_in_flight_roadmap_row_names_exact_plan_path() -> None:
+    paths = _active_plan_paths()
+    assert len(paths) == 1
+    assert paths[0].exists()
+
+
 def test_in_flight_spl_plans_reference_protocol_or_required_docs() -> None:
     for path in _active_plan_paths():
         text = _read(path)
@@ -134,7 +131,17 @@ def test_in_flight_spl_plans_reference_protocol_or_required_docs() -> None:
         has_protocol = "docs/superpowers/notes/spl-literary-protocol.md" in text
         has_docs = all(required in text for required in REQUIRED_DOCS)
         assert has_protocol or has_docs, path
-        assert "test_literary_compliance.py" in text or "literary compliance" in text
+        required_tests = {
+            "tests/test_literary_compliance.py",
+            "tests/test_literary_toml_schema.py",
+            "tests/test_assemble.py",
+            "tests/test_codegen_html.py",
+            "tests/test_mdtest.py -k 'Amps and angle'",
+        }
+        missing_tests = {
+            required for required in required_tests if required not in text
+        }
+        assert not missing_tests, (path, missing_tests)
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -176,8 +183,9 @@ Rules:
   category.
 - Use `docs/spl/style-lexicon.md` and `docs/spl/codegen-style-guide.md` for
   Incidental prose that remains hand-authored.
-- Run the active plan's literary compliance tests after changing SPL,
-  assembler, or codegen behavior.
+- Run the exact compliance tests named by the active plan after changing SPL,
+  assembler, or codegen behavior. Do not write "literary compliance" as a
+  generic placeholder for test commands.
 ```
 
 - [ ] **Step 4: Update active prompt to load the protocol**
@@ -342,6 +350,21 @@ v1 = "a big big big big big big cat"
         load_literary_surfaces(path)
 
 
+def test_value_atoms_reject_repeated_adjectives(tmp_path: Path) -> None:
+    path = _write_literary(
+        tmp_path,
+        """
+[value_atoms.default]
+v0 = "nothing"
+v1 = "a cat"
+v2 = "a big big cat"
+""",
+    )
+
+    with pytest.raises(ValueError, match="repeats adjective"):
+        load_literary_surfaces(path)
+
+
 def test_literary_surfaces_type_is_constructible() -> None:
     surfaces = LiterarySurfaces(data={"play": {"title": "Shakedown."}})
     assert surfaces.resolve("play.title") == "Shakedown."
@@ -431,17 +454,32 @@ def _validate_atom_phrase(key: str, phrase: str) -> None:
             raise ValueError(
                 f"{key}: atom {atom!r} exceeds {ATOM_WORD_MAX} words"
             )
+        _reject_repeated_adjectives(key, atom)
+
+
+def _reject_repeated_adjectives(key: str, atom: str) -> None:
+    words = atom.split()
+    if len(words) < 3 or words[0] not in {"a", "an"}:
+        return
+    adjectives = words[1:-1]
+    if len(adjectives) != len(set(adjectives)):
+        raise ValueError(f"{key}: atom {atom!r} repeats adjective")
 
 
 def _atoms_in(phrase: str) -> list[str]:
     text = phrase.strip()
-    prefix = "the sum of "
-    if text.lower().startswith(prefix):
+    for prefix in ("the sum of ", "the product of "):
+        if not text.lower().startswith(prefix):
+            continue
         rest = text[len(prefix) :]
-        idx = rest.find(" and ")
-        if idx == -1:
-            return [text]
-        return _atoms_in(rest[:idx]) + _atoms_in(rest[idx + len(" and ") :])
+        for match in reversed(list(re.finditer(r" and ", rest))):
+            left = rest[: match.start()]
+            right = rest[match.end() :]
+            return _atoms_in(left) + _atoms_in(right)
+        return [text]
+    square_prefix = "the square of "
+    if text.lower().startswith(square_prefix):
+        return _atoms_in(text[len(square_prefix) :])
     return [text]
 ```
 
@@ -550,7 +588,7 @@ from scripts.literary_surfaces import load_literary_surfaces
 Add:
 
 ```python
-_LIT_RE = re.compile(r"@LIT\.([A-Za-z0-9_.]+)")
+_LIT_RE = re.compile(r"@LIT\.([A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*)")
 
 
 def _resolve_literary_placeholders(source: str, literary_path: Path) -> str:
@@ -629,8 +667,8 @@ v16 = "a normal little furry black cat"
 
 - [ ] **Step 2: Update codegen tests for TOML-loaded atoms and compact recipes**
 
-In `tests/test_codegen_html.py`, change the atom expectation for `16` by adding
-this case to `test_emit_byte_atom_forms`:
+In `tests/test_codegen_html.py`, add `import re`, then change the atom
+expectation for `16` by adding this case to `test_emit_byte_atom_forms`:
 
 ```python
 (16, "a normal little furry black cat"),
@@ -668,6 +706,33 @@ def test_parse_value_phrase_understands_compact_arithmetic() -> None:
 def _max_atom_repetition(phrase: str) -> int:
     atoms = _atoms(phrase)
     return max((atoms.count(atom) for atom in set(atoms)), default=0)
+
+
+def _atoms(phrase: str) -> list[str]:
+    text = phrase.strip()
+    for prefix in ("the sum of ", "the product of "):
+        if not text.lower().startswith(prefix):
+            continue
+        rest = text[len(prefix) :]
+        left, right = _split_binary_for_test(rest, phrase)
+        return _atoms(left) + _atoms(right)
+    square_prefix = "the square of "
+    if text.lower().startswith(square_prefix):
+        return _atoms(text[len(square_prefix) :])
+    return [text]
+
+
+def _split_binary_for_test(rest: str, phrase: str) -> tuple[str, str]:
+    for match in reversed(list(re.finditer(r" and ", rest))):
+        left = rest[: match.start()]
+        right = rest[match.end() :]
+        try:
+            parse_value_phrase(left)
+            parse_value_phrase(right)
+        except ValueError:
+            continue
+        return left, right
+    raise ValueError(f"malformed binary expression: {phrase!r}")
 ```
 
 Also add a failing test that rejects repeated adjectives inside one generated
@@ -872,7 +937,7 @@ git commit -m "feat: drive byte value atoms from literary data"
 - Modify: `tests/test_literary_compliance.py`
 - Modify: `src/literary.toml`
 
-- [ ] **Step 1: Add source-placeholder and production-literary tests**
+- [ ] **Step 1: Add or update source-placeholder and production-literary tests**
 
 Add this import near the top of `tests/test_literary_compliance.py` if it is
 not already present:
@@ -881,7 +946,9 @@ not already present:
 from collections import Counter
 ```
 
-Append to `tests/test_literary_compliance.py`:
+Add the following helpers/tests to `tests/test_literary_compliance.py`. If a
+helper or test with the same purpose already exists, update the existing
+definition instead of appending a duplicate:
 
 ```python
 SCENE_TITLE_WORD_LIMITS = {
@@ -934,7 +1001,7 @@ def _scene_blocks(source: str) -> dict[str, str]:
 def _scene_titles() -> dict[str, str]:
     return {
         match["label"]: match["title"].strip()
-        for match in SCENE_RE.finditer(_production_source())
+        for match in SCENE_RE.finditer(_resolved_production_source())
     }
 
 
@@ -949,6 +1016,22 @@ def _preamble_character_lines(source: str) -> set[str]:
         for character in CHARACTER_KEY
         if re.search(rf"^{re.escape(character)},", preamble, re.MULTILINE)
     }
+
+
+def _resolved_production_source() -> str:
+    data = _literary()
+    source = _production_source()
+
+    def replace(match: re.Match[str]) -> str:
+        current: object = data
+        key = match.group(1)
+        for part in key.split("."):
+            assert isinstance(current, dict), key
+            current = current[part]
+        assert isinstance(current, str), key
+        return current
+
+    return re.sub(r"@LIT\.([A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*)", replace, source)
 
 
 def test_value_atoms_do_not_repeat_adjectives() -> None:
@@ -1098,9 +1181,49 @@ def test_controlled_surfaces_use_literary_placeholders_in_source() -> None:
         assert f"@LIT.acts.{act}.title" in source
     assert "@LIT.scenes." in source
     assert "@LIT.characters." in source
+
+
+def test_all_literary_placeholders_in_source_resolve() -> None:
+    source = _production_source()
+    resolved = _resolved_production_source()
+    assert "@LIT." in source
+    assert "@LIT." not in resolved
+    assert "@LIT." not in ASSEMBLED.read_text()
+
+
+def test_scene_ledger_matches_source_scene_labels() -> None:
+    data = _literary()
+    scenes = data["scenes"]
+    assert isinstance(scenes, dict)
+    source_labels = {
+        match["label"] for match in SCENE_RE.finditer(_production_source())
+    }
+    assert set(scenes) == source_labels
+
+
+def test_controlled_literals_are_not_duplicated_inline() -> None:
+    data = _literary()
+    source = _production_source()
+    assembled = ASSEMBLED.read_text()
+
+    play = data["play"]
+    assert isinstance(play, dict)
+    assert play["title"] in assembled
+    assert play["title"] not in source
+
+    acts = data["acts"]
+    assert isinstance(acts, dict)
+    for act in acts.values():
+        assert isinstance(act, dict)
+        title = act["title"]
+        assert isinstance(title, str)
+        assert title in assembled
+        assert title not in source
 ```
 
-Append to `tests/test_literary_toml_schema.py`:
+Add the following schema checks to `tests/test_literary_toml_schema.py`. If a
+check with the same purpose already exists, update the existing definition
+instead of appending a duplicate:
 
 ```python
 REQUIRED_HECATE_VALUE_ATOMS = {
@@ -1125,6 +1248,20 @@ def test_iconic_and_dramatic_moment_ledgers_are_populated() -> None:
     dramatic = data["dramatic_moments"]
     assert len(iconic) >= 4
     assert len(dramatic) >= 3
+
+
+def test_production_motifs_shape() -> None:
+    data = load()
+    motifs = data["production_motifs"]
+    characters = data["characters"]
+    assert isinstance(motifs, dict)
+    assert isinstance(characters, dict)
+    assert set(motifs) <= set(characters)
+    for key, values in motifs.items():
+        assert isinstance(key, str)
+        assert isinstance(values, list)
+        assert values
+        assert all(isinstance(value, str) for value in values)
 ```
 
 The active-character motif test is intentionally production-facing. It does not
@@ -1148,7 +1285,49 @@ Only list characters whose motifs are active production obligations. Deferred
 ledger characters may remain under `[characters]` without appearing in
 `[production_motifs]` until they enter the assembled preamble.
 
-- [ ] **Step 2: Run test to verify it fails**
+- [ ] **Step 1b: Update existing compliance tests for placeholders and keyed Recall**
+
+Existing tests that compare raw `src/*.spl` titles against TOML must resolve
+`@LIT.` placeholders before comparing. Update them to use
+`_resolved_production_source()` for title, motif, and dramatic-surface checks.
+
+For Recall, convert `recall_pool` arrays to keyed tables before replacing
+source Recall strings, and update helper code so tests read the keyed table:
+
+```python
+def _recall_values(character: dict[str, object]) -> set[str]:
+    recall = character.get("recall")
+    if isinstance(recall, dict):
+        return {value for value in recall.values() if isinstance(value, str)}
+    recall_pool = character.get("recall_pool")
+    if isinstance(recall_pool, list):
+        return {value for value in recall_pool if isinstance(value, str)}
+    return set()
+```
+
+Then change the Recall compliance test to assert each resolved production
+Recall is present in `_recall_values(characters[key])`. Keep `recall_pool`
+compatibility only until the keyed table conversion lands in the same task;
+after conversion, schema tests should require keyed `recall` tables and may
+allow `recall_pool` only as a temporary compatibility mirror if the plan chooses
+to keep both.
+
+- [ ] **Step 2: Capture pre-conversion implemented fixture baseline**
+
+Capture the implemented fixture output before replacing any source text with
+placeholders:
+
+```bash
+mkdir -p /tmp/shakedown-literary-prevention-baseline
+fixture="$HOME/mdtest/Markdown.mdtest/Amps and angle encoding.text"
+./shakedown < "$fixture" > "/tmp/shakedown-literary-prevention-baseline/Amps and angle encoding.xhtml"
+```
+
+Expected: command exits 0. If `_IMPLEMENTED_FIXTURES` in
+`tests/test_mdtest.py` has grown by the time this plan runs, capture every
+fixture named there.
+
+- [ ] **Step 3: Run test to verify it fails**
 
 Run:
 
@@ -1161,7 +1340,7 @@ The scene-title length, Prospero equality, Hecate atom family, and
 iconic/dramatic ledger tests should already pass before placeholder conversion;
 if any fail, stop and restore the cleaned source before proceeding.
 
-- [ ] **Step 3: Replace play and act titles**
+- [ ] **Step 4: Replace play and act titles**
 
 In `src/00-preamble.spl`, replace the literal play title line with:
 
@@ -1178,7 +1357,7 @@ Act III: @LIT.acts.act3.title
 Act IV: @LIT.acts.act4.title
 ```
 
-- [ ] **Step 4: Replace scene titles**
+- [ ] **Step 5: Replace scene titles**
 
 For each scene declaration of the form:
 
@@ -1194,7 +1373,7 @@ Scene @LABEL: @LIT.scenes.LABEL.title
 
 Use the exact symbolic label already present in the scene declaration.
 
-- [ ] **Step 5: Replace Recall phrases with character keys**
+- [ ] **Step 6: Replace Recall phrases with character keys**
 
 For each production Recall phrase that exists in
 `src/literary.toml` under `[characters.<character>.recall]`, replace:
@@ -1227,13 +1406,13 @@ Use the existing TOML key for the exact phrase. If the cleanup ledger currently
 stores Recall pools as arrays, first convert those pools to keyed tables while
 preserving the same phrase strings.
 
-- [ ] **Step 6: Assemble and run focused checks**
+- [ ] **Step 7: Assemble and run focused checks**
 
 Run:
 
 ```bash
 env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
-env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_assemble.py tests/test_literary_compliance.py tests/test_mdtest.py -k 'Amps and angle' -q
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_assemble.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_mdtest.py -k 'Amps and angle' -q
 ```
 
 Expected: assembler tests pass, the Slice 1 fixture still passes, and any
@@ -1245,14 +1424,7 @@ iconic/dramatic moment ledger gate. It must also preserve the production-cast,
 active-motif, scene-title monotony, blurb meta-language, and dramatic-moment
 visibility gates.
 
-- [ ] **Step 7: Commit**
-
-```bash
-git add src/*.spl shakedown.spl tests/test_literary_compliance.py src/literary.toml
-git commit -m "refactor: reference literary surfaces by key"
-```
-
-- [ ] **Step 8: Capture and compare implemented fixture output**
+- [ ] **Step 8: Compare implemented fixture output to the pre-conversion baseline**
 
 Only compare fixtures currently marked implemented in `tests/test_mdtest.py`.
 Do not use all 23 mdtest fixtures here; non-shipped fixtures may correctly exit
@@ -1261,11 +1433,8 @@ nonzero.
 Run:
 
 ```bash
-mkdir -p /tmp/shakedown-literary-prevention-baseline
-fixture="$HOME/mdtest/Markdown.mdtest/Amps and angle encoding.text"
-./shakedown < "$fixture" > "/tmp/shakedown-literary-prevention-baseline/Amps and angle encoding.xhtml"
-env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
 mkdir -p /tmp/shakedown-literary-prevention-after
+fixture="$HOME/mdtest/Markdown.mdtest/Amps and angle encoding.text"
 ./shakedown < "$fixture" > "/tmp/shakedown-literary-prevention-after/Amps and angle encoding.xhtml"
 diff -u \
   "/tmp/shakedown-literary-prevention-baseline/Amps and angle encoding.xhtml" \
@@ -1273,7 +1442,14 @@ diff -u \
 ```
 
 Expected: no diff. If `_IMPLEMENTED_FIXTURES` in `tests/test_mdtest.py` has grown
-by the time this plan runs, capture and compare every fixture named there.
+by the time this plan runs, compare every fixture named there.
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add src/*.spl shakedown.spl tests/test_literary_compliance.py src/literary.toml
+git commit -m "refactor: reference literary surfaces by key"
+```
 
 ---
 
@@ -1339,6 +1515,25 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .
 
 Expected: all pass, except any existing repository-wide skips already present in
 the baseline.
+
+- [ ] **Step 1a: Run the literary surface audit subset**
+
+Run this audit whenever assembler, codegen, TOML surface data, SPL fragments, or
+prompt protocol files changed:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest \
+  tests/test_prompt_literary_protocol.py \
+  tests/test_literary_toml_schema.py \
+  tests/test_literary_compliance.py \
+  tests/test_assemble.py \
+  tests/test_codegen_html.py \
+  tests/test_mdtest.py -k 'Amps and angle' -q
+```
+
+Expected: all selected tests pass. If `_IMPLEMENTED_FIXTURES` in
+`tests/test_mdtest.py` has grown, replace the `-k 'Amps and angle'` filter with
+the full implemented-fixture subset.
 
 - [ ] **Step 2: Confirm generated output has no unresolved placeholders**
 
