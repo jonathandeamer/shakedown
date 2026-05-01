@@ -76,7 +76,7 @@ structure.
 - Create: `tests/fixtures/architecture_spikes/lists/hard_wrapped_boundary.text`
 - Create: `tests/test_architecture_spikes.py`
 
-- [ ] **Step 1: Create list spike snippets**
+- [x] **Step 1: Create list spike snippets**
 
 Create `tests/fixtures/architecture_spikes/lists/flat_unordered_tight.text`:
 
