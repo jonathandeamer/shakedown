@@ -183,7 +183,7 @@ def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
     )
 ```
 
-- [ ] **Step 3: Verify the harness fails for unimplemented list snippets**
+- [x] **Step 3: Verify the harness fails for unimplemented list snippets**
 
 Run:
 
