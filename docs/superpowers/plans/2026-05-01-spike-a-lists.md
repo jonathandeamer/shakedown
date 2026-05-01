@@ -267,7 +267,7 @@ title = "Prospero closes the ranks."
 If the implementation adds another `Scene @LABEL:`, add a matching
 `[scenes.LABEL]` table with a concrete `title` in the same task.
 
-- [ ] **Step 3: Run the protocol enforcement tests**
+- [x] **Step 3: Run the protocol enforcement tests**
 
 ```bash
 uv run pytest tests/test_prompt_literary_protocol.py -q
