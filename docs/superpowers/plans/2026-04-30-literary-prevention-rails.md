@@ -677,6 +677,25 @@ def _atom_adjectives(phrase: str) -> list[str]:
     return words[1:-1]
 ```
 
+Extend `tests/test_literary_surfaces.py` so TOML atom families are held to the
+same rule before codegen consumes them:
+
+```python
+def test_value_atoms_reject_repeated_adjectives(tmp_path: Path) -> None:
+    path = _write_literary(
+        tmp_path,
+        """
+[value_atoms.default]
+v0 = "nothing"
+v1 = "a cat"
+v2 = "a big big cat"
+""",
+    )
+
+    with pytest.raises(ValueError, match="repeats adjective"):
+        load_literary_surfaces(path)
+```
+
 - [ ] **Step 3: Run tests to verify they fail before implementation**
 
 Run:
@@ -806,6 +825,7 @@ these properties:
   than three times
 - no generated atom repeats an adjective inside one noun phrase, such as
   `big big`, `fine fine`, or `noble noble`
+- no configured TOML atom family repeats an adjective inside one noun phrase
 - 256 is expressed with `the square of ...`, not sixteen repeated 16-value atoms
 - values with several 16-value chunks use `the product of ... and ...`
 - every generated phrase round-trips through `parse_value_phrase`
@@ -847,6 +867,15 @@ git commit -m "feat: drive byte value atoms from literary data"
 Append to `tests/test_literary_compliance.py`:
 
 ```python
+SCENE_TITLE_WORD_LIMITS = {
+    "wherein": (6, 12),
+    "bare_statement": (4, 10),
+    "scene_of_character": (5, 10),
+    "iconic_echo": (3, 8),
+    "cross_character": (6, 14),
+    "locale": (3, 7),
+}
+
 VALUE_ATOM_RE = re.compile(
     r"\b(?:a|an)\s+(?P<adjectives>[a-z][a-z' -]*?)\s+"
     r"(?P<noun>cat|flower|day|rose|hero|angel|tree|brother)\b",
@@ -860,6 +889,34 @@ def test_value_atoms_do_not_repeat_adjectives() -> None:
         assert len(adjectives) == len(set(adjectives)), match.group(0)
 
 
+def test_scene_titles_fit_declared_pattern_lengths() -> None:
+    scenes = _literary()["scenes"]
+    assert isinstance(scenes, dict)
+    for label, scene in scenes.items():
+        pattern = scene["pattern"]
+        title = scene["title"]
+        low, high = SCENE_TITLE_WORD_LIMITS[pattern]
+        word_count = len(re.findall(r"[A-Za-z0-9']+", title))
+        assert low <= word_count <= high, (label, pattern, title)
+
+
+def test_prospero_assignment_equalities_use_his_pool() -> None:
+    data = _literary()
+    equality_pool = data["characters"]["prospero"]["soft_variation"]["equality"]
+    current_speaker: str | None = None
+    for line in _production_source().splitlines():
+        stripped = line.strip()
+        speaker_only = SPEAKER_ONLY_RE.match(stripped)
+        if speaker_only:
+            current_speaker = speaker_only["speaker"]
+            continue
+        if current_speaker != "Prospero":
+            continue
+        match = re.search(r"\bYou are (as [a-z-]+ as)\b", stripped)
+        if match:
+            assert match.group(1) in equality_pool, stripped
+
+
 def test_controlled_surfaces_use_literary_placeholders_in_source() -> None:
     source = _production_source()
     assert "@LIT.play.title" in source
@@ -867,6 +924,33 @@ def test_controlled_surfaces_use_literary_placeholders_in_source() -> None:
         assert f"@LIT.acts.{act}.title" in source
     assert "@LIT.scenes." in source
     assert "@LIT.characters." in source
+```
+
+Append to `tests/test_literary_toml_schema.py`:
+
+```python
+REQUIRED_HECATE_VALUE_ATOMS = {
+    "v1": "a cat",
+    "v2": "a black cat",
+    "v4": "a furry black cat",
+    "v8": "a little furry black cat",
+    "v16": "a normal little furry black cat",
+}
+
+
+def test_hecate_value_atoms_match_cleaned_cat_family() -> None:
+    data = load()
+    stable = data["characters"]["hecate"]["stable_utility"]
+    for key, phrase in REQUIRED_HECATE_VALUE_ATOMS.items():
+        assert stable[key] == phrase
+
+
+def test_iconic_and_dramatic_moment_ledgers_are_populated() -> None:
+    data = load()
+    iconic = data["iconic_moments"]
+    dramatic = data["dramatic_moments"]
+    assert len(iconic) >= 4
+    assert len(dramatic) >= 3
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -878,6 +962,9 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_literary_compliance.py::
 ```
 
 Expected: fails because production source still contains direct prose.
+The scene-title length, Prospero equality, Hecate atom family, and
+iconic/dramatic ledger tests should already pass before placeholder conversion;
+if any fail, stop and restore the cleaned source before proceeding.
 
 - [ ] **Step 3: Replace play and act titles**
 
@@ -957,6 +1044,9 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_assemble.py tests/test_l
 Expected: assembler tests pass, the Slice 1 fixture still passes, and any
 remaining literary compliance failure names a prevention-specific gate introduced
 by this task rather than a pre-existing cleanup issue.
+The placeholder conversion must preserve the scene-title pattern-length gate,
+Prospero equality-pool gate, Hecate value-atom family gate, and populated
+iconic/dramatic moment ledger gate.
 
 - [ ] **Step 7: Commit**
 

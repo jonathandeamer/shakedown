@@ -189,9 +189,19 @@ Assembler/codegen gates:
 - `assemble.py` resolves known literary placeholders.
 - unresolved or unknown placeholders fail.
 - generated `shakedown.spl` contains no `@LIT.` placeholders.
+- production scene titles keep their declared pattern metadata and stay within
+  the literary spec's word-count ranges for that pattern after placeholder
+  conversion.
+- iconic and dramatic moment ledgers are populated, and iconic scene-title
+  entries point at real scenes whose TOML pattern is `iconic_echo`.
+- character soft-variation pools are enforced for generated and production
+  speech where grammar permits; notably, Prospero's Act IV equality assignments
+  stay in his configured equality pool.
 - codegen loads configured value atoms from TOML.
 - configured atom families round-trip through `emit_byte` and
   `parse_value_phrase`.
+- configured TOML atom families reject repeated adjectives and remain consistent
+  with any production-specific cleaned families, including Hecate's cat family.
 - production source has no oversized `big ... cat` atom.
 - generated and production value atoms do not repeat adjectives inside a single
   noun phrase.
