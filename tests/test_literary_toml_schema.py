@@ -185,10 +185,11 @@ def test_character_soft_variation_and_recall_pools_exist() -> None:
             assert isinstance(values, list), (name, key)
             assert values, (name, key)
             assert all(isinstance(value, str) for value in values), (name, key)
-        recall_pool = section.get("recall_pool")
-        assert isinstance(recall_pool, list), name
-        assert all(isinstance(value, str) for value in recall_pool), name
-        assert len(recall_pool) == len(set(recall_pool)), name
+        recall = section.get("recall", {})
+        assert isinstance(recall, dict), name
+        assert all(isinstance(key, str) for key in recall), name
+        assert all(isinstance(value, str) for value in recall.values()), name
+        assert len(recall.values()) == len(set(recall.values())), name
 
 
 def test_hecate_value_atoms_match_cleaned_cat_family() -> None:
@@ -211,3 +212,17 @@ def test_iconic_and_dramatic_moment_ledgers_are_populated() -> None:
     assert isinstance(dramatic, dict)
     assert len(iconic) >= 4
     assert len(dramatic) >= 3
+
+
+def test_production_motifs_shape() -> None:
+    data = load()
+    motifs = data["production_motifs"]
+    characters = data["characters"]
+    assert isinstance(motifs, dict)
+    assert isinstance(characters, dict)
+    assert set(motifs) <= set(characters)
+    for key, values in motifs.items():
+        assert isinstance(key, str)
+        assert isinstance(values, list)
+        assert values
+        assert all(isinstance(value, str) for value in values)

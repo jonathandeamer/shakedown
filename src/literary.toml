@@ -27,6 +27,13 @@ v4 = "a furry black cat"
 v8 = "a little furry black cat"
 v16 = "a normal little furry black cat"
 
+[production_motifs]
+juliet = ["night", "star", "stars", "starlit", "silver"]
+prospero = ["revels", "inscribes", "releases", "seals"]
+puck = ["messenger", "room", "colour", "flies"]
+romeo = ["sun", "sunlit", "morning", "summer", "golden"]
+rosalind = ["forest", "shelf", "references", "bargain"]
+
 [iconic_moments.double_double]
 surface = "scene_title"
 scene = "HECATE_READ_INPUT"
@@ -73,7 +80,7 @@ role = "librarian"
 palette = "pastoral_natural"
 voice_register = "witty_agile_cross_register"
 blurb = "Rosalind, keeper of references, agile of tongue across the Forest of Arden."
-recall_pool = []
+[characters.rosalind.recall]
 [characters.rosalind.stable_utility]
 v1 = "a tree"
 v2 = "a green tree"
@@ -92,7 +99,7 @@ role = "steward"
 palette = "domestic_familial"
 voice_register = "plain_spoken_keeper"
 blurb = "Horatio, plain witness of the household, holder of secrets."
-recall_pool = []
+[characters.horatio.recall]
 [characters.horatio.stable_utility]
 v1 = "a brother"
 v2 = "a happy brother"
@@ -111,15 +118,14 @@ role = "herald"
 palette = "pastoral_natural"
 voice_register = "chameleonic_messenger"
 blurb = "Puck, swift messenger, who wears each room's colour and flies between them."
-recall_pool = [
-  "Recall the mason's stone.",
-  "Recall the first forest seal.",
-  "Recall the first forest path.",
-  "Recall the first forest name.",
-  "Recall the second forest seal.",
-  "Recall the second forest path.",
-  "Recall the second forest name.",
-]
+[characters.puck.recall]
+masons_stone = "Recall the mason's stone."
+first_forest_seal = "Recall the first forest seal."
+first_forest_path = "Recall the first forest path."
+first_forest_name = "Recall the first forest name."
+second_forest_seal = "Recall the second forest seal."
+second_forest_path = "Recall the second forest path."
+second_forest_name = "Recall the second forest name."
 [characters.puck.stable_utility]
 v1 = "a flower"
 v2 = "a sweet flower"
@@ -138,11 +144,10 @@ role = "sorter"
 palette = "grotesque_abusive"
 voice_register = "incantatory_grimy"
 blurb = "Hecate, witch-queen, who scours the underbelly of the page."
-recall_pool = [
-  "Recall the sealed second shelf.",
-  "Recall the sealed first shelf.",
-  "Recall the cauldron dreg.",
-]
+[characters.hecate.recall]
+sealed_second_shelf = "Recall the sealed second shelf."
+sealed_first_shelf = "Recall the sealed first shelf."
+cauldron_dreg = "Recall the cauldron dreg."
 [characters.hecate.stable_utility]
 v1 = "a cat"
 v2 = "a black cat"
@@ -164,10 +169,9 @@ role = "mason"
 palette = "martial_catastrophic"
 voice_register = "decisive_clean_martial"
 blurb = "Lady Macbeth, mason of the block, who cuts the page into rooms."
-recall_pool = [
-  "Recall the hewn glyph.",
-  "Recall the blank glyph.",
-]
+[characters.lady_macbeth.recall]
+hewn_glyph = "Recall the hewn glyph."
+blank_glyph = "Recall the blank glyph."
 [characters.lady_macbeth.stable_utility]
 v1 = "a hero"
 v2 = "a noble hero"
@@ -186,7 +190,7 @@ role = "apprentice"
 palette = "martial_catastrophic"
 voice_register = "doubt_shadowed_martial"
 blurb = "Macbeth, apprentice mason, who steps through the shadowed threshold."
-recall_pool = []
+[characters.macbeth.recall]
 [characters.macbeth.stable_utility]
 v1 = "a kingdom"
 v2 = "a proud kingdom"
@@ -205,32 +209,31 @@ role = "lyric_a"
 palette = "pastoral_natural"
 voice_register = "lyrical_sun_imagery"
 blurb = "Romeo, who pushes candidate substitutions like sunlit petals."
-recall_pool = [
-  "Recall the morning's first cut.",
-  "Recall the bracket's first petal.",
-  "Recall the link's second petal.",
-  "Recall the link's third petal.",
-  "Recall the link's fourth petal.",
-  "Recall the link's closing petal.",
-  "Recall the link's following air.",
-  "Recall the inline path's first gate.",
-  "Recall the inline path's next gate.",
-  "Recall the bracketed path's next gate.",
-  "Recall the bracketed path's round seal.",
-  "Recall the first shelf's open mark.",
-  "Recall the first shelf's number.",
-  "Recall the first shelf's close mark.",
-  "Recall the house's second petal.",
-  "Recall the house's ampersand.",
-  "Recall the house's last petal.",
-  "Recall the house's closing petal.",
-  "Recall the house's following air.",
-  "Recall the second shelf's open mark.",
-  "Recall the second shelf's number.",
-  "Recall the second shelf's close mark.",
-  "Recall the morning's next cut.",
-  "Recall the rose's kept word.",
-]
+[characters.romeo.recall]
+mornings_first_cut = "Recall the morning's first cut."
+brackets_first_petal = "Recall the bracket's first petal."
+links_second_petal = "Recall the link's second petal."
+links_third_petal = "Recall the link's third petal."
+links_fourth_petal = "Recall the link's fourth petal."
+links_closing_petal = "Recall the link's closing petal."
+links_following_air = "Recall the link's following air."
+inline_paths_first_gate = "Recall the inline path's first gate."
+inline_paths_next_gate = "Recall the inline path's next gate."
+bracketed_paths_next_gate = "Recall the bracketed path's next gate."
+bracketed_paths_round_seal = "Recall the bracketed path's round seal."
+first_shelfs_open_mark = "Recall the first shelf's open mark."
+first_shelfs_number = "Recall the first shelf's number."
+first_shelfs_close_mark = "Recall the first shelf's close mark."
+houses_second_petal = "Recall the house's second petal."
+houses_ampersand = "Recall the house's ampersand."
+houses_last_petal = "Recall the house's last petal."
+houses_closing_petal = "Recall the house's closing petal."
+houses_following_air = "Recall the house's following air."
+second_shelfs_open_mark = "Recall the second shelf's open mark."
+second_shelfs_number = "Recall the second shelf's number."
+second_shelfs_close_mark = "Recall the second shelf's close mark."
+mornings_next_cut = "Recall the morning's next cut."
+roses_kept_word = "Recall the rose's kept word."
 [characters.romeo.stable_utility]
 v1 = "a summer's day"
 v2 = "a sunny summer's day"
@@ -249,7 +252,7 @@ role = "lyric_b"
 palette = "pastoral_natural"
 voice_register = "lyrical_night_imagery"
 blurb = "Juliet, night-star lyric, who lays final roses on the silver path."
-recall_pool = []
+[characters.juliet.recall]
 [characters.juliet.stable_utility]
 v1 = "a rose"
 v2 = "a sweet rose"
@@ -268,9 +271,8 @@ role = "scribe"
 palette = "noble_radiant"
 voice_register = "ceremonial_declarative"
 blurb = "Prospero, scribe and emitter, whose pronouncements close the work."
-recall_pool = [
-  "Recall the herald's present word.",
-]
+[characters.prospero.recall]
+heralds_present_word = "Recall the herald's present word."
 [characters.prospero.stable_utility]
 v1 = "an angel"
 v2 = "a noble angel"

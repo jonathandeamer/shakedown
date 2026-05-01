@@ -127,7 +127,7 @@ def _scene_blocks(source: str) -> dict[str, str]:
 def _scene_titles() -> dict[str, str]:
     return {
         match["label"]: match["title"].strip()
-        for match in SCENE_RE.finditer(_production_source())
+        for match in SCENE_RE.finditer(_resolved_production_source())
     }
 
 
@@ -136,12 +136,38 @@ def _words(text: str) -> set[str]:
 
 
 def _preamble_character_lines(source: str) -> set[str]:
-    preamble = source.split("Act I:", maxsplit=1)[0]
+    preamble = _resolved_production_source().split("Act I:", maxsplit=1)[0]
     return {
         character
         for character in CHARACTER_KEY
         if re.search(rf"^{re.escape(character)},", preamble, re.MULTILINE)
     }
+
+
+def _resolved_production_source() -> str:
+    data = _literary()
+    source = _production_source()
+
+    def replace(match: re.Match[str]) -> str:
+        current: object = data
+        key = match.group(1)
+        for part in key.split("."):
+            assert isinstance(current, dict), key
+            current = current[part]
+        assert isinstance(current, str), key
+        return current
+
+    return re.sub(r"@LIT\.([A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*)", replace, source)
+
+
+def _recall_values(character: dict[str, object]) -> set[str]:
+    recall = character.get("recall")
+    if isinstance(recall, dict):
+        return {value for value in recall.values() if isinstance(value, str)}
+    recall_pool = character.get("recall_pool")
+    if isinstance(recall_pool, list):
+        return {value for value in recall_pool if isinstance(value, str)}
+    return set()
 
 
 def test_locked_play_title_and_act_titles() -> None:
@@ -165,10 +191,7 @@ def test_scene_titles_have_toml_entries_and_match_source() -> None:
     scenes = data["scenes"]
     assert isinstance(scenes, dict)
 
-    source_titles = {
-        match["label"]: match["title"].strip()
-        for match in SCENE_RE.finditer(_production_source())
-    }
+    source_titles = _scene_titles()
     assert source_titles
     assert set(source_titles) == set(scenes)
     for label, title in source_titles.items():
@@ -204,7 +227,7 @@ def test_recall_phrases_are_in_speaker_pools() -> None:
     assert isinstance(characters, dict)
 
     current_speaker: str | None = None
-    for line in _production_source().splitlines():
+    for line in _resolved_production_source().splitlines():
         stripped = line.strip()
         speaker_only = SPEAKER_ONLY_RE.match(stripped)
         if speaker_only:
@@ -222,8 +245,9 @@ def test_recall_phrases_are_in_speaker_pools() -> None:
             continue
 
         key = CHARACTER_KEY[speaker]
-        pool = characters[key].get("recall_pool", [])
-        assert isinstance(pool, list)
+        character = characters[key]
+        assert isinstance(character, dict)
+        pool = _recall_values(character)
         assert recall in pool, f"{speaker} missing recall pool entry {recall!r}"
 
 
@@ -381,3 +405,79 @@ def test_dramatic_moments_are_visible_in_scene_surfaces() -> None:
         if not (title_words & character_words or block_words & character_words):
             missing.append(name)
     assert not missing
+
+
+def test_active_character_motifs_are_visible() -> None:
+    data = _literary()
+    characters = data["characters"]
+    production_motifs = data["production_motifs"]
+    assert isinstance(characters, dict)
+    assert isinstance(production_motifs, dict)
+    titles = " ".join(_scene_titles().values())
+    source = _production_source()
+    active_keys = {
+        CHARACTER_KEY[character] for character in _preamble_character_lines(source)
+    }
+
+    missing: dict[str, set[str]] = {}
+    for key in active_keys & set(production_motifs):
+        character = characters[key]
+        motifs = production_motifs[key]
+        assert isinstance(character, dict)
+        assert isinstance(motifs, list)
+        assert all(isinstance(motif, str) for motif in motifs)
+        blurb = character["blurb"]
+        assert isinstance(blurb, str)
+        surfaces = f"{blurb} {titles}"
+        motif_set = set(motifs)
+        motif_hits = _words(surfaces) & motif_set
+        if not motif_hits:
+            missing[key] = motif_set
+    assert not missing
+
+
+def test_controlled_surfaces_use_literary_placeholders_in_source() -> None:
+    source = _production_source()
+    assert "@LIT.play.title" in source
+    for act in ACT_TITLES:
+        assert f"@LIT.acts.{act}.title" in source
+    assert "@LIT.scenes." in source
+    assert "@LIT.characters." in source
+
+
+def test_all_literary_placeholders_in_source_resolve() -> None:
+    source = _production_source()
+    resolved = _resolved_production_source()
+    assert "@LIT." in source
+    assert "@LIT." not in resolved
+    assert "@LIT." not in ASSEMBLED.read_text()
+
+
+def test_scene_ledger_matches_source_scene_labels() -> None:
+    data = _literary()
+    scenes = data["scenes"]
+    assert isinstance(scenes, dict)
+    source_labels = {
+        match["label"] for match in SCENE_RE.finditer(_production_source())
+    }
+    assert set(scenes) == source_labels
+
+
+def test_controlled_literals_are_not_duplicated_inline() -> None:
+    data = _literary()
+    source = _production_source()
+    assembled = ASSEMBLED.read_text()
+
+    play = data["play"]
+    assert isinstance(play, dict)
+    assert play["title"] in assembled
+    assert play["title"] not in source
+
+    acts = data["acts"]
+    assert isinstance(acts, dict)
+    for act in acts.values():
+        assert isinstance(act, dict)
+        title = act["title"]
+        assert isinstance(title, str)
+        assert title in assembled
+        assert title not in source

@@ -1,4 +1,4 @@
-                    Scene @ACT_III_START: The lovers begin their substitutions.
+                    Scene @ACT_III_START: @LIT.scenes.ACT_III_START.title
 
 [Enter Puck and Romeo]
 
@@ -10,7 +10,7 @@ Romeo:
  Let us proceed to scene @LYRIC_SCAN_CHECK.
 
 
-                    Scene @LYRIC_SCAN_CHECK: The morning counts each glyph.
+                    Scene @LYRIC_SCAN_CHECK: @LIT.scenes.LYRIC_SCAN_CHECK.title
 
 Romeo:
  Am I as fair as nothing?
@@ -22,10 +22,10 @@ Puck:
  If not, let us proceed to scene @LYRIC_POP_GLYPH.
 
 
-                    Scene @LYRIC_POP_GLYPH: Puck hands one mark to the sun.
+                    Scene @LYRIC_POP_GLYPH: @LIT.scenes.LYRIC_POP_GLYPH.title
 
 Romeo:
- Recall the morning's first cut.
+ @LIT.characters.romeo.recall.mornings_first_cut
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -42,7 +42,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_TEST_AMPERSAND.
 
 
-                    Scene @LYRIC_TEST_AMPERSAND: A rose by any other name.
+                    Scene @LYRIC_TEST_AMPERSAND: @LIT.scenes.LYRIC_TEST_AMPERSAND.title
 
 Romeo:
  Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
@@ -55,10 +55,10 @@ Puck:
  If not, let us proceed to scene @LYRIC_TEST_LEFT_ANGLE.
 
 
-                    Scene @LYRIC_REFERENCE_POP_AFTER_OPEN: The rose tests the named shelf.
+                    Scene @LYRIC_REFERENCE_POP_AFTER_OPEN: @LIT.scenes.LYRIC_REFERENCE_POP_AFTER_OPEN.title
 
 Romeo:
- Recall the bracket's first petal.
+ @LIT.characters.romeo.recall.brackets_first_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -74,7 +74,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_REFERENCE_TEST_ATT_TEXT.
 
 
-                    Scene @LYRIC_REFERENCE_TEST_ATT_TEXT: The rose tests the ampersand house.
+                    Scene @LYRIC_REFERENCE_TEST_ATT_TEXT: @LIT.scenes.LYRIC_REFERENCE_TEST_ATT_TEXT.title
 
 Romeo:
  Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
@@ -87,34 +87,34 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_REFERENCE_FALLBACK.
 
 
-                    Scene @LYRIC_REFERENCE_LINK_POP_BODY: The small link name is gathered.
+                    Scene @LYRIC_REFERENCE_LINK_POP_BODY: @LIT.scenes.LYRIC_REFERENCE_LINK_POP_BODY.title
 
 Romeo:
- Recall the link's second petal.
+ @LIT.characters.romeo.recall.links_second_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the link's third petal.
+ @LIT.characters.romeo.recall.links_third_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the link's fourth petal.
+ @LIT.characters.romeo.recall.links_fourth_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the link's closing petal.
+ @LIT.characters.romeo.recall.links_closing_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the link's following air.
+ @LIT.characters.romeo.recall.links_following_air
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -130,7 +130,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_LINK_TEST_INLINE_OPEN.
 
 
-                    Scene @LYRIC_LINK_TEST_INLINE_OPEN: The small link seeks an inline gate.
+                    Scene @LYRIC_LINK_TEST_INLINE_OPEN: @LIT.scenes.LYRIC_LINK_TEST_INLINE_OPEN.title
 
 Romeo:
  Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
@@ -143,10 +143,10 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
 
-                    Scene @LYRIC_INLINE_POP_FIRST_DESTINATION: The garden path opens.
+                    Scene @LYRIC_INLINE_POP_FIRST_DESTINATION: @LIT.scenes.LYRIC_INLINE_POP_FIRST_DESTINATION.title
 
 Romeo:
- Recall the inline path's first gate.
+ @LIT.characters.romeo.recall.inline_paths_first_gate
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -162,7 +162,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION.
 
 
-                    Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: The path asks for its silver bracket.
+                    Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: @LIT.scenes.LYRIC_INLINE_TEST_BRACKETED_DESTINATION.title
 
 Romeo:
  Are you as fair as the difference between the square of a fair golden sunny summer's day
@@ -175,7 +175,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
 
-                    Scene @LYRIC_INLINE_DEST_DIRECT_CHECK: The bare path seeks its close.
+                    Scene @LYRIC_INLINE_DEST_DIRECT_CHECK: @LIT.scenes.LYRIC_INLINE_DEST_DIRECT_CHECK.title
 
 Romeo:
  Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
@@ -188,13 +188,13 @@ Puck:
  If not, let us proceed to scene @LYRIC_INLINE_DEST_DIRECT_KEEP.
 
 
-                    Scene @LYRIC_INLINE_DEST_DIRECT_KEEP: One bare path glyph is kept.
+                    Scene @LYRIC_INLINE_DEST_DIRECT_KEEP: @LIT.scenes.LYRIC_INLINE_DEST_DIRECT_KEEP.title
 
 Puck:
  Remember me.
 
 Romeo:
- Recall the inline path's next gate.
+ @LIT.characters.romeo.recall.inline_paths_next_gate
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -203,10 +203,10 @@ Puck:
  Let us return to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
 
 
-                    Scene @LYRIC_INLINE_DEST_BRACKETED_POP: The bracketed path yields a glyph.
+                    Scene @LYRIC_INLINE_DEST_BRACKETED_POP: @LIT.scenes.LYRIC_INLINE_DEST_BRACKETED_POP.title
 
 Romeo:
- Recall the bracketed path's next gate.
+ @LIT.characters.romeo.recall.bracketed_paths_next_gate
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -222,7 +222,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_KEEP.
 
 
-                    Scene @LYRIC_INLINE_DEST_BRACKETED_KEEP: One bracketed path glyph is kept.
+                    Scene @LYRIC_INLINE_DEST_BRACKETED_KEEP: @LIT.scenes.LYRIC_INLINE_DEST_BRACKETED_KEEP.title
 
 Puck:
  Remember me.
@@ -231,10 +231,10 @@ Puck:
  Let us return to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
 
 
-                    Scene @LYRIC_INLINE_DEST_BRACKETED_CLOSE: The bracketed path seeks its round seal.
+                    Scene @LYRIC_INLINE_DEST_BRACKETED_CLOSE: @LIT.scenes.LYRIC_INLINE_DEST_BRACKETED_CLOSE.title
 
 Romeo:
- Recall the bracketed path's round seal.
+ @LIT.characters.romeo.recall.bracketed_paths_round_seal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -250,7 +250,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_INLINE_LINK: Juliet receives the first silver path.
+                    Scene @LYRIC_OPEN_OUTPUT_INLINE_LINK: @LIT.scenes.LYRIC_OPEN_OUTPUT_INLINE_LINK.title
 
 [Exit Romeo]
 
@@ -260,7 +260,7 @@ Juliet:
  Let us proceed to scene @LYRIC_ANCHOR_INLINE.
 
 
-                    Scene @LYRIC_ANCHOR_INLINE: The inline path becomes a reusable bright path.
+                    Scene @LYRIC_ANCHOR_INLINE: @LIT.scenes.LYRIC_ANCHOR_INLINE.title
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a black cat and a cat.
@@ -383,22 +383,22 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_REFERENCE_ONE_POP_LABEL: Rosalind's first bargain is named.
+                    Scene @LYRIC_REFERENCE_ONE_POP_LABEL: @LIT.scenes.LYRIC_REFERENCE_ONE_POP_LABEL.title
 
 Romeo:
- Recall the first shelf's open mark.
+ @LIT.characters.romeo.recall.first_shelfs_open_mark
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the first shelf's number.
+ @LIT.characters.romeo.recall.first_shelfs_number
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the first shelf's close mark.
+ @LIT.characters.romeo.recall.first_shelfs_close_mark
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -407,52 +407,52 @@ Puck:
  Let us proceed to scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE.
 
 
-                    Scene @LYRIC_REFERENCE_ATT_POP_BODY: The house name keeps its ampersand.
+                    Scene @LYRIC_REFERENCE_ATT_POP_BODY: @LIT.scenes.LYRIC_REFERENCE_ATT_POP_BODY.title
 
 Romeo:
- Recall the house's second petal.
+ @LIT.characters.romeo.recall.houses_second_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the house's ampersand.
+ @LIT.characters.romeo.recall.houses_ampersand
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the house's last petal.
+ @LIT.characters.romeo.recall.houses_last_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the house's closing petal.
+ @LIT.characters.romeo.recall.houses_closing_petal
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the house's following air.
+ @LIT.characters.romeo.recall.houses_following_air
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the second shelf's open mark.
+ @LIT.characters.romeo.recall.second_shelfs_open_mark
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the second shelf's number.
+ @LIT.characters.romeo.recall.second_shelfs_number
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
 
 Romeo:
- Recall the second shelf's close mark.
+ @LIT.characters.romeo.recall.second_shelfs_close_mark
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -461,7 +461,7 @@ Puck:
  Let us proceed to scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO.
 
 
-                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE: Rosalind opens the first forest shelf.
+                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE: @LIT.scenes.LYRIC_OPEN_CONSULT_REFERENCE_ONE.title
 
 [Exit Romeo]
 
@@ -471,22 +471,22 @@ Rosalind:
  Let us proceed to scene @LYRIC_CONSULT_REFERENCE_ONE.
 
 
-                    Scene @LYRIC_CONSULT_REFERENCE_ONE: The forest yields Rosalind's first bargain.
+                    Scene @LYRIC_CONSULT_REFERENCE_ONE: @LIT.scenes.LYRIC_CONSULT_REFERENCE_ONE.title
 
 Puck:
- Recall the first forest seal.
+ @LIT.characters.puck.recall.first_forest_seal
 
 Puck:
- Recall the first forest path.
+ @LIT.characters.puck.recall.first_forest_path
 
 Puck:
- Recall the first forest name.
+ @LIT.characters.puck.recall.first_forest_name
 
 Rosalind:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE: Juliet receives the first starlit path.
+                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE: @LIT.scenes.LYRIC_OPEN_OUTPUT_REFERENCE_ONE.title
 
 [Exit Rosalind]
 
@@ -496,7 +496,7 @@ Juliet:
  Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_ONE.
 
 
-                    Scene @LYRIC_ANCHOR_REFERENCE_ONE: The first shelf becomes a reusable bright path.
+                    Scene @LYRIC_ANCHOR_REFERENCE_ONE: @LIT.scenes.LYRIC_ANCHOR_REFERENCE_ONE.title
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a black cat and a cat.
@@ -669,7 +669,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO: Rosalind opens the second forest shelf.
+                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO: @LIT.scenes.LYRIC_OPEN_CONSULT_REFERENCE_TWO.title
 
 [Exit Romeo]
 
@@ -679,22 +679,22 @@ Rosalind:
  Let us proceed to scene @LYRIC_CONSULT_REFERENCE_TWO.
 
 
-                    Scene @LYRIC_CONSULT_REFERENCE_TWO: The forest yields Rosalind's second bargain.
+                    Scene @LYRIC_CONSULT_REFERENCE_TWO: @LIT.scenes.LYRIC_CONSULT_REFERENCE_TWO.title
 
 Puck:
- Recall the second forest seal.
+ @LIT.characters.puck.recall.second_forest_seal
 
 Puck:
- Recall the second forest path.
+ @LIT.characters.puck.recall.second_forest_path
 
 Puck:
- Recall the second forest name.
+ @LIT.characters.puck.recall.second_forest_name
 
 Rosalind:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO: Juliet receives the titled star path.
+                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO: @LIT.scenes.LYRIC_OPEN_OUTPUT_REFERENCE_TWO.title
 
 [Exit Rosalind]
 
@@ -704,7 +704,7 @@ Juliet:
  Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_TWO.
 
 
-                    Scene @LYRIC_ANCHOR_REFERENCE_TWO: The second shelf keeps a reusable title.
+                    Scene @LYRIC_ANCHOR_REFERENCE_TWO: @LIT.scenes.LYRIC_ANCHOR_REFERENCE_TWO.title
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a black cat and a cat.
@@ -847,7 +847,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK: Juliet keeps the moonlit loose rose.
+                    Scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK: @LIT.scenes.LYRIC_OPEN_OUTPUT_LINK_FALLBACK.title
 
 [Exit Romeo]
 
@@ -857,7 +857,7 @@ Juliet:
  Let us proceed to scene @LYRIC_OUTPUT_LINK_FALLBACK.
 
 
-                    Scene @LYRIC_OUTPUT_LINK_FALLBACK: The unripe link returns unchanged.
+                    Scene @LYRIC_OUTPUT_LINK_FALLBACK: @LIT.scenes.LYRIC_OUTPUT_LINK_FALLBACK.title
 
 Puck:
  Remember the sum of a sweet flower and the sum of a little green sweet flower and the
@@ -888,7 +888,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_REFERENCE_FALLBACK: Juliet keeps the starlit reference rose.
+                    Scene @LYRIC_OPEN_REFERENCE_FALLBACK: @LIT.scenes.LYRIC_OPEN_REFERENCE_FALLBACK.title
 
 [Exit Romeo]
 
@@ -898,7 +898,7 @@ Juliet:
  Let us proceed to scene @LYRIC_REFERENCE_FALLBACK.
 
 
-                    Scene @LYRIC_REFERENCE_FALLBACK: The stray bracket returns to the line.
+                    Scene @LYRIC_REFERENCE_FALLBACK: @LIT.scenes.LYRIC_REFERENCE_FALLBACK.title
 
 Puck:
  Remember the sum of a sweet flower and the sum of a little green sweet flower and the
@@ -911,7 +911,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_TEST_LEFT_ANGLE: The line looks for a bracketed shadow.
+                    Scene @LYRIC_TEST_LEFT_ANGLE: @LIT.scenes.LYRIC_TEST_LEFT_ANGLE.title
 
 Romeo:
  Are you as fair as the difference between the square of a fair golden sunny summer's day
@@ -924,10 +924,10 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_CURRENT.
 
 
-                    Scene @LYRIC_AMP_POP_NEXT: The ampersand tests its old name.
+                    Scene @LYRIC_AMP_POP_NEXT: @LIT.scenes.LYRIC_AMP_POP_NEXT.title
 
 Romeo:
- Recall the morning's next cut.
+ @LIT.characters.romeo.recall.mornings_next_cut
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -943,10 +943,10 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_AMP_ENTITY_CURRENT.
 
 
-                    Scene @LYRIC_LEFT_ANGLE_POP_NEXT: The angle asks whether a path follows.
+                    Scene @LYRIC_LEFT_ANGLE_POP_NEXT: @LIT.scenes.LYRIC_LEFT_ANGLE_POP_NEXT.title
 
 Romeo:
- Recall the morning's next cut.
+ @LIT.characters.romeo.recall.mornings_next_cut
 
 Puck:
  You are as fair as the difference between Romeo and a cat.
@@ -962,7 +962,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_CURRENT: Juliet receives the plain mark.
+                    Scene @LYRIC_OPEN_OUTPUT_CURRENT: @LIT.scenes.LYRIC_OPEN_OUTPUT_CURRENT.title
 
 [Exit Romeo]
 
@@ -972,7 +972,7 @@ Juliet:
  Let us proceed to scene @LYRIC_OUTPUT_CURRENT.
 
 
-                    Scene @LYRIC_OUTPUT_CURRENT: One untouched glyph is laid in the garden.
+                    Scene @LYRIC_OUTPUT_CURRENT: @LIT.scenes.LYRIC_OUTPUT_CURRENT.title
 
 Puck:
  You are as fair as myself.
@@ -984,7 +984,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_AMP_ENTITY_CURRENT: Juliet receives the named ampersand.
+                    Scene @LYRIC_OPEN_OUTPUT_AMP_ENTITY_CURRENT: @LIT.scenes.LYRIC_OPEN_OUTPUT_AMP_ENTITY_CURRENT.title
 
 [Exit Romeo]
 
@@ -994,7 +994,7 @@ Juliet:
  Let us proceed to scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT.
 
 
-                    Scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT: The broken and is gilded.
+                    Scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT: @LIT.scenes.LYRIC_OUTPUT_AMP_ENTITY_CURRENT.title
 
 Puck:
  You are as fair as the sum of the product of a rural little green sweet flower and a sweet
@@ -1041,7 +1041,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT: Juliet receives the old ampersand.
+                    Scene @LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT: @LIT.scenes.LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT.title
 
 [Exit Romeo]
 
@@ -1051,7 +1051,7 @@ Juliet:
  Let us proceed to scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT.
 
 
-                    Scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT: The old name remains whole.
+                    Scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LITERAL_AMP_CURRENT.title
 
 Puck:
  You are as fair as the sum of the product of a rural little green sweet flower and a sweet
@@ -1070,7 +1070,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT: Juliet receives the softened silver angle.
+                    Scene @LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT: @LIT.scenes.LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT.title
 
 [Exit Romeo]
 
@@ -1080,7 +1080,7 @@ Juliet:
  Let us proceed to scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT.
 
 
-                    Scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT: The sharp angle turns to light.
+                    Scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LT_ENTITY_CURRENT.title
 
 Puck:
  You are as fair as the sum of the product of a rural little green sweet flower and a sweet
@@ -1122,7 +1122,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_LITERAL_LEFT_CURRENT: Juliet receives the path angle.
+                    Scene @LYRIC_OPEN_OUTPUT_LITERAL_LEFT_CURRENT: @LIT.scenes.LYRIC_OPEN_OUTPUT_LITERAL_LEFT_CURRENT.title
 
 [Exit Romeo]
 
@@ -1132,7 +1132,7 @@ Juliet:
  Let us proceed to scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT.
 
 
-                    Scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT: The path keeps its gate.
+                    Scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LITERAL_LEFT_CURRENT.title
 
 Puck:
  You are as fair as the sum of the product of a rural little green sweet flower and the sum
@@ -1152,7 +1152,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_RETURN_TO_SCAN: Romeo resumes the morning count.
+                    Scene @LYRIC_RETURN_TO_SCAN: @LIT.scenes.LYRIC_RETURN_TO_SCAN.title
 
 [Exit Juliet]
 
@@ -1162,7 +1162,7 @@ Romeo:
  Let us return to scene @LYRIC_SCAN_CHECK.
 
 
-                    Scene @LYRIC_OPEN_REVERSE: The rose turns the line back to Puck.
+                    Scene @LYRIC_OPEN_REVERSE: @LIT.scenes.LYRIC_OPEN_REVERSE.title
 
 [Exit Puck]
 
@@ -1176,7 +1176,7 @@ Romeo:
  Let us proceed to scene @LYRIC_REVERSE_CHECK.
 
 
-                    Scene @LYRIC_REVERSE_CHECK: The evening counts the garden home.
+                    Scene @LYRIC_REVERSE_CHECK: @LIT.scenes.LYRIC_REVERSE_CHECK.title
 
 Romeo:
  Am I as fair as nothing?
@@ -1188,10 +1188,10 @@ Juliet:
  If not, let us proceed to scene @LYRIC_REVERSE_POP.
 
 
-                    Scene @LYRIC_REVERSE_POP: Juliet lifts one starlit glyph.
+                    Scene @LYRIC_REVERSE_POP: @LIT.scenes.LYRIC_REVERSE_POP.title
 
 Romeo:
- Recall the rose's kept word.
+ @LIT.characters.romeo.recall.roses_kept_word
 
 Juliet:
  You are as fair as the difference between Romeo and a cat.
@@ -1200,7 +1200,7 @@ Romeo:
  Let us proceed to scene @LYRIC_OPEN_PUSH_BACK.
 
 
-                    Scene @LYRIC_OPEN_PUSH_BACK: Puck takes the starlit word.
+                    Scene @LYRIC_OPEN_PUSH_BACK: @LIT.scenes.LYRIC_OPEN_PUSH_BACK.title
 
 [Exit Romeo]
 
@@ -1210,7 +1210,7 @@ Juliet:
  Let us proceed to scene @LYRIC_PUSH_BACK.
 
 
-                    Scene @LYRIC_PUSH_BACK: The herald carries the gilded stream.
+                    Scene @LYRIC_PUSH_BACK: @LIT.scenes.LYRIC_PUSH_BACK.title
 
 Juliet:
  You are as fair as myself.
@@ -1222,7 +1222,7 @@ Puck:
  Let us proceed to scene @LYRIC_RETURN_TO_REVERSE.
 
 
-                    Scene @LYRIC_RETURN_TO_REVERSE: Romeo counts the remaining roses.
+                    Scene @LYRIC_RETURN_TO_REVERSE: @LIT.scenes.LYRIC_RETURN_TO_REVERSE.title
 
 [Exit Puck]
 
@@ -1232,10 +1232,10 @@ Romeo:
  Let us return to scene @LYRIC_REVERSE_CHECK.
 
 
-                    Scene @ACT_III_DONE: Romeo and Juliet part as one bright rose.
+                    Scene @ACT_III_DONE: @LIT.scenes.ACT_III_DONE.title
 
 [Exeunt]
 
 
 
-                    Act IV: Wherein Prospero, his work done, inscribes and releases all.
+                    Act IV: @LIT.acts.act4.title

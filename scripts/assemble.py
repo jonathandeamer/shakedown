@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 import re
+import sys
 import tomllib
 from pathlib import Path
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from scripts.literary_surfaces import load_literary_surfaces
 

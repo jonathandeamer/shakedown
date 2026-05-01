@@ -1,4 +1,4 @@
-                    Scene @ACT_II_START: Wherein Lady Macbeth receives the cauldron's line.
+                    Scene @ACT_II_START: @LIT.scenes.ACT_II_START.title
 
 [Enter Hecate and Lady Macbeth]
 
@@ -13,10 +13,10 @@ Lady Macbeth:
  Let us proceed to scene @MASON_READ_PARAGRAPH_GLYPH.
 
 
-                    Scene @MASON_READ_PARAGRAPH_GLYPH: Once more unto the breach.
+                    Scene @MASON_READ_PARAGRAPH_GLYPH: @LIT.scenes.MASON_READ_PARAGRAPH_GLYPH.title
 
 Lady Macbeth:
- Recall the hewn glyph.
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
 
 Hecate:
  You are as rotten as the difference between yourself and a cat.
@@ -31,7 +31,7 @@ Hecate:
  If not, let us proceed to scene @MASON_KEEP_PARAGRAPH_GLYPH.
 
 
-                    Scene @MASON_KEEP_PARAGRAPH_GLYPH: One glyph is laid within the wall.
+                    Scene @MASON_KEEP_PARAGRAPH_GLYPH: @LIT.scenes.MASON_KEEP_PARAGRAPH_GLYPH.title
 
 Hecate:
  Remember me.
@@ -46,7 +46,7 @@ Hecate:
  If not, let us return to scene @MASON_READ_PARAGRAPH_GLYPH.
 
 
-                    Scene @MASON_CLOSE_PARAGRAPH: The wall is sealed against the blank.
+                    Scene @MASON_CLOSE_PARAGRAPH: @LIT.scenes.MASON_CLOSE_PARAGRAPH.title
 
 Hecate:
  Remember nothing.
@@ -61,10 +61,10 @@ Hecate:
  If not, let us proceed to scene @MASON_SKIP_BLANK_GLYPH.
 
 
-                    Scene @MASON_SKIP_BLANK_GLYPH: Empty lines pass beneath the keep.
+                    Scene @MASON_SKIP_BLANK_GLYPH: @LIT.scenes.MASON_SKIP_BLANK_GLYPH.title
 
 Lady Macbeth:
- Recall the blank glyph.
+ @LIT.characters.lady_macbeth.recall.blank_glyph
 
 Hecate:
  You are as rotten as the difference between yourself and a cat.
@@ -79,7 +79,7 @@ Hecate:
  If not, let us proceed to scene @MASON_OPEN_PARAGRAPH_WITH_GLYPH.
 
 
-                    Scene @MASON_AFTER_BLANK_GLYPH: The mason counts the quiet.
+                    Scene @MASON_AFTER_BLANK_GLYPH: @LIT.scenes.MASON_AFTER_BLANK_GLYPH.title
 
 Hecate:
  Are you as rotten as nothing?
@@ -91,7 +91,7 @@ Hecate:
  If not, let us return to scene @MASON_SKIP_BLANK_GLYPH.
 
 
-                    Scene @MASON_OPEN_PARAGRAPH_WITH_GLYPH: A new chamber takes its mark.
+                    Scene @MASON_OPEN_PARAGRAPH_WITH_GLYPH: @LIT.scenes.MASON_OPEN_PARAGRAPH_WITH_GLYPH.title
 
 Hecate:
  Remember a cat.
@@ -109,7 +109,7 @@ Hecate:
  If not, let us return to scene @MASON_READ_PARAGRAPH_GLYPH.
 
 
-                    Scene @MASON_CLOSE_FINAL_PARAGRAPH: The last chamber is sealed.
+                    Scene @MASON_CLOSE_FINAL_PARAGRAPH: @LIT.scenes.MASON_CLOSE_FINAL_PARAGRAPH.title
 
 Hecate:
  Remember nothing.
@@ -118,7 +118,7 @@ Lady Macbeth:
  Let us proceed to scene @MASON_OPEN_REVERSE_STREAM.
 
 
-                    Scene @MASON_OPEN_REVERSE_STREAM: Lady Macbeth gives Puck the mason's order.
+                    Scene @MASON_OPEN_REVERSE_STREAM: @LIT.scenes.MASON_OPEN_REVERSE_STREAM.title
 
 [Exit Hecate]
 
@@ -132,10 +132,10 @@ Puck:
  Let us proceed to scene @HERALD_REVERSE_TOKEN_STREAM.
 
 
-                    Scene @HERALD_REVERSE_TOKEN_STREAM: The herald turns the wall toward morning.
+                    Scene @HERALD_REVERSE_TOKEN_STREAM: @LIT.scenes.HERALD_REVERSE_TOKEN_STREAM.title
 
 Puck:
- Recall the mason's stone.
+ @LIT.characters.puck.recall.masons_stone
 
 Lady Macbeth:
  Remember me.
@@ -153,10 +153,10 @@ Puck:
  If not, let us return to scene @HERALD_REVERSE_TOKEN_STREAM.
 
 
-                    Scene @ACT_II_DONE: The second act yields.
+                    Scene @ACT_II_DONE: @LIT.scenes.ACT_II_DONE.title
 
 [Exeunt]
 
 
 
-                    Act III: Wherein the lovers gild the line with light and rose.
+                    Act III: @LIT.acts.act3.title

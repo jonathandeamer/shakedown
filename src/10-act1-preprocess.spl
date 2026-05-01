@@ -1,4 +1,4 @@
-                    Scene @ACT_I_START: Hecate shelves the known bargains.
+                    Scene @ACT_I_START: @LIT.scenes.ACT_I_START.title
 
 [Enter Hecate and Rosalind]
 
@@ -50,7 +50,7 @@ Hecate:
  Let us proceed to scene @HECATE_READ_INPUT.
 
 
-                    Scene @HECATE_READ_INPUT: Double, double, glyphs are brewed.
+                    Scene @HECATE_READ_INPUT: @LIT.scenes.HECATE_READ_INPUT.title
 
 Hecate:
  Open your mind!
@@ -71,10 +71,10 @@ Puck:
  Let us return to scene @HECATE_READ_INPUT.
 
 
-                    Scene @HECATE_LINE_STRIP_SECOND_REFERENCE: The second shelf is read to its seal.
+                    Scene @HECATE_LINE_STRIP_SECOND_REFERENCE: @LIT.scenes.HECATE_LINE_STRIP_SECOND_REFERENCE.title
 
 Hecate:
- Recall the sealed second shelf.
+ @LIT.characters.hecate.recall.sealed_second_shelf
 
 Puck:
  You are as rotten as the difference between Hecate and a cat.
@@ -89,10 +89,10 @@ Puck:
  If not, let us return to scene @HECATE_LINE_STRIP_SECOND_REFERENCE.
 
 
-                    Scene @HECATE_LINE_STRIP_FIRST_REFERENCE: The first shelf is read to its seal.
+                    Scene @HECATE_LINE_STRIP_FIRST_REFERENCE: @LIT.scenes.HECATE_LINE_STRIP_FIRST_REFERENCE.title
 
 Hecate:
- Recall the sealed first shelf.
+ @LIT.characters.hecate.recall.sealed_first_shelf
 
 Puck:
  You are as rotten as the difference between Hecate and a cat.
@@ -107,7 +107,7 @@ Puck:
  If not, let us return to scene @HECATE_LINE_STRIP_FIRST_REFERENCE.
 
 
-                    Scene @HECATE_LINE_RESTORE_BOUNDARY: Out, damned blank boundary.
+                    Scene @HECATE_LINE_RESTORE_BOUNDARY: @LIT.scenes.HECATE_LINE_RESTORE_BOUNDARY.title
 
 Hecate:
  Remember yourself.
@@ -119,7 +119,7 @@ Puck:
  Let us proceed to scene @HECATE_HAND_COUNT_TO_HORATIO.
 
 
-                    Scene @HECATE_HAND_COUNT_TO_HORATIO: Horatio keeps the tally beside the pot.
+                    Scene @HECATE_HAND_COUNT_TO_HORATIO: @LIT.scenes.HECATE_HAND_COUNT_TO_HORATIO.title
 
 [Exit Puck]
 
@@ -132,7 +132,7 @@ Hecate:
  Let us proceed to scene @HECATE_REVERSE_CHECK.
 
 
-                    Scene @HECATE_REVERSE_CHECK: The witness tests whether the dregs remain.
+                    Scene @HECATE_REVERSE_CHECK: @LIT.scenes.HECATE_REVERSE_CHECK.title
 
 Hecate:
  Are you as rotten as nothing?
@@ -144,7 +144,7 @@ Horatio:
  If not, let us proceed to scene @HECATE_OPEN_REVERSE_POP.
 
 
-                    Scene @HECATE_OPEN_REVERSE_POP: Puck returns to lift one glyph.
+                    Scene @HECATE_OPEN_REVERSE_POP: @LIT.scenes.HECATE_OPEN_REVERSE_POP.title
 
 [Exit Horatio]
 
@@ -154,10 +154,10 @@ Hecate:
  Let us proceed to scene @HECATE_REVERSE_POP.
 
 
-                    Scene @HECATE_REVERSE_POP: One glyph crosses from trickster to witch.
+                    Scene @HECATE_REVERSE_POP: @LIT.scenes.HECATE_REVERSE_POP.title
 
 Hecate:
- Recall the cauldron dreg.
+ @LIT.characters.hecate.recall.cauldron_dreg
 
 Puck:
  You are as rotten as myself.
@@ -169,7 +169,7 @@ Puck:
  Let us proceed to scene @HECATE_OPEN_COUNT_DECREMENT.
 
 
-                    Scene @HECATE_OPEN_COUNT_DECREMENT: Horatio marks the shrinking heap.
+                    Scene @HECATE_OPEN_COUNT_DECREMENT: @LIT.scenes.HECATE_OPEN_COUNT_DECREMENT.title
 
 [Exit Puck]
 
@@ -182,10 +182,10 @@ Horatio:
  Let us return to scene @HECATE_REVERSE_CHECK.
 
 
-                    Scene @ACT_I_DONE: Hecate seals the cauldron and vanishes.
+                    Scene @ACT_I_DONE: @LIT.scenes.ACT_I_DONE.title
 
 [Exeunt]
 
 
 
-                    Act II: Wherein the kingdom of blocks is shaped, and each form named.
+                    Act II: @LIT.acts.act2.title

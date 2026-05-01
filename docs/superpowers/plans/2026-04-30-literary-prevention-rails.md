@@ -937,7 +937,7 @@ git commit -m "feat: drive byte value atoms from literary data"
 - Modify: `tests/test_literary_compliance.py`
 - Modify: `src/literary.toml`
 
-- [ ] **Step 1: Add or update source-placeholder and production-literary tests**
+- [x] **Step 1: Add or update source-placeholder and production-literary tests**
 
 Add this import near the top of `tests/test_literary_compliance.py` if it is
 not already present:
@@ -1268,7 +1268,7 @@ The active-character motif test is intentionally production-facing. It does not
 require deferred TOML characters such as a future Macbeth role to appear in the
 assembled preamble or to speak before the implementation actually uses them.
 
-- [ ] **Step 1a: Add production motif metadata**
+- [x] **Step 1a: Add production motif metadata**
 
 Add this section to `src/literary.toml`:
 
@@ -1285,7 +1285,7 @@ Only list characters whose motifs are active production obligations. Deferred
 ledger characters may remain under `[characters]` without appearing in
 `[production_motifs]` until they enter the assembled preamble.
 
-- [ ] **Step 1b: Update existing compliance tests for placeholders and keyed Recall**
+- [x] **Step 1b: Update existing compliance tests for placeholders and keyed Recall**
 
 Existing tests that compare raw `src/*.spl` titles against TOML must resolve
 `@LIT.` placeholders before comparing. Update them to use
@@ -1312,7 +1312,7 @@ after conversion, schema tests should require keyed `recall` tables and may
 allow `recall_pool` only as a temporary compatibility mirror if the plan chooses
 to keep both.
 
-- [ ] **Step 2: Capture pre-conversion implemented fixture baseline**
+- [x] **Step 2: Capture pre-conversion implemented fixture baseline**
 
 Capture the implemented fixture output before replacing any source text with
 placeholders:
@@ -1327,7 +1327,7 @@ Expected: command exits 0. If `_IMPLEMENTED_FIXTURES` in
 `tests/test_mdtest.py` has grown by the time this plan runs, capture every
 fixture named there.
 
-- [ ] **Step 3: Run test to verify it fails**
+- [x] **Step 3: Run test to verify it fails**
 
 Run:
 
@@ -1340,7 +1340,7 @@ The scene-title length, Prospero equality, Hecate atom family, and
 iconic/dramatic ledger tests should already pass before placeholder conversion;
 if any fail, stop and restore the cleaned source before proceeding.
 
-- [ ] **Step 4: Replace play and act titles**
+- [x] **Step 4: Replace play and act titles**
 
 In `src/00-preamble.spl`, replace the literal play title line with:
 
@@ -1357,7 +1357,7 @@ Act III: @LIT.acts.act3.title
 Act IV: @LIT.acts.act4.title
 ```
 
-- [ ] **Step 5: Replace scene titles**
+- [x] **Step 5: Replace scene titles**
 
 For each scene declaration of the form:
 
@@ -1373,7 +1373,7 @@ Scene @LABEL: @LIT.scenes.LABEL.title
 
 Use the exact symbolic label already present in the scene declaration.
 
-- [ ] **Step 6: Replace Recall phrases with character keys**
+- [x] **Step 6: Replace Recall phrases with character keys**
 
 For each production Recall phrase that exists in
 `src/literary.toml` under `[characters.<character>.recall]`, replace:
@@ -1406,7 +1406,7 @@ Use the existing TOML key for the exact phrase. If the cleanup ledger currently
 stores Recall pools as arrays, first convert those pools to keyed tables while
 preserving the same phrase strings.
 
-- [ ] **Step 7: Assemble and run focused checks**
+- [x] **Step 7: Assemble and run focused checks**
 
 Run:
 
@@ -1424,7 +1424,7 @@ iconic/dramatic moment ledger gate. It must also preserve the production-cast,
 active-motif, scene-title monotony, blurb meta-language, and dramatic-moment
 visibility gates.
 
-- [ ] **Step 8: Compare implemented fixture output to the pre-conversion baseline**
+- [x] **Step 8: Compare implemented fixture output to the pre-conversion baseline**
 
 Only compare fixtures currently marked implemented in `tests/test_mdtest.py`.
 Do not use all 23 mdtest fixtures here; non-shipped fixtures may correctly exit
@@ -1444,7 +1444,7 @@ diff -u \
 Expected: no diff. If `_IMPLEMENTED_FIXTURES` in `tests/test_mdtest.py` has grown
 by the time this plan runs, compare every fixture named there.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/*.spl shakedown.spl tests/test_literary_compliance.py src/literary.toml
