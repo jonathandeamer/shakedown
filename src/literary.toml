@@ -19,6 +19,14 @@ title = "Wherein the lovers gild the line with light and rose."
 [acts.act4]
 title = "Wherein Prospero, his work done, inscribes and releases all."
 
+[value_atoms.default]
+v0 = "nothing"
+v1 = "a cat"
+v2 = "a black cat"
+v4 = "a furry black cat"
+v8 = "a little furry black cat"
+v16 = "a normal little furry black cat"
+
 [iconic_moments.double_double]
 surface = "scene_title"
 scene = "HECATE_READ_INPUT"

@@ -651,7 +651,7 @@ git commit -m "feat: resolve literary placeholders in assembler"
 - Modify: `scripts/codegen_html.py`
 - Modify: `tests/test_codegen_html.py`
 
-- [ ] **Step 1: Add default value atom family to TOML**
+- [x] **Step 1: Add default value atom family to TOML**
 
 Add this section to `src/literary.toml`:
 
@@ -665,7 +665,7 @@ v8 = "a little furry black cat"
 v16 = "a normal little furry black cat"
 ```
 
-- [ ] **Step 2: Update codegen tests for TOML-loaded atoms and compact recipes**
+- [x] **Step 2: Update codegen tests for TOML-loaded atoms and compact recipes**
 
 In `tests/test_codegen_html.py`, add `import re`, then change the atom
 expectation for `16` by adding this case to `test_emit_byte_atom_forms`:
@@ -770,7 +770,7 @@ v2 = "a big big cat"
         load_literary_surfaces(path)
 ```
 
-- [ ] **Step 3: Run tests to verify they fail before implementation**
+- [x] **Step 3: Run tests to verify they fail before implementation**
 
 Run:
 
@@ -781,7 +781,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_codegen_html.py -q
 Expected: the new TOML and compact-recipe tests fail because codegen still uses
 hardcoded atoms and repeated largest-atom subtraction.
 
-- [ ] **Step 4: Implement TOML-backed atoms**
+- [x] **Step 4: Implement TOML-backed atoms**
 
 Modify `scripts/codegen_html.py`:
 
@@ -904,7 +904,7 @@ these properties:
 - values with several 16-value chunks use `the product of ... and ...`
 - every generated phrase round-trips through `parse_value_phrase`
 
-- [ ] **Step 5: Run codegen checks**
+- [x] **Step 5: Run codegen checks**
 
 Run:
 
@@ -916,7 +916,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pyright scripts/codegen_html.py scripts/li
 
 Expected: all pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/literary.toml scripts/codegen_html.py tests/test_codegen_html.py
