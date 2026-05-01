@@ -252,7 +252,7 @@ git commit -m "docs: add SPL literary prompt protocol"
 - Create: `scripts/literary_surfaces.py`
 - Create: `tests/test_literary_surfaces.py`
 
-- [ ] **Step 1: Write failing loader tests**
+- [x] **Step 1: Write failing loader tests**
 
 Create `tests/test_literary_surfaces.py`:
 
@@ -370,7 +370,7 @@ def test_literary_surfaces_type_is_constructible() -> None:
     assert surfaces.resolve("play.title") == "Shakedown."
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run:
 
@@ -380,7 +380,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_literary_surfaces.py -q
 
 Expected: import failure because `scripts/literary_surfaces.py` does not exist.
 
-- [ ] **Step 3: Implement the loader**
+- [x] **Step 3: Implement the loader**
 
 Create `scripts/literary_surfaces.py`:
 
@@ -483,7 +483,7 @@ def _atoms_in(phrase: str) -> list[str]:
     return [text]
 ```
 
-- [ ] **Step 4: Run tests and type checks**
+- [x] **Step 4: Run tests and type checks**
 
 Run:
 
@@ -495,7 +495,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pyright scripts/literary_surfaces.py tests
 
 Expected: all pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/literary_surfaces.py tests/test_literary_surfaces.py
