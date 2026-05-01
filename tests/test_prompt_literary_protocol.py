@@ -50,6 +50,10 @@ def test_protocol_note_exists_and_names_required_inputs() -> None:
 def test_active_prompt_loads_protocol_note() -> None:
     text = _read(ACTIVE_PROMPT)
     assert "@docs/superpowers/notes/spl-literary-protocol.md" in text
+    assert "SPL literary, aesthetic, and stylistic policy is mandatory" in text
+    assert "Controlled prose must remain TOML-owned" in text
+    assert "Do not treat literary compliance" in text
+    assert "optional cleanup" in text
 
 
 def test_claude_tells_prompt_authors_to_use_protocol() -> None:

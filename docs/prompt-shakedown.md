@@ -29,8 +29,14 @@ Standing rules:
 
 - No placeholders. Real implementations only. If a step says "write code X",
   write code X; do not write a stub that says "TODO".
-- SPL literary policy lives in `@docs/superpowers/notes/spl-literary-protocol.md`.
-  Follow it before editing SPL, assembler, codegen, or literary surface data.
+- SPL literary, aesthetic, and stylistic policy is mandatory for any SPL-facing
+  change. Before editing `src/*.spl`, `scripts/assemble.py`,
+  `scripts/codegen_html.py`, `src/literary.toml`, or future SPL generators,
+  read and follow `@docs/superpowers/notes/spl-literary-protocol.md`.
+  Controlled prose must remain TOML-owned and referenced by `@LIT.`
+  placeholders where the protocol requires it. Do not treat literary compliance
+  as optional cleanup; run the literary compliance tests named by the active
+  plan before committing.
 - No autonomous version bumps. Do not run `cz bump`, create tags, push tags, or
   update `CHANGELOG.md` unless the current plan step explicitly authorises it.
 - Respect `.agent/blockers.md`. If any line begins with `- BLOCK:`, address it
