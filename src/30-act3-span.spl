@@ -250,7 +250,7 @@ Puck:
  If not, let us proceed to scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_INLINE_LINK: Juliet receives the inline anchor.
+                    Scene @LYRIC_OPEN_OUTPUT_INLINE_LINK: Juliet receives the first silver path.
 
 [Exit Romeo]
 
@@ -461,17 +461,17 @@ Puck:
  Let us proceed to scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO.
 
 
-                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE: Rosalind opens the first shelf.
+                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE: Rosalind opens the first forest shelf.
 
 [Exit Romeo]
 
 [Enter Rosalind]
 
-Puck:
+Rosalind:
  Let us proceed to scene @LYRIC_CONSULT_REFERENCE_ONE.
 
 
-                    Scene @LYRIC_CONSULT_REFERENCE_ONE: The forest yields the first bargain.
+                    Scene @LYRIC_CONSULT_REFERENCE_ONE: The forest yields Rosalind's first bargain.
 
 Puck:
  Recall the first forest seal.
@@ -486,7 +486,7 @@ Rosalind:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE: Juliet receives the first anchor.
+                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE: Juliet receives the first starlit path.
 
 [Exit Rosalind]
 
@@ -669,17 +669,17 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO: Rosalind opens the second shelf.
+                    Scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO: Rosalind opens the second forest shelf.
 
 [Exit Romeo]
 
 [Enter Rosalind]
 
-Puck:
+Rosalind:
  Let us proceed to scene @LYRIC_CONSULT_REFERENCE_TWO.
 
 
-                    Scene @LYRIC_CONSULT_REFERENCE_TWO: The forest yields the second bargain.
+                    Scene @LYRIC_CONSULT_REFERENCE_TWO: The forest yields Rosalind's second bargain.
 
 Puck:
  Recall the second forest seal.
@@ -694,7 +694,7 @@ Rosalind:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO: Juliet receives the titled anchor.
+                    Scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO: Juliet receives the titled star path.
 
 [Exit Rosalind]
 
@@ -847,7 +847,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK: Juliet receives an unfinished inline link.
+                    Scene @LYRIC_OPEN_OUTPUT_LINK_FALLBACK: Juliet keeps the moonlit loose rose.
 
 [Exit Romeo]
 
@@ -888,7 +888,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_REFERENCE_FALLBACK: Juliet receives a lone bracket.
+                    Scene @LYRIC_OPEN_REFERENCE_FALLBACK: Juliet keeps the starlit reference rose.
 
 [Exit Romeo]
 
@@ -1070,7 +1070,7 @@ Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
-                    Scene @LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT: Juliet receives the softened angle.
+                    Scene @LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT: Juliet receives the softened silver angle.
 
 [Exit Romeo]
 
@@ -1188,7 +1188,7 @@ Juliet:
  If not, let us proceed to scene @LYRIC_REVERSE_POP.
 
 
-                    Scene @LYRIC_REVERSE_POP: Juliet lifts one brightened glyph.
+                    Scene @LYRIC_REVERSE_POP: Juliet lifts one starlit glyph.
 
 Romeo:
  Recall the rose's kept word.
@@ -1200,7 +1200,7 @@ Romeo:
  Let us proceed to scene @LYRIC_OPEN_PUSH_BACK.
 
 
-                    Scene @LYRIC_OPEN_PUSH_BACK: Puck takes the brightened word.
+                    Scene @LYRIC_OPEN_PUSH_BACK: Puck takes the starlit word.
 
 [Exit Romeo]
 
@@ -1232,7 +1232,7 @@ Romeo:
  Let us return to scene @LYRIC_REVERSE_CHECK.
 
 
-                    Scene @ACT_III_DONE: The third act yields.
+                    Scene @ACT_III_DONE: Romeo and Juliet part as one bright rose.
 
 [Exeunt]
 

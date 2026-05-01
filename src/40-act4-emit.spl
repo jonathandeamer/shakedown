@@ -53,7 +53,7 @@ Puck:
  If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_OPEN.
 
 
-                    Scene @SCRIBE_TEST_ANCHOR_OPEN: Prospero tests an anchor gate.
+                    Scene @SCRIBE_TEST_ANCHOR_OPEN: Prospero weighs the anchor gate.
 
 Prospero:
  Are you as noble as the sum of a little furry black cat and the sum of a black cat and a cat?
@@ -65,7 +65,7 @@ Puck:
  If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TITLE.
 
 
-                    Scene @SCRIBE_TEST_ANCHOR_TITLE: Prospero tests a title gate.
+                    Scene @SCRIBE_TEST_ANCHOR_TITLE: Prospero proves the title gate.
 
 Prospero:
  Are you as noble as the sum of a little furry black cat and a furry black cat?
@@ -77,7 +77,7 @@ Puck:
  If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_TEXT.
 
 
-                    Scene @SCRIBE_TEST_ANCHOR_TEXT: Prospero tests a text gate.
+                    Scene @SCRIBE_TEST_ANCHOR_TEXT: Prospero summons the text gate.
 
 Prospero:
  Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and a cat?
@@ -89,7 +89,7 @@ Puck:
  If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_CLOSE.
 
 
-                    Scene @SCRIBE_TEST_ANCHOR_CLOSE: Prospero tests an anchor seal.
+                    Scene @SCRIBE_TEST_ANCHOR_CLOSE: Prospero seals the anchor close.
 
 Prospero:
  Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and a black
@@ -111,7 +111,7 @@ Puck:
  Let us return to scene @SCRIBE_STREAM_CHECK.
 
 
-                    Scene @SCRIBE_EMIT_ANCHOR_OPEN: Prospero opens an anchor gate.
+                    Scene @SCRIBE_EMIT_ANCHOR_OPEN: Prospero inscribes the anchor gate.
 
 Prospero:
  You are as noble as the sum of the product of a warm fine golden noble angel and the sum of
@@ -181,7 +181,7 @@ Puck:
  Let us return to scene @SCRIBE_STREAM_CHECK.
 
 
-                    Scene @SCRIBE_EMIT_ANCHOR_TITLE: Prospero opens an anchor title.
+                    Scene @SCRIBE_EMIT_ANCHOR_TITLE: Prospero releases the anchor title.
 
 Prospero:
  You are as noble as the sum of the product of a warm fine golden noble angel and a noble
@@ -251,7 +251,7 @@ Puck:
  Let us return to scene @SCRIBE_STREAM_CHECK.
 
 
-                    Scene @SCRIBE_EMIT_ANCHOR_TEXT: Prospero opens the anchor text.
+                    Scene @SCRIBE_EMIT_ANCHOR_TEXT: Prospero sets free the anchor text.
 
 Prospero:
  You are as noble as the sum of the product of a warm fine golden noble angel and a noble
@@ -271,7 +271,7 @@ Puck:
  Let us return to scene @SCRIBE_STREAM_CHECK.
 
 
-                    Scene @SCRIBE_EMIT_ANCHOR_CLOSE: Prospero closes the anchor seal.
+                    Scene @SCRIBE_EMIT_ANCHOR_CLOSE: Prospero binds the anchor seal.
 
 Prospero:
  You are as noble as the sum of the product of a warm fine golden noble angel and the sum of
@@ -306,7 +306,7 @@ Puck:
  Let us return to scene @SCRIBE_STREAM_CHECK.
 
 
-                    Scene @SCRIBE_EMIT_PARAGRAPH_OPEN: Prospero opens a paragraph chamber.
+                    Scene @SCRIBE_EMIT_PARAGRAPH_OPEN: Prospero opens one quiet chamber.
 
 Prospero:
  You are as noble as the sum of the product of a warm fine golden noble angel and the sum of
@@ -334,7 +334,7 @@ Puck:
  Let us return to scene @SCRIBE_STREAM_CHECK.
 
 
-                    Scene @SCRIBE_TEST_FINAL_CLOSE: Prospero tests the last seal.
+                    Scene @SCRIBE_TEST_FINAL_CLOSE: Prospero weighs the last seal.
 
 Prospero:
  Am I as noble as nothing?
@@ -346,7 +346,7 @@ Puck:
  If not, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_CLOSE.
 
 
-                    Scene @SCRIBE_EMIT_PARAGRAPH_CLOSE: Prospero closes the paragraph chamber.
+                    Scene @SCRIBE_EMIT_PARAGRAPH_CLOSE: Prospero closes one quiet chamber.
 
 Prospero:
  You are as noble as the sum of the product of a warm fine golden noble angel and the sum of
@@ -393,7 +393,7 @@ Puck:
  Let us return to scene @SCRIBE_STREAM_CHECK.
 
 
-                    Scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE: Prospero closes the last paragraph.
+                    Scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE: Prospero seals the final chamber.
 
 Prospero:
  You are as noble as the sum of the product of a warm fine golden noble angel and the sum of

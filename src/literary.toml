@@ -102,7 +102,7 @@ play = "A Midsummer Night's Dream"
 role = "herald"
 palette = "pastoral_natural"
 voice_register = "chameleonic_messenger"
-blurb = "Puck, swift messenger, whose adjectives change with the room he visits."
+blurb = "Puck, swift messenger, who wears each room's colour and flies between them."
 recall_pool = [
   "Recall the mason's stone.",
   "Recall the first forest seal.",
@@ -177,7 +177,7 @@ play = "Macbeth"
 role = "apprentice"
 palette = "martial_catastrophic"
 voice_register = "doubt_shadowed_martial"
-blurb = "Macbeth, apprentice mason, who pairs with the Lady though dread shadows him."
+blurb = "Macbeth, apprentice mason, who steps through the shadowed threshold."
 recall_pool = []
 [characters.macbeth.stable_utility]
 v1 = "a kingdom"
@@ -240,7 +240,7 @@ play = "Romeo and Juliet"
 role = "lyric_b"
 palette = "pastoral_natural"
 voice_register = "lyrical_night_imagery"
-blurb = "Juliet, who commits final tokens like petals laid on stone."
+blurb = "Juliet, night-star lyric, who lays final roses on the silver path."
 recall_pool = []
 [characters.juliet.stable_utility]
 v1 = "a rose"
@@ -316,7 +316,7 @@ title = "Horatio marks the shrinking heap."
 pattern = "scene_of_character"
 
 [scenes.ACT_I_DONE]
-title = "The first act yields."
+title = "Hecate seals the cauldron and vanishes."
 pattern = "bare_statement"
 
 [scenes.ACT_II_START]
@@ -352,7 +352,7 @@ title = "The last chamber is sealed."
 pattern = "bare_statement"
 
 [scenes.MASON_OPEN_REVERSE_STREAM]
-title = "Puck bears the mason's order toward morning."
+title = "Lady Macbeth gives Puck the mason's order."
 pattern = "cross_character"
 
 [scenes.HERALD_REVERSE_TOKEN_STREAM]
@@ -424,7 +424,7 @@ title = "The bracketed path seeks its round seal."
 pattern = "bare_statement"
 
 [scenes.LYRIC_OPEN_OUTPUT_INLINE_LINK]
-title = "Juliet receives the inline anchor."
+title = "Juliet receives the first silver path."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_ANCHOR_INLINE]
@@ -440,15 +440,15 @@ title = "The house name keeps its ampersand."
 pattern = "bare_statement"
 
 [scenes.LYRIC_OPEN_CONSULT_REFERENCE_ONE]
-title = "Rosalind opens the first shelf."
+title = "Rosalind opens the first forest shelf."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_CONSULT_REFERENCE_ONE]
-title = "The forest yields the first bargain."
+title = "The forest yields Rosalind's first bargain."
 pattern = "locale"
 
 [scenes.LYRIC_OPEN_OUTPUT_REFERENCE_ONE]
-title = "Juliet receives the first anchor."
+title = "Juliet receives the first starlit path."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_ANCHOR_REFERENCE_ONE]
@@ -456,15 +456,15 @@ title = "The first shelf becomes a reusable bright path."
 pattern = "bare_statement"
 
 [scenes.LYRIC_OPEN_CONSULT_REFERENCE_TWO]
-title = "Rosalind opens the second shelf."
+title = "Rosalind opens the second forest shelf."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_CONSULT_REFERENCE_TWO]
-title = "The forest yields the second bargain."
+title = "The forest yields Rosalind's second bargain."
 pattern = "locale"
 
 [scenes.LYRIC_OPEN_OUTPUT_REFERENCE_TWO]
-title = "Juliet receives the titled anchor."
+title = "Juliet receives the titled star path."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_ANCHOR_REFERENCE_TWO]
@@ -472,7 +472,7 @@ title = "The second shelf keeps a reusable title."
 pattern = "bare_statement"
 
 [scenes.LYRIC_OPEN_OUTPUT_LINK_FALLBACK]
-title = "Juliet receives an unfinished inline link."
+title = "Juliet keeps the moonlit loose rose."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_OUTPUT_LINK_FALLBACK]
@@ -480,7 +480,7 @@ title = "The unripe link returns unchanged."
 pattern = "bare_statement"
 
 [scenes.LYRIC_OPEN_REFERENCE_FALLBACK]
-title = "Juliet receives a lone bracket."
+title = "Juliet keeps the starlit reference rose."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_REFERENCE_FALLBACK]
@@ -524,7 +524,7 @@ title = "The old name remains whole."
 pattern = "bare_statement"
 
 [scenes.LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT]
-title = "Juliet receives the softened angle."
+title = "Juliet receives the softened silver angle."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_OUTPUT_LT_ENTITY_CURRENT]
@@ -552,11 +552,11 @@ title = "The evening counts the garden home."
 pattern = "bare_statement"
 
 [scenes.LYRIC_REVERSE_POP]
-title = "Juliet lifts one brightened glyph."
+title = "Juliet lifts one starlit glyph."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_OPEN_PUSH_BACK]
-title = "Puck takes the brightened word."
+title = "Puck takes the starlit word."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_PUSH_BACK]
@@ -568,7 +568,7 @@ title = "Romeo counts the remaining roses."
 pattern = "scene_of_character"
 
 [scenes.ACT_III_DONE]
-title = "The third act yields."
+title = "Romeo and Juliet part as one bright rose."
 pattern = "bare_statement"
 
 [scenes.ACT_IV_START]
@@ -588,19 +588,19 @@ title = "The scribe weighs a seal."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_ANCHOR_OPEN]
-title = "Prospero tests an anchor gate."
+title = "Prospero weighs the anchor gate."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_ANCHOR_TITLE]
-title = "Prospero tests a title gate."
+title = "Prospero proves the title gate."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_ANCHOR_TEXT]
-title = "Prospero tests a text gate."
+title = "Prospero summons the text gate."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_ANCHOR_CLOSE]
-title = "Prospero tests an anchor seal."
+title = "Prospero seals the anchor close."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_PAYLOAD]
@@ -608,35 +608,35 @@ title = "One glyph is released."
 pattern = "bare_statement"
 
 [scenes.SCRIBE_EMIT_ANCHOR_OPEN]
-title = "Prospero opens an anchor gate."
+title = "Prospero inscribes the anchor gate."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_ANCHOR_TITLE]
-title = "Prospero opens an anchor title."
+title = "Prospero releases the anchor title."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_ANCHOR_TEXT]
-title = "Prospero opens the anchor text."
+title = "Prospero sets free the anchor text."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_ANCHOR_CLOSE]
-title = "Prospero closes the anchor seal."
+title = "Prospero binds the anchor seal."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_PARAGRAPH_OPEN]
-title = "Prospero opens a paragraph chamber."
+title = "Prospero opens one quiet chamber."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_FINAL_CLOSE]
-title = "Prospero tests the last seal."
+title = "Prospero weighs the last seal."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_PARAGRAPH_CLOSE]
-title = "Prospero closes the paragraph chamber."
+title = "Prospero closes one quiet chamber."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE]
-title = "Prospero closes the last paragraph."
+title = "Prospero seals the final chamber."
 pattern = "scene_of_character"
 
 [scenes.ACT_IV_DONE]

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 import tomllib
+from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).parent.parent
@@ -64,6 +65,26 @@ CHARACTER_KEY = {
     "Romeo": "romeo",
     "Rosalind": "rosalind",
 }
+REFERENCE_SCENES = {
+    "LYRIC_OPEN_CONSULT_REFERENCE_ONE",
+    "LYRIC_CONSULT_REFERENCE_ONE",
+    "LYRIC_OPEN_OUTPUT_REFERENCE_ONE",
+    "LYRIC_OPEN_CONSULT_REFERENCE_TWO",
+    "LYRIC_CONSULT_REFERENCE_TWO",
+    "LYRIC_OPEN_OUTPUT_REFERENCE_TWO",
+}
+JULIET_NIGHT_WORDS = {"night", "star", "stars", "starlit", "silver"}
+IMPLEMENTATION_META_WORDS = {
+    "adjective",
+    "adjectives",
+    "codegen",
+    "implementation",
+    "mechanism",
+    "token",
+    "tokens",
+}
+ACT_IV_DULL_VERBS = {"tests", "opens", "closes"}
+MAX_ACT_IV_DULL_VERB_USES = 2
 
 
 def _production_source() -> str:
@@ -82,6 +103,45 @@ def _is_inline_character_dialogue(line: str) -> bool:
 
 def _word_count(text: str) -> int:
     return len(re.findall(r"[A-Za-z0-9']+", text))
+
+
+def _speaker_counts(source: str) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for line in source.splitlines():
+        match = SPEAKER_ONLY_RE.match(line.strip())
+        if match and match["speaker"] in CHARACTER_KEY:
+            counts[match["speaker"]] += 1
+    return counts
+
+
+def _scene_blocks(source: str) -> dict[str, str]:
+    matches = list(SCENE_RE.finditer(source))
+    blocks: dict[str, str] = {}
+    for idx, match in enumerate(matches):
+        start = match.start()
+        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(source)
+        blocks[match["label"]] = source[start:end]
+    return blocks
+
+
+def _scene_titles() -> dict[str, str]:
+    return {
+        match["label"]: match["title"].strip()
+        for match in SCENE_RE.finditer(_production_source())
+    }
+
+
+def _words(text: str) -> set[str]:
+    return {word.lower() for word in re.findall(r"[A-Za-z']+", text)}
+
+
+def _preamble_character_lines(source: str) -> set[str]:
+    preamble = source.split("Act I:", maxsplit=1)[0]
+    return {
+        character
+        for character in CHARACTER_KEY
+        if re.search(rf"^{re.escape(character)},", preamble, re.MULTILINE)
+    }
 
 
 def test_locked_play_title_and_act_titles() -> None:
@@ -233,3 +293,91 @@ def test_speaker_colon_layout_is_removed_when_supported() -> None:
         line for line in source.splitlines() if _is_inline_character_dialogue(line)
     ]
     assert not offenders[:10]
+
+
+def test_named_production_characters_have_speaking_lines() -> None:
+    source = _production_source()
+    counts = _speaker_counts(source)
+    introduced = _preamble_character_lines(source)
+    silent = [character for character in introduced if counts[character] == 0]
+    assert not silent
+
+
+def test_reference_librarian_is_visible_in_reference_scenes() -> None:
+    blocks = _scene_blocks(_production_source())
+    reference_text = "\n".join(blocks[label] for label in sorted(REFERENCE_SCENES))
+    assert reference_text.count("Rosalind:") >= 4
+
+
+def test_juliet_surfaces_include_night_or_star_imagery() -> None:
+    data = _literary()
+    characters = data["characters"]
+    assert isinstance(characters, dict)
+    juliet = characters["juliet"]
+    assert isinstance(juliet, dict)
+
+    titles = _scene_titles()
+    juliet_titles = " ".join(
+        title
+        for title in titles.values()
+        if "Juliet" in title or _words(title) & {"rose", "evening"}
+    )
+    surfaces = f"{juliet['blurb']} {juliet_titles}"
+    assert _words(surfaces) & JULIET_NIGHT_WORDS
+
+
+def test_act_iv_scene_titles_use_ceremonial_verb_variety() -> None:
+    titles = _scene_titles()
+    act_iv_titles = [
+        title
+        for label, title in titles.items()
+        if label.startswith("SCRIBE_") or label == "ACT_IV_DONE"
+    ]
+    words = Counter(
+        word
+        for title in act_iv_titles
+        for word in re.findall(r"[A-Za-z']+", title.lower())
+    )
+    overused = {
+        verb: words[verb]
+        for verb in ACT_IV_DULL_VERBS
+        if words[verb] > MAX_ACT_IV_DULL_VERB_USES
+    }
+    assert not overused
+
+
+def test_character_blurbs_avoid_implementation_meta_language() -> None:
+    data = _literary()
+    characters = data["characters"]
+    assert isinstance(characters, dict)
+    offenders: dict[str, set[str]] = {}
+    for key, character in characters.items():
+        assert isinstance(character, dict)
+        blurb = character["blurb"]
+        assert isinstance(blurb, str)
+        meta_words = _words(blurb) & IMPLEMENTATION_META_WORDS
+        if meta_words:
+            offenders[key] = meta_words
+    assert not offenders
+
+
+def test_dramatic_moments_are_visible_in_scene_surfaces() -> None:
+    data = _literary()
+    moments = data["dramatic_moments"]
+    assert isinstance(moments, dict)
+    titles = _scene_titles()
+    blocks = _scene_blocks(_production_source())
+
+    missing: list[str] = []
+    for name, moment in moments.items():
+        assert isinstance(moment, dict)
+        scene = moment["scene"]
+        character = moment["character"]
+        assert isinstance(scene, str)
+        assert isinstance(character, str)
+        title_words = _words(titles[scene])
+        block_words = _words(blocks[scene])
+        character_words = _words(character)
+        if not (title_words & character_words or block_words & character_words):
+            missing.append(name)
+    assert not missing
