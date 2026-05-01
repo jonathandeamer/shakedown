@@ -6,6 +6,12 @@
 
 **Architecture:** Keep production SPL fragments readable, but allow explicit `@LIT.<section>.<key>[.<field>]` placeholders for controlled prose. Add a shared `scripts/literary_surfaces.py` loader, have `assemble.py` resolve placeholders, have `codegen_html.py` load numeric atom families from TOML, and add prompt compliance tests that force future run-loop prompts and plans to include the SPL literary protocol.
 
+The literary ledger may contain deferred characters and motifs that are not yet
+active in assembled production SPL. Prevention gates must therefore distinguish
+TOML ledger coverage from production-surface obligations: active cast members
+are the characters introduced in `src/00-preamble.spl`, and every active cast
+member must have visible production speech and voice/motif coverage.
+
 **Tech Stack:** Python 3.12, `tomllib`, pytest, pyright, ruff, existing SPL assembler/codegen scripts.
 
 ---
@@ -27,9 +33,12 @@ plan makes that ledger operational.
 - `tests/test_literary_surfaces.py`: loader validation and failure tests.
 - `scripts/assemble.py`: placeholder resolution before scene-label resolution.
 - `tests/test_assemble.py`: placeholder success/failure tests.
-- `src/literary.toml`: add `value_atoms.default` and any missing key structure needed by the loader.
+- `src/literary.toml`: add `value_atoms.default`, production-facing motif
+  metadata, and any missing key structure needed by the loader.
 - `scripts/codegen_html.py`: load value atoms from TOML instead of hardcoded Python constants.
 - `tests/test_codegen_html.py`: TOML-backed atom and round-trip tests.
+- `tests/test_literary_compliance.py`: production-cast, motif, scene-title
+  monotony, blurb, dramatic-moment, and placeholder compliance tests.
 - `src/*.spl`: replace controlled title, scene-title, Recall, and recurring value surfaces with `@LIT.` placeholders where readability remains good.
 - `shakedown.spl`: regenerated assembled output.
 
@@ -861,8 +870,16 @@ git commit -m "feat: drive byte value atoms from literary data"
 - Modify: `src/40-act4-emit.spl`
 - Modify: `shakedown.spl`
 - Modify: `tests/test_literary_compliance.py`
+- Modify: `src/literary.toml`
 
-- [ ] **Step 1: Add source-placeholder coverage test**
+- [ ] **Step 1: Add source-placeholder and production-literary tests**
+
+Add this import near the top of `tests/test_literary_compliance.py` if it is
+not already present:
+
+```python
+from collections import Counter
+```
 
 Append to `tests/test_literary_compliance.py`:
 
@@ -881,6 +898,57 @@ VALUE_ATOM_RE = re.compile(
     r"(?P<noun>cat|flower|day|rose|hero|angel|tree|brother)\b",
     re.IGNORECASE,
 )
+REFERENCE_SCENES = {
+    "LYRIC_OPEN_CONSULT_REFERENCE_ONE",
+    "LYRIC_CONSULT_REFERENCE_ONE",
+    "LYRIC_OPEN_OUTPUT_REFERENCE_ONE",
+    "LYRIC_OPEN_CONSULT_REFERENCE_TWO",
+    "LYRIC_CONSULT_REFERENCE_TWO",
+    "LYRIC_OPEN_OUTPUT_REFERENCE_TWO",
+}
+IMPLEMENTATION_META_WORDS = {
+    "adjective",
+    "adjectives",
+    "codegen",
+    "implementation",
+    "mechanism",
+    "token",
+    "tokens",
+}
+ACT_TITLE_DULL_VERBS = {
+    "act4": {"tests", "opens", "closes"},
+}
+MAX_DULL_VERB_USES = 2
+
+
+def _scene_blocks(source: str) -> dict[str, str]:
+    matches = list(SCENE_RE.finditer(source))
+    blocks: dict[str, str] = {}
+    for idx, match in enumerate(matches):
+        start = match.start()
+        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(source)
+        blocks[match["label"]] = source[start:end]
+    return blocks
+
+
+def _scene_titles() -> dict[str, str]:
+    return {
+        match["label"]: match["title"].strip()
+        for match in SCENE_RE.finditer(_production_source())
+    }
+
+
+def _words(text: str) -> set[str]:
+    return {word.lower() for word in re.findall(r"[A-Za-z']+", text)}
+
+
+def _preamble_character_lines(source: str) -> set[str]:
+    preamble = source.split("Act I:", maxsplit=1)[0]
+    return {
+        character
+        for character in CHARACTER_KEY
+        if re.search(rf"^{re.escape(character)},", preamble, re.MULTILINE)
+    }
 
 
 def test_value_atoms_do_not_repeat_adjectives() -> None:
@@ -915,6 +983,112 @@ def test_prospero_assignment_equalities_use_his_pool() -> None:
         match = re.search(r"\bYou are (as [a-z-]+ as)\b", stripped)
         if match:
             assert match.group(1) in equality_pool, stripped
+
+
+def test_named_production_characters_have_speaking_lines() -> None:
+    source = _production_source()
+    introduced = _preamble_character_lines(source)
+    counts = {
+        character: source.count(f"\n{character}:\n")
+        for character in introduced
+    }
+    assert all(counts[character] > 0 for character in introduced), counts
+
+
+def test_reference_librarian_is_visible_in_reference_scenes() -> None:
+    blocks = _scene_blocks(_production_source())
+    reference_text = "\n".join(blocks[label] for label in sorted(REFERENCE_SCENES))
+    assert reference_text.count("Rosalind:") >= 4
+
+
+def test_active_character_motifs_are_visible() -> None:
+    data = _literary()
+    characters = data["characters"]
+    production_motifs = data["production_motifs"]
+    assert isinstance(characters, dict)
+    assert isinstance(production_motifs, dict)
+    titles = " ".join(_scene_titles().values())
+    source = _production_source()
+    active_keys = {
+        CHARACTER_KEY[character]
+        for character in _preamble_character_lines(source)
+    }
+
+    missing: dict[str, set[str]] = {}
+    for key in active_keys & set(production_motifs):
+        character = characters[key]
+        motifs = production_motifs[key]
+        assert isinstance(character, dict)
+        assert isinstance(motifs, list)
+        assert all(isinstance(motif, str) for motif in motifs)
+        blurb = character["blurb"]
+        assert isinstance(blurb, str)
+        surfaces = f"{blurb} {titles}"
+        motif_set = set(motifs)
+        motif_hits = _words(surfaces) & motif_set
+        if not motif_hits:
+            missing[key] = motif_set
+    assert not missing
+
+
+def test_act_scene_titles_avoid_overused_utility_verbs() -> None:
+    titles = _scene_titles()
+    by_act: dict[str, list[str]] = {"act1": [], "act2": [], "act3": [], "act4": []}
+    for label, title in titles.items():
+        if label.startswith("SCRIBE_") or label == "ACT_IV_DONE":
+            by_act["act4"].append(title)
+
+    overused: dict[str, dict[str, int]] = {}
+    for act, dull_verbs in ACT_TITLE_DULL_VERBS.items():
+        words = Counter(
+            word
+            for title in by_act[act]
+            for word in re.findall(r"[A-Za-z']+", title.lower())
+        )
+        act_overused = {
+            verb: words[verb]
+            for verb in dull_verbs
+            if words[verb] > MAX_DULL_VERB_USES
+        }
+        if act_overused:
+            overused[act] = act_overused
+    assert not overused
+
+
+def test_character_blurbs_avoid_implementation_meta_language() -> None:
+    data = _literary()
+    characters = data["characters"]
+    assert isinstance(characters, dict)
+    offenders: dict[str, set[str]] = {}
+    for key, character in characters.items():
+        assert isinstance(character, dict)
+        blurb = character["blurb"]
+        assert isinstance(blurb, str)
+        meta_words = _words(blurb) & IMPLEMENTATION_META_WORDS
+        if meta_words:
+            offenders[key] = meta_words
+    assert not offenders
+
+
+def test_dramatic_moments_are_visible_in_scene_surfaces() -> None:
+    data = _literary()
+    moments = data["dramatic_moments"]
+    assert isinstance(moments, dict)
+    titles = _scene_titles()
+    blocks = _scene_blocks(_production_source())
+
+    missing: list[str] = []
+    for name, moment in moments.items():
+        assert isinstance(moment, dict)
+        scene = moment["scene"]
+        character = moment["character"]
+        assert isinstance(scene, str)
+        assert isinstance(character, str)
+        character_words = _words(character)
+        visible_words = _words(titles[scene]) | _words(blocks[scene])
+        if not visible_words & character_words:
+            missing.append(name)
+    assert not missing
 
 
 def test_controlled_surfaces_use_literary_placeholders_in_source() -> None:
@@ -952,6 +1126,27 @@ def test_iconic_and_dramatic_moment_ledgers_are_populated() -> None:
     assert len(iconic) >= 4
     assert len(dramatic) >= 3
 ```
+
+The active-character motif test is intentionally production-facing. It does not
+require deferred TOML characters such as a future Macbeth role to appear in the
+assembled preamble or to speak before the implementation actually uses them.
+
+- [ ] **Step 1a: Add production motif metadata**
+
+Add this section to `src/literary.toml`:
+
+```toml
+[production_motifs]
+juliet = ["night", "star", "stars", "starlit", "silver"]
+prospero = ["revels", "inscribes", "releases", "seals"]
+puck = ["messenger", "room", "colour", "flies"]
+romeo = ["sun", "sunlit", "morning", "summer", "golden"]
+rosalind = ["forest", "shelf", "references", "bargain"]
+```
+
+Only list characters whose motifs are active production obligations. Deferred
+ledger characters may remain under `[characters]` without appearing in
+`[production_motifs]` until they enter the assembled preamble.
 
 - [ ] **Step 2: Run test to verify it fails**
 
@@ -1046,7 +1241,9 @@ remaining literary compliance failure names a prevention-specific gate introduce
 by this task rather than a pre-existing cleanup issue.
 The placeholder conversion must preserve the scene-title pattern-length gate,
 Prospero equality-pool gate, Hecate value-atom family gate, and populated
-iconic/dramatic moment ledger gate.
+iconic/dramatic moment ledger gate. It must also preserve the production-cast,
+active-motif, scene-title monotony, blurb meta-language, and dramatic-moment
+visibility gates.
 
 - [ ] **Step 7: Commit**
 
@@ -1054,6 +1251,29 @@ iconic/dramatic moment ledger gate.
 git add src/*.spl shakedown.spl tests/test_literary_compliance.py src/literary.toml
 git commit -m "refactor: reference literary surfaces by key"
 ```
+
+- [ ] **Step 8: Capture and compare implemented fixture output**
+
+Only compare fixtures currently marked implemented in `tests/test_mdtest.py`.
+Do not use all 23 mdtest fixtures here; non-shipped fixtures may correctly exit
+nonzero.
+
+Run:
+
+```bash
+mkdir -p /tmp/shakedown-literary-prevention-baseline
+fixture="$HOME/mdtest/Markdown.mdtest/Amps and angle encoding.text"
+./shakedown < "$fixture" > "/tmp/shakedown-literary-prevention-baseline/Amps and angle encoding.xhtml"
+env UV_CACHE_DIR=/tmp/uv-cache uv run python scripts/assemble.py
+mkdir -p /tmp/shakedown-literary-prevention-after
+./shakedown < "$fixture" > "/tmp/shakedown-literary-prevention-after/Amps and angle encoding.xhtml"
+diff -u \
+  "/tmp/shakedown-literary-prevention-baseline/Amps and angle encoding.xhtml" \
+  "/tmp/shakedown-literary-prevention-after/Amps and angle encoding.xhtml"
+```
+
+Expected: no diff. If `_IMPLEMENTED_FIXTURES` in `tests/test_mdtest.py` has grown
+by the time this plan runs, capture and compare every fixture named there.
 
 ---
 

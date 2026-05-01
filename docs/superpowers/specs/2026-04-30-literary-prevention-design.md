@@ -11,6 +11,13 @@ next agents' path harder to get wrong by moving controlled prose into
 `src/literary.toml`, teaching assembler/codegen to consume that data, and adding
 prompt-level gates for future run-loop work.
 
+Follow-up from the 2026-05-01 final compliance pass: the prevention layer must
+also distinguish TOML ledger entries from active production obligations.
+`src/literary.toml` may contain deferred characters or motifs, but the assembled
+preamble is the active cast contract. Characters introduced there must speak and
+carry visible motifs; deferred characters must not be forced into production
+until a behavior-safe implementation actually uses them.
+
 ## Scope
 
 In scope:
@@ -71,6 +78,8 @@ Required sections:
   variants.
 - `[characters.<character>.recall_pool]` for Recall descriptions available to
   that speaker.
+- `[production_motifs]` for motif words that active production characters must
+  visibly carry in blurbs, scene titles, or other safe literary surfaces.
 - `[value_atoms.<family>]` for numeric atom families used by codegen and
   production placeholders.
 - `docs/superpowers/notes/spl-literary-protocol.md` as the reusable prompt
@@ -192,6 +201,19 @@ Assembler/codegen gates:
 - production scene titles keep their declared pattern metadata and stay within
   the literary spec's word-count ranges for that pattern after placeholder
   conversion.
+- every character introduced in the assembled preamble has at least one
+  production speaking line; deferred TOML characters may remain silent only if
+  they are absent from the preamble.
+- active production characters with `[production_motifs]` entries have at least
+  one declared motif visible in safe production surfaces.
+- reference-link scenes keep Rosalind visibly present while preserving stack
+  ownership for Recall operations.
+- scene-title utility verbs stay under conservative per-act repetition limits,
+  starting with Act IV `tests` / `opens` / `closes`.
+- character blurbs reject implementation-meta wording such as `adjectives`,
+  `codegen`, `implementation`, `mechanism`, and `tokens`.
+- dramatic moment ledger entries are visible in the scene title or scene block
+  for their declared scene.
 - iconic and dramatic moment ledgers are populated, and iconic scene-title
   entries point at real scenes whose TOML pattern is `iconic_echo`.
 - character soft-variation pools are enforced for generated and production
@@ -223,6 +245,12 @@ Prompt gates:
 These tests are intentionally structural. They cannot judge beauty, but they can
 prove future agents were given the right inputs and that controlled surfaces are
 not bypassing the data path.
+
+Regression gates must compare only currently implemented Markdown fixtures.
+The mdtest suite contains non-shipped fixtures that may correctly fail or exit
+nonzero. Prevention-plan verification should read the implemented fixture set
+from `tests/test_mdtest.py` and compare those outputs before and after assembler
+or codegen changes.
 
 ## Error Handling
 
