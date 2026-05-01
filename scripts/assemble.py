@@ -6,6 +6,8 @@ import re
 import tomllib
 from pathlib import Path
 
+from scripts.literary_surfaces import load_literary_surfaces
+
 _ROMAN_ONES = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
 _ROMAN_TENS = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
 _ROMAN_HUNDREDS = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"]
@@ -20,6 +22,21 @@ def _int_to_roman(n: int) -> str:
 _ACT_RE = re.compile(r"^\s*Act\s+[IVXLCDM]+\s*:", re.MULTILINE)
 _SCENE_DECL_RE = re.compile(r"Scene\s+@([A-Z_][A-Z0-9_]*)\s*:")
 _SCENE_REF_RE = re.compile(r"scene\s+@([A-Z_][A-Z0-9_]*)")
+_LIT_RE = re.compile(r"@LIT\.([A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*)")
+
+
+def _resolve_literary_placeholders(source: str, literary_path: Path) -> str:
+    if "@LIT." not in source:
+        return source
+    surfaces = load_literary_surfaces(literary_path)
+
+    def replace(match: re.Match[str]) -> str:
+        return surfaces.resolve(match.group(1))
+
+    resolved = _LIT_RE.sub(replace, source)
+    if "@LIT." in resolved:
+        raise ValueError("unresolved @LIT placeholder")
+    return resolved
 
 
 def _resolve_scene_labels(source: str) -> str:
@@ -69,7 +86,11 @@ def assemble(src_dir: Path, manifest: Path, output: Path) -> None:
 
     fragments: list[str] = config["fragments"]
     combined = "".join((src_dir / name).read_text() for name in fragments)
-    resolved = _resolve_scene_labels(combined)
+    with_literary = _resolve_literary_placeholders(
+        combined,
+        src_dir / "literary.toml",
+    )
+    resolved = _resolve_scene_labels(with_literary)
     output.write_text(resolved)
 
 

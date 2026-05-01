@@ -61,3 +61,49 @@ def test_assemble_scene_label_collision_within_act_raises(tmp_path: Path) -> Non
     output = tmp_path / "out.spl"
     with pytest.raises(ValueError, match="@FOO"):
         assemble(src_dir=src, manifest=src / "manifest.toml", output=output)
+
+
+def test_assemble_resolves_literary_placeholders(tmp_path: Path) -> None:
+    from scripts.assemble import assemble
+
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "fragment.spl").write_text(
+        "@LIT.play.title\n"
+        "Act I: @LIT.acts.act1.title\n"
+        "Scene @START: @LIT.scenes.START.title\n"
+    )
+    (src / "manifest.toml").write_text('fragments = ["fragment.spl"]\n')
+    (src / "literary.toml").write_text(
+        """
+[play]
+title = "Shakedown."
+
+[acts.act1]
+title = "Wherein the first act begins."
+
+[scenes.START]
+title = "The page awakens."
+"""
+    )
+
+    output = tmp_path / "out.spl"
+    assemble(src_dir=src, manifest=src / "manifest.toml", output=output)
+
+    assert output.read_text() == (
+        "Shakedown.\nAct I: Wherein the first act begins.\nScene I: The page awakens.\n"
+    )
+
+
+def test_assemble_unknown_literary_placeholder_raises(tmp_path: Path) -> None:
+    from scripts.assemble import assemble
+
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "fragment.spl").write_text("@LIT.play.subtitle\n")
+    (src / "manifest.toml").write_text('fragments = ["fragment.spl"]\n')
+    (src / "literary.toml").write_text('[play]\ntitle = "Shakedown."\n')
+
+    output = tmp_path / "out.spl"
+    with pytest.raises(KeyError, match="play.subtitle"):
+        assemble(src_dir=src, manifest=src / "manifest.toml", output=output)

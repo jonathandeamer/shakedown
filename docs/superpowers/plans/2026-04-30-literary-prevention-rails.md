@@ -510,7 +510,7 @@ git commit -m "feat: load literary surface data"
 - Modify: `scripts/assemble.py`
 - Modify: `tests/test_assemble.py`
 
-- [ ] **Step 1: Add failing assembler placeholder tests**
+- [x] **Step 1: Add failing assembler placeholder tests**
 
 Append to `tests/test_assemble.py`:
 
@@ -563,7 +563,7 @@ def test_assemble_unknown_literary_placeholder_raises(tmp_path: Path) -> None:
         assemble(src_dir=src, manifest=src / "manifest.toml", output=output)
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run:
 
@@ -573,7 +573,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_assemble.py -q
 
 Expected: the new placeholder test fails because placeholders are not resolved.
 
-- [ ] **Step 3: Implement placeholder resolution**
+- [x] **Step 3: Implement placeholder resolution**
 
 Modify `scripts/assemble.py`:
 
@@ -623,7 +623,7 @@ with_literary = _resolve_literary_placeholders(
 resolved = _resolve_scene_labels(with_literary)
 ```
 
-- [ ] **Step 4: Run assembler checks**
+- [x] **Step 4: Run assembler checks**
 
 Run:
 
@@ -635,7 +635,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pyright scripts/assemble.py scripts/litera
 
 Expected: all pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/assemble.py tests/test_assemble.py
