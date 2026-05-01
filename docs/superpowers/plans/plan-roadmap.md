@@ -83,6 +83,8 @@ Halting is cheap. Continuing on a wrong floor is expensive.
   assembler/codegen path to consume `src/literary.toml` and to enforce the SPL
   literary protocol in future run-loop prompts. Do not start a new design phase
   for that same scope unless the approved prevention plan is superseded.
+- SPL-changing plans must use `docs/superpowers/notes/spl-literary-protocol.md`
+  or explicitly reference its required docs and literary compliance tests.
 
 ## References
 

@@ -64,6 +64,10 @@ def test_in_flight_roadmap_row_names_exact_plan_path() -> None:
     assert paths[0].exists()
 
 
+def test_roadmap_names_spl_literary_protocol() -> None:
+    assert "docs/superpowers/notes/spl-literary-protocol.md" in _read(ROADMAP)
+
+
 def test_in_flight_spl_plans_reference_protocol_or_required_docs() -> None:
     for path in _active_plan_paths():
         text = _read(path)

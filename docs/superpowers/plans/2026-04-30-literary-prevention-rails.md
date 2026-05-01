@@ -1459,7 +1459,7 @@ git commit -m "refactor: reference literary surfaces by key"
 - Modify: `docs/superpowers/plans/plan-roadmap.md`
 - Modify: `tests/test_prompt_literary_protocol.py`
 
-- [ ] **Step 1: Add roadmap source note**
+- [x] **Step 1: Add roadmap source note**
 
 In `docs/superpowers/plans/plan-roadmap.md`, add this source note:
 
@@ -1468,7 +1468,7 @@ In `docs/superpowers/plans/plan-roadmap.md`, add this source note:
   or explicitly reference its required docs and literary compliance tests.
 ```
 
-- [ ] **Step 2: Add test that roadmap names the protocol**
+- [x] **Step 2: Add test that roadmap names the protocol**
 
 Append to `tests/test_prompt_literary_protocol.py`:
 
@@ -1477,7 +1477,7 @@ def test_roadmap_names_spl_literary_protocol() -> None:
     assert "docs/superpowers/notes/spl-literary-protocol.md" in _read(ROADMAP)
 ```
 
-- [ ] **Step 3: Run prompt protocol tests**
+- [x] **Step 3: Run prompt protocol tests**
 
 Run:
 
@@ -1487,7 +1487,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_prompt_literary_protocol
 
 Expected: all pass.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add docs/superpowers/plans/plan-roadmap.md tests/test_prompt_literary_protocol.py
