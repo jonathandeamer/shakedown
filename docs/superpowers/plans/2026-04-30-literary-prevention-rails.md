@@ -1501,7 +1501,7 @@ git commit -m "docs: require literary protocol in SPL plans"
 **Files:**
 - No new files
 
-- [ ] **Step 1: Run full verification**
+- [x] **Step 1: Run full verification**
 
 Run:
 
@@ -1516,7 +1516,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .
 Expected: all pass, except any existing repository-wide skips already present in
 the baseline.
 
-- [ ] **Step 1a: Run the literary surface audit subset**
+- [x] **Step 1a: Run the literary surface audit subset**
 
 Run this audit whenever assembler, codegen, TOML surface data, SPL fragments, or
 prompt protocol files changed:
@@ -1535,7 +1535,7 @@ Expected: all selected tests pass. If `_IMPLEMENTED_FIXTURES` in
 `tests/test_mdtest.py` has grown, replace the `-k 'Amps and angle'` filter with
 the full implemented-fixture subset.
 
-- [ ] **Step 2: Confirm generated output has no unresolved placeholders**
+- [x] **Step 2: Confirm generated output has no unresolved placeholders**
 
 Run:
 
@@ -1545,7 +1545,7 @@ rg -n '@LIT\\.' shakedown.spl && exit 1 || true
 
 Expected: no output and exit status 0.
 
-- [ ] **Step 3: Confirm source still uses placeholders**
+- [x] **Step 3: Confirm source still uses placeholders**
 
 Run:
 
@@ -1555,7 +1555,7 @@ rg -n '@LIT\\.' src/*.spl
 
 Expected: matches for title, scene-title, Recall, or recurring value surfaces.
 
-- [ ] **Step 4: Commit any verification-only plan checkbox changes**
+- [x] **Step 4: Commit any verification-only plan checkbox changes**
 
 If executing through the run-loop and this plan file is being checked off, commit
 the checked boxes:
