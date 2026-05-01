@@ -194,7 +194,7 @@ uv run pytest tests/test_architecture_spikes.py -q
 Expected: the list snippets fail because `./shakedown` still treats list-shaped
 input as paragraph text.
 
-- [ ] **Step 4: Commit the failing spike harness**
+- [x] **Step 4: Commit the failing spike harness**
 
 Run:
 
