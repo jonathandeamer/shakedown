@@ -19,6 +19,19 @@ Start a new session with `docs/README.md` as the entry point for the docs set.
 
 **Intended workflow:** Interactive Claude sessions (with superpowers) are used for bootstrapping, design, and planning. Huntley/run-loop autonomous loops are used for the actual implementation of `shakedown.spl` once a concrete plan is marked in flight in `docs/superpowers/plans/plan-roadmap.md`.
 
+## Roadmap first
+
+Before starting SPL, prompt, plan, or run-loop work, read:
+
+- `docs/README.md`
+- `docs/superpowers/plans/plan-roadmap.md`
+
+The roadmap is the source of truth for what plan is in flight. Do not advance
+implementation unless the roadmap has at most one in-flight plan and the active
+prompt references that exact plan. If no plan is marked `in flight`, do not
+invent implementation work; follow the active prompt's completion behavior or
+return to interactive planning from `docs/README.md`.
+
 ## Setup
 
 ```bash
