@@ -210,7 +210,7 @@ git commit -m "test: add list architecture spike harness"
 - Read: `src/literary.toml`
 - Read: `tests/test_literary_compliance.py`
 
-- [ ] **Step 1: Confirm scene ledger and source labels must change together**
+- [x] **Step 1: Confirm scene ledger and source labels must change together**
 
 Read `tests/test_literary_compliance.py::test_scene_ledger_matches_source_scene_labels`.
 The rule is strict: every `Scene @LABEL:` in production source must have a
