@@ -64,6 +64,15 @@ The run-loop checks for this file at the top of every iteration and exits when i
 
 `AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex.
 
+## SPL literary protocol for prompts and plans
+
+SPL-changing prompts and implementation plans must use
+`docs/superpowers/notes/spl-literary-protocol.md`. This includes work that edits
+`src/*.spl`, `scripts/assemble.py`, `scripts/codegen_html.py`, or future SPL
+generators. Prompt authors must include the protocol block or load it by
+university reference, and SPL-changing plans must name the exact literary
+compliance tests they expect the implementation agent to run.
+
 ## Operator halt switch (`.agent/blockers.md`)
 
 The autonomous agent reads `.agent/blockers.md` on every iteration via the

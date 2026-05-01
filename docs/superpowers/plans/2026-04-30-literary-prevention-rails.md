@@ -52,7 +52,7 @@ plan makes that ledger operational.
 - Modify: `CLAUDE.md`
 - Modify: `docs/prompt-shakedown.md`
 
-- [ ] **Step 1: Write failing prompt protocol tests**
+- [x] **Step 1: Write failing prompt protocol tests**
 
 Create `tests/test_prompt_literary_protocol.py`:
 
@@ -144,7 +144,7 @@ def test_in_flight_spl_plans_reference_protocol_or_required_docs() -> None:
         assert not missing_tests, (path, missing_tests)
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run:
 
@@ -155,7 +155,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_prompt_literary_protocol
 Expected: failures because the protocol note does not exist and the active
 prompt does not load it.
 
-- [ ] **Step 3: Create the reusable protocol note**
+- [x] **Step 3: Create the reusable protocol note**
 
 Create `docs/superpowers/notes/spl-literary-protocol.md`:
 
@@ -188,7 +188,7 @@ Rules:
   generic placeholder for test commands.
 ```
 
-- [ ] **Step 4: Update active prompt to load the protocol**
+- [x] **Step 4: Update active prompt to load the protocol**
 
 In `docs/prompt-shakedown.md`, add this university reference after
 `@docs/spl/literary-spec.md`:
@@ -211,7 +211,7 @@ with:
   Follow it before editing SPL, assembler, codegen, or literary surface data.
 ```
 
-- [ ] **Step 5: Update CLAUDE.md for prompt authors**
+- [x] **Step 5: Update CLAUDE.md for prompt authors**
 
 In `CLAUDE.md`, add this section after "run-loop" and before "Operator halt
 switch":
@@ -227,7 +227,7 @@ university reference, and SPL-changing plans must name the literary compliance
 tests they expect the implementation agent to run.
 ```
 
-- [ ] **Step 6: Run tests**
+- [x] **Step 6: Run tests**
 
 Run:
 
@@ -237,7 +237,7 @@ env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_prompt_literary_protocol
 
 Expected: all tests pass.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add docs/superpowers/notes/spl-literary-protocol.md tests/test_prompt_literary_protocol.py CLAUDE.md docs/prompt-shakedown.md

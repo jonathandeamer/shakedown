@@ -1,6 +1,7 @@
 @docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md
 @docs/superpowers/plans/plan-roadmap.md
 @docs/spl/literary-spec.md
+@docs/superpowers/notes/spl-literary-protocol.md
 @docs/spl/reference.md
 @docs/markdown/target.md
 @docs/markdown/divergences.md
@@ -28,8 +29,8 @@ Standing rules:
 
 - No placeholders. Real implementations only. If a step says "write code X",
   write code X; do not write a stub that says "TODO".
-- Aesthetic policy lives in `@docs/spl/literary-spec.md`. Reach for it before
-  writing any decorative surface.
+- SPL literary policy lives in `@docs/superpowers/notes/spl-literary-protocol.md`.
+  Follow it before editing SPL, assembler, codegen, or literary surface data.
 - No autonomous version bumps. Do not run `cz bump`, create tags, push tags, or
   update `CHANGELOG.md` unless the current plan step explicitly authorises it.
 - Respect `.agent/blockers.md`. If any line begins with `- BLOCK:`, address it
