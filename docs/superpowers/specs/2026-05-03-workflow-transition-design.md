@@ -21,8 +21,8 @@ Three files change. No plan files, no SPL source, no tests.
 
 | File | What changes |
 |---|---|
-| `CLAUDE.md` | "Intended workflow" blurb; `## run-loop` section replaced by `## Implementation workflow`; `## Operator halt switch` section removed |
-| `docs/README.md` | One line: "active `run-loop` prompt" → "legacy `run-loop` prompt (archived)" |
+| `CLAUDE.md` | "Intended workflow" blurb; `## Roadmap first` section rewritten; `## run-loop` section replaced by `## Implementation workflow` (preserves `AGENTS.md` symlink note); `## Operator halt switch` section removed; version-cut operator-only note updated |
+| `docs/README.md` | Two lines: optional-context bullet and Canonical Flow of Truth entry both updated to mark `prompt-shakedown.md` as legacy |
 | `docs/superpowers/plans/plan-roadmap.md` | References entry: drop "`run-loop` contract" |
 
 ## New workflow description
@@ -54,6 +54,31 @@ kill switch.
 > `superpowers:subagent-driven-development`), and work through the active plan
 > task by task with the operator present.
 
+### `## Roadmap first` section
+
+**Before:**
+> Before starting SPL, prompt, plan, or run-loop work, read:
+>
+> - `docs/README.md`
+> - `docs/superpowers/plans/plan-roadmap.md`
+>
+> The roadmap is the source of truth for what plan is in flight. Do not advance
+> implementation unless the roadmap has at most one in-flight plan and the active
+> prompt references that exact plan. If no plan is marked `in flight`, do not
+> invent implementation work; follow the active prompt's completion behavior or
+> return to interactive planning from `docs/README.md`.
+
+**After:**
+> Before starting SPL, plan, or implementation work, read:
+>
+> - `docs/README.md`
+> - `docs/superpowers/plans/plan-roadmap.md`
+>
+> The roadmap is the source of truth for what plan is in flight. Do not advance
+> implementation unless the roadmap has at most one in-flight plan. If no plan
+> is marked `in flight`, do not invent implementation work; return to
+> interactive planning from `docs/README.md`.
+
 ### `## run-loop` section
 
 **Replaced by:**
@@ -68,6 +93,8 @@ start a supervised implementation session:
 2. Invoke `superpowers:executing-plans` or `superpowers:subagent-driven-development`
    to work through the plan task by task.
 3. The operator triggers each session manually and is present throughout.
+
+`AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex.
 
 ### Legacy: run-loop
 
