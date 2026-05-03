@@ -16,7 +16,7 @@ def _read(path: Path) -> str:
 def test_claude_requires_reading_roadmap_before_plan_work() -> None:
     text = _read(CLAUDE)
 
-    assert "Before starting SPL, prompt, plan, or run-loop work" in text
+    assert "Before starting SPL, plan, or implementation work" in text
     assert "docs/README.md" in text
     assert "docs/superpowers/plans/plan-roadmap.md" in text
     assert "source of truth for what plan is in flight" in text
