@@ -50,7 +50,7 @@ Additions beyond the minimum (all observed in Quackdown's evolution, commit-by-c
 - OOM / resource preflight guard to fail fast when the host cannot safely relaunch the agent.
 - State file (`.agent/run-loop-state.json`) so backend choice persists across driver restarts.
 
-`run-loop` at the root of this repo is one such driver. See `CLAUDE.md` "run-loop" section for the Shakedown-specific contract.
+`run-loop` at the root of this repo is one such driver, now retained as a legacy artifact. See `CLAUDE.md` `Legacy: run-loop` subsection for the Shakedown-specific contract.
 
 ## Prompt patterns
 
@@ -203,7 +203,7 @@ Shakedown's architecture-planning phase is an example of the wrong-tool case. Th
 
 ### In this repo
 
-- `CLAUDE.md` "run-loop" section — Shakedown's driver contract.
+- `CLAUDE.md` `Legacy: run-loop` subsection — Shakedown's legacy driver contract.
 - `run-loop` at repo root — the driver itself.
 - `docs/prior-attempt/feasibility-lessons.md` — what the prior Shakedown Ralph run actually learned.
 - `docs/prior-attempt/architecture-lessons.md` — where the prior Ralph run stalled (architecture, not the loop).

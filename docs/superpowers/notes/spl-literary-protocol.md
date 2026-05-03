@@ -1,8 +1,8 @@
 # SPL Literary Protocol
 
-Use this block in any run-loop prompt or implementation plan that asks an agent
-to edit `src/*.spl`, `scripts/assemble.py`, `scripts/codegen_html.py`, or any
-future SPL code generator.
+Use this block in any implementation plan that asks an agent to edit
+`src/*.spl`, `scripts/assemble.py`, `scripts/codegen_html.py`, or any future
+SPL code generator.
 
 Before editing, read:
 

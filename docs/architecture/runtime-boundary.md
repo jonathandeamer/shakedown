@@ -78,6 +78,6 @@ The selected architecture treats cache acceleration as optional and evidence-gat
 
 ## Run-Loop Boundary
 
-The replacement run-loop prompt is intentionally missing until implementation planning writes
-the selected-architecture prompt. This document does not create that prompt; the implementation
-plan must define the prompt inputs and completion marker.
+The `run-loop` driver and its prompt are now legacy artifacts. Implementation work uses
+supervised superpowers sessions instead; see `CLAUDE.md` § Implementation workflow. This
+document no longer drives prompt design.
