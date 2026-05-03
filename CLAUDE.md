@@ -17,20 +17,19 @@ Huntley-loop methodology. See `docs/lineage.md` for the full story.
 
 Start a new session with `docs/README.md` as the entry point for the docs set.
 
-**Intended workflow:** Interactive Claude sessions (with superpowers) are used for bootstrapping, design, and planning. Huntley/run-loop autonomous loops are used for the actual implementation of `shakedown.spl` once a concrete plan is marked in flight in `docs/superpowers/plans/plan-roadmap.md`.
+**Intended workflow:** Interactive Claude sessions (with superpowers) are used for bootstrapping, design, and planning. Implementation sessions are operator-triggered and supervised: start a new session, invoke `superpowers:executing-plans` (or `superpowers:subagent-driven-development`), and work through the active plan task by task with the operator present.
 
 ## Roadmap first
 
-Before starting SPL, prompt, plan, or run-loop work, read:
+Before starting SPL, plan, or implementation work, read:
 
 - `docs/README.md`
 - `docs/superpowers/plans/plan-roadmap.md`
 
 The roadmap is the source of truth for what plan is in flight. Do not advance
-implementation unless the roadmap has at most one in-flight plan and the active
-prompt references that exact plan. If no plan is marked `in flight`, do not
-invent implementation work; follow the active prompt's completion behavior or
-return to interactive planning from `docs/README.md`.
+implementation unless the roadmap has at most one in-flight plan. If no plan
+is marked `in flight`, do not invent implementation work; return to
+interactive planning from `docs/README.md`.
 
 ## Setup
 
@@ -39,30 +38,30 @@ git config core.hooksPath .githooks  # activate conventional commit enforcement
 uv sync                               # install dev dependencies
 ```
 
-## run-loop
+## Implementation workflow
 
-`run-loop` is a Python executable that drives autonomous agent sessions.
-It switches automatically between codex and claude when one hits a usage limit.
+When a plan is marked `in flight` in `docs/superpowers/plans/plan-roadmap.md`,
+start a supervised implementation session:
 
-```bash
-./run-loop                            # use the active default prompt
-./run-loop docs/some-other-prompt.md  # alternate prompt
-./run-loop docs/archive/prompt-shakedown.md  # legacy archived prompt, if you explicitly want it
-```
-
-- Current code default: `docs/prompt-shakedown.md`
-- Current docs reality: `docs/prompt-shakedown.md` is plan-driven and should point at the current in-flight plan
-- Practical guidance: use `./run-loop` only when the roadmap has an in-flight implementation plan and the prompt references that exact plan; otherwise start fresh interactive sessions from `docs/README.md`
-- State: `.agent/run-loop-state.json` (tracks which backend was last used)
-- Completion marker: derived from prompt filename — `docs/prompt-<name>.md` → `.agent/complete-<name>.md`
-
-To signal completion, write the marker file:
-```bash
-mkdir -p .agent && touch .agent/complete-shakedown.md
-```
-The run-loop checks for this file at the top of every iteration and exits when it exists.
+1. Read the roadmap and identify the active plan.
+2. Invoke `superpowers:executing-plans` or `superpowers:subagent-driven-development`
+   to work through the plan task by task.
+3. The operator triggers each session manually and is present throughout.
 
 `AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex.
+
+### Legacy: run-loop
+
+The earlier approach used `run-loop`, a Python executor that drove autonomous
+agent sessions via `docs/prompt-shakedown.md`. The code and prompt are
+preserved for history but are no longer the active workflow.
+
+```bash
+./run-loop                            # legacy: use the active default prompt
+./run-loop docs/some-other-prompt.md  # legacy: alternate prompt
+```
+
+State: `.agent/run-loop-state.json`. Completion marker: `.agent/complete-<name>.md`.
 
 ## SPL literary protocol for prompts and plans
 
@@ -80,15 +79,6 @@ when rebuilding `shakedown.spl`. Codegen should load configured value atoms
 from the same TOML instead of hardcoding adjective chains. Do not hand-edit
 `shakedown.spl` for literary surface changes; edit `src/*.spl` and
 `src/literary.toml`, then rebuild with `uv run python scripts/assemble.py`.
-
-## Operator halt switch (`.agent/blockers.md`)
-
-The autonomous agent reads `.agent/blockers.md` on every iteration via the
-`@.agent/blockers.md` university reference in `docs/prompt-shakedown.md`. Any
-line starting with `- BLOCK:` halts plan advancement until the operator
-removes it. Non-blocking notes use `- NOTE:`. See
-`docs/superpowers/specs/2026-04-27-loop-prompt-design.md` §5 for the full
-convention.
 
 ## Target interface
 
@@ -235,7 +225,7 @@ Version = progress signal. Cut one when something is demonstrably working, not a
 | Bug fix in a passing fixture, no new capability | patch bump |
 | Every fixture either passes or is documented as an accepted divergence in `docs/markdown/divergences.md` | `1.0.0` |
 
-**Operator-only.** Autonomous run-loop agents must NOT run `cz bump`,
+**Operator-only.** Implementation agents must NOT run `cz bump`,
 `git tag`, `git push --tags`, or update `CHANGELOG.md` unless the current
 plan step explicitly authorises it. Version cuts are operator decisions per
 architecture spec §7.9.
