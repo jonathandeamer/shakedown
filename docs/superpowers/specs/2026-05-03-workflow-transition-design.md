@@ -17,13 +17,15 @@ artifacts. Only forward-facing instructions change.
 
 ## Scope
 
-Three files change. No plan files, no SPL source, no tests.
+Five files change. No SPL source.
 
 | File | What changes |
 |---|---|
 | `CLAUDE.md` | "Intended workflow" blurb; `## Roadmap first` section rewritten; `## run-loop` section replaced by `## Implementation workflow` (preserves `AGENTS.md` symlink note); `## Operator halt switch` section removed; version-cut operator-only note updated |
 | `docs/README.md` | Two lines: optional-context bullet and Canonical Flow of Truth entry both updated to mark `prompt-shakedown.md` as legacy |
 | `docs/superpowers/plans/plan-roadmap.md` | References entry: drop "`run-loop` contract" |
+| `README.md` (root) | Line 13 stale-archived note replaced with one-line legacy pointer to `CLAUDE.md` § Implementation workflow |
+| `tests/test_roadmap_contract.py` | One assertion updated to match the new "Roadmap first" wording |
 
 ## New workflow description
 
