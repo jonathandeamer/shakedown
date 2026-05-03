@@ -95,4 +95,4 @@ Halting is cheap. Continuing on a wrong floor is expensive.
 - `docs/superpowers/plans/2026-04-30-literary-prevention-rails.md` — implementation plan for the approved literary prevention rails.
 - `docs/spl/literary-spec.md` — voice, palette, decorative-surface policy.
 - `docs/ralph-loop.md` — Huntley/Ralph loop methodology and `@file` university pattern.
-- `CLAUDE.md` — commit conventions, version cadence, target interface, `run-loop` contract.
+- `CLAUDE.md` — commit conventions, version cadence, target interface, implementation workflow.
