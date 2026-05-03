@@ -41,7 +41,7 @@ Optional historical/supporting context:
 - [`superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`](superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md) — latest pre-design synthesis. Useful context, not canonical truth.
 - [`superpowers/specs/`](superpowers/specs/) — proposed design/spec artifacts from earlier interactive planning. The selected architecture spec is the one active exception and is linked from `architecture/selected-architecture.md`; other specs are historical context unless restated in canonical docs.
 - [`superpowers/plans/`](superpowers/plans/) — implementation plans and process artifacts. Use `superpowers/plans/plan-roadmap.md` for live plan status.
-- [`prompt-shakedown.md`](prompt-shakedown.md) — legacy `run-loop` prompt (archived); no longer the active implementation workflow.
+- [`prompt-shakedown.md`](prompt-shakedown.md) — legacy `run-loop` prompt; no longer the active implementation workflow.
 
 ## Directory Map
 
@@ -99,7 +99,7 @@ Optional historical/supporting context:
 - **Architecture-input rubrics:** `architecture/decision-rubric.md`, `architecture/runtime-boundary.md`, `architecture/encoding-and-scope.md`, and `performance/budget.md`.
 - **Inherited prototype scaffold:** `architecture/inherited-scaffold.md` documents `./shakedown-dev`, `scripts/assemble.py`, `src/*.spl`, and generated `shakedown.spl`. These are prototype artifacts, not adopted architecture.
 - **What is proven vs retrospective vs open:** `verification-plan.md`.
-- **Operational process artifacts:** `docs/superpowers/plans/plan-roadmap.md` tracks live plan status. `docs/prompt-shakedown.md` is the legacy run-loop prompt (archived). Other `docs/superpowers/` content is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
+- **Operational process artifacts:** `docs/superpowers/plans/plan-roadmap.md` tracks live plan status. `docs/prompt-shakedown.md` is the legacy `run-loop` prompt. Other `docs/superpowers/` content is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
 
 ## What This Docs Set Does Not Do
 
