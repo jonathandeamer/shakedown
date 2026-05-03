@@ -129,7 +129,7 @@ In the optional-context bullet at the bottom of the reading list:
 
 **After:**
 ```
-- [`prompt-shakedown.md`](prompt-shakedown.md) — legacy `run-loop` prompt (archived); no longer the active implementation workflow.
+- [`prompt-shakedown.md`](prompt-shakedown.md) — legacy `run-loop` prompt; no longer the active implementation workflow.
 ```
 
 And the "Canonical Flow of Truth" section line:
@@ -141,7 +141,7 @@ And the "Canonical Flow of Truth" section line:
 
 **After:**
 ```
-- **Operational process artifacts:** `docs/superpowers/plans/plan-roadmap.md` tracks live plan status. `docs/prompt-shakedown.md` is the legacy run-loop prompt (archived). Other `docs/superpowers/` content is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
+- **Operational process artifacts:** `docs/superpowers/plans/plan-roadmap.md` tracks live plan status. `docs/prompt-shakedown.md` is the legacy `run-loop` prompt. Other `docs/superpowers/` content is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
 ```
 
 ## plan-roadmap.md — exact change
