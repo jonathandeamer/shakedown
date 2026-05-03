@@ -10,4 +10,4 @@ Start with [`docs/README.md`](docs/README.md).
 
 That docs index is the canonical entry point for new sessions and architecture work.
 
-Note: the legacy `docs/prompt-shakedown.md` prompt was archived to `docs/archive/prompt-shakedown.md`. The root `run-loop` still hard-codes the old path, so use an explicit prompt path if you need `run-loop` before a new default prompt is written.
+Note: `run-loop` and `docs/prompt-shakedown.md` are legacy artifacts. The active workflow uses supervised superpowers sessions; see `CLAUDE.md` § Implementation workflow.
