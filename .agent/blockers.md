@@ -18,8 +18,4 @@ Non-blocking notes (no halt) use `- NOTE:` instead.
   authoring SPL by hand at scale, not list semantics. Resolution direction:
   revise the architecture so SPL is generated from a small intermediate
   representation (interactive design session required). Do not resume list
-  implementation until the revised architecture ships. The same Act I
-  handoff change (f45b626) also removed the runtime-error behavior that
-  tests/test_binary_contract.py::test_repo_shakedown_entrypoint_reports_spl_runtime_errors
-  asserted; that test is xfailed until the redesign restores a deliberate
-  error contract.
+  implementation until the revised architecture ships.
