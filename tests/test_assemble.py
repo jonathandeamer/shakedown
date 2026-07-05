@@ -107,3 +107,57 @@ def test_assemble_unknown_literary_placeholder_raises(tmp_path: Path) -> None:
     output = tmp_path / "out.spl"
     with pytest.raises(KeyError, match="play.subtitle"):
         assemble(src_dir=src, manifest=src / "manifest.toml", output=output)
+
+
+MINIMAL_VALID_PLAY = """\
+A quiet probe.
+
+Romeo, a probe.
+Juliet, a probe.
+
+                    Act I: The probe.
+
+                    Scene I: The probe.
+
+[Enter Romeo and Juliet]
+
+Romeo:
+ You are as fair as nothing.
+
+[Exeunt]
+"""
+
+
+def test_assemble_parse_check_rejects_unparseable_output(tmp_path: Path) -> None:
+    from scripts.assemble import assemble
+
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "a.spl").write_text("this is not a play\n")
+    (src / "manifest.toml").write_text('fragments = ["a.spl"]\n')
+
+    with pytest.raises(ValueError, match="does not parse"):
+        assemble(
+            src_dir=src,
+            manifest=src / "manifest.toml",
+            output=tmp_path / "out.spl",
+            parse_check=True,
+        )
+
+
+def test_assemble_parse_check_accepts_valid_play(tmp_path: Path) -> None:
+    from scripts.assemble import assemble
+
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "play.spl").write_text(MINIMAL_VALID_PLAY)
+    (src / "manifest.toml").write_text('fragments = ["play.spl"]\n')
+
+    output = tmp_path / "out.spl"
+    assemble(
+        src_dir=src,
+        manifest=src / "manifest.toml",
+        output=output,
+        parse_check=True,
+    )
+    assert output.read_text() == MINIMAL_VALID_PLAY

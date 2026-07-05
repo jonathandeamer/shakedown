@@ -24,6 +24,7 @@ def _assemble() -> Path:
         src_dir=REPO / "src",
         manifest=REPO / "src" / "manifest.toml",
         output=DEV_ASSEMBLED,
+        parse_check=True,
     )
     return DEV_ASSEMBLED
 

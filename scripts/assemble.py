@@ -83,7 +83,24 @@ def _resolve_in_segment(segment: str) -> str:
     return _SCENE_REF_RE.sub(lookup, with_decls_resolved)
 
 
-def assemble(src_dir: Path, manifest: Path, output: Path) -> None:
+def _parse_check(source: str, output: Path) -> None:
+    from shakespearelang import Shakespeare
+    from shakespearelang.errors import ShakespeareParseError
+
+    try:
+        Shakespeare(source)
+    except ShakespeareParseError as exc:
+        raise ValueError(
+            f"assembled SPL at {output} does not parse:\n{exc}"
+        ) from exc
+
+
+def assemble(
+    src_dir: Path,
+    manifest: Path,
+    output: Path,
+    parse_check: bool = False,
+) -> None:
     """Concatenate fragments per manifest and resolve scene labels."""
     with manifest.open("rb") as f:
         config = tomllib.load(f)
@@ -95,6 +112,8 @@ def assemble(src_dir: Path, manifest: Path, output: Path) -> None:
         src_dir / "literary.toml",
     )
     resolved = _resolve_scene_labels(with_literary)
+    if parse_check:
+        _parse_check(resolved, output)
     output.write_text(resolved)
 
 
@@ -104,6 +123,7 @@ def main() -> None:
         src_dir=root / "src",
         manifest=root / "src" / "manifest.toml",
         output=root / "shakedown.spl",
+        parse_check=True,
     )
 
 
