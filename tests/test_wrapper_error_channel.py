@@ -52,3 +52,30 @@ def test_wrapper_succeeds_on_valid_play(tmp_path: Path) -> None:
     valid.write_text(MINIMAL_VALID_PLAY)
     result = _run_wrapper(valid)
     assert result.returncode == 0, result.stderr.decode()
+
+
+MINIMAL_RUNTIME_ERROR_PLAY = """\
+A hungry probe.
+
+Romeo, a probe.
+Juliet, a probe.
+
+                    Act I: The probe.
+
+                    Scene I: The probe.
+
+[Enter Romeo and Juliet]
+
+Romeo:
+ Recall your empty larder.
+
+[Exeunt]
+"""
+
+
+def test_wrapper_fails_on_runtime_error(tmp_path: Path) -> None:
+    erroring = tmp_path / "runtime_error.spl"
+    erroring.write_text(MINIMAL_RUNTIME_ERROR_PLAY)
+    result = _run_wrapper(erroring)
+    assert result.returncode != 0
+    assert b"SPL runtime error:" in result.stderr
