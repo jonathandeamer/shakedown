@@ -1,0 +1,16 @@
+"""Dispatch token codes — one definition, matching docs/spl/token-codes.md."""
+
+PARA = 1
+HEADER = 2
+HR = 3
+LIST_OPEN = 4
+LIST_ITEM = 5
+LIST_CLOSE = 6
+BLOCKQUOTE_OPEN = 7
+BLOCKQUOTE_CLOSE = 8
+CODE_BLOCK = 9
+RAW_HTML_HASH = 10
+ANCHOR_OPEN = 11
+ANCHOR_TITLE = 12
+ANCHOR_TEXT = 13
+ANCHOR_CLOSE = 14
