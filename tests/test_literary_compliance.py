@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import re
-import tomllib
 from collections import Counter
 from pathlib import Path
+
+from scripts.literary_surfaces import load_literary_surfaces
 
 REPO = Path(__file__).parent.parent
 SRC = REPO / "src"
@@ -89,9 +90,6 @@ MAX_ACT_IV_DULL_VERB_USES = 2
 
 def _production_source() -> str:
     return "\n".join(path.read_text() for path in sorted(SRC.glob("[0-9]*.spl")))
-
-
-from scripts.literary_surfaces import load_literary_surfaces
 
 
 def _literary() -> dict[str, object]:

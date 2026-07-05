@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-import tomllib
 from collections.abc import Iterator
 from pathlib import Path
+
+from scripts.literary_surfaces import load_literary_surfaces
 
 LITERARY_TOML = Path(__file__).parent.parent / "src" / "literary.toml"
 
@@ -44,12 +45,8 @@ def _atoms_in(phrase: str) -> list[str]:
     return [text]
 
 
-from scripts.literary_surfaces import load_literary_surfaces
-
-
 def load() -> dict[str, object]:
     return load_literary_surfaces(LITERARY_TOML).data
-
 
 
 def test_file_exists() -> None:
