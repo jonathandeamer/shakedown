@@ -41,7 +41,7 @@ The working tree on `main` carries a ~2,600-line uncommitted diff (partial Spike
 **Interfaces:**
 - Produces: a clean `main` working tree where the committed `shakedown.spl` parses and the Slice 1 fixture passes; branch `spike-a-lists-wip` holding the abandoned hand-authored list attempt for the future IR-codegen redesign to mine.
 
-- [ ] **Step 1: Confirm the expected dirty state**
+- [x] **Step 1: Confirm the expected dirty state**
 
 Run: `git status --porcelain`
 Expected (order may vary; `2026-07-05-agent-feedback-rails.md` is this plan itself):
@@ -57,7 +57,7 @@ Expected (order may vary; `2026-07-05-agent-feedback-rails.md` is this plan itse
 
 If other tracked files are modified, STOP and report — do not guess at intent.
 
-- [ ] **Step 2: Commit the WIP to a preservation branch**
+- [x] **Step 2: Commit the WIP to a preservation branch**
 
 ```bash
 git switch -c spike-a-lists-wip
@@ -66,7 +66,7 @@ git commit -m "chore: preserve non-parsing spike a list WIP for redesign referen
 git switch main
 ```
 
-- [ ] **Step 3: Verify main is clean and the committed play parses**
+- [x] **Step 3: Verify main is clean and the committed play parses**
 
 Run: `git status --porcelain`
 Expected: only the two `??` plan files remain.
@@ -74,7 +74,7 @@ Expected: only the two `??` plan files remain.
 Run: `uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`
 Expected: `1 passed, 22 deselected` — the committed `shakedown.spl` works again.
 
-- [ ] **Step 4: Archive the shipped token-efficiency plan**
+- [x] **Step 4: Archive the shipped token-efficiency plan**
 
 Its five commits already landed (see `git log 143a9e0~5..143a9e0`); the plan file was simply never committed.
 
@@ -98,7 +98,7 @@ git commit -m "docs: archive shipped token-efficiency plan"
 - Consumes: nothing from other tasks.
 - Produces: `SHAKEDOWN_SPL` environment variable — overrides the play file the wrapper runs (defaults to `$DIR/shakedown.spl`). Task 4's `./shakedown-debug` relies on this exact variable name.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `tests/test_wrapper_error_channel.py`:
 
@@ -159,12 +159,12 @@ def test_wrapper_succeeds_on_valid_play(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr.decode()
 ```
 
-- [ ] **Step 2: Run the tests to verify current behavior fails**
+- [x] **Step 2: Run the tests to verify current behavior fails**
 
 Run: `uv run pytest tests/test_wrapper_error_channel.py -v`
 Expected: `test_wrapper_fails_on_parse_error` FAILS (wrapper exits 0 today — it neither honours `SHAKEDOWN_SPL` nor catches parse errors); `test_wrapper_succeeds_on_valid_play` also fails for the same `SHAKEDOWN_SPL` reason.
 
-- [ ] **Step 3: Fix the wrapper**
+- [x] **Step 3: Fix the wrapper**
 
 Replace the full contents of `./shakedown` with:
 
@@ -193,12 +193,12 @@ if grep -qE '^SPL (runtime|parse) error:' "$stderr_file"; then
 fi
 ```
 
-- [ ] **Step 4: Run the tests to verify they pass**
+- [x] **Step 4: Run the tests to verify they pass**
 
 Run: `uv run pytest tests/test_wrapper_error_channel.py tests/test_shakedown_run.py tests/test_mdtest.py -k 'Amps and angle or wrapper' -v`
 Expected: all selected tests PASS (line budget: the new wrapper is ~21 lines, well under 100).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add shakedown tests/test_wrapper_error_channel.py
@@ -221,7 +221,7 @@ An agent should learn its SPL is illegal **at assemble time**, seconds after the
 - Consumes: nothing from other tasks.
 - Produces: `assemble(src_dir: Path, manifest: Path, output: Path, parse_check: bool = False) -> None` — the new keyword defaults to `False` so existing unit tests that assemble non-play fragments keep passing; `main()` and `scripts/shakedown_run.py::_assemble` pass `parse_check=True`. Task 4 extends this same signature with `replace`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `tests/test_assemble.py`:
 
@@ -302,12 +302,12 @@ def test_committed_shakedown_spl_parses() -> None:
     Shakespeare((REPO / "shakedown.spl").read_text())
 ```
 
-- [ ] **Step 2: Run the new tests to verify the right ones fail**
+- [x] **Step 2: Run the new tests to verify the right ones fail**
 
 Run: `uv run pytest tests/test_assemble.py tests/test_spl_parse_smoke.py -v`
 Expected: `test_assemble_parse_check_rejects_unparseable_output` and `test_assemble_parse_check_accepts_valid_play` FAIL with `TypeError: assemble() got an unexpected keyword argument 'parse_check'`; `test_committed_shakedown_spl_parses` PASSES (Task 1 restored a valid committed play); pre-existing assemble tests PASS.
 
-- [ ] **Step 3: Implement the parse gate**
+- [x] **Step 3: Implement the parse gate**
 
 In `scripts/assemble.py`, add below `_resolve_in_segment`:
 
@@ -355,7 +355,7 @@ In `main()`, pass `parse_check=True` to the `assemble(...)` call.
 
 In `scripts/shakedown_run.py::_assemble`, pass `parse_check=True` to its `assemble(...)` call.
 
-- [ ] **Step 4: Run the tests and the real assembler**
+- [x] **Step 4: Run the tests and the real assembler**
 
 Run: `uv run pytest tests/test_assemble.py tests/test_spl_parse_smoke.py tests/test_shakedown_run.py -v`
 Expected: all PASS.
@@ -363,7 +363,7 @@ Expected: all PASS.
 Run: `uv run python scripts/assemble.py && git diff --stat shakedown.spl`
 Expected: no diff output — the rebuild is byte-identical to the committed file.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/assemble.py scripts/shakedown_run.py tests/test_assemble.py tests/test_spl_parse_smoke.py
@@ -387,7 +387,7 @@ The four acts communicate through a token stream on Puck's stack, but the only o
 - Consumes: `SHAKEDOWN_SPL` env override from Task 2; `parse_check` keyword from Task 3.
 - Produces: `assemble(src_dir, manifest, output, parse_check=False, replace: dict[str, Path] | None = None)` where `replace` maps a manifest fragment name to a substitute file path; `python scripts/assemble.py --debug` writes `.cache/shakedown-debug.spl` (git-ignored via the existing `.cache/` rule); `./shakedown-debug` assembles and runs it (stdin Markdown → stdout integers, one per line).
 
-- [ ] **Step 1: Write the failing assembler test**
+- [x] **Step 1: Write the failing assembler test**
 
 Append to `tests/test_assemble.py`:
 
@@ -415,7 +415,7 @@ def test_assemble_replace_substitutes_fragment(tmp_path: Path) -> None:
 Run: `uv run pytest tests/test_assemble.py::test_assemble_replace_substitutes_fragment -v`
 Expected: FAIL with `TypeError: assemble() got an unexpected keyword argument 'replace'`.
 
-- [ ] **Step 2: Implement `replace` and `--debug` in the assembler**
+- [x] **Step 2: Implement `replace` and `--debug` in the assembler**
 
 In `scripts/assemble.py`, change `assemble` to:
 
@@ -475,7 +475,7 @@ def main() -> None:
 Run: `uv run pytest tests/test_assemble.py -v`
 Expected: all PASS.
 
-- [ ] **Step 3: Write the debug Act IV fragment**
+- [x] **Step 3: Write the debug Act IV fragment**
 
 Create `debug/40-act4-token-dump.spl`. The stream-count scenes (`@DBG_START`, `@DBG_OLD_MEASURE`, `@DBG_SHORT_MEASURE`, `@DBG_LOOP`, and the pop mechanics in `@DBG_POP`) are copied line-for-line from the **resolved** production Act IV in the committed `shakedown.spl` (Act IV Scenes I–V); only the dispatch chain is replaced by print-integer + print-newline + loop. `Open your heart!` prints the addressed character's value as an integer; the sum of a little furry black cat and a black cat is 10 (newline) for `Speak your mind!`. This file is a non-production debug artifact: no `@LIT.` placeholders, no `src/literary.toml` entries, plain literal scene titles.
 
@@ -558,7 +558,7 @@ Puck:
 Run: `uv run python scripts/assemble.py --debug`
 Expected: exits 0 and `.cache/shakedown-debug.spl` exists. If it exits nonzero with a parse error, the error message now points at the exact line — fix the debug fragment (not the assembler) until it parses. Do not proceed past this step with a non-parsing debug play.
 
-- [ ] **Step 4: Create the debug wrapper**
+- [x] **Step 4: Create the debug wrapper**
 
 Create `./shakedown-debug`:
 
@@ -575,7 +575,7 @@ SHAKEDOWN_SPL="$DIR/.cache/shakedown-debug.spl" exec "$DIR/shakedown"
 chmod +x shakedown-debug
 ```
 
-- [ ] **Step 5: Write the token-dump test**
+- [x] **Step 5: Write the token-dump test**
 
 Create `tests/test_token_dump.py`:
 
@@ -611,17 +611,17 @@ def test_debug_target_dumps_integer_token_stream() -> None:
     assert values[0] == 1
 ```
 
-- [ ] **Step 6: Run the token-dump test**
+- [x] **Step 6: Run the token-dump test**
 
 Run: `uv run pytest tests/test_token_dump.py -v`
 Expected: PASS (takes a few seconds — one cold interpreter run). If `values[0] == 1` fails while every line parsed as an integer, the dump loop works but the copied stream-count scenes drifted from production — re-copy Scenes I–V of Act IV from the committed `shakedown.spl` exactly.
 
-- [ ] **Step 7: Regression-check the production build is untouched**
+- [x] **Step 7: Regression-check the production build is untouched**
 
 Run: `uv run python scripts/assemble.py && git diff --stat shakedown.spl && uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`
 Expected: no diff; `1 passed, 22 deselected`.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add debug/40-act4-token-dump.spl scripts/assemble.py shakedown-debug tests/test_assemble.py tests/test_token_dump.py
@@ -643,7 +643,7 @@ Spike A's plan devoted roughly 40% of its text to literary compliance, and imple
 - Consumes: nothing from other tasks.
 - Produces: the workflow note path `docs/superpowers/notes/correctness-first-spl-workflow.md`, referenced by future SPL-changing plans.
 
-- [ ] **Step 1: Write the workflow note**
+- [x] **Step 1: Write the workflow note**
 
 Create `docs/superpowers/notes/correctness-first-spl-workflow.md`:
 
@@ -684,7 +684,7 @@ alongside `docs/superpowers/notes/spl-literary-protocol.md`.
    entries, plain literal titles.
 ```
 
-- [ ] **Step 2: Reference the note from the protocol**
+- [x] **Step 2: Reference the note from the protocol**
 
 In `docs/superpowers/notes/spl-literary-protocol.md`, append to the `Rules:` list (do not modify existing lines — tests assert on their exact wording):
 
@@ -695,7 +695,7 @@ In `docs/superpowers/notes/spl-literary-protocol.md`, append to the `Rules:` lis
   Implementation agents must not author new controlled prose mid-task.
 ```
 
-- [ ] **Step 3: Reference the note from CLAUDE.md**
+- [x] **Step 3: Reference the note from CLAUDE.md**
 
 In `CLAUDE.md`, append this paragraph to the end of the `## SPL literary protocol for prompts and plans` section (after the "Do not hand-edit `shakedown.spl` ..." paragraph, adding — not rewording — existing text, which tests assert on):
 
@@ -706,12 +706,12 @@ reserve all controlled prose (plus spare scene titles) up front, and
 implementation agents never invent literary surfaces mid-task.
 ```
 
-- [ ] **Step 4: Run the docs-contract tests**
+- [x] **Step 4: Run the docs-contract tests**
 
 Run: `uv run pytest tests/test_prompt_literary_protocol.py tests/test_roadmap_contract.py -v`
 Expected: all PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add docs/superpowers/notes/correctness-first-spl-workflow.md docs/superpowers/notes/spl-literary-protocol.md CLAUDE.md
@@ -734,7 +734,7 @@ Spike A hit the architecture's own §8.2 halt condition: hand-authoring the Act 
 - Consumes: branch name `spike-a-lists-wip` from Task 1.
 - Produces: roadmap with exactly one `in flight` row (this plan); a green default test suite.
 
-- [ ] **Step 1: xfail the halted spike tests**
+- [x] **Step 1: xfail the halted spike tests**
 
 In `tests/test_architecture_spikes.py`, replace the parametrized test's decorator so each case carries an xfail mark (keep the test body unchanged):
 
@@ -762,7 +762,7 @@ def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
 Run: `uv run pytest tests/test_architecture_spikes.py -q`
 Expected: no failures — only `xfailed` (and possibly `xpassed`) outcomes.
 
-- [ ] **Step 2: Record the halt in blockers**
+- [x] **Step 2: Record the halt in blockers**
 
 Append to `.agent/blockers.md`:
 
@@ -776,7 +776,7 @@ Append to `.agent/blockers.md`:
   implementation until the revised architecture ships.
 ```
 
-- [ ] **Step 3: Update the roadmap**
+- [x] **Step 3: Update the roadmap**
 
 In `docs/superpowers/plans/plan-roadmap.md`:
 
@@ -806,12 +806,12 @@ interactive design session before any replacement list plan is written.
 
 4. Update the `**Last updated:**` line to `2026-07-05`.
 
-- [ ] **Step 4: Run the roadmap and protocol contract tests**
+- [x] **Step 4: Run the roadmap and protocol contract tests**
 
 Run: `uv run pytest tests/test_roadmap_contract.py tests/test_prompt_literary_protocol.py -v`
 Expected: all PASS — exactly one in-flight row, and this plan file contains the protocol reference and the named compliance-test commands.
 
-- [ ] **Step 5: Run the full literary and parity regression gates**
+- [x] **Step 5: Run the full literary and parity regression gates**
 
 Run:
 
@@ -822,12 +822,12 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 Expected: all PASS; `1 passed, 22 deselected` for the fixture gate.
 
-- [ ] **Step 6: Run the full default suite**
+- [x] **Step 6: Run the full default suite**
 
 Run: `uv run pytest`
 Expected: green — no failures; spike list cases report xfail/xpass.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add .agent/blockers.md docs/superpowers/plans/plan-roadmap.md tests/test_architecture_spikes.py docs/superpowers/plans/2026-07-05-agent-feedback-rails.md
