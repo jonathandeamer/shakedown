@@ -80,6 +80,11 @@ from the same TOML instead of hardcoding adjective chains. Do not hand-edit
 `shakedown.spl` for literary surface changes; edit `src/*.spl` and
 `src/literary.toml`, then rebuild with `uv run python scripts/assemble.py`.
 
+Literary authorship happens at planning time, not implementation time:
+see `docs/superpowers/notes/correctness-first-spl-workflow.md`. Plans
+reserve all controlled prose (plus spare scene titles) up front, and
+implementation agents never invent literary surfaces mid-task.
+
 ## Target interface
 
 `tests/test_mdtest.py` invokes `./shakedown` as a subprocess — stdin Markdown, stdout HTML. Everything else about the shape (single `.spl` file, shell wrapper, Python orchestrator, something else) is a design decision. The retrospective research (`docs/prior-attempt/`) is evidence from the prior attempt, not a prescription — the design should justify its choice against the current state of the interpreter and machine.

@@ -24,3 +24,7 @@ Rules:
 - Run the exact compliance tests named by the active plan after changing SPL,
   assembler, or codegen behavior. Do not write "literary compliance" as a
   generic placeholder for test commands.
+- Reserve every controlled surface the implementation will need — plus a
+  spare scene-title pool — at plan time, per
+  `docs/superpowers/notes/correctness-first-spl-workflow.md`.
+  Implementation agents must not author new controlled prose mid-task.
