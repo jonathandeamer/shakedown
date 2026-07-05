@@ -90,9 +90,7 @@ def _parse_check(source: str, output: Path) -> None:
     try:
         Shakespeare(source)
     except ShakespeareParseError as exc:
-        raise ValueError(
-            f"assembled SPL at {output} does not parse:\n{exc}"
-        ) from exc
+        raise ValueError(f"assembled SPL at {output} does not parse:\n{exc}") from exc
 
 
 def assemble(
