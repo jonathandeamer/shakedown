@@ -103,16 +103,29 @@ def entry_pairs(a: Act) -> dict[str, tuple[Char, Char] | None]:
     for sc in a.scenes:
         leaving = participants(sc, a.anchor)
         for op in sc.ops:
-            for target in _jump_targets(op):
+            if isinstance(op, Goto):
+                target = op.target
                 if target not in by_label:
-                    continue  # undefined targets reported by validate()
-                if target in entry and entry[target] != leaving:
+                    continue
+                target_pair = participants(by_label[target], a.anchor)
+                if target in entry and entry[target] != target_pair:
                     raise IrError(
                         f"scene {target}: predecessors leave inconsistent "
-                        f"stage pairs ({entry[target]} vs {leaving} from "
+                        f"stage pairs ({entry[target]} vs {target_pair} from "
                         f"{sc.label})"
                     )
-                entry[target] = leaving
+                entry[target] = target_pair
+            elif isinstance(op, Branch):
+                for target in [op.then] + ([op.else_] if op.else_ is not None else []):
+                    if target not in by_label:
+                        continue
+                    if target in entry and entry[target] != leaving:
+                        raise IrError(
+                            f"scene {target}: predecessors leave inconsistent "
+                            f"stage pairs ({entry[target]} vs {leaving} from "
+                            f"{sc.label})"
+                        )
+                    entry[target] = leaving
     return entry
 
 

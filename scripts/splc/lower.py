@@ -112,6 +112,7 @@ def _stage_directions(
 
 def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -> str:
     entry = validate(a, prose)
+    by_label = {sc.label: sc for sc in a.scenes}
     order = {sc.label: i for i, sc in enumerate(a.scenes)}
     blocks: list[str] = []
     for index, sc in enumerate(a.scenes):
@@ -190,6 +191,11 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
                         )
                     )
             elif isinstance(op, Goto):
+                target_pair = participants(by_label[op.target], a.anchor)
+                if pair != target_pair:
+                    for direction in _stage_directions(pair, target_pair):
+                        lines.append(direction)
+                        lines.append("")
                 lines.append(
                     _speech(
                         a.anchor,

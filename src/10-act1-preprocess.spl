@@ -9,8 +9,7 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum
-  of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
 
 Hecate:
  Remember yourself.
@@ -28,16 +27,13 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum
-  of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Hecate:
  Remember yourself.
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum
-  of a little furry black cat and a furry black cat and the sum of a little furry black cat
-  and a cat.
+ You are as horrid as the sum of the product of a normal little furry black cat and the sum of a little furry black cat and a furry black cat and the sum of a little furry black cat and a cat.
 
 Hecate:
  Remember yourself.
@@ -56,7 +52,7 @@ Hecate:
  Open your mind!
 
 Hecate:
- Are you as rotten as a pig?
+ Are you as cursed as a toad?
 
 Puck:
  If so, let us proceed to scene @HECATE_TEST_FINAL_GLYPH.
@@ -65,10 +61,10 @@ Hecate:
  Remember yourself.
 
 Puck:
- You are as rotten as the sum of Hecate and a cat.
+ You are as rotten as the sum of yourself and a flower.
 
-Puck:
- Let us return to scene @HECATE_READ_INPUT.
+Hecate:
+ We must return to scene @HECATE_READ_INPUT.
 
 
                     Scene @HECATE_TEST_FINAL_GLYPH: @LIT.scenes.HECATE_TEST_FINAL_GLYPH.title
@@ -77,10 +73,10 @@ Hecate:
  @LIT.characters.hecate.recall.cauldron_dreg
 
 Puck:
- You are as rotten as the difference between Hecate and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Hecate:
- Are you as rotten as the sum of a little furry black cat and a black cat?
+ Are you as cursed as the sum of a little furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @HECATE_RESTORE_FINAL_NEWLINE.
@@ -95,15 +91,19 @@ Hecate:
  Remember yourself.
 
 Puck:
- You are as rotten as the sum of Hecate and a cat.
+ You are as noble as the sum of yourself and a flower.
 
 Hecate:
  Remember yourself.
 
 Puck:
- You are as rotten as the sum of Hecate and a cat.
+ You are as fair as the sum of yourself and a flower.
 
-Puck:
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
  Let us proceed to scene @HECATE_HAND_COUNT_TO_HORATIO.
 
 
@@ -113,10 +113,10 @@ Hecate:
  @LIT.characters.hecate.recall.sealed_second_shelf
 
 Puck:
- You are as rotten as the difference between Hecate and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Hecate:
- Are you as rotten as the sum of a little furry black cat and a black cat?
+ Are you as horrid as the sum of a little furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @HECATE_LINE_STRIP_FIRST_REFERENCE.
@@ -131,10 +131,10 @@ Hecate:
  @LIT.characters.hecate.recall.sealed_first_shelf
 
 Puck:
- You are as rotten as the difference between Hecate and a cat.
+ You are as rotten as the difference between yourself and a flower.
 
 Hecate:
- Are you as rotten as the sum of a little furry black cat and a black cat?
+ Are you as cursed as the sum of a little furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @HECATE_LINE_RESTORE_BOUNDARY.
@@ -149,20 +149,20 @@ Hecate:
  Remember yourself.
 
 Puck:
- You are as rotten as the sum of Hecate and a cat.
-
-Puck:
- Let us proceed to scene @HECATE_HAND_COUNT_TO_HORATIO.
-
-
-                    Scene @HECATE_HAND_COUNT_TO_HORATIO: @LIT.scenes.HECATE_HAND_COUNT_TO_HORATIO.title
+ You are as fair as the sum of yourself and a flower.
 
 [Exit Puck]
 
 [Enter Horatio]
 
 Hecate:
- You are as rotten as myself.
+ Let us proceed to scene @HECATE_HAND_COUNT_TO_HORATIO.
+
+
+                    Scene @HECATE_HAND_COUNT_TO_HORATIO: @LIT.scenes.HECATE_HAND_COUNT_TO_HORATIO.title
+
+Hecate:
+ You are as horrid as myself.
 
 Hecate:
  Remember yourself.
@@ -174,7 +174,7 @@ Hecate:
                     Scene @HECATE_REVERSE_CHECK: @LIT.scenes.HECATE_REVERSE_CHECK.title
 
 Hecate:
- Are you as rotten as nothing?
+ Are you as cursed as nothing?
 
 Horatio:
  If so, let us proceed to scene @ACT_I_DONE.
@@ -199,26 +199,26 @@ Hecate:
  @LIT.characters.hecate.recall.cauldron_dreg
 
 Puck:
- You are as rotten as myself.
+ You are as noble as myself.
 
 Puck:
  Remember yourself.
-
-Puck:
- Let us proceed to scene @HECATE_OPEN_COUNT_DECREMENT.
-
-
-                    Scene @HECATE_OPEN_COUNT_DECREMENT: @LIT.scenes.HECATE_OPEN_COUNT_DECREMENT.title
 
 [Exit Puck]
 
 [Enter Horatio]
 
 Hecate:
+ Let us proceed to scene @HECATE_OPEN_COUNT_DECREMENT.
+
+
+                    Scene @HECATE_OPEN_COUNT_DECREMENT: @LIT.scenes.HECATE_OPEN_COUNT_DECREMENT.title
+
+Hecate:
  You are as rotten as the difference between yourself and a cat.
 
-Horatio:
- Let us return to scene @HECATE_REVERSE_CHECK.
+Hecate:
+ We must return to scene @HECATE_REVERSE_CHECK.
 
 
                     Scene @ACT_I_DONE: @LIT.scenes.ACT_I_DONE.title
