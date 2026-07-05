@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Literal, Union
+from typing import Literal
 
 
 class Char(Enum):
@@ -45,11 +45,11 @@ class Val:
 @dataclass(frozen=True)
 class BinOp:
     op: Literal["add", "sub", "mul", "div", "mod"]
-    left: "Expr"
-    right: "Expr"
+    left: Expr
+    right: Expr
 
 
-Expr = Union[Const, Val, BinOp]
+Expr = Const | Val | BinOp
 
 
 @dataclass(frozen=True)
@@ -96,7 +96,7 @@ class PrintInt:
 class Branch:
     cond: Cond
     then: str
-    else_: "str | None"
+    else_: str | None
 
 
 @dataclass(frozen=True)
@@ -109,14 +109,14 @@ class HaltAct:
     pass
 
 
-Op = Union[Let, Push, Pop, ReadChar, PrintChar, PrintInt, Branch, Goto, HaltAct]
+Op = Let | Push | Pop | ReadChar | PrintChar | PrintInt | Branch | Goto | HaltAct
 
 
 @dataclass(frozen=True)
 class Scene:
     label: str
     ops: tuple[Op, ...]
-    companion: "Char | None"
+    companion: Char | None
 
 
 @dataclass(frozen=True)
@@ -196,7 +196,7 @@ def print_int(target: Char) -> PrintInt:
     return PrintInt(target)
 
 
-def branch(cond: Cond, then: str, else_: "str | None" = None) -> Branch:
+def branch(cond: Cond, then: str, else_: str | None = None) -> Branch:
     return Branch(cond, then, else_)
 
 
@@ -208,7 +208,7 @@ def halt_act() -> HaltAct:
     return HaltAct()
 
 
-def scene(label: str, *ops: Op, companion: "Char | None" = None) -> Scene:
+def scene(label: str, *ops: Op, companion: Char | None = None) -> Scene:
     return Scene(label, tuple(ops), companion)
 
 
