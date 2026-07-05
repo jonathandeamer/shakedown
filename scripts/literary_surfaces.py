@@ -47,9 +47,26 @@ class LiterarySurfaces:
         return atoms
 
 
+def _merge_dicts(dest: dict[str, object], src: dict[str, object]) -> None:
+    for k, v in src.items():
+        if k in dest and isinstance(dest[k], dict) and isinstance(v, dict):
+            _merge_dicts(cast(dict[str, object], dest[k]), cast(dict[str, object], v))
+        else:
+            dest[k] = v
+
+
 def load_literary_surfaces(path: Path) -> LiterarySurfaces:
     with path.open("rb") as f:
         data = tomllib.load(f)
+
+    # Recursively load and merge all other *-literary.toml files in the same directory
+    for file_path in sorted(path.parent.glob("*-literary.toml")):
+        if file_path.resolve() == path.resolve():
+            continue
+        with file_path.open("rb") as f:
+            sub_data = tomllib.load(f)
+            _merge_dicts(data, cast(dict[str, object], sub_data))
+
     surfaces = LiterarySurfaces(data=cast(dict[str, object], data))
     if "value_atoms" in data:
         value_atoms = data["value_atoms"]

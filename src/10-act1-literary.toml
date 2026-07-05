@@ -1,0 +1,51 @@
+[scenes.ACT_I_DONE]
+title = "Hecate seals the cauldron and vanishes."
+pattern = "bare_statement"
+
+[scenes.ACT_I_START]
+title = "Hecate shelves the known bargains."
+pattern = "scene_of_character"
+
+[scenes.HECATE_HAND_COUNT_TO_HORATIO]
+title = "Horatio keeps the tally beside the pot."
+pattern = "scene_of_character"
+
+[scenes.HECATE_LINE_RESTORE_BOUNDARY]
+title = "Out, damned blank boundary."
+pattern = "iconic_echo"
+
+[scenes.HECATE_LINE_STRIP_FIRST_REFERENCE]
+title = "The first shelf is read to its seal."
+pattern = "bare_statement"
+
+[scenes.HECATE_LINE_STRIP_SECOND_REFERENCE]
+title = "The second shelf is read to its seal."
+pattern = "bare_statement"
+
+[scenes.HECATE_OPEN_COUNT_DECREMENT]
+title = "Horatio marks the shrinking heap."
+pattern = "scene_of_character"
+
+[scenes.HECATE_OPEN_REVERSE_POP]
+title = "Puck returns to lift one glyph."
+pattern = "scene_of_character"
+
+[scenes.HECATE_READ_INPUT]
+title = "Double, double, glyphs are brewed."
+pattern = "iconic_echo"
+
+[scenes.HECATE_RESTORE_FINAL_NEWLINE]
+title = "The rim receives its final seal."
+pattern = "bare_statement"
+
+[scenes.HECATE_REVERSE_CHECK]
+title = "The witness tests whether the dregs remain."
+pattern = "scene_of_character"
+
+[scenes.HECATE_REVERSE_POP]
+title = "One glyph crosses from trickster to witch."
+pattern = "cross_character"
+
+[scenes.HECATE_TEST_FINAL_GLYPH]
+title = "The last dreg is tested at the rim."
+pattern = "bare_statement"

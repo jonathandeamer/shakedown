@@ -1,0 +1,79 @@
+[scenes.ACT_IV_DONE]
+title = "Our revels now are ended."
+pattern = "iconic_echo"
+
+[scenes.ACT_IV_START]
+title = "Prospero receives the herald's stream."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ANCHOR_CLOSE]
+title = "Prospero binds the anchor seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ANCHOR_OPEN]
+title = "Prospero inscribes the anchor gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ANCHOR_TEXT]
+title = "Prospero sets free the anchor text."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ANCHOR_TITLE]
+title = "Prospero releases the anchor title."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE]
+title = "Prospero seals the final chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_PARAGRAPH_CLOSE]
+title = "Prospero closes one quiet chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_PARAGRAPH_OPEN]
+title = "Prospero opens one quiet chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_PAYLOAD]
+title = "One glyph is released."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_POP_TOKEN]
+title = "The herald yields one bright word."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_SET_SHORT_STREAM_COUNT]
+title = "The short cell takes Horatio's measure."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_SET_SLICE_ONE_STREAM_COUNT]
+title = "The old cell keeps its measure."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_STREAM_CHECK]
+title = "The cell measures the remaining words."
+pattern = "locale"
+
+[scenes.SCRIBE_TEST_ANCHOR_CLOSE]
+title = "Prospero seals the anchor close."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_ANCHOR_OPEN]
+title = "Prospero weighs the anchor gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_ANCHOR_TEXT]
+title = "Prospero summons the text gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_ANCHOR_TITLE]
+title = "Prospero proves the title gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_FINAL_CLOSE]
+title = "Prospero weighs the last seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_PARAGRAPH_CLOSE]
+title = "The scribe weighs a seal."
+pattern = "scene_of_character"
