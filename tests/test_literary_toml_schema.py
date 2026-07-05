@@ -44,9 +44,12 @@ def _atoms_in(phrase: str) -> list[str]:
     return [text]
 
 
+from scripts.literary_surfaces import load_literary_surfaces
+
+
 def load() -> dict[str, object]:
-    with LITERARY_TOML.open("rb") as f:
-        return tomllib.load(f)
+    return load_literary_surfaces(LITERARY_TOML).data
+
 
 
 def test_file_exists() -> None:

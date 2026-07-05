@@ -91,9 +91,11 @@ def _production_source() -> str:
     return "\n".join(path.read_text() for path in sorted(SRC.glob("[0-9]*.spl")))
 
 
+from scripts.literary_surfaces import load_literary_surfaces
+
+
 def _literary() -> dict[str, object]:
-    with LITERARY_TOML.open("rb") as f:
-        return tomllib.load(f)
+    return load_literary_surfaces(LITERARY_TOML).data
 
 
 def _is_inline_character_dialogue(line: str) -> bool:
