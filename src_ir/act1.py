@@ -113,6 +113,7 @@ ACT: Act = act(
                 then="ACT_I_DONE",
                 else_="HECATE_OPEN_REVERSE_POP",
             ),
+            companion=HORATIO,
         ),
         scene(
             "HECATE_OPEN_REVERSE_POP",

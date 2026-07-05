@@ -5,12 +5,8 @@ from __future__ import annotations
 
 from scripts.splc.ir import (
     Act,
-    BinOp,
     Branch,
     Char,
-    Cond,
-    Const,
-    Expr,
     Goto,
     HaltAct,
     Let,
@@ -21,7 +17,6 @@ from scripts.splc.ir import (
     Push,
     ReadChar,
     Scene,
-    Val,
 )
 from scripts.splc.prose import ProseEngine
 
@@ -30,34 +25,16 @@ class IrError(ValueError):
     pass
 
 
-def _expr_chars(expr: Expr) -> set[Char]:
-    if isinstance(expr, Const):
-        return set()
-    if isinstance(expr, Val):
-        return {expr.char}
-    if isinstance(expr, BinOp):
-        return _expr_chars(expr.left) | _expr_chars(expr.right)
-    raise IrError(f"unknown expression node {expr!r}")
-
-
-def _cond_chars(cond: Cond) -> set[Char]:
-    return _expr_chars(cond.left) | _expr_chars(cond.right)
-
-
-def _op_chars(op: Op) -> set[Char]:
-    if isinstance(op, (Let, Push)):
-        return {op.target} | _expr_chars(op.expr)
-    if isinstance(op, (Pop, ReadChar, PrintChar, PrintInt)):
+def _op_targets(op: Op) -> set[Char]:
+    if isinstance(op, (Let, Push, Pop, ReadChar, PrintChar, PrintInt)):
         return {op.target}
-    if isinstance(op, Branch):
-        return _cond_chars(op.cond)
     return set()
 
 
 def participants(sc: Scene, anchor: Char) -> tuple[Char, Char]:
     chars: set[Char] = {anchor}
     for op in sc.ops:
-        chars |= _op_chars(op)
+        chars |= _op_targets(op)
     if sc.companion is not None:
         chars.add(sc.companion)
     others = sorted(chars - {anchor}, key=lambda c: c.value)
@@ -145,12 +122,7 @@ def validate(a: Act, prose: ProseEngine) -> dict[str, tuple[Char, Char] | None]:
             for target in _jump_targets(op):
                 if target not in defined:
                     raise IrError(f"scene {sc.label}: jump to undefined scene {target}")
-            for c in _op_chars(op):
-                if c not in pair:
-                    raise IrError(
-                        f"scene {sc.label}: {c.value} referenced but not in "
-                        f"stage pair {tuple(p.value for p in pair)}"
-                    )
+
             if isinstance(op, Pop):
                 speaker = pair[1] if op.target == a.anchor else a.anchor
                 try:

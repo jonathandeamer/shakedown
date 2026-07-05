@@ -131,6 +131,7 @@ def test_inconsistent_predecessor_pairs_rejected() -> None:
                 "ACT_I_START",
                 branch(eq(val(Char.ROSALIND), const(0)), then="ACT_I_DONE"),
                 goto("HECATE_READ_INPUT"),
+                companion=Char.ROSALIND,
             ),
             scene(
                 "HECATE_READ_INPUT",
@@ -146,3 +147,53 @@ def test_inconsistent_predecessor_pairs_rejected() -> None:
     # but (Hecate, Puck) from the second scene's branch.
     with pytest.raises(IrError, match="ACT_I_DONE"):
         validate(bad, _prose())
+
+
+def test_expr_and_cond_references_stay_offstage() -> None:
+    from scripts.splc.validate import participants
+
+    sc = scene(
+        "ACT_I_START",
+        let(Char.ROSALIND, val(Char.HORATIO)),
+        branch(
+            eq(val(Char.MACBETH), const(0)),
+            then="ACT_I_START",
+            else_="ACT_I_START",
+        ),
+    )
+    # Horatio and Macbeth are only referenced, never targeted: they stay
+    # off stage and Rosalind is the sole non-anchor participant.
+    assert participants(sc, Char.HECATE) == (Char.HECATE, Char.ROSALIND)
+
+
+def test_scene_with_no_targets_requires_companion() -> None:
+    from scripts.splc.validate import IrError, participants
+
+    sc = scene(
+        "ACT_I_START",
+        branch(
+            eq(val(Char.HORATIO), const(0)),
+            then="ACT_I_START",
+            else_="ACT_I_START",
+        ),
+    )
+    with pytest.raises(IrError, match="companion"):
+        participants(sc, Char.HECATE)
+
+
+def test_offstage_value_reference_validates() -> None:
+    from scripts.splc.validate import validate
+
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            scene(
+                "ACT_I_START",
+                let(Char.ROSALIND, val(Char.HORATIO)),
+                goto("ACT_I_DONE"),
+            ),
+            scene("ACT_I_DONE", halt_act(), companion=Char.ROSALIND),
+        ],
+    )
+    validate(a, _prose())  # must not raise
