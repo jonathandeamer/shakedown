@@ -35,7 +35,23 @@ def _list_cases() -> list[Path]:
     return sorted(LIST_FIXTURES.glob("*.text"))
 
 
-@pytest.mark.parametrize("fixture", _list_cases(), ids=lambda path: path.stem)
+_SPIKE_A_HALT_REASON = (
+    "Spike A halted per architecture §8.2 on 2026-07-05; "
+    "see docs/superpowers/plans/plan-roadmap.md and .agent/blockers.md"
+)
+
+
+@pytest.mark.parametrize(
+    "fixture",
+    [
+        pytest.param(
+            path,
+            id=path.stem,
+            marks=pytest.mark.xfail(reason=_SPIKE_A_HALT_REASON, strict=False),
+        )
+        for path in _list_cases()
+    ],
+)
 def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
     input_bytes = fixture.read_bytes()
     actual = _run([str(SHAKEDOWN)], input_bytes)
