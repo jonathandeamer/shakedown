@@ -132,11 +132,17 @@ def test_inconsistent_predecessor_pairs_rejected() -> None:
                 branch(eq(val(Char.ROSALIND), const(0)), then="ACT_I_DONE"),
                 goto("HECATE_READ_INPUT"),
             ),
-            scene("HECATE_READ_INPUT", let(Char.PUCK, const(1)), goto("ACT_I_DONE")),
+            scene(
+                "HECATE_READ_INPUT",
+                let(Char.PUCK, const(1)),
+                branch(
+                    eq(val(Char.PUCK), const(1)), then="ACT_I_DONE", else_="ACT_I_DONE"
+                ),
+            ),
             scene("ACT_I_DONE", halt_act(), companion=Char.ROSALIND),
         ],
     )
-    # ACT_I_DONE is reached with (Hecate, Rosalind) from the first scene but
-    # (Hecate, Puck) from the second.
+    # ACT_I_DONE is reached with (Hecate, Rosalind) from the first scene's branch
+    # but (Hecate, Puck) from the second scene's branch.
     with pytest.raises(IrError, match="ACT_I_DONE"):
         validate(bad, _prose())
