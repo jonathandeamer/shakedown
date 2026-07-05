@@ -192,6 +192,10 @@ two things: it parses, and it behaves.
 
 ## Staged port
 
+> **Superseded for stages 2–4:** the line counts below were stale (Act II's
+> figure came from the spike WIP branch). See Addendum §A1 for the corrected
+> staging, approved after the stage-1 port shipped.
+
 Order is smallest-first to shake out IR gaps at the lowest cost:
 
 | Stage | Act | Hand-authored lines | Gate |
@@ -256,6 +260,79 @@ plan is written in IR.
   reference-definition stripping quirk, see `.agent/blockers.md` history).
   Ports translate behavior as-is, quirks included; behavior changes are out
   of scope for the port and belong to later feature plans.
+
+## Addendum — Acts II–IV Port (2026-07-05, operator-approved)
+
+Written after the stage-1 (Act I) port shipped at commit 3c5b521. Corrects
+stale inputs in the Staged port section and closes the gaps the Act I port
+exposed. Everything else in this design stands unchanged.
+
+### A1. Corrected staging
+
+The original stage table counted Act II at 1,467 lines — that figure came
+from the spike WIP branch, not main. On main, Act II is a 183-line
+pass-through (the list logic was never merged). Smallest-first, applied to
+the real numbers, gives the corrected order:
+
+| Stage | Plan | Act | On main | Gate |
+|---|---|---|---|---|
+| 2 | 3H | Act II (pass-through) | 183 lines, 13 scenes | G1–G3 + error contract (A4) |
+| 3 | 3I | Act IV + `debug_act4` shared scenes | 461 lines, 20 scenes | G1–G3 (order per A3) |
+| 4 | 3J | Act III | 1,285 lines, 56 scenes | G1–G3, spike xfails re-examined |
+
+One roadmap row per plan. List semantics never land in a port plan: they
+arrive afterwards as the resumed Spike A plan, written directly in IR
+against the fully ported play.
+
+### A2. IR extensions (audit-backed, closed)
+
+A construct audit of `src/20-act2-block.spl`, `src/30-act3-span.spl`,
+`src/40-act4-emit.spl`, and `debug/40-act4-token-dump.spl` against the
+implemented `scripts/splc/ir.py` found exactly one missing expression:
+
+- **Add `square(e)`** — `the square of` appears 48 times, all in Act III.
+- **Drop the promised `twice`/`half` builders** — zero uses in any act;
+  YAGNI per this design's own non-goals. The instruction-set listing above
+  is amended accordingly.
+- **Self-questions are prose, not ops.** Acts III/IV use "Am I as …" when a
+  speaker tests their own value. This is a question-form selection in
+  `prose.py` (per-character self-question pool entries), not an IR change.
+
+No other gaps: every statement in Acts II–IV maps to the existing op set.
+Any further gap discovered mid-port is handled per the no-escape-hatch rule
+(extend the instruction set with tests; never bypass).
+
+### A3. Multi-act composition and the debug act
+
+- `src/manifest.toml` continues to list fragments in order; each stage swaps
+  one hand-authored fragment for a generated one, following the Act I
+  pattern including the per-act literary TOML convention
+  (`src/20-act2-literary.toml` etc. already exist).
+- Stage 3 delivers `src_ir/debug_act4.py` importing the stream-count scenes
+  from `act4.py`, replacing `debug/40-act4-token-dump.spl`. Because the
+  debug play is itself the G2 instrument, stage 3's gate order is explicit:
+  record the G2 snapshot with the **old** debug play before the swap; after
+  the swap, G1 is the semantic gate and the new debug play must reproduce
+  the identical dump on the fixed input set.
+- Act III (56 scenes) is the prose-pool stress test. Its plan reserves all
+  56 scene titles plus any new pool material in the TOML up front (existing
+  correctness-first policy), and the pool-exhaustion build warning promised
+  above must be implemented by stage 4 at the latest.
+
+### A4. Deliberate runtime-error contract (lands in stage 2 / plan 3H)
+
+The contract is wrapper-level: when the interpreter raises an SPL runtime
+error, `./shakedown` exits nonzero and writes `SPL runtime error:` to
+stderr. The xfailed
+`tests/test_binary_contract.py::test_repo_shakedown_entrypoint_reports_spl_runtime_errors`
+proved this only by accident — it relied on the pre-f45b626 play crashing
+on `AT&T` input. Restore coverage by retargeting: a minimal deliberately
+erroring play fixture driven through the wrapper (the
+`tests/test_wrapper_error_channel.py` minimal-play pattern), replacing the
+xfailed test. The production play is not required to error on any real
+input. Plan 3H replaces the test and removes the corresponding half of the
+`.agent/blockers.md` entry; the Spike A halt line itself clears when 3J
+ships and the resumed list plan is written.
 
 ## References
 
