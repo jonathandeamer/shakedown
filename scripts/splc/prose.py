@@ -56,9 +56,7 @@ class ProseEngine:
         pools = self._section("characters", speaker.toml_key, "soft_variation")
         pool = pools.get(key)
         if not isinstance(pool, list) or not pool:
-            raise KeyError(
-                f"empty soft_variation.{key} pool for {speaker.value}"
-            )
+            raise KeyError(f"empty soft_variation.{key} pool for {speaker.value}")
         return cast(list[str], pool)
 
     def comparator(self, speaker: Char, cond_op: str, seed: str) -> str:
@@ -71,7 +69,5 @@ class ProseEngine:
     def recall_placeholder(self, speaker: Char, key: str) -> str:
         recalls = self._section("characters", speaker.toml_key, "recall")
         if key not in recalls:
-            raise KeyError(
-                f"no [characters.{speaker.toml_key}.recall] key {key!r}"
-            )
+            raise KeyError(f"no [characters.{speaker.toml_key}.recall] key {key!r}")
         return f"@LIT.characters.{speaker.toml_key}.recall.{key}"
