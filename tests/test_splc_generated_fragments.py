@@ -18,3 +18,14 @@ def test_committed_fragments_match_render() -> None:
             f"src/{name} drifted from src_ir render; regenerate with "
             "`uv run python -m scripts.splc`"
         )
+
+
+def test_committed_debug_fragments_match_render() -> None:
+    from scripts.splc.__main__ import rendered_debug_fragments
+
+    for rel, text in rendered_debug_fragments().items():
+        committed = (REPO / rel).read_text()
+        assert committed == text, (
+            f"{rel} drifted from src_ir render; regenerate with "
+            "`uv run python -m scripts.splc`"
+        )
