@@ -128,6 +128,7 @@ perl ~/markdown/Markdown.pl < ~/mdtest/Markdown.mdtest/"Test Name.text"
 uv run ruff check .  # lint Python
 uv run ruff format . # format Python
 uv run pyright       # type-check Python
+uv run python scripts/query_docs.py "query"  # query active documentation paragraphs to save tokens
 uv run cz bump                              # bump version based on conventional commits since last tag
 uv run git-cliff -o CHANGELOG.md           # regenerate full changelog
 uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commits only
@@ -141,6 +142,9 @@ uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commi
 - **Mock external calls** in unit tests (subprocesses, file I/O). Integration tests that invoke real backends must be marked `@pytest.mark.integration` and are excluded from the default `uv run pytest` run.
 
 ## Reference materials
+
+> [!WARNING]
+> Do NOT read or search files inside `docs/archive/`. Those are historical, shipped, or superseded plan artifacts and are irrelevant to active development.
 
 - `~/markdown/Markdown.pl` — oracle; the thing being ported
 - `~/mdtest/Markdown.mdtest/` — 23 test fixtures (.text input, .xhtml/.html expected)

@@ -36,11 +36,11 @@ For an agent about to plan Shakedown implementation work, read the canonical doc
 23. [`spl/codegen-style-guide.md`](spl/codegen-style-guide.md) — policy for recurring value phrases.
 24. [`spl/style-guide-validation.md`](spl/style-guide-validation.md) — which style-guide claims are mechanically enforceable, demonstrable, or advisory.
 
-Optional historical/supporting context:
+Optional historical/supporting context (Do not search or read inside `docs/archive/`):
 
 - [`superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`](superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md) — latest pre-design synthesis. Useful context, not canonical truth.
-- [`superpowers/specs/`](superpowers/specs/) — proposed design/spec artifacts from earlier interactive planning. The selected architecture spec is the one active exception and is linked from `architecture/selected-architecture.md`; other specs are historical context unless restated in canonical docs.
-- [`superpowers/plans/`](superpowers/plans/) — implementation plans and process artifacts. Use `superpowers/plans/plan-roadmap.md` for live plan status.
+- [`superpowers/specs/`](superpowers/specs/) — active design/spec artifacts. Historical design specs have been moved to `docs/archive/specs/` and do not need to be read.
+- [`superpowers/plans/`](superpowers/plans/) — active plans. Shipped plans have been moved to `docs/archive/plans/` and do not need to be read.
 - [`prompt-shakedown.md`](prompt-shakedown.md) — legacy `run-loop` prompt; no longer the active implementation workflow.
 
 ## Directory Map
