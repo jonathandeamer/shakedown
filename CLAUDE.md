@@ -67,18 +67,44 @@ State: `.agent/run-loop-state.json`. Completion marker: `.agent/complete-<name>.
 
 SPL-changing prompts and implementation plans must use
 `docs/superpowers/notes/spl-literary-protocol.md`. This includes work that edits
-`src/*.spl`, `scripts/assemble.py`, `scripts/codegen_html.py`, or future SPL
-generators. Prompt authors must include the protocol block or load it by
-university reference, and SPL-changing plans must name the exact literary
-compliance tests they expect the implementation agent to run.
+`src_ir/*.py`, `scripts/splc/*`, `src/*.spl`, `scripts/assemble.py`, or
+`scripts/codegen_html.py`. Prompt authors must include the protocol block or
+load it by university reference, and SPL-changing plans must name the exact
+literary compliance tests they expect the implementation agent to run.
 
 Controlled SPL prose belongs in `src/literary.toml`. Source fragments should
 refer to controlled titles, scene surfaces, Recall lines, and recurring
 literary values with `@LIT.` placeholders that `scripts/assemble.py` resolves
 when rebuilding `shakedown.spl`. Codegen should load configured value atoms
-from the same TOML instead of hardcoding adjective chains. Do not hand-edit
-`shakedown.spl` for literary surface changes; edit `src/*.spl` and
-`src/literary.toml`, then rebuild with `uv run python scripts/assemble.py`.
+from the same TOML instead of hardcoding adjective chains.
+
+### Two-tier build: splc IR → fragments → `shakedown.spl`
+
+`shakedown.spl` is assembled from the `src/*.spl` fragments listed in
+`src/manifest.toml` by `scripts/assemble.py`. Several of those fragments are
+**generated, not hand-authored**: the splc compiler (`scripts/splc/`) lowers
+the IR act modules in `src_ir/` to SPL text.
+
+- Generated fragments (edit the IR, never the `.spl`): `src_ir/act1.py` →
+  `src/10-act1-preprocess.spl`, `src_ir/act2.py` → `src/20-act2-block.spl`,
+  `src_ir/act4.py` → `src/40-act4-emit.spl`, and `src_ir/debug_act4.py` →
+  `debug/40-act4-token-dump.spl`.
+- Still hand-authored: `src/00-preamble.spl` and `src/30-act3-span.spl`
+  (Act III has not been ported to the IR yet).
+
+Do not hand-edit `shakedown.spl` for literary surface changes, and do not
+hand-edit any generated fragment. For a generated act, edit its `src_ir/*.py`
+module (and `src/literary.toml` for controlled prose), then regenerate and
+reassemble:
+
+```bash
+uv run python -m scripts.splc          # re-render generated fragments from src_ir/
+uv run python scripts/assemble.py      # rebuild shakedown.spl from src/manifest.toml
+```
+
+For a hand-authored fragment, edit the `.spl` and `src/literary.toml`
+directly, then reassemble. `tests/test_splc_generated_fragments.py` fails if a
+committed generated fragment drifts from a fresh render.
 
 Literary authorship happens at planning time, not implementation time:
 see `docs/superpowers/notes/correctness-first-spl-workflow.md`. Plans
