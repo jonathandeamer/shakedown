@@ -30,6 +30,9 @@ GOLDEN_TOML = """\
 [scenes.GOLD_START]
 title = "The probe begins."
 
+[scenes.GOLD_MID]
+title = "The probe forks."
+
 [scenes.GOLD_DONE]
 title = "The probe ends."
 
@@ -65,6 +68,29 @@ v1 = "a cat"
 equality = ["as swift as"]
 greater_than = ["quicker than"]
 less_than = ["slower than"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
+
+[characters.rosalind.stable_utility]
+v0 = "nothing"
+v1 = "a cat"
+
+[characters.rosalind.soft_variation]
+equality = ["as fair as"]
+greater_than = ["nobler than"]
+less_than = ["lesser than"]
+goto_forward = ["Let us proceed to"]
+goto_backward = ["Let us return to"]
+
+[characters.horatio.stable_utility]
+v0 = "nothing"
+v1 = "a cat"
+v2 = "a black cat"
+
+[characters.horatio.soft_variation]
+equality = ["as loyal as"]
+greater_than = ["bolder than"]
+less_than = ["lesser than"]
 goto_forward = ["Let us proceed to"]
 goto_backward = ["Let us return to"]
 """
@@ -181,3 +207,65 @@ def test_golden_mini_play_parses_and_runs(tmp_path: Path) -> None:
         check=True,
     )
     assert result.stdout == b"H\n"
+
+
+def test_third_person_question_for_offstage_tested_char(tmp_path: Path) -> None:
+    from scripts.splc.ir import gt
+    from scripts.splc.lower import lower_act
+
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            scene(
+                "GOLD_START",
+                branch(
+                    gt(val(Char.HORATIO), const(2)),
+                    then="GOLD_DONE",
+                    else_="GOLD_DONE",
+                ),
+                companion=Char.PUCK,
+            ),
+            scene("GOLD_DONE", halt_act(), companion=Char.PUCK),
+        ],
+    )
+    text = lower_act(a, _golden_engine(tmp_path))
+    # Speaker is the anchor (Hecate, gt pool "bigger than"); tested Horatio
+    # is named in the third person; Puck (the other pair member) answers.
+    assert "Is Horatio bigger than a black cat?" in text
+    assert "Are you" not in text
+    assert "Puck:\n If so," in text
+
+
+def test_goto_adapts_to_branch_defined_entry(tmp_path: Path) -> None:
+    from scripts.splc.lower import lower_act
+
+    # GOLD_START and GOLD_MID pair: (Hecate, Puck)
+    # GOLD_DONE pair: (Hecate, Rosalind) — branch predecessors define the entry
+    # The goto from GOLD_MID must emit [Exit Puck]/[Enter Rosalind] at the source.
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            scene(
+                "GOLD_START",
+                let(Char.PUCK, const(1)),
+                branch(
+                    eq(val(Char.PUCK), const(0)),
+                    then="GOLD_DONE",
+                    else_="GOLD_MID",
+                ),
+            ),
+            scene("GOLD_MID", let(Char.PUCK, const(2)), goto("GOLD_DONE")),
+            scene("GOLD_DONE", let(Char.ROSALIND, const(1)), halt_act()),
+        ],
+    )
+    text = lower_act(a, _golden_engine(tmp_path))
+    heading = "Scene @GOLD_DONE: @LIT.scenes.GOLD_DONE.title"
+    after_done = text.split(heading, 1)[1]
+    # Directions render once, at the target scene's start (branch-defined entry).
+    assert "[Exit Puck]" in after_done
+    assert "[Enter Rosalind]" in after_done
+    # The goto site in GOLD_MID emits none (target entry was branch-defined).
+    mid = text.split("Scene @GOLD_MID", 1)[1].split(heading, 1)[0]
+    assert "[Exit" not in mid and "[Enter" not in mid

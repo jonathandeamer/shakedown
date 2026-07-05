@@ -77,32 +77,29 @@ def _check_terminal(sc: Scene) -> None:
 def entry_pairs(a: Act) -> dict[str, tuple[Char, Char] | None]:
     by_label = {sc.label: sc for sc in a.scenes}
     entry: dict[str, tuple[Char, Char] | None] = {a.scenes[0].label: None}
+    # Pass 1 — branch arrivals fix the entry stage: directions render at
+    # the target's scene start, so branch predecessors must agree.
     for sc in a.scenes:
         leaving = participants(sc, a.anchor)
         for op in sc.ops:
-            if isinstance(op, Goto):
-                target = op.target
+            if not isinstance(op, Branch):
+                continue
+            for target in [op.then] + ([op.else_] if op.else_ is not None else []):
                 if target not in by_label:
                     continue
-                target_pair = participants(by_label[target], a.anchor)
-                if target in entry and entry[target] != target_pair:
+                if target in entry and entry[target] != leaving:
                     raise IrError(
                         f"scene {target}: predecessors leave inconsistent "
-                        f"stage pairs ({entry[target]} vs {target_pair} from "
+                        f"stage pairs ({entry[target]} vs {leaving} from "
                         f"{sc.label})"
                     )
-                entry[target] = target_pair
-            elif isinstance(op, Branch):
-                for target in [op.then] + ([op.else_] if op.else_ is not None else []):
-                    if target not in by_label:
-                        continue
-                    if target in entry and entry[target] != leaving:
-                        raise IrError(
-                            f"scene {target}: predecessors leave inconsistent "
-                            f"stage pairs ({entry[target]} vs {leaving} from "
-                            f"{sc.label})"
-                        )
-                    entry[target] = leaving
+                entry[target] = leaving
+    # Pass 2 — goto arrivals adapt at the source, so a goto-only scene is
+    # entered with its own pair already staged.
+    for sc in a.scenes:
+        for op in sc.ops:
+            if isinstance(op, Goto) and op.target in by_label:
+                entry.setdefault(op.target, participants(by_label[op.target], a.anchor))
     return entry
 
 

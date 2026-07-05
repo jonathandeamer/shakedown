@@ -112,7 +112,6 @@ def _stage_directions(
 
 def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -> str:
     entry = validate(a, prose)
-    by_label = {sc.label: sc for sc in a.scenes}
     order = {sc.label: i for i, sc in enumerate(a.scenes)}
     blocks: list[str] = []
     for index, sc in enumerate(a.scenes):
@@ -156,10 +155,19 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
                 lines.append(_speech(speaker, "Open your heart!"))
             elif isinstance(op, Branch):
                 tested = _tested_char(op, sc)
-                speaker, addressee = _roles(tested, a.anchor, pair)
-                cmp_phrase = prose.comparator(speaker, op.cond.op, seed)
-                rhs = _render_expr(op.cond.right, speaker, addressee, prose)
-                question = f"Are you {cmp_phrase} {rhs}?"
+                if tested in pair:
+                    speaker, addressee = _roles(tested, a.anchor, pair)
+                    cmp_phrase = prose.comparator(speaker, op.cond.op, seed)
+                    rhs = _render_expr(op.cond.right, speaker, addressee, prose)
+                    question = f"Are you {cmp_phrase} {rhs}?"
+                else:
+                    # Off-stage tested character: third-person question by
+                    # the anchor; the other pair member answers the Ifs.
+                    speaker = a.anchor
+                    addressee = pair[1] if pair[0] == a.anchor else pair[0]
+                    cmp_phrase = prose.comparator(speaker, op.cond.op, seed)
+                    rhs = _render_expr(op.cond.right, speaker, addressee, prose)
+                    question = f"Is {tested.value} {cmp_phrase} {rhs}?"
                 lines.append(_speech(speaker, question))
                 lines.append(
                     _speech(
@@ -191,9 +199,9 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
                         )
                     )
             elif isinstance(op, Goto):
-                target_pair = participants(by_label[op.target], a.anchor)
-                if pair != target_pair:
-                    for direction in _stage_directions(pair, target_pair):
+                target_entry = entry.get(op.target)
+                if target_entry is not None and pair != target_entry:
+                    for direction in _stage_directions(pair, target_entry):
                         lines.append(direction)
                         lines.append("")
                 lines.append(

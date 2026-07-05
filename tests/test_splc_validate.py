@@ -197,3 +197,38 @@ def test_offstage_value_reference_validates() -> None:
         ],
     )
     validate(a, _prose())  # must not raise
+
+
+def test_mixed_goto_and_branch_predecessors_agree() -> None:
+    from scripts.splc.validate import validate
+
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            # Branch predecessor: leaves (Hecate, Puck).
+            scene(
+                "ACT_I_START",
+                let(Char.PUCK, const(1)),
+                branch(
+                    eq(val(Char.PUCK), const(0)),
+                    then="ACT_I_DONE",
+                    else_="HECATE_READ_INPUT",
+                ),
+            ),
+            # Goto predecessor with the same leaving pair.
+            scene(
+                "HECATE_READ_INPUT",
+                let(Char.PUCK, const(2)),
+                goto("ACT_I_DONE"),
+            ),
+            # Target stages a different pair: branch-defined entry (Hecate, Puck).
+            scene(
+                "ACT_I_DONE",
+                let(Char.ROSALIND, const(1)),
+                halt_act(),
+            ),
+        ],
+    )
+    pairs = validate(a, _prose())
+    assert pairs["ACT_I_DONE"] == (Char.HECATE, Char.PUCK)
