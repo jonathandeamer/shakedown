@@ -1,0 +1,71 @@
+                    Scene @DBG_START: The scribe weighs the stream measure.
+
+[Enter Puck and Prospero]
+
+Puck:
+ Is Horatio jollier than the product of a little green sweet flower and a rural little green
+  sweet flower?
+
+Prospero:
+ If so, let us proceed to scene @DBG_OLD_MEASURE.
+
+Prospero:
+ If not, let us proceed to scene @DBG_SHORT_MEASURE.
+
+
+                    Scene @DBG_OLD_MEASURE: The old cell keeps its measure.
+
+Puck:
+ You are as noble as the product of the sum of a flower and a sweet flower and the sum of a
+  flower and the product of a little green sweet flower and a rural little green sweet
+  flower.
+
+Prospero:
+ We shall proceed to scene @DBG_LOOP.
+
+
+                    Scene @DBG_SHORT_MEASURE: The short cell takes Horatio's measure.
+
+Puck:
+ You are as noble as Horatio.
+
+Prospero:
+ We shall proceed to scene @DBG_LOOP.
+
+
+                    Scene @DBG_LOOP: The scribe asks if words remain.
+
+Prospero:
+ Am I as noble as nothing?
+
+Puck:
+ If so, let us proceed to scene @DBG_DONE.
+
+Puck:
+ If not, let us proceed to scene @DBG_POP.
+
+
+                    Scene @DBG_POP: The herald yields one word and it is counted aloud.
+
+Prospero:
+ Recall the herald's present word.
+
+Puck:
+ You are as noble as the difference between Prospero and a cat.
+
+Prospero:
+ Open your heart!
+
+Prospero:
+ You are as noble as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Puck:
+ Let us return to scene @DBG_LOOP.
+
+
+                    Scene @DBG_DONE: The counting is done.
+
+[Exeunt]

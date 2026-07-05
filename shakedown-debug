@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+uv run --directory "$DIR" python scripts/assemble.py --debug
+SHAKEDOWN_SPL="$DIR/.cache/shakedown-debug.spl" exec "$DIR/shakedown"

@@ -161,3 +161,23 @@ def test_assemble_parse_check_accepts_valid_play(tmp_path: Path) -> None:
         parse_check=True,
     )
     assert output.read_text() == MINIMAL_VALID_PLAY
+
+
+def test_assemble_replace_substitutes_fragment(tmp_path: Path) -> None:
+    from scripts.assemble import assemble
+
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "a.spl").write_text("original\n")
+    (src / "manifest.toml").write_text('fragments = ["a.spl"]\n')
+    substitute = tmp_path / "substitute.spl"
+    substitute.write_text("substituted\n")
+
+    output = tmp_path / "out.spl"
+    assemble(
+        src_dir=src,
+        manifest=src / "manifest.toml",
+        output=output,
+        replace={"a.spl": substitute},
+    )
+    assert output.read_text() == "substituted\n"

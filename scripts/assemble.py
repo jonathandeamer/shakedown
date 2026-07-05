@@ -100,13 +100,17 @@ def assemble(
     manifest: Path,
     output: Path,
     parse_check: bool = False,
+    replace: dict[str, Path] | None = None,
 ) -> None:
     """Concatenate fragments per manifest and resolve scene labels."""
     with manifest.open("rb") as f:
         config = tomllib.load(f)
 
+    replacements = replace or {}
     fragments: list[str] = config["fragments"]
-    combined = "".join((src_dir / name).read_text() for name in fragments)
+    combined = "".join(
+        replacements.get(name, src_dir / name).read_text() for name in fragments
+    )
     with_literary = _resolve_literary_placeholders(
         combined,
         src_dir / "literary.toml",
@@ -119,12 +123,25 @@ def assemble(
 
 def main() -> None:
     root = Path(__file__).parent.parent
-    assemble(
-        src_dir=root / "src",
-        manifest=root / "src" / "manifest.toml",
-        output=root / "shakedown.spl",
-        parse_check=True,
-    )
+    if "--debug" in sys.argv[1:]:
+        output = root / ".cache" / "shakedown-debug.spl"
+        output.parent.mkdir(exist_ok=True)
+        assemble(
+            src_dir=root / "src",
+            manifest=root / "src" / "manifest.toml",
+            output=output,
+            parse_check=True,
+            replace={
+                "40-act4-emit.spl": root / "debug" / "40-act4-token-dump.spl",
+            },
+        )
+    else:
+        assemble(
+            src_dir=root / "src",
+            manifest=root / "src" / "manifest.toml",
+            output=root / "shakedown.spl",
+            parse_check=True,
+        )
 
 
 if __name__ == "__main__":
