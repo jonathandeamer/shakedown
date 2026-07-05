@@ -20,11 +20,15 @@ from scripts.splc.prose import ProseEngine  # noqa: E402
 def rendered_fragments() -> dict[str, str]:
     """Fragment filename -> rendered text, for every IR-owned act."""
     from src_ir.act1 import ACT as ACT1
+    from src_ir.act2 import ACT as ACT2
 
     prose = ProseEngine(load_literary_surfaces(_ROOT / "src" / "literary.toml"))
     return {
         "10-act1-preprocess.spl": lower_act(
             ACT1, prose, next_act_heading="Act II: @LIT.acts.act2.title"
+        ),
+        "20-act2-block.spl": lower_act(
+            ACT2, prose, next_act_heading="Act III: @LIT.acts.act3.title"
         ),
     }
 
