@@ -334,6 +334,20 @@ input. Plan 3H replaces the test and removes the corresponding half of the
 `.agent/blockers.md` entry; the Spike A halt line itself clears when 3J
 ships and the resumed list plan is written.
 
+### A5. Dispositions recorded at stage 4 (plan 3J)
+
+- **`square(e)` is permanently out.** §A2 promised it for Act III; the
+  port-readiness audit (`docs/superpowers/notes/act3-port-audit.md`)
+  mechanically verified all 37 `the square of` sites are pure-constant
+  phrases — no dynamic square exists anywhere in the play. Constant
+  recipes (`src_ir/stream.py`) cover every use; the builder was never
+  added and never will be unless a future plan introduces a dynamic use.
+- **The §A3 pool-exhaustion warning is retired.** `prose.py` selects with
+  seeded `random.choice` — pools are sampled with replacement, so
+  exhaustion is not a reachable failure mode. Repetition across scene
+  runs is an aesthetic-pool concern policed by the compliance tests that
+  target the TOML pools; no build warning is needed.
+
 ## References
 
 - `docs/superpowers/plans/plan-roadmap.md` — halt record and staging ladder
