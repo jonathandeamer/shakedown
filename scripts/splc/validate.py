@@ -98,12 +98,23 @@ def entry_pairs(a: Act) -> dict[str, tuple[Char, Char] | None]:
                         f"{sc.label})"
                     )
                 entry[target] = leaving
-    # Pass 2 — goto arrivals adapt at the source, so a goto-only scene is
-    # entered with its own pair already staged.
+    # Pass 2 — goto arrivals normally adapt at the source, so a goto-only
+    # scene is entered with its own pair already staged. That only works
+    # when the source's speaking anchor survives into the target's default
+    # pair; if adaptation would exit the source's own anchor (only possible
+    # with scene-level anchor overrides), defer instead to the target's own
+    # scene-start direction by recording the source's leaving pair.
     for sc in a.scenes:
+        source_anchor = sc.anchor or a.anchor
         for op in sc.ops:
             if isinstance(op, Goto) and op.target in by_label:
-                entry.setdefault(op.target, participants(by_label[op.target], a.anchor))
+                target_pair = participants(by_label[op.target], a.anchor)
+                candidate = (
+                    target_pair
+                    if source_anchor in target_pair
+                    else participants(sc, a.anchor)
+                )
+                entry.setdefault(op.target, candidate)
     return entry
 
 

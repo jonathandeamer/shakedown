@@ -3,8 +3,7 @@
 [Enter Puck and Romeo]
 
 Puck:
- Is Horatio friendlier than the product of a little green sweet flower and a rural little
-  green sweet flower?
+ Is Horatio friendlier than the product of a normal little furry black cat and a little furry black cat?
 
 Romeo:
  If so, let us proceed to scene @LYRIC_SET_SLICE_ONE_SCAN_COUNT.
@@ -16,8 +15,7 @@ Romeo:
                     Scene @LYRIC_SET_SLICE_ONE_SCAN_COUNT: @LIT.scenes.LYRIC_SET_SLICE_ONE_SCAN_COUNT.title
 
 Puck:
- You are as fair as the product of the sum of a flower and a green sweet flower and the
-  difference between the square of a little green sweet flower and a flower.
+ You are as rotten as the product of the sum of a flower and a furry black cat and the difference between the product of a little furry black cat and a little furry black cat and a flower.
 
 Romeo:
  Let us proceed to scene @LYRIC_SCAN_CHECK.
@@ -26,7 +24,7 @@ Romeo:
                     Scene @LYRIC_SET_SHORT_SCAN_COUNT: @LIT.scenes.LYRIC_SET_SHORT_SCAN_COUNT.title
 
 Puck:
- You are as fair as Horatio.
+ You are as noble as Horatio.
 
 Romeo:
  Let us proceed to scene @LYRIC_SCAN_CHECK.
@@ -34,13 +32,13 @@ Romeo:
 
                     Scene @LYRIC_SCAN_CHECK: @LIT.scenes.LYRIC_SCAN_CHECK.title
 
-Romeo:
- Am I as fair as nothing?
-
 Puck:
+ Are you as rotten as nothing?
+
+Romeo:
  If so, let us proceed to scene @LYRIC_OPEN_REVERSE.
 
-Puck:
+Romeo:
  If not, let us proceed to scene @LYRIC_POP_GLYPH.
 
 
@@ -50,12 +48,10 @@ Romeo:
  @LIT.characters.romeo.recall.mornings_first_cut
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the sum of a sunny summer's day and the sum of a fair golden sunny
-  summer's day and the square of the sum of a summer's day and a fair golden sunny summer's
-  day?
+ Are you as golden as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_POP_AFTER_OPEN.
@@ -67,8 +63,7 @@ Puck:
                     Scene @LYRIC_TEST_AMPERSAND: @LIT.scenes.LYRIC_TEST_AMPERSAND.title
 
 Romeo:
- Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
-  sunny summer's day and the sum of a golden sunny summer's day and a sunny summer's day?
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AMP_POP_NEXT.
@@ -83,11 +78,10 @@ Romeo:
  @LIT.characters.romeo.recall.brackets_first_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the sum of a fair golden sunny summer's day and the square of the sum of
-  a sunny summer's day and a fair golden sunny summer's day?
+ Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_LINK_POP_BODY.
@@ -99,8 +93,7 @@ Puck:
                     Scene @LYRIC_REFERENCE_TEST_ATT_TEXT: @LIT.scenes.LYRIC_REFERENCE_TEST_ATT_TEXT.title
 
 Romeo:
- Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
-  golden sunny summer's day and a summer's day?
+ Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_ATT_POP_BODY.
@@ -115,35 +108,34 @@ Romeo:
  @LIT.characters.romeo.recall.links_second_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.links_third_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as fair as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.links_fourth_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.links_closing_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as rotten as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.links_following_air
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as fair as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the product of a warm fair golden sunny summer's day and a sunny
-  summer's day?
+ Are you as fair as the product of a normal little furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_ONE_POP_LABEL.
@@ -155,8 +147,7 @@ Puck:
                     Scene @LYRIC_LINK_TEST_INLINE_OPEN: @LIT.scenes.LYRIC_LINK_TEST_INLINE_OPEN.title
 
 Romeo:
- Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
-  sunny summer's day and a fair golden sunny summer's day?
+ Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_POP_FIRST_DESTINATION.
@@ -171,11 +162,10 @@ Romeo:
  @LIT.characters.romeo.recall.inline_paths_first_gate
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as fair as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the difference between the square of the difference between a fair
-  golden sunny summer's day and a summer's day and a sunny summer's day?
+ Are you as golden as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
@@ -187,8 +177,7 @@ Puck:
                     Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: @LIT.scenes.LYRIC_INLINE_TEST_BRACKETED_DESTINATION.title
 
 Romeo:
- Are you as fair as the difference between the square of a fair golden sunny summer's day
-  and a golden sunny summer's day?
+ Are you as golden as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
@@ -200,8 +189,7 @@ Puck:
                     Scene @LYRIC_INLINE_DEST_DIRECT_CHECK: @LIT.scenes.LYRIC_INLINE_DEST_DIRECT_CHECK.title
 
 Romeo:
- Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
-  sunny summer's day and the sum of a fair golden sunny summer's day and a summer's day?
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
@@ -213,15 +201,15 @@ Puck:
                     Scene @LYRIC_INLINE_DEST_DIRECT_KEEP: @LIT.scenes.LYRIC_INLINE_DEST_DIRECT_KEEP.title
 
 Puck:
- Remember me.
+ Remember myself.
 
 Romeo:
  @LIT.characters.romeo.recall.inline_paths_next_gate
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
-Puck:
+Romeo:
  Let us return to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
 
 
@@ -231,11 +219,10 @@ Romeo:
  @LIT.characters.romeo.recall.bracketed_paths_next_gate
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as fair as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the difference between the square of a fair golden sunny summer's day
-  and a sunny summer's day?
+ Are you as golden as the difference between the product of a little furry black cat and a little furry black cat and a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_CLOSE.
@@ -247,9 +234,9 @@ Puck:
                     Scene @LYRIC_INLINE_DEST_BRACKETED_KEEP: @LIT.scenes.LYRIC_INLINE_DEST_BRACKETED_KEEP.title
 
 Puck:
- Remember me.
+ Remember myself.
 
-Puck:
+Romeo:
  Let us return to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
 
 
@@ -259,11 +246,10 @@ Romeo:
  @LIT.characters.romeo.recall.bracketed_paths_round_seal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the sum of the product of a warm fair golden sunny summer's day and a
-  sunny summer's day and the sum of a fair golden sunny summer's day and a summer's day?
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
@@ -288,115 +274,88 @@ Puck:
  Remember the sum of a little furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the difference between the square of the difference between a little green sweet
-  flower and a flower and a sweet flower.
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
 
 Puck:
- Remember the sum of a rural little green sweet flower and the difference between the square
-  of the sum of a sweet flower and a little green sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and a flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a sweet
-  flower and a flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a sweet flower and
-  the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of a flower and the sum of a little green sweet flower and the square of
-  the sum of a sweet flower and a little green sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a green sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a sweet
-  flower and a flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a green
-  sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
 
 Puck:
- Remember the sum of a little green sweet flower and the difference between the square of
-  the sum of a sweet flower and a little green sweet flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
@@ -411,21 +370,21 @@ Romeo:
  @LIT.characters.romeo.recall.first_shelfs_open_mark
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as rotten as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.first_shelfs_number
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.first_shelfs_close_mark
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as fair as the difference between yourself and a flower.
 
-Puck:
+Romeo:
  Let us proceed to scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE.
 
 
@@ -435,51 +394,51 @@ Romeo:
  @LIT.characters.romeo.recall.houses_second_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.houses_ampersand
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.houses_last_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.houses_closing_petal
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as rotten as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.houses_following_air
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as fair as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.second_shelfs_open_mark
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as fair as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.second_shelfs_number
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
  @LIT.characters.romeo.recall.second_shelfs_close_mark
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
-Puck:
+Romeo:
  Let us proceed to scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO.
 
 
@@ -524,165 +483,124 @@ Puck:
  Remember the sum of a little furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a little green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a sweet
-  flower and a flower and the sum of a little green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a black cat.
 
 Puck:
- Remember the difference between the square of the difference between a little green sweet
-  flower and a flower and a sweet flower.
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
 
 Puck:
- Remember the difference between the square of the difference between a little green sweet
-  flower and a flower and a sweet flower.
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a green sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a little green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a little furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of a flower and the sum of a little green sweet flower and the square of
-  the sum of a sweet flower and a little green sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a green
-  sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a green sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a sweet
-  flower.
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
 
 Puck:
- Remember the sum of a flower and the sum of a little green sweet flower and the square of
-  the sum of a sweet flower and a little green sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the square of the difference between a little green sweet
-  flower and a flower and a sweet flower.
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and a flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a sweet
-  flower and a flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a sweet flower and
-  the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of a flower and the sum of a little green sweet flower and the square of
-  the sum of a sweet flower and a little green sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a green sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a sweet
-  flower and a flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a green
-  sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
 
 Puck:
- Remember the sum of a little green sweet flower and the difference between the square of
-  the sum of a sweet flower and a little green sweet flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
@@ -732,135 +650,103 @@ Puck:
  Remember the sum of a little furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a little green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a sweet
-  flower and a flower and the sum of a little green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a black cat.
 
 Puck:
- Remember the difference between the square of the difference between a little green sweet
-  flower and a flower and a sweet flower.
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
 
 Puck:
- Remember the difference between the square of the difference between a little green sweet
-  flower and a flower and a sweet flower.
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a sweet flower and
-  the sum of a little green sweet flower and the sum of a green sweet flower and a sweet
-  flower.
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
 
 Puck:
- Remember the sum of a flower and the sum of a little green sweet flower and the square of
-  the sum of a sweet flower and a little green sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the square of the difference between a little green sweet
-  flower and a flower and a sweet flower.
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
 
 Puck:
  Remember the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a green sweet
-  flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a sweet flower and
-  the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of a flower and the sum of a little green sweet flower and the square of
-  the sum of a sweet flower and a little green sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a green sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a green sweet
-  flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a sweet flower and
-  the sum of a green sweet flower and a sweet flower.
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of a flower and the sum of a little green sweet flower and the square of
-  the sum of a sweet flower and a little green sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a rural little green sweet flower and the sum of a green sweet
-  flower and the sum of a sweet flower and a flower.
+ Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
- Remember the difference between the square of a little green sweet flower and the sum of a
-  flower and a green sweet flower.
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a flower and a green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
 
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
@@ -882,29 +768,22 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LINK_FALLBACK: @LIT.scenes.LYRIC_OUTPUT_LINK_FALLBACK.title
 
 Puck:
- Remember the sum of a sweet flower and the sum of a little green sweet flower and the
-  square of the sum of a flower and a little green sweet flower.
+ Remember the product of the difference between a little furry black cat and a flower and the sum of a little furry black cat and the sum of a furry black cat and a flower.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a green
-  sweet flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and the sum of a green
-  sweet flower and a sweet flower and the sum of a little green sweet flower and a flower.
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
 
 Puck:
- Remember the difference between the product of a rural little green sweet flower and the
-  difference between a little green sweet flower and a flower and a sweet flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
 
 Puck:
- Remember the sum of a little green sweet flower and the difference between the square of
-  the sum of a sweet flower and a little green sweet flower and a flower.
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
 
 Puck:
- Remember the sum of the product of a rural little green sweet flower and a sweet flower and
-  a little green sweet flower.
+ Remember the sum of the product of a normal little furry black cat and a black cat and a little furry black cat.
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -923,8 +802,7 @@ Juliet:
                     Scene @LYRIC_REFERENCE_FALLBACK: @LIT.scenes.LYRIC_REFERENCE_FALLBACK.title
 
 Puck:
- Remember the sum of a sweet flower and the sum of a little green sweet flower and the
-  square of the sum of a flower and a little green sweet flower.
+ Remember the product of the difference between a little furry black cat and a flower and the sum of a little furry black cat and the sum of a furry black cat and a flower.
 
 Puck:
  Remember myself.
@@ -936,8 +814,7 @@ Juliet:
                     Scene @LYRIC_TEST_LEFT_ANGLE: @LIT.scenes.LYRIC_TEST_LEFT_ANGLE.title
 
 Romeo:
- Are you as fair as the difference between the square of a fair golden sunny summer's day
-  and a golden sunny summer's day?
+ Are you as sunny as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LEFT_ANGLE_POP_NEXT.
@@ -952,11 +829,10 @@ Romeo:
  @LIT.characters.romeo.recall.mornings_next_cut
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the sum of the product of a warm fair golden sunny summer's day and the
-  sum of a golden sunny summer's day and a sunny summer's day and a summer's day?
+ Are you as sunny as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT.
@@ -971,11 +847,10 @@ Romeo:
  @LIT.characters.romeo.recall.mornings_next_cut
 
 Puck:
- You are as fair as the difference between Romeo and a cat.
+ You are as rotten as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the difference between the square of the difference between a fair
-  golden sunny summer's day and a summer's day and a sunny summer's day?
+ Are you as fair as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_LITERAL_LEFT_CURRENT.
@@ -997,7 +872,7 @@ Juliet:
                     Scene @LYRIC_OUTPUT_CURRENT: @LIT.scenes.LYRIC_OUTPUT_CURRENT.title
 
 Puck:
- You are as fair as myself.
+ You are as noble as myself.
 
 Puck:
  Remember yourself.
@@ -1019,42 +894,37 @@ Juliet:
                     Scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT: @LIT.scenes.LYRIC_OUTPUT_AMP_ENTITY_CURRENT.title
 
 Puck:
- You are as fair as the sum of the product of a rural little green sweet flower and a sweet
-  flower and the sum of a green sweet flower and a sweet flower.
+ You are as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of the product of a rural little green sweet flower and the sum
-  of a green sweet flower and a sweet flower and a flower.
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of a flower and the sum of a little green sweet flower and the
-  square of the sum of a sweet flower and a little green sweet flower.
+ You are as fair as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the product of a rural little green sweet flower and the sum of a green
-  sweet flower and the sum of a sweet flower and a flower.
+ You are as fair as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the difference between the square of a little green sweet flower and the
-  sum of a flower and a green sweet flower.
+ You are as fair as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as myself.
+ You are as rotten as myself.
 
 Puck:
  Remember yourself.
@@ -1076,14 +946,13 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LITERAL_AMP_CURRENT.title
 
 Puck:
- You are as fair as the sum of the product of a rural little green sweet flower and a sweet
-  flower and the sum of a green sweet flower and a sweet flower.
+ You are as rotten as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as myself.
+ You are as rotten as myself.
 
 Puck:
  Remember yourself.
@@ -1105,31 +974,25 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LT_ENTITY_CURRENT.title
 
 Puck:
- You are as fair as the sum of the product of a rural little green sweet flower and a sweet
-  flower and the sum of a green sweet flower and a sweet flower.
+ You are as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of the product of a rural little green sweet flower and the sum
-  of a green sweet flower and a sweet flower and the sum of a little green sweet flower and
-  a green sweet flower.
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of the product of a rural little green sweet flower and the sum
-  of a green sweet flower and the sum of a sweet flower and a flower and a green sweet
-  flower.
+ You are as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the difference between the square of a little green sweet flower and the
-  sum of a flower and a green sweet flower.
+ You are as noble as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
 
 Puck:
  Remember yourself.
@@ -1157,15 +1020,13 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LITERAL_LEFT_CURRENT.title
 
 Puck:
- You are as fair as the sum of the product of a rural little green sweet flower and the sum
-  of a sweet flower and a flower and the sum of a little green sweet flower and a green
-  sweet flower.
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as myself.
+ You are as rotten as myself.
 
 Puck:
  Remember yourself.
@@ -1191,8 +1052,7 @@ Romeo:
 [Enter Juliet]
 
 Juliet:
- Is Horatio friendlier than the product of a little green sweet flower and a rural little
-  green sweet flower?
+ Is Horatio friendlier than the product of a normal little furry black cat and a little furry black cat?
 
 Romeo:
  If so, let us proceed to scene @LYRIC_SET_SLICE_ONE_REVERSE_COUNT.
@@ -1204,10 +1064,9 @@ Romeo:
                     Scene @LYRIC_SET_SLICE_ONE_REVERSE_COUNT: @LIT.scenes.LYRIC_SET_SLICE_ONE_REVERSE_COUNT.title
 
 Juliet:
- You are as fair as the product of the sum of a rose and a sweet rose and the sum of a rose
-  and the product of a gentle fair sweet rose and a beautiful gentle fair sweet rose.
+ You are as fair as the product of the sum of a rose and a sweet rose and the sum of a rose and the product of a little furry black cat and a normal little furry black cat.
 
-Romeo:
+Juliet:
  Let us proceed to scene @LYRIC_REVERSE_CHECK.
 
 
@@ -1216,19 +1075,19 @@ Romeo:
 Juliet:
  You are as fair as Horatio.
 
-Romeo:
+Juliet:
  Let us proceed to scene @LYRIC_REVERSE_CHECK.
 
 
                     Scene @LYRIC_REVERSE_CHECK: @LIT.scenes.LYRIC_REVERSE_CHECK.title
 
-Romeo:
- Am I as fair as nothing?
-
 Juliet:
+ Are you as fair as nothing?
+
+Romeo:
  If so, let us proceed to scene @ACT_III_DONE.
 
-Juliet:
+Romeo:
  If not, let us proceed to scene @LYRIC_REVERSE_POP.
 
 
@@ -1238,17 +1097,17 @@ Romeo:
  @LIT.characters.romeo.recall.roses_kept_word
 
 Juliet:
- You are as fair as the difference between Romeo and a cat.
-
-Romeo:
- Let us proceed to scene @LYRIC_OPEN_PUSH_BACK.
-
-
-                    Scene @LYRIC_OPEN_PUSH_BACK: @LIT.scenes.LYRIC_OPEN_PUSH_BACK.title
+ You are as sweet as the difference between yourself and a rose.
 
 [Exit Romeo]
 
 [Enter Puck]
+
+Juliet:
+ Let us proceed to scene @LYRIC_OPEN_PUSH_BACK.
+
+
+                    Scene @LYRIC_OPEN_PUSH_BACK: @LIT.scenes.LYRIC_OPEN_PUSH_BACK.title
 
 Juliet:
  Let us proceed to scene @LYRIC_PUSH_BACK.
@@ -1257,20 +1116,20 @@ Juliet:
                     Scene @LYRIC_PUSH_BACK: @LIT.scenes.LYRIC_PUSH_BACK.title
 
 Juliet:
- You are as fair as myself.
+ You are as gentle as myself.
 
 Juliet:
  Remember yourself.
 
-Puck:
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_REVERSE.
 
 
                     Scene @LYRIC_RETURN_TO_REVERSE: @LIT.scenes.LYRIC_RETURN_TO_REVERSE.title
-
-[Exit Puck]
-
-[Enter Romeo]
 
 Romeo:
  Let us return to scene @LYRIC_REVERSE_CHECK.

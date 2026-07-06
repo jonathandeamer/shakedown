@@ -33,6 +33,7 @@ def rendered_fragments() -> dict[str, str]:
     """Fragment filename -> rendered text, for every IR-owned act."""
     from src_ir.act1 import ACT as ACT1
     from src_ir.act2 import ACT as ACT2
+    from src_ir.act3 import ACT as ACT3
     from src_ir.act4 import ACT as ACT4
 
     prose = ProseEngine(_surfaces())
@@ -42,6 +43,9 @@ def rendered_fragments() -> dict[str, str]:
         ),
         "20-act2-block.spl": lower_act(
             ACT2, prose, next_act_heading="Act III: @LIT.acts.act3.title"
+        ),
+        "30-act3-span.spl": lower_act(
+            ACT3, prose, next_act_heading="Act IV: @LIT.acts.act4.title"
         ),
         # Act IV is the final act — no next-act heading; Act III's fragment
         # emits the "Act IV:" heading at its tail.
