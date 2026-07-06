@@ -1,7 +1,22 @@
-"""Act II — block pass (Slice 1 pass-through). Ported from the hand-authored
-fragment; behavior identical, quirks included (the fixed reverse count of 315
-when the glyph count exceeds 128, and the 1/0 stream markers). See the plan's
-Behavioral ground truth table."""
+"""Act II — block dispatcher skeleton (Spike A P1). One production pass
+(paragraph formation) inside the frame: sentinel-seeded carrier stacks and an
+explicit final reverse onto Puck, so order restoration is unconditional.
+
+Pass ordering slots (architecture spec §4.2, matching _RunBlockGamut):
+headers -> horizontal rules -> lists -> code blocks -> blockquotes ->
+HTML re-hash -> paragraph formation. Only paragraph formation exists; each
+future pass lands as a contiguous PASS_<NAME>_* scene group inserted before
+the pass that follows it, reading one carrier stack and producing onto the
+other (Lady Macbeth <-> Macbeth ping-pong; Macbeth's stack is reserved for
+frame sentinels, so a pass needing frames must not write to him — design
+spec §6.3). The FRAME_REVERSE_* scenes always drain the last carrier.
+
+Slice-1 quirks preserved: the unconditional leading PARA push (empty input
+keeps its crash shape) and the 1/0 paragraph framing, which is exactly the
+PARA token encoding (code 1, glyph run, TEXT_END). The Slice-1 fixed reverse
+count (315 above the 128 threshold) is retired: the tokenized stream is
+bottom-terminated by STREAM_END, making counts structurally unnecessary
+(design spec, cross-act impact)."""
 
 from __future__ import annotations
 
@@ -12,23 +27,19 @@ from scripts.splc.ir import (
     const,
     eq,
     goto,
-    gt,
     halt_act,
     let,
-    mul,
     pop,
     push,
     scene,
     sub,
     val,
 )
+from src_ir import tokens
 from src_ir.cast import HECATE, HORATIO, LADY_MACBETH, PUCK
-from src_ir.stream import SLICE_ONE_GLYPH_COUNT, STREAM_THRESHOLD
+from src_ir.stream import emit_token
 
 _NEWLINE = const(10)
-
-# The 9 x 35 split below must stay in step with the shared constant.
-assert 9 * 35 == SLICE_ONE_GLYPH_COUNT
 
 ACT: Act = act(
     2,
@@ -37,108 +48,91 @@ ACT: Act = act(
         scene(
             "ACT_II_START",
             let(LADY_MACBETH, val(HORATIO)),
-            push(LADY_MACBETH, const(1)),
-            goto("MASON_READ_PARAGRAPH_GLYPH"),
+            push(LADY_MACBETH, const(tokens.STREAM_END)),
+            *emit_token(LADY_MACBETH, tokens.PARA),
+            goto("PASS_PARA_READ_GLYPH"),
             companion=HECATE,
         ),
         scene(
-            "MASON_READ_PARAGRAPH_GLYPH",
+            "PASS_PARA_READ_GLYPH",
             pop(HECATE, recall="hewn_glyph"),
             let(LADY_MACBETH, sub(val(LADY_MACBETH), const(1))),
             branch(
                 eq(val(HECATE), _NEWLINE),
-                then="MASON_CLOSE_PARAGRAPH",
-                else_="MASON_KEEP_PARAGRAPH_GLYPH",
+                then="PASS_PARA_CLOSE_PARAGRAPH",
+                else_="PASS_PARA_KEEP_GLYPH",
             ),
         ),
         scene(
-            "MASON_KEEP_PARAGRAPH_GLYPH",
+            "PASS_PARA_KEEP_GLYPH",
             push(LADY_MACBETH, val(HECATE)),
             branch(
                 eq(val(LADY_MACBETH), const(0)),
-                then="MASON_CLOSE_FINAL_PARAGRAPH",
-                else_="MASON_READ_PARAGRAPH_GLYPH",
+                then="PASS_PARA_CLOSE_FINAL",
+                else_="PASS_PARA_READ_GLYPH",
             ),
             companion=HECATE,
         ),
         scene(
-            "MASON_CLOSE_PARAGRAPH",
-            push(LADY_MACBETH, const(0)),
+            "PASS_PARA_CLOSE_PARAGRAPH",
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
             branch(
                 eq(val(LADY_MACBETH), const(0)),
-                then="MASON_OPEN_REVERSE_STREAM",
-                else_="MASON_SKIP_BLANK_GLYPH",
+                then="FRAME_REVERSE_OPEN",
+                else_="PASS_PARA_SKIP_BLANK",
             ),
             companion=HECATE,
         ),
         scene(
-            "MASON_SKIP_BLANK_GLYPH",
+            "PASS_PARA_SKIP_BLANK",
             pop(HECATE, recall="blank_glyph"),
             let(LADY_MACBETH, sub(val(LADY_MACBETH), const(1))),
             branch(
                 eq(val(HECATE), _NEWLINE),
-                then="MASON_AFTER_BLANK_GLYPH",
-                else_="MASON_OPEN_PARAGRAPH_WITH_GLYPH",
+                then="PASS_PARA_AFTER_BLANK",
+                else_="PASS_PARA_OPEN_WITH_GLYPH",
             ),
         ),
         scene(
-            "MASON_AFTER_BLANK_GLYPH",
+            "PASS_PARA_AFTER_BLANK",
             branch(
                 eq(val(LADY_MACBETH), const(0)),
-                then="MASON_OPEN_REVERSE_STREAM",
-                else_="MASON_SKIP_BLANK_GLYPH",
+                then="FRAME_REVERSE_OPEN",
+                else_="PASS_PARA_SKIP_BLANK",
             ),
             companion=HECATE,
         ),
         scene(
-            "MASON_OPEN_PARAGRAPH_WITH_GLYPH",
-            push(LADY_MACBETH, const(1)),
+            "PASS_PARA_OPEN_WITH_GLYPH",
+            *emit_token(LADY_MACBETH, tokens.PARA),
             push(LADY_MACBETH, val(HECATE)),
             branch(
                 eq(val(LADY_MACBETH), const(0)),
-                then="MASON_CLOSE_FINAL_PARAGRAPH",
-                else_="MASON_READ_PARAGRAPH_GLYPH",
+                then="PASS_PARA_CLOSE_FINAL",
+                else_="PASS_PARA_READ_GLYPH",
             ),
             companion=HECATE,
         ),
         scene(
-            "MASON_CLOSE_FINAL_PARAGRAPH",
-            push(LADY_MACBETH, const(0)),
-            goto("MASON_OPEN_REVERSE_STREAM"),
+            "PASS_PARA_CLOSE_FINAL",
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
+            goto("FRAME_REVERSE_OPEN"),
             companion=HECATE,
         ),
         scene(
-            "MASON_OPEN_REVERSE_STREAM",
-            branch(
-                gt(val(HORATIO), const(STREAM_THRESHOLD)),
-                then="MASON_SET_SLICE_ONE_REVERSE_COUNT",
-                else_="MASON_SET_SHORT_REVERSE_COUNT",
-            ),
-            companion=PUCK,
+            "FRAME_REVERSE_OPEN",
+            push(PUCK, const(tokens.STREAM_END)),
+            goto("FRAME_REVERSE_POP"),
         ),
         scene(
-            "MASON_SET_SLICE_ONE_REVERSE_COUNT",
-            # 315 = 9 × 35; split to stay within the 4-operator arithmetic limit
-            # (test_numeric_recipe_complexity_stays_bounded).
-            let(PUCK, const(9)),
-            let(PUCK, mul(val(PUCK), const(35))),
-            goto("HERALD_REVERSE_TOKEN_STREAM"),
-        ),
-        scene(
-            "MASON_SET_SHORT_REVERSE_COUNT",
-            let(PUCK, val(HORATIO)),
-            goto("HERALD_REVERSE_TOKEN_STREAM"),
-        ),
-        scene(
-            "HERALD_REVERSE_TOKEN_STREAM",
+            "FRAME_REVERSE_POP",
             pop(LADY_MACBETH, recall="masons_stone"),
-            push(PUCK, val(LADY_MACBETH)),
-            let(PUCK, sub(val(PUCK), const(1))),
             branch(
-                eq(val(PUCK), const(0)),
+                eq(val(LADY_MACBETH), const(tokens.STREAM_END)),
                 then="ACT_II_DONE",
-                else_="HERALD_REVERSE_TOKEN_STREAM",
             ),
+            push(PUCK, val(LADY_MACBETH)),
+            goto("FRAME_REVERSE_POP"),
         ),
         scene("ACT_II_DONE", halt_act(), companion=PUCK),
     ],

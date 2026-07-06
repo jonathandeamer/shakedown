@@ -6,16 +6,67 @@ Hecate:
  You are as rotten as Horatio.
 
 Hecate:
+ Remember a toad.
+
+Hecate:
  Remember a cat.
 
 Lady Macbeth:
- Let us proceed to scene @MASON_READ_PARAGRAPH_GLYPH.
+ Let us proceed to scene @PASS_PARA_READ_GLYPH.
 
 
-                    Scene @MASON_READ_PARAGRAPH_GLYPH: @LIT.scenes.MASON_READ_PARAGRAPH_GLYPH.title
+                    Scene @PASS_PARA_READ_GLYPH: @LIT.scenes.PASS_PARA_READ_GLYPH.title
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as cursed as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as villainous as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_PARA_CLOSE_PARAGRAPH.
+
+Hecate:
+ If not, let us proceed to scene @PASS_PARA_KEEP_GLYPH.
+
+
+                    Scene @PASS_PARA_KEEP_GLYPH: @LIT.scenes.PASS_PARA_KEEP_GLYPH.title
+
+Hecate:
+ Remember myself.
+
+Hecate:
+ Are you as horrid as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_PARA_CLOSE_FINAL.
+
+Lady Macbeth:
+ If not, let us return to scene @PASS_PARA_READ_GLYPH.
+
+
+                    Scene @PASS_PARA_CLOSE_PARAGRAPH: @LIT.scenes.PASS_PARA_CLOSE_PARAGRAPH.title
+
+Hecate:
+ Remember nothing.
+
+Hecate:
+ Are you as cursed as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @FRAME_REVERSE_OPEN.
+
+Lady Macbeth:
+ If not, let us proceed to scene @PASS_PARA_SKIP_BLANK.
+
+
+                    Scene @PASS_PARA_SKIP_BLANK: @LIT.scenes.PASS_PARA_SKIP_BLANK.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.blank_glyph
 
 Hecate:
  You are as rotten as the difference between yourself and a cat.
@@ -24,73 +75,25 @@ Lady Macbeth:
  Are you as mighty as the sum of a little furry black cat and a black cat?
 
 Hecate:
- If so, let us proceed to scene @MASON_CLOSE_PARAGRAPH.
+ If so, let us proceed to scene @PASS_PARA_AFTER_BLANK.
 
 Hecate:
- If not, let us proceed to scene @MASON_KEEP_PARAGRAPH_GLYPH.
+ If not, let us proceed to scene @PASS_PARA_OPEN_WITH_GLYPH.
 
 
-                    Scene @MASON_KEEP_PARAGRAPH_GLYPH: @LIT.scenes.MASON_KEEP_PARAGRAPH_GLYPH.title
-
-Hecate:
- Remember myself.
-
-Hecate:
- Are you as rotten as nothing?
-
-Lady Macbeth:
- If so, let us proceed to scene @MASON_CLOSE_FINAL_PARAGRAPH.
-
-Lady Macbeth:
- If not, let us return to scene @MASON_READ_PARAGRAPH_GLYPH.
-
-
-                    Scene @MASON_CLOSE_PARAGRAPH: @LIT.scenes.MASON_CLOSE_PARAGRAPH.title
-
-Hecate:
- Remember nothing.
+                    Scene @PASS_PARA_AFTER_BLANK: @LIT.scenes.PASS_PARA_AFTER_BLANK.title
 
 Hecate:
  Are you as horrid as nothing?
 
 Lady Macbeth:
- If so, let us proceed to scene @MASON_OPEN_REVERSE_STREAM.
+ If so, let us proceed to scene @FRAME_REVERSE_OPEN.
 
 Lady Macbeth:
- If not, let us proceed to scene @MASON_SKIP_BLANK_GLYPH.
+ If not, let us return to scene @PASS_PARA_SKIP_BLANK.
 
 
-                    Scene @MASON_SKIP_BLANK_GLYPH: @LIT.scenes.MASON_SKIP_BLANK_GLYPH.title
-
-Lady Macbeth:
- @LIT.characters.lady_macbeth.recall.blank_glyph
-
-Hecate:
- You are as horrid as the difference between yourself and a cat.
-
-Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
-
-Hecate:
- If so, let us proceed to scene @MASON_AFTER_BLANK_GLYPH.
-
-Hecate:
- If not, let us proceed to scene @MASON_OPEN_PARAGRAPH_WITH_GLYPH.
-
-
-                    Scene @MASON_AFTER_BLANK_GLYPH: @LIT.scenes.MASON_AFTER_BLANK_GLYPH.title
-
-Hecate:
- Are you as horrid as nothing?
-
-Lady Macbeth:
- If so, let us proceed to scene @MASON_OPEN_REVERSE_STREAM.
-
-Lady Macbeth:
- If not, let us return to scene @MASON_SKIP_BLANK_GLYPH.
-
-
-                    Scene @MASON_OPEN_PARAGRAPH_WITH_GLYPH: @LIT.scenes.MASON_OPEN_PARAGRAPH_WITH_GLYPH.title
+                    Scene @PASS_PARA_OPEN_WITH_GLYPH: @LIT.scenes.PASS_PARA_OPEN_WITH_GLYPH.title
 
 Hecate:
  Remember a cat.
@@ -99,80 +102,53 @@ Hecate:
  Remember myself.
 
 Hecate:
- Are you as rotten as nothing?
+ Are you as horrid as nothing?
 
 Lady Macbeth:
- If so, let us proceed to scene @MASON_CLOSE_FINAL_PARAGRAPH.
+ If so, let us proceed to scene @PASS_PARA_CLOSE_FINAL.
 
 Lady Macbeth:
- If not, let us return to scene @MASON_READ_PARAGRAPH_GLYPH.
+ If not, let us return to scene @PASS_PARA_READ_GLYPH.
 
 
-                    Scene @MASON_CLOSE_FINAL_PARAGRAPH: @LIT.scenes.MASON_CLOSE_FINAL_PARAGRAPH.title
+                    Scene @PASS_PARA_CLOSE_FINAL: @LIT.scenes.PASS_PARA_CLOSE_FINAL.title
 
 Hecate:
  Remember nothing.
 
 Lady Macbeth:
- Let us proceed to scene @MASON_OPEN_REVERSE_STREAM.
+ Let us proceed to scene @FRAME_REVERSE_OPEN.
 
 
-                    Scene @MASON_OPEN_REVERSE_STREAM: @LIT.scenes.MASON_OPEN_REVERSE_STREAM.title
+                    Scene @FRAME_REVERSE_OPEN: @LIT.scenes.FRAME_REVERSE_OPEN.title
 
 [Exit Hecate]
 
 [Enter Puck]
 
 Lady Macbeth:
- Is Horatio more bold than the product of a normal little furry black cat and a little furry black cat?
-
-Puck:
- If so, let us proceed to scene @MASON_SET_SLICE_ONE_REVERSE_COUNT.
-
-Puck:
- If not, let us proceed to scene @MASON_SET_SHORT_REVERSE_COUNT.
-
-
-                    Scene @MASON_SET_SLICE_ONE_REVERSE_COUNT: @LIT.scenes.MASON_SET_SLICE_ONE_REVERSE_COUNT.title
+ Remember a wolf.
 
 Lady Macbeth:
- You are as villainous as the sum of a little furry black cat and a cat.
-
-Lady Macbeth:
- You are as bold as the product of yourself and the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat.
-
-Lady Macbeth:
- Let us proceed to scene @HERALD_REVERSE_TOKEN_STREAM.
+ Let us proceed to scene @FRAME_REVERSE_POP.
 
 
-                    Scene @MASON_SET_SHORT_REVERSE_COUNT: @LIT.scenes.MASON_SET_SHORT_REVERSE_COUNT.title
-
-Lady Macbeth:
- You are as bold as Horatio.
-
-Lady Macbeth:
- Let us proceed to scene @HERALD_REVERSE_TOKEN_STREAM.
-
-
-                    Scene @HERALD_REVERSE_TOKEN_STREAM: @LIT.scenes.HERALD_REVERSE_TOKEN_STREAM.title
+                    Scene @FRAME_REVERSE_POP: @LIT.scenes.FRAME_REVERSE_POP.title
 
 Puck:
  @LIT.characters.puck.recall.masons_stone
+
+Puck:
+ Are you as noble as a wolf?
+
+Lady Macbeth:
+ If so, let us proceed to scene @ACT_II_DONE.
 
 Lady Macbeth:
  Remember myself.
 
 Lady Macbeth:
- You are as villainous as the difference between yourself and a hero.
-
-Lady Macbeth:
- Are you as mighty as nothing?
-
-Puck:
- If so, let us proceed to scene @ACT_II_DONE.
-
-Puck:
- If not, let us return to scene @HERALD_REVERSE_TOKEN_STREAM.
+ Let us return to scene @FRAME_REVERSE_POP.
 
 
                     Scene @ACT_II_DONE: @LIT.scenes.ACT_II_DONE.title

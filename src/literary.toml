@@ -46,7 +46,7 @@ phrase = "Out, damned spot"
 
 [iconic_moments.once_more_breach]
 surface = "scene_title"
-scene = "MASON_READ_PARAGRAPH_GLYPH"
+scene = "PASS_PARA_READ_GLYPH"
 phrase = "Once more unto the breach"
 
 [iconic_moments.rose_by_any_other_name]
@@ -65,7 +65,7 @@ character = "Hecate"
 kind = "phase_exit"
 
 [dramatic_moments.lady_macbeth_death_exit]
-scene = "MASON_OPEN_REVERSE_STREAM"
+scene = "FRAME_REVERSE_OPEN"
 character = "Lady Macbeth"
 kind = "phase_handoff"
 
