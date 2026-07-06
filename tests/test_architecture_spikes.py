@@ -36,8 +36,10 @@ def _list_cases() -> list[Path]:
 
 
 _SPIKE_A_HALT_REASON = (
-    "Spike A halted per architecture §8.2 on 2026-07-05; "
-    "see docs/superpowers/plans/plan-roadmap.md and .agent/blockers.md"
+    "List semantics not yet implemented: the SPL-from-IR architecture "
+    "revision (plans 3G-3J) resolved the Spike A hand-authoring halt; "
+    "the resumed list plan is written in IR against the fully ported play "
+    "(docs/superpowers/plans/plan-roadmap.md)"
 )
 
 
