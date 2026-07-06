@@ -1,31 +1,15 @@
-"""Cross-act stream constants and shared <=4-operator value recipes.
+"""Shared <=4-operator value recipes and tokenized-stream emission helpers.
 
-Single home for the magic numbers of the inter-act stream contract
-(docs/superpowers/notes/act3-port-audit.md, "Constants") and for byte
-values whose default atom decomposition would exceed the 4-operator
-compliance bound (test_numeric_recipe_complexity_stays_bounded)."""
+Single home for byte values whose default atom decomposition would exceed
+the 4-operator compliance bound (test_numeric_recipe_complexity_stays_bounded)
+and for arity-checked token emission (emit_token). The Slice-1 stream-count
+constants (128/315/387) were retired by the P1 stream migration: the stream
+is bottom-terminated by tokens.STREAM_END."""
 
 from __future__ import annotations
 
 from scripts.splc.ir import BinOp, Char, Push, add, const, mul, push, sub
 from src_ir import tokens
-
-STREAM_THRESHOLD = 128  # 8 x 16: Slice 1 vs. short measure, all four acts
-SLICE_ONE_GLYPH_COUNT = 315  # Act II push count = Act III scan count
-SLICE_ONE_STREAM_COUNT = 387  # Act III push count = Act IV stream count
-
-
-def slice_one_glyph_expr() -> BinOp:
-    """315 = (1+4) x (8x8 - 1), a single 4-operator phrase."""
-    return mul(add(const(1), const(4)), sub(mul(const(8), const(8)), const(1)))
-
-
-def slice_one_stream_expr() -> BinOp:
-    """387 = (1+2) x (1 + 8x16), a single 4-operator phrase.
-
-    (Moved verbatim from src_ir/act4.py's slice_one_count_expr.)"""
-    return mul(add(const(1), const(2)), add(const(1), mul(const(8), const(16))))
-
 
 # Byte values whose default decomposition exceeds the 4-operator bound.
 # 47/61/62 moved verbatim from src_ir/act4.py's _EMIT_RECIPE; the rest are

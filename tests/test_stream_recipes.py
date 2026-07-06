@@ -33,24 +33,6 @@ def _phrase_ops(expr: Expr) -> int:
     return len(re.findall(r"\b(sum|difference|product|quotient|square)\b", phrase))
 
 
-def test_stream_constants_and_count_exprs() -> None:
-    from src_ir.stream import (
-        SLICE_ONE_GLYPH_COUNT,
-        SLICE_ONE_STREAM_COUNT,
-        STREAM_THRESHOLD,
-        slice_one_glyph_expr,
-        slice_one_stream_expr,
-    )
-
-    assert STREAM_THRESHOLD == 128
-    assert SLICE_ONE_GLYPH_COUNT == 315
-    assert SLICE_ONE_STREAM_COUNT == 387
-    assert _eval(slice_one_glyph_expr()) == 315
-    assert _eval(slice_one_stream_expr()) == 387
-    assert _phrase_ops(slice_one_glyph_expr()) <= 4
-    assert _phrase_ops(slice_one_stream_expr()) <= 4
-
-
 def test_recipes_evaluate_to_their_keys_within_bound() -> None:
     from src_ir.stream import RECIPES
 
