@@ -117,6 +117,7 @@ class Scene:
     label: str
     ops: tuple[Op, ...]
     companion: Char | None
+    anchor: Char | None = None
 
 
 @dataclass(frozen=True)
@@ -208,8 +209,13 @@ def halt_act() -> HaltAct:
     return HaltAct()
 
 
-def scene(label: str, *ops: Op, companion: Char | None = None) -> Scene:
-    return Scene(label, tuple(ops), companion)
+def scene(
+    label: str,
+    *ops: Op,
+    companion: Char | None = None,
+    anchor: Char | None = None,
+) -> Scene:
+    return Scene(label, tuple(ops), companion, anchor)
 
 
 def act(number: int, anchor: Char, scenes: list[Scene]) -> Act:

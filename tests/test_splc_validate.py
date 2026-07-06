@@ -232,3 +232,73 @@ def test_mixed_goto_and_branch_predecessors_agree() -> None:
     )
     pairs = validate(a, _prose())
     assert pairs["ACT_I_DONE"] == (Char.HECATE, Char.PUCK)
+
+
+def test_scene_anchor_override_changes_participants() -> None:
+    from scripts.splc.validate import participants
+
+    sc = scene(
+        "ACT_I_START",
+        let(Char.ROSALIND, const(1)),
+        goto("ACT_I_DONE"),
+        anchor=Char.PUCK,
+    )
+    # The scene-level anchor replaces the act anchor entirely.
+    assert participants(sc, Char.HECATE) == (Char.PUCK, Char.ROSALIND)
+
+
+def test_mixed_anchor_predecessors_compare_as_sets() -> None:
+    from scripts.splc.validate import validate
+
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            # Leaves (Hecate, Puck).
+            scene(
+                "ACT_I_START",
+                let(Char.PUCK, const(1)),
+                branch(
+                    eq(val(Char.PUCK), const(0)),
+                    then="ACT_I_DONE",
+                    else_="HECATE_READ_INPUT",
+                ),
+            ),
+            # Same on-stage set, opposite tuple order: leaves (Puck, Hecate).
+            scene(
+                "HECATE_READ_INPUT",
+                let(Char.HECATE, const(2)),
+                branch(
+                    eq(val(Char.HECATE), const(0)),
+                    then="ACT_I_DONE",
+                    else_="ACT_I_DONE",
+                ),
+                anchor=Char.PUCK,
+            ),
+            scene("ACT_I_DONE", halt_act(), companion=Char.PUCK),
+        ],
+    )
+    validate(a, _prose())  # must not raise
+
+
+def test_pop_recall_speaker_uses_scene_anchor() -> None:
+    from scripts.splc.validate import IrError, validate
+
+    # Pop targets the scene anchor, so the *other* pair member (Rosalind)
+    # speaks the Recall — and she has no such key in her pool.
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            scene(
+                "ACT_I_START",
+                pop(Char.PUCK, recall="hewn_glyph"),
+                goto("ACT_I_DONE"),
+                anchor=Char.PUCK,
+                companion=Char.ROSALIND,
+            ),
+            scene("ACT_I_DONE", halt_act(), companion=Char.ROSALIND),
+        ],
+    )
+    with pytest.raises(IrError, match="rosalind"):
+        validate(a, _prose())

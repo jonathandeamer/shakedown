@@ -31,7 +31,8 @@ def _op_targets(op: Op) -> set[Char]:
     return set()
 
 
-def participants(sc: Scene, anchor: Char) -> tuple[Char, Char]:
+def participants(sc: Scene, act_anchor: Char) -> tuple[Char, Char]:
+    anchor = sc.anchor or act_anchor
     chars: set[Char] = {anchor}
     for op in sc.ops:
         chars |= _op_targets(op)
@@ -87,7 +88,10 @@ def entry_pairs(a: Act) -> dict[str, tuple[Char, Char] | None]:
             for target in [op.then] + ([op.else_] if op.else_ is not None else []):
                 if target not in by_label:
                     continue
-                if target in entry and entry[target] != leaving:
+                recorded = entry.get(target)
+                if target in entry and (
+                    recorded is None or set(recorded) != set(leaving)
+                ):
                     raise IrError(
                         f"scene {target}: predecessors leave inconsistent "
                         f"stage pairs ({entry[target]} vs {leaving} from "
@@ -121,7 +125,8 @@ def validate(a: Act, prose: ProseEngine) -> dict[str, tuple[Char, Char] | None]:
                     raise IrError(f"scene {sc.label}: jump to undefined scene {target}")
 
             if isinstance(op, Pop):
-                speaker = pair[1] if op.target == a.anchor else a.anchor
+                anchor = sc.anchor or a.anchor
+                speaker = pair[1] if op.target == anchor else anchor
                 try:
                     prose.recall_placeholder(speaker, op.recall)
                 except KeyError as exc:

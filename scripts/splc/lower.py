@@ -116,6 +116,7 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
     blocks: list[str] = []
     for index, sc in enumerate(a.scenes):
         pair = participants(sc, a.anchor)
+        anchor = sc.anchor or a.anchor
         lines: list[str] = [
             f"{_HEADING_INDENT}{prose.scene_heading(sc.label)}",
             "",
@@ -126,7 +127,7 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
         for op_index, op in enumerate(sc.ops):
             seed = f"{sc.label}:{op_index}"
             if isinstance(op, Let):
-                speaker, addressee = _roles(op.target, a.anchor, pair)
+                speaker, addressee = _roles(op.target, anchor, pair)
                 cmp_phrase = prose.comparator(speaker, "eq", seed)
                 sentence = (
                     f"You are {cmp_phrase} "
@@ -134,37 +135,37 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
                 )
                 lines.append(_speech(speaker, sentence))
             elif isinstance(op, Push):
-                speaker, addressee = _roles(op.target, a.anchor, pair)
+                speaker, addressee = _roles(op.target, anchor, pair)
                 sentence = (
                     f"Remember {_render_expr(op.expr, speaker, addressee, prose)}."
                 )
                 lines.append(_speech(speaker, sentence))
             elif isinstance(op, Pop):
-                speaker, _ = _roles(op.target, a.anchor, pair)
+                speaker, _ = _roles(op.target, anchor, pair)
                 lines.append(
                     _speech(speaker, prose.recall_placeholder(speaker, op.recall))
                 )
             elif isinstance(op, ReadChar):
-                speaker, _ = _roles(op.target, a.anchor, pair)
+                speaker, _ = _roles(op.target, anchor, pair)
                 lines.append(_speech(speaker, "Open your mind!"))
             elif isinstance(op, PrintChar):
-                speaker, _ = _roles(op.target, a.anchor, pair)
+                speaker, _ = _roles(op.target, anchor, pair)
                 lines.append(_speech(speaker, "Speak your mind!"))
             elif isinstance(op, PrintInt):
-                speaker, _ = _roles(op.target, a.anchor, pair)
+                speaker, _ = _roles(op.target, anchor, pair)
                 lines.append(_speech(speaker, "Open your heart!"))
             elif isinstance(op, Branch):
                 tested = _tested_char(op, sc)
                 if tested in pair:
-                    speaker, addressee = _roles(tested, a.anchor, pair)
+                    speaker, addressee = _roles(tested, anchor, pair)
                     cmp_phrase = prose.comparator(speaker, op.cond.op, seed)
                     rhs = _render_expr(op.cond.right, speaker, addressee, prose)
                     question = f"Are you {cmp_phrase} {rhs}?"
                 else:
                     # Off-stage tested character: third-person question by
                     # the anchor; the other pair member answers the Ifs.
-                    speaker = a.anchor
-                    addressee = pair[1] if pair[0] == a.anchor else pair[0]
+                    speaker = anchor
+                    addressee = pair[1] if pair[0] == anchor else pair[0]
                     cmp_phrase = prose.comparator(speaker, op.cond.op, seed)
                     rhs = _render_expr(op.cond.right, speaker, addressee, prose)
                     question = f"Is {tested.value} {cmp_phrase} {rhs}?"
@@ -200,14 +201,14 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
                     )
             elif isinstance(op, Goto):
                 target_entry = entry.get(op.target)
-                if target_entry is not None and pair != target_entry:
+                if target_entry is not None and set(pair) != set(target_entry):
                     for direction in _stage_directions(pair, target_entry):
                         lines.append(direction)
                         lines.append("")
                 lines.append(
                     _speech(
-                        a.anchor,
-                        _jump_sentence(prose, a.anchor, index, op.target, order, seed),
+                        anchor,
+                        _jump_sentence(prose, anchor, index, op.target, order, seed),
                     )
                 )
             elif isinstance(op, HaltAct):

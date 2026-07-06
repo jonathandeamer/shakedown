@@ -269,3 +269,52 @@ def test_goto_adapts_to_branch_defined_entry(tmp_path: Path) -> None:
     # The goto site in GOLD_MID emits none (target entry was branch-defined).
     mid = text.split("Scene @GOLD_MID", 1)[1].split(heading, 1)[0]
     assert "[Exit" not in mid and "[Enter" not in mid
+
+
+def test_scene_anchor_override_directs_speakers_and_stage(
+    tmp_path: Path,
+) -> None:
+    from scripts.splc.lower import lower_act
+
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            scene(
+                "GOLD_START",
+                let(Char.PUCK, const(1)),
+                branch(
+                    eq(val(Char.PUCK), const(0)),
+                    then="GOLD_MID",
+                    else_="GOLD_MID",
+                ),
+            ),
+            # Anchor flips to Puck; Rosalind replaces Hecate on stage.
+            scene(
+                "GOLD_MID",
+                let(Char.ROSALIND, const(2)),
+                goto("GOLD_DONE"),
+                anchor=Char.PUCK,
+            ),
+            scene(
+                "GOLD_DONE",
+                halt_act(),
+                anchor=Char.PUCK,
+                companion=Char.ROSALIND,
+            ),
+        ],
+    )
+    text = lower_act(a, _golden_engine(tmp_path))
+    mid = text.split("Scene @GOLD_MID", 1)[1].split("Scene @GOLD_DONE", 1)[0]
+    # Entry adaptation at GOLD_MID's start: Hecate leaves, Rosalind enters.
+    assert "[Exit Hecate]" in mid
+    assert "[Enter Rosalind]" in mid
+    # The scene anchor (Puck) speaks the assignment and the goto.
+    assert "Puck:\n You are as swift as a black cat." in mid
+    assert "Puck:\n Let us proceed to scene @GOLD_DONE." in mid
+    # GOLD_MID and GOLD_DONE stage the same set: no directions at the goto
+    # site and none at GOLD_DONE's start beyond the final [Exeunt].
+    assert mid.count("[Exit") == 1 and mid.count("[Enter") == 1
+    done = text.split("Scene @GOLD_DONE", 1)[1]
+    assert "[Exit" not in done and "[Enter" not in done
+    assert "[Exeunt]" in done
