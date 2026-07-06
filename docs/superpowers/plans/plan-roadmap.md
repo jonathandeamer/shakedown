@@ -54,7 +54,7 @@ gates. The win: every plan is written against ground truth.
 | 5 | Slice 2 — Low-risk fixtures | §7.5 | Seven fixtures pass: Auto links (URL only), Backslash escapes, Code Spans, Tidyness, Tabs, Horizontal rules, Code Blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 6 | Slice 3 — Medium-risk fixtures | §7.6 | ~10 fixtures pass: Hard-wrapped paragraphs with list-like lines; Links (inline, reference, shortcut); Images; Literal quotes in titles; Strong and em together; Inline HTML (Simple); Inline HTML comments; Blockquotes with code blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 7 | Slice 4 — High-risk fixtures | §7.7 | Three fixtures pass: Inline HTML (Advanced); Nested blockquotes (full); Ordered and unordered lists (full) | §8.1 four-gate per fixture; spike snippets still pass | pending |
-| 8 | Slice 5 — Documentation aggregates | §7.8 | Two aggregate fixtures pass: Markdown Documentation — Basics; Markdown Documentation — Syntax. If all 23 fixtures pass or are documented divergences, cuts `1.0.0` per CLAUDE.md milestone policy | §8.1 four-gate per fixture; full 23-fixture suite green | pending |
+| 8 | Slice 5 — Documentation aggregates | §7.8 | Two aggregate fixtures pass: Markdown Documentation — Basics; Markdown Documentation — Syntax. All 23 fixtures pass or are documented divergences | §8.1 four-gate per fixture; full 23-fixture suite green | pending |
 
 ## How to write the next plan
 
@@ -109,4 +109,4 @@ interactive design session before any replacement list plan is written.
 - `docs/superpowers/specs/2026-07-05-spl-ir-compiler-design.md` — approved design for the SPL-from-IR compiler (splc), resolving the Spike A halt.
 - `docs/spl/literary-spec.md` — voice, palette, decorative-surface policy.
 - `docs/ralph-loop.md` — Huntley/Ralph loop methodology and `@file` university pattern.
-- `CLAUDE.md` — commit conventions, version cadence, target interface, implementation workflow.
+- `CLAUDE.md` — commit conventions, target interface, implementation workflow.

@@ -160,9 +160,6 @@ uv run ruff check .  # lint Python
 uv run ruff format . # format Python
 uv run pyright       # type-check Python
 uv run python scripts/query_docs.py "query"  # query active documentation paragraphs to save tokens
-uv run cz bump                              # bump version based on conventional commits since last tag
-uv run git-cliff -o CHANGELOG.md           # regenerate full changelog
-uv run git-cliff --unreleased --prepend CHANGELOG.md  # prepend unreleased commits only
 ```
 
 ## Python conventions
@@ -226,20 +223,20 @@ Conventional commits enforced by `.githooks/commit-msg` (activated in Setup abov
 
 ### Commit types
 
-| Type | Use for | Bumps version? |
-|---|---|---|
-| `feat` | User-facing functionality added to `shakedown.spl` | minor |
-| `fix` | Bug fix in a deliverable or infrastructure — **not** for test-only changes | patch |
-| `test` | Adding or fixing tests; use this instead of `fix:` when only test files change | no |
-| `docs` | Documentation, specs, plans, design docs, READMEs | no |
-| `experiment` | Feasibility study, experiment sketch, or research finding | no |
-| `chore` | Tooling, infrastructure, config, build, cleanup, renaming | no |
-| `refactor` | Code restructure with no behaviour change | no |
-| `perf` | Performance improvement | patch |
-| `ci` | CI/CD pipeline changes | no |
-| `build` | Build system changes | no |
-| `style` | Formatting only | no |
-| `revert` | Revert a prior commit | depends |
+| Type | Use for |
+|---|---|
+| `feat` | User-facing functionality added to `shakedown.spl` |
+| `fix` | Bug fix in a deliverable or infrastructure — **not** for test-only changes |
+| `test` | Adding or fixing tests; use this instead of `fix:` when only test files change |
+| `docs` | Documentation, specs, plans, design docs, READMEs |
+| `experiment` | Feasibility study, experiment sketch, or research finding |
+| `chore` | Tooling, infrastructure, config, build, cleanup, renaming |
+| `refactor` | Code restructure with no behaviour change |
+| `perf` | Performance improvement |
+| `ci` | CI/CD pipeline changes |
+| `build` | Build system changes |
+| `style` | Formatting only |
+| `revert` | Revert a prior commit |
 
 ### Breaking changes
 
@@ -249,33 +246,13 @@ Append `!` before the colon for breaking changes:
 chore!: rename shakedown → something-else
 ```
 
-### When to cut a version
+### Versioning
 
-Version = progress signal. Cut one when something is demonstrably working, not after every commit.
-
-| Milestone | Version |
-|---|---|
-| First fixture passing end-to-end | `0.1.0` |
-| Each additional fixture, or a coherent group (e.g. all inline elements) | minor bump |
-| Bug fix in a passing fixture, no new capability | patch bump |
-| Every fixture either passes or is documented as an accepted divergence in `docs/markdown/divergences.md` | `1.0.0` |
-
-**Operator-only.** Implementation agents must NOT run `cz bump`,
-`git tag`, `git push --tags`, or update `CHANGELOG.md` unless the current
-plan step explicitly authorises it. Version cuts are operator decisions per
-architecture spec §7.9.
-
-### How to cut a version
-
-```bash
-uv run cz bump                              # computes bump from commits, updates pyproject.toml, commits + tags
-uv run git-cliff -o CHANGELOG.md           # regenerate changelog up to the new tag
-git add CHANGELOG.md
-git commit -m "docs: update changelog for $(uv run cz version --project)"
-```
-
-`cz bump` reads conventional commits since the last tag to determine the bump type:
-`feat` → minor, `fix`/`perf` → patch, any `!` breaking change → major.
+This repo does not use semantic versioning or automated version bumps.
+`pyproject.toml` stays pinned at `0.0.1`; there is no `CHANGELOG.md`, no
+`cz bump`, and no version-cut ceremony. Progress is tracked through
+`docs/superpowers/plans/plan-roadmap.md` and git history, not a version
+number.
 
 ### Common mistakes to avoid
 

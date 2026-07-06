@@ -588,7 +588,7 @@ Every `Markdown.mdtest` fixture has an explicit route:
 
 ### 7.9 Per-Slice Discipline
 
-Every slice ends with: target fixture(s) passing; all prior fixtures still passing; commit per slice (or sub-fixture) following conventional commits. Version bumps and tags follow CLAUDE.md's milestone policy, but autonomous run-loop agents must not run `cz bump`, create tags, or push release artifacts unless explicitly authorized by the human/operator.
+Every slice ends with: target fixture(s) passing; all prior fixtures still passing; commit per slice (or sub-fixture) following conventional commits. This repo does not use version bumps or tags (see CLAUDE.md's Versioning section); progress is tracked through the plan roadmap and git history.
 
 ---
 
@@ -645,14 +645,13 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 - **A fixture requires Markdown.pl behavior we haven't seen.** *Mitigation:* `~/markdown/Markdown.pl` is ground truth; unexpected behavior is investigated against the binary, not against documentation.
 - **A spike succeeds at minimum scope but fails at full fixture scope in Slice 4.** *Mitigation:* spikes establish a floor, not a ceiling; Slice 4 has its own design step.
 
-### 8.6 What "Done" Looks Like for `1.0.0`
+### 8.6 What "Done" Looks Like
 
 - All 23 mdtest fixtures either pass or are documented divergences.
 - Strict-oracle audit clean for every claimed fixture.
 - Release-mode wrapper in place; dev wrapper moved to `scripts/dev/`.
 - `docs/spl/literary-spec.md` and `src/literary.toml` match the shipped SPL.
 - Performance budget met for representative fixtures.
-- `1.0.0` tag cut per CLAUDE.md's version policy.
 
 ---
 
