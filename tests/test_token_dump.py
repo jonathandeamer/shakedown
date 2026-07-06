@@ -27,3 +27,27 @@ def test_debug_target_dumps_integer_token_stream() -> None:
     # byte-identical), so the first popped stream value must be the
     # PARAGRAPH_OPEN token.
     assert values[0] == 1
+
+
+BASELINES = REPO / "tests" / "fixtures" / "token_stream"
+
+
+def _dump(input_bytes: bytes) -> bytes:
+    result = subprocess.run(
+        [str(DEBUG_WRAPPER)],
+        input=input_bytes,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr.decode()
+    return result.stdout
+
+
+def test_dump_matches_blessed_amps_baseline() -> None:
+    """G2 gate: blessed by the P1 plan; P2 and later slices re-bless
+    deliberately when the vocabulary grows, never casually."""
+    assert _dump(AMPS_FIXTURE.read_bytes()) == (BASELINES / "amps.dump").read_bytes()
+
+
+def test_dump_matches_blessed_short_baseline() -> None:
+    assert _dump(b"hello\n\nworld\n") == (BASELINES / "short.dump").read_bytes()
