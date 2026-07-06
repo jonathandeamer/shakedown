@@ -1,45 +1,9 @@
-                    Scene @DBG_START: The scribe weighs the stream measure.
+                    Scene @DBG_START: The scribe takes his station.
 
 [Enter Prospero and Puck]
 
 Prospero:
- Is Horatio more peaceful than the product of a normal little furry black cat and a little furry black cat?
-
-Puck:
- If so, let us proceed to scene @DBG_OLD_MEASURE.
-
-Puck:
- If not, let us proceed to scene @DBG_SHORT_MEASURE.
-
-
-                    Scene @DBG_OLD_MEASURE: The old cell keeps its measure.
-
-Puck:
- You are as rotten as the product of the sum of a flower and a sweet flower and the sum of a flower and the product of a little furry black cat and a normal little furry black cat.
-
-Prospero:
- We shall proceed to scene @DBG_LOOP.
-
-
-                    Scene @DBG_SHORT_MEASURE: The short cell takes Horatio's measure.
-
-Puck:
- You are as fair as Horatio.
-
-Prospero:
- We shall proceed to scene @DBG_LOOP.
-
-
-                    Scene @DBG_LOOP: The scribe asks if words remain.
-
-Puck:
- Are you as noble as nothing?
-
-Prospero:
- If so, we shall proceed to scene @DBG_DONE.
-
-Prospero:
- If not, we shall proceed to scene @DBG_POP.
+ We shall proceed to scene @DBG_POP.
 
 
                     Scene @DBG_POP: The herald yields one word and it is counted aloud.
@@ -47,8 +11,11 @@ Prospero:
 Prospero:
  Recall the herald's present word.
 
+Prospero:
+ Are you as honest as a curse?
+
 Puck:
- You are as fair as the difference between yourself and a flower.
+ If so, let us proceed to scene @DBG_DONE.
 
 Prospero:
  Open your heart!
@@ -60,7 +27,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @DBG_LOOP.
+ We shall return to scene @DBG_POP.
 
 
                     Scene @DBG_DONE: The counting is done.

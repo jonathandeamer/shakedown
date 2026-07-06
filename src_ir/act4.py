@@ -1,8 +1,9 @@
-"""Act IV — emit pass (Slice 1 token-stream to HTML). Ported from the
-hand-authored fragment; behavior identical. Anchor Prospero holds the
-remaining stream count; Puck carries the current token / scratch. See the
-Act IV port-readiness audit (docs/superpowers/notes/act4-port-audit.md) for
-the decoded ground truth this module reproduces."""
+"""Act IV — emit pass over the tokenized stream (Spike A P1). Prospero
+anchors and speaks; Puck carries the current token / scratch. Dispatch pops
+until the STREAM_END sentinel (src_ir/tokens.py) — the Slice-1 fixed stream
+count is retired. The final-paragraph close (single trailing newline) is
+decided by a one-token lookahead at each TEXT_END. Emission ground truth is
+unchanged from the Slice-1 port (docs/superpowers/notes/act4-port-audit.md)."""
 
 from __future__ import annotations
 
@@ -14,18 +15,16 @@ from scripts.splc.ir import (
     const,
     eq,
     goto,
-    gt,
     halt_act,
     let,
     pop,
     print_char,
     scene,
-    sub,
     val,
 )
 from src_ir import tokens
-from src_ir.cast import HORATIO, PROSPERO, PUCK
-from src_ir.stream import RECIPES, STREAM_THRESHOLD, slice_one_stream_expr
+from src_ir.cast import PROSPERO, PUCK
+from src_ir.stream import RECIPES
 
 
 def _emit(*codes: int) -> list[Op]:
@@ -43,48 +42,31 @@ ACT: Act = act(
     [
         scene(
             "ACT_IV_START",
-            branch(
-                gt(val(HORATIO), const(STREAM_THRESHOLD)),
-                then="SCRIBE_SET_SLICE_ONE_STREAM_COUNT",
-                else_="SCRIBE_SET_SHORT_STREAM_COUNT",
-            ),
-            companion=PUCK,
-        ),
-        scene(
-            "SCRIBE_SET_SLICE_ONE_STREAM_COUNT",
-            let(PROSPERO, slice_one_stream_expr()),
-            goto("SCRIBE_STREAM_CHECK"),
-            companion=PUCK,
-        ),
-        scene(
-            "SCRIBE_SET_SHORT_STREAM_COUNT",
-            let(PROSPERO, val(HORATIO)),
-            goto("SCRIBE_STREAM_CHECK"),
-            companion=PUCK,
-        ),
-        scene(
-            "SCRIBE_STREAM_CHECK",
-            branch(
-                eq(val(PROSPERO), const(0)),
-                then="ACT_IV_DONE",
-                else_="SCRIBE_POP_TOKEN",
-            ),
+            goto("SCRIBE_POP_TOKEN"),
             companion=PUCK,
         ),
         scene(
             "SCRIBE_POP_TOKEN",
             pop(PUCK, recall="heralds_present_word"),
-            let(PROSPERO, sub(val(PROSPERO), const(1))),
+            branch(
+                eq(val(PUCK), const(tokens.STREAM_END)),
+                then="ACT_IV_DONE",
+            ),
+            goto("SCRIBE_DISPATCH_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_DISPATCH_TOKEN",
             branch(
                 eq(val(PUCK), const(tokens.PARA)),
                 then="SCRIBE_EMIT_PARAGRAPH_OPEN",
                 else_="SCRIBE_TEST_PARAGRAPH_CLOSE",
             ),
+            companion=PUCK,
         ),
         scene(
             "SCRIBE_TEST_PARAGRAPH_CLOSE",
             branch(
-                eq(val(PUCK), const(0)),
+                eq(val(PUCK), const(tokens.TEXT_END)),
                 then="SCRIBE_TEST_FINAL_CLOSE",
                 else_="SCRIBE_TEST_ANCHOR_OPEN",
             ),
@@ -129,58 +111,64 @@ ACT: Act = act(
         scene(
             "SCRIBE_EMIT_PAYLOAD",
             print_char(PUCK),
-            goto("SCRIBE_STREAM_CHECK"),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_ANCHOR_OPEN",
             # <a href="
             *_emit(60, 97, 32, 104, 114, 101, 102, 61, 34),
-            goto("SCRIBE_STREAM_CHECK"),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_ANCHOR_TITLE",
             # " title="
             *_emit(34, 32, 116, 105, 116, 108, 101, 61, 34),
-            goto("SCRIBE_STREAM_CHECK"),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_ANCHOR_TEXT",
             # ">
             *_emit(34, 62),
-            goto("SCRIBE_STREAM_CHECK"),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_ANCHOR_CLOSE",
             # </a>
             *_emit(60, 47, 97, 62),
-            goto("SCRIBE_STREAM_CHECK"),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_PARAGRAPH_OPEN",
             # <p>
             *_emit(60, 112, 62),
-            goto("SCRIBE_STREAM_CHECK"),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_TEST_FINAL_CLOSE",
+            # Lookahead: the paragraph just closed; peek at the next stream
+            # item to choose the final (single-newline) close. Stashed in
+            # Prospero (his count register is retired) because _emit's
+            # per-byte loop below overwrites Puck's value.
+            pop(PUCK, recall="heralds_parting_word"),
+            let(PROSPERO, val(PUCK)),
             branch(
-                eq(val(PROSPERO), const(0)),
+                eq(val(PUCK), const(tokens.STREAM_END)),
                 then="SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE",
                 else_="SCRIBE_EMIT_PARAGRAPH_CLOSE",
             ),
-            companion=PUCK,
         ),
         scene(
             "SCRIBE_EMIT_PARAGRAPH_CLOSE",
-            # </p>\n\n
+            # </p>\n\n — then recall the stashed lookahead and dispatch it.
             *_emit(60, 47, 112, 62, 10, 10),
-            goto("SCRIBE_STREAM_CHECK"),
+            let(PUCK, val(PROSPERO)),
+            goto("SCRIBE_DISPATCH_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE",
-            # </p>\n
+            # </p>\n — the lookahead consumed STREAM_END; the play is done.
             *_emit(60, 47, 112, 62, 10),
-            goto("SCRIBE_STREAM_CHECK"),
+            goto("ACT_IV_DONE"),
         ),
         scene("ACT_IV_DONE", halt_act(), companion=PUCK),
     ],

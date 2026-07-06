@@ -276,6 +276,7 @@ voice_register = "ceremonial_declarative"
 blurb = "Prospero, scribe and emitter, whose pronouncements close the work."
 [characters.prospero.recall]
 heralds_present_word = "Recall the herald's present word."
+heralds_parting_word = "Recall the herald's parting word."
 [characters.prospero.stable_utility]
 v1 = "an angel"
 v2 = "a noble angel"

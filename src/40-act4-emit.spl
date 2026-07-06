@@ -3,43 +3,7 @@
 [Enter Prospero and Puck]
 
 Prospero:
- Is Horatio more noble than the product of a normal little furry black cat and a little furry black cat?
-
-Puck:
- If so, let us proceed to scene @SCRIBE_SET_SLICE_ONE_STREAM_COUNT.
-
-Puck:
- If not, let us proceed to scene @SCRIBE_SET_SHORT_STREAM_COUNT.
-
-
-                    Scene @SCRIBE_SET_SLICE_ONE_STREAM_COUNT: @LIT.scenes.SCRIBE_SET_SLICE_ONE_STREAM_COUNT.title
-
-Puck:
- You are as rotten as the product of the sum of a flower and a sweet flower and the sum of a flower and the product of a little furry black cat and a normal little furry black cat.
-
-Prospero:
- We shall proceed to scene @SCRIBE_STREAM_CHECK.
-
-
-                    Scene @SCRIBE_SET_SHORT_STREAM_COUNT: @LIT.scenes.SCRIBE_SET_SHORT_STREAM_COUNT.title
-
-Puck:
- You are as rotten as Horatio.
-
-Prospero:
- We shall proceed to scene @SCRIBE_STREAM_CHECK.
-
-
-                    Scene @SCRIBE_STREAM_CHECK: @LIT.scenes.SCRIBE_STREAM_CHECK.title
-
-Puck:
- Are you as noble as nothing?
-
-Prospero:
- If so, we shall proceed to scene @ACT_IV_DONE.
-
-Prospero:
- If not, we shall proceed to scene @SCRIBE_POP_TOKEN.
+ We shall proceed to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_POP_TOKEN: @LIT.scenes.SCRIBE_POP_TOKEN.title
@@ -47,11 +11,20 @@ Prospero:
 Prospero:
  @LIT.characters.prospero.recall.heralds_present_word
 
+Prospero:
+ Are you as noble as a curse?
+
 Puck:
- You are as rotten as the difference between yourself and a flower.
+ If so, let us proceed to scene @ACT_IV_DONE.
 
 Prospero:
- Are you as honest as an angel?
+ We shall proceed to scene @SCRIBE_DISPATCH_TOKEN.
+
+
+                    Scene @SCRIBE_DISPATCH_TOKEN: @LIT.scenes.SCRIBE_DISPATCH_TOKEN.title
+
+Prospero:
+ Are you as noble as an angel?
 
 Puck:
  If so, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_OPEN.
@@ -126,7 +99,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ We shall return to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_EMIT_ANCHOR_OPEN: @LIT.scenes.SCRIBE_EMIT_ANCHOR_OPEN.title
@@ -186,7 +159,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ We shall return to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_EMIT_ANCHOR_TITLE: @LIT.scenes.SCRIBE_EMIT_ANCHOR_TITLE.title
@@ -246,7 +219,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ We shall return to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_EMIT_ANCHOR_TEXT: @LIT.scenes.SCRIBE_EMIT_ANCHOR_TEXT.title
@@ -264,7 +237,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ We shall return to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_EMIT_ANCHOR_CLOSE: @LIT.scenes.SCRIBE_EMIT_ANCHOR_CLOSE.title
@@ -294,7 +267,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ We shall return to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_EMIT_PARAGRAPH_OPEN: @LIT.scenes.SCRIBE_EMIT_PARAGRAPH_OPEN.title
@@ -318,19 +291,25 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ We shall return to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_TEST_FINAL_CLOSE: @LIT.scenes.SCRIBE_TEST_FINAL_CLOSE.title
 
+Prospero:
+ @LIT.characters.prospero.recall.heralds_parting_word
+
 Puck:
- Are you as noble as nothing?
+ You are as rotten as myself.
 
 Prospero:
- If so, we shall proceed to scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE.
+ Are you as noble as a curse?
 
-Prospero:
- If not, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_CLOSE.
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE.
+
+Puck:
+ If not, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_CLOSE.
 
 
                     Scene @SCRIBE_EMIT_PARAGRAPH_CLOSE: @LIT.scenes.SCRIBE_EMIT_PARAGRAPH_CLOSE.title
@@ -372,7 +351,10 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ You are as noble as myself.
+
+Prospero:
+ We shall return to scene @SCRIBE_DISPATCH_TOKEN.
 
 
                     Scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE: @LIT.scenes.SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE.title
@@ -408,7 +390,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- We shall return to scene @SCRIBE_STREAM_CHECK.
+ We shall proceed to scene @ACT_IV_DONE.
 
 
                     Scene @ACT_IV_DONE: @LIT.scenes.ACT_IV_DONE.title

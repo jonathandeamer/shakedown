@@ -34,6 +34,10 @@ pattern = "scene_of_character"
 title = "Prospero opens one quiet chamber."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_DISPATCH_TOKEN]
+title = "The scribe reads the present word."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_EMIT_PAYLOAD]
 title = "One glyph is released."
 pattern = "bare_statement"
@@ -41,18 +45,6 @@ pattern = "bare_statement"
 [scenes.SCRIBE_POP_TOKEN]
 title = "The herald yields one bright word."
 pattern = "scene_of_character"
-
-[scenes.SCRIBE_SET_SHORT_STREAM_COUNT]
-title = "The short cell takes Horatio's measure."
-pattern = "bare_statement"
-
-[scenes.SCRIBE_SET_SLICE_ONE_STREAM_COUNT]
-title = "The old cell keeps its measure."
-pattern = "bare_statement"
-
-[scenes.SCRIBE_STREAM_CHECK]
-title = "The cell measures the remaining words."
-pattern = "locale"
 
 [scenes.SCRIBE_TEST_ANCHOR_CLOSE]
 title = "Prospero seals the anchor close."
