@@ -250,6 +250,8 @@ ordering invariant before block parsing begins.
 
 **Stream contract (2026-07-06):** a token on the stream is an integer code from the canonical table, followed by a fixed number of integer payloads determined by the code, followed — for text-bearing tokens — by a glyph run terminated by `0` (glyphs are always ≥ 1). The single definition of codes, payload arity, and text-bearing flags lives in `src_ir/tokens.py` and is consumed by Act II emission, Act III traversal, Act IV dispatch, and the debug dump. Detail: `docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`.
 
+Termination (P1, 2026-07-06): the stream is bottom-terminated by a `STREAM_END` sentinel (−1) seeded beneath every carrier stack; traversal is sentinel-based, retiring the Slice-1 fixed counts (128/315/387). `0` remains reserved as the text-run terminator (`TEXT_END`); glyphs are always ≥ 1.
+
 **Mechanic:** **multi-pass token-stream dispatcher.** Each pass recognizes one block class. Pass order matches Markdown.pl's `_RunBlockGamut` (see `docs/markdown/oracle-mechanics.md` Block Pipeline):
 
 1. Pass A: Headers — Setext (`===` / `---` underlines) before ATX (`#` prefixes). **Headers run first** so setext underlines are recognized as headers before any other pass can consume them.
