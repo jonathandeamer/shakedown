@@ -1,45 +1,40 @@
                     Scene @ACT_III_START: @LIT.scenes.ACT_III_START.title
 
-[Enter Puck and Romeo]
+[Enter Juliet and Puck]
 
 Puck:
- Is Horatio friendlier than the product of a normal little furry black cat and a little furry black cat?
+ Remember a wolf.
 
-Romeo:
- If so, let us proceed to scene @LYRIC_SET_SLICE_ONE_SCAN_COUNT.
-
-Romeo:
- If not, let us proceed to scene @LYRIC_SET_SHORT_SCAN_COUNT.
+Juliet:
+ Let us proceed to scene @TRAVERSE_NEXT_TOKEN.
 
 
-                    Scene @LYRIC_SET_SLICE_ONE_SCAN_COUNT: @LIT.scenes.LYRIC_SET_SLICE_ONE_SCAN_COUNT.title
+                    Scene @TRAVERSE_NEXT_TOKEN: @LIT.scenes.TRAVERSE_NEXT_TOKEN.title
 
-Puck:
- You are as rotten as the product of the sum of a flower and a furry black cat and the difference between the product of a little furry black cat and a little furry black cat and a flower.
+Juliet:
+ @LIT.characters.juliet.recall.nights_next_word
 
-Romeo:
- Let us proceed to scene @LYRIC_SCAN_CHECK.
-
-
-                    Scene @LYRIC_SET_SHORT_SCAN_COUNT: @LIT.scenes.LYRIC_SET_SHORT_SCAN_COUNT.title
+Juliet:
+ Are you as fair as a wolf?
 
 Puck:
- You are as noble as Horatio.
-
-Romeo:
- Let us proceed to scene @LYRIC_SCAN_CHECK.
-
-
-                    Scene @LYRIC_SCAN_CHECK: @LIT.scenes.LYRIC_SCAN_CHECK.title
-
-Puck:
- Are you as rotten as nothing?
-
-Romeo:
  If so, let us proceed to scene @LYRIC_OPEN_REVERSE.
 
+Puck:
+ Remember myself.
+
+Juliet:
+ Let us proceed to scene @TRAVERSE_OPEN_TEXT.
+
+
+                    Scene @TRAVERSE_OPEN_TEXT: @LIT.scenes.TRAVERSE_OPEN_TEXT.title
+
+[Exit Juliet]
+
+[Enter Romeo]
+
 Romeo:
- If not, let us proceed to scene @LYRIC_POP_GLYPH.
+ Let us proceed to scene @LYRIC_POP_GLYPH.
 
 
                     Scene @LYRIC_POP_GLYPH: @LIT.scenes.LYRIC_POP_GLYPH.title
@@ -49,6 +44,12 @@ Romeo:
 
 Puck:
  You are as noble as the difference between yourself and a flower.
+
+Romeo:
+ Are you as golden as nothing?
+
+Puck:
+ If so, let us proceed to scene @TRAVERSE_COPY_TERMINATOR.
 
 Romeo:
  Are you as golden as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
@@ -1042,100 +1043,54 @@ Juliet:
 [Enter Romeo]
 
 Romeo:
- Let us return to scene @LYRIC_SCAN_CHECK.
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @TRAVERSE_COPY_TERMINATOR: @LIT.scenes.TRAVERSE_COPY_TERMINATOR.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ Remember nothing.
+
+Juliet:
+ Let us return to scene @TRAVERSE_NEXT_TOKEN.
 
 
                     Scene @LYRIC_OPEN_REVERSE: @LIT.scenes.LYRIC_OPEN_REVERSE.title
 
-[Exit Puck]
-
-[Enter Juliet]
+Juliet:
+ Remember a wolf.
 
 Juliet:
- Is Horatio friendlier than the product of a normal little furry black cat and a little furry black cat?
-
-Romeo:
- If so, let us proceed to scene @LYRIC_SET_SLICE_ONE_REVERSE_COUNT.
-
-Romeo:
- If not, let us proceed to scene @LYRIC_SET_SHORT_REVERSE_COUNT.
-
-
-                    Scene @LYRIC_SET_SLICE_ONE_REVERSE_COUNT: @LIT.scenes.LYRIC_SET_SLICE_ONE_REVERSE_COUNT.title
-
-Juliet:
- You are as fair as the product of the sum of a rose and a sweet rose and the sum of a rose and the product of a little furry black cat and a normal little furry black cat.
-
-Juliet:
- Let us proceed to scene @LYRIC_REVERSE_CHECK.
-
-
-                    Scene @LYRIC_SET_SHORT_REVERSE_COUNT: @LIT.scenes.LYRIC_SET_SHORT_REVERSE_COUNT.title
-
-Juliet:
- You are as fair as Horatio.
-
-Juliet:
- Let us proceed to scene @LYRIC_REVERSE_CHECK.
-
-
-                    Scene @LYRIC_REVERSE_CHECK: @LIT.scenes.LYRIC_REVERSE_CHECK.title
-
-Juliet:
- Are you as fair as nothing?
-
-Romeo:
- If so, let us proceed to scene @ACT_III_DONE.
-
-Romeo:
- If not, let us proceed to scene @LYRIC_REVERSE_POP.
+ Let us proceed to scene @LYRIC_REVERSE_POP.
 
 
                     Scene @LYRIC_REVERSE_POP: @LIT.scenes.LYRIC_REVERSE_POP.title
 
-Romeo:
- @LIT.characters.romeo.recall.roses_kept_word
+Puck:
+ @LIT.characters.puck.recall.roses_kept_word
+
+Puck:
+ Are you as rotten as a wolf?
 
 Juliet:
- You are as sweet as the difference between yourself and a rose.
-
-[Exit Romeo]
-
-[Enter Puck]
+ If so, let us proceed to scene @ACT_III_DONE.
 
 Juliet:
- Let us proceed to scene @LYRIC_OPEN_PUSH_BACK.
-
-
-                    Scene @LYRIC_OPEN_PUSH_BACK: @LIT.scenes.LYRIC_OPEN_PUSH_BACK.title
+ Remember myself.
 
 Juliet:
- Let us proceed to scene @LYRIC_PUSH_BACK.
+ Let us return to scene @LYRIC_REVERSE_POP.
 
 
-                    Scene @LYRIC_PUSH_BACK: @LIT.scenes.LYRIC_PUSH_BACK.title
-
-Juliet:
- You are as gentle as myself.
-
-Juliet:
- Remember yourself.
+                    Scene @ACT_III_DONE: @LIT.scenes.ACT_III_DONE.title
 
 [Exit Puck]
 
 [Enter Romeo]
-
-Juliet:
- Let us proceed to scene @LYRIC_RETURN_TO_REVERSE.
-
-
-                    Scene @LYRIC_RETURN_TO_REVERSE: @LIT.scenes.LYRIC_RETURN_TO_REVERSE.title
-
-Romeo:
- Let us return to scene @LYRIC_REVERSE_CHECK.
-
-
-                    Scene @ACT_III_DONE: @LIT.scenes.ACT_III_DONE.title
 
 [Exeunt]
 

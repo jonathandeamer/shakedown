@@ -110,10 +110,6 @@ pattern = "scene_of_character"
 title = "Juliet receives the titled star path."
 pattern = "scene_of_character"
 
-[scenes.LYRIC_OPEN_PUSH_BACK]
-title = "Puck takes the starlit word."
-pattern = "scene_of_character"
-
 [scenes.LYRIC_OPEN_REFERENCE_FALLBACK]
 title = "Juliet keeps the starlit reference rose."
 pattern = "scene_of_character"
@@ -150,10 +146,6 @@ pattern = "bare_statement"
 title = "Puck hands one mark to the sun."
 pattern = "scene_of_character"
 
-[scenes.LYRIC_PUSH_BACK]
-title = "The herald carries the gilded stream."
-pattern = "scene_of_character"
-
 [scenes.LYRIC_REFERENCE_ATT_POP_BODY]
 title = "The house name keeps its ampersand."
 pattern = "bare_statement"
@@ -178,41 +170,13 @@ pattern = "bare_statement"
 title = "The rose tests the ampersand house."
 pattern = "bare_statement"
 
-[scenes.LYRIC_RETURN_TO_REVERSE]
-title = "Romeo counts the remaining roses."
-pattern = "scene_of_character"
-
 [scenes.LYRIC_RETURN_TO_SCAN]
 title = "Romeo resumes the morning count."
 pattern = "scene_of_character"
 
-[scenes.LYRIC_REVERSE_CHECK]
-title = "The evening counts the garden home."
-pattern = "bare_statement"
-
 [scenes.LYRIC_REVERSE_POP]
 title = "Juliet lifts one starlit glyph."
 pattern = "scene_of_character"
-
-[scenes.LYRIC_SCAN_CHECK]
-title = "The morning counts each glyph."
-pattern = "bare_statement"
-
-[scenes.LYRIC_SET_SHORT_REVERSE_COUNT]
-title = "The short rose takes Horatio's measure."
-pattern = "bare_statement"
-
-[scenes.LYRIC_SET_SHORT_SCAN_COUNT]
-title = "The short morning takes Horatio's measure."
-pattern = "bare_statement"
-
-[scenes.LYRIC_SET_SLICE_ONE_REVERSE_COUNT]
-title = "The old rose keeps its measure."
-pattern = "bare_statement"
-
-[scenes.LYRIC_SET_SLICE_ONE_SCAN_COUNT]
-title = "The old morning keeps its measure."
-pattern = "bare_statement"
 
 [scenes.LYRIC_TEST_AMPERSAND]
 title = "A rose by any other name."
@@ -220,4 +184,16 @@ pattern = "iconic_echo"
 
 [scenes.LYRIC_TEST_LEFT_ANGLE]
 title = "The line looks for a bracketed shadow."
+pattern = "bare_statement"
+
+[scenes.TRAVERSE_COPY_TERMINATOR]
+title = "The night lays down the sealing stone."
+pattern = "bare_statement"
+
+[scenes.TRAVERSE_NEXT_TOKEN]
+title = "Juliet takes the herald's next word."
+pattern = "cross_character"
+
+[scenes.TRAVERSE_OPEN_TEXT]
+title = "The morning takes up the gilded scan."
 pattern = "bare_statement"

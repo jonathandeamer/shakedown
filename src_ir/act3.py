@@ -1,7 +1,10 @@
-"""Act III — span pass (Slice 1). Ported from the hand-authored fragment;
-behavior identical, quirks included (Romeo's write-only destination discard
-pile, Rosalind's drained-and-discarded consult pops, the hardcoded Slice 1
-anchor payloads, the `[link(` fallback that drops the current glyph).
+"""Act III — span pass over the tokenized stream (Spike A P1). Traversal
+copies token codes and fixed payloads through untouched and runs the span
+gamut only on text-payload glyphs (arity table in src_ir/tokens.py); the 56
+span scenes are the Slice-1 port, quirks included (Romeo's write-only
+destination discard pile and dead scan decrement, Rosalind's
+drained-and-discarded consult pops, the hardcoded Slice 1 anchor payloads,
+the `[link(` fallback that drops the current glyph).
 Decoded ground truth: docs/superpowers/notes/act3-port-audit.md."""
 
 from __future__ import annotations
@@ -15,7 +18,6 @@ from scripts.splc.ir import (
     const,
     eq,
     goto,
-    gt,
     halt_act,
     let,
     pop,
@@ -25,13 +27,13 @@ from scripts.splc.ir import (
     val,
 )
 from src_ir import tokens
-from src_ir.cast import HORATIO, JULIET, PUCK, ROMEO, ROSALIND
-from src_ir.stream import (
-    RECIPES,
-    STREAM_THRESHOLD,
-    slice_one_glyph_expr,
-    slice_one_stream_expr,
-)
+from src_ir.cast import JULIET, PUCK, ROMEO, ROSALIND
+from src_ir.stream import RECIPES
+
+# P1 traverses PARA-only streams: no fixed payloads, text follows. P2
+# replaces the unconditional copy in TRAVERSE_NEXT_TOKEN with a dispatch
+# generated over tokens.ARITY.
+assert tokens.ARITY[tokens.PARA] == tokens.TokenArity(0, True)
 
 
 def _k(n: int) -> Expr:
@@ -71,41 +73,40 @@ ACT: Act = act(
     3,
     ROMEO,
     [
-        # --- Scan phase: (Puck, Romeo) ---
+        # --- Traversal phase: walk token stream ---
         scene(
             "ACT_III_START",
-            branch(
-                gt(val(HORATIO), const(STREAM_THRESHOLD)),
-                then="LYRIC_SET_SLICE_ONE_SCAN_COUNT",
-                else_="LYRIC_SET_SHORT_SCAN_COUNT",
-            ),
-            anchor=PUCK,
-            companion=ROMEO,
-        ),
-        scene(
-            "LYRIC_SET_SLICE_ONE_SCAN_COUNT",
-            let(ROMEO, slice_one_glyph_expr()),
-            goto("LYRIC_SCAN_CHECK"),
+            push(JULIET, const(tokens.STREAM_END)),
+            goto("TRAVERSE_NEXT_TOKEN"),
+            anchor=JULIET,
             companion=PUCK,
         ),
         scene(
-            "LYRIC_SET_SHORT_SCAN_COUNT",
-            let(ROMEO, val(HORATIO)),
-            goto("LYRIC_SCAN_CHECK"),
-            companion=PUCK,
-        ),
-        scene(
-            "LYRIC_SCAN_CHECK",
+            "TRAVERSE_NEXT_TOKEN",
+            pop(PUCK, recall="nights_next_word"),
             branch(
-                eq(val(ROMEO), const(0)),
+                eq(val(PUCK), const(tokens.STREAM_END)),
                 then="LYRIC_OPEN_REVERSE",
-                else_="LYRIC_POP_GLYPH",
             ),
+            # PARA (build-time assert above): copy the code through
+            # untouched; no fixed payloads; a glyph run follows.
+            push(JULIET, val(PUCK)),
+            goto("TRAVERSE_OPEN_TEXT"),
+            anchor=JULIET,
+        ),
+        scene(
+            "TRAVERSE_OPEN_TEXT",
+            goto("LYRIC_POP_GLYPH"),
             companion=PUCK,
         ),
+        # --- Scan phase: (Puck, Romeo) ---
         scene(
             "LYRIC_POP_GLYPH",
             *_pop_glyph("mornings_first_cut"),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="TRAVERSE_COPY_TERMINATOR",
+            ),
             branch(
                 eq(val(PUCK), _k(91)),  # '['
                 then="LYRIC_REFERENCE_POP_AFTER_OPEN",
@@ -459,66 +460,33 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_RETURN_TO_SCAN",
-            goto("LYRIC_SCAN_CHECK"),
+            goto("LYRIC_POP_GLYPH"),
             companion=PUCK,
         ),
-        # --- Reverse phase: (Romeo, Juliet) / (Juliet, Puck), anchor Juliet ---
+        scene(
+            "TRAVERSE_COPY_TERMINATOR",
+            push(JULIET, const(tokens.TEXT_END)),
+            goto("TRAVERSE_NEXT_TOKEN"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        # --- Reverse phase: (Juliet, Puck), anchor Juliet ---
         scene(
             "LYRIC_OPEN_REVERSE",
-            branch(
-                gt(val(HORATIO), const(STREAM_THRESHOLD)),
-                then="LYRIC_SET_SLICE_ONE_REVERSE_COUNT",
-                else_="LYRIC_SET_SHORT_REVERSE_COUNT",
-            ),
+            push(PUCK, const(tokens.STREAM_END)),
+            goto("LYRIC_REVERSE_POP"),
             anchor=JULIET,
-            companion=ROMEO,
-        ),
-        scene(
-            "LYRIC_SET_SLICE_ONE_REVERSE_COUNT",
-            let(ROMEO, slice_one_stream_expr()),
-            goto("LYRIC_REVERSE_CHECK"),
-            anchor=JULIET,
-        ),
-        scene(
-            "LYRIC_SET_SHORT_REVERSE_COUNT",
-            let(ROMEO, val(HORATIO)),
-            goto("LYRIC_REVERSE_CHECK"),
-            anchor=JULIET,
-        ),
-        scene(
-            "LYRIC_REVERSE_CHECK",
-            branch(
-                eq(val(ROMEO), const(0)),
-                then="ACT_III_DONE",
-                else_="LYRIC_REVERSE_POP",
-            ),
-            anchor=JULIET,
-            companion=ROMEO,
         ),
         scene(
             "LYRIC_REVERSE_POP",
             pop(JULIET, recall="roses_kept_word"),
-            let(ROMEO, sub(val(ROMEO), const(1))),
-            goto("LYRIC_OPEN_PUSH_BACK"),
+            branch(
+                eq(val(JULIET), const(tokens.STREAM_END)),
+                then="ACT_III_DONE",
+            ),
+            push(PUCK, val(JULIET)),
+            goto("LYRIC_REVERSE_POP"),
             anchor=JULIET,
-        ),
-        scene(
-            "LYRIC_OPEN_PUSH_BACK",
-            goto("LYRIC_PUSH_BACK"),
-            anchor=JULIET,
-            companion=PUCK,
-        ),
-        scene(
-            "LYRIC_PUSH_BACK",
-            let(PUCK, val(JULIET)),
-            push(PUCK, val(PUCK)),
-            goto("LYRIC_RETURN_TO_REVERSE"),
-            anchor=JULIET,
-        ),
-        scene(
-            "LYRIC_RETURN_TO_REVERSE",
-            goto("LYRIC_REVERSE_CHECK"),
-            companion=JULIET,
         ),
         scene(
             "ACT_III_DONE",

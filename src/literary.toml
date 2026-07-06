@@ -126,6 +126,7 @@ first_forest_name = "Recall the first forest name."
 second_forest_seal = "Recall the second forest seal."
 second_forest_path = "Recall the second forest path."
 second_forest_name = "Recall the second forest name."
+roses_kept_word = "Recall the rose's kept word."
 [characters.puck.stable_utility]
 v1 = "a flower"
 v2 = "a sweet flower"
@@ -254,6 +255,7 @@ palette = "pastoral_natural"
 voice_register = "lyrical_night_imagery"
 blurb = "Juliet, night-star lyric, who lays final roses on the silver path."
 [characters.juliet.recall]
+nights_next_word = "Recall the night's next word."
 [characters.juliet.stable_utility]
 v1 = "a rose"
 v2 = "a sweet rose"
