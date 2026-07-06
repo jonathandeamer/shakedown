@@ -8,11 +8,8 @@ from __future__ import annotations
 
 from scripts.splc.ir import (
     Act,
-    BinOp,
-    Const,
     Op,
     act,
-    add,
     branch,
     const,
     eq,
@@ -20,7 +17,6 @@ from scripts.splc.ir import (
     gt,
     halt_act,
     let,
-    mul,
     pop,
     print_char,
     scene,
@@ -29,47 +25,16 @@ from scripts.splc.ir import (
 )
 from src_ir import tokens
 from src_ir.cast import HORATIO, PROSPERO, PUCK
-
-# Shared magic numbers — imported by src_ir/debug_act4.py so the two plays
-# can never drift. STREAM_THRESHOLD picks the Slice 1 vs. short measure;
-# SLICE_ONE_STREAM_COUNT is the fixed Slice 1 reverse-stream length.
-STREAM_THRESHOLD = 128  # 8 × 16
-SLICE_ONE_STREAM_COUNT = 387  # (1 + 2) × (1 + 8 × 16)
-
-
-def slice_one_count_expr() -> BinOp:
-    """387 as a single 4-operator phrase, within the compliance bound
-    (test_numeric_recipe_complexity_stays_bounded). A bare const(387) would
-    decompose to five operators."""
-    expr = mul(add(const(1), const(2)), add(const(1), mul(const(8), const(16))))
-    return expr
-
-
-# Byte values whose default (cat-atom) decomposition exceeds the 4-operator
-# compliance bound; each is given an explicit ≤4-op recipe instead. The
-# hand-authored fragment used angel-atom forms for exactly these three glyphs.
-_EMIT_RECIPE: dict[int, BinOp] = {
-    47: sub(mul(const(3), const(16)), const(1)),  # '/' = 3×16 − 1
-    61: sub(mul(const(8), const(8)), add(const(1), const(2))),  # '=' = 8² − 3
-    62: sub(mul(const(8), const(8)), const(2)),  # '>' = 8² − 2
-}
+from src_ir.stream import RECIPES, STREAM_THRESHOLD, slice_one_stream_expr
 
 
 def _emit(*codes: int) -> list[Op]:
     """One `let`/`print_char` pair per output byte, on Puck."""
     ops: list[Op] = []
     for code in codes:
-        ops.append(let(PUCK, _EMIT_RECIPE.get(code, const(code))))
+        ops.append(let(PUCK, RECIPES.get(code, const(code))))
         ops.append(print_char(PUCK))
     return ops
-
-
-# Self-consistency guard: the phrase recipe must equal the exported constant.
-assert isinstance(slice_one_count_expr().left, BinOp)
-assert (1 + 2) * (1 + 8 * 16) == SLICE_ONE_STREAM_COUNT, (
-    "slice_one_count_expr recipe drifted from SLICE_ONE_STREAM_COUNT"
-)
-assert isinstance(const(STREAM_THRESHOLD), Const)
 
 
 ACT: Act = act(
@@ -87,7 +52,7 @@ ACT: Act = act(
         ),
         scene(
             "SCRIBE_SET_SLICE_ONE_STREAM_COUNT",
-            let(PROSPERO, slice_one_count_expr()),
+            let(PROSPERO, slice_one_stream_expr()),
             goto("SCRIBE_STREAM_CHECK"),
             companion=PUCK,
         ),

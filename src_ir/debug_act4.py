@@ -23,8 +23,8 @@ from scripts.splc.ir import (
     sub,
     val,
 )
-from src_ir.act4 import STREAM_THRESHOLD, slice_one_count_expr
 from src_ir.cast import HORATIO, PROSPERO, PUCK
+from src_ir.stream import STREAM_THRESHOLD, slice_one_stream_expr
 
 # The debug play lives outside the globbed production literary ledger (a
 # src/*-literary.toml entry for these would orphan them against the
@@ -55,7 +55,7 @@ ACT: Act = act(
         ),
         scene(
             "DBG_OLD_MEASURE",
-            let(PROSPERO, slice_one_count_expr()),
+            let(PROSPERO, slice_one_stream_expr()),
             goto("DBG_LOOP"),
             companion=PUCK,
         ),

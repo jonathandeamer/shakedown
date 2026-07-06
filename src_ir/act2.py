@@ -23,8 +23,12 @@ from scripts.splc.ir import (
     val,
 )
 from src_ir.cast import HECATE, HORATIO, LADY_MACBETH, PUCK
+from src_ir.stream import SLICE_ONE_GLYPH_COUNT, STREAM_THRESHOLD
 
 _NEWLINE = const(10)
+
+# The 9 x 35 split below must stay in step with the shared constant.
+assert 9 * 35 == SLICE_ONE_GLYPH_COUNT
 
 ACT: Act = act(
     2,
@@ -106,7 +110,7 @@ ACT: Act = act(
         scene(
             "MASON_OPEN_REVERSE_STREAM",
             branch(
-                gt(val(HORATIO), const(128)),
+                gt(val(HORATIO), const(STREAM_THRESHOLD)),
                 then="MASON_SET_SLICE_ONE_REVERSE_COUNT",
                 else_="MASON_SET_SHORT_REVERSE_COUNT",
             ),
