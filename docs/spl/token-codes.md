@@ -40,6 +40,33 @@ All atoms are at most 6 words.
 doubling jumps 1 -> 2 -> 4 -> 8; these values cannot be reached as single
 atoms. Compound length is uncapped per §8.1; each atom still obeys the cap.
 
+## Arity table (stream contract)
+
+A token is its code, then a fixed number of integer payloads, then — for
+text-bearing tokens — a glyph run terminated by `TEXT_END`. Mirrored in
+`src_ir/tokens.py` (`ARITY`); `tests/test_token_codes.py` keeps the two in
+step. Spike-scope vocabulary only; later slices append rows in both places.
+
+| Token | Code | Fixed payloads | Text |
+|---|---:|---:|---|
+| PARA | 1 | 0 | yes |
+| LIST_OPEN | 4 | 1 | no |
+| LIST_ITEM | 5 | 1 | yes |
+| LIST_CLOSE | 6 | 0 | no |
+
+`LIST_OPEN` payload — kind: 1 = unordered, 2 = ordered. `LIST_ITEM` payload —
+looseness: 1 = tight, 2 = loose.
+
+## Framing markers
+
+Not tokens: never dispatched on. Spoken through each speaker's
+`stable_utility` `v0`/`vneg1` pools rather than a Critical canonical phrase.
+
+| Marker | Value | Meaning |
+|---|---:|---|
+| TEXT_END | 0 | terminates a text-bearing token's glyph run (glyphs ≥ 1) |
+| STREAM_END | −1 | bottom-of-stream sentinel seeded under every carrier stack |
+
 ## How To Extend
 
 Slice 3 onward may need additional tokens. Append rows here and validate with

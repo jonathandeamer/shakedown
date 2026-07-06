@@ -79,3 +79,35 @@ def _atoms_in(phrase: str) -> list[str]:
         left, right = rest[:idx], rest[idx + len(" and ") :]
         return _atoms_in(left) + _atoms_in(right)
     return [text]
+
+
+def test_framing_markers_are_disjoint_from_token_codes() -> None:
+    from src_ir import tokens
+
+    assert tokens.TEXT_END == 0
+    assert tokens.STREAM_END == -1
+    codes = {row[1] for row in parse_table()}
+    assert tokens.TEXT_END not in codes
+    assert tokens.STREAM_END not in codes
+
+
+def test_arity_table_matches_doc() -> None:
+    """The doc's arity rows and src_ir.tokens.ARITY are the same table."""
+    from src_ir import tokens
+
+    doc_rows: dict[int, tuple[int, bool]] = {}
+    row_re = re.compile(
+        r"^\|\s*(?P<name>[A-Z_]+)\s*\|\s*(?P<code>-?\d+)\s*\|"
+        r"\s*(?P<payloads>\d+)\s*\|\s*(?P<text>yes|no)\s*\|"
+    )
+    for line in TOKEN_CODES_DOC.read_text().splitlines():
+        match = row_re.match(line)
+        if match:
+            doc_rows[int(match["code"])] = (
+                int(match["payloads"]),
+                match["text"] == "yes",
+            )
+    assert doc_rows, "no arity rows found in docs/spl/token-codes.md"
+    assert doc_rows == {
+        code: (arity.payloads, arity.has_text) for code, arity in tokens.ARITY.items()
+    }

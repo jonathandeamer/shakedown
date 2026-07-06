@@ -7,7 +7,8 @@ compliance bound (test_numeric_recipe_complexity_stays_bounded)."""
 
 from __future__ import annotations
 
-from scripts.splc.ir import BinOp, add, const, mul, sub
+from scripts.splc.ir import BinOp, Char, Push, add, const, mul, push, sub
+from src_ir import tokens
 
 STREAM_THRESHOLD = 128  # 8 x 16: Slice 1 vs. short measure, all four acts
 SLICE_ONE_GLYPH_COUNT = 315  # Act II push count = Act III scan count
@@ -51,3 +52,16 @@ RECIPES: dict[int, BinOp] = {
         mul(const(16), sub(const(8), const(1))), add(const(1), const(2))
     ),
 }
+
+
+def emit_token(target: Char, code: int, *payloads: int) -> list[Push]:
+    """Push a token's code and fixed payloads per the arity table.
+
+    Text-bearing tokens stream their glyph run afterwards; the caller closes
+    it with push(target, const(tokens.TEXT_END))."""
+    arity = tokens.ARITY[code]
+    if len(payloads) != arity.payloads:
+        raise ValueError(
+            f"token {code} takes {arity.payloads} payload(s), got {len(payloads)}"
+        )
+    return [push(target, const(code)), *(push(target, const(p)) for p in payloads)]

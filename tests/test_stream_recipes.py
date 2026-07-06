@@ -59,3 +59,26 @@ def test_recipes_evaluate_to_their_keys_within_bound() -> None:
     for value, expr in RECIPES.items():
         assert _eval(expr) == value
         assert _phrase_ops(expr) <= 4, value
+
+
+def test_emit_token_validates_arity() -> None:
+    import pytest
+
+    from scripts.splc.ir import Const, Push
+    from src_ir import tokens
+    from src_ir.stream import emit_token
+
+    para = emit_token(Char.LADY_MACBETH, tokens.PARA)
+    assert [type(op) for op in para] == [Push]
+    assert para[0] == Push(Char.LADY_MACBETH, Const(tokens.PARA))
+
+    list_open = emit_token(Char.LADY_MACBETH, tokens.LIST_OPEN, 1)
+    assert [op.expr for op in list_open] == [
+        Const(tokens.LIST_OPEN),
+        Const(1),
+    ]
+
+    with pytest.raises(ValueError, match="payload"):
+        emit_token(Char.LADY_MACBETH, tokens.LIST_OPEN)
+    with pytest.raises(ValueError, match="payload"):
+        emit_token(Char.LADY_MACBETH, tokens.PARA, 7)
