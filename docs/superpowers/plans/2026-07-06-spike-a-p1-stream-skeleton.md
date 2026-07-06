@@ -132,7 +132,7 @@ use to the operator):
 - Consumes: existing token constants; `scripts.splc.ir` `Push`/`push`/`const`; `Char`.
 - Produces: `tokens.TokenArity(payloads: int, has_text: bool)` frozen dataclass; `tokens.ARITY: dict[int, TokenArity]`; `tokens.TEXT_END = 0`; `tokens.STREAM_END = -1`; `stream.emit_token(target: Char, code: int, *payloads: int) -> list[Push]`. Tasks 2–5 rely on all of these names exactly.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `tests/test_token_codes.py`:
 
@@ -196,12 +196,12 @@ def test_emit_token_validates_arity() -> None:
         emit_token(Char.LADY_MACBETH, tokens.PARA, 7)
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `uv run pytest tests/test_token_codes.py tests/test_stream_recipes.py -q`
 Expected: the three new tests FAIL (`AttributeError`/`ImportError` for `TEXT_END`, `ARITY`, `emit_token`); all pre-existing tests PASS.
 
-- [ ] **Step 3: Implement the contract constants**
+- [x] **Step 3: Implement the contract constants**
 
 Replace `src_ir/tokens.py` with:
 
@@ -274,7 +274,7 @@ def emit_token(target: Char, code: int, *payloads: int) -> list[Push]:
     return [push(target, const(code)), *(push(target, const(p)) for p in payloads)]
 ```
 
-- [ ] **Step 4: Extend `docs/spl/token-codes.md`**
+- [x] **Step 4: Extend `docs/spl/token-codes.md`**
 
 Append before the "How To Extend" section:
 
@@ -307,12 +307,12 @@ Not tokens: never dispatched on. Spoken through each speaker's
 | STREAM_END | −1 | bottom-of-stream sentinel seeded under every carrier stack |
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 Run: `uv run pytest tests/test_token_codes.py tests/test_stream_recipes.py -q`
 Expected: PASS (all, including pre-existing).
 
-- [ ] **Step 6: Regen identity, lint, type-check, commit**
+- [x] **Step 6: Regen identity, lint, type-check, commit**
 
 ```bash
 uv run python -m scripts.splc && git diff --exit-code src/10-act1-preprocess.spl src/20-act2-block.spl src/30-act3-span.spl src/40-act4-emit.spl debug/40-act4-token-dump.spl
@@ -343,7 +343,7 @@ completely (previously truncated — untested surface).
 - Consumes: Task 1's `tokens.STREAM_END`/`tokens.TEXT_END`/`emit_token`; existing cast and IR builders.
 - Produces: Act II leaves Puck's stack as `STREAM_END` + forward token stream (Acts III/IV consume in Tasks 3–4); scene-label prefixes `PASS_PARA_*` / `FRAME_REVERSE_*` that P2's `PASS_LISTS_*` scenes will slot before.
 
-- [ ] **Step 1: Record the G2 before-dumps (pre-migration play)**
+- [x] **Step 1: Record the G2 before-dumps (pre-migration play)**
 
 ```bash
 mkdir -p .cache
@@ -354,7 +354,7 @@ wc -l .cache/g2-p1-before-amps.txt .cache/g2-p1-before-short.txt
 
 Expected: 387 lines for Amps. Keep both files untouched for the whole plan.
 
-- [ ] **Step 2: Rewrite `src_ir/act2.py`**
+- [x] **Step 2: Rewrite `src_ir/act2.py`**
 
 Replace the whole module with:
 
@@ -500,7 +500,7 @@ ACT: Act = act(
 )
 ```
 
-- [ ] **Step 3: Replace `src/20-act2-literary.toml`**
+- [x] **Step 3: Replace `src/20-act2-literary.toml`**
 
 Full new file content (titles reused verbatim from the retired labels):
 
@@ -550,12 +550,12 @@ title = "Empty lines pass beneath the keep."
 pattern = "bare_statement"
 ```
 
-- [ ] **Step 4: Move the two pointers in `src/literary.toml`**
+- [x] **Step 4: Move the two pointers in `src/literary.toml`**
 
 In `[iconic_moments.once_more_breach]`, change `scene = "MASON_READ_PARAGRAPH_GLYPH"` to `scene = "PASS_PARA_READ_GLYPH"`.
 In `[dramatic_moments.lady_macbeth_death_exit]`, change `scene = "MASON_OPEN_REVERSE_STREAM"` to `scene = "FRAME_REVERSE_OPEN"`.
 
-- [ ] **Step 5: Regenerate and gate**
+- [x] **Step 5: Regenerate and gate**
 
 ```bash
 uv run python -m scripts.splc && uv run python scripts/assemble.py
@@ -583,7 +583,7 @@ uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.
 
 Expected: all green, same pass/skip/xfail shape as before the task. Watch `test_scene_titles_have_toml_entries_and_match_source` (ledger sync), `test_iconic_moments`/`test_dramatic_moments_are_visible_in_scene_surfaces` (the two moved pointers), and `test_named_production_characters_have_speaking_lines` (Lady Macbeth still speaks throughout the pass).
 
-- [ ] **Step 6: Lint, type-check, commit**
+- [x] **Step 6: Lint, type-check, commit**
 
 ```bash
 uv run ruff check . && uv run ruff format . && uv run pyright
@@ -609,7 +609,7 @@ scenes listed below are traversal-boundary scenes only.
 - Consumes: `tokens.STREAM_END`/`tokens.TEXT_END`/`tokens.ARITY`/`tokens.TokenArity`; Act II's sentinel-seeded Puck stack (Task 2).
 - Produces: Act III leaves Puck's stack as `STREAM_END` + forward gilded stream (Act IV consumes in Task 4); labels `TRAVERSE_*` that P2 extends with the `LIST_*` arms of the traversal dispatch.
 
-- [ ] **Step 1: Edit `src_ir/act3.py`**
+- [x] **Step 1: Edit `src_ir/act3.py`**
 
 **(a) Imports and module guard.** Remove `gt` from the `scripts.splc.ir`
 import (no longer used); remove `HORATIO` from the `src_ir.cast` import;
@@ -746,7 +746,7 @@ united exit stands; entering it swaps Puck for Romeo once, which is fine):
 
 Every other scene in the module is byte-unchanged.
 
-- [ ] **Step 2: Reserve the new controlled surfaces**
+- [x] **Step 2: Reserve the new controlled surfaces**
 
 Add to `src/30-act3-literary.toml` (alphabetical position with the other
 entries):
@@ -787,7 +787,7 @@ roses_kept_word = "Recall the rose's kept word."
 (`characters.romeo.recall.roses_kept_word` stays — pools may hold unused
 keys; do not remove entries this plan doesn't own.)
 
-- [ ] **Step 3: Regenerate and gate**
+- [x] **Step 3: Regenerate and gate**
 
 ```bash
 uv run python -m scripts.splc && uv run python scripts/assemble.py
@@ -810,7 +810,7 @@ Rosalind consult scenes are untouched — it must still pass) and
 `test_juliet_surfaces_include_night_or_star_imagery` (the new title and
 recall line are night-imagery positive).
 
-- [ ] **Step 4: Lint, type-check, commit**
+- [x] **Step 4: Lint, type-check, commit**
 
 ```bash
 uv run ruff check . && uv run ruff format . && uv run pyright
@@ -839,7 +839,7 @@ and speaks every line addressed to Puck, as before.
 - Consumes: `tokens.STREAM_END`/`tokens.PARA`/anchor token constants; Act III's sentinel-seeded Puck stack (Task 3).
 - Produces: `SCRIBE_DISPATCH_TOKEN` — the single dispatch-chain entry that P2's list-emission scenes extend; the debug dump that Task 5 blesses as the G2 baseline.
 
-- [ ] **Step 1: Rewrite `src_ir/act4.py`**
+- [x] **Step 1: Rewrite `src_ir/act4.py`**
 
 ```python
 """Act IV — emit pass over the tokenized stream (Spike A P1). Prospero
@@ -1015,7 +1015,7 @@ ACT: Act = act(
 )
 ```
 
-- [ ] **Step 2: Rewrite `src_ir/debug_act4.py`**
+- [x] **Step 2: Rewrite `src_ir/debug_act4.py`**
 
 ```python
 """Debug Act IV — token-stream dump. Shadow of src_ir/act4.py used by
@@ -1082,7 +1082,7 @@ ACT: Act = act(
 )
 ```
 
-- [ ] **Step 3: Reserve the new controlled surfaces**
+- [x] **Step 3: Reserve the new controlled surfaces**
 
 Add to `src/40-act4-literary.toml`:
 
@@ -1103,7 +1103,7 @@ In `src/literary.toml`, add to `[characters.prospero.recall]`:
 heralds_parting_word = "Recall the herald's parting word."
 ```
 
-- [ ] **Step 4: Regenerate and gate**
+- [x] **Step 4: Regenerate and gate**
 
 ```bash
 uv run python -m scripts.splc && uv run python scripts/assemble.py
@@ -1125,7 +1125,7 @@ Expected: empty Amps diff; all suites green, same shape. Watch
 `let`; the test must pass vacuously or over `_emit`'s Puck assignments, which
 he speaks) and `test_token_dump.py` (`values[0] == 1` still holds).
 
-- [ ] **Step 5: Lint, type-check, commit**
+- [x] **Step 5: Lint, type-check, commit**
 
 ```bash
 uv run ruff check . && uv run ruff format . && uv run pyright
@@ -1149,7 +1149,7 @@ git commit -m "refactor: dispatch act four and debug dump on sentinel-terminated
 - Consumes: the migrated play from Tasks 2–4.
 - Produces: committed G2 baselines that gate P2 and everything after; `src_ir/stream.py` reduced to `RECIPES` + `emit_token`.
 
-- [ ] **Step 1: Remove the dead count machinery**
+- [x] **Step 1: Remove the dead count machinery**
 
 In `src_ir/stream.py`, delete `STREAM_THRESHOLD`, `SLICE_ONE_GLYPH_COUNT`,
 `SLICE_ONE_STREAM_COUNT`, `slice_one_glyph_expr`, `slice_one_stream_expr`,
@@ -1183,7 +1183,7 @@ git add src_ir/stream.py tests/test_stream_recipes.py
 git commit -m "chore: retire slice-one stream-count constants"
 ```
 
-- [ ] **Step 2: Hand-review and bless the G2 baselines (design-spec procedure)**
+- [x] **Step 2: Hand-review and bless the G2 baselines (design-spec procedure)**
 
 ```bash
 ./shakedown-debug < "$HOME/mdtest/Markdown.mdtest/Amps and angle encoding.text" > .cache/g2-p1-after-amps.txt
@@ -1216,7 +1216,7 @@ cp .cache/g2-p1-after-amps.txt tests/fixtures/token_stream/amps.dump
 cp .cache/g2-p1-after-short.txt tests/fixtures/token_stream/short.dump
 ```
 
-- [ ] **Step 3: Add the baseline regression tests**
+- [x] **Step 3: Add the baseline regression tests**
 
 Append to `tests/test_token_dump.py`:
 
@@ -1255,7 +1255,7 @@ git add tests/fixtures/token_stream tests/test_token_dump.py
 git commit -m "test: bless tokenized-stream G2 dump baselines"
 ```
 
-- [ ] **Step 4: Record the contract in the architecture spec**
+- [x] **Step 4: Record the contract in the architecture spec**
 
 In `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`,
 find the `**Stream contract (2026-07-06):**` paragraph in §4.2 and append to
@@ -1268,7 +1268,7 @@ sentinel-based, retiring the Slice-1 fixed counts (128/315/387). `0` remains
 reserved as the text-run terminator (`TEXT_END`); glyphs are always ≥ 1.
 ```
 
-- [ ] **Step 5: Verify every gate one final time**
+- [x] **Step 5: Verify every gate one final time**
 
 ```bash
 uv run pytest -q
@@ -1279,7 +1279,7 @@ uv run ruff check . && uv run pyright
 Expected: suite green (same xfail shape — the six list spike cases stay
 xfailed until P2); no fragment diff; lint/types clean.
 
-- [ ] **Step 6: Bookkeeping, tick, commit**
+- [x] **Step 6: Bookkeeping, tick, commit**
 
 In `.agent/blockers.md`, update the Spike A `- BLOCK:` entry's last sentence
 to reflect that the resumption is in flight: replace "Do not resume list
