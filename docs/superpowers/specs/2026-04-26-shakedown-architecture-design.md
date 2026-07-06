@@ -4,6 +4,16 @@
 **Status:** Draft for review
 **Author pairing:** interactive Claude session (superpowers:brainstorming workflow)
 
+**Revision history:**
+
+- **2026-07-06 — IR adoption (splc).** §2, §4.2, §5.3, §6.3, §7.3, §8.2, and §8.4
+  revised in place after the Spike A halt (2026-07-05) was resolved by the
+  SPL-from-IR compiler (`docs/superpowers/specs/2026-07-05-spl-ir-compiler-design.md`,
+  plans 3G–3J). Authored sources are now `src_ir/*.py` + `src/literary.toml`;
+  hand-authoring SPL at scale is the documented failure mode, not the method.
+  The resumed Spike A design is
+  `docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`.
+
 ## Context
 
 The pre-architecture hardening pass (`docs/superpowers/specs/2026-04-24-pre-architecture-hardening-design.md`) closed roughly 14 gaps in the docs set so that an architecture-planning session could reason from measurement rather than inference. This spec is the architecture itself: the load-bearing decisions about how `shakedown.spl` is structured, how the Markdown pipeline maps onto SPL, how state is partitioned across characters, and how the literary work and the computational work reinforce each other rather than fighting.
@@ -31,7 +41,7 @@ The architecture is the consolidated output of a brainstorming dialogue that ran
 | # | Decision | Locked |
 |---|---|---|
 | D1 | Runtime: dev-time Python wrapper with cache only after a feasibility spike; release-time bash-only entry | yes |
-| D2 | Source: hand-written SPL fragments + assembler + scoped codegen for forced-byte HTML literals only | yes |
+| D2 | Source: typed Python IR (`src_ir/`) compiled to SPL by splc, prose from `src/literary.toml`, assembler composition, scoped codegen for forced-byte HTML literals (revised 2026-07-06; the original hand-authoring decision is superseded — see §2) | yes |
 | D3 | Internal pipeline: four acts (Pre-process / Block / Span / Emit) | yes |
 | D4 | Dispatcher shape: multi-pass token-stream | yes |
 | D5 | Interpreter cache: dev-mode only if proven viable; removed at release | yes |
@@ -47,7 +57,7 @@ Each decision is detailed in its own section below, with reasoning preserved.
 
 ### Decision
 
-**`shakedown.spl` is a single, hand-curated SPL file** — the art object. **`./shakedown` is a thin wrapper** that does only plumbing.
+**`shakedown.spl` is a single SPL file** — the art object (since 2026-07-06 its text is compiled from `src_ir/` with its literary surface authored in `src/literary.toml`; see §2). **`./shakedown` is a thin wrapper** that does only plumbing.
 
 **During development:** `./shakedown` is a Python wrapper (`scripts/shakedown_run.py`) that reads stdin, assembles `shakedown.spl`, and invokes `shakespearelang`'s runtime. If the pre-Slice-1 cache spike proves a safe cache target, the wrapper may cache that target as described in Section 5; otherwise it remains a direct assemble-and-run wrapper.
 
@@ -60,7 +70,7 @@ The wrapper performs **no Markdown work**. No tokenizing, no normalization beyon
 ### Reasoning
 
 - **Direct SPL** pays cold-start cost on every run with no cache opportunity (B14 measured ~13.3s for a 4k-line SPL file).
-- **Generated SPL** puts the art object behind a code generator and weakens the "SPL owns Markdown" claim from the rubric.
+- **Generated SPL** puts the art object behind a code generator and weakens the "SPL owns Markdown" claim from the rubric. *(2026-07-06: the Spike A halt overturned this weighting for SPL text itself — see §2. The literary surface remains authored in `src/literary.toml`, and Markdown semantics still execute in SPL, so the rubric's SPL-ownership axis is preserved.)*
 - **Wrapper-assisted SPL** lets the SPL stay hand-curated and readable, gives us a place to assemble fragments and, if proven viable, cache interpreter work while keeping the rubric's SPL-ownership axis clean.
 - A single `shakedown.spl` over runtime-loaded fragments: SPL has no import mechanism, the rubric values the art object, and assembly happens at build time anyway.
 
@@ -68,39 +78,47 @@ The wrapper performs **no Markdown work**. No tokenizing, no normalization beyon
 
 ## Section 2 — Source Layout and Assembly
 
-### Decision
+### Decision (revised 2026-07-06)
 
-Hand-written SPL fragments are the source of truth. They live under `src/`, are committed, and are what humans read and edit. The assembled `shakedown.spl` is generated output — checked in for inspection and CI, but never hand-edited.
+**Typed Python IR modules plus the literary TOML are the source of truth.** The splc compiler (`scripts/splc/`) lowers `src_ir/*.py` to SPL fragments; `scripts/assemble.py` composes them per `src/manifest.toml`. Both the generated `src/*.spl` fragments and the assembled `shakedown.spl` are committed for inspection and CI, and never hand-edited.
+
+The original decision — hand-written SPL fragments under `src/` as source of truth — was superseded after the Spike A halt (2026-07-05): hand-authoring SPL at scale fails on long-range bookkeeping (enter/exit choreography, question/conditional adjacency, scene plumbing), not on Markdown semantics. The full rationale and compiler design are in `docs/superpowers/specs/2026-07-05-spl-ir-compiler-design.md`; branch `spike-a-lists-wip` preserves the failure specimen.
 
 ```
+src_ir/
+  cast.py                 # fixed dramatis personae (closed set)
+  tokens.py               # token codes + payload arity table (the single stream-contract definition)
+  act1.py … act4.py       # one module per act, exporting ACT
+  debug_act4.py           # token-dump act, sharing scenes with act4.py
+
 src/
-  00-preamble.spl         # dramatis personae + Act I header
-  10-act1-preprocess.spl  # normalize, append \n\n, detab, strip whitespace-only lines, hash HTML blocks, strip link defs
-  20-act2-block.spl       # block parse → token stream
-  30-act3-span.spl        # span substitution over tokens
-  40-act4-emit.spl        # emit HTML
+  literary.toml           # controlled prose: scene titles, dialogue pools, value atoms
   manifest.toml           # ordered fragment list
+  *.spl                   # splc-generated fragments (committed, never hand-edited)
 
 scripts/
-  assemble.py             # concat + resolve symbolic scene labels → Roman numerals
+  splc/                   # IR, validation, prose engine, lowering
+  assemble.py             # compose fragments, resolve labels, parse gate
   codegen_html.py         # narrow codegen for forced-byte HTML literals only
   shakedown_run.py        # dev wrapper (until release transition)
 ```
 
-### Assembly does two things
+### The build does three things
 
-1. Concatenate fragments in manifest order.
-2. Resolve symbolic scene labels (e.g. `@scene:dispatch_block`) to act-local Roman numerals so cross-scene gotos within an act stay readable in source.
+1. splc renders each IR act module to an SPL fragment, drawing all prose from `src/literary.toml` with deterministic seeding (no spurious diffs).
+2. `assemble.py` concatenates fragments in manifest order and resolves symbolic scene labels to act-local Roman numerals.
+3. The assemble-time parse gate rejects any output the interpreter cannot parse; after splc's build-time validation, a parse failure is a compiler bug, not an author error.
 
 ### Codegen is scoped, not pervasive
 
-`scripts/codegen_html.py` produces only the **forced-byte HTML literals** required for HTML output (the exact ASCII codes for `<p>`, `</p>`, `<em>`, `&amp;`, etc.) following `docs/spl/codegen-style-guide.md`. Everything else — control flow, state machines, dispatch, character roles — is hand-written. Codegen output is plain by policy because it's parsing utility, not literary register.
+`scripts/codegen_html.py` produces only the **forced-byte HTML literals** required for HTML output (the exact ASCII codes for `<p>`, `</p>`, `<em>`, `&amp;`, etc.) following `docs/spl/codegen-style-guide.md`. splc's prose engine reuses the same atom machinery for value rendering. Codegen output is plain by policy because it's parsing utility, not literary register.
 
 ### Reasoning
 
-- **Fragments over a single hand-edited file:** the prior attempt's single-file approach hit ~4,300 lines on block-only and stalled under duplicated-pattern pressure. Fragments let each act stay in working memory.
+- **IR over hand-authored SPL:** agents are strong at Python and weak at maintaining internal consistency across thousands of lines of adversarial syntax. The compiler derives stage choreography, speaker assignment, and question/conditional adjacency — exactly the bookkeeping class that killed the original Spike A.
+- **Literary compliance by construction:** all rendered prose comes from `src/literary.toml` pools reserved at planning time; the compiler cannot invent prose, so the correctness-first workflow is mechanized rather than policed.
 - **Build-time assembler over runtime composition:** SPL has no import mechanism, and the art object must be a single legal SPL program.
-- **Scoped codegen over full codegen:** full codegen makes the SPL a build artifact rather than a hand-curated work. Forced-byte literals are the one place where humans don't add expressive value, so we delegate them.
+- **Scoped codegen over full prose generation:** the literary surface stays authored (in the TOML); only mechanical rendering is delegated.
 
 ---
 
@@ -230,6 +248,8 @@ ordering invariant before block parsing begins.
 - `CODE_BLOCK(text)`
 - `RAW_HTML_HASH(id)` (resolved in Act IV)
 
+**Stream contract (2026-07-06):** a token on the stream is an integer code from the canonical table, followed by a fixed number of integer payloads determined by the code, followed — for text-bearing tokens — by a glyph run terminated by `0` (glyphs are always ≥ 1). The single definition of codes, payload arity, and text-bearing flags lives in `src_ir/tokens.py` and is consumed by Act II emission, Act III traversal, Act IV dispatch, and the debug dump. Detail: `docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`.
+
 **Mechanic:** **multi-pass token-stream dispatcher.** Each pass recognizes one block class. Pass order matches Markdown.pl's `_RunBlockGamut` (see `docs/markdown/oracle-mechanics.md` Block Pipeline):
 
 1. Pass A: Headers — Setext (`===` / `---` underlines) before ATX (`#` prefixes). **Headers run first** so setext underlines are recognized as headers before any other pass can consume them.
@@ -278,7 +298,7 @@ ordering invariant before block parsing begins.
 
 **Mechanic:** linear walk over the token stream. The only act that calls SPL's character-output verbs in production work.
 
-**Forced-byte HTML literals are codegen output** (Section 2). Every `<p>`, `</p>`, `<em>`, `&amp;` is emitted by codegen-named scenes; the surrounding control flow is hand-written in the Act IV palette.
+**Forced-byte HTML literals are codegen output** (Section 2). Every `<p>`, `</p>`, `<em>`, `&amp;` is emitted by codegen-named scenes; the surrounding control flow is authored in `src_ir/act4.py` and lowered by splc in the Act IV palette.
 
 ### 4.5 Why Four Acts
 
@@ -329,7 +349,7 @@ This resolves `shakespeare` through the project's `uv`-managed environment rathe
 
 The dev wrapper's per-invocation flow:
 
-1. **Assemble.** Run `scripts/assemble.py` to refresh `shakedown.spl` from `src/*.spl`. Assembly is fast (concat + label resolution); doing it on every invocation guarantees the cache key reflects current fragment state without developers remembering to assemble.
+1. **Render and assemble.** (Revised 2026-07-06.) Render generated fragments from `src_ir/` via splc, then run `scripts/assemble.py` to refresh `shakedown.spl` per `src/manifest.toml`. Both steps are fast; doing them on every invocation guarantees the cache key reflects current source state without developers remembering to rebuild.
 2. **Run.** Invoke `uv run shakespeare run shakedown.spl`.
 3. **Pass through** stdin, stdout, stderr, and exit code.
 
@@ -427,10 +447,13 @@ SPL has no variables: each character has one integer "value" and one stack of in
 
 ### 6.3 Structural Stack Responsibility
 
-Open-block sentinels for frame-sentinel nesting (B16) are owned by the Act II block-shaping pair,
-with Puck as Herald carrying dispatch transitions across later acts. The implementation plan must
-assign exact sentinel ownership before Spike A; it should not add a tenth character unless Spike A
-shows the nine-character partition is too cramped.
+**Resolved 2026-07-06:** open-block sentinels for frame-sentinel nesting (B16) live on
+**Macbeth's stack**. Act II's passes ping-pong the stream between Lady Macbeth and Macbeth as
+carriers; a pass that needs nesting frames must not simultaneously use Macbeth as its ping-pong
+destination (the resumed Spike A list pass reads from Lady Macbeth and writes to Puck's staging,
+leaving Macbeth free for frames). Spike B reuses the same sentinel stack sequentially, not
+concurrently. Puck as Herald carries dispatch transitions across later acts. The nine-character
+partition stands; no tenth character unless the resumed spike shows it is too cramped.
 
 ### 6.4 Cast Total
 
@@ -483,21 +506,23 @@ The first fixture. Narrow but walks all four acts.
 
 **Definition of done:** `uv run pytest tests/test_mdtest.py -k "Amps and angle"` passes; output byte-identical to Markdown.pl; first ~6 characters have spoken lines that follow `docs/spl/literary-spec.md` and draw from checked-in `src/literary.toml` surfaces.
 
-### 7.3 Spike A — Lists at Minimum Viable Scope
+### 7.3 Spike A — Dispatcher Skeleton + Lists, in IR (revised 2026-07-06)
 
-Immediately after Slice 1.
+The original spike (plan `2026-05-01-spike-a-lists.md`) halted on 2026-07-05: hand-authored Act II list SPL never reached a parseable state, so the dispatcher design was never actually exercised. The halt was resolved by the splc compiler (plans 3G–3J). The resumed spike, written in IR against the fully ported play, is therefore the **first real validation** of this section's multi-pass dispatcher and frame-sentinel decisions — they stand unvalidated, not invalidated.
 
-**Goal:** validate the multi-pass dispatcher and frame-sentinel nesting.
+**Goal:** validate the multi-pass dispatcher shape and frame-sentinel nesting, in IR. This includes standing up the dispatcher skeleton itself: the pass ordering frame, the tokenized inter-act stream contract (§4.2), and paragraph formation as a proper pass — because list tokens cannot be bolted onto the Slice-1 glyph pass-through.
 
-**Scope:** flat unordered list (3 tight items); flat ordered list (3 tight items); one nesting level (one ordered inside one unordered, or vice versa); one loose list item with a second paragraph; one list item with an indented continuation/code-block candidate.
+**Markdown scope (unchanged from the original spike):** flat unordered list (3 tight items); flat ordered list (3 tight items); one nesting level (one ordered inside one unordered, or vice versa); one loose list item with a second paragraph; one list item with an indented continuation/code-block candidate.
 
 **Not in spike:** full `Ordered and unordered lists` fixture coverage, all marker-family variants, list-with-blockquotes, and every nested loose-list combination. Those wait for Slice 4. The spike still exercises the token-shape decisions for tight vs loose and indented continuation/code because those are expensive to change later.
 
 **Outcomes:**
-- ✅ Spike passes — frame-sentinel pattern confirmed at fixture-relevant scope.
-- ❌ Spike struggles — revisit dispatcher shape *now*. Cost of pivot is bounded.
+- ✅ Spike passes — dispatcher shape and frame-sentinel pattern confirmed at fixture-relevant scope, in the medium the project will actually use.
+- ❌ Spike struggles — now it genuinely is the pass decomposition; revisit Section 4 *now*. Cost of pivot is bounded.
 
-**Verification harness:** add dedicated snippet fixtures under `tests/fixtures/architecture_spikes/lists/` and a pytest parametrization that compares `./shakedown` output to `perl ~/markdown/Markdown.pl` for each snippet. These snippets are part of the no-regression gate after Spike A.
+**Verification harness:** the snippet fixtures under `tests/fixtures/architecture_spikes/lists/` and their oracle-backed pytest parametrization already exist (currently xfailed with the halt reason); the resumed spike un-xfails them. These snippets are part of the no-regression gate after Spike A.
+
+**Design:** `docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md` (stream contract, pass staging, IR conventions, plan decomposition).
 
 ### 7.4 Spike B — Nested Blockquote-Inside-List at Minimum Viable Scope
 
@@ -586,7 +611,8 @@ Conditions under which we **halt and redesign:**
 
 | Trigger | What it indicates | Action |
 |---|---|---|
-| Spike A fails | Multi-pass dispatcher needs revision | Revisit Section 4's pass decomposition |
+| Spike A (original) — **triggered 2026-07-05** | Hand-authoring SPL at scale failed before the dispatcher was ever exercised | **Resolved:** SPL-from-IR compiler (splc), plans 3G–3J; see the 2026-07-05 design spec |
+| Resumed Spike A struggles in IR | Multi-pass dispatcher needs revision (authoring is no longer the confound) | Revisit Section 4's pass decomposition |
 | Spike B fails | Frame-sentinel composition needs revision | Revisit per-character stack partitioning |
 | Slice 1 assembled `shakedown.spl` exceeds ~600 lines | Act granularity wrong; duplication pressure showing | Revisit four-act split |
 | Cache spike fails | Current interpreter cannot safely reuse the proposed cache target | Use direct assemble-and-run dev mode until a new cache target is proven |
@@ -607,8 +633,8 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 |---|---|
 | Concrete Slice 1 literary surfaces | `src/literary.toml` before Slice 1 |
 | Stdin transport: temp file vs pipe | Slice 1 implementation step |
-| Token encoding details | Slice 1 implementation; Spike A may force revision |
-| Whether structural helper folds into another character | After Spike A — actual stack pressure known by then |
+| Token encoding details | Resolved 2026-07-06: arity-table stream contract (§4.2, `src_ir/tokens.py`) |
+| Whether structural helper folds into another character | Resolved 2026-07-06: Macbeth owns frame sentinels (§6.3); no tenth character |
 | Run-loop prompt content | Explicit deliverable of implementation planning before autonomous implementation begins |
 | Exact line-budgets per slice | Set during writing-plans |
 
