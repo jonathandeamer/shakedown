@@ -35,25 +35,7 @@ def _list_cases() -> list[Path]:
     return sorted(LIST_FIXTURES.glob("*.text"))
 
 
-_SPIKE_A_HALT_REASON = (
-    "List semantics not yet implemented: the SPL-from-IR architecture "
-    "revision (plans 3G-3J) resolved the Spike A hand-authoring halt; "
-    "the resumed list plan is written in IR against the fully ported play "
-    "(docs/superpowers/plans/plan-roadmap.md)"
-)
-
-
-@pytest.mark.parametrize(
-    "fixture",
-    [
-        pytest.param(
-            path,
-            id=path.stem,
-            marks=pytest.mark.xfail(reason=_SPIKE_A_HALT_REASON, strict=False),
-        )
-        for path in _list_cases()
-    ],
-)
+@pytest.mark.parametrize("fixture", _list_cases(), ids=lambda path: path.stem)
 def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
     input_bytes = fixture.read_bytes()
     actual = _run([str(SHAKEDOWN)], input_bytes)

@@ -5,6 +5,8 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).parent.parent
 DEBUG_WRAPPER = REPO / "shakedown-debug"
 AMPS_FIXTURE = (
@@ -30,6 +32,8 @@ def test_debug_target_dumps_integer_token_stream() -> None:
 
 
 BASELINES = REPO / "tests" / "fixtures" / "token_stream"
+LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
+LIST_BASELINES = BASELINES / "lists"
 
 
 def _dump(input_bytes: bytes) -> bytes:
@@ -51,3 +55,14 @@ def test_dump_matches_blessed_amps_baseline() -> None:
 
 def test_dump_matches_blessed_short_baseline() -> None:
     assert _dump(b"hello\n\nworld\n") == (BASELINES / "short.dump").read_bytes()
+
+
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in LIST_FIXTURES.glob("*.text")),
+)
+def test_dump_matches_blessed_list_baseline(stem: str) -> None:
+    """G2 gate over the P2 list vocabulary: blessed by the P2 plan after
+    hand-review; later slices re-bless deliberately, never casually."""
+    fixture = LIST_FIXTURES / f"{stem}.text"
+    assert _dump(fixture.read_bytes()) == (LIST_BASELINES / f"{stem}.dump").read_bytes()
