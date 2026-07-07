@@ -60,12 +60,14 @@ looseness: 1 = tight, 2 = loose.
 ## Framing markers
 
 Not tokens: never dispatched on. Spoken through each speaker's
-`stable_utility` `v0`/`vneg1` pools rather than a Critical canonical phrase.
+`stable_utility` `v0`/`vneg1`/`vneg2` pools rather than a Critical canonical
+phrase.
 
 | Marker | Value | Meaning |
 |---|---:|---|
 | TEXT_END | 0 | terminates a text-bearing token's glyph run (glyphs ≥ 1) |
 | STREAM_END | −1 | bottom-of-stream sentinel seeded under every carrier stack |
+| ITEM_START | −2 | brackets a list item's text on Act II's intra-act mixed stream (pass-internal; never crosses an act boundary) |
 
 ## How To Extend
 

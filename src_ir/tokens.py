@@ -30,6 +30,12 @@ ANCHOR_CLOSE = 14
 # per speaker, unlike Critical token-code phrases.
 TEXT_END = 0
 STREAM_END = -1
+# ITEM_START brackets a list item's text on the intra-Act-II mixed stream
+# (list-pass output): [ITEM_START, glyphs..., TEXT_END]. The paragraph pass
+# replaces it with the LIST_ITEM code plus the looseness payload from the
+# side channel; it never crosses an act boundary, so it never appears in a
+# G2 dump. Spoken via stable_utility vneg2 per speaker.
+ITEM_START = -2
 
 
 @dataclass(frozen=True)
