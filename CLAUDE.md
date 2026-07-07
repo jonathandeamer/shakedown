@@ -87,10 +87,11 @@ the IR act modules in `src_ir/` to SPL text.
 
 - Generated fragments (edit the IR, never the `.spl`): `src_ir/act1.py` →
   `src/10-act1-preprocess.spl`, `src_ir/act2.py` → `src/20-act2-block.spl`,
-  `src_ir/act4.py` → `src/40-act4-emit.spl`, and `src_ir/debug_act4.py` →
+  `src_ir/act3.py` → `src/30-act3-span.spl`, `src_ir/act4.py` →
+  `src/40-act4-emit.spl`, and `src_ir/debug_act4.py` →
   `debug/40-act4-token-dump.spl`.
-- Still hand-authored: `src/00-preamble.spl` and `src/30-act3-span.spl`
-  (Act III has not been ported to the IR yet).
+- Still hand-authored: `src/00-preamble.spl` only. All four acts are
+  generated from `src_ir/` (Act III was ported by plan 3J, 2026-07-06).
 
 Do not hand-edit `shakedown.spl` for literary surface changes, and do not
 hand-edit any generated fragment. For a generated act, edit its `src_ir/*.py`

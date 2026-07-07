@@ -97,6 +97,15 @@ Resolution progress: the architecture revision and the resumption design
 its final task records the spike outcome and removes this halt entry — with
 Spike B (row 4) following P2.
 
+## Queued after 3L: completability review actions
+
+`docs/superpowers/notes/2026-07-07-completability-review.md` records a
+2026-07-07 review of roadmap completability. After 3L ships and before (or
+alongside) writing the Spike B plan: run the input-size execution-scaling
+probe (highest priority), and decide on mdtest parallelization and re-opening
+the cache spike before the Slice 3 plan is written. See the note for the
+decision rules.
+
 ## Source notes
 
 - Literary prevention is already designed and planned. After this cleanup is
