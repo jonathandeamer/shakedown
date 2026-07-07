@@ -248,7 +248,7 @@ ordering invariant before block parsing begins.
 - `CODE_BLOCK(text)`
 - `RAW_HTML_HASH(id)` (resolved in Act IV)
 
-**Stream contract (2026-07-06):** a token on the stream is an integer code from the canonical table, followed by a fixed number of integer payloads determined by the code, followed — for text-bearing tokens — by a glyph run terminated by `0` (glyphs are always ≥ 1). The single definition of codes, payload arity, and text-bearing flags lives in `src_ir/tokens.py` and is consumed by Act II emission, Act III traversal, Act IV dispatch, and the debug dump. Detail: `docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`.
+**Stream contract (2026-07-06):** a token on the stream is an integer code from the canonical table, followed by a fixed number of integer payloads determined by the code, followed — for text-bearing tokens — by a glyph run terminated by `0` (glyphs are always ≥ 1). The single definition of codes, payload arity, and text-bearing flags lives in `src_ir/tokens.py` and is consumed by Act II emission, Act III traversal, Act IV dispatch, and the debug dump. Detail: `docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`. P2 (2026-07-07) adds one pass-internal framing marker: `ITEM_START` (−2) brackets a list item's text on Act II's mixed stream and is consumed by the paragraph pass; it never crosses an act boundary. Item looseness travels on a side channel (Horatio's stack, staged onto Puck) rather than by buffering item text.
 
 Termination (P1, 2026-07-06): the stream is bottom-terminated by a `STREAM_END` sentinel (−1) seeded beneath every carrier stack; traversal is sentinel-based, retiring the Slice-1 fixed counts (128/315/387). `0` remains reserved as the text-run terminator (`TEXT_END`); glyphs are always ≥ 1.
 
@@ -521,6 +521,8 @@ The original spike (plan `2026-05-01-spike-a-lists.md`) halted on 2026-07-05: ha
 **Outcomes:**
 - ✅ Spike passes — dispatcher shape and frame-sentinel pattern confirmed at fixture-relevant scope, in the medium the project will actually use.
 - ❌ Spike struggles — now it genuinely is the pass decomposition; revisit Section 4 *now*. Cost of pivot is bounded.
+
+**Outcome (P2, 2026-07-07): ✅ spike passed.** All six snippet fixtures are byte-identical to the oracle through the four-act play (`tests/test_architecture_spikes.py`, hard-gated); the dispatcher shape and frame-sentinel pattern are confirmed in IR. Findings: (1) SPL's two-characters-per-scene and one-question rules inflate the pass automaton to 93 Act II scenes against the design's ~15–20 estimate — a cost-surface finding, not a decomposition failure; (2) the assembled play grew from 1,911 to 4,538 lines with cold runtime ≈11.210s per invocation on `flat_unordered_tight` and ≈11.167s on `Amps and angle encoding` (B14 curve); (3) spike-scope narrowings, lifted in Slice 4: single-digit ordered markers; no top-level marker indent; post-blank indented markers read as loose continuation text (nested loose sublists diverge from the oracle — probe `* a\n  * b\n\n  cont\n* c\n`); whitespace-only lines inside items unsupported. Item looseness uses the §4.2 side channel.
 
 **Verification harness:** the snippet fixtures under `tests/fixtures/architecture_spikes/lists/` and their oracle-backed pytest parametrization already exist (currently xfailed with the halt reason); the resumed spike un-xfails them. These snippets are part of the no-regression gate after Spike A.
 

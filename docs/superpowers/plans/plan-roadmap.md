@@ -81,21 +81,15 @@ If a spike or slice triggers a halt (architecture §8.2):
 
 Halting is cheap. Continuing on a wrong floor is expensive.
 
-Active halt: Spike A (2026-07-05). The accepted resolution direction is to
-stop hand-authoring SPL and generate it from a small intermediate
-representation (scenes as states; operations for character tests, stack
-push/pop, jumps, and token emission), extending the existing
-assembler/codegen pipeline. This requires re-opening
-`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` in an
-interactive design session before any replacement list plan is written.
-
-Resolution progress: the architecture revision and the resumption design
-(`docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`) shipped
-2026-07-06. P1 (row 3K, tokenized stream + dispatcher skeleton) shipped
-2026-07-06. P2 (row 3L, list pass,
-`docs/superpowers/plans/2026-07-07-spike-a-p2-list-pass.md`) is in flight —
-its final task records the spike outcome and removes this halt entry — with
-Spike B (row 4) following P2.
+Spike A is mechanically resolved and its outcome is now recorded in the
+architecture spec. The 2026-07-05 halt on hand-authored SPL was resolved by
+the splc compiler (plans 3G-3J), and the resumed Spike A chain is complete in
+code and tests: P1 (row 3K, tokenized stream + dispatcher skeleton) shipped
+2026-07-06 and P2 (row 3L, list pass) is implemented, verified, and awaiting
+the next planning session that writes the Spike B plan. Row 3L remains the
+single `in flight` roadmap row until that successor plan exists, satisfying
+the repo's one-active-plan contract. Spike B (row 4) is the next pending
+implementation scope.
 
 ## Queued after 3L: completability review actions
 

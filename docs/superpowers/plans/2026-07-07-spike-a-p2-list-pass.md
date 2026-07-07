@@ -276,7 +276,7 @@ to the operator):
 - Consumes: existing `tokens` module.
 - Produces: `tokens.ITEM_START = -2`. Task 4's Act II relies on this exact name.
 
-- [ ] **Step 1: Extend the failing test**
+- [x] **Step 1: Extend the failing test**
 
 In `tests/test_token_codes.py`, replace
 `test_framing_markers_are_disjoint_from_token_codes` with:
@@ -294,12 +294,12 @@ def test_framing_markers_are_disjoint_from_token_codes() -> None:
     assert tokens.ITEM_START not in codes
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `uv run pytest tests/test_token_codes.py -q`
 Expected: the extended test FAILS with `AttributeError: ... ITEM_START`; the rest PASS.
 
-- [ ] **Step 3: Add the marker**
+- [x] **Step 3: Add the marker**
 
 In `src_ir/tokens.py`, directly below `STREAM_END = -1`, add:
 
@@ -312,7 +312,7 @@ In `src_ir/tokens.py`, directly below `STREAM_END = -1`, add:
 ITEM_START = -2
 ```
 
-- [ ] **Step 4: Extend `docs/spl/token-codes.md`**
+- [x] **Step 4: Extend `docs/spl/token-codes.md`**
 
 Append to the Framing markers table:
 
@@ -324,7 +324,7 @@ and change the sentence above the table from "Spoken through each speaker's
 `stable_utility` `v0`/`vneg1` pools" to "Spoken through each speaker's
 `stable_utility` `v0`/`vneg1`/`vneg2` pools".
 
-- [ ] **Step 5: Verify, regen identity, lint, commit**
+- [x] **Step 5: Verify, regen identity, lint, commit**
 
 ```bash
 uv run pytest tests/test_token_codes.py tests/test_stream_recipes.py -q
@@ -354,7 +354,7 @@ the Amps/short dumps must stay byte-equal.
 - Consumes: `tokens.ARITY`, `tokens.STREAM_END`; Act II's sentinel-seeded Puck stack.
 - Produces: labels `TRAVERSE_COPY_PAYLOAD_NEXT` / `TRAVERSE_COPY_PAYLOAD_TEXT`; the dispatch that Task 4's list tokens flow through. Later slices extend the vocabulary by adding `ARITY` rows — the dispatch regenerates.
 
-- [ ] **Step 1: Edit `src_ir/act3.py`**
+- [x] **Step 1: Edit `src_ir/act3.py`**
 
 **(a)** Update the module docstring's first line from
 `"""Act III — span pass over the tokenized stream (Spike A P1). Traversal`
@@ -426,7 +426,7 @@ assert above)` comment) with these three scenes:
 
 Every other scene in the module is byte-unchanged.
 
-- [ ] **Step 2: Reserve the controlled surfaces**
+- [x] **Step 2: Reserve the controlled surfaces**
 
 Add to `src/30-act3-literary.toml` (alphabetical position):
 
@@ -446,7 +446,7 @@ In `src/literary.toml`, add to `[characters.juliet.recall]`:
 kept_charge = "Recall the kept charge."
 ```
 
-- [ ] **Step 3: Regenerate and gate**
+- [x] **Step 3: Regenerate and gate**
 
 ```bash
 uv run python -m scripts.splc && uv run python scripts/assemble.py
@@ -459,7 +459,7 @@ uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.
 Expected: only `src/30-act3-span.spl` and `shakedown.spl` change; the blessed
 amps/short dump tests pass unchanged; full suite green, same pass/xfail shape.
 
-- [ ] **Step 4: Lint, type-check, commit**
+- [x] **Step 4: Lint, type-check, commit**
 
 ```bash
 uv run ruff check . && uv run ruff format . && uv run pyright
@@ -485,7 +485,7 @@ green). The byte rules and invariants are in §Contract and choreography.
 - Consumes: `tokens.LIST_OPEN`/`LIST_ITEM`/`LIST_CLOSE`/`TEXT_END`/`STREAM_END`; Act III's sentinel-seeded Puck stack.
 - Produces: the list-flow scene group `SCRIBE_LIST_OPEN` … `SCRIBE_EMIT_LIST_BLOCK_SEP` that Task 4's token streams drive; Prospero's stack as the list-kind stack.
 
-- [ ] **Step 1: Replace `src_ir/act4.py` with:**
+- [x] **Step 1: Replace `src_ir/act4.py` with:**
 
 ```python
 """Act IV — emit pass over the tokenized stream (Spike A P2). Prospero
@@ -928,7 +928,7 @@ ACT: Act = act(
 )
 ```
 
-- [ ] **Step 2: Reserve the controlled surfaces**
+- [x] **Step 2: Reserve the controlled surfaces**
 
 Add to `src/40-act4-literary.toml` (alphabetical position with the existing
 entries):
@@ -1065,7 +1065,7 @@ In `src/literary.toml`, add to `[characters.puck.recall]`:
 sealed_gates_colour = "Recall the sealed gate's colour."
 ```
 
-- [ ] **Step 3: Regenerate and gate**
+- [x] **Step 3: Regenerate and gate**
 
 ```bash
 uv run python -m scripts.splc && uv run python scripts/assemble.py
@@ -1080,7 +1080,7 @@ dumps byte-equal; full suite green, same shape. Watch
 `test_act_iv_scene_titles_use_ceremonial_verb_variety` (the 31 new titles add
 zero uses of tests/opens/closes — the budget stays 0/1/1).
 
-- [ ] **Step 4: Lint, type-check, commit**
+- [x] **Step 4: Lint, type-check, commit**
 
 ```bash
 uv run ruff check . && uv run ruff format . && uv run pyright
@@ -1108,7 +1108,7 @@ this task.
 - Consumes: Task 1's `tokens.ITEM_START`; Tasks 2–3's traversal and emission; `emit_token`; the full cast.
 - Produces: the tokenized stream on Puck exactly as §Contract specifies; scene-group prefixes `PASS_LISTS_*` / `PASS_PARA_*` that future passes (headers, HR, code, blockquotes — later slices) slot between.
 
-- [ ] **Step 1: Replace `src_ir/act2.py` with:**
+- [x] **Step 1: Replace `src_ir/act2.py` with:**
 
 ```python
 """Act II — block dispatcher (Spike A P2): list pass + paragraph pass.
@@ -1888,7 +1888,7 @@ ACT: Act = act(
 )
 ```
 
-- [ ] **Step 2: Replace `src/20-act2-literary.toml` with:**
+- [x] **Step 2: Replace `src/20-act2-literary.toml` with:**
 
 ```toml
 [scenes.ACT_II_DONE]
@@ -2280,7 +2280,7 @@ title = "One glyph is laid within the wall."
 pattern = "bare_statement"
 ```
 
-- [ ] **Step 3: Edit `src/literary.toml`**
+- [x] **Step 3: Edit `src/literary.toml`**
 
 **(a)** In `[iconic_moments.once_more_breach]`, change
 `scene = "PASS_PARA_READ_GLYPH"` to `scene = "PASS_LISTS_BLOCK_START"`.
@@ -2320,7 +2320,7 @@ kept_measure = "Recall the kept measure."
 headers. Negative noun + one negative adjective = −2 per
 `docs/spl/reference.md`.)
 
-- [ ] **Step 4: Add Macbeth to the dramatis personae**
+- [x] **Step 4: Add Macbeth to the dramatis personae**
 
 In `src/00-preamble.spl`, insert directly after the Lady Macbeth line:
 
@@ -2333,7 +2333,7 @@ load-bearing SPL — Act II now puts Macbeth on stage — and it satisfies
 `test_named_production_characters_have_speaking_lines` because he speaks in
 the staging scenes of this same commit.)
 
-- [ ] **Step 5: Regenerate and gate**
+- [x] **Step 5: Regenerate and gate**
 
 ```bash
 uv run python -m scripts.splc && uv run python scripts/assemble.py
@@ -2354,7 +2354,7 @@ strict parity holds. If a spike fixture mismatches, diff `./shakedown-debug`
 output for that fixture against §Contract's expected stream to localize the
 act at fault before touching anything.
 
-- [ ] **Step 6: Lint, type-check, commit**
+- [x] **Step 6: Lint, type-check, commit**
 
 ```bash
 uv run ruff check . && uv run ruff format . && uv run pyright
@@ -2374,7 +2374,7 @@ git commit -m "feat: recognize lists in act two at spike scope"
 - Consumes: the completed play from Tasks 1–4.
 - Produces: the extended G2 baseline set that gates Spike B and Slices 2+; the spike tests as hard gates.
 
-- [ ] **Step 1: Record and machine-check the six dumps**
+- [x] **Step 1: Record and machine-check the six dumps**
 
 ```bash
 mkdir -p tests/fixtures/token_stream/lists
@@ -2418,7 +2418,7 @@ EOF
 Expected: `all six dumps match the plan's expected streams`. Any mismatch is
 an implementation bug — stop and fix the offending act task; do not bless.
 
-- [ ] **Step 2: Hand-review two dumps against the contract**
+- [x] **Step 2: Hand-review two dumps against the contract**
 
 Read `loose_second_paragraph.dump` and `nested_one_level.dump` top to bottom
 against the worked decodings in §Contract and choreography (loose payload `2`
@@ -2427,7 +2427,7 @@ Confirm no `-2` and no `-1` appears in any dump (framing markers never cross
 the act boundary). This is the design spec's deliberate-extension review; the
 committed files below are the durable record of it.
 
-- [ ] **Step 3: Add the baseline regression tests**
+- [x] **Step 3: Add the baseline regression tests**
 
 Append to `tests/test_token_dump.py`:
 
@@ -2454,7 +2454,7 @@ and add `import pytest` below the existing imports.
 Run: `uv run pytest tests/test_token_dump.py -q`
 Expected: PASS (nine tests).
 
-- [ ] **Step 4: Un-xfail the spike tests**
+- [x] **Step 4: Un-xfail the spike tests**
 
 In `tests/test_architecture_spikes.py`, delete the `_SPIKE_A_HALT_REASON`
 assignment and replace the whole `@pytest.mark.parametrize(...)` decorator
@@ -2467,7 +2467,7 @@ with:
 Run: `uv run pytest tests/test_architecture_spikes.py -q`
 Expected: `6 passed` (hard passes, no xfail/xpass).
 
-- [ ] **Step 5: Measure the grown play (for Task 6's record)**
+- [x] **Step 5: Measure the grown play (for Task 6's record)**
 
 ```bash
 wc -l shakedown.spl
@@ -2477,7 +2477,7 @@ time ./shakedown < ~/mdtest/Markdown.mdtest/"Amps and angle encoding.text" > /de
 
 Note the line count and the two wall times for Task 6.
 
-- [ ] **Step 6: Full verify, commit**
+- [x] **Step 6: Full verify, commit**
 
 ```bash
 uv run pytest -q
@@ -2500,7 +2500,7 @@ Expected: default suite fully green with **zero xfails remaining for lists**.
 - Consumes: Task 5's measurements and the green gates.
 - Produces: Spike A closed in the durable design record; the roadmap pointing at Spike B.
 
-- [ ] **Step 1: Architecture spec §4.2 — record the intra-act marker**
+- [x] **Step 1: Architecture spec §4.2 — record the intra-act marker**
 
 In the `**Stream contract (2026-07-06):**` paragraph's termination note,
 append:
@@ -2513,7 +2513,7 @@ side channel (Horatio's stack, staged onto Puck) rather than by buffering
 item text.
 ```
 
-- [ ] **Step 2: Architecture spec §7.3 — record the outcome**
+- [x] **Step 2: Architecture spec §7.3 — record the outcome**
 
 Append to §7.3 (after the **Outcomes** bullets), filling in Task 5's measured
 numbers:
@@ -2534,12 +2534,12 @@ probe `* a\n  * b\n\n  cont\n* c\n`); whitespace-only lines inside items
 unsupported. Item looseness uses the §4.2 side channel.
 ```
 
-- [ ] **Step 3: Clear the blocker**
+- [x] **Step 3: Clear the blocker**
 
 In `.agent/blockers.md`, delete the Spike A `- BLOCK:` entry entirely (the
 resolution chain 3F–3L is complete; gates are green as of Task 5's commit).
 
-- [ ] **Step 4: Roadmap and plan bookkeeping**
+- [x] **Step 4: Roadmap and plan bookkeeping**
 
 In `docs/superpowers/plans/plan-roadmap.md`: set row 3L's status to
 `shipped: <date> at commit <sha of Task 5's commit or later>`; update the
@@ -2548,7 +2548,7 @@ resolved and closed (P1+P2 shipped; outcome recorded in architecture spec
 §7.3); leave row 4 (Spike B) as the next pending row. Tick every checkbox in
 this plan file.
 
-- [ ] **Step 5: Verify and commit**
+- [x] **Step 5: Verify and commit**
 
 ```bash
 uv run pytest tests/test_roadmap_contract.py tests/test_iconic_moments.py -q
