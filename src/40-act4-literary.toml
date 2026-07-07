@@ -6,6 +6,14 @@ pattern = "iconic_echo"
 title = "Prospero receives the herald's stream."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_AFTER_NESTED_CLOSE]
+title = "The inner gate yields to the outer march."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_DISPATCH_TOKEN]
+title = "The scribe reads the present word."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_EMIT_ANCHOR_CLOSE]
 title = "Prospero binds the anchor seal."
 pattern = "scene_of_character"
@@ -22,8 +30,44 @@ pattern = "scene_of_character"
 title = "Prospero releases the anchor title."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_EMIT_FINAL_LIST_NEWLINE]
+title = "Prospero releases the final measure."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE]
 title = "Prospero seals the final chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ITEM_OPEN_LOOSE]
+title = "Prospero grants the soldier a wide chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_ITEM_OPEN_TIGHT]
+title = "Prospero grants the soldier his place."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_LIST_BLOCK_SEP]
+title = "The scribe inscribes a waiting seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_LI_CLOSE]
+title = "Prospero seals the soldier's place."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_LOOSE_END]
+title = "Prospero seals the wide chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_OL_OPEN_NESTED]
+title = "Prospero unfurls the inner numbered ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_OL_OPEN_TOP]
+title = "Prospero unfurls the numbered ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_PARAGRAPH_BREAK]
+title = "Prospero parts the chamber in two."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_PARAGRAPH_CLOSE]
@@ -34,16 +78,88 @@ pattern = "scene_of_character"
 title = "Prospero opens one quiet chamber."
 pattern = "scene_of_character"
 
-[scenes.SCRIBE_DISPATCH_TOKEN]
-title = "The scribe reads the present word."
-pattern = "scene_of_character"
-
 [scenes.SCRIBE_EMIT_PAYLOAD]
 title = "One glyph is released."
 pattern = "bare_statement"
 
+[scenes.SCRIBE_EMIT_UL_OPEN_NESTED]
+title = "Prospero unfurls the inner rough ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_UL_OPEN_TOP]
+title = "Prospero unfurls the rough ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_ITEM_END]
+title = "Prospero hears the soldier's last word."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_ITEM_FIRST]
+title = "The first soldier steps forward."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_ITEM_LOOSENESS]
+title = "Prospero weighs each soldier's bearing."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_ITEM_SUBSEQUENT]
+title = "Another soldier steps forward."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_ITEM_TEXT_LOOSE]
+title = "The soldier speaks at his ease."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_ITEM_TEXT_TIGHT]
+title = "The soldier speaks his plain words."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_LIST_BLOCK_SEP]
+title = "Prospero weighs the parting word."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_LIST_CLOSE]
+title = "Prospero receives the barred gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_LIST_OPEN]
+title = "Prospero admits the gathered ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_LOOSE_NEWLINE]
+title = "Prospero weighs the pause within."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_LOOSE_NEWLINE_GLYPH]
+title = "The pause passes and speech resumes."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_NESTED_CLOSE]
+title = "Prospero pronounces on the inner gate."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_NESTED_OPEN]
+title = "Prospero admits an inner troop."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_POP_TOKEN]
 title = "The herald yields one bright word."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_STASH_OL_CLOSE_NESTED]
+title = "Prospero bars the inner numbered ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_STASH_OL_CLOSE_TOP]
+title = "Prospero bars the numbered ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_STASH_UL_CLOSE_NESTED]
+title = "Prospero bars the inner rough ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_STASH_UL_CLOSE_TOP]
+title = "Prospero bars the rough ranks."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_ANCHOR_CLOSE]
@@ -66,6 +182,14 @@ pattern = "scene_of_character"
 title = "Prospero weighs the last seal."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_TEST_LIST_OPEN]
+title = "Prospero weighs the gate of ranks."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_TEST_PARAGRAPH_CLOSE]
 title = "The scribe weighs a seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TOP_CLOSE]
+title = "Prospero pronounces on the outer gate."
 pattern = "scene_of_character"

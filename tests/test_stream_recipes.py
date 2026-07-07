@@ -36,7 +36,7 @@ def _phrase_ops(expr: Expr) -> int:
 def test_recipes_evaluate_to_their_keys_within_bound() -> None:
     from src_ir.stream import RECIPES
 
-    expected_keys = {47, 59, 61, 62, 63, 91, 107, 109, 110, 111, 115}
+    expected_keys = {47, 59, 61, 62, 63, 91, 107, 109, 110, 111, 115, 117}
     assert set(RECIPES) == expected_keys
     for value, expr in RECIPES.items():
         assert _eval(expr) == value

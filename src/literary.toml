@@ -119,6 +119,7 @@ palette = "pastoral_natural"
 voice_register = "chameleonic_messenger"
 blurb = "Puck, swift messenger, who wears each room's colour and flies between them."
 [characters.puck.recall]
+sealed_gates_colour = "Recall the sealed gate's colour."
 masons_stone = "Recall the mason's stone."
 first_forest_seal = "Recall the first forest seal."
 first_forest_path = "Recall the first forest path."

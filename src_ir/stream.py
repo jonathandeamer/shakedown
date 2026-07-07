@@ -35,6 +35,9 @@ RECIPES: dict[int, BinOp] = {
     115: add(  # 's' = 16x7 + 3
         mul(const(16), sub(const(8), const(1))), add(const(1), const(2))
     ),
+    117: add(  # 'u' = 16x7 + 5
+        mul(const(16), sub(const(8), const(1))), add(const(4), const(1))
+    ),
 }
 
 
