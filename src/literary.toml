@@ -46,7 +46,7 @@ phrase = "Out, damned spot"
 
 [iconic_moments.once_more_breach]
 surface = "scene_title"
-scene = "PASS_PARA_READ_GLYPH"
+scene = "PASS_LISTS_BLOCK_START"
 phrase = "Once more unto the breach"
 
 [iconic_moments.rose_by_any_other_name]
@@ -103,6 +103,7 @@ blurb = "Horatio, plain witness of the household, holder of secrets."
 [characters.horatio.stable_utility]
 v1 = "a brother"
 v2 = "a happy brother"
+vneg2 = "a miserable beggar"
 vneg1 = "a beggar"
 v0 = "nothing"
 [characters.horatio.soft_variation]
@@ -120,6 +121,7 @@ voice_register = "chameleonic_messenger"
 blurb = "Puck, swift messenger, who wears each room's colour and flies between them."
 [characters.puck.recall]
 sealed_gates_colour = "Recall the sealed gate's colour."
+kept_measure = "Recall the kept measure."
 masons_stone = "Recall the mason's stone."
 first_forest_seal = "Recall the first forest seal."
 first_forest_path = "Recall the first forest path."
@@ -131,6 +133,7 @@ roses_kept_word = "Recall the rose's kept word."
 [characters.puck.stable_utility]
 v1 = "a flower"
 v2 = "a sweet flower"
+vneg2 = "a vile wolf"
 vneg1 = "a wolf"
 v0 = "nothing"
 [characters.puck.soft_variation]
@@ -157,6 +160,7 @@ v2 = "a black cat"
 v4 = "a furry black cat"
 v8 = "a little furry black cat"
 v16 = "a normal little furry black cat"
+vneg2 = "a rotten toad"
 vneg1 = "a toad"
 v0 = "nothing"
 [characters.hecate.soft_variation]
@@ -173,11 +177,15 @@ palette = "martial_catastrophic"
 voice_register = "decisive_clean_martial"
 blurb = "Lady Macbeth, mason of the block, who cuts the page into rooms."
 [characters.lady_macbeth.recall]
+fallen_rampart = "Recall the fallen rampart."
 hewn_glyph = "Recall the hewn glyph."
 blank_glyph = "Recall the blank glyph."
+kept_measure = "Recall the kept measure."
+staged_stone = "Recall the staged stone."
 [characters.lady_macbeth.stable_utility]
 v1 = "a hero"
 v2 = "a noble hero"
+vneg2 = "a cursed wolf"
 vneg1 = "a wolf"
 v0 = "nothing"
 [characters.lady_macbeth.soft_variation]
@@ -194,9 +202,11 @@ palette = "martial_catastrophic"
 voice_register = "doubt_shadowed_martial"
 blurb = "Macbeth, apprentice mason, who steps through the shadowed threshold."
 [characters.macbeth.recall]
+masons_stone = "Recall the mason's stone."
 [characters.macbeth.stable_utility]
 v1 = "a kingdom"
 v2 = "a proud kingdom"
+vneg2 = "a foul curse"
 vneg1 = "a curse"
 v0 = "nothing"
 [characters.macbeth.soft_variation]

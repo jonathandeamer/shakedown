@@ -14,30 +14,374 @@ pattern = "cross_character"
 title = "The herald turns the wall toward morning."
 pattern = "scene_of_character"
 
-[scenes.PASS_PARA_AFTER_BLANK]
-title = "The mason counts the quiet."
+[scenes.FRAME_STAGE_MAIN_OPEN]
+title = "Macbeth shoulders the finished wall."
 pattern = "scene_of_character"
 
-[scenes.PASS_PARA_CLOSE_FINAL]
-title = "The last chamber is sealed."
+[scenes.FRAME_STAGE_MAIN_POP]
+title = "Lady Macbeth hands each stone to Macbeth."
+pattern = "cross_character"
+
+[scenes.FRAME_STAGE_SIDE_OPEN]
+title = "The tally passes to the herald."
+pattern = "scene_of_character"
+
+[scenes.FRAME_STAGE_SIDE_POP]
+title = "Horatio hands the kept measures to Puck."
+pattern = "cross_character"
+
+[scenes.PASS_LISTS_AFTER_LIST]
+title = "The field lies open beyond the gates."
 pattern = "bare_statement"
 
-[scenes.PASS_PARA_CLOSE_PARAGRAPH]
-title = "The wall is sealed against the blank."
+[scenes.PASS_LISTS_BLANK]
+title = "A silence falls across the ranks."
 pattern = "bare_statement"
 
-[scenes.PASS_PARA_KEEP_GLYPH]
-title = "One glyph is laid within the wall."
+[scenes.PASS_LISTS_BLANK_HEAD]
+title = "The captain reads past the silence."
 pattern = "bare_statement"
 
-[scenes.PASS_PARA_OPEN_WITH_GLYPH]
-title = "A new chamber takes its mark."
+[scenes.PASS_LISTS_BLANK_HEAD_ORDERED]
+title = "The captain counts past the silence."
 pattern = "bare_statement"
 
-[scenes.PASS_PARA_READ_GLYPH]
+[scenes.PASS_LISTS_BLANK_INDENT_1]
+title = "One step inward past the silence."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BLANK_INDENT_2]
+title = "Two steps inward past the silence."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BLANK_INDENT_3]
+title = "Three steps inward past the silence."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BLANK_INDENT_4]
+title = "Four steps inward past the silence."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BLANK_JOIN]
+title = "The far line rejoins its wide soldier."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BLOCK_BLANK]
+title = "Quiet lines pass before the gate."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BLOCK_START]
 title = "Once more unto the breach."
 pattern = "iconic_echo"
 
-[scenes.PASS_PARA_SKIP_BLANK]
-title = "Empty lines pass beneath the keep."
+[scenes.PASS_LISTS_BSIB_EMIT]
+title = "The soldier is sealed loose upon the field."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BSIB_OUTDENT]
+title = "The inner troop yields after the silence."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BSIB_SAVE_OL]
+title = "A number rises after the silence."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BSIB_SAVE_UL]
+title = "A banner rises after the silence."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BSIB_TEST_DOT]
+title = "The risen number awaits its seal."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BSIB_TEST_OL]
+title = "A space must follow the risen number."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BSIB_TEST_UL]
+title = "A space must follow the risen banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_CLOSE_ALL]
+title = "Every open gate is barred."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_CLOSE_ALL_DONE]
+title = "Macbeth lays a new floor for the rampart."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_CLOSE_ALL_REPLAY]
+title = "The gates are barred behind a false banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_CLOSE_ALL_REPLAY_DOT]
+title = "The gates are barred behind a false number."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_CLOSE_REPLAY_DONE]
+title = "Macbeth restores the rampart's floor."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_CLOSE_REPLAY_DOT_DONE]
+title = "Macbeth steadies the rampart's floor."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_DONE]
+title = "The first pass lays down its arms."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_END_OF_INPUT]
+title = "The last soldier stands at the page's end."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_GATE_ORDERED]
+title = "The captain counts a numbered banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_GATE_UNORDERED]
+title = "The captain eyes a rough banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_1]
+title = "One step inward from the wall."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_2]
+title = "Two steps inward from the wall."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_3]
+title = "Three steps inward from the wall."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_4]
+title = "Four steps mark a carried line."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_CLASSIFY]
+title = "The captain weighs the indented head."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_ORDERED]
+title = "The captain counts the indented head."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_ITEM_BEGIN_LOOSE]
+title = "A wide-marching soldier takes his place."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_ITEM_BEGIN_TIGHT]
+title = "A close-drawn soldier takes his place."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_ITEM_GLYPH]
+title = "One glyph is laid within the rank."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_ITEM_LINE_END]
+title = "The rank's line reaches its end."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_ITEM_NEXT]
+title = "The rank takes one more glyph."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_ITEM_SKIP_SPACES]
+title = "Idle spaces fall before the soldier."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_JOIN_LINE]
+title = "The wrapped line joins the standing rank."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LAZY_REPLAY_SAVED]
+title = "The false banner joins the rank."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LAZY_REPLAY_SAVED_DOT]
+title = "The false number joins the rank."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LINE_HEAD]
+title = "The captain reads the new line's head."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LINE_HEAD_ORDERED]
+title = "The captain counts the new line's head."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LIST_END]
+title = "The ranks are dismissed."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LIST_END_REPLAY]
+title = "The ranks are dismissed by a false banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LIST_END_REPLAY_DOT]
+title = "The ranks are dismissed by a false number."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_MARK_SAVE_OL]
+title = "The numbered banner is held aloft."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_MARK_SAVE_UL]
+title = "The rough banner is held aloft."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_MARK_TEST_DOT]
+title = "The number awaits its seal."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_MARK_TEST_OL]
+title = "A space must follow the number."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_MARK_TEST_UL]
+title = "A space must follow the banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_EMIT_OL]
+title = "The soldier yields to an inner column."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_EMIT_UL]
+title = "The soldier yields to an inner troop."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_OPEN_OL]
+title = "An inner gate of numbered ranks."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_OPEN_UL]
+title = "An inner gate of rough ranks."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_SAVE_OL]
+title = "An inner number is held aloft."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_SAVE_UL]
+title = "An inner banner is held aloft."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_TEST_DOT]
+title = "The inner number awaits its seal."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_TEST_OL]
+title = "A space must follow the inner number."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_TEST_UL]
+title = "A space must follow the inner banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_OPEN_OL]
+title = "The gate of numbered ranks is opened."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_OPEN_UL]
+title = "The gate of rough ranks is opened."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_RAW_AFTER_NEWLINE]
+title = "The watch turns at the line's end."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_RAW_BLANK]
+title = "A blank rank crosses the field."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_RAW_GLYPH]
+title = "One plain glyph joins the wall."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_RAW_NEXT]
+title = "The line marches on."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_RAW_REPLAY_SAVED]
+title = "The held banner returns to the wall."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_RAW_REPLAY_SAVED_DOT]
+title = "The banner and seal return to the wall."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_SEED_FRAMES]
+title = "Macbeth lays the first stone of the rampart."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_SIB_EMIT]
+title = "The soldier is sealed into the ranks."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_SIB_OUTDENT]
+title = "The inner troop returns to command."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_SIB_SAVE_OL]
+title = "A brother number is held aloft."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_SIB_SAVE_UL]
+title = "A brother banner is held aloft."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_SIB_TEST_DOT]
+title = "The brother number awaits its seal."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_SIB_TEST_OL]
+title = "A space must follow the brother number."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_SIB_TEST_UL]
+title = "A space must follow the brother banner."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_CLOSE_BLANK]
+title = "The wall is sealed against the blank."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_COPY_CLOSE]
+title = "A barred stone passes through unchanged."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_COPY_OPEN]
+title = "A gate stone passes through unchanged."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_FINAL_CLOSE]
+title = "The last chamber is sealed."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_ITEM]
+title = "The soldier receives his kept measure."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_ITEM_TEXT]
+title = "The soldier's words pass through unchanged."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_NEWLINE]
+title = "The wall pauses at the line's end."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_NEXT]
+title = "The mason takes the next staged stone."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_OPEN]
+title = "The mason opens the second pass."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_OPEN_PARA]
+title = "A new chamber takes its mark."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_TEXT]
+title = "One glyph is laid within the wall."
 pattern = "bare_statement"
