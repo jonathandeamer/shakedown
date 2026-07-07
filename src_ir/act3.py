@@ -1,4 +1,4 @@
-"""Act III — span pass over the tokenized stream (Spike A P1). Traversal
+"""Act III — span pass over the tokenized stream (Spike A P2). Traversal
 copies token codes and fixed payloads through untouched and runs the span
 gamut only on text-payload glyphs (arity table in src_ir/tokens.py); the 56
 span scenes are the Slice-1 port, quirks included (Romeo's write-only
@@ -30,10 +30,33 @@ from src_ir import tokens
 from src_ir.cast import JULIET, PUCK, ROMEO, ROSALIND
 from src_ir.stream import RECIPES
 
-# P1 traverses PARA-only streams: no fixed payloads, text follows. P2
-# replaces the unconditional copy in TRAVERSE_NEXT_TOKEN with a dispatch
-# generated over tokens.ARITY.
-assert tokens.ARITY[tokens.PARA] == tokens.TokenArity(0, True)
+# Traversal routes per arity shape: (payloads, has_text). Codes with neither
+# payloads nor text copy through and loop; unknown shapes fail the build.
+_ARITY_ROUTE = {
+    (0, True): "TRAVERSE_OPEN_TEXT",
+    (1, False): "TRAVERSE_COPY_PAYLOAD_NEXT",
+    (1, True): "TRAVERSE_COPY_PAYLOAD_TEXT",
+}
+
+
+def _traverse_dispatch() -> list[Op]:
+    """The token-code dispatch, generated over the arity table. Codes with
+    neither payloads nor text ((0, False)) copy through and take the final
+    goto back to the token loop."""
+    ops: list[Op] = [
+        pop(PUCK, recall="nights_next_word"),
+        branch(eq(val(PUCK), const(tokens.STREAM_END)), then="LYRIC_OPEN_REVERSE"),
+        push(JULIET, val(PUCK)),
+    ]
+    for code, arity in sorted(tokens.ARITY.items()):
+        shape = (arity.payloads, arity.has_text)
+        if shape == (0, False):
+            continue
+        if shape not in _ARITY_ROUTE:
+            raise ValueError(f"token {code}: unsupported arity {shape}")
+        ops.append(branch(eq(val(PUCK), const(code)), then=_ARITY_ROUTE[shape]))
+    ops.append(goto("TRAVERSE_NEXT_TOKEN"))
+    return ops
 
 
 def _k(n: int) -> Expr:
@@ -83,13 +106,19 @@ ACT: Act = act(
         ),
         scene(
             "TRAVERSE_NEXT_TOKEN",
-            pop(PUCK, recall="nights_next_word"),
-            branch(
-                eq(val(PUCK), const(tokens.STREAM_END)),
-                then="LYRIC_OPEN_REVERSE",
-            ),
-            # PARA (build-time assert above): copy the code through
-            # untouched; no fixed payloads; a glyph run follows.
+            *_traverse_dispatch(),
+            anchor=JULIET,
+        ),
+        scene(
+            "TRAVERSE_COPY_PAYLOAD_NEXT",
+            pop(PUCK, recall="kept_charge"),
+            push(JULIET, val(PUCK)),
+            goto("TRAVERSE_NEXT_TOKEN"),
+            anchor=JULIET,
+        ),
+        scene(
+            "TRAVERSE_COPY_PAYLOAD_TEXT",
+            pop(PUCK, recall="kept_charge"),
             push(JULIET, val(PUCK)),
             goto("TRAVERSE_OPEN_TEXT"),
             anchor=JULIET,

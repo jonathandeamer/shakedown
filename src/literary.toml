@@ -255,6 +255,7 @@ palette = "pastoral_natural"
 voice_register = "lyrical_night_imagery"
 blurb = "Juliet, night-star lyric, who lays final roses on the silver path."
 [characters.juliet.recall]
+kept_charge = "Recall the kept charge."
 nights_next_word = "Recall the night's next word."
 [characters.juliet.stable_utility]
 v1 = "a rose"

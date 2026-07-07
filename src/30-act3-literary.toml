@@ -190,6 +190,14 @@ pattern = "bare_statement"
 title = "The night lays down the sealing stone."
 pattern = "bare_statement"
 
+[scenes.TRAVERSE_COPY_PAYLOAD_NEXT]
+title = "The night carries the word's charge onward."
+pattern = "bare_statement"
+
+[scenes.TRAVERSE_COPY_PAYLOAD_TEXT]
+title = "The night carries the charge to the garden."
+pattern = "bare_statement"
+
 [scenes.TRAVERSE_NEXT_TOKEN]
 title = "Juliet takes the herald's next word."
 pattern = "cross_character"

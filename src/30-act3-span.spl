@@ -24,6 +24,48 @@ Puck:
  Remember myself.
 
 Juliet:
+ Are you as sweet as a rose?
+
+Puck:
+ If so, let us proceed to scene @TRAVERSE_OPEN_TEXT.
+
+Juliet:
+ Are you as gentle as a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_NEXT.
+
+Juliet:
+ Are you as fair as the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_TEXT.
+
+Juliet:
+ Let us return to scene @TRAVERSE_NEXT_TOKEN.
+
+
+                    Scene @TRAVERSE_COPY_PAYLOAD_NEXT: @LIT.scenes.TRAVERSE_COPY_PAYLOAD_NEXT.title
+
+Juliet:
+ @LIT.characters.juliet.recall.kept_charge
+
+Puck:
+ Remember myself.
+
+Juliet:
+ Let us return to scene @TRAVERSE_NEXT_TOKEN.
+
+
+                    Scene @TRAVERSE_COPY_PAYLOAD_TEXT: @LIT.scenes.TRAVERSE_COPY_PAYLOAD_TEXT.title
+
+Juliet:
+ @LIT.characters.juliet.recall.kept_charge
+
+Puck:
+ Remember myself.
+
+Juliet:
  Let us proceed to scene @TRAVERSE_OPEN_TEXT.
 
 
