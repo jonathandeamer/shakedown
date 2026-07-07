@@ -95,6 +95,7 @@ whether the cost is debuggable in the run-loop.
 - **Current-repo scene-count-per-act (200 scenes):** first-run and median per B18.
 - **Current-repo reference-lookup at fixture scale:** first-run and median per B17.
 - **Current oracle-stub mdtest contract:** 23 passing tests in about 1.44s (B9).
+- **Input-size execution scaling (2026-07-07):** ~11s fixed program cost plus ~0.11s per KB of input; a Syntax-sized (27KB) synthetic input runs in ~14s median (B20).
 
 ### Historical / retrospective context
 

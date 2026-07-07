@@ -32,6 +32,13 @@ and record first-run + median per `docs/performance/budget.md` protocol.
 single large fixture), the per-character pass structure needs a conversation
 **before** Slices 3–4 lock it in, not after.
 
+**Resolved 2026-07-07 — green.** Recorded as B20 in
+`docs/verification-plan.md`: ~11s fixed program cost plus ~0.11s/KB of input;
+a Syntax-sized (27KB) synthetic input runs in ~14s median. No pass-structure
+conversation is forced. Fixed program cost (Gap 2) remains the term to watch.
+The real Syntax fixture crashes at spike scope (Act III, expected); empty
+stdin also crashes (Act I line 96) — hygiene item for a future plan.
+
 ## Gap 2 — Program-size growth will make the feedback loop painful around Slice 3
 
 `shakedown.spl` was ~2,820 lines with essentially one fixture passing

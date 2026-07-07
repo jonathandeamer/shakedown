@@ -262,6 +262,44 @@ Each replay was run once as part of the docs restructure. Results below capture 
 
 - **Disposition:** The Slice 1 fixture is just over the green threshold for a single small fixture (`<= 10s`) and remains in the yellow zone (`<= 30s`) from `docs/performance/budget.md`. Continue to treat fixture-runtime cost as architecture-relevant evidence during Spike A and later dispatcher work.
 
+### B20 — Input-size execution scaling
+
+- **Command:**
+  ```
+  /usr/bin/time -p ./shakedown < <synthetic-paragraph-input>
+  ```
+  Synthetic inputs are repeated plain-text paragraphs (one ~172-char sentence
+  plus a blank line) at 860, 7,052, 14,276, and 27,348 characters — the last
+  matching `Markdown Documentation - Syntax.text` (27,428 chars). Synthetic
+  inputs were used because the real Syntax fixture crashes at spike scope
+  (see disposition); plain paragraphs traverse all four acts cleanly.
+- **Purpose:** close the completability-review Gap 1
+  (`docs/superpowers/notes/2026-07-07-completability-review.md`): all prior
+  baselines (B14, B17, B18) measure program-size cost; nothing measured how
+  execution time grows with **input** size through the four-act pipeline.
+- **Observed (2026-07-07, commit `19b64fe`, clean tree):**
+
+  ```
+  input chars:  860     7,052   14,276  27,348
+  first run:    11.24s  11.89s  13.53s  14.13s
+  ```
+
+  27,348-char point, 5 runs: first 14.13s, median 13.96s,
+  all ['14.13', '14.03', '13.91', '13.83', '13.96'].
+- **Disposition:** **Green.** Input scaling is approximately linear at
+  ~0.11s per KB on top of a ~11s fixed program cost (startup + parse of the
+  ~2,820-line `shakedown.spl`). A Syntax-sized input costs ~14s total —
+  well inside the single-large-fixture green threshold (<= 30s) and nowhere
+  near the >120s red line that would have forced a per-character
+  pass-structure redesign before Slices 3–4. Fixed program cost, not input
+  size, is the dominant term; program growth (Gap 2, B14) remains the cost
+  driver to watch. Two ancillary findings: (1) the real Syntax fixture
+  crashes after ~13.2s with `Tried to pop from an empty stack` at line 2800
+  (Act III reference-link scene) — expected at spike scope, no output
+  emitted; (2) empty stdin crashes in Act I (line 96, empty-stack pop) —
+  a missing zero-input guard, noted as hygiene, not currently exercised by
+  any fixture.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.
