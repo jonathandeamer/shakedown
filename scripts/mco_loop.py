@@ -33,9 +33,11 @@ RATE_LIMIT_MARKERS = (
     "retryable_rate_limit",
     "rate_limit",
     "rate limit",
+    "rate-limited",
     "usage limit",
     "too many requests",
     "http 429",
+    "429:",
 )
 TRANSIENT_MARKERS = (
     "retryable_timeout",

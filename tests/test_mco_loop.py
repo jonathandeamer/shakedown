@@ -380,6 +380,25 @@ def test_new_blocker_is_not_no_progress() -> None:
     assert mco_loop.classify_result(result) == "blocked"
 
 
+def test_openrouter_upstream_throttle_classifies_as_rate_limit() -> None:
+    throttle = (
+        '429: {"message":"Provider returned error","code":429,"metadata":'
+        '{"raw":"openai/gpt-oss-120b:free is temporarily rate-limited '
+        'upstream. Please retry shortly."}}'
+    )
+    result = InvocationResult(0, throttle, "", False, False)
+
+    assert mco_loop.classify_result(result) == "rate_limit"
+
+
+def test_progress_still_outranks_throttle_wording() -> None:
+    result = InvocationResult(
+        0, "documented how rate-limited 429: responses are handled", "", True, False
+    )
+
+    assert mco_loop.classify_result(result) == "progress"
+
+
 def test_recovery_rewrite_would_change_key_if_misused() -> None:
     canonical = NextAction(ActionKind.IMPLEMENT, "execute", Path("plan.md"), "step", ())
     rewritten = mco_loop.apply_failure_action(
