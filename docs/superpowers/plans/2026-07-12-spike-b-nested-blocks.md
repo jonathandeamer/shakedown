@@ -224,7 +224,7 @@ pattern = "scene_of_character"
 
   Finish each stream exactly as its design-table row specifies, ending in `-1`.
 
-- [ ] **Step 3: Run pre-implementation evidence.**
+- [x] **Step 3: Run pre-implementation evidence.**
 
   Run: `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py -q`  
   Expected: structural baseline tests PASS; new real-runtime/oracle tests FAIL until Tasks 3–4 implement the behavior.
