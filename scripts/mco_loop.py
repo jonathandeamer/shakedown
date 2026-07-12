@@ -457,9 +457,10 @@ def select_executor(
         own_until = int(own) if isinstance(own, int | float) else 0
         return max(group_until, own_until)
 
+    # Compatibility argument retained for callers/status tests. Executor order
+    # is policy: Pi models are last-resort and must not leapfrog trusted models.
+    _ = preserve_planning
     ordered = list(executors)
-    if preserve_planning:
-        ordered.sort(key=lambda item: item.quota_group in PRESERVED_PLANNING_GROUPS)
 
     unattempted = [item for item in ordered if item.name not in attempts]
     for executor in unattempted:

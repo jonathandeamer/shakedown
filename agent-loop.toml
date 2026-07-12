@@ -57,15 +57,6 @@ coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
 
 [[implementation]]
-name = "agy-flash-implement"
-provider = "agy-flash"
-display_model = "Gemini 3.5 Flash (High)"
-quota_group = "agy"
-best_effort = true
-coauthor_name = "Google Gemini"
-coauthor_email = "noreply@google.com"
-
-[[implementation]]
 name = "claude-opus-implement"
 provider = "claude-opus"
 display_model = "opus"
@@ -83,37 +74,25 @@ coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
 
 [[implementation]]
-name = "agy-pro-implement"
-provider = "agy-pro"
-display_model = "Gemini 3.1 Pro (High)"
-quota_group = "agy"
-best_effort = true
-coauthor_name = "Google Gemini"
-coauthor_email = "noreply@google.com"
-
-[[implementation]]
 name = "grok-implement"
-provider = "pi"
-model_provider = "xai"
-model = "grok-build-0.1"
+provider = "pi-grok-stateless"
+display_model = "grok-build-0.1"
 quota_group = "xai"
 coauthor_name = "xAI Grok"
 coauthor_email = "noreply@x.ai"
 
 [[implementation]]
 name = "hy3-implement"
-provider = "pi"
-model_provider = "openrouter"
-model = "tencent/hy3:free"
+provider = "pi-hy3-stateless"
+display_model = "tencent/hy3:free"
 quota_group = "openrouter"
 coauthor_name = "Tencent Hy3"
 coauthor_email = "noreply@tencent.com"
 
 [[implementation]]
 name = "nemotron-implement"
-provider = "pi"
-model_provider = "openrouter"
-model = "nvidia/nemotron-4-340b-instruct:free"
+provider = "pi-nemotron-stateless"
+display_model = "nvidia/nemotron-4-340b-instruct:free"
 quota_group = "openrouter"
 coauthor_name = "NVIDIA Nemotron"
 coauthor_email = "noreply@nvidia.com"

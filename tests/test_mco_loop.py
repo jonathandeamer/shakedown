@@ -118,24 +118,20 @@ def test_live_config_has_role_scoped_model_order() -> None:
     assert [item.provider for item in config.implementation] == [
         "claude-sonnet",
         "codex",
-        "agy-flash",
         "claude-opus",
         "codex",
-        "agy-pro",
-        "pi",
-        "pi",
-        "pi",
+        "pi-grok-stateless",
+        "pi-hy3-stateless",
+        "pi-nemotron-stateless",
     ]
     assert [(item.model_provider, item.model) for item in config.implementation] == [
         (None, None),
         (None, "gpt-5.4"),
         (None, None),
-        (None, None),
         (None, "gpt-5.6-sol"),
         (None, None),
-        ("xai", "grok-build-0.1"),
-        ("openrouter", "tencent/hy3:free"),
-        ("openrouter", "nvidia/nemotron-4-340b-instruct:free"),
+        (None, None),
+        (None, None),
     ]
     assert config.planning[2].display_model == "opus"
     assert config.implementation[0].display_model == "sonnet"
@@ -144,6 +140,23 @@ def test_live_config_has_role_scoped_model_order() -> None:
     }
     assert all(item.provider != "claude-fable" for item in config.planning)
     assert all(item.provider != "claude-fable" for item in config.implementation)
+
+
+def test_automatic_shims_are_stateless_and_models_remain_visible() -> None:
+    agents = (mco_loop.REPO / ".mco" / "agents.yaml").read_text()
+    config = mco_loop.load_config()
+
+    assert agents.count("claude -p --no-session-persistence") == 3
+    assert agents.count("pi --no-session --print") == 3
+    assert not {"agy-flash", "agy-pro", "pi"} & {
+        item.provider for item in config.implementation
+    }
+    fallbacks = config.implementation[-3:]
+    assert [item.display_model for item in fallbacks] == [
+        "grok-build-0.1",
+        "tencent/hy3:free",
+        "nvidia/nemotron-4-340b-instruct:free",
+    ]
 
 
 def test_parse_roadmap_finds_live_rows_and_plan_path() -> None:
@@ -262,8 +275,8 @@ def test_mco_argv_contains_model_policy_but_no_secret_values(tmp_path: Path) -> 
     command = mco_loop.mco_command(config, executor, "task", prompt)
 
     joined = " ".join(command)
-    assert "tencent/hy3:free" in joined
-    assert "openrouter" in joined
+    assert "pi-hy3-stateless" in joined
+    assert "--provider-models-json" not in command
     assert "or-secret" not in joined
     assert "OPENROUTER_API_KEY" not in joined
     assert command[command.index("--max-provider-parallelism") + 1] == "1"
@@ -419,6 +432,20 @@ def test_selection_skips_substantively_attempted_executor() -> None:
 
     assert selection.executor == executors[1]
     assert selection.exhausted is False
+
+
+def test_selection_keeps_configured_priority_for_implementation() -> None:
+    action = NextAction(ActionKind.IMPLEMENT, "execute", None, "step", ())
+    executors = (
+        Executor("claude", "claude", "claude"),
+        Executor("fallback", "pi-fallback", "openrouter"),
+    )
+
+    selection = mco_loop.select_executor(
+        executors, {"cooldowns": {}}, action, now=100, preserve_planning=True
+    )
+
+    assert selection.executor == executors[0]
 
 
 def test_selection_waits_for_unattempted_trusted_cooldown() -> None:

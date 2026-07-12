@@ -1,16 +1,19 @@
 agents:
   - name: claude-fable
     transport: shim
-    command: 'claude -p --permission-mode plan --model claude-fable-5 --output-format text'
+    command: 'claude -p --no-session-persistence --permission-mode plan --model claude-fable-5 --output-format text'
   - name: claude-opus
     transport: shim
-    command: 'claude -p --dangerously-skip-permissions --model opus --output-format text'
+    command: 'claude -p --no-session-persistence --dangerously-skip-permissions --model opus --output-format text'
   - name: claude-sonnet
     transport: shim
-    command: 'claude -p --dangerously-skip-permissions --model sonnet --output-format text'
-  - name: agy-flash
+    command: 'claude -p --no-session-persistence --dangerously-skip-permissions --model sonnet --output-format text'
+  - name: pi-grok-stateless
     transport: shim
-    command: 'agy --print --dangerously-skip-permissions --mode accept-edits --agent "Gemini 3.5 Flash (High)" --print-timeout 30m'
-  - name: agy-pro
+    command: 'pi --no-session --print --provider xai --model grok-build-0.1'
+  - name: pi-hy3-stateless
     transport: shim
-    command: 'agy --print --dangerously-skip-permissions --mode accept-edits --agent "Gemini 3.1 Pro (High)" --print-timeout 30m'
+    command: 'pi --no-session --print --provider openrouter --model tencent/hy3:free'
+  - name: pi-nemotron-stateless
+    transport: shim
+    command: 'pi --no-session --print --provider openrouter --model nvidia/nemotron-4-340b-instruct:free'
