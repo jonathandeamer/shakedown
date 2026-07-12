@@ -8,6 +8,7 @@ contracts before the buffered scanner lands.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
@@ -28,6 +29,12 @@ STEP_LIMIT = 200_000
 _BORROWED_PREFIX = (7, 13, 42)
 
 
+@dataclass(frozen=True)
+class _CarrierBoundary:
+    borrowed: StackSnapshot
+    floor_prefix: tuple[int, ...]
+
+
 def _run_to_act2(stem: str) -> InterpreterState:
     input_text = (SPAN_FIXTURES / f"{stem}.text").read_text()
     state = InterpreterState(input_text=input_text)
@@ -40,11 +47,17 @@ def _run_to_act3(stem: str) -> InterpreterState:
     return run_act(ACT3, state, step_limit=STEP_LIMIT).state
 
 
-def _run_to_act3_with_prefix(stem: str) -> tuple[StackSnapshot, InterpreterState]:
+def _run_to_act3_with_prefix(stem: str) -> tuple[_CarrierBoundary, InterpreterState]:
     state = _run_to_act2(stem)
     state.stacks[Char.PUCK] = list(_BORROWED_PREFIX) + state.stacks[Char.PUCK]
-    snapshot = StackSnapshot(char=Char.PUCK, values=_BORROWED_PREFIX)
-    return snapshot, run_act(ACT3, state, step_limit=STEP_LIMIT).state
+    borrowed = StackSnapshot(char=Char.PUCK, values=_BORROWED_PREFIX)
+    boundary = _CarrierBoundary(
+        borrowed=borrowed,
+        # Freeze the exact bytes already beneath the future private scan floor:
+        # the borrowed prefix plus the carrier's seeded STREAM_END sentinel.
+        floor_prefix=tuple(state.stacks[Char.PUCK][: borrowed.floor + 1]),
+    )
+    return boundary, run_act(ACT3, state, step_limit=STEP_LIMIT).state
 
 
 def _carrier_stream(state: InterpreterState) -> list[int]:
@@ -68,9 +81,9 @@ def _decode_carrier(state: InterpreterState) -> list[DecodedToken]:
 
 
 def _stack_carrier_from_floor(
-    state: InterpreterState, snapshot: StackSnapshot
+    state: InterpreterState, boundary: _CarrierBoundary
 ) -> list[int]:
-    stream = state.stacks[Char.PUCK][snapshot.floor :]
+    stream = state.stacks[Char.PUCK][boundary.borrowed.floor :]
     assert stream
     assert stream[0] == tokens.STREAM_END
     return stream
@@ -115,11 +128,15 @@ def test_act3_preserves_span_fixture_structural_stream(stem: str) -> None:
 def test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels(
     stem: str,
 ) -> None:
-    snapshot, state = _run_to_act3_with_prefix(stem)
+    boundary, state = _run_to_act3_with_prefix(stem)
 
-    assert_prefix_preserved(snapshot, state.stacks[Char.PUCK])
+    assert_prefix_preserved(boundary.borrowed, state.stacks[Char.PUCK])
+    assert (
+        tuple(state.stacks[Char.PUCK][: len(boundary.floor_prefix)])
+        == boundary.floor_prefix
+    )
 
-    stream = _stack_carrier_from_floor(state, snapshot)
+    stream = _stack_carrier_from_floor(state, boundary)
     assert stream.count(tokens.ITEM_START) == 0
     assert stream.count(tokens.STREAM_END) == 1
 

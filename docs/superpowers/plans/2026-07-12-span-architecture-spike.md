@@ -151,7 +151,7 @@ pattern = "bare_statement"
   Run: `uv run pytest tests/test_act3_contracts.py -q`  
   Expected: structural-prefix assertions PASS, while expected rendered-region assertions FAIL because current Act III cannot produce the protected-region contracts.
 
-- [ ] **Step 3: Assert the floor/prefix boundary.**
+- [x] **Step 3: Assert the floor/prefix boundary.**
 
   Instrument only the IR-interpreter-facing test helper (not production SPL) to retain the carrier prefix before calling `ACT3`; assert that the prefix beneath the planned private floor is byte-for-byte equal after the act exits. Assert the final stream carries no leaked `ITEM_START` marker and no extra `STREAM_END`.
 
