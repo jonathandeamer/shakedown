@@ -162,10 +162,12 @@ pattern = "bare_statement"
 
   Evidence (2026-07-12): `53 passed, 5 failed`. The five failures are exactly the intentionally-red `test_act3_does_not_yet_render_expected_span_html` cases (one per span probe); all prefix, stream-shape, floor-boundary, and decode/structure assertions pass.
 
-- [ ] **Step 5: Commit and push the carrier contract.**
+- [x] **Step 5: Commit and push the carrier contract.**
 
   Run: `git add tests/test_act3_contracts.py && git commit -m "test: scaffold span carrier contracts"`  
   Expected: conventional commit with required provenance trailers succeeds, followed by `git push` succeeding.
+
+  Evidence (2026-07-12): the carrier contract (`tests/test_act3_contracts.py`) is committed and pushed to `origin/main` across commits `d47ed74`→`6e5c1a5`. Re-run confirms the recorded Task 2 state: `10 passed, 5 failed`, where the five failures are exactly the intentionally-red `test_act3_does_not_yet_render_expected_span_html` cases (one per span probe) held red until Task 3.
 
 ### Task 3: Implement the one-way buffered scan for code spans and escapes
 
