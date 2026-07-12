@@ -399,6 +399,58 @@ def test_progress_still_outranks_throttle_wording() -> None:
     assert mco_loop.classify_result(result) == "progress"
 
 
+def test_pi_auth_shadow_warning_detects_openrouter_entry(tmp_path: Path) -> None:
+    auth = tmp_path / "auth.json"
+    auth.write_text('{"openrouter": {"type": "api_key", "key": "sk-or-v1-stale"}}')
+
+    warning = mco_loop.pi_auth_shadow_warning(auth)
+
+    assert warning is not None
+    assert "auth.json" in warning
+    assert "openrouter" in warning.lower()
+    assert "sk-or-v1-stale" not in warning
+
+
+def test_pi_auth_shadow_warning_silent_when_clean(tmp_path: Path) -> None:
+    clean = tmp_path / "auth.json"
+    clean.write_text('{"anthropic": {"type": "api_key", "key": "sk-ant-x"}}')
+    assert mco_loop.pi_auth_shadow_warning(clean) is None
+    assert mco_loop.pi_auth_shadow_warning(tmp_path / "missing.json") is None
+    malformed = tmp_path / "broken.json"
+    malformed.write_text("{not json")
+    assert mco_loop.pi_auth_shadow_warning(malformed) is None
+
+
+def test_pi_models_config_warning_names_missing_capped_models(tmp_path: Path) -> None:
+    missing = mco_loop.pi_models_config_warning(tmp_path / "models.json")
+    assert missing is not None
+    assert "models.json" in missing
+    assert "qwen/qwen3-coder:free" in missing
+    assert "nvidia/nemotron-3-super-120b-a12b:free" in missing
+
+    partial = tmp_path / "partial.json"
+    partial.write_text(
+        '{"providers": {"openrouter": {"models": '
+        '[{"id": "qwen/qwen3-coder:free", "maxTokens": 32768}]}}}'
+    )
+    warning = mco_loop.pi_models_config_warning(partial)
+    assert warning is not None
+    assert "nvidia/nemotron-3-super-120b-a12b:free" in warning
+    assert "qwen/qwen3-coder:free" not in warning
+
+
+def test_pi_models_config_warning_silent_when_complete(tmp_path: Path) -> None:
+    complete = tmp_path / "models.json"
+    complete.write_text(
+        '{"providers": {"openrouter": {"models": ['
+        '{"id": "qwen/qwen3-coder:free", "maxTokens": 32768},'
+        '{"id": "nvidia/nemotron-3-super-120b-a12b:free", "maxTokens": 32768}'
+        "]}}}"
+    )
+
+    assert mco_loop.pi_models_config_warning(complete) is None
+
+
 def test_recovery_rewrite_would_change_key_if_misused() -> None:
     canonical = NextAction(ActionKind.IMPLEMENT, "execute", Path("plan.md"), "step", ())
     rewritten = mco_loop.apply_failure_action(

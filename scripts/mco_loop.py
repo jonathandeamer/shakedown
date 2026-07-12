@@ -46,6 +46,60 @@ TRANSIENT_MARKERS = (
     "service unavailable",
 )
 MCO_TIMEOUT_SECONDS = 18000
+PI_AUTH_FILE = Path.home() / ".pi" / "agent" / "auth.json"
+PI_MODELS_FILE = Path.home() / ".pi" / "agent" / "models.json"
+PI_MODELS_REQUIRED_IDS = (
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "qwen/qwen3-coder:free",
+)
+
+
+def pi_auth_shadow_warning(path: Path = PI_AUTH_FILE) -> str | None:
+    """Warn when a stored Pi credential would shadow the loop's env key."""
+    try:
+        stored = json.loads(path.read_text())
+    except (FileNotFoundError, OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(stored, dict) or "openrouter" not in stored:
+        return None
+    return (
+        f"agent-loop: {path} contains a stored openrouter credential; "
+        "pi prefers it over the loop's OPENROUTER_API_KEY. Remove the "
+        "entry if the loop's key should win."
+    )
+
+
+def pi_models_config_warning(path: Path = PI_MODELS_FILE) -> str | None:
+    """Warn when machine-local Pi definitions for capped models are absent."""
+    try:
+        config_text = path.read_text()
+    except (FileNotFoundError, OSError):
+        config_text = ""
+    try:
+        parsed: object = json.loads(config_text) if config_text else {}
+    except json.JSONDecodeError:
+        parsed = {}
+    defined: set[str] = set()
+    if isinstance(parsed, dict):
+        providers = parsed.get("providers")
+        if isinstance(providers, dict):
+            for provider in providers.values():
+                if not isinstance(provider, dict):
+                    continue
+                models = provider.get("models")
+                if not isinstance(models, list):
+                    continue
+                for model in models:
+                    if isinstance(model, dict) and isinstance(model.get("id"), str):
+                        defined.add(model["id"])
+    missing = [name for name in PI_MODELS_REQUIRED_IDS if name not in defined]
+    if not missing:
+        return None
+    return (
+        f"agent-loop: {path} lacks maxTokens-capped definitions for "
+        f"{', '.join(missing)}; those executors will fail with a 400 "
+        "output-budget error until the entries are added."
+    )
 
 
 class ActionKind(Enum):
@@ -1237,6 +1291,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         print("agent-loop: mco is not installed; install @tt-a1i/mco", file=sys.stderr)
         return 2
     environment = load_named_secrets(config.env_file)
+    for preflight_warning in (pi_auth_shadow_warning(), pi_models_config_warning()):
+        if preflight_warning:
+            print(preflight_warning, file=sys.stderr)
     try:
         while True:
             rows = parse_roadmap(ROADMAP.read_text())
