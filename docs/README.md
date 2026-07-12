@@ -41,7 +41,8 @@ Optional historical/supporting context (Do not search or read inside `docs/archi
 - [`superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`](superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md) — latest pre-design synthesis. Useful context, not canonical truth.
 - [`superpowers/specs/`](superpowers/specs/) — active design/spec artifacts. Historical design specs have been moved to `docs/archive/specs/` and do not need to be read.
 - [`superpowers/plans/`](superpowers/plans/) — active plans. Shipped plans have been moved to `docs/archive/plans/` and do not need to be read.
-- [`prompt-shakedown.md`](prompt-shakedown.md) — legacy `run-loop` prompt; no longer the active implementation workflow.
+- [`archive/prompt-shakedown-legacy.md`](archive/prompt-shakedown-legacy.md) — legacy `run-loop` prompt; no longer the active implementation workflow.
+- [`2026-07-12-mco-loop-details.md`](2026-07-12-mco-loop-details.md) — active MCO autonomous loop operational guide.
 - [`../agent-loop.toml`](../agent-loop.toml) — active MCO autonomous executor policy for planning, implementation, failover, and cooldowns.
 
 ## Directory Map
@@ -82,8 +83,11 @@ Optional historical/supporting context (Do not search or read inside `docs/archi
 | `prior-attempt/feasibility-lessons.md` | Consolidated feasibility findings from round 1 and round 2. |
 | `prior-attempt/architecture-lessons.md` | Consolidated architecture memo and the A/B/C options. |
 | `archive/` | Historical artifacts preserved for context, not current guidance. |
+| `archive/prompt-shakedown-legacy.md` | Legacy `run-loop` prompt. |
+| `2026-07-12-mco-loop-details.md` | Active MCO-backed autonomous loop detailed guide. |
 | `superpowers/specs/` | Historical proposed design/spec artifacts from earlier planning sessions, except the selected architecture spec linked from `architecture/selected-architecture.md`. |
 | `superpowers/plans/` | Operational implementation plans and live roadmap; not canonical design truth. |
+
 
 ## Canonical Flow of Truth
 
@@ -101,7 +105,7 @@ Optional historical/supporting context (Do not search or read inside `docs/archi
 - **Architecture-input rubrics:** `architecture/decision-rubric.md`, `architecture/runtime-boundary.md`, `architecture/encoding-and-scope.md`, and `performance/budget.md`.
 - **Inherited prototype scaffold:** `architecture/inherited-scaffold.md` documents `./shakedown-dev`, `scripts/assemble.py`, `src/*.spl`, and generated `shakedown.spl`. These are prototype artifacts, not adopted architecture.
 - **What is proven vs retrospective vs open:** `verification-plan.md`.
-- **Operational process artifacts:** `docs/superpowers/plans/plan-roadmap.md` tracks live plan status and `../agent-loop` executes it through MCO. `docs/prompt-shakedown.md` is the legacy `run-loop` prompt. Other `docs/superpowers/` content is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
+- **Operational process artifacts:** `docs/superpowers/plans/plan-roadmap.md` tracks live plan status and `../agent-loop` executes it through MCO. `docs/archive/prompt-shakedown-legacy.md` is the legacy `run-loop` prompt, and `docs/2026-07-12-mco-loop-details.md` is the operational loop guide. Other `docs/superpowers/` content is supporting context only, except for the selected architecture spec linked from `architecture/selected-architecture.md`.
 
 ## What This Docs Set Does Not Do
 
