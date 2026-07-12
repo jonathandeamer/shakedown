@@ -30,7 +30,7 @@
 - Consumes: `InvocationResult(exit_code, stdout, stderr, made_progress, recorded_blocker)`
 - Produces: `classify_result(result: InvocationResult) -> str` with `progress`, `blocked`, `supervisor_timeout`, `rate_limit`, `transient`, `backend_failure`, and `no_progress` outcomes.
 
-- [ ] **Step 1: Write classification tests that expose marker precedence and timeout behavior**
+- [x] **Step 1: Write classification tests that expose marker precedence and timeout behavior**
 
 Add focused tests equivalent to:
 
@@ -52,7 +52,7 @@ def test_new_blocker_is_not_no_progress() -> None:
 
 Update existing `InvocationResult` constructions with `recorded_blocker=False`.
 
-- [ ] **Step 2: Run the tests and verify RED**
+- [x] **Step 2: Run the tests and verify RED**
 
 Run:
 
@@ -62,7 +62,7 @@ uv run pytest tests/test_mco_loop.py -k "progress_outranks or supervisor_timeout
 
 Expected: failures because `recorded_blocker` and `classify_result` do not exist.
 
-- [ ] **Step 3: Implement the minimal ordered classifier and blocker observation**
+- [x] **Step 3: Implement the minimal ordered classifier and blocker observation**
 
 Extend the result record and replace `classify_failure` with this ordering:
 
@@ -95,7 +95,7 @@ def classify_result(result: InvocationResult) -> str:
 
 In `invoke_mco`, capture `read_blockers()` before spawning and after artifact redaction. Set `recorded_blocker` only when the post-run set contains a new blocker line. Apply the same comparison on timeout returns.
 
-- [ ] **Step 4: Run the focused and existing MCO tests GREEN**
+- [x] **Step 4: Run the focused and existing MCO tests GREEN**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -q
@@ -103,7 +103,7 @@ uv run pytest tests/test_mco_loop.py -q
 
 Expected: all tests pass.
 
-- [ ] **Step 5: Commit the classification checkpoint**
+- [x] **Step 5: Commit the classification checkpoint**
 
 ```bash
 git add scripts/mco_loop.py tests/test_mco_loop.py
@@ -122,7 +122,7 @@ git commit -m "fix: classify agent loop results from evidence"
 - Consumes: the pre-rewrite `NextAction`, executor pool, persisted cooldowns, and current time.
 - Produces: `action_key(action: NextAction) -> str`, persisted `action_attempt`, and `ExecutorSelection(executor, next_ready, exhausted)`.
 
-- [ ] **Step 1: Write failing tests for stable identity and compatible state loading**
+- [x] **Step 1: Write failing tests for stable identity and compatible state loading**
 
 Cover these exact properties:
 
@@ -147,7 +147,7 @@ def test_load_state_preserves_optional_action_attempt(tmp_path: Path) -> None:
 
 Also parameterize action-key tests so kind, summary, plan, step, and blockers each alter the key on the canonical action.
 
-- [ ] **Step 2: Run identity/state tests RED**
+- [x] **Step 2: Run identity/state tests RED**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -k "action_key or action_attempt" -q
@@ -155,7 +155,7 @@ uv run pytest tests/test_mco_loop.py -k "action_key or action_attempt" -q
 
 Expected: failures because the key and state field do not exist.
 
-- [ ] **Step 3: Add typed selection and canonical action helpers**
+- [x] **Step 3: Add typed selection and canonical action helpers**
 
 Implement deterministic JSON hashing and a selection record:
 
@@ -186,7 +186,7 @@ Teach `load_state` to retain valid dictionary-shaped `action_attempt` and
 `exhaustion` ensures the final diagnostic survives a later status read and
 subsequent state save after the operator restarts the loop.
 
-- [ ] **Step 4: Write failing executor-selection tests**
+- [x] **Step 4: Write failing executor-selection tests**
 
 Add tests proving:
 
@@ -197,7 +197,7 @@ Add tests proving:
 - changing the canonical key ignores stale attempts;
 - quota/transient failures never enter the substantive-attempt map.
 
-- [ ] **Step 5: Run selection tests RED**
+- [x] **Step 5: Run selection tests RED**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -k "selection or substantive_attempt or trusted_retry" -q
@@ -205,7 +205,7 @@ uv run pytest tests/test_mco_loop.py -k "selection or substantive_attempt or tru
 
 Expected: failures because selection still considers cooldowns only.
 
-- [ ] **Step 6: Implement action-aware selection**
+- [x] **Step 6: Implement action-aware selection**
 
 Replace the cooldown-only return tuple with `select_executor`. For the matching action key, skip names in `attempts`; select the first unattempted executor whose group and executor cooldowns have expired. If none is available, compute `next_ready` only from unattempted executors in `TRUSTED_RETRY_GROUPS = {"claude", "codex"}`. Return wait state when such an expiry exists; otherwise return exhaustion.
 
@@ -215,7 +215,7 @@ substantive failure records the executor in `attempts` at the same time it adds
 an executor-level cooldown. This is why trusted unattempted cooldowns are safe
 to expose as retryable.
 
-- [ ] **Step 7: Update result application with attempt lifecycle**
+- [x] **Step 7: Update result application with attempt lifecycle**
 
 Change `apply_result` to accept the canonical action and use `classify_result`:
 
@@ -225,7 +225,7 @@ Change `apply_result` to accept the canonical action and use `classify_result`:
 
 Keep historical failure counters for status visibility. Ensure a changed action key starts with an empty attempt map.
 
-- [ ] **Step 8: Run all MCO tests GREEN**
+- [x] **Step 8: Run all MCO tests GREEN**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -q
@@ -233,7 +233,7 @@ uv run pytest tests/test_mco_loop.py -q
 
 Expected: all tests pass.
 
-- [ ] **Step 9: Commit attempt tracking and selection**
+- [x] **Step 9: Commit attempt tracking and selection**
 
 ```bash
 git add scripts/mco_loop.py tests/test_mco_loop.py
@@ -252,7 +252,7 @@ git commit -m "fix: stop exhausted agent executor chains"
 - Consumes: canonical action, rewritten execution action, and `ExecutorSelection`.
 - Produces: secret-free `exhaustion_payload(...) -> dict[str, object]`, exit `3` for trusted wait in `--once`, and exit `5` for exhaustion.
 
-- [ ] **Step 1: Write failing main-loop tests**
+- [x] **Step 1: Write failing main-loop tests**
 
 Mock roadmap/config/time and assert:
 
@@ -264,7 +264,7 @@ Mock roadmap/config/time and assert:
 - loading and re-saving state after exhaustion retains the diagnostic;
 - `--status` and `--dry-run` expose action attempts and selection state without mutation.
 
-- [ ] **Step 2: Run main-loop tests RED**
+- [x] **Step 2: Run main-loop tests RED**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -k "exhausted or exit_three or canonical_action" -q
@@ -272,7 +272,7 @@ uv run pytest tests/test_mco_loop.py -k "exhausted or exit_three or canonical_ac
 
 Expected: failures because current no-executor handling always waits or returns `3`.
 
-- [ ] **Step 3: Implement the three-state main-loop branch**
+- [x] **Step 3: Implement the three-state main-loop branch**
 
 In `main`, assign `canonical_action` immediately after roadmap/completion classification. Derive the execution action from it only afterward. Select and apply results using the canonical action. For selection:
 
@@ -294,7 +294,7 @@ if selection.executor is None:
 
 Print `agent-loop: supervisor outcome: <outcome>` after every invocation so MCO transport `PASS` is never presented as the task authority.
 
-- [ ] **Step 4: Run all MCO tests GREEN**
+- [x] **Step 4: Run all MCO tests GREEN**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -q
@@ -302,7 +302,7 @@ uv run pytest tests/test_mco_loop.py -q
 
 Expected: all tests pass without real provider calls.
 
-- [ ] **Step 5: Commit supervisor diagnostics**
+- [x] **Step 5: Commit supervisor diagnostics**
 
 ```bash
 git add scripts/mco_loop.py tests/test_mco_loop.py
@@ -322,7 +322,7 @@ git commit -m "fix: report terminal agent loop exhaustion"
 - Consumes: MCO shim commands receiving the prompt from MCO.
 - Produces: non-persistent Claude shims and `pi-grok-stateless`, `pi-hy3-stateless`, and `pi-nemotron-stateless` implementation executors.
 
-- [ ] **Step 1: Update configuration tests first**
+- [x] **Step 1: Update configuration tests first**
 
 Change the expected implementation order to:
 
@@ -340,7 +340,7 @@ Change the expected implementation order to:
 
 Add assertions that `.mco/agents.yaml` gives Claude `--no-session-persistence`, every Pi shim `--no-session`, and no implementation executor uses `agy-flash`, `agy-pro`, or built-in `pi`.
 
-- [ ] **Step 2: Run configuration tests RED**
+- [x] **Step 2: Run configuration tests RED**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -k "live_config or stateless" -q
@@ -348,7 +348,7 @@ uv run pytest tests/test_mco_loop.py -k "live_config or stateless" -q
 
 Expected: failures against the current Agy/built-in-Pi configuration.
 
-- [ ] **Step 3: Update shim and executor configuration**
+- [x] **Step 3: Update shim and executor configuration**
 
 Add `--no-session-persistence` to all three Claude shim commands: Fable
 governor, Opus, and Sonnet. Remove Agy executors from `agent-loop.toml`. Define
@@ -373,7 +373,7 @@ selection. Add explicit `display_model` values `grok-build-0.1`,
 existing quota groups so operator logs remain readable and cooldown grouping
 does not change.
 
-- [ ] **Step 4: Verify MCO resolves every configured command without invoking providers**
+- [x] **Step 4: Verify MCO resolves every configured command without invoking providers**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -k "live_config or stateless or mco_argv" -q
@@ -382,7 +382,7 @@ uv run pytest tests/test_mco_loop.py -k "live_config or stateless or mco_argv" -
 
 Expected: tests pass; dry run prints a valid selected executor and no secret values.
 
-- [ ] **Step 5: Commit provider isolation**
+- [x] **Step 5: Commit provider isolation**
 
 ```bash
 git add .mco/agents.yaml agent-loop.toml tests/test_mco_loop.py
@@ -403,11 +403,11 @@ git commit -m "fix: isolate automatic agent sessions"
 - Consumes: per-invocation `task_id` and the completed behavior from Tasks 1-4.
 - Produces: invocation-ID prompt boundary, documented exit table, and completed Task 6A evidence.
 
-- [ ] **Step 1: Write a failing prompt-boundary test**
+- [x] **Step 1: Write a failing prompt-boundary test**
 
 Update `build_prompt` to accept `invocation_id: str` and assert the rendered prompt begins with the identifier plus an instruction to treat the file as a complete new-session task. Assert it contains no prior provider prose.
 
-- [ ] **Step 2: Run the prompt test RED**
+- [x] **Step 2: Run the prompt test RED**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -k "prompt_contains_invocation_boundary" -q
@@ -415,7 +415,7 @@ uv run pytest tests/test_mco_loop.py -k "prompt_contains_invocation_boundary" -q
 
 Expected: failure because `build_prompt` has no invocation identifier.
 
-- [ ] **Step 3: Move task-ID creation before prompt rendering and pass it through**
+- [x] **Step 3: Move task-ID creation before prompt rendering and pass it through**
 
 Create `task_id` before writing `.agent/mco-current-prompt.md`. Add this header before the existing objective:
 
@@ -425,7 +425,7 @@ Treat this file as the complete task for a fresh, isolated session. Do not
 resume, answer, or rely on any earlier conversation.
 ```
 
-- [ ] **Step 4: Run the prompt test GREEN and commit the behavior change**
+- [x] **Step 4: Run the prompt test GREEN and commit the behavior change**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -k "prompt_contains_invocation_boundary" -q
@@ -435,7 +435,7 @@ git commit -m "fix: add invocation boundary to agent prompts"
 
 Expected: the focused test passes before the `fix:` commit is created.
 
-- [ ] **Step 5: Document cooldown, exhaustion, and exit behavior**
+- [x] **Step 5: Document cooldown, exhaustion, and exit behavior**
 
 Update `docs/2026-07-12-mco-loop-details.md` with:
 
@@ -446,7 +446,7 @@ Update `docs/2026-07-12-mco-loop-details.md` with:
 - the durable exhaustion diagnostic and final stderr line;
 - stateless automatic provider policy.
 
-- [ ] **Step 6: Run the complete evidence gate**
+- [x] **Step 6: Run the complete evidence gate**
 
 ```bash
 uv run pytest tests/test_mco_loop.py
@@ -459,11 +459,11 @@ git diff --check
 
 Expected: every command exits `0`; the default suite retains only documented skips.
 
-- [ ] **Step 7: Record evidence and close Task 6A**
+- [x] **Step 7: Record evidence and close Task 6A**
 
 Add the exact test counts and command outcomes under Task 6A in the active 3M plan, then check its single checkbox. Do not advance Task 7.
 
-- [ ] **Step 8: Commit and push the completed hardening documentation**
+- [x] **Step 8: Commit and push the completed hardening documentation**
 
 ```bash
 git add docs/2026-07-12-mco-loop-details.md docs/superpowers/plans/2026-07-11-completion-safety-rails.md

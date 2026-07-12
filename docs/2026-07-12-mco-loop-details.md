@@ -43,7 +43,20 @@ To maintain continuous progression without getting stuck on rate limits or stubb
 
 * **Executor Pools**: Configured under `[[planning]]` and `[[implementation]]` sections in [agent-loop.toml](file:///Users/jonathan/shakedown/agent-loop.toml) using prioritized failover lists.
 * **State Preservation**: Non-secret supervisor state is recorded in [.agent/mco-loop-state.json](file:///Users/jonathan/shakedown/.agent/mco-loop-state.json).
-* **Rate Limits / Cooldowns**: If an executor fails with transient errors, rate limits, or timeout markers, its quota group is placed on cooldown (`cooldown_seconds` defaults to `3600` seconds). The loop automatically selects the next eligible executor from the fallback chain via [available_executor](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L352).
+* **Rate Limits / Cooldowns**: If an executor fails with transient errors or rate limits, its quota group is placed on cooldown (`cooldown_seconds` defaults to `3600` seconds). The loop selects, waits for trusted availability, or terminates exhaustion via `select_executor` in `scripts/mco_loop.py`.
+
+Result classification is supervisor-owned. Observable repository progress wins
+over words in provider output, so a provider editing rate-limit tests is not
+mistaken for a rate-limited backend. New blocker lines are non-substantive;
+Python supervisor timeout `124`, backend failures, and zero-progress results
+are substantive failures.
+
+Substantive attempts are recorded under a stable key derived from the canonical
+roadmap action before recovery or governor rewrites. An executor is attempted
+only once for that unchanged action. Claude and Codex availability failures are
+retried after their cooldown; Pi fallbacks remain last-resort. The loop
+intentionally does not wait for a Pi cooldown after the trusted and available
+fallback chain is exhausted.
 
 ---
 
@@ -52,6 +65,7 @@ To maintain continuous progression without getting stuck on rate limits or stubb
 For each action, the loop builds a handoff prompt in [.agent/mco-current-prompt.md](file:///Users/jonathan/shakedown/.agent/mco-current-prompt.md) and invokes the MCO command:
 
 * **MCO Invocation**: Commands run with `--execution-mode yolo` to allow autonomous tool calling.
+* **Session Isolation**: Claude shims use `--no-session-persistence`; project-local Pi shims use `--no-session`. Antigravity is excluded from automatic routing because the installed CLI has no verified stateless execution mode.
 * **Commit Guidelines**: Upon completing a step and passing its evidence gate, the agent must commit changes and push.
 * **Provenance Trailers**: Every commit must end with a blank line followed by standard trailers identifying the agent executor:
   ```git
@@ -90,6 +104,25 @@ tail -f .agent/loop.log
 * Check status: `./agent-loop --status`
 * Dry run (inspect next step/model selection): `./agent-loop --dry-run`
 * Check supervisor state: `cat .agent/mco-loop-state.json`
+
+### Exit Statuses
+
+| Status | Meaning |
+|---|---|
+| `0` | Successful invocation, completed roadmap, status, or dry run |
+| `1` | `--once` invocation returned a non-success outcome |
+| `2` | Setup, configuration, or MCO availability failure |
+| `3` | `--once` found no executor available while a trusted transient cooldown remains retryable |
+| `4` | Explicit Fable governor stop |
+| `5` | Substantive executor chain exhausted for the unchanged action |
+| `124` | Explicit governor invocation reached the Python supervisor timeout |
+| `130` | Operator interrupt |
+
+On exit `5`, the loop prints `agent-loop: exhausted` to stderr and persists a
+structured, secret-free diagnostic in `.agent/mco-loop-state.json`. The record
+includes the canonical action, substantive attempts, active cooldowns, and
+configured executors. Background runs capture the final line in
+`.agent/loop.log`.
 
 ### Stopping Safely
 * **Manual Interrupt**: Press `Ctrl+C` during the 5-second sleep window between steps to cleanly terminate the script.

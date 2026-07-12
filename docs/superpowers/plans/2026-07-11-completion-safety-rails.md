@@ -261,12 +261,19 @@ type checks passed; the full default suite passed 407 tests with the roadmap's
 
 ### Task 6A — Harden result classification and executor exhaustion
 
-- [ ] Execute
+- [x] Execute
       `docs/superpowers/plans/2026-07-12-agent-loop-result-hardening.md`
       task by task, satisfying its red/green tests and final evidence gate.
 
 **Design:**
 `docs/superpowers/specs/2026-07-12-agent-loop-result-hardening-design.md`
+
+**Evidence recorded 2026-07-12:** `tests/test_mco_loop.py` passed 48 tests;
+ruff check and format-check passed; pyright reported zero errors; dry-run
+selected `claude-implement` with Pi retained as the stateless fallback tail;
+the full default suite passed 560 tests with 26 documented skips and one
+deselected integration test. `git diff --check` passed. No SPL source or
+generated artifact changed.
 
 ## Task 7 — Integrate evidence into the roadmap and architecture
 
