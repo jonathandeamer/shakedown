@@ -108,3 +108,12 @@ model = "tencent/hy3:free"
 quota_group = "openrouter"
 coauthor_name = "Tencent Hy3"
 coauthor_email = "noreply@tencent.com"
+
+[[implementation]]
+name = "nemotron-implement"
+provider = "pi"
+model_provider = "openrouter"
+model = "nvidia/nemotron-4-340b-instruct:free"
+quota_group = "openrouter"
+coauthor_name = "NVIDIA Nemotron"
+coauthor_email = "noreply@nvidia.com"

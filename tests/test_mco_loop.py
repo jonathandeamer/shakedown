@@ -40,6 +40,7 @@ def test_live_config_has_role_scoped_model_order() -> None:
         "agy-pro",
         "pi",
         "pi",
+        "pi",
     ]
     assert [(item.model_provider, item.model) for item in config.implementation] == [
         (None, None),
@@ -50,6 +51,7 @@ def test_live_config_has_role_scoped_model_order() -> None:
         (None, None),
         ("xai", "grok-build-0.1"),
         ("openrouter", "tencent/hy3:free"),
+        ("openrouter", "nvidia/nemotron-4-340b-instruct:free"),
     ]
     assert config.planning[2].display_model == "opus"
     assert config.implementation[0].display_model == "sonnet"
@@ -169,7 +171,7 @@ def test_exported_secret_takes_precedence_over_env_file(tmp_path: Path) -> None:
 def test_mco_argv_contains_model_policy_but_no_secret_values(tmp_path: Path) -> None:
     config = mco_loop.load_config()
     prompt = tmp_path / "prompt.md"
-    executor = config.implementation[-1]
+    executor = next(item for item in config.implementation if item.name == "hy3-implement")
 
     command = mco_loop.mco_command(config, executor, "task", prompt)
 
@@ -558,7 +560,9 @@ def test_available_executor_falls_back_to_preserved_groups() -> None:
     assert selected.name == "claude-impl"
 
 
-def test_main_available_executor_preserve_planning_flag(monkeypatch, tmp_path: Path) -> None:
+def test_main_available_executor_preserve_planning_flag(
+    monkeypatch, tmp_path: Path
+) -> None:
     # Mock files
     roadmap_file = tmp_path / "roadmap.md"
     roadmap_file.write_text("")
