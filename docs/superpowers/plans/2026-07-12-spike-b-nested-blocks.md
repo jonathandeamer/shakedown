@@ -376,7 +376,7 @@ pattern = "scene_of_character"
   Run: `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_token_structure.py tests/test_splc_generated_fragments.py tests/test_literary_toml_schema.py tests/test_literary_compliance.py tests/test_spl_style_guide_validation.py tests/test_splc_prose.py -q`
   Expected: PASS; all ten architecture-spike fixtures are byte-identical and every dump validates.
 
-- [ ] **Step 6: Commit and push renderer support.**
+- [x] **Step 6: Commit and push renderer support.**
 
   Run: `git add src_ir/act4.py src/40-act4-literary.toml src/40-act4-emit.spl debug/40-act4-token-dump.spl shakedown.spl tests && git commit -m "feat: render nested block containers"`
   Expected: conventional commit and provenance trailers succeed, followed by `git push`.
