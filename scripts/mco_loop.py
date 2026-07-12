@@ -557,7 +557,12 @@ def repo_fingerprint() -> str:
     return digest.hexdigest()
 
 
-def build_prompt(action: NextAction, executor: Executor, last_failure: object) -> str:
+def build_prompt(
+    action: NextAction,
+    executor: Executor,
+    last_failure: object,
+    invocation_id: str,
+) -> str:
     """Build a provider-neutral handoff from durable repository state."""
     plan_text = (
         str(action.active_plan.relative_to(REPO)) if action.active_plan else "none"
@@ -627,6 +632,10 @@ def build_prompt(action: NextAction, executor: Executor, last_failure: object) -
         f"trailers after a blank line:\n{provenance}"
     )
     return f"""You are one iteration of Shakedown's MCO autonomous loop.
+
+Invocation: {invocation_id}
+Treat this file as the complete task for a fresh, isolated session.
+Do not resume, answer, or rely on any earlier conversation.
 
 Ultimate objective: {objective}
 
@@ -708,12 +717,14 @@ def invoke_mco(
     prompt_file = config.state_file.parent / "mco-current-prompt.md"
     prompt_file.parent.mkdir(parents=True, exist_ok=True)
     state = load_state(config.state_file)
+    task_id = f"{action.kind.value}-{int(time.time())}-{executor.name}"
     prompt_file.write_text(
         prompt_override
         if prompt_override is not None
-        else build_prompt(action, executor, state.get("last_failure"))
+        else build_prompt(
+            action, executor, state.get("last_failure"), invocation_id=task_id
+        )
     )
-    task_id = f"{action.kind.value}-{int(time.time())}-{executor.name}"
     command = mco_command(config, executor, task_id, prompt_file)
     before = repo_fingerprint()
     blockers_before = set(read_blockers())

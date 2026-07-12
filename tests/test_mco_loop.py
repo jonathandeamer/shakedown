@@ -685,6 +685,7 @@ def test_prompt_contains_durable_handoff_and_dirty_worktree(
         action,
         Executor("claude", "claude", "claude", "sonnet"),
         {"kind": "rate_limit", "executor": "codex"},
+        "implement-1-claude",
     )
 
     assert "Implement the parser" in prompt
@@ -695,6 +696,22 @@ def test_prompt_contains_durable_handoff_and_dirty_worktree(
     assert "Agent: claude" in prompt
     assert "Model: sonnet" in prompt
     assert "Harness: MCO 0.10.8" in prompt
+
+
+def test_prompt_contains_invocation_boundary(monkeypatch) -> None:
+    monkeypatch.setattr(mco_loop, "_git_output", lambda arguments: "")
+    action = NextAction(ActionKind.IMPLEMENT, "Execute one step.", None, "step", ())
+
+    prompt = mco_loop.build_prompt(
+        action,
+        Executor("claude", "claude", "claude"),
+        None,
+        "implement-123-claude",
+    )
+
+    assert "Invocation: implement-123-claude" in prompt
+    assert "complete task for a fresh, isolated session" in prompt
+    assert "Do not resume, answer, or rely on any earlier conversation" in prompt
 
 
 def test_planning_prompt_requires_noninteractive_superpowers_artifacts(
@@ -713,6 +730,7 @@ def test_planning_prompt_requires_noninteractive_superpowers_artifacts(
         action,
         Executor("planner", "claude-opus", "claude", display_model="opus"),
         None,
+        "plan-1-planner",
     )
 
     assert "do not wait for human input" in prompt
@@ -738,6 +756,7 @@ def test_planning_prompt_refines_existing_plan_without_creating_second(
         action,
         Executor("planner", "codex", "codex", "gpt-5.6-terra"),
         None,
+        "plan-2-planner",
     )
 
     assert "Refine the existing active plan" in prompt
