@@ -476,6 +476,24 @@ def test_pi_models_config_warning_names_missing_capped_models(tmp_path: Path) ->
     assert "qwen/qwen3-coder:free" not in warning
 
 
+def test_pi_models_config_warning_requires_valid_max_tokens_cap(
+    tmp_path: Path,
+) -> None:
+    uncapped = tmp_path / "models.json"
+    uncapped.write_text(
+        '{"providers": {"openrouter": {"models": ['
+        '{"id": "qwen/qwen3-coder:free"},'
+        '{"id": "nvidia/nemotron-3-super-120b-a12b:free", "maxTokens": 262000}'
+        "]}}}"
+    )
+
+    warning = mco_loop.pi_models_config_warning(uncapped)
+
+    assert warning is not None
+    assert "qwen/qwen3-coder:free" in warning
+    assert "nvidia/nemotron-3-super-120b-a12b:free" in warning
+
+
 def test_pi_models_config_warning_silent_when_complete(tmp_path: Path) -> None:
     complete = tmp_path / "models.json"
     complete.write_text(

@@ -52,6 +52,7 @@ PI_MODELS_REQUIRED_IDS = (
     "nvidia/nemotron-3-super-120b-a12b:free",
     "qwen/qwen3-coder:free",
 )
+PI_MODELS_MAX_TOKENS_CAP = 32768
 
 
 def pi_auth_shadow_warning(path: Path = PI_AUTH_FILE) -> str | None:
@@ -79,7 +80,7 @@ def pi_models_config_warning(path: Path = PI_MODELS_FILE) -> str | None:
         parsed: object = json.loads(config_text) if config_text else {}
     except json.JSONDecodeError:
         parsed = {}
-    defined: set[str] = set()
+    capped: set[str] = set()
     if isinstance(parsed, dict):
         providers = parsed.get("providers")
         if isinstance(providers, dict):
@@ -90,13 +91,23 @@ def pi_models_config_warning(path: Path = PI_MODELS_FILE) -> str | None:
                 if not isinstance(models, list):
                     continue
                 for model in models:
-                    if isinstance(model, dict) and isinstance(model.get("id"), str):
-                        defined.add(model["id"])
-    missing = [name for name in PI_MODELS_REQUIRED_IDS if name not in defined]
+                    if not isinstance(model, dict) or not isinstance(
+                        model.get("id"), str
+                    ):
+                        continue
+                    max_tokens = model.get("maxTokens")
+                    if (
+                        isinstance(max_tokens, int)
+                        and not isinstance(max_tokens, bool)
+                        and 0 < max_tokens <= PI_MODELS_MAX_TOKENS_CAP
+                    ):
+                        capped.add(model["id"])
+    missing = [name for name in PI_MODELS_REQUIRED_IDS if name not in capped]
     if not missing:
         return None
     return (
-        f"agent-loop: {path} lacks maxTokens-capped definitions for "
+        f"agent-loop: {path} lacks maxTokens-capped definitions "
+        f"(0 < maxTokens <= {PI_MODELS_MAX_TOKENS_CAP}) for "
         f"{', '.join(missing)}; those executors will fail with a 400 "
         "output-budget error until the entries are added."
     )
