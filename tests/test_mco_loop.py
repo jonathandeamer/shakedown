@@ -527,3 +527,29 @@ def test_completion_requires_pytest_mdtest_and_deterministic_parity(
     assert calls[0] == ["uv", "run", "pytest", "-q"]
     assert calls[1] == ["uv", "run", "pytest", "tests/test_mdtest.py", "-q"]
     assert "Auto links" not in calls[2]
+
+
+def test_available_executor_preserves_planning_groups() -> None:
+    from scripts.mco_loop import Executor, available_executor
+    executors = [
+        Executor("claude-impl", "claude-sonnet", "claude"),
+        Executor("agy-impl", "agy-flash", "agy"),
+    ]
+    state = {"cooldowns": {}}
+    # When preserve_planning=True, agy-impl (index 1) should be chosen over claude-impl (index 0)
+    selected, _ = available_executor(executors, state, now=100, preserve_planning=True)
+    assert selected is not None
+    assert selected.name == "agy-impl"
+
+
+def test_available_executor_falls_back_to_preserved_groups() -> None:
+    from scripts.mco_loop import Executor, available_executor
+    executors = [
+        Executor("claude-impl", "claude-sonnet", "claude"),
+        Executor("agy-impl", "agy-flash", "agy"),
+    ]
+    # agy is cooling down, so only claude is available
+    state = {"cooldowns": {"agy": 200}}
+    selected, _ = available_executor(executors, state, now=100, preserve_planning=True)
+    assert selected is not None
+    assert selected.name == "claude-impl"
