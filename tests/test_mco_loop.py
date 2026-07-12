@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import io
 import json
+import os
+import signal
+import sys
 from pathlib import Path
 
 from scripts import mco_loop
@@ -20,6 +24,86 @@ def _row(
     description: str = "A plan",
 ) -> RoadmapRow:
     return RoadmapRow(identifier, plan_path, description, status)
+
+
+def _invocation_inputs(
+    tmp_path: Path,
+) -> tuple[mco_loop.LoopConfig, Executor, NextAction]:
+    config = mco_loop.LoopConfig(
+        env_file=tmp_path / ".env",
+        state_file=tmp_path / "state.json",
+        artifact_dir=tmp_path / "artifacts",
+        cooldown_seconds=600,
+        iteration_pause_seconds=0,
+        planning=(),
+        implementation=(),
+    )
+    executor = Executor("test", "test-provider", "test-group")
+    action = NextAction(ActionKind.FIX, "test subprocess handling", None, None, ())
+    return config, executor, action
+
+
+def test_invoke_mco_terminates_process_group_on_timeout(
+    monkeypatch, tmp_path: Path
+) -> None:
+    config, executor, action = _invocation_inputs(tmp_path)
+    popen_kwargs: dict[str, object] = {}
+    signals: list[tuple[int, int]] = []
+
+    class FakeProcess:
+        stdout = io.StringIO("")
+        stderr = io.StringIO("")
+        returncode = None
+        pid = 4321
+
+        def poll(self) -> None:
+            return None
+
+        def wait(self, timeout: float | None = None) -> int:
+            self.returncode = -signal.SIGTERM
+            return self.returncode
+
+    def fake_popen(command, **kwargs):
+        popen_kwargs.update(kwargs)
+        return FakeProcess()
+
+    times = iter((100.0, 100.0, 101.0))
+    monkeypatch.setattr(mco_loop.subprocess, "Popen", fake_popen)
+    monkeypatch.setattr(mco_loop.time, "time", lambda: next(times))
+    monkeypatch.setattr(mco_loop, "MCO_TIMEOUT_SECONDS", 0.5)
+    monkeypatch.setattr(os, "killpg", lambda pgid, sig: signals.append((pgid, sig)))
+    monkeypatch.setattr(mco_loop, "repo_fingerprint", lambda: "unchanged")
+
+    result = mco_loop.invoke_mco(config, executor, action, {}, prompt_override="test")
+
+    assert result.exit_code == 124
+    assert popen_kwargs["start_new_session"] is True
+    assert signals == [
+        (4321, signal.SIGTERM),
+        (4321, 0),
+        (4321, signal.SIGKILL),
+    ]
+
+
+def test_invoke_mco_drains_stderr_while_process_runs(
+    monkeypatch, tmp_path: Path
+) -> None:
+    config, executor, action = _invocation_inputs(tmp_path)
+    command = [
+        sys.executable,
+        "-c",
+        "import sys; sys.stderr.write('e' * 1000000); "
+        "sys.stderr.flush(); sys.stdout.write('done\\n'); sys.stdout.flush()",
+    ]
+    monkeypatch.setattr(mco_loop, "mco_command", lambda *args: command)
+    monkeypatch.setattr(mco_loop, "MCO_TIMEOUT_SECONDS", 2.0)
+    monkeypatch.setattr(mco_loop, "repo_fingerprint", lambda: "unchanged")
+
+    result = mco_loop.invoke_mco(config, executor, action, {})
+
+    assert result.exit_code == 0
+    assert result.stdout == "done\n"
+    assert result.stderr == "e" * 1000000
 
 
 def test_live_config_has_role_scoped_model_order() -> None:

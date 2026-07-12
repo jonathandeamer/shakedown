@@ -8,8 +8,10 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
+import threading
 import time
 import tomllib
 from collections.abc import Mapping, Sequence
@@ -39,6 +41,7 @@ TRANSIENT_MARKERS = (
     "timed out",
     "service unavailable",
 )
+MCO_TIMEOUT_SECONDS = 18000
 
 
 class ActionKind(Enum):
@@ -601,6 +604,7 @@ def invoke_mco(
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
+            start_new_session=True,
         )
     except Exception as e:
         return InvocationResult(
@@ -611,20 +615,40 @@ def invoke_mco(
         )
 
     assert process.stdout is not None, "process.stdout is None"
+    assert process.stderr is not None, "process.stderr is None"
+    stderr_pipe = process.stderr
     start_time = time.time()
-    timeout = 18000  # 5 hours
+    stderr_lines: list[str] = []
+    stderr_reader = threading.Thread(
+        target=lambda: stderr_lines.extend(iter(stderr_pipe.readline, "")),
+        name="mco-stderr-reader",
+        daemon=True,
+    )
+    stderr_reader.start()
 
     while True:
-        if time.time() - start_time > timeout:
-            process.terminate()
+        if time.time() - start_time > MCO_TIMEOUT_SECONDS:
+            process_group = process.pid
+            os.killpg(process_group, signal.SIGTERM)
             try:
                 process.wait(timeout=5)
             except subprocess.TimeoutExpired:
-                process.kill()
+                pass
+            try:
+                os.killpg(process_group, 0)
+            except ProcessLookupError:
+                pass
+            else:
+                os.killpg(process_group, signal.SIGKILL)
+                process.wait()
+            stderr_reader.join(timeout=5)
             return InvocationResult(
                 exit_code=124,
                 stdout="".join(stdout_lines),
-                stderr="MCO execution timed out after 5 hours at Python level.",
+                stderr=(
+                    "".join(stderr_lines)
+                    + "MCO execution timed out after 5 hours at Python level."
+                ),
                 made_progress=False,
             )
 
@@ -676,7 +700,8 @@ def invoke_mco(
             if ret is not None:
                 break
 
-    stderr = process.stderr.read() if process.stderr else ""
+    stderr_reader.join()
+    stderr = "".join(stderr_lines)
     redact_artifacts(config.artifact_dir, environment)
     after = repo_fingerprint()
     return InvocationResult(
