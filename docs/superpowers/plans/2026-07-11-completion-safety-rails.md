@@ -85,7 +85,7 @@ real generated SPL is byte-identical before and after the task.
       expected carrier termination, and no pop below a declared floor.
 - [x] Instrument the IR interpreter with optional boundary observers; do not
       add runtime operations or rendered SPL.
-- [ ] Add Act II contract tests proving that arbitrary pre-existing payload on
+- [x] Add Act II contract tests proving that arbitrary pre-existing payload on
       Horatio's stack survives the list-looseness side-channel borrow.
 - [ ] Assert Macbeth's frame floor and all temporary carrier floors are restored
       across every existing list spike case.
