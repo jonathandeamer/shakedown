@@ -292,7 +292,7 @@ pattern = "scene_of_character"
   become necessary. Do not put scene prose in `src/literary.toml` or inline it
   in the IR module.
 
-- [ ] **Step 4: Regenerate and assemble.**
+- [x] **Step 4: Regenerate and assemble.**
 
   Run:
 
