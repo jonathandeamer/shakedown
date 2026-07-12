@@ -201,7 +201,7 @@ pattern = "scene_of_character"
   test in `tests/test_architecture_spikes.py`; do not weaken list-fixture tests.
   Include the same stems in token-dump and both Act II contract parametrizations.
 
-- [ ] **Step 2: Write literal reviewed dump fixtures before implementation.**
+- [x] **Step 2: Write literal reviewed dump fixtures before implementation.**
 
   Encode the four design-table streams one integer per line. For example
   `quote_list_then_paragraph.dump` begins:
@@ -254,7 +254,11 @@ pattern = "scene_of_character"
   Add a helper that runs Act I then Act II with `scripts.splc.interpret.run_act`,
   pops Puck's stream in document order through `STREAM_END`, and compares it to
   `tests/fixtures/token_stream/nested_blocks/<stem>.dump`. Include a test that
-  passes the resulting integers through `decode_stream` and `validate_stream`.
+  asserts there is exactly one terminal `STREAM_END`, removes that runtime
+  carrier-stack sentinel, and passes the remaining inter-act stream integers
+  through `decode_stream` and `validate_stream`. `decode_stream` must continue
+  to reject framing sentinels because the debug/inter-act dump contract never
+  exposes them.
 
 - [ ] **Step 2: Run the focused interpreter tests to verify failure.**
 

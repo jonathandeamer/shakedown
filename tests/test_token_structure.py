@@ -33,7 +33,14 @@ def _all_dump_fixtures() -> list[Path]:
     "path", _all_dump_fixtures(), ids=lambda p: str(p.relative_to(BASELINES))
 )
 def test_every_committed_dump_decodes_and_validates(path: Path) -> None:
-    validate_stream(decode_stream(_dump_values(path)))
+    values = _dump_values(path)
+    if "nested_blocks" in path.parts:
+        # Spike B's reviewed Act-II carrier fixtures include the runtime stack
+        # floor.  The inter-act/debug stream contract begins above that floor.
+        assert values[-1] == tokens.STREAM_END
+        assert tokens.STREAM_END not in values[:-1]
+        values = values[:-1]
+    validate_stream(decode_stream(values))
 
 
 def test_flat_list_validates() -> None:
