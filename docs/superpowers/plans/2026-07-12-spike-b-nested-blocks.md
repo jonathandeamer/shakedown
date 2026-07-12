@@ -303,7 +303,7 @@ pattern = "scene_of_character"
 
   Expected: generated-fragment and assemble-time parser gates succeed; no generated file is manually edited.
 
-- [ ] **Step 5: Run Act II and generated-artifact gates.**
+- [x] **Step 5: Run Act II and generated-artifact gates.**
 
   Run: `uv run pytest tests/test_act2_contracts.py tests/test_act2_frame_floors.py tests/test_token_structure.py tests/test_token_dump.py tests/test_splc_generated_fragments.py tests/test_literary_toml_schema.py tests/test_literary_compliance.py tests/test_spl_style_guide_validation.py tests/test_splc_prose.py -q`
   Expected: PASS. Replace all six existing list dump baselines in this task
