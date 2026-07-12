@@ -69,7 +69,7 @@ git diff --exit-code -- src debug shakedown.spl
       act, scene, character, and step.
 - [x] Keep interpreter state injectable so tests can execute one act with
       preserved cross-act stacks and values.
-- [ ] Add `tests/test_splc_interpret.py` covering every op, both branch arms,
+- [x] Add `tests/test_splc_interpret.py` covering every op, both branch arms,
       EOF, underflow diagnostics, step-limit failure, and state handoff.
 - [ ] Port the six list spike inputs and the Amps/short token cases into fast
       interpreter parity tests without deleting the real-interpreter gates.
