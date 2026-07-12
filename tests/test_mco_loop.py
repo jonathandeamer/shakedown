@@ -171,7 +171,9 @@ def test_exported_secret_takes_precedence_over_env_file(tmp_path: Path) -> None:
 def test_mco_argv_contains_model_policy_but_no_secret_values(tmp_path: Path) -> None:
     config = mco_loop.load_config()
     prompt = tmp_path / "prompt.md"
-    executor = next(item for item in config.implementation if item.name == "hy3-implement")
+    executor = next(
+        item for item in config.implementation if item.name == "hy3-implement"
+    )
 
     command = mco_loop.mco_command(config, executor, "task", prompt)
 

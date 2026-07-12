@@ -134,7 +134,7 @@ but blocking the required regression gate).
 - [x] Add `scripts/differential_smoke.py` with typed result records, per-case
       timeout, bounded stderr, first-byte-difference reporting, JSON output,
       and Markdown rendering.
-- [ ] Default mode is observational: fixture mismatches/crashes/timeouts appear
+- [x] Default mode is observational: fixture mismatches/crashes/timeouts appear
       in the report but do not make the command fail. Harness/configuration
       failures do fail.
 - [ ] Add repeatable `--require NAME` arguments that make named fixtures fail
