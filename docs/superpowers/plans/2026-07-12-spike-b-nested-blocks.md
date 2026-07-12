@@ -392,7 +392,7 @@ pattern = "scene_of_character"
 
 **Produces:** A recorded pass or a documented halt-and-redesign result; no silent transition to the span spike.
 
-- [ ] **Step 1: Run the complete required verification set.**
+- [x] **Step 1: Run the complete required verification set.**
 
   Run:
 
