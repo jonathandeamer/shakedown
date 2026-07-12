@@ -379,14 +379,22 @@ def test_recovery_rewrite_would_change_key_if_misused() -> None:
 def test_action_key_uses_every_canonical_routing_field() -> None:
     base = NextAction(ActionKind.IMPLEMENT, "execute", Path("plan.md"), "step", ())
     variants = (
-        NextAction(ActionKind.FIX, base.summary, base.active_plan, base.step, base.blockers),
+        NextAction(
+            ActionKind.FIX, base.summary, base.active_plan, base.step, base.blockers
+        ),
         NextAction(base.kind, "recover", base.active_plan, base.step, base.blockers),
         NextAction(base.kind, base.summary, Path("other.md"), base.step, base.blockers),
-        NextAction(base.kind, base.summary, base.active_plan, "other step", base.blockers),
-        NextAction(base.kind, base.summary, base.active_plan, base.step, ("- BLOCK: x",)),
+        NextAction(
+            base.kind, base.summary, base.active_plan, "other step", base.blockers
+        ),
+        NextAction(
+            base.kind, base.summary, base.active_plan, base.step, ("- BLOCK: x",)
+        ),
     )
 
-    assert all(mco_loop.action_key(item) != mco_loop.action_key(base) for item in variants)
+    assert all(
+        mco_loop.action_key(item) != mco_loop.action_key(base) for item in variants
+    )
 
 
 def test_load_state_preserves_optional_action_attempt_and_exhaustion(
@@ -591,7 +599,9 @@ def test_main_uses_canonical_action_and_exits_five_on_exhaustion(
 
     monkeypatch.setattr(mco_loop, "REPO", tmp_path)
     monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
-    monkeypatch.setattr(mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config)
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
     monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
     monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
     monkeypatch.setattr(
@@ -599,9 +609,15 @@ def test_main_uses_canonical_action_and_exits_five_on_exhaustion(
         "parse_roadmap",
         lambda text: (_row("3M", "in flight", plan),),
     )
-    monkeypatch.setattr(mco_loop, "determine_next_action", lambda rows, blockers: canonical)
-    monkeypatch.setattr(mco_loop, "apply_failure_action", lambda action, state: rewritten)
-    monkeypatch.setattr(mco_loop, "apply_governor_directive", lambda action: (action, False))
+    monkeypatch.setattr(
+        mco_loop, "determine_next_action", lambda rows, blockers: canonical
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_failure_action", lambda action, state: rewritten
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_governor_directive", lambda action: (action, False)
+    )
 
     def fake_select(executors, state, action, now, preserve_planning=False):
         selected_actions.append(action)
@@ -631,7 +647,9 @@ def test_main_once_returns_three_only_for_trusted_retry_wait(
 
     monkeypatch.setattr(mco_loop, "REPO", tmp_path)
     monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
-    monkeypatch.setattr(mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config)
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
     monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
     monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
     monkeypatch.setattr(
@@ -639,8 +657,12 @@ def test_main_once_returns_three_only_for_trusted_retry_wait(
         "parse_roadmap",
         lambda text: (_row("3M", "in flight", plan),),
     )
-    monkeypatch.setattr(mco_loop, "determine_next_action", lambda rows, blockers: canonical)
-    monkeypatch.setattr(mco_loop, "apply_governor_directive", lambda action: (action, False))
+    monkeypatch.setattr(
+        mco_loop, "determine_next_action", lambda rows, blockers: canonical
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_governor_directive", lambda action: (action, False)
+    )
     monkeypatch.setattr(
         mco_loop,
         "select_executor",

@@ -501,9 +501,7 @@ def exhaustion_payload(
     active_cooldowns = {
         key: int(value)
         for key, value in cooldowns.items()
-        if isinstance(key, str)
-        and isinstance(value, int | float)
-        and int(value) > now
+        if isinstance(key, str) and isinstance(value, int | float) and int(value) > now
     }
     active_plan: str | None = None
     if action.active_plan is not None:
