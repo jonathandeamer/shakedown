@@ -6,6 +6,50 @@ pattern = "iconic_echo"
 title = "Prospero receives the herald's stream."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_BLOCKQUOTE_OPEN]
+title = "Prospero raises the inward pavilion."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_BLOCKQUOTE_CLOSE]
+title = "Prospero lowers the inward pavilion."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_ITEM_BLOCK_OPEN]
+title = "Prospero grants the chamber its first seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_ITEM_BLOCK_CLOSE]
+title = "Prospero releases the chamber's last seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_ITEM_CLOSE]
+title = "Prospero seals the soldier's chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_CONTAINER_LOOKAHEAD]
+title = "Prospero keeps the next bright measure."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_LIST_CONTAINER_RETURN]
+title = "Prospero restores the parting seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_LIST_OUTER_RELEASE]
+title = "Prospero frees the parting procession."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_CONTAINER_RETURN]
+title = "Prospero restores the waiting seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_QUOTED_PARAGRAPH]
+title = "Prospero inscribes the inward chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_OUTER_RELEASE]
+title = "Prospero frees the outer procession."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_AFTER_NESTED_CLOSE]
 title = "The inner gate yields to the outer march."
 pattern = "bare_statement"
@@ -156,6 +200,14 @@ pattern = "scene_of_character"
 
 [scenes.SCRIBE_STASH_UL_CLOSE_NESTED]
 title = "Prospero bars the inner rough ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_UL_CLOSE_LEADING_SEP]
+title = "Prospero parts the outer rough ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_OL_CLOSE_LEADING_SEP]
+title = "Prospero parts the outer numbered ranks."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_STASH_UL_CLOSE_TOP]

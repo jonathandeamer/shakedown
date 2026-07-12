@@ -633,7 +633,10 @@ ACT: Act = act(
         ),
         scene(
             "PASS_CONTAINERS_REPLAY_SCAN",
-            goto("PASS_LISTS_BLANK"),
+            *_read("blank_glyph"),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_LISTS_BLANK"),
+            branch(eq(val(HECATE), _SPACE), then="PASS_LISTS_INDENT_1"),
+            goto("PASS_LISTS_LINE_HEAD"),
             companion=HECATE,
         ),
         scene(

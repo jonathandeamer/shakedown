@@ -11,3 +11,4 @@ cannot resolve from the universities (`@file` references in
 blocker mid-run. The operator removes the line when the block is resolved.
 
 Non-blocking notes (no halt) use `- NOTE:` instead.
+

@@ -1545,7 +1545,25 @@ Lady Macbeth:
 [Enter Hecate]
 
 Lady Macbeth:
- Let us return to scene @PASS_LISTS_BLANK.
+ @LIT.characters.lady_macbeth.recall.blank_glyph
+
+Hecate:
+ You are as cursed as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as villainous as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @PASS_LISTS_BLANK.
+
+Lady Macbeth:
+ Are you as villainous as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @PASS_LISTS_INDENT_1.
+
+Lady Macbeth:
+ Let us return to scene @PASS_LISTS_LINE_HEAD.
 
 
                     Scene @FRAME_STAGE_SIDE_POP: @LIT.scenes.FRAME_STAGE_SIDE_POP.title

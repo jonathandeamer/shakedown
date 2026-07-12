@@ -1,26 +1,20 @@
-"""Act IV — emit pass over the tokenized stream (Spike A P2). Prospero
-anchors and speaks; Puck carries the current token / scratch. Dispatch pops
-until the STREAM_END sentinel; paragraph emission is the Slice-1 port
-unchanged (docs/superpowers/notes/act4-port-audit.md); list emission follows
-the P2 plan's oracle-derived byte rules.
+"""Act IV — stack-driven emission of the explicit block-container stream.
 
-List-flow invariants (from Act II construction, enforced by the G2 dumps):
-- LIST_ITEM (5) and LIST_CLOSE (6) never reach SCRIBE_DISPATCH_TOKEN; they
-  are consumed by lookahead inside the list flow. Only LIST_OPEN needs a
-  dispatch arm.
-- A LIST_OPEN is always followed by a LIST_ITEM.
-- A nested LIST_CLOSE is always followed by LIST_ITEM or LIST_CLOSE; a
-  top-level LIST_CLOSE never is — so close depth is decided by lookahead
-  and no depth register is needed.
-- Prospero's value is scratch (popped kind, then stashed lookahead);
-  Prospero's stack holds the open list kinds."""
+Prospero's stack borrows one sentinel-delimited region.  Each frame records
+both its container kind and whether that container has already emitted a
+child block; item frames additionally record tight/loose rendering.  Puck
+carries the current stream token and output bytes.
+"""
 
 from __future__ import annotations
 
 from scripts.splc.ir import (
     Act,
+    Char,
     Op,
+    Scene,
     act,
+    add,
     branch,
     const,
     eq,
@@ -30,7 +24,7 @@ from scripts.splc.ir import (
     pop,
     print_char,
     push,
-    scene,
+    scene as ir_scene,
     val,
 )
 from src_ir import tokens
@@ -51,26 +45,59 @@ def _bytes(text: str) -> list[int]:
     return list(text.encode())
 
 
+def scene(
+    label: str,
+    *ops: Op,
+    companion: Char | None = PUCK,
+    anchor: Char | None = None,
+) -> Scene:
+    """Act-IV scenes always retain Puck as Prospero's stage companion."""
+    return ir_scene(label, *ops, companion=companion, anchor=anchor)
+
+
+# Container frames.  Adding ten marks that a child block has completed.
+DOCUMENT_EMPTY = 16
+DOCUMENT_USED = 17
+LIST_UL_EMPTY = 21
+LIST_OL_EMPTY = 22
+LIST_UL_USED = 31
+LIST_OL_USED = 32
+LIST_UL_COMPLEX = 41
+LIST_OL_COMPLEX = 42
+LIST_UL_NESTED = 51
+LIST_OL_NESTED = 52
+LIST_UL_NESTED_USED = 64
+LIST_OL_NESTED_USED = 65
+LIST_OL_NESTED_CLOSED = 75
+ITEM_TIGHT_EMPTY = 23
+ITEM_LOOSE_EMPTY = 24
+ITEM_TIGHT_USED = 33
+ITEM_LOOSE_USED = 34
+ITEM_LOOSE_COMPLEX = 44
+QUOTE_EMPTY = 18
+QUOTE_USED = 19
+
+
 ACT: Act = act(
     4,
     PROSPERO,
     [
         scene(
             "ACT_IV_START",
+            push(PROSPERO, const(tokens.STREAM_END)),
+            push(PROSPERO, const(DOCUMENT_EMPTY)),
             goto("SCRIBE_POP_TOKEN"),
             companion=PUCK,
         ),
         scene(
             "SCRIBE_POP_TOKEN",
             pop(PUCK, recall="heralds_present_word"),
-            branch(
-                eq(val(PUCK), const(tokens.STREAM_END)),
-                then="ACT_IV_DONE",
-            ),
+            branch(eq(val(PUCK), const(tokens.STREAM_END)), then="ACT_IV_DONE"),
             goto("SCRIBE_DISPATCH_TOKEN"),
         ),
         scene(
             "SCRIBE_DISPATCH_TOKEN",
+            branch(eq(val(PUCK), const(tokens.STREAM_END)), then="ACT_IV_DONE"),
             branch(
                 eq(val(PUCK), const(tokens.PARA)),
                 then="SCRIBE_EMIT_PARAGRAPH_OPEN",
@@ -82,353 +109,397 @@ ACT: Act = act(
             "SCRIBE_TEST_PARAGRAPH_CLOSE",
             branch(
                 eq(val(PUCK), const(tokens.TEXT_END)),
-                then="SCRIBE_TEST_FINAL_CLOSE",
+                then="SCRIBE_EMIT_PARAGRAPH_CLOSE",
                 else_="SCRIBE_TEST_LIST_OPEN",
             ),
             companion=PUCK,
         ),
-        # Dispatch arm (only LIST_OPEN reaches the top-level chain).
         scene(
             "SCRIBE_TEST_LIST_OPEN",
             branch(
                 eq(val(PUCK), const(tokens.LIST_OPEN)),
                 then="SCRIBE_LIST_OPEN",
-                else_="SCRIBE_TEST_ANCHOR_OPEN",
+                else_="SCRIBE_ITEM_FIRST",
             ),
             companion=PUCK,
         ),
-        # List open: kind onto Prospero's stack. Top-level opens arrive from the
-        # dispatch chain; nested opens arrive from SCRIBE_ITEM_END.
-        scene(
-            "SCRIBE_LIST_OPEN",
-            pop(PUCK, recall="heralds_present_word"),
-            push(PROSPERO, val(PUCK)),
-            branch(
-                eq(val(PUCK), const(1)),
-                then="SCRIBE_EMIT_UL_OPEN_TOP",
-                else_="SCRIBE_EMIT_OL_OPEN_TOP",
-            ),
-        ),
-        scene(
-            "SCRIBE_EMIT_UL_OPEN_TOP",
-            # <ul>\n
-            *_emit(*_bytes("<ul>"), 10),
-            goto("SCRIBE_ITEM_FIRST"),
-        ),
-        scene(
-            "SCRIBE_EMIT_OL_OPEN_TOP",
-            # <ol>\n
-            *_emit(*_bytes("<ol>"), 10),
-            goto("SCRIBE_ITEM_FIRST"),
-        ),
-        scene(
-            "SCRIBE_NESTED_OPEN",
-            # Reached from an item's text end: the enclosing <li> stays open.
-            pop(PUCK, recall="heralds_present_word"),
-            push(PROSPERO, val(PUCK)),
-            branch(
-                eq(val(PUCK), const(1)),
-                then="SCRIBE_EMIT_UL_OPEN_NESTED",
-                else_="SCRIBE_EMIT_OL_OPEN_NESTED",
-            ),
-        ),
-        scene(
-            "SCRIBE_EMIT_UL_OPEN_NESTED",
-            # \n<ul>
-            *_emit(10, *_bytes("<ul>")),
-            goto("SCRIBE_ITEM_FIRST"),
-        ),
-        scene(
-            "SCRIBE_EMIT_OL_OPEN_NESTED",
-            # \n<ol>
-            *_emit(10, *_bytes("<ol>")),
-            goto("SCRIBE_ITEM_FIRST"),
-        ),
-        # Items. A LIST_OPEN is always followed by a LIST_ITEM, so the first-item
-        # entry consumes the item code directly; subsequent items arrive with
-        # their code already consumed by the </li> lookahead.
         scene(
             "SCRIBE_ITEM_FIRST",
-            pop(PUCK, recall="heralds_present_word"),
-            goto("SCRIBE_ITEM_LOOSENESS"),
-        ),
-        scene(
-            "SCRIBE_ITEM_SUBSEQUENT",
-            # \n between </li> and the next <li>
-            *_emit(10),
-            goto("SCRIBE_ITEM_LOOSENESS"),
-        ),
-        scene(
-            "SCRIBE_ITEM_LOOSENESS",
-            pop(PUCK, recall="heralds_present_word"),
             branch(
-                eq(val(PUCK), const(2)),
-                then="SCRIBE_EMIT_ITEM_OPEN_LOOSE",
-                else_="SCRIBE_EMIT_ITEM_OPEN_TIGHT",
+                eq(val(PUCK), const(tokens.LIST_ITEM)),
+                then="SCRIBE_ITEM_LOOSENESS",
+                else_="SCRIBE_ITEM_END",
             ),
-        ),
-        scene(
-            "SCRIBE_EMIT_ITEM_OPEN_TIGHT",
-            *_emit(*_bytes("<li>")),
-            goto("SCRIBE_ITEM_TEXT_TIGHT"),
-        ),
-        scene(
-            "SCRIBE_ITEM_TEXT_TIGHT",
-            pop(PUCK, recall="heralds_present_word"),
-            branch(eq(val(PUCK), const(tokens.TEXT_END)), then="SCRIBE_ITEM_END"),
-            print_char(PUCK),
-            goto("SCRIBE_ITEM_TEXT_TIGHT"),
-        ),
-        scene(
-            "SCRIBE_EMIT_ITEM_OPEN_LOOSE",
-            *_emit(*_bytes("<li><p>")),
-            goto("SCRIBE_ITEM_TEXT_LOOSE"),
-        ),
-        scene(
-            "SCRIBE_ITEM_TEXT_LOOSE",
-            pop(PUCK, recall="heralds_present_word"),
-            branch(
-                eq(val(PUCK), const(tokens.TEXT_END)),
-                then="SCRIBE_EMIT_LOOSE_END",
-            ),
-            branch(eq(val(PUCK), const(10)), then="SCRIBE_LOOSE_NEWLINE"),
-            print_char(PUCK),
-            goto("SCRIBE_ITEM_TEXT_LOOSE"),
-        ),
-        scene(
-            "SCRIBE_LOOSE_NEWLINE",
-            # Two newlines mark a paragraph break inside the loose item; one is
-            # literal text. Stash the lookahead glyph before _emit reuses Puck.
-            pop(PUCK, recall="heralds_parting_word"),
-            branch(eq(val(PUCK), const(10)), then="SCRIBE_EMIT_PARAGRAPH_BREAK"),
-            let(PROSPERO, val(PUCK)),
-            goto("SCRIBE_LOOSE_NEWLINE_GLYPH"),
-        ),
-        scene(
-            "SCRIBE_LOOSE_NEWLINE_GLYPH",
-            *_emit(10),
-            let(PUCK, val(PROSPERO)),
-            print_char(PUCK),
-            goto("SCRIBE_ITEM_TEXT_LOOSE"),
-        ),
-        scene(
-            "SCRIBE_EMIT_PARAGRAPH_BREAK",
-            # </p>\n\n<p>
-            *_emit(*_bytes("</p>"), 10, 10, *_bytes("<p>")),
-            goto("SCRIBE_ITEM_TEXT_LOOSE"),
-        ),
-        scene(
-            "SCRIBE_EMIT_LOOSE_END",
-            *_emit(*_bytes("</p>")),
-            goto("SCRIBE_ITEM_END"),
-            companion=PROSPERO,
+            companion=PUCK,
         ),
         scene(
             "SCRIBE_ITEM_END",
-            # Lookahead: a nested LIST_OPEN keeps this <li> open.
-            pop(PUCK, recall="heralds_parting_word"),
-            branch(eq(val(PUCK), const(tokens.LIST_OPEN)), then="SCRIBE_NESTED_OPEN"),
-            let(PROSPERO, val(PUCK)),
-            goto("SCRIBE_EMIT_LI_CLOSE"),
-        ),
-        scene(
-            "SCRIBE_EMIT_LI_CLOSE",
-            # The lookahead (LIST_ITEM or LIST_CLOSE) is stashed in Prospero.
-            *_emit(*_bytes("</li>")),
             branch(
-                eq(val(PROSPERO), const(tokens.LIST_ITEM)),
-                then="SCRIBE_ITEM_SUBSEQUENT",
+                eq(val(PUCK), const(tokens.ITEM_CLOSE)),
+                then="SCRIBE_ITEM_CLOSE",
+                else_="SCRIBE_LIST_CLOSE",
             ),
-            goto("SCRIBE_LIST_CLOSE"),
+            companion=PUCK,
         ),
-        # List close. Entered with the LIST_CLOSE code already consumed. Pops
-        # the kind, then one lookahead token; the lookahead picks nested vs top.
         scene(
             "SCRIBE_LIST_CLOSE",
-            pop(PROSPERO, recall="sealed_gates_colour"),
-            pop(PUCK, recall="heralds_parting_word"),
-            branch(eq(val(PUCK), const(tokens.LIST_ITEM)), then="SCRIBE_NESTED_CLOSE"),
             branch(
                 eq(val(PUCK), const(tokens.LIST_CLOSE)),
-                then="SCRIBE_NESTED_CLOSE",
+                then="SCRIBE_TOP_CLOSE",
+                else_="SCRIBE_NESTED_OPEN",
             ),
-            goto("SCRIBE_TOP_CLOSE"),
+            companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_NESTED_OPEN",
+            branch(
+                eq(val(PUCK), const(tokens.BLOCKQUOTE_OPEN)),
+                then="SCRIBE_BLOCKQUOTE_OPEN",
+                else_="SCRIBE_NESTED_CLOSE",
+            ),
+            companion=PUCK,
         ),
         scene(
             "SCRIBE_NESTED_CLOSE",
             branch(
-                eq(val(PROSPERO), const(1)),
-                then="SCRIBE_STASH_UL_CLOSE_NESTED",
-                else_="SCRIBE_STASH_OL_CLOSE_NESTED",
+                eq(val(PUCK), const(tokens.BLOCKQUOTE_CLOSE)),
+                then="SCRIBE_BLOCKQUOTE_CLOSE",
+                else_="SCRIBE_TEST_ANCHOR_OPEN",
             ),
             companion=PUCK,
         ),
+
+        # Paragraph opening peeks at the parent frame.  A used frame inserts a
+        # blank-line block separator; loose items retain paragraph tags while
+        # tight items deliberately suppress them.
         scene(
-            "SCRIBE_STASH_UL_CLOSE_NESTED",
-            # Kind is consumed by the branch above; stash the lookahead before
-            # emission reuses Puck.
-            let(PROSPERO, val(PUCK)),
-            # </ul></li> — the parent item closes with the nested list.
-            *_emit(*_bytes("</ul></li>")),
-            goto("SCRIBE_AFTER_NESTED_CLOSE"),
+            "SCRIBE_EMIT_PARAGRAPH_OPEN",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_EMPTY)), then="SCRIBE_ITEM_TEXT_TIGHT"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_USED)), then="SCRIBE_EMIT_PARAGRAPH_BREAK"),
+            branch(eq(val(PROSPERO), const(ITEM_LOOSE_EMPTY)), then="SCRIBE_EMIT_ITEM_OPEN_LOOSE"),
+            branch(eq(val(PROSPERO), const(ITEM_LOOSE_USED)), then="SCRIBE_EMIT_PARAGRAPH_BREAK"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_EMIT_PARAGRAPH_BREAK"),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_EMIT_PARAGRAPH_BREAK"),
+            goto("SCRIBE_EMIT_ITEM_OPEN_TIGHT"),
         ),
         scene(
-            "SCRIBE_STASH_OL_CLOSE_NESTED",
-            let(PROSPERO, val(PUCK)),
-            *_emit(*_bytes("</ol></li>")),
-            goto("SCRIBE_AFTER_NESTED_CLOSE"),
+            "SCRIBE_ITEM_TEXT_TIGHT",
+            push(PROSPERO, const(ITEM_TIGHT_EMPTY)),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
-            "SCRIBE_AFTER_NESTED_CLOSE",
-            branch(
-                eq(val(PROSPERO), const(tokens.LIST_ITEM)),
-                then="SCRIBE_ITEM_SUBSEQUENT",
-            ),
-            # Otherwise the stashed lookahead is another LIST_CLOSE, already
-            # consumed — exactly SCRIBE_LIST_CLOSE's entry state.
-            goto("SCRIBE_LIST_CLOSE"),
-            companion=PUCK,
+            "SCRIBE_ITEM_SUBSEQUENT",
+            push(PROSPERO, val(PROSPERO)),
+            push(PROSPERO, val(PUCK)),
+            *_emit(10),
+            goto("SCRIBE_ITEM_BLOCK_OPEN"),
         ),
         scene(
-            "SCRIBE_TOP_CLOSE",
-            branch(
-                eq(val(PROSPERO), const(1)),
-                then="SCRIBE_STASH_UL_CLOSE_TOP",
-                else_="SCRIBE_STASH_OL_CLOSE_TOP",
-            ),
-            companion=PUCK,
+            "SCRIBE_EMIT_ITEM_OPEN_LOOSE",
+            push(PROSPERO, const(ITEM_LOOSE_EMPTY)),
+            *_emit(*_bytes("<p>")),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_EMIT_PARAGRAPH_BREAK",
+            push(PROSPERO, val(PROSPERO)),
+            *_emit(10, 10, *_bytes("<p>")),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_EMIT_ITEM_OPEN_TIGHT",
+            push(PROSPERO, val(PROSPERO)),
+            *_emit(*_bytes("<p>")),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_EMIT_PARAGRAPH_CLOSE",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_EMPTY)), then="SCRIBE_EMIT_LOOSE_END"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_USED)), then="SCRIBE_EMIT_LOOSE_END"),
+            branch(eq(val(PROSPERO), const(ITEM_LOOSE_EMPTY)), then="SCRIBE_TEST_FINAL_CLOSE"),
+            branch(eq(val(PROSPERO), const(ITEM_LOOSE_USED)), then="SCRIBE_TEST_FINAL_CLOSE"),
+            goto("SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE"),
+        ),
+        scene(
+            "SCRIBE_EMIT_LOOSE_END",
+            push(PROSPERO, const(ITEM_TIGHT_USED)),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_TEST_FINAL_CLOSE",
+            push(PROSPERO, const(ITEM_LOOSE_USED)),
+            *_emit(*_bytes("</p>")),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE",
+            *_emit(*_bytes("</p>")),
+            branch(eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_OUTER_RELEASE"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_OUTER_RELEASE"),
+            goto("SCRIBE_CONTAINER_RETURN"),
         ),
         scene(
             "SCRIBE_STASH_UL_CLOSE_TOP",
-            let(PROSPERO, val(PUCK)),
-            # \n</ul>
+            push(PROSPERO, add(val(PROSPERO), const(20))),
+            push(PROSPERO, val(PUCK)),
+            *_emit(*_bytes("</li>")),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            let(PUCK, val(PROSPERO)),
+            goto("SCRIBE_DISPATCH_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_STASH_OL_CLOSE_TOP",
+            push(PROSPERO, add(val(PROSPERO), const(10))),
+            push(PROSPERO, val(PUCK)),
+            *_emit(*_bytes("</li>")),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            let(PUCK, val(PROSPERO)),
+            goto("SCRIBE_DISPATCH_TOKEN"),
+        ),
+
+        # List containers choose their separator from the parent frame, then
+        # retain their kind until LIST_CLOSE.
+        scene(
+            "SCRIBE_LIST_OPEN",
+            pop(PUCK, recall="heralds_present_word"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, val(PROSPERO)),
+            push(PROSPERO, val(PUCK)),
+            branch(eq(val(PROSPERO), const(LIST_UL_EMPTY)), then="SCRIBE_EMIT_UL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_UL_USED)), then="SCRIBE_EMIT_UL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_OL_EMPTY)), then="SCRIBE_EMIT_UL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_OL_USED)), then="SCRIBE_EMIT_UL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_USED)), then="SCRIBE_EMIT_UL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(ITEM_LOOSE_USED)), then="SCRIBE_EMIT_UL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_EMIT_LIST_BLOCK_SEP"),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_EMIT_LIST_BLOCK_SEP"),
+            goto("SCRIBE_EMIT_UL_OPEN_TOP"),
+        ),
+        scene(
+            "SCRIBE_EMIT_UL_OPEN_NESTED",
+            *_emit(10),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(1)), then="SCRIBE_ITEM_BLOCK_CLOSE"),
+            push(PROSPERO, const(LIST_OL_EMPTY)),
+            *_emit(*_bytes("<ol>")),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_EMIT_OL_OPEN_NESTED",
+            *_emit(*_bytes("</ol>")),
+            goto("SCRIBE_LIST_BLOCK_SEP"),
+        ),
+        scene(
+            "SCRIBE_EMIT_LIST_BLOCK_SEP",
+            *_emit(10, 10),
+            goto("SCRIBE_EMIT_UL_OPEN_TOP"),
+        ),
+        scene(
+            "SCRIBE_EMIT_UL_OPEN_TOP",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(1)), then="SCRIBE_EMIT_OL_OPEN_TOP"),
+            push(PROSPERO, const(LIST_OL_EMPTY)),
+            *_emit(*_bytes("<ol>"), 10),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_EMIT_OL_OPEN_TOP",
+            push(PROSPERO, const(LIST_UL_EMPTY)),
+            *_emit(*_bytes("<ul>"), 10),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_ITEM_LOOSENESS",
+            pop(PUCK, recall="heralds_present_word"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(LIST_UL_COMPLEX)), then="SCRIBE_ITEM_TEXT_LOOSE"),
+            branch(eq(val(PROSPERO), const(LIST_OL_COMPLEX)), then="SCRIBE_LOOSE_NEWLINE"),
+            branch(eq(val(PROSPERO), const(LIST_UL_USED)), then="SCRIBE_ITEM_SUBSEQUENT"),
+            branch(eq(val(PROSPERO), const(LIST_OL_USED)), then="SCRIBE_ITEM_SUBSEQUENT"),
+            branch(eq(val(PROSPERO), const(LIST_UL_NESTED_USED)), then="SCRIBE_ITEM_SUBSEQUENT"),
+            branch(eq(val(PROSPERO), const(LIST_OL_NESTED_USED)), then="SCRIBE_ITEM_SUBSEQUENT"),
+            push(PROSPERO, val(PROSPERO)),
+            push(PROSPERO, val(PUCK)),
+            goto("SCRIBE_ITEM_BLOCK_OPEN"),
+        ),
+        scene(
+            "SCRIBE_ITEM_TEXT_LOOSE",
+            push(PROSPERO, const(LIST_UL_USED)),
+            push(PROSPERO, val(PUCK)),
+            *_emit(10),
+            goto("SCRIBE_ITEM_BLOCK_OPEN"),
+        ),
+        scene(
+            "SCRIBE_LOOSE_NEWLINE",
+            push(PROSPERO, const(LIST_OL_USED)),
+            push(PROSPERO, val(PUCK)),
+            *_emit(10),
+            goto("SCRIBE_ITEM_BLOCK_OPEN"),
+        ),
+        scene(
+            "SCRIBE_EMIT_LI_CLOSE",
+            pop(PUCK, recall="heralds_parting_word"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            goto("SCRIBE_STASH_UL_CLOSE_TOP"),
+        ),
+        scene(
+            "SCRIBE_ITEM_BLOCK_OPEN",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            *_emit(*_bytes("<li>")),
+            branch(eq(val(PROSPERO), const(2)), then="SCRIBE_EMIT_FINAL_LIST_NEWLINE"),
+            push(PROSPERO, const(ITEM_TIGHT_EMPTY)),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_ITEM_CLOSE",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(ITEM_LOOSE_COMPLEX)), then="SCRIBE_EMIT_LI_CLOSE"),
+            pop(PUCK, recall="heralds_parting_word"),
+            branch(eq(val(PUCK), const(tokens.LIST_OPEN)), then="SCRIBE_LIST_OPEN"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            goto("SCRIBE_STASH_OL_CLOSE_TOP"),
+        ),
+        scene(
+            "SCRIBE_AFTER_NESTED_CLOSE",
+            *_emit(*_bytes("</li>")),
+            push(PROSPERO, const(LIST_UL_USED)),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_TOP_CLOSE",
+            # LIST_CLOSE: pop the list frame, emit its kind-specific close,
+            # then mark the enclosing frame used.
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(LIST_UL_USED)), then="SCRIBE_STASH_UL_CLOSE_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_UL_EMPTY)), then="SCRIBE_STASH_UL_CLOSE_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_UL_COMPLEX)), then="SCRIBE_STASH_UL_CLOSE_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_OL_NESTED)), then="SCRIBE_EMIT_OL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_OL_NESTED_USED)), then="SCRIBE_EMIT_OL_OPEN_NESTED"),
+            branch(eq(val(PROSPERO), const(LIST_OL_NESTED_CLOSED)), then="SCRIBE_EMIT_OL_OPEN_NESTED"),
+            goto("SCRIBE_STASH_OL_CLOSE_NESTED"),
+        ),
+        scene(
+            "SCRIBE_STASH_UL_CLOSE_NESTED",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, val(PROSPERO)),
+            branch(eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_UL_CLOSE_LEADING_SEP"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_UL_CLOSE_LEADING_SEP"),
+            branch(eq(val(PROSPERO), const(QUOTE_EMPTY)), then="SCRIBE_UL_CLOSE_LEADING_SEP"),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_UL_CLOSE_LEADING_SEP"),
+            *_emit(*_bytes("</ul>")),
+            goto("SCRIBE_LIST_BLOCK_SEP"),
+        ),
+        scene(
+            "SCRIBE_UL_CLOSE_LEADING_SEP",
             *_emit(10, *_bytes("</ul>")),
             goto("SCRIBE_LIST_BLOCK_SEP"),
         ),
         scene(
-            "SCRIBE_STASH_OL_CLOSE_TOP",
-            let(PROSPERO, val(PUCK)),
+            "SCRIBE_STASH_OL_CLOSE_NESTED",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, val(PROSPERO)),
+            branch(eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_OL_CLOSE_LEADING_SEP"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_OL_CLOSE_LEADING_SEP"),
+            branch(eq(val(PROSPERO), const(QUOTE_EMPTY)), then="SCRIBE_OL_CLOSE_LEADING_SEP"),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_OL_CLOSE_LEADING_SEP"),
+            *_emit(*_bytes("</ol>")),
+            goto("SCRIBE_LIST_BLOCK_SEP"),
+        ),
+        scene(
+            "SCRIBE_OL_CLOSE_LEADING_SEP",
             *_emit(10, *_bytes("</ol>")),
             goto("SCRIBE_LIST_BLOCK_SEP"),
         ),
         scene(
             "SCRIBE_LIST_BLOCK_SEP",
-            branch(
-                eq(val(PROSPERO), const(tokens.STREAM_END)),
-                then="SCRIBE_EMIT_FINAL_LIST_NEWLINE",
-            ),
-            goto("SCRIBE_EMIT_LIST_BLOCK_SEP"),
-            companion=PUCK,
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(LIST_UL_EMPTY)), then="SCRIBE_AFTER_NESTED_CLOSE"),
+            branch(eq(val(PROSPERO), const(LIST_UL_USED)), then="SCRIBE_AFTER_NESTED_CLOSE"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_LIST_OUTER_RELEASE"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_LIST_OUTER_RELEASE"),
+            branch(eq(val(PROSPERO), const(QUOTE_EMPTY)), then="SCRIBE_LIST_CONTAINER_RETURN"),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_LIST_CONTAINER_RETURN"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_EMPTY)), then="SCRIBE_CONTAINER_LOOKAHEAD"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_USED)), then="SCRIBE_CONTAINER_LOOKAHEAD"),
+            goto("SCRIBE_EMIT_PARAGRAPH_BREAK"),
+        ),
+        scene("SCRIBE_EMIT_FINAL_LIST_NEWLINE", push(PROSPERO, const(ITEM_LOOSE_EMPTY)), goto("SCRIBE_POP_TOKEN")),
+        scene("SCRIBE_CONTAINER_RETURN", push(PROSPERO, const(QUOTE_USED)), goto("SCRIBE_POP_TOKEN")),
+        scene("SCRIBE_CONTAINER_LOOKAHEAD", push(PROSPERO, const(ITEM_TIGHT_USED)), goto("SCRIBE_POP_TOKEN")),
+        scene(
+            "SCRIBE_LIST_OUTER_RELEASE",
+            push(PROSPERO, const(DOCUMENT_USED)),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
-            "SCRIBE_EMIT_FINAL_LIST_NEWLINE",
-            *_emit(10),
-            goto("ACT_IV_DONE"),
+            "SCRIBE_LIST_CONTAINER_RETURN",
+            push(PROSPERO, const(QUOTE_USED)),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+
+        scene(
+            "SCRIBE_BLOCKQUOTE_OPEN",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, val(PROSPERO)),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_USED)), then="SCRIBE_LOOSE_NEWLINE_GLYPH"),
+            branch(eq(val(PROSPERO), const(ITEM_LOOSE_USED)), then="SCRIBE_LOOSE_NEWLINE_GLYPH"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_LOOSE_NEWLINE_GLYPH"),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_LOOSE_NEWLINE_GLYPH"),
+            *_emit(*_bytes("<blockquote>"), 10, 32, 32),
+            push(PROSPERO, const(QUOTE_EMPTY)),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
-            "SCRIBE_EMIT_LIST_BLOCK_SEP",
+            "SCRIBE_LOOSE_NEWLINE_GLYPH",
             *_emit(10, 10),
-            let(PUCK, val(PROSPERO)),
-            goto("SCRIBE_DISPATCH_TOKEN"),
+            *_emit(*_bytes("<blockquote>"), 10, 32, 32),
+            push(PROSPERO, const(QUOTE_EMPTY)),
+            goto("SCRIBE_POP_TOKEN"),
         ),
+        scene(
+            "SCRIBE_ITEM_BLOCK_CLOSE",
+            push(PROSPERO, const(LIST_UL_EMPTY)),
+            *_emit(*_bytes("<ul>")),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_BLOCKQUOTE_CLOSE",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            *_emit(10, *_bytes("</blockquote>")),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_OUTER_RELEASE"),
+            branch(eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_OUTER_RELEASE"),
+            branch(eq(val(PROSPERO), const(QUOTE_EMPTY)), then="SCRIBE_CONTAINER_RETURN"),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_CONTAINER_RETURN"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_EMPTY)), then="SCRIBE_CONTAINER_LOOKAHEAD"),
+            branch(eq(val(PROSPERO), const(ITEM_TIGHT_USED)), then="SCRIBE_CONTAINER_LOOKAHEAD"),
+            goto("SCRIBE_QUOTED_PARAGRAPH"),
+        ),
+        scene("SCRIBE_OUTER_RELEASE", push(PROSPERO, const(DOCUMENT_USED)), goto("SCRIBE_POP_TOKEN")),
+        scene("SCRIBE_QUOTED_PARAGRAPH", push(PROSPERO, const(ITEM_LOOSE_COMPLEX)), goto("SCRIBE_POP_TOKEN")),
+
         scene(
             "SCRIBE_TEST_ANCHOR_OPEN",
-            branch(
-                eq(val(PUCK), const(tokens.ANCHOR_OPEN)),
-                then="SCRIBE_EMIT_ANCHOR_OPEN",
-                else_="SCRIBE_TEST_ANCHOR_TITLE",
-            ),
+            branch(eq(val(PUCK), const(tokens.ANCHOR_OPEN)), then="SCRIBE_EMIT_ANCHOR_OPEN", else_="SCRIBE_TEST_ANCHOR_TITLE"),
             companion=PUCK,
         ),
+        scene("SCRIBE_TEST_ANCHOR_TITLE", branch(eq(val(PUCK), const(tokens.ANCHOR_TITLE)), then="SCRIBE_EMIT_ANCHOR_TITLE", else_="SCRIBE_TEST_ANCHOR_TEXT"), companion=PUCK),
+        scene("SCRIBE_TEST_ANCHOR_TEXT", branch(eq(val(PUCK), const(tokens.ANCHOR_TEXT)), then="SCRIBE_EMIT_ANCHOR_TEXT", else_="SCRIBE_TEST_ANCHOR_CLOSE"), companion=PUCK),
+        scene("SCRIBE_TEST_ANCHOR_CLOSE", branch(eq(val(PUCK), const(tokens.ANCHOR_CLOSE)), then="SCRIBE_EMIT_ANCHOR_CLOSE", else_="SCRIBE_EMIT_PAYLOAD"), companion=PUCK),
+        scene("SCRIBE_EMIT_PAYLOAD", print_char(PUCK), goto("SCRIBE_POP_TOKEN")),
+        scene("SCRIBE_EMIT_ANCHOR_OPEN", *_emit(*_bytes('<a href="')), goto("SCRIBE_POP_TOKEN")),
+        scene("SCRIBE_EMIT_ANCHOR_TITLE", *_emit(*_bytes('" title="')), goto("SCRIBE_POP_TOKEN")),
+        scene("SCRIBE_EMIT_ANCHOR_TEXT", *_emit(*_bytes('\">')), goto("SCRIBE_POP_TOKEN")),
+        scene("SCRIBE_EMIT_ANCHOR_CLOSE", *_emit(*_bytes("</a>")), goto("SCRIBE_POP_TOKEN")),
         scene(
-            "SCRIBE_TEST_ANCHOR_TITLE",
-            branch(
-                eq(val(PUCK), const(tokens.ANCHOR_TITLE)),
-                then="SCRIBE_EMIT_ANCHOR_TITLE",
-                else_="SCRIBE_TEST_ANCHOR_TEXT",
-            ),
+            "ACT_IV_DONE",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            *_emit(10),
+            halt_act(),
             companion=PUCK,
         ),
-        scene(
-            "SCRIBE_TEST_ANCHOR_TEXT",
-            branch(
-                eq(val(PUCK), const(tokens.ANCHOR_TEXT)),
-                then="SCRIBE_EMIT_ANCHOR_TEXT",
-                else_="SCRIBE_TEST_ANCHOR_CLOSE",
-            ),
-            companion=PUCK,
-        ),
-        scene(
-            "SCRIBE_TEST_ANCHOR_CLOSE",
-            branch(
-                eq(val(PUCK), const(tokens.ANCHOR_CLOSE)),
-                then="SCRIBE_EMIT_ANCHOR_CLOSE",
-                else_="SCRIBE_EMIT_PAYLOAD",
-            ),
-            companion=PUCK,
-        ),
-        scene(
-            "SCRIBE_EMIT_PAYLOAD",
-            print_char(PUCK),
-            goto("SCRIBE_POP_TOKEN"),
-        ),
-        scene(
-            "SCRIBE_EMIT_ANCHOR_OPEN",
-            # <a href="
-            *_emit(60, 97, 32, 104, 114, 101, 102, 61, 34),
-            goto("SCRIBE_POP_TOKEN"),
-        ),
-        scene(
-            "SCRIBE_EMIT_ANCHOR_TITLE",
-            # " title="
-            *_emit(34, 32, 116, 105, 116, 108, 101, 61, 34),
-            goto("SCRIBE_POP_TOKEN"),
-        ),
-        scene(
-            "SCRIBE_EMIT_ANCHOR_TEXT",
-            # ">
-            *_emit(34, 62),
-            goto("SCRIBE_POP_TOKEN"),
-        ),
-        scene(
-            "SCRIBE_EMIT_ANCHOR_CLOSE",
-            # </a>
-            *_emit(60, 47, 97, 62),
-            goto("SCRIBE_POP_TOKEN"),
-        ),
-        scene(
-            "SCRIBE_EMIT_PARAGRAPH_OPEN",
-            # <p>
-            *_emit(60, 112, 62),
-            goto("SCRIBE_POP_TOKEN"),
-        ),
-        scene(
-            "SCRIBE_TEST_FINAL_CLOSE",
-            # Lookahead: the paragraph just closed; peek at the next stream
-            # item to choose the final (single-newline) close. Stashed in
-            # Prospero (his count register is retired) because _emit's
-            # per-byte loop below overwrites Puck's value.
-            pop(PUCK, recall="heralds_parting_word"),
-            let(PROSPERO, val(PUCK)),
-            branch(
-                eq(val(PUCK), const(tokens.STREAM_END)),
-                then="SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE",
-                else_="SCRIBE_EMIT_PARAGRAPH_CLOSE",
-            ),
-        ),
-        scene(
-            "SCRIBE_EMIT_PARAGRAPH_CLOSE",
-            # </p>\n\n — then recall the stashed lookahead and dispatch it.
-            *_emit(60, 47, 112, 62, 10, 10),
-            let(PUCK, val(PROSPERO)),
-            goto("SCRIBE_DISPATCH_TOKEN"),
-        ),
-        scene(
-            "SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE",
-            # </p>\n — the lookahead consumed STREAM_END; the play is done.
-            *_emit(60, 47, 112, 62, 10),
-            goto("ACT_IV_DONE"),
-        ),
-        scene("ACT_IV_DONE", halt_act(), companion=PUCK),
     ],
 )

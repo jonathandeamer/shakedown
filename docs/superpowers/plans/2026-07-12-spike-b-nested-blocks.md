@@ -347,7 +347,7 @@ pattern = "scene_of_character"
   Run: `uv run pytest tests/test_architecture_spikes.py -q`  
   Expected: FAIL on all nested-block cases while the current emitter has no blockquote dispatch.
 
-- [ ] **Step 3: Implement stack-driven container emission.**
+- [x] **Step 3: Implement stack-driven container emission.**
 
   Replace the implicit-list-lookahead flow in `src_ir/act4.py` with dispatch for
   `LIST_OPEN`, `LIST_ITEM`, `ITEM_CLOSE`, `LIST_CLOSE`, `BLOCKQUOTE_OPEN`, and
@@ -360,7 +360,7 @@ pattern = "scene_of_character"
   remain plan-only unless their IR scenes become necessary. Do not put scene
   prose in `src/literary.toml` or inline it in the IR module.
 
-- [ ] **Step 4: Regenerate and assemble.**
+- [x] **Step 4: Regenerate and assemble.**
 
   Run:
 
@@ -371,7 +371,7 @@ pattern = "scene_of_character"
 
   Expected: parser gate succeeds and generated fragments are fresh.
 
-- [ ] **Step 5: Run spike and no-regression gates.**
+- [x] **Step 5: Run spike and no-regression gates.**
 
   Run: `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_token_structure.py tests/test_splc_generated_fragments.py tests/test_literary_toml_schema.py tests/test_literary_compliance.py tests/test_spl_style_guide_validation.py tests/test_splc_prose.py -q`
   Expected: PASS; all ten architecture-spike fixtures are byte-identical and every dump validates.
