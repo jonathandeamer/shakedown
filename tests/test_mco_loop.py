@@ -7,6 +7,8 @@ import signal
 import sys
 from pathlib import Path
 
+import pytest
+
 from scripts import mco_loop
 from scripts.mco_loop import (
     ActionKind,
@@ -693,8 +695,8 @@ def test_main_once_returns_three_only_for_trusted_retry_wait(
     assert mco_loop.main(["--once"]) == 3
 
 
-def test_exhaustion_payload_redacts_action_text() -> None:
-    secret = "secret-value"
+@pytest.mark.parametrize("secret", ["secret-value", 'abc"def\\ghi\njkl'])
+def test_exhaustion_payload_redacts_action_text(secret: str) -> None:
     action = NextAction(
         ActionKind.FIX,
         f"recover {secret}",

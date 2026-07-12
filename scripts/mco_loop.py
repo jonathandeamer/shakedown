@@ -540,8 +540,7 @@ def exhaustion_payload(
         "next_ready": None,
         "recorded_at": now,
     }
-    redacted = _redact(json.dumps(payload), environment)
-    return cast(dict[str, object], json.loads(redacted))
+    return cast(dict[str, object], _redact_structure(payload, environment))
 
 
 def _git_output(arguments: Sequence[str]) -> str:
@@ -1107,6 +1106,20 @@ def _redact(text: str, environment: Mapping[str, str]) -> str:
         if value:
             redacted = redacted.replace(value, f"<{name}:redacted>")
     return redacted
+
+
+def _redact_structure(value: object, environment: Mapping[str, str]) -> object:
+    """Redact strings before serialization can escape secret characters."""
+    if isinstance(value, str):
+        return _redact(value, environment)
+    if isinstance(value, list):
+        return [_redact_structure(item, environment) for item in value]
+    if isinstance(value, dict):
+        return {
+            _redact(str(key), environment): _redact_structure(item, environment)
+            for key, item in value.items()
+        }
+    return value
 
 
 def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
