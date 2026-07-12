@@ -558,7 +558,7 @@ def test_available_executor_falls_back_to_preserved_groups() -> None:
     assert selected.name == "claude-impl"
 
 
-def test_main_available_executor_preserve_planning_flag(monkeypatch, tmp_path) -> None:
+def test_main_available_executor_preserve_planning_flag(monkeypatch, tmp_path: Path) -> None:
     # Mock files
     roadmap_file = tmp_path / "roadmap.md"
     roadmap_file.write_text("")
@@ -566,6 +566,8 @@ def test_main_available_executor_preserve_planning_flag(monkeypatch, tmp_path) -
 
     blockers_file = tmp_path / "blockers.md"
     monkeypatch.setattr(mco_loop, "BLOCKERS", blockers_file)
+
+    monkeypatch.setattr(mco_loop, "FABLE_DIRECTIVE", tmp_path / "fable-directive.md")
 
     # Mock config
     config = mco_loop.LoopConfig(

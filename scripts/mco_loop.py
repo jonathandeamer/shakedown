@@ -364,9 +364,9 @@ def available_executor(
         else {}
     )
 
-    def get_cooldown_expiry(exec: Executor) -> int:
-        group_value = cooldowns.get(exec.quota_group, 0)
-        executor_value = cooldowns.get(f"executor:{exec.name}", 0)
+    def get_cooldown_expiry(exe: Executor) -> int:
+        group_value = cooldowns.get(exe.quota_group, 0)
+        executor_value = cooldowns.get(f"executor:{exe.name}", 0)
         group_until = int(group_value) if isinstance(group_value, int | float) else 0
         executor_until = (
             int(executor_value) if isinstance(executor_value, int | float) else 0
