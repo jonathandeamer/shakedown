@@ -51,9 +51,12 @@ trusted executor is waiting only on such a cooldown, the loop waits until the
 earliest trusted executor becomes available and retries it.
 
 Pi-backed Grok, Hy3, and Nemotron remain last-resort automatic fallbacks. Their
-commands must use Pi's ephemeral `--no-session` mode. A substantive failure by
-a Pi fallback is recorded for the current action, but does not prevent the loop
-from waiting for a trusted Claude or Codex transient cooldown.
+commands must use Pi's ephemeral `--no-session` mode. Implement this with
+project-local shim entries in `.mco/agents.yaml`, one for each configured Pi
+model, and route `agent-loop.toml` executors through those shim names instead of
+MCO's built-in `pi` adapter. A substantive failure by a Pi fallback is recorded
+for the current action, but does not prevent the loop from waiting for a trusted
+Claude or Codex transient cooldown.
 
 Antigravity Flash and Pro are removed from the automatic implementation pool.
 They may return only after their CLI offers a verified stateless execution mode
@@ -65,7 +68,10 @@ required unless its adapter later introduces persistence.
 
 ## Action Identity
 
-The supervisor derives a stable action key from durable routing inputs:
+The supervisor captures a canonical action immediately after roadmap and
+completion-gate classification, before `apply_failure_action` or
+`apply_governor_directive` can rewrite its role or summary. It derives the
+stable action key from that pre-rewrite action's durable routing inputs:
 
 - action kind;
 - active-plan repository-relative path, or `none`;
@@ -78,24 +84,48 @@ attempts are discarded. Repository progress also clears the current attempt
 cycle because the next iteration must re-read the roadmap and working tree
 before deciding what remains.
 
+Recovery routing from `IMPLEMENT` to `FIX` and governor routing from the
+canonical action do not change the key. A genuine roadmap, step, blocker, or
+pre-rewrite classification change does. The canonical action and execution
+action are therefore separate values throughout selection and result handling.
+
 ## Result Classification
 
 Result classification remains evidence-based:
 
-- `rate_limit`: recognized quota marker, regardless of MCO's decision;
+- progress: tracked commit/diff or non-ignored untracked content changed;
+- `blocked`: the invocation added a new `- BLOCK:` line under `.agent/`;
+- `supervisor_timeout`: the Python supervisor terminated the MCO process group
+  and assigned exit code `124`;
+- `rate_limit`: recognized quota marker after excluding the cases above;
 - `transient`: recognized temporary backend marker;
 - `backend_failure`: nonzero process exit without a more specific marker;
-- `no_progress`: zero process exit with an unchanged repository fingerprint;
-- progress: tracked commit/diff or non-ignored untracked content changed.
+- `no_progress`: zero process exit with an unchanged repository fingerprint.
 
 The repository fingerprint remains the progress authority so interrupted work
 can be handed off without a commit. MCO's `PASS` or `COMPLETED` label is
 transport metadata, not task completion. The supervisor must print its own
 classification explicitly after every invocation.
 
-`backend_failure` and `no_progress` are substantive failures for the current
-action. `rate_limit` and `transient` are availability failures and do not add
-the executor to the action's substantive-attempt set.
+Progress is checked first, so provider prose that merely discusses a rate limit
+cannot cool a quota group after the provider changed the repository. Marker
+matching remains a compatibility fallback for unstructured MCO/provider
+failures; it never overrides observed progress, a newly recorded blocker, or
+the supervisor's explicit timeout exit code.
+
+`supervisor_timeout`, `backend_failure`, and `no_progress` are substantive
+failures for the current action. `rate_limit` and `transient` are availability
+failures and do not add the executor to the action's substantive-attempt set.
+A newly recorded blocker is a non-substantive `blocked` outcome: it adds no
+cooldown or attempt, clears the prior attempt cycle, and lets the next iteration
+derive the blocker-driven `FIX` action.
+
+The fingerprint intentionally treats any non-ignored repository file as
+partial progress. A provider can therefore postpone exhaustion by repeatedly
+creating scratch files. This is an accepted limitation of preserving partial
+handoffs; semantic or path-based relevance inference remains out of scope. The
+operator-visible working-tree status and subsequent agent handoff provide the
+recovery surface for such pollution.
 
 ## Exhaustion Rules
 
@@ -107,7 +137,8 @@ For an unchanged action:
 4. If no unattempted executor is available but a trusted Claude or Codex
    executor has only a transient quota-group cooldown, wait until the earliest
    such cooldown expires.
-5. Otherwise write an exhaustion diagnostic and exit with status `5`.
+5. Otherwise write an exhaustion diagnostic, print a loud final
+   `agent-loop: exhausted` line to stderr, and exit with status `5`.
 
 The diagnostic is printed as JSON and persisted under `.agent/` in the loop
 state. It contains the action key and human-readable action fields, attempted
@@ -119,6 +150,24 @@ must not contain provider output, prompt text, environment values, or secrets.
 If selection is already exhausted, it prints the same diagnostic and exits
 with status `5`. `--status` and `--dry-run` expose the current attempt-cycle and
 selection data without mutating it.
+
+The operational guide documents the supervisor exit statuses after this
+change:
+
+- `0`: successful invocation, completed roadmap, status, or dry run;
+- `1`: `--once` invocation returned a non-success outcome;
+- `2`: setup, configuration, or MCO availability failure;
+- `3`: `--once` found no executor currently available but a trusted transient
+  cooldown remains retryable;
+- `4`: explicit Fable governor stop;
+- `5`: substantive executor chain exhausted for the unchanged action;
+- `124`: explicit governor invocation reached the Python supervisor timeout;
+  ordinary continuous invocations classify this internally instead;
+- `130`: operator interrupt.
+
+No external notification integration is added. Background operators receive
+the final stderr line in `.agent/loop.log`, and the structured diagnostic
+survives under `.agent/` for postmortem inspection.
 
 ## State Compatibility
 
@@ -146,8 +195,12 @@ and the optional governor directive. It must not include prior provider prose.
 Unit tests with mocked subprocesses and time cover:
 
 - action keys changing when any durable routing input changes;
+- recovery and governor rewrites preserving the pre-rewrite action key;
 - partial repository changes clearing the attempt cycle;
 - MCO `PASS` plus no repository change becoming `no_progress`;
+- progress plus rate-limit wording in provider prose classifying as progress;
+- Python supervisor timeout `124` counting as a substantive attempt;
+- a newly recorded blocker producing `blocked` without penalizing the executor;
 - substantive failures skipping an executor for the unchanged action;
 - rate limits and transient failures remaining retryable after cooldown;
 - fallback attempts continuing while a trusted provider cools down;
@@ -156,7 +209,7 @@ Unit tests with mocked subprocesses and time cover:
 - backward-compatible state loading;
 - Claude and Pi stateless command configuration;
 - Antigravity absence from automatic implementation routing; and
-- secret-free structured diagnostics.
+- secret-free structured diagnostics and the documented exit-status table.
 
 The evidence gate is:
 
