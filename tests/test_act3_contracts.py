@@ -45,12 +45,12 @@ def _carrier_stream(state: InterpreterState) -> list[int]:
         stream.append(value)
         if value == tokens.STREAM_END:
             break
+    assert stream.count(tokens.STREAM_END) == 1
     return stream
 
 
 def _decode_carrier(state: InterpreterState) -> list[DecodedToken]:
     stream = _carrier_stream(state)
-    assert stream.count(tokens.STREAM_END) == 1
     decoded = decode_stream(stream[:-1])
     validate_stream(decoded)
     return decoded
@@ -79,11 +79,20 @@ def _paragraph_text(decoded: list[DecodedToken]) -> str:
     "stem",
     sorted(path.stem for path in SPAN_FIXTURES.glob("*.text")),
 )
-def test_act3_preserves_span_fixture_block_shape_but_not_yet_rendered_html(
-    stem: str,
-) -> None:
+def test_act3_preserves_span_fixture_structural_stream(stem: str) -> None:
     before = _decode_carrier(_run_to_act2(stem))
     after = _decode_carrier(_run_to_act3(stem))
 
     assert _structural_shape(after) == _structural_shape(before)
+
+
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in SPAN_FIXTURES.glob("*.text")),
+)
+def test_act3_does_not_yet_render_expected_span_html(
+    stem: str,
+) -> None:
+    after = _decode_carrier(_run_to_act3(stem))
+
     assert _paragraph_text(after) == _rendered_paragraph_html(stem)
