@@ -478,6 +478,57 @@ def select_executor(
     return ExecutorSelection(None, None, True)
 
 
+def exhaustion_payload(
+    action: NextAction,
+    executors: Sequence[Executor],
+    state: Mapping[str, object],
+    now: int,
+) -> dict[str, object]:
+    """Build a secret-free durable diagnostic for terminal pool exhaustion."""
+    raw_attempt = state.get("action_attempt")
+    attempts: Mapping[str, object] = {}
+    if isinstance(raw_attempt, dict) and raw_attempt.get("key") == action_key(action):
+        raw_attempts = raw_attempt.get("attempts", {})
+        if isinstance(raw_attempts, dict):
+            attempts = cast(Mapping[str, object], raw_attempts)
+    raw_cooldowns = state.get("cooldowns", {})
+    cooldowns = (
+        cast(Mapping[str, object], raw_cooldowns)
+        if isinstance(raw_cooldowns, dict)
+        else {}
+    )
+    active_cooldowns = {
+        key: int(value)
+        for key, value in cooldowns.items()
+        if isinstance(key, str)
+        and isinstance(value, int | float)
+        and int(value) > now
+    }
+    active_plan: str | None = None
+    if action.active_plan is not None:
+        try:
+            active_plan = str(action.active_plan.relative_to(REPO))
+        except ValueError:
+            active_plan = str(action.active_plan)
+    return {
+        "kind": "executor_exhaustion",
+        "action_key": action_key(action),
+        "action": {
+            "kind": action.kind.value,
+            "summary": action.summary,
+            "active_plan": active_plan,
+            "step": action.step,
+            "blockers": list(action.blockers),
+        },
+        "attempts": dict(attempts),
+        "active_cooldowns": active_cooldowns,
+        "trusted_retry_candidates": [],
+        "configured_executors": [executor.name for executor in executors],
+        "next_ready": None,
+        "recorded_at": now,
+    }
+
+
 def _git_output(arguments: Sequence[str]) -> str:
     result = subprocess.run(
         ["git", *arguments],
@@ -856,6 +907,7 @@ def apply_result(
         failures[executor.name] = 0
         state["last_failure"] = None
         state["action_attempt"] = None
+        state["exhaustion"] = None
         FABLE_DIRECTIVE.unlink(missing_ok=True)
     else:
         previous = failures.get(executor.name, 0)
@@ -1153,8 +1205,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                     print(f"agent-loop: complete: {detail}")
                     return 0
                 action = NextAction(ActionKind.FIX, detail, None, None, blockers)
+            canonical_action = action
             state = load_state(config.state_file)
-            action = apply_failure_action(action, state)
+            action = apply_failure_action(canonical_action, state)
             action, governor_stop = apply_governor_directive(action)
             if governor_stop:
                 print(
@@ -1168,12 +1221,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                 else config.implementation
             )
             now = int(time.time())
-            executor, next_ready = available_executor(
+            selection = select_executor(
                 pool,
                 state,
+                canonical_action,
                 now,
                 preserve_planning=(action.kind is not ActionKind.PLAN),
             )
+            executor = selection.executor
+            next_ready = selection.next_ready
             status_payload = {
                 "action": action.kind.value,
                 "summary": action.summary,
@@ -1183,12 +1239,21 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "step": action.step,
                 "executor": executor.name if executor else None,
                 "next_ready": next_ready,
+                "exhausted": selection.exhausted,
+                "action_attempt": state.get("action_attempt"),
                 "fable_governor_recommended": executor is None,
                 "state": state,
             }
             if args.dry_run or args.status:
                 print(json.dumps(status_payload, indent=2, sort_keys=True))
                 return 0
+            if selection.exhausted:
+                payload = exhaustion_payload(canonical_action, pool, state, now)
+                state["exhaustion"] = payload
+                save_state(config.state_file, state)
+                print(json.dumps(payload, indent=2, sort_keys=True))
+                print("agent-loop: exhausted", file=sys.stderr, flush=True)
+                return 5
             if executor is None:
                 if args.once:
                     print(json.dumps(status_payload, indent=2, sort_keys=True))
@@ -1215,8 +1280,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             if result.stderr:
                 print(_redact(result.stderr, environment), file=sys.stderr)
             outcome = apply_result(
-                config, state, executor, action, result, int(time.time())
+                config,
+                state,
+                executor,
+                canonical_action,
+                result,
+                int(time.time()),
             )
+            print(f"agent-loop: supervisor outcome: {outcome}")
             failed = outcome not in {"progress", "blocked"}
             if failed:
                 print(f"agent-loop: {executor.name} entered cooldown after {outcome}")

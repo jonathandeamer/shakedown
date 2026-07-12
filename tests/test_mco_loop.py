@@ -538,6 +538,92 @@ def test_progress_and_blocker_clear_action_attempt(tmp_path: Path) -> None:
         assert state["cooldowns"] == {}
 
 
+def _main_test_config(tmp_path: Path) -> mco_loop.LoopConfig:
+    return mco_loop.LoopConfig(
+        env_file=tmp_path / ".env",
+        state_file=tmp_path / "state.json",
+        artifact_dir=tmp_path / "artifacts",
+        cooldown_seconds=60,
+        iteration_pause_seconds=0,
+        planning=(),
+        implementation=(Executor("claude", "claude", "claude"),),
+    )
+
+
+def test_main_uses_canonical_action_and_exits_five_on_exhaustion(
+    tmp_path: Path, monkeypatch, capsys
+) -> None:
+    config = _main_test_config(tmp_path)
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
+    rewritten = NextAction(ActionKind.FIX, "recover", plan, "step", ())
+    selected_actions: list[NextAction] = []
+
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config)
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("3M", "in flight", plan),),
+    )
+    monkeypatch.setattr(mco_loop, "determine_next_action", lambda rows, blockers: canonical)
+    monkeypatch.setattr(mco_loop, "apply_failure_action", lambda action, state: rewritten)
+    monkeypatch.setattr(mco_loop, "apply_governor_directive", lambda action: (action, False))
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        selected_actions.append(action)
+        return mco_loop.ExecutorSelection(None, None, True)
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+
+    result = mco_loop.main(["--once"])
+
+    assert result == 5
+    assert selected_actions == [canonical]
+    assert json.loads(config.state_file.read_text())["exhaustion"]["action_key"] == (
+        mco_loop.action_key(canonical)
+    )
+    assert "agent-loop: exhausted" in capsys.readouterr().err
+
+
+def test_main_once_returns_three_only_for_trusted_retry_wait(
+    tmp_path: Path, monkeypatch
+) -> None:
+    config = _main_test_config(tmp_path)
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
+
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config)
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("3M", "in flight", plan),),
+    )
+    monkeypatch.setattr(mco_loop, "determine_next_action", lambda rows, blockers: canonical)
+    monkeypatch.setattr(mco_loop, "apply_governor_directive", lambda action: (action, False))
+    monkeypatch.setattr(
+        mco_loop,
+        "select_executor",
+        lambda *args, **kwargs: mco_loop.ExecutorSelection(None, 200, False),
+    )
+    monkeypatch.setattr(mco_loop.time, "time", lambda: 100)
+
+    assert mco_loop.main(["--once"]) == 3
+
+
 def test_planning_pool_never_falls_through_to_implementation_only_models() -> None:
     config = mco_loop.load_config()
     state: dict[str, object] = {
@@ -852,7 +938,7 @@ def test_available_executor_falls_back_to_preserved_groups() -> None:
     assert selected.name == "claude-impl"
 
 
-def test_main_available_executor_preserve_planning_flag(
+def test_main_select_executor_preserve_planning_flag(
     monkeypatch, tmp_path: Path
 ) -> None:
     # Mock files
@@ -884,14 +970,14 @@ def test_main_available_executor_preserve_planning_flag(
         lambda text: (mco_loop.RoadmapRow("1", None, "description", "pending"),),
     )
 
-    # Track calls to available_executor
+    # Track calls to select_executor
     calls = []
 
-    def fake_available_executor(pool, state, now, preserve_planning=False):
-        calls.append((pool, state, now, preserve_planning))
-        return None, None
+    def fake_select_executor(pool, state, action, now, preserve_planning=False):
+        calls.append((pool, state, action, now, preserve_planning))
+        return mco_loop.ExecutorSelection(None, None, True)
 
-    monkeypatch.setattr(mco_loop, "available_executor", fake_available_executor)
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select_executor)
 
     # 1. ActionKind.PLAN -> preserve_planning should be False
     monkeypatch.setattr(
@@ -903,7 +989,7 @@ def test_main_available_executor_preserve_planning_flag(
     )
     mco_loop.main(["--status"])
     assert len(calls) == 1
-    assert calls[0][3] is False
+    assert calls[0][4] is False
 
     # 2. ActionKind.IMPLEMENT -> preserve_planning should be True
     calls.clear()
@@ -916,7 +1002,7 @@ def test_main_available_executor_preserve_planning_flag(
     )
     mco_loop.main(["--status"])
     assert len(calls) == 1
-    assert calls[0][3] is True
+    assert calls[0][4] is True
 
     # 3. ActionKind.FIX -> preserve_planning should be True
     calls.clear()
@@ -929,4 +1015,4 @@ def test_main_available_executor_preserve_planning_flag(
     )
     mco_loop.main(["--status"])
     assert len(calls) == 1
-    assert calls[0][3] is True
+    assert calls[0][4] is True
