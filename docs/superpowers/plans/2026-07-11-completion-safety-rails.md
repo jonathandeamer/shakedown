@@ -289,10 +289,32 @@ obsolete §8.2 ~600-line halt trigger row is untouched pending the next item.
 - [x] Update the canonical architecture spec with the structural-contract,
       stack-contract, span-spike, differential-smoke, and performance-gate
       decisions from the approved hardening design.
-- [ ] Replace the obsolete ~600-line halt trigger with the measured red-budget
+- [x] Replace the obsolete ~600-line halt trigger with the measured red-budget
       / two-consecutive-projection trigger.
-- [ ] Revise Spike B's outcome language: failure reopens container grammar and
+
+**Evidence recorded 2026-07-12 (item 2):** replaced the §8.2 "Slice 1 assembled
+`shakedown.spl` exceeds ~600 lines" row in
+`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` with the
+measured-red / two-consecutive-projection trigger already decided in §8.3
+("Raw line count alone is diagnostic, not by itself a halt condition; the
+architecture conversation trigger is a measured red threshold or two
+consecutive plans whose observed growth projects the full contract beyond
+red"), citing the full-23-fixture-contract red threshold (>15m) from
+`docs/performance/budget.md`. `tests/test_roadmap_contract.py` and
+`tests/test_prompt_literary_protocol.py` passed; no Python/SPL behavior
+changed.
+
+- [x] Revise Spike B's outcome language: failure reopens container grammar and
       recursive scheduling before character partitioning.
+
+**Evidence recorded 2026-07-12 (item 3):** the §7.4 acceptance contract
+already stated the container-grammar-first revision order; the stale §8.2
+halt-trigger table row for "Spike B fails" still said "Revisit per-character
+stack partitioning" with no grammar-first ordering. Updated that row in
+`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` to match
+§7.4: container grammar and recursive pass scheduling (§7.3's token contract
+and §6.3) first, character-stack partitioning only if a valid grammar cannot
+be realized with current stack ownership. No Python/SPL behavior changed.
 - [ ] Update `docs/superpowers/notes/2026-07-07-completability-review.md` so
       resolved, implemented, and still-open actions are unambiguous.
 - [ ] Mark plan 3M shipped only after Tasks 1–5 pass; leave Spike B pending

@@ -692,8 +692,8 @@ Conditions under which we **halt and redesign:**
 |---|---|---|
 | Spike A (original) — **triggered 2026-07-05** | Hand-authoring SPL at scale failed before the dispatcher was ever exercised | **Resolved:** SPL-from-IR compiler (splc), plans 3G–3J; see the 2026-07-05 design spec |
 | Resumed Spike A struggles in IR | Multi-pass dispatcher needs revision (authoring is no longer the confound) | Revisit Section 4's pass decomposition |
-| Spike B fails | Frame-sentinel composition needs revision | Revisit per-character stack partitioning |
-| Slice 1 assembled `shakedown.spl` exceeds ~600 lines | Act granularity wrong; duplication pressure showing | Revisit four-act split |
+| Spike B fails | Frame-sentinel composition needs revision | Revisit the container grammar and recursive pass scheduling (§7.3's token contract and §6.3) first; per-character stack partitioning is reconsidered only when evidence shows a valid grammar cannot be realized with the current stack ownership |
+| Full 23-fixture contract wall time measures **red** (>15m, §8.3/`docs/performance/budget.md`), or two consecutive shipped plans' measured growth project the full contract crossing red | Line/scene growth is costing real feedback-loop time, not just aesthetic bulk | Revisit four-act split or the regression-acceleration strategy (§8.3) |
 | Cache spike fails | Current interpreter cannot safely reuse the proposed cache target | Use direct assemble-and-run dev mode until a new cache target is proven |
 | Dev-mode cache overhead exceeds 100ms (B19, if cache exists) | Serialization choice needs revision | Investigate alternatives or disable cache |
 | Aesthetic drift detected in review | Lexicon use degrading toward "big big cat" | Re-anchor on `docs/spl/literary-spec.md` and `src/literary.toml`; merge blocker |
