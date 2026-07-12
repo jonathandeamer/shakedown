@@ -101,7 +101,7 @@ test causes a local, named contract failure rather than a downstream SPL pop.
 
 - [x] Extend token metadata with verification-only structural roles without
       changing numeric codes or `ARITY` behavior.
-- [ ] Add a decoder that turns integer dumps into typed tokens and rejects
+- [x] Add a decoder that turns integer dumps into typed tokens and rejects
       unknown codes, truncated payloads, unterminated text, and framing markers
       that escape their permitted phase.
 - [ ] Add a structural validator for the currently shipped grammar: top-level
