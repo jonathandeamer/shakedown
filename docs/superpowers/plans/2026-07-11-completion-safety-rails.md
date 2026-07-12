@@ -277,7 +277,16 @@ generated artifact changed.
 
 ## Task 7 — Integrate evidence into the roadmap and architecture
 
-- [ ] Update the canonical architecture spec with the structural-contract,
+**Evidence recorded 2026-07-12 (item 1):** folded the hardening design's
+structural token contract into §4.2, the executable stack-borrow/stream
+contracts into §6.3, the span architecture spike as new §7.4a plus Spike B's
+acceptance contract into §7.4, differential smoke reporting into §8.1, and the
+per-shipped-plan performance measurement decision into §8.3, all in
+`docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md`. The
+obsolete §8.2 ~600-line halt trigger row is untouched pending the next item.
+`tests/test_roadmap_contract.py` passed; no Python/SPL behavior changed.
+
+- [x] Update the canonical architecture spec with the structural-contract,
       stack-contract, span-spike, differential-smoke, and performance-gate
       decisions from the approved hardening design.
 - [ ] Replace the obsolete ~600-line halt trigger with the measured red-budget

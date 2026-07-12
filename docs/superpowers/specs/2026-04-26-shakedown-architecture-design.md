@@ -252,6 +252,29 @@ ordering invariant before block parsing begins.
 
 Termination (P1, 2026-07-06): the stream is bottom-terminated by a `STREAM_END` sentinel (−1) seeded beneath every carrier stack; traversal is sentinel-based, retiring the Slice-1 fixed counts (128/315/387). `0` remains reserved as the text-run terminator (`TEXT_END`); glyphs are always ≥ 1.
 
+**Structural token contract (2026-07-11, plan 3M):** `src_ir/tokens.py::ARITY` remains the
+single lexical definition of token code, fixed payload count, and text-bearing status. A
+verification-only structural layer (`scripts/splc/token_structure.py`) validates legal token
+sequences after lexical decoding, against the target recursive grammar:
+
+```text
+document   := block*
+block      := paragraph | header | horizontal_rule | code_block | raw_html
+            | list | blockquote
+list       := LIST_OPEN item+ LIST_CLOSE
+item       := ITEM_OPEN block* ITEM_CLOSE
+blockquote := BLOCKQUOTE_OPEN block* BLOCKQUOTE_CLOSE
+```
+
+This is the semantic grammar, not yet a commitment to final numeric token codes. Spike B chooses
+the concrete representation — in particular, whether the existing text-bearing `LIST_ITEM` can
+safely encode `ITEM_OPEN` with implicit closure, or whether the stream migrates to explicit
+`LIST_ITEM_OPEN`/`LIST_ITEM_CLOSE` tokens — accounting for a nested block followed by a sibling
+item, loose items containing multiple blocks, list-in-blockquote/blockquote-in-list return
+boundaries, later passes descending into already-tokenized containers, and Act III applying spans
+only to eligible leaf text. The validator decodes and inspects token dumps in Python; it performs
+no production Markdown work and does not alter the SPL-ownership boundary.
+
 **Mechanic:** **multi-pass token-stream dispatcher.** Each pass recognizes one block class. Pass order matches Markdown.pl's `_RunBlockGamut` (see `docs/markdown/oracle-mechanics.md` Block Pipeline):
 
 1. Pass A: Headers — Setext (`===` / `---` underlines) before ATX (`#` prefixes). **Headers run first** so setext underlines are recognized as headers before any other pass can consume them.
@@ -457,6 +480,20 @@ leaving Macbeth free for frames). Spike B reuses the same sentinel stack sequent
 concurrently. Puck as Herald carries dispatch transitions across later acts. The nine-character
 partition stands; no tenth character unless the resumed spike shows it is too cramped.
 
+**Executable stack-borrow and stream contracts (2026-07-11, plan 3M):** the instruction-level IR
+interpreter (`scripts/splc/interpret.py`), committed as test infrastructure rather than a
+production runtime, executes the closed IR instruction set and supports executable invariants at
+act and pass boundaries: no pop below a declared stack floor; every temporary sentinel frame is
+consumed exactly once; a borrowed stack preserves the prefix beneath its floor sentinel; Act II
+preserves Horatio's pre-existing cross-act payload while borrowing the stack for list looseness;
+carrier streams end with exactly one `STREAM_END`; and the emitted stream passes lexical and
+structural validation. These are executable contracts, not a general static stack-height theorem —
+data-dependent loops make a sound static analysis substantially more complex, so a corrupted or
+omitted floor/sentinel is caught by a named contract failure in the interpreter rather than by a
+downstream SPL pop. Empty stdin is a mandatory interpreter and real-wrapper case; the currently
+recorded Act I underflow on empty input is made a visible, non-silent failure by plan 3M, with the
+expected empty-document contract itself left to the first feature plan allowed to change behavior.
+
 ### 6.4 Cast Total
 
 **9 characters:** 3 cross-act state holders + 6 act-bound workers. This matches
@@ -540,9 +577,37 @@ Immediately after Spike A.
 
 **Verification harness:** add dedicated snippet fixtures under `tests/fixtures/architecture_spikes/nested_blocks/` and include them in the same spike pytest parametrization. These snippets are part of the no-regression gate after Spike B.
 
+**Acceptance contract (2026-07-11):** Spike B keeps the existing two oracle cases and adds at
+least: a list item containing a blockquote followed by a sibling list item; a blockquote
+containing a list followed by quoted paragraph text; a loose list item containing a blockquote or
+second paragraph; and a nested container that closes two levels before ordinary following text.
+Before SPL-changing tasks begin, the Spike B plan must include reviewed token streams for every
+case and ready-to-paste literary reservations per `docs/superpowers/notes/spl-literary-protocol.md`.
+Passing rendered HTML while emitting a structurally invalid stream is a gate failure. If Spike B
+fails, the first revision target is the container grammar and recursive pass scheduling (§7.3's
+token contract and §6.3); character-stack partitioning is reconsidered only when evidence shows
+that a valid grammar cannot be realized with the current stack ownership.
+
+### 7.4a Span Architecture Spike (2026-07-11, plan 3M amendment)
+
+Precedes Slice 2 as the first stage of the former Slice 2 scope, with its own halt-and-redesign
+outcome.
+
+**Goal:** establish the protected-region and buffered-scan shape before broad Act III growth, so
+variable-length code spans, escapes, and protected HTML/link/image regions do not have to be
+retrofitted after Slice 2 fixtures ship against an unproven span model.
+
+**Scope:** multiple/variable-length code spans, escapes inside and outside protected spans,
+punctuation-rich link/image destinations, emphasis inside link text, HTML-tag protection, and
+representative overlapping strong/emphasis cases.
+
+**Outcomes:** same shape as Spike A/B. It may conclude that protected tokens, hashes, or buffered
+substreams are required. A failure reopens Act III's transformation model (§4.3) before additional
+span scenes are committed.
+
 ### 7.5 Slice 2 — Remaining Low-Risk Fixtures
 
-After both spikes succeed.
+After both spikes and the span architecture spike (§7.4a) succeed.
 
 **Fixtures:** Auto links (URL only), Backslash escapes, Code Spans, Tidyness, Tabs, Horizontal rules, Code Blocks. Order within slice: cheapest first.
 
@@ -609,6 +674,16 @@ Every slice and spike must clear all four:
 
 The strict Shakedown-vs-Markdown.pl harness from §7.1 is the canonical comparison tool for claimed implemented fixtures. `scripts/markdown_pl_parity_audit.py` remains useful for auditing checked-in mdtest expected files against the local oracle, but it does not run `./shakedown` and must not be cited as implementation parity evidence. Spike snippets use the same comparison principle through a dedicated pytest harness because they are custom scopes, not named mdtest fixtures.
 
+**Differential smoke reporting (2026-07-11, plan 3M):** `scripts/differential_smoke.py` runs all 23
+local mdtest inputs through `./shakedown` and Markdown.pl with per-case timeouts, writing a stable
+machine-readable result and a human Markdown summary containing byte-identical/mismatch/crash/
+timeout status, first differing byte, return code and bounded stderr excerpt, and elapsed time for
+both binaries. The command returns nonzero only for harness/configuration failure by default —
+future unimplemented fixture mismatches are observations, not gate failures. A repeatable
+`--require NAME` argument makes named already-shipped fixtures gating, using the strict harness's
+selection conventions. All 23 fixtures, including both documentation aggregates, become non-gating
+canaries immediately rather than after Slice 2; shipped fixtures remain the only parity gate.
+
 ### 8.2 Architecture Validation Gates
 
 Conditions under which we **halt and redesign:**
@@ -630,6 +705,18 @@ Halting is cheaper than continuing on a wrong floor. Spikes exist *because* halt
 - **B19 (new):** if the cache spike succeeds, measure dev-mode cache execution on representative `shakedown.spl` ≥ 2k lines. Threshold: ≤100ms wrapper/cache overhead beyond SPL execution.
 - **B14 re-measurement:** before `1.0.0`, re-measure cold release-mode runtime on the final `shakedown.spl` against representative fixtures. Compare to `docs/performance/budget.md`.
 - **Slice 5 budget check:** Documentation aggregates is the worst case; release-mode runtime there is the headline number for `1.0.0`.
+
+**Performance measured at every shipped plan (2026-07-11, plan 3M):** every shipped plan records
+generated SPL lines and scenes per act, first-run and median representative fixture time,
+shipped-fixture regression wall time, and a projection against the `docs/performance/budget.md`
+yellow/red thresholds. `docs/architecture/cache-spike.md`, `docs/performance/budget.md`, and
+`docs/verification-plan.md` carry the exact commands, dates, run counts, and decisions. Task 5's
+2026-07-12 measurement adopted `pytest-xdist` for regression wall time (3–4x win) and did not adopt
+a session-scoped in-process runner for acceleration despite proven state isolation, because
+construction cost matched fresh-subprocess cost; direct subprocess remains the binary-contract and
+release-performance authority. Raw line count alone is diagnostic, not by itself a halt condition;
+the architecture conversation trigger is a measured red threshold or two consecutive plans whose
+observed growth projects the full contract beyond red (see §8.2).
 
 ### 8.4 Open Questions (deferred)
 
