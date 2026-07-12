@@ -290,7 +290,8 @@ def test_rate_limit_cools_quota_group_and_selects_next_executor(
     first = config.implementation[0]
     result = InvocationResult(2, '{"error_kind":"retryable_rate_limit"}', "", False)
 
-    failure = mco_loop.apply_result(config, state, first, result, now=1000)
+    action = NextAction(ActionKind.IMPLEMENT, "test", None, "step", ())
+    failure = mco_loop.apply_result(config, state, first, action, result, now=1000)
     selected, _ = mco_loop.available_executor(config.implementation, state, now=1001)
 
     assert failure == "rate_limit"
@@ -320,6 +321,7 @@ def test_no_progress_success_also_advances_to_next_executor(tmp_path: Path) -> N
         config,
         state,
         config.implementation[0],
+        NextAction(ActionKind.IMPLEMENT, "test", None, "step", ()),
         InvocationResult(0, "analysis only", "", False),
         now=100,
     )
@@ -349,6 +351,191 @@ def test_new_blocker_is_not_no_progress() -> None:
     result = InvocationResult(0, "", "", False, True)
 
     assert mco_loop.classify_result(result) == "blocked"
+
+
+def test_recovery_rewrite_would_change_key_if_misused() -> None:
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", Path("plan.md"), "step", ())
+    rewritten = mco_loop.apply_failure_action(
+        canonical, {"last_failure": {"kind": "no_progress", "executor": "claude"}}
+    )
+
+    assert rewritten != canonical
+    assert mco_loop.action_key(rewritten) != mco_loop.action_key(canonical)
+
+
+def test_action_key_uses_every_canonical_routing_field() -> None:
+    base = NextAction(ActionKind.IMPLEMENT, "execute", Path("plan.md"), "step", ())
+    variants = (
+        NextAction(ActionKind.FIX, base.summary, base.active_plan, base.step, base.blockers),
+        NextAction(base.kind, "recover", base.active_plan, base.step, base.blockers),
+        NextAction(base.kind, base.summary, Path("other.md"), base.step, base.blockers),
+        NextAction(base.kind, base.summary, base.active_plan, "other step", base.blockers),
+        NextAction(base.kind, base.summary, base.active_plan, base.step, ("- BLOCK: x",)),
+    )
+
+    assert all(mco_loop.action_key(item) != mco_loop.action_key(base) for item in variants)
+
+
+def test_load_state_preserves_optional_action_attempt_and_exhaustion(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "state.json"
+    path.write_text(
+        json.dumps(
+            {
+                "action_attempt": {
+                    "key": "abc",
+                    "attempts": {"claude": "no_progress"},
+                },
+                "exhaustion": {"action_key": "abc"},
+            }
+        )
+    )
+
+    state = mco_loop.load_state(path)
+
+    assert state["action_attempt"] == {
+        "key": "abc",
+        "attempts": {"claude": "no_progress"},
+    }
+    assert state["exhaustion"] == {"action_key": "abc"}
+
+
+def test_selection_skips_substantively_attempted_executor() -> None:
+    action = NextAction(ActionKind.IMPLEMENT, "execute", None, "step", ())
+    executors = (
+        Executor("claude", "claude", "claude"),
+        Executor("fallback", "pi-fallback", "openrouter"),
+    )
+    state = {
+        "cooldowns": {},
+        "action_attempt": {
+            "key": mco_loop.action_key(action),
+            "attempts": {"claude": "no_progress"},
+        },
+    }
+
+    selection = mco_loop.select_executor(executors, state, action, now=100)
+
+    assert selection.executor == executors[1]
+    assert selection.exhausted is False
+
+
+def test_selection_waits_for_unattempted_trusted_cooldown() -> None:
+    action = NextAction(ActionKind.IMPLEMENT, "execute", None, "step", ())
+    executors = (
+        Executor("claude", "claude", "claude"),
+        Executor("fallback", "pi-fallback", "openrouter"),
+    )
+    state = {
+        "cooldowns": {"claude": 200},
+        "action_attempt": {
+            "key": mco_loop.action_key(action),
+            "attempts": {"fallback": "no_progress"},
+        },
+    }
+
+    selection = mco_loop.select_executor(executors, state, action, now=100)
+
+    assert selection.executor is None
+    assert selection.next_ready == 200
+    assert selection.exhausted is False
+
+
+def test_selection_exhausts_instead_of_waiting_for_untrusted_cooldown() -> None:
+    action = NextAction(ActionKind.IMPLEMENT, "execute", None, "step", ())
+    executors = (
+        Executor("claude", "claude", "claude"),
+        Executor("fallback", "pi-fallback", "openrouter"),
+    )
+    state = {
+        "cooldowns": {"openrouter": 200},
+        "action_attempt": {
+            "key": mco_loop.action_key(action),
+            "attempts": {"claude": "no_progress"},
+        },
+    }
+
+    selection = mco_loop.select_executor(executors, state, action, now=100)
+
+    assert selection.executor is None
+    assert selection.next_ready is None
+    assert selection.exhausted is True
+
+
+def test_substantive_result_records_attempt_for_canonical_action(
+    tmp_path: Path,
+) -> None:
+    config, executor, action = _invocation_inputs(tmp_path)
+    state: dict[str, object] = {
+        "cooldowns": {},
+        "failures": {},
+        "last_failure": None,
+    }
+
+    outcome = mco_loop.apply_result(
+        config,
+        state,
+        executor,
+        action,
+        InvocationResult(0, "analysis only", "", False),
+        now=100,
+    )
+
+    assert outcome == "no_progress"
+    assert state["action_attempt"] == {
+        "key": mco_loop.action_key(action),
+        "attempts": {executor.name: "no_progress"},
+    }
+
+
+def test_availability_result_does_not_record_substantive_attempt(
+    tmp_path: Path,
+) -> None:
+    config, executor, action = _invocation_inputs(tmp_path)
+    state: dict[str, object] = {
+        "cooldowns": {},
+        "failures": {},
+        "last_failure": None,
+    }
+
+    outcome = mco_loop.apply_result(
+        config,
+        state,
+        executor,
+        action,
+        InvocationResult(2, '{"error_kind":"retryable_rate_limit"}', "", False),
+        now=100,
+    )
+
+    assert outcome == "rate_limit"
+    assert state.get("action_attempt") is None
+
+
+def test_progress_and_blocker_clear_action_attempt(tmp_path: Path) -> None:
+    config, executor, action = _invocation_inputs(tmp_path)
+    for result, expected in (
+        (InvocationResult(0, "changed", "", True), "progress"),
+        (InvocationResult(0, "", "", False, True), "blocked"),
+    ):
+        state: dict[str, object] = {
+            "cooldowns": {},
+            "failures": {executor.name: 1},
+            "last_failure": {"kind": "no_progress"},
+            "action_attempt": {
+                "key": mco_loop.action_key(action),
+                "attempts": {executor.name: "no_progress"},
+            },
+        }
+
+        outcome = mco_loop.apply_result(
+            config, state, executor, action, result, now=100
+        )
+
+        assert outcome == expected
+        assert state["action_attempt"] is None
+        assert state["last_failure"] is None
+        assert state["cooldowns"] == {}
 
 
 def test_planning_pool_never_falls_through_to_implementation_only_models() -> None:
@@ -542,6 +729,7 @@ def test_implementation_failover_walks_every_configured_executor(
             config,
             state,
             selected,
+            NextAction(ActionKind.IMPLEMENT, "test", None, "step", ()),
             InvocationResult(2, "backend failed", "", False),
             now=1000 + offset,
         )

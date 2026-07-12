@@ -27,6 +27,7 @@ BLOCKERS = REPO / ".agent" / "blockers.md"
 FABLE_DIRECTIVE = REPO / ".agent" / "fable-directive.md"
 ALLOWED_SECRET_NAMES = ("XAI_API_KEY", "OPENROUTER_API_KEY")
 PRESERVED_PLANNING_GROUPS = {"claude", "codex"}
+TRUSTED_RETRY_GROUPS = {"claude", "codex"}
 RATE_LIMIT_MARKERS = (
     "retryable_rate_limit",
     "rate_limit",
@@ -102,6 +103,13 @@ class InvocationResult:
     @property
     def combined_output(self) -> str:
         return f"{self.stdout}\n{self.stderr}"
+
+
+@dataclass(frozen=True)
+class ExecutorSelection:
+    executor: Executor | None
+    next_ready: int | None
+    exhausted: bool
 
 
 def _mapping(value: object, label: str) -> Mapping[str, object]:
@@ -339,10 +347,14 @@ def load_state(path: Path) -> dict[str, object]:
     if not isinstance(value, dict):
         return {"cooldowns": {}, "failures": {}, "last_failure": None}
     state = cast(dict[str, object], value)
+    action_attempt = state.get("action_attempt")
+    exhaustion = state.get("exhaustion")
     return {
         "cooldowns": state.get("cooldowns", {}),
         "failures": state.get("failures", {}),
         "last_failure": state.get("last_failure"),
+        "action_attempt": action_attempt if isinstance(action_attempt, dict) else None,
+        "exhaustion": exhaustion if isinstance(exhaustion, dict) else None,
     }
 
 
@@ -396,6 +408,74 @@ def available_executor(
         waits.append(until)
 
     return None, min(waits) if waits else None
+
+
+def action_key(action: NextAction) -> str:
+    """Hash the canonical durable routing fields for one roadmap action."""
+    active_plan: str | None = None
+    if action.active_plan is not None:
+        try:
+            active_plan = str(action.active_plan.relative_to(REPO))
+        except ValueError:
+            active_plan = str(action.active_plan)
+    payload = {
+        "kind": action.kind.value,
+        "summary": action.summary,
+        "active_plan": active_plan,
+        "step": action.step,
+        "blockers": list(action.blockers),
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode()).hexdigest()
+
+
+def select_executor(
+    executors: Sequence[Executor],
+    state: Mapping[str, object],
+    action: NextAction,
+    now: int,
+    preserve_planning: bool = False,
+) -> ExecutorSelection:
+    """Select, wait for trusted availability, or exhaust one action's pool."""
+    raw_cooldowns = state.get("cooldowns", {})
+    cooldowns = (
+        cast(Mapping[str, object], raw_cooldowns)
+        if isinstance(raw_cooldowns, dict)
+        else {}
+    )
+    attempts: Mapping[str, object] = {}
+    raw_attempt = state.get("action_attempt")
+    if isinstance(raw_attempt, dict) and raw_attempt.get("key") == action_key(action):
+        raw_attempts = raw_attempt.get("attempts", {})
+        if isinstance(raw_attempts, dict):
+            attempts = cast(Mapping[str, object], raw_attempts)
+
+    def expiry(executor: Executor) -> int:
+        group = cooldowns.get(executor.quota_group, 0)
+        own = cooldowns.get(f"executor:{executor.name}", 0)
+        group_until = int(group) if isinstance(group, int | float) else 0
+        own_until = int(own) if isinstance(own, int | float) else 0
+        return max(group_until, own_until)
+
+    ordered = list(executors)
+    if preserve_planning:
+        ordered.sort(key=lambda item: item.quota_group in PRESERVED_PLANNING_GROUPS)
+
+    unattempted = [item for item in ordered if item.name not in attempts]
+    for executor in unattempted:
+        if expiry(executor) <= now:
+            return ExecutorSelection(executor, None, False)
+
+    # Substantive failures always add an attempt with the executor cooldown, so
+    # an unattempted executor can only be waiting on an availability cooldown.
+    trusted_waits = [
+        expiry(executor)
+        for executor in unattempted
+        if executor.quota_group in TRUSTED_RETRY_GROUPS and expiry(executor) > now
+    ]
+    if trusted_waits:
+        return ExecutorSelection(None, min(trusted_waits), False)
+    return ExecutorSelection(None, None, True)
 
 
 def _git_output(arguments: Sequence[str]) -> str:
@@ -754,12 +834,12 @@ def apply_result(
     config: LoopConfig,
     state: dict[str, object],
     executor: Executor,
+    action: NextAction,
     result: InvocationResult,
     now: int,
-) -> str | None:
+) -> str:
     """Update cooldown state from one invocation."""
     outcome = classify_result(result)
-    failure = None if outcome in {"progress", "blocked"} else outcome
     raw_cooldowns = state.get("cooldowns", {})
     cooldowns = (
         dict(cast(Mapping[str, object], raw_cooldowns))
@@ -772,30 +852,42 @@ def apply_result(
         if isinstance(raw_failures, dict)
         else {}
     )
-    if failure is None:
+    if outcome in {"progress", "blocked"}:
         failures[executor.name] = 0
         state["last_failure"] = None
+        state["action_attempt"] = None
         FABLE_DIRECTIVE.unlink(missing_ok=True)
     else:
         previous = failures.get(executor.name, 0)
         failures[executor.name] = (
             int(previous) if isinstance(previous, int) else 0
         ) + 1
+        availability_failure = outcome in {"rate_limit", "transient"}
         cooldown_key = (
             executor.quota_group
-            if failure in {"rate_limit", "transient"}
+            if availability_failure
             else f"executor:{executor.name}"
         )
         cooldowns[cooldown_key] = now + config.cooldown_seconds
         state["last_failure"] = {
             "executor": executor.name,
-            "kind": failure,
+            "kind": outcome,
             "exit_code": result.exit_code,
         }
+        if not availability_failure:
+            key = action_key(action)
+            raw_attempt = state.get("action_attempt")
+            attempts: dict[str, object] = {}
+            if isinstance(raw_attempt, dict) and raw_attempt.get("key") == key:
+                raw_attempts = raw_attempt.get("attempts", {})
+                if isinstance(raw_attempts, dict):
+                    attempts = dict(cast(Mapping[str, object], raw_attempts))
+            attempts[executor.name] = outcome
+            state["action_attempt"] = {"key": key, "attempts": attempts}
     state["cooldowns"] = cooldowns
     state["failures"] = failures
     save_state(config.state_file, state)
-    return failure
+    return outcome
 
 
 def apply_failure_action(action: NextAction, state: Mapping[str, object]) -> NextAction:
@@ -1122,11 +1214,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(_redact(result.stdout, environment))
             if result.stderr:
                 print(_redact(result.stderr, environment), file=sys.stderr)
-            failure = apply_result(config, state, executor, result, int(time.time()))
-            if failure:
-                print(f"agent-loop: {executor.name} entered cooldown after {failure}")
+            outcome = apply_result(
+                config, state, executor, action, result, int(time.time())
+            )
+            failed = outcome not in {"progress", "blocked"}
+            if failed:
+                print(f"agent-loop: {executor.name} entered cooldown after {outcome}")
             if args.once:
-                return 0 if failure is None else 1
+                return 1 if failed else 0
             time.sleep(config.iteration_pause_seconds)
     except KeyboardInterrupt:
         print("\nagent-loop: interrupted")
