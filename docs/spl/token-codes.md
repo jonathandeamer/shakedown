@@ -22,6 +22,7 @@ Utility variation does not apply to these.
 | BLOCKQUOTE_CLOSE | 8 | `a big big big cat` |
 | CODE_BLOCK | 9 | `the sum of a big big big cat and a cat` |
 | RAW_HTML_HASH | 10 | `the sum of a big big big cat and a big cat` |
+| ITEM_CLOSE | 15 | `the sum of a big big big cat and the sum of a big big cat and a cat` |
 
 ## Inline-marker allocation
 
@@ -36,7 +37,7 @@ Utility variation does not apply to these.
 `a big big cat` (4, 4 words), `a big big big cat` (8, 5 words).
 All atoms are at most 6 words.
 
-**Compound-only codes (3, 5, 6, 7, 9, 10):** unavoidable because adjective
+**Compound-only codes (3, 5, 6, 7, 9, 10, 15):** unavoidable because adjective
 doubling jumps 1 -> 2 -> 4 -> 8; these values cannot be reached as single
 atoms. Compound length is uncapped per §8.1; each atom still obeys the cap.
 
@@ -51,8 +52,11 @@ step. Spike-scope vocabulary only; later slices append rows in both places.
 |---|---:|---:|---|
 | PARA | 1 | 0 | yes |
 | LIST_OPEN | 4 | 1 | no |
-| LIST_ITEM | 5 | 1 | yes |
+| LIST_ITEM | 5 | 1 | no |
 | LIST_CLOSE | 6 | 0 | no |
+| BLOCKQUOTE_OPEN | 7 | 0 | no |
+| BLOCKQUOTE_CLOSE | 8 | 0 | no |
+| ITEM_CLOSE | 15 | 0 | no |
 
 `LIST_OPEN` payload — kind: 1 = unordered, 2 = ordered. `LIST_ITEM` payload —
 looseness: 1 = tight, 2 = loose.

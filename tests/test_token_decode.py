@@ -16,19 +16,23 @@ def test_decodes_simple_paragraph() -> None:
     ]
 
 
-def test_decodes_list_open_item_close() -> None:
+def test_decodes_explicit_list_item() -> None:
     values = [
         tokens.LIST_OPEN,
         1,
         tokens.LIST_ITEM,
         1,
+        tokens.PARA,
         ord("a"),
         tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
         tokens.LIST_CLOSE,
     ]
     assert decode_stream(values) == [
         DecodedToken(code=tokens.LIST_OPEN, payloads=(1,), text=None),
-        DecodedToken(code=tokens.LIST_ITEM, payloads=(1,), text="a"),
+        DecodedToken(code=tokens.LIST_ITEM, payloads=(1,), text=None),
+        DecodedToken(code=tokens.PARA, payloads=(), text="a"),
+        DecodedToken(code=tokens.ITEM_CLOSE, payloads=(), text=None),
         DecodedToken(code=tokens.LIST_CLOSE, payloads=(), text=None),
     ]
 

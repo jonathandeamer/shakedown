@@ -22,7 +22,11 @@ def _dump_values(path: Path) -> list[int]:
 
 
 def _all_dump_fixtures() -> list[Path]:
-    return sorted(BASELINES.rglob("*.dump"))
+    # Spike A list dumps retain the old text-bearing LIST_ITEM vocabulary until
+    # Task 3 migrates Act II and its reviewed baselines atomically.
+    return sorted(
+        path for path in BASELINES.rglob("*.dump") if "lists" not in path.parts
+    )
 
 
 @pytest.mark.parametrize(
@@ -38,8 +42,10 @@ def test_flat_list_validates() -> None:
         1,
         tokens.LIST_ITEM,
         1,
+        tokens.PARA,
         ord("a"),
         tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
         tokens.LIST_CLOSE,
     ]
     validate_stream(decode_stream(values))
@@ -54,8 +60,10 @@ def test_top_level_paragraph_then_list_validates() -> None:
         1,
         tokens.LIST_ITEM,
         1,
+        tokens.PARA,
         ord("a"),
         tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
         tokens.LIST_CLOSE,
     ]
     validate_stream(decode_stream(values))
@@ -70,7 +78,7 @@ def test_rejects_stream_ending_with_list_still_open() -> None:
     with pytest.raises(StructuralError, match="still open"):
         validate_stream(
             decode_stream(
-                [tokens.LIST_OPEN, 1, tokens.LIST_ITEM, 1, ord("a"), tokens.TEXT_END]
+                [tokens.LIST_OPEN, 1, tokens.LIST_ITEM, 1]
             )
         )
 
@@ -82,27 +90,22 @@ def test_rejects_empty_list_with_no_item() -> None:
 
 def test_rejects_item_outside_any_list() -> None:
     with pytest.raises(StructuralError, match="outside any open list"):
-        validate_stream(decode_stream([tokens.LIST_ITEM, 1, ord("a"), tokens.TEXT_END]))
+        validate_stream(decode_stream([tokens.LIST_ITEM, 1]))
 
 
-def test_rejects_paragraph_nested_inside_an_open_list() -> None:
-    """Expected future case: the target grammar's `item := ITEM_OPEN block*
-    ITEM_CLOSE` would let a PARA sit inside an item's block* content, but
-    that representation is undecided until Spike B. Today a standalone PARA
-    while a list is open must be rejected, not silently accepted."""
+def test_rejects_paragraph_directly_inside_an_open_list() -> None:
     values = [
         tokens.LIST_OPEN,
         1,
         tokens.LIST_ITEM,
         1,
-        ord("a"),
-        tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
         tokens.PARA,
         ord("b"),
         tokens.TEXT_END,
         tokens.LIST_CLOSE,
     ]
-    with pytest.raises(StructuralError, match="not yet legal inside an open list"):
+    with pytest.raises(StructuralError, match="where a block is not legal"):
         validate_stream(decode_stream(values))
 
 
@@ -114,12 +117,11 @@ def test_rejects_nested_list_opened_before_parent_has_an_item() -> None:
         1,
         tokens.LIST_ITEM,
         1,
-        ord("a"),
-        tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
         tokens.LIST_CLOSE,
         tokens.LIST_CLOSE,
     ]
-    with pytest.raises(StructuralError, match="before its parent list had any item"):
+    with pytest.raises(StructuralError, match="where a block is not legal"):
         validate_stream(decode_stream(values))
 
 
@@ -171,39 +173,31 @@ def test_item_close_is_in_arity_table_with_zero_payloads_and_no_text() -> None:
     assert tokens.ARITY[tokens.ITEM_CLOSE] == tokens.TokenArity(0, False)
 
 
-def test_blockquote_open_and_close_are_in_arity_table_with_zero_payloads_and_no_text() -> None:
+def test_blockquote_tokens_have_zero_payloads_and_no_text() -> None:
     assert tokens.ARITY[tokens.BLOCKQUOTE_OPEN] == tokens.TokenArity(0, False)
     assert tokens.ARITY[tokens.BLOCKQUOTE_CLOSE] == tokens.TokenArity(0, False)
 
 
 def test_item_close_has_container_close_role() -> None:
-    assert tokens.ROLES[tokens.ITEM_CLOSE] == tokens.StructuralRole.CONTAINER_CLOSE
+    assert tokens.ROLES[tokens.ITEM_CLOSE] == tokens.StructuralRole.ITEM_CLOSE
 
 
 def test_blockquote_open_and_close_have_container_roles() -> None:
     assert tokens.ROLES[tokens.BLOCKQUOTE_OPEN] == tokens.StructuralRole.CONTAINER_OPEN
-    assert tokens.ROLES[tokens.BLOCKQUOTE_CLOSE] == tokens.StructuralRole.CONTAINER_CLOSE
+    assert (
+        tokens.ROLES[tokens.BLOCKQUOTE_CLOSE]
+        == tokens.StructuralRole.CONTAINER_CLOSE
+    )
 
 
-def test_rejects_blockquote_as_container_not_yet_shipped() -> None:
-    """Expected future case: `blockquote := BLOCKQUOTE_OPEN block*
-    BLOCKQUOTE_CLOSE` is in the target grammar and BLOCKQUOTE_OPEN/CLOSE
-    already carry CONTAINER_OPEN/CONTAINER_CLOSE roles (src_ir/tokens.py),
-    but they have no ARITY row yet, so decode_stream cannot lex them from an
-    integer dump. Feed hand-built DecodedTokens directly to prove the
-    validator still rejects the container as unshipped rather than silently
-    accepting an undecided representation."""
-    with pytest.raises(StructuralError, match="not yet shipped"):
-        validate_stream(
-            [DecodedToken(code=tokens.BLOCKQUOTE_OPEN, payloads=(), text=None)]
-        )
+def test_rejects_unclosed_blockquote() -> None:
+    with pytest.raises(StructuralError, match="still open"):
+        validate_stream(decode_stream([tokens.BLOCKQUOTE_OPEN]))
 
 
-def test_rejects_blockquote_close_not_yet_shipped() -> None:
-    with pytest.raises(StructuralError, match="not yet shipped"):
-        validate_stream(
-            [DecodedToken(code=tokens.BLOCKQUOTE_CLOSE, payloads=(), text=None)]
-        )
+def test_rejects_blockquote_close_without_matching_open() -> None:
+    with pytest.raises(StructuralError, match="no matching open blockquote"):
+        validate_stream(decode_stream([tokens.BLOCKQUOTE_CLOSE]))
 
 
 @pytest.mark.parametrize(
@@ -219,20 +213,10 @@ def test_rejects_other_target_grammar_leaf_blocks_not_yet_shipped(code: int) -> 
         validate_stream([DecodedToken(code=code, payloads=(), text=None)])
 
 
-def test_rejects_container_block_nested_inside_a_list_item() -> None:
-    """Expected future case: the target grammar's `item := ITEM_OPEN block*
-    ITEM_CLOSE` would let a blockquote sit inside an item's block* content.
-    No ITEM_OPEN/ITEM_CLOSE token exists yet — Spike B decides whether
-    LIST_ITEM's implicit closure is kept or replaced — so this feeds a
-    BLOCKQUOTE_OPEN directly after a LIST_ITEM and confirms it is rejected
-    for being an unshipped container, not accepted as nested item content."""
-    with pytest.raises(StructuralError, match="not yet shipped"):
-        validate_stream(
-            decode_stream(
-                [tokens.LIST_OPEN, 1, tokens.LIST_ITEM, 1, ord("a"), tokens.TEXT_END]
-            )
-            + [DecodedToken(code=tokens.BLOCKQUOTE_OPEN, payloads=(), text=None)]
-        )
+def test_rejects_crossed_item_and_blockquote_closes() -> None:
+    values = [tokens.LIST_OPEN, 1, tokens.LIST_ITEM, 1, tokens.BLOCKQUOTE_OPEN]
+    with pytest.raises(StructuralError, match="no matching open item"):
+        validate_stream(decode_stream(values + [tokens.ITEM_CLOSE]))
 
 
 def test_rejects_token_with_no_structural_role() -> None:

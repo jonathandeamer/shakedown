@@ -23,6 +23,7 @@ ANCHOR_OPEN = 11
 ANCHOR_TITLE = 12
 ANCHOR_TEXT = 13
 ANCHOR_CLOSE = 14
+ITEM_CLOSE = 15
 
 # Framing markers — not tokens, never dispatched on by the arity table.
 # TEXT_END closes a text-bearing token's glyph run (glyphs are always >= 1).
@@ -50,8 +51,11 @@ class TokenArity:
 ARITY: dict[int, TokenArity] = {
     PARA: TokenArity(0, True),
     LIST_OPEN: TokenArity(1, False),  # kind: 1 = unordered, 2 = ordered
-    LIST_ITEM: TokenArity(1, True),  # looseness: 1 = tight, 2 = loose
+    LIST_ITEM: TokenArity(1, False),  # looseness: 1 = tight, 2 = loose
     LIST_CLOSE: TokenArity(0, False),
+    BLOCKQUOTE_OPEN: TokenArity(0, False),
+    BLOCKQUOTE_CLOSE: TokenArity(0, False),
+    ITEM_CLOSE: TokenArity(0, False),
 }
 
 
@@ -68,6 +72,7 @@ class StructuralRole(Enum):
     CONTAINER_OPEN = "container_open"
     CONTAINER_CLOSE = "container_close"
     ITEM = "item"
+    ITEM_CLOSE = "item_close"
     INLINE_MARKER = "inline_marker"
 
 
@@ -89,4 +94,5 @@ ROLES: dict[int, StructuralRole] = {
     ANCHOR_TITLE: StructuralRole.INLINE_MARKER,
     ANCHOR_TEXT: StructuralRole.INLINE_MARKER,
     ANCHOR_CLOSE: StructuralRole.INLINE_MARKER,
+    ITEM_CLOSE: StructuralRole.ITEM_CLOSE,
 }

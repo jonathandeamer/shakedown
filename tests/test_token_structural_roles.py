@@ -22,13 +22,17 @@ PRE_EXISTING_CODES = {
     tokens.ANCHOR_TITLE: 12,
     tokens.ANCHOR_TEXT: 13,
     tokens.ANCHOR_CLOSE: 14,
+    tokens.ITEM_CLOSE: 15,
 }
 
 PRE_EXISTING_ARITY = {
     tokens.PARA: (0, True),
     tokens.LIST_OPEN: (1, False),
-    tokens.LIST_ITEM: (1, True),
+    tokens.LIST_ITEM: (1, False),
     tokens.LIST_CLOSE: (0, False),
+    tokens.BLOCKQUOTE_OPEN: (0, False),
+    tokens.BLOCKQUOTE_CLOSE: (0, False),
+    tokens.ITEM_CLOSE: (0, False),
 }
 
 
@@ -62,6 +66,7 @@ def test_roles_partition_by_grammar_position() -> None:
     assert tokens.ROLES[tokens.BLOCKQUOTE_CLOSE] is Role.CONTAINER_CLOSE
 
     assert tokens.ROLES[tokens.LIST_ITEM] is Role.ITEM
+    assert tokens.ROLES[tokens.ITEM_CLOSE] is Role.ITEM_CLOSE
 
     assert tokens.ROLES[tokens.ANCHOR_OPEN] is Role.INLINE_MARKER
     assert tokens.ROLES[tokens.ANCHOR_TITLE] is Role.INLINE_MARKER

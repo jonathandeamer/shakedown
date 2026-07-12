@@ -142,7 +142,7 @@ pattern = "scene_of_character"
   Run: `uv run pytest tests/test_token_structure.py tests/test_token_codes.py -q`  
   Expected: FAIL because `ITEM_CLOSE` and the shipped blockquote/item grammar do not exist.
 
-- [ ] **Step 3: Implement the contract, without changing generated SPL.**
+- [x] **Step 3: Implement the contract, without changing generated SPL.**
 
   In `src_ir/tokens.py`, make these rows exact:
 

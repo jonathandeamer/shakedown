@@ -1,23 +1,14 @@
-"""Structural validator for the currently shipped block grammar.
+"""Structural validator for the explicit nested-container block grammar.
 
 Verification-only, per
 docs/superpowers/specs/2026-07-11-completability-hardening-design.md §1. It
 checks lexically decoded tokens (`scripts.splc.token_decode`) against the
-subset of the recursive container grammar that is actually shipped today:
+recursive container grammar accepted for Spike B:
 
     document := block*
-    block    := PARA | list
-    list     := LIST_OPEN item+ LIST_CLOSE
-    item     := LIST_ITEM
-
-`LIST_ITEM` may be followed directly by a nested `list` (one nesting level,
-per Spike A P2) before the next sibling item or the enclosing `LIST_CLOSE`.
-Loose second paragraphs and indented continuations are not separate tokens
-today — they are additional glyphs folded into the same `LIST_ITEM` text
-run — so a standalone `PARA` is only legal while no list is open. This is
-deliberately narrower than the design's full grammar (`block*` inside an
-item, blockquotes, other leaf blocks): Spike B decides the concrete
-representation for those, and this validator must not accept them early.
+    block    := PARA | list | blockquote
+    list     := LIST_OPEN (LIST_ITEM block* ITEM_CLOSE)+ LIST_CLOSE
+    blockquote := BLOCKQUOTE_OPEN block* BLOCKQUOTE_CLOSE
 """
 
 from __future__ import annotations
@@ -34,8 +25,10 @@ class StructuralError(ValueError):
 
 def validate_stream(decoded: list[DecodedToken]) -> None:
     """Validate `decoded` against the shipped grammar, or raise `StructuralError`."""
-    open_lists: list[int] = []
-    awaiting_item: list[bool] = []
+    frames: list[tuple[str, int | bool]] = []
+
+    def block_is_legal() -> bool:
+        return not frames or frames[-1][0] in {"item", "blockquote"}
 
     for position, token in enumerate(decoded):
         role = tokens.ROLES.get(token.code)
@@ -49,50 +42,62 @@ def validate_stream(decoded: list[DecodedToken]) -> None:
                 raise StructuralError(
                     f"position {position}: leaf block {token.code} is not yet shipped"
                 )
-            if open_lists:
+            if not block_is_legal():
                 raise StructuralError(
-                    f"position {position}: PARA is not yet legal inside an "
-                    "open list (shipped grammar: top-level only; loose "
-                    "second paragraphs are folded into the item's own text "
-                    "run today)"
+                    f"position {position}: PARA appears where a block is not legal"
                 )
         elif role is StructuralRole.CONTAINER_OPEN:
-            if token.code != tokens.LIST_OPEN:
+            if not block_is_legal():
+                raise StructuralError(
+                    f"position {position}: container {token.code} appears where "
+                    "a block is not legal"
+                )
+            if token.code == tokens.LIST_OPEN:
+                frames.append(("list", False))
+            elif token.code == tokens.BLOCKQUOTE_OPEN:
+                frames.append(("blockquote", False))
+            else:
                 raise StructuralError(
                     f"position {position}: container {token.code} is not yet shipped"
                 )
-            if open_lists and awaiting_item[-1]:
-                raise StructuralError(
-                    f"position {position}: nested list opened before its "
-                    "parent list had any item (list := LIST_OPEN item+ "
-                    "LIST_CLOSE requires an item first)"
-                )
-            open_lists.append(token.payloads[0])
-            awaiting_item.append(True)
         elif role is StructuralRole.ITEM:
-            if not open_lists:
+            if not frames or frames[-1][0] != "list":
                 raise StructuralError(
                     f"position {position}: item appears outside any open list"
                 )
-            awaiting_item[-1] = False
+            frames[-1] = ("list", True)
+            frames.append(("item", token.payloads[0]))
+        elif role is StructuralRole.ITEM_CLOSE:
+            if not frames or frames[-1][0] != "item":
+                raise StructuralError(
+                    f"position {position}: item close has no matching open item"
+                )
+            frames.pop()
         elif role is StructuralRole.CONTAINER_CLOSE:
-            if token.code != tokens.LIST_CLOSE:
+            if token.code == tokens.LIST_CLOSE:
+                if not frames or frames[-1][0] != "list":
+                    raise StructuralError(
+                        f"position {position}: list close has no matching open list"
+                    )
+                if not frames[-1][1]:
+                    raise StructuralError(
+                        f"position {position}: list closed without any item "
+                        "(list := LIST_OPEN item+ LIST_CLOSE requires at least "
+                        "one item)"
+                    )
+                frames.pop()
+            elif token.code == tokens.BLOCKQUOTE_CLOSE:
+                if not frames or frames[-1][0] != "blockquote":
+                    raise StructuralError(
+                        f"position {position}: blockquote close has no matching "
+                        "open blockquote"
+                    )
+                frames.pop()
+            else:
                 raise StructuralError(
                     f"position {position}: container close {token.code} is "
                     "not yet shipped"
                 )
-            if not open_lists:
-                raise StructuralError(
-                    f"position {position}: list close has no matching open list"
-                )
-            if awaiting_item[-1]:
-                raise StructuralError(
-                    f"position {position}: list closed without any item "
-                    "(list := LIST_OPEN item+ LIST_CLOSE requires at least "
-                    "one item)"
-                )
-            open_lists.pop()
-            awaiting_item.pop()
         elif role is StructuralRole.INLINE_MARKER:
             raise StructuralError(
                 f"position {position}: inline marker {token.code} is not "
@@ -103,5 +108,7 @@ def validate_stream(decoded: list[DecodedToken]) -> None:
                 f"position {position}: unhandled structural role {role!r}"
             )
 
-    if open_lists:
-        raise StructuralError(f"stream ended with {len(open_lists)} list(s) still open")
+    if frames:
+        raise StructuralError(
+            f"stream ended with {len(frames)} structural frame(s) still open"
+        )
