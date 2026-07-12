@@ -78,8 +78,8 @@ tail -f .agent/loop.log
 
 Configuration: `agent-loop.toml` and `.mco/agents.yaml`. Ignored state and
 artifacts: `.agent/mco-loop-state.json` and `.agent/mco-artifacts/`. API keys
-are loaded by name from the configured external env file and must never be
-committed. Claude Fable is excluded from automatic routing; use the expensive
+are loaded by name from the configured env file (the git-ignored repo-root
+`.env`) and must never be committed. Claude Fable is excluded from automatic routing; use the expensive
 read-only governor only after genuine systemic failure:
 
 ```bash

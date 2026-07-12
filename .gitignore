@@ -3,6 +3,9 @@
 !.agent/blockers.md
 .codex
 
+# Secrets (loaded by name via agent-loop.toml env_file; never commit)
+.env
+
 # Python
 __pycache__/
 *.pyc
