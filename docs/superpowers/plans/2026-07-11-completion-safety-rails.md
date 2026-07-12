@@ -315,7 +315,7 @@ stack partitioning" with no grammar-first ordering. Updated that row in
 §7.4: container grammar and recursive pass scheduling (§7.3's token contract
 and §6.3) first, character-stack partitioning only if a valid grammar cannot
 be realized with current stack ownership. No Python/SPL behavior changed.
-- [ ] Update `docs/superpowers/notes/2026-07-07-completability-review.md` so
+- [x] Update `docs/superpowers/notes/2026-07-07-completability-review.md` so
       resolved, implemented, and still-open actions are unambiguous.
 - [ ] Mark plan 3M shipped only after Tasks 1–5 pass; leave Spike B pending
       until its separate design and literary reservations are reviewed.
