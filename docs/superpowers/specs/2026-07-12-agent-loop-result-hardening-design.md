@@ -140,6 +140,11 @@ For an unchanged action:
 5. Otherwise write an exhaustion diagnostic, print a loud final
    `agent-loop: exhausted` line to stderr, and exit with status `5`.
 
+The loop intentionally does not wait for an untrusted Pi fallback's cooldown,
+even when that executor has not yet made a substantive attempt. Exhaustion
+favors a durable operator diagnostic over waiting on a last-resort executor;
+the diagnostic still records that executor's cooldown expiry.
+
 The diagnostic is printed as JSON and persisted under `.agent/` in the loop
 state. It contains the action key and human-readable action fields, attempted
 executor names and failure kinds, active cooldown expiry times, trusted
@@ -205,6 +210,8 @@ Unit tests with mocked subprocesses and time cover:
 - rate limits and transient failures remaining retryable after cooldown;
 - fallback attempts continuing while a trusted provider cools down;
 - exhaustion exiting `5` without sleeping indefinitely;
+- `--once` returning `3` only for a trusted retryable cooldown and returning
+  `5` when only an untrusted fallback cooldown remains;
 - `--once`, `--status`, and `--dry-run` diagnostics;
 - backward-compatible state loading;
 - Claude and Pi stateless command configuration;
