@@ -67,16 +67,28 @@ def test_invoke_mco_terminates_process_group_on_timeout(
         popen_kwargs.update(kwargs)
         return FakeProcess()
 
-    times = iter((100.0, 100.0, 101.0))
+    times = iter((100.0, 101.0))
     monkeypatch.setattr(mco_loop.subprocess, "Popen", fake_popen)
     monkeypatch.setattr(mco_loop.time, "time", lambda: next(times))
     monkeypatch.setattr(mco_loop, "MCO_TIMEOUT_SECONDS", 0.5)
     monkeypatch.setattr(os, "killpg", lambda pgid, sig: signals.append((pgid, sig)))
-    monkeypatch.setattr(mco_loop, "repo_fingerprint", lambda: "unchanged")
+    fingerprints = iter(("before", "after"))
+    monkeypatch.setattr(mco_loop, "repo_fingerprint", lambda: next(fingerprints))
+    config.artifact_dir.mkdir(parents=True)
+    artifact = config.artifact_dir / "provider.json"
+    artifact.write_text('{"secret":"secret-value"}')
 
-    result = mco_loop.invoke_mco(config, executor, action, {}, prompt_override="test")
+    result = mco_loop.invoke_mco(
+        config,
+        executor,
+        action,
+        {"XAI_API_KEY": "secret-value"},
+        prompt_override="test",
+    )
 
     assert result.exit_code == 124
+    assert result.made_progress is True
+    assert "secret-value" not in artifact.read_text()
     assert popen_kwargs["start_new_session"] is True
     assert signals == [
         (4321, signal.SIGTERM),
@@ -679,6 +691,38 @@ def test_main_once_returns_three_only_for_trusted_retry_wait(
     monkeypatch.setattr(mco_loop.time, "time", lambda: 100)
 
     assert mco_loop.main(["--once"]) == 3
+
+
+def test_exhaustion_payload_redacts_action_text() -> None:
+    secret = "secret-value"
+    action = NextAction(
+        ActionKind.FIX,
+        f"recover {secret}",
+        None,
+        f"step {secret}",
+        (f"- BLOCK: {secret}",),
+    )
+
+    payload = mco_loop.exhaustion_payload(
+        action,
+        (),
+        {"action_attempt": None, "cooldowns": {}},
+        now=100,
+        environment={"XAI_API_KEY": secret},
+    )
+
+    serialized = json.dumps(payload)
+    assert secret not in serialized
+    assert "XAI_API_KEY:redacted" in serialized
+
+
+def test_new_task_ids_are_unique_for_same_executor_and_action() -> None:
+    action = NextAction(ActionKind.IMPLEMENT, "execute", None, "step", ())
+    executor = Executor("claude", "claude", "claude")
+
+    assert mco_loop.new_task_id(action, executor) != mco_loop.new_task_id(
+        action, executor
+    )
 
 
 def test_planning_pool_never_falls_through_to_implementation_only_models() -> None:

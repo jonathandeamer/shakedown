@@ -14,6 +14,7 @@ import sys
 import threading
 import time
 import tomllib
+import uuid
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
@@ -496,6 +497,7 @@ def exhaustion_payload(
     executors: Sequence[Executor],
     state: Mapping[str, object],
     now: int,
+    environment: Mapping[str, str],
 ) -> dict[str, object]:
     """Build a secret-free durable diagnostic for terminal pool exhaustion."""
     raw_attempt = state.get("action_attempt")
@@ -521,7 +523,7 @@ def exhaustion_payload(
             active_plan = str(action.active_plan.relative_to(REPO))
         except ValueError:
             active_plan = str(action.active_plan)
-    return {
+    payload = {
         "kind": "executor_exhaustion",
         "action_key": action_key(action),
         "action": {
@@ -538,6 +540,8 @@ def exhaustion_payload(
         "next_ready": None,
         "recorded_at": now,
     }
+    redacted = _redact(json.dumps(payload), environment)
+    return cast(dict[str, object], json.loads(redacted))
 
 
 def _git_output(arguments: Sequence[str]) -> str:
@@ -712,6 +716,11 @@ def mco_command(
     return command
 
 
+def new_task_id(action: NextAction, executor: Executor) -> str:
+    """Return a collision-resistant identifier for one isolated invocation."""
+    return f"{action.kind.value}-{uuid.uuid4().hex}-{executor.name}"
+
+
 def invoke_mco(
     config: LoopConfig,
     executor: Executor,
@@ -727,7 +736,7 @@ def invoke_mco(
     prompt_file = config.state_file.parent / "mco-current-prompt.md"
     prompt_file.parent.mkdir(parents=True, exist_ok=True)
     state = load_state(config.state_file)
-    task_id = f"{action.kind.value}-{int(time.time())}-{executor.name}"
+    task_id = new_task_id(action, executor)
     prompt_file.write_text(
         prompt_override
         if prompt_override is not None
@@ -797,6 +806,8 @@ def invoke_mco(
                 os.killpg(process_group, signal.SIGKILL)
                 process.wait()
             stderr_reader.join(timeout=5)
+            redact_artifacts(config.artifact_dir, environment)
+            after = repo_fingerprint()
             return InvocationResult(
                 exit_code=124,
                 stdout="".join(stdout_lines),
@@ -804,7 +815,7 @@ def invoke_mco(
                     "".join(stderr_lines)
                     + "MCO execution timed out after 5 hours at Python level."
                 ),
-                made_progress=False,
+                made_progress=before != after,
                 recorded_blocker=bool(set(read_blockers()) - blockers_before),
             )
 
@@ -1270,7 +1281,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(json.dumps(status_payload, indent=2, sort_keys=True))
                 return 0
             if selection.exhausted:
-                payload = exhaustion_payload(canonical_action, pool, state, now)
+                payload = exhaustion_payload(
+                    canonical_action, pool, state, now, environment
+                )
                 state["exhaustion"] = payload
                 save_state(config.state_file, state)
                 print(json.dumps(payload, indent=2, sort_keys=True))
