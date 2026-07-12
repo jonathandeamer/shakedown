@@ -181,14 +181,18 @@ pattern = "bare_statement"
 
 **Produces:** A floor-bounded source buffer that supports variable-length code spans and escaped punctuation without feeding generated output back into the scan; Amps remains byte-identical.
 
-- [ ] **Step 1: Add the minimum IR tests before changing the scanner.**
+- [x] **Step 1: Add the minimum IR tests before changing the scanner.**
 
   In `tests/test_act3_contracts.py`, assert `variable_code_spans` has exactly two `<code>` regions with `<code>a \` b</code>` and `<code>x &amp; &lt;y&gt;</code>` in its decoded paragraph text; assert `escapes_and_overlap` retains literal `*literal*`, `[bracket]`, and `` `tick` ``. Assert that the carrier below the temporary scan-floor sentinel matches the pre-scan prefix exactly.
 
-- [ ] **Step 2: Run the focused red gate.**
+  Evidence (2026-07-12): added `test_act3_renders_variable_length_code_spans`, `test_act3_preserves_escaped_and_literal_span_punctuation`, and the parameterized `test_act3_scan_floor_matches_pre_scan_prefix` over `variable_code_spans`/`escapes_and_overlap`.
+
+- [x] **Step 2: Run the focused red gate.**
 
   Run: `uv run pytest tests/test_act3_contracts.py tests/test_architecture_spikes.py -k 'span or act3' -q`  
   Expected: FAIL because the existing `LYRIC_POP_GLYPH` path has no variable-run or escape buffering.
+
+  Evidence (2026-07-12): `12 failed, 12 passed, 14 deselected`. The two new rendering assertions fail red as intended (alongside the pre-existing span-probe reds); the two new scan-floor invariant cases pass, keeping the borrowed-prefix contract green before the scanner lands.
 
 - [ ] **Step 3: Replace direct glyph dispatch with the bounded scanner.**
 

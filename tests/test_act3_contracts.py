@@ -151,3 +151,44 @@ def test_act3_does_not_yet_render_expected_span_html(
     after = _decode_carrier(_run_to_act3(stem))
 
     assert _paragraph_text(after) == _rendered_paragraph_html(stem)
+
+
+# --- Task 3: buffered code-span and escape scanner (red until Task 3 Step 3) ---
+#
+# These fixtures exercise the first two protected-region modes the buffered
+# scanner must land: variable-length backtick code runs and backslash escapes.
+# They stay red on the pre-scan `LYRIC_POP_GLYPH` copy path.
+_TASK3_SCAN_FIXTURES = ("variable_code_spans", "escapes_and_overlap")
+
+
+def test_act3_renders_variable_length_code_spans() -> None:
+    text = _paragraph_text(_decode_carrier(_run_to_act3("variable_code_spans")))
+
+    # Exactly two protected code regions, each with its verbatim/encoded body.
+    assert text.count("<code>") == 2
+    assert text.count("</code>") == 2
+    assert "<code>a ` b</code>" in text
+    assert "<code>x &amp; &lt;y&gt;</code>" in text
+
+
+def test_act3_preserves_escaped_and_literal_span_punctuation() -> None:
+    text = _paragraph_text(_decode_carrier(_run_to_act3("escapes_and_overlap")))
+
+    # Escaped punctuation survives as literal glyphs, unpaired ticks stay bare.
+    assert "*literal*" in text
+    assert "[bracket]" in text
+    assert "`tick`" in text
+
+
+@pytest.mark.parametrize("stem", _TASK3_SCAN_FIXTURES)
+def test_act3_scan_floor_matches_pre_scan_prefix(stem: str) -> None:
+    boundary, state = _run_to_act3_with_prefix(stem)
+
+    # The buffered scan runs above a private floor sentinel; every byte beneath
+    # that floor must equal the pre-scan carrier prefix once the act returns.
+    assert (
+        tuple(state.stacks[Char.PUCK][: len(boundary.floor_prefix)])
+        == boundary.floor_prefix
+    )
+    stream = _stack_carrier_from_floor(state, boundary)
+    assert stream[0] == tokens.STREAM_END
