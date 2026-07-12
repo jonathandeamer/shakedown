@@ -137,15 +137,15 @@ but blocking the required regression gate).
 - [x] Default mode is observational: fixture mismatches/crashes/timeouts appear
       in the report but do not make the command fail. Harness/configuration
       failures do fail.
-- [ ] Add repeatable `--require NAME` arguments that make named fixtures fail
+- [x] Add repeatable `--require NAME` arguments that make named fixtures fail
       unless byte-identical; use the strict harness's selection conventions.
-- [ ] Unit-test subprocesses via mocks and add one local integration test only
+- [x] Unit-test subprocesses via mocks and add one local integration test only
       if marked `@pytest.mark.integration`.
-- [ ] Run the command over all 23 fixtures and write its dated baseline under
+- [x] Run the command over all 23 fixtures and write its dated baseline under
       `.agent/` (operator evidence, not a committed correctness oracle).
-- [ ] Ensure both documentation aggregates appear with status, elapsed time,
+- [x] Ensure both documentation aggregates appear with status, elapsed time,
       and crash/diff information.
-- [ ] Run the required regression commands.
+- [x] Run the required regression commands.
 
 **Evidence gate:** observational mode completes all discoverable cases even
 when `./shakedown` crashes; `--require 'Amps and angle encoding'` passes.
