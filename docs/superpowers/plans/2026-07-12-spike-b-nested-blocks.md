@@ -260,7 +260,7 @@ pattern = "scene_of_character"
   to reject framing sentinels because the debug/inter-act dump contract never
   exposes them.
 
-- [ ] **Step 2: Run the focused interpreter tests to verify failure.**
+- [x] **Step 2: Run the focused interpreter tests to verify failure.**
 
   Run: `uv run pytest tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py -q`  
   Expected: FAIL because current Act II emits text-bearing implicit list items and no blockquote tokens.
