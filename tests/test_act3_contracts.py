@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.splc.contracts import StackSnapshot, assert_prefix_preserved
 from scripts.splc.interpret import InterpreterState, run_act
 from scripts.splc.ir import Char
 from scripts.splc.token_decode import DecodedToken, decode_stream
@@ -24,6 +25,7 @@ from src_ir.act3 import ACT as ACT3
 REPO = Path(__file__).parent.parent
 SPAN_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "spans"
 STEP_LIMIT = 200_000
+_BORROWED_PREFIX = (7, 13, 42)
 
 
 def _run_to_act2(stem: str) -> InterpreterState:
@@ -36,6 +38,13 @@ def _run_to_act2(stem: str) -> InterpreterState:
 def _run_to_act3(stem: str) -> InterpreterState:
     state = _run_to_act2(stem)
     return run_act(ACT3, state, step_limit=STEP_LIMIT).state
+
+
+def _run_to_act3_with_prefix(stem: str) -> tuple[StackSnapshot, InterpreterState]:
+    state = _run_to_act2(stem)
+    state.stacks[Char.PUCK] = list(_BORROWED_PREFIX) + state.stacks[Char.PUCK]
+    snapshot = StackSnapshot(char=Char.PUCK, values=_BORROWED_PREFIX)
+    return snapshot, run_act(ACT3, state, step_limit=STEP_LIMIT).state
 
 
 def _carrier_stream(state: InterpreterState) -> list[int]:
@@ -56,6 +65,15 @@ def _decode_carrier(state: InterpreterState) -> list[DecodedToken]:
     decoded = decode_stream(stream[:-1])
     validate_stream(decoded)
     return decoded
+
+
+def _stack_carrier_from_floor(
+    state: InterpreterState, snapshot: StackSnapshot
+) -> list[int]:
+    stream = state.stacks[Char.PUCK][snapshot.floor :]
+    assert stream
+    assert stream[0] == tokens.STREAM_END
+    return stream
 
 
 def _rendered_paragraph_html(stem: str) -> str:
@@ -88,6 +106,22 @@ def test_act3_preserves_span_fixture_structural_stream(stem: str) -> None:
     # Task 2 proves Act III can rewrite paragraph text later while leaving the
     # block-level carrier shape intact across the buffered scan boundary.
     assert _non_text_shape(after) == _non_text_shape(before)
+
+
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in SPAN_FIXTURES.glob("*.text")),
+)
+def test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels(
+    stem: str,
+) -> None:
+    snapshot, state = _run_to_act3_with_prefix(stem)
+
+    assert_prefix_preserved(snapshot, state.stacks[Char.PUCK])
+
+    stream = _stack_carrier_from_floor(state, snapshot)
+    assert stream.count(tokens.ITEM_START) == 0
+    assert stream.count(tokens.STREAM_END) == 1
 
 
 @pytest.mark.parametrize(
