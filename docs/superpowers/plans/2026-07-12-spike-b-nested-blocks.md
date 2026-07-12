@@ -330,7 +330,7 @@ pattern = "scene_of_character"
 
 **Produces:** Byte-identical Markdown.pl output for the four nested cases and no regression in six shipped list cases.
 
-- [ ] **Step 1: Add emitter-facing byte assertions before implementation.**
+- [x] **Step 1: Add emitter-facing byte assertions before implementation.**
 
   Keep oracle comparison as the authority and add direct expected-byte tests for
   the four snippets, including the necessary list/blockquote separators:
