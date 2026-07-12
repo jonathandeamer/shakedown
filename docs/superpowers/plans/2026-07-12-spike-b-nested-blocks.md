@@ -172,7 +172,7 @@ pattern = "scene_of_character"
   Run: `uv run pytest tests/test_token_codes.py tests/test_token_decode.py tests/test_token_structural_roles.py tests/test_token_structure.py -q`  
   Expected: PASS.
 
-- [ ] **Step 5: Commit and push the token contract.**
+- [x] **Step 5: Commit and push the token contract.**
 
   Run: `git add src_ir/tokens.py docs/spl/token-codes.md scripts/splc/token_structure.py tests/test_token_codes.py tests/test_token_structure.py tests/test_token_structural_roles.py && git commit -m "feat: define nested container stream contract"`  
   Expected: conventional commit succeeds; append the required provenance trailers, then `git push` succeeds.
