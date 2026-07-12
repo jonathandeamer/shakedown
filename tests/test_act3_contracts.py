@@ -45,6 +45,8 @@ def _carrier_stream(state: InterpreterState) -> list[int]:
         stream.append(value)
         if value == tokens.STREAM_END:
             break
+    assert stream
+    assert stream[-1] == tokens.STREAM_END
     assert stream.count(tokens.STREAM_END) == 1
     return stream
 
@@ -63,7 +65,7 @@ def _rendered_paragraph_html(stem: str) -> str:
     return expected.removeprefix("<p>").removesuffix("</p>\n")
 
 
-def _structural_shape(decoded: list[DecodedToken]) -> list[tuple[int, tuple[int, ...]]]:
+def _non_text_shape(decoded: list[DecodedToken]) -> list[tuple[int, tuple[int, ...]]]:
     return [(token.code, token.payloads) for token in decoded]
 
 
@@ -83,7 +85,9 @@ def test_act3_preserves_span_fixture_structural_stream(stem: str) -> None:
     before = _decode_carrier(_run_to_act2(stem))
     after = _decode_carrier(_run_to_act3(stem))
 
-    assert _structural_shape(after) == _structural_shape(before)
+    # Task 2 proves Act III can rewrite paragraph text later while leaving the
+    # block-level carrier shape intact across the buffered scan boundary.
+    assert _non_text_shape(after) == _non_text_shape(before)
 
 
 @pytest.mark.parametrize(

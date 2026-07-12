@@ -142,7 +142,7 @@ pattern = "bare_statement"
 
 **Produces:** Executable proof scaffolding that Act III retains exactly one `STREAM_END`, exposes a valid block stream, and provides a stable comparison point for the private scan floor. Task 4 adds reviewed final dumps only after the implementation exists.
 
-- [ ] **Step 1: Write interpreter helpers and failing contracts.**
+- [x] **Step 1: Write interpreter helpers and failing contracts.**
 
   Add `_run_to_act3(stem: str) -> InterpreterState` that feeds the fixture text through `ACT1`, `ACT2`, and `ACT3` with `STEP_LIMIT = 200_000`; add `_carrier_stream(state) -> list[int]` that pops Puck through the sole terminal `STREAM_END`. Assert `stream.count(tokens.STREAM_END) == 1`, `decode_stream(stream[:-1])` succeeds, and `validate_stream(...)` accepts it. Add a parameterized test that records the pre-scan paragraph stream and proves non-text structural tokens/payloads remain unchanged across Act III; keep the expected rendered text deliberately failing until Task 3.
 
