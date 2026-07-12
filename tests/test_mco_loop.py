@@ -632,4 +632,3 @@ def test_main_available_executor_preserve_planning_flag(monkeypatch, tmp_path) -
     mco_loop.main(["--status"])
     assert len(calls) == 1
     assert calls[0][3] is True
-

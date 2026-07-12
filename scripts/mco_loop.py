@@ -950,7 +950,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                 else config.implementation
             )
             now = int(time.time())
-            executor, next_ready = available_executor(pool, state, now)
+            executor, next_ready = available_executor(
+                pool,
+                state,
+                now,
+                preserve_planning=(action.kind is not ActionKind.PLAN),
+            )
             status_payload = {
                 "action": action.kind.value,
                 "summary": action.summary,
