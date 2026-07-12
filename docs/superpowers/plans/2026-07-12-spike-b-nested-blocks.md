@@ -137,7 +137,7 @@ pattern = "scene_of_character"
 
   Update the target-grammar transcription to `LIST_ITEM(looseness) block* ITEM_CLOSE`; assert BLOCKQUOTE_OPEN/CLOSE and ITEM_CLOSE are in `ARITY` and possess the correct roles.
 
-- [ ] **Step 2: Run the new tests to verify they fail.**
+- [x] **Step 2: Run the new tests to verify they fail.**
 
   Run: `uv run pytest tests/test_token_structure.py tests/test_token_codes.py -q`  
   Expected: FAIL because `ITEM_CLOSE` and the shipped blockquote/item grammar do not exist.
