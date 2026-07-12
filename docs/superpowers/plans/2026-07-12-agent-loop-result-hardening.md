@@ -127,13 +127,13 @@ git commit -m "fix: classify agent loop results from evidence"
 Cover these exact properties:
 
 ```python
-def test_recovery_rewrite_does_not_change_canonical_action_key() -> None:
+def test_recovery_rewrite_would_change_key_if_misused() -> None:
     canonical = NextAction(ActionKind.IMPLEMENT, "execute", Path("plan.md"), "step", ())
     rewritten = mco_loop.apply_failure_action(
         canonical, {"last_failure": {"kind": "no_progress", "executor": "claude"}}
     )
     assert rewritten != canonical
-    assert mco_loop.action_key(canonical) == mco_loop.action_key(canonical)
+    assert mco_loop.action_key(rewritten) != mco_loop.action_key(canonical)
 
 
 def test_load_state_preserves_optional_action_attempt(tmp_path: Path) -> None:
@@ -181,7 +181,10 @@ def action_key(action: NextAction) -> str:
     return hashlib.sha256(encoded.encode()).hexdigest()
 ```
 
-Teach `load_state` to retain only a valid dictionary-shaped `action_attempt`, defaulting to `None` otherwise.
+Teach `load_state` to retain valid dictionary-shaped `action_attempt` and
+`exhaustion` records, defaulting each to `None` otherwise. Retaining
+`exhaustion` ensures the final diagnostic survives a later status read and
+subsequent state save after the operator restarts the loop.
 
 - [ ] **Step 4: Write failing executor-selection tests**
 
@@ -205,6 +208,12 @@ Expected: failures because selection still considers cooldowns only.
 - [ ] **Step 6: Implement action-aware selection**
 
 Replace the cooldown-only return tuple with `select_executor`. For the matching action key, skip names in `attempts`; select the first unattempted executor whose group and executor cooldowns have expired. If none is available, compute `next_ready` only from unattempted executors in `TRUSTED_RETRY_GROUPS = {"claude", "codex"}`. Return wait state when such an expiry exists; otherwise return exhaustion.
+
+Preserve this invariant in a code comment: an unattempted executor can only be
+cooling through an availability/quota-group cooldown, because every
+substantive failure records the executor in `attempts` at the same time it adds
+an executor-level cooldown. This is why trusted unattempted cooldowns are safe
+to expose as retryable.
 
 - [ ] **Step 7: Update result application with attempt lifecycle**
 
@@ -252,6 +261,7 @@ Mock roadmap/config/time and assert:
 - `--once` returns `3` for that trusted wait state;
 - both modes return `5` for `ExecutorSelection(None, None, True)`;
 - exhaustion prints `agent-loop: exhausted` to stderr and persists a diagnostic without output/prompt/secrets;
+- loading and re-saving state after exhaustion retains the diagnostic;
 - `--status` and `--dry-run` expose action attempts and selection state without mutation.
 
 - [ ] **Step 2: Run main-loop tests RED**
@@ -340,7 +350,9 @@ Expected: failures against the current Agy/built-in-Pi configuration.
 
 - [ ] **Step 3: Update shim and executor configuration**
 
-Add `--no-session-persistence` to both writing Claude commands, leaving the read-only governor unchanged unless its CLI also runs with `--print`. Remove Agy executors from `agent-loop.toml`. Define Pi shim commands using:
+Add `--no-session-persistence` to all three Claude shim commands: Fable
+governor, Opus, and Sonnet. Remove Agy executors from `agent-loop.toml`. Define
+Pi shim commands using:
 
 ```yaml
 - name: pi-grok-stateless
@@ -354,7 +366,12 @@ Add `--no-session-persistence` to both writing Claude commands, leaving the read
   command: 'pi --no-session --print --provider openrouter --model nvidia/nemotron-4-340b-instruct:free'
 ```
 
-Point the three configured fallback executors at those names and remove their `model_provider`/`model` overrides because the shim command owns model selection. Retain display models and quota groups.
+Point the three configured fallback executors at those names and remove their
+`model_provider`/`model` overrides because the shim command owns model
+selection. Add explicit `display_model` values `grok-build-0.1`,
+`tencent/hy3:free`, and `nvidia/nemotron-4-340b-instruct:free`; retain their
+existing quota groups so operator logs remain readable and cooldown grouping
+does not change.
 
 - [ ] **Step 4: Verify MCO resolves every configured command without invoking providers**
 
@@ -408,7 +425,17 @@ Treat this file as the complete task for a fresh, isolated session. Do not
 resume, answer, or rely on any earlier conversation.
 ```
 
-- [ ] **Step 4: Document cooldown, exhaustion, and exit behavior**
+- [ ] **Step 4: Run the prompt test GREEN and commit the behavior change**
+
+```bash
+uv run pytest tests/test_mco_loop.py -k "prompt_contains_invocation_boundary" -q
+git add scripts/mco_loop.py tests/test_mco_loop.py
+git commit -m "fix: add invocation boundary to agent prompts"
+```
+
+Expected: the focused test passes before the `fix:` commit is created.
+
+- [ ] **Step 5: Document cooldown, exhaustion, and exit behavior**
 
 Update `docs/2026-07-12-mco-loop-details.md` with:
 
@@ -419,7 +446,7 @@ Update `docs/2026-07-12-mco-loop-details.md` with:
 - the durable exhaustion diagnostic and final stderr line;
 - stateless automatic provider policy.
 
-- [ ] **Step 5: Run the complete evidence gate**
+- [ ] **Step 6: Run the complete evidence gate**
 
 ```bash
 uv run pytest tests/test_mco_loop.py
@@ -432,14 +459,14 @@ git diff --check
 
 Expected: every command exits `0`; the default suite retains only documented skips.
 
-- [ ] **Step 6: Record evidence and close Task 6A**
+- [ ] **Step 7: Record evidence and close Task 6A**
 
 Add the exact test counts and command outcomes under Task 6A in the active 3M plan, then check its single checkbox. Do not advance Task 7.
 
-- [ ] **Step 7: Commit and push the completed hardening**
+- [ ] **Step 8: Commit and push the completed hardening documentation**
 
 ```bash
-git add scripts/mco_loop.py tests/test_mco_loop.py docs/2026-07-12-mco-loop-details.md docs/superpowers/plans/2026-07-11-completion-safety-rails.md
+git add docs/2026-07-12-mco-loop-details.md docs/superpowers/plans/2026-07-11-completion-safety-rails.md
 git commit -m "docs: record agent loop hardening evidence"
 git push origin main
 ```
