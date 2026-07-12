@@ -24,6 +24,7 @@ ROADMAP = REPO / "docs" / "superpowers" / "plans" / "plan-roadmap.md"
 BLOCKERS = REPO / ".agent" / "blockers.md"
 FABLE_DIRECTIVE = REPO / ".agent" / "fable-directive.md"
 ALLOWED_SECRET_NAMES = ("XAI_API_KEY", "OPENROUTER_API_KEY")
+PRESERVED_PLANNING_GROUPS = {"claude", "codex"}
 RATE_LIMIT_MARKERS = (
     "retryable_rate_limit",
     "rate_limit",
@@ -350,7 +351,10 @@ def save_state(path: Path, state: Mapping[str, object]) -> None:
 
 
 def available_executor(
-    executors: Sequence[Executor], state: Mapping[str, object], now: int
+    executors: Sequence[Executor],
+    state: Mapping[str, object],
+    now: int,
+    preserve_planning: bool = False,
 ) -> tuple[Executor | None, int | None]:
     """Return the first executor whose quota group is not cooling down."""
     raw_cooldowns = state.get("cooldowns", {})
@@ -359,18 +363,33 @@ def available_executor(
         if isinstance(raw_cooldowns, dict)
         else {}
     )
-    waits: list[int] = []
-    for executor in executors:
-        group_value = cooldowns.get(executor.quota_group, 0)
-        executor_value = cooldowns.get(f"executor:{executor.name}", 0)
+
+    def get_cooldown_expiry(exec: Executor) -> int:
+        group_value = cooldowns.get(exec.quota_group, 0)
+        executor_value = cooldowns.get(f"executor:{exec.name}", 0)
         group_until = int(group_value) if isinstance(group_value, int | float) else 0
         executor_until = (
             int(executor_value) if isinstance(executor_value, int | float) else 0
         )
-        until = max(group_until, executor_until)
+        return max(group_until, executor_until)
+
+    # Pass 1: Prioritize executors whose quota groups are NOT in PRESERVED_PLANNING_GROUPS
+    if preserve_planning:
+        for executor in executors:
+            if executor.quota_group in PRESERVED_PLANNING_GROUPS:
+                continue
+            until = get_cooldown_expiry(executor)
+            if until <= now:
+                return executor, None
+
+    # Pass 2: Fall back to checking all executors (including preserved groups)
+    waits: list[int] = []
+    for executor in executors:
+        until = get_cooldown_expiry(executor)
         if until <= now:
             return executor, None
         waits.append(until)
+
     return None, min(waits) if waits else None
 
 
