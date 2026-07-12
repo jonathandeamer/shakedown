@@ -5,7 +5,7 @@ from pathlib import Path
 
 REPO = Path(__file__).parent.parent
 CLAUDE = REPO / "CLAUDE.md"
-ACTIVE_PROMPT = REPO / "docs" / "prompt-shakedown.md"
+ACTIVE_PROMPT = REPO / "docs" / "archive" / "prompt-shakedown-legacy.md"
 ROADMAP = REPO / "docs" / "superpowers" / "plans" / "plan-roadmap.md"
 
 
