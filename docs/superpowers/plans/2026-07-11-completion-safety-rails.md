@@ -71,9 +71,9 @@ git diff --exit-code -- src debug shakedown.spl
       preserved cross-act stacks and values.
 - [x] Add `tests/test_splc_interpret.py` covering every op, both branch arms,
       EOF, underflow diagnostics, step-limit failure, and state handoff.
-- [ ] Port the six list spike inputs and the Amps/short token cases into fast
+- [x] Port the six list spike inputs and the Amps/short token cases into fast
       interpreter parity tests without deleting the real-interpreter gates.
-- [ ] Run the required regression commands.
+- [x] Run the required regression commands.
 
 **Evidence gate:** interpreter token streams equal the committed dump baselines;
 real generated SPL is byte-identical before and after the task.

@@ -228,12 +228,19 @@ def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpretResu
                 taken = _eval_cond(op.cond, state, act.number, sc.label, step)
                 if taken:
                     jump = op.then
+                    break
                 elif op.else_ is not None:
                     jump = op.else_
+                    break
+                # Non-exhaustive branch, condition false: fall through to
+                # the scene's next op, matching SPL's "if" semantics where
+                # only a taken (or exhaustive) branch ends the scene early.
             elif isinstance(op, Goto):
                 jump = op.target
+                break
             elif isinstance(op, HaltAct):
                 halted = True
+                break
             else:
                 raise TypeError(f"unknown op {op!r}")
         if halted:
