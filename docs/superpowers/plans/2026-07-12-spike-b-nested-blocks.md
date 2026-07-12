@@ -12,7 +12,7 @@
 
 - First read `docs/superpowers/plans/plan-roadmap.md`, architecture §6.3/§7.4/§8.2, and the accepted design above; this is the sole in-flight plan.
 - Do not hand-edit `src/20-act2-block.spl`, `src/30-act3-span.spl`, `src/40-act4-emit.spl`, `debug/40-act4-token-dump.spl`, or `shakedown.spl`; edit IR/TOML, then run `uv run python -m scripts.splc` and `uv run python scripts/assemble.py`.
-- Follow `docs/superpowers/notes/spl-literary-protocol.md`: classify all new prose, take titles only from the reservations below, and run the exact literary gates listed in Task 2.
+- Follow `docs/superpowers/notes/spl-literary-protocol.md`: classify all new prose, take titles only from the reservations below, and run the exact literary gates listed in Tasks 3–5 after generated scenes and their TOML entries land atomically.
 - Preserve all allocated token numbers. `LIST_ITEM` remains code 5 but changes to an item-open with one looseness payload and no text; `ITEM_CLOSE` is code 15 with no payload/text.
 - Do not broaden scope to headers, code blocks, raw HTML, ordered markers, multiple quote depths, or full list semantics.
 - At every task boundary run its evidence gate; commit only the task's files with a conventional subject and the required MCO provenance trailers, then push without force. On push failure append one `- BLOCK:` line to `.agent/blockers.md` and exit.
@@ -177,7 +177,7 @@ pattern = "scene_of_character"
   Run: `git add src_ir/tokens.py docs/spl/token-codes.md scripts/splc/token_structure.py tests/test_token_codes.py tests/test_token_structure.py tests/test_token_structural_roles.py && git commit -m "feat: define nested container stream contract"`  
   Expected: conventional commit succeeds; append the required provenance trailers, then `git push` succeeds.
 
-### Task 2: Add the Spike B corpus, reservations, and structural baselines
+### Task 2: Add the Spike B corpus and structural baselines
 
 **Files:**
 - Create: `tests/fixtures/architecture_spikes/nested_blocks/list_quote_sibling.text`
@@ -189,12 +189,10 @@ pattern = "scene_of_character"
 - Modify: `tests/test_token_dump.py`
 - Modify: `tests/test_act2_contracts.py`
 - Modify: `tests/test_act2_frame_floors.py`
-- Modify: `src/20-act2-literary.toml`
-- Modify: `src/40-act4-literary.toml`
 
-**Consumes:** Task 1's parser and the reserved titles above.
+**Consumes:** Task 1's parser.
 
-**Produces:** Four permanent Spike B no-regression fixtures, mechanically validated reviewed streams, and all required prose before IR changes.
+**Produces:** Four permanent Spike B no-regression fixtures and mechanically validated reviewed streams. The prose remains reserved above and lands atomically with the IR scenes that use it in Tasks 3 and 4, preserving the exact scene-ledger invariant.
 
 - [x] **Step 1: Create the fixture files and parametrize all Spike B checks.**
 
@@ -203,12 +201,7 @@ pattern = "scene_of_character"
   test in `tests/test_architecture_spikes.py`; do not weaken list-fixture tests.
   Include the same stems in token-dump and both Act II contract parametrizations.
 
-- [ ] **Step 2: Add the reserved TOML titles exactly as supplied above.**
-
-  Add the five active and four spare entries per touched act. Do not put scene
-  prose in `src/literary.toml` or inline it in an IR module.
-
-- [ ] **Step 3: Write literal reviewed dump fixtures before implementation.**
+- [ ] **Step 2: Write literal reviewed dump fixtures before implementation.**
 
   Encode the four design-table streams one integer per line. For example
   `quote_list_then_paragraph.dump` begins:
@@ -231,25 +224,21 @@ pattern = "scene_of_character"
 
   Finish each stream exactly as its design-table row specifies, ending in `-1`.
 
-- [ ] **Step 4: Run pre-implementation evidence.**
+- [ ] **Step 3: Run pre-implementation evidence.**
 
   Run: `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py -q`  
   Expected: structural baseline tests PASS; new real-runtime/oracle tests FAIL until Tasks 3–4 implement the behavior.
 
-- [ ] **Step 5: Run required literary compliance evidence.**
+- [ ] **Step 4: Commit and push the corpus and baselines.**
 
-  Run: `uv run pytest tests/test_literary_toml_schema.py tests/test_literary_compliance.py tests/test_spl_style_guide_validation.py tests/test_splc_prose.py -q`  
-  Expected: PASS; this is the exact literary-protocol gate for the new TOML surfaces.
-
-- [ ] **Step 6: Commit and push the corpus and reservations.**
-
-  Run: `git add tests/fixtures tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py src/20-act2-literary.toml src/40-act4-literary.toml && git commit -m "test: add nested block spike corpus"`  
+  Run: `git add tests/fixtures tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py && git commit -m "test: add nested block spike corpus"`
   Expected: conventional commit and provenance trailers succeed, followed by a successful `git push`.
 
 ### Task 3: Emit valid nested-container streams from Act II
 
 **Files:**
 - Modify: `src_ir/act2.py`
+- Modify: `src/20-act2-literary.toml`
 - Modify: `tests/test_act2_contracts.py`
 - Modify: `tests/test_act2_frame_floors.py`
 - Modify: `tests/test_token_dump.py`
@@ -293,7 +282,11 @@ pattern = "scene_of_character"
   optional space); strip exactly that prefix. An unquoted line closes quote
   frames; a sibling marker closes the current item before opening the next one.
   Paragraph formation must emit `PARA ... TEXT_END` inside items/quotes and
-  must copy structural codes untouched. Use only the reserved scene labels.
+  must copy structural codes untouched. For every new IR scene, add the matching
+  reserved `[scenes.LABEL]` entry from the Act II block above in the same task.
+  Add no unused entries; spare titles remain plan-only unless their IR scenes
+  become necessary. Do not put scene prose in `src/literary.toml` or inline it
+  in the IR module.
 
 - [ ] **Step 4: Regenerate and assemble.**
 
@@ -308,20 +301,21 @@ pattern = "scene_of_character"
 
 - [ ] **Step 5: Run Act II and generated-artifact gates.**
 
-  Run: `uv run pytest tests/test_act2_contracts.py tests/test_act2_frame_floors.py tests/test_token_structure.py tests/test_token_dump.py tests/test_splc_generated_fragments.py -q`  
+  Run: `uv run pytest tests/test_act2_contracts.py tests/test_act2_frame_floors.py tests/test_token_structure.py tests/test_token_dump.py tests/test_splc_generated_fragments.py tests/test_literary_toml_schema.py tests/test_literary_compliance.py tests/test_spl_style_guide_validation.py tests/test_splc_prose.py -q`
   Expected: PASS. Replace all six existing list dump baselines in this task
   with the explicit-item representation, hand-review each against the same
   grammar, and record that deliberate G2 vocabulary migration in its commit.
 
 - [ ] **Step 6: Commit and push the block-parser result.**
 
-  Run: `git add src_ir/act2.py src/20-act2-block.spl shakedown.spl tests && git commit -m "feat: emit nested block container streams"`  
+  Run: `git add src_ir/act2.py src/20-act2-literary.toml src/20-act2-block.spl shakedown.spl tests && git commit -m "feat: emit nested block container streams"`
   Expected: conventional commit and provenance trailers succeed, followed by `git push`.
 
 ### Task 4: Render explicit items and blockquotes in Act IV
 
 **Files:**
 - Modify: `src_ir/act4.py`
+- Modify: `src/40-act4-literary.toml`
 - Modify: `tests/test_architecture_spikes.py`
 - Modify: `tests/test_token_dump.py`
 - Regenerate: `src/40-act4-emit.spl`
@@ -356,7 +350,11 @@ pattern = "scene_of_character"
   `BLOCKQUOTE_CLOSE`. Track container kind and item looseness on Prospero's
   stack above a sentinel; emit `\n`/`\n\n` based on sibling block boundaries,
   never on raw text. Preserve existing `PARA` and anchor paths. The four
-  required byte layouts are the oracle outputs in Task 2's fixture tests.
+  required byte layouts are the oracle outputs in Task 2's fixture tests. For
+  every new IR scene, add the matching reserved `[scenes.LABEL]` entry from the
+  Act IV block above in the same task. Add no unused entries; spare titles
+  remain plan-only unless their IR scenes become necessary. Do not put scene
+  prose in `src/literary.toml` or inline it in the IR module.
 
 - [ ] **Step 4: Regenerate and assemble.**
 
@@ -371,12 +369,12 @@ pattern = "scene_of_character"
 
 - [ ] **Step 5: Run spike and no-regression gates.**
 
-  Run: `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_token_structure.py tests/test_splc_generated_fragments.py -q`  
+  Run: `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_token_structure.py tests/test_splc_generated_fragments.py tests/test_literary_toml_schema.py tests/test_literary_compliance.py tests/test_spl_style_guide_validation.py tests/test_splc_prose.py -q`
   Expected: PASS; all ten architecture-spike fixtures are byte-identical and every dump validates.
 
 - [ ] **Step 6: Commit and push renderer support.**
 
-  Run: `git add src_ir/act4.py src/40-act4-emit.spl debug/40-act4-token-dump.spl shakedown.spl tests && git commit -m "feat: render nested block containers"`  
+  Run: `git add src_ir/act4.py src/40-act4-literary.toml src/40-act4-emit.spl debug/40-act4-token-dump.spl shakedown.spl tests && git commit -m "feat: render nested block containers"`
   Expected: conventional commit and provenance trailers succeed, followed by `git push`.
 
 ### Task 5: Finalize the spike evidence and roadmap state
@@ -429,8 +427,8 @@ pattern = "scene_of_character"
 ## Plan self-review
 
 - **Coverage:** Tasks 1–4 implement every §7.4 acceptance case, explicit streams,
-  fixture parity, Act II/IV composition, and literary reservations; Task 5 owns
-  the §8.2 halt path and full suite.
+  fixture parity, Act II/IV composition, and atomically applied literary
+  reservations; Task 5 owns the §8.2 halt path and full suite.
 - **No placeholders:** every planned token number, fixture, stream, title,
   test path, command, and expected gate is named.
 - **Consistency:** `LIST_ITEM` is the explicit item opening throughout; code 15
