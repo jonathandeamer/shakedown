@@ -115,7 +115,7 @@ pattern = "bare_statement"
   overlapping_emphasis: ***both*** and **outer *inner* outer**\n
   ```
 
-- [ ] **Step 2: Generate and review oracle expectations.**
+- [x] **Step 2: Generate and review oracle expectations.**
 
   For every `.text`, run `perl ~/markdown/Markdown.pl < <fixture> > <fixture>.expected`; inspect the resulting bytes. In particular, assert the expected output contains `<code>a \` b</code>`, `<code>x &amp; &lt;y&gt;</code>`, literal `*literal*`, `<span><em>raw</em></span>`, a once-encoded autolink query ampersand, `<img src="img.png" alt="c <em>d</em>" title="i" />`, and `<strong><em>both</em></strong>`.
 
