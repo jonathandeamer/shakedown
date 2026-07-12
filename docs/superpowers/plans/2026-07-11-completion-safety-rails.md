@@ -80,7 +80,7 @@ real generated SPL is byte-identical before and after the task.
 
 ## Task 2 — Add executable stack-borrow and stream contracts
 
-- [ ] Add a verification-only contract module under `scripts/splc/` with typed
+- [x] Add a verification-only contract module under `scripts/splc/` with typed
       snapshots and assertions for stack prefix preservation, sentinel balance,
       expected carrier termination, and no pop below a declared floor.
 - [ ] Instrument the IR interpreter with optional boundary observers; do not
