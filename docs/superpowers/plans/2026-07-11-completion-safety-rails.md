@@ -259,6 +259,15 @@ roadmap/protocol/legacy-loop contracts passed 68 tests; full lint, format, and
 type checks passed; the full default suite passed 407 tests with the roadmap's
 26 expected skips. Generated SPL was not touched.
 
+### Task 6A — Harden result classification and executor exhaustion
+
+- [ ] Execute
+      `docs/superpowers/plans/2026-07-12-agent-loop-result-hardening.md`
+      task by task, satisfying its red/green tests and final evidence gate.
+
+**Design:**
+`docs/superpowers/specs/2026-07-12-agent-loop-result-hardening-design.md`
+
 ## Task 7 — Integrate evidence into the roadmap and architecture
 
 - [ ] Update the canonical architecture spec with the structural-contract,
