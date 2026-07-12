@@ -10,4 +10,21 @@ Start with [`docs/README.md`](docs/README.md).
 
 That docs index is the canonical entry point for new sessions and architecture work.
 
-Note: `run-loop` and `docs/prompt-shakedown.md` are legacy artifacts. The active workflow uses supervised superpowers sessions; see `CLAUDE.md` § Implementation workflow.
+## Autonomous workflow
+
+`./agent-loop` is the active MCO-backed roadmap executor. It reads the sole
+in-flight plan (or writes the next Superpowers-style plan), runs one step per
+iteration, switches eligible providers on rate limits or zero progress, and
+owns the final full-suite/23-fixture parity gate.
+Successful iterations create conventional commits at logical checkpoints and
+push the current branch for GitHub visibility.
+
+```bash
+npm install -g @tt-a1i/mco@0.10.8
+./agent-loop --dry-run   # show classified action and selected executor
+./agent-loop --once      # execute one MCO iteration
+./agent-loop             # continue until interrupted or genuinely complete
+```
+
+Model policy and fallbacks live in `agent-loop.toml`. `run-loop` and
+`docs/prompt-shakedown.md` remain legacy artifacts.

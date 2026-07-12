@@ -48,6 +48,38 @@ start a supervised implementation session:
    to work through the plan task by task.
 3. The operator triggers each session manually and is present throughout.
 
+### Active autonomous workflow
+
+`./agent-loop` is the active autonomous alternative. It uses MCO as the only
+agent orchestration layer, reads the roadmap/active plan on every iteration,
+and dispatches exactly one writing provider. Planning agents autonomously
+write Superpowers-style plans/specs and leave exactly one plan in flight;
+implementation/fix agents execute one unchecked step and its evidence gate.
+Every successful iteration commits at logical checkpoints using the repository's
+conventional-commit rules and pushes the current branch. Never force-push;
+failed pushes are recorded as blockers rather than hidden.
+Contrary to any generic agent guidance that omits attribution, every autonomous
+commit must end with `Agent:`, `Model:`, and `Harness:` Git trailers and the
+configured `Co-authored-by:` identity for that executor. The operator's Git
+identity remains the primary author.
+
+```bash
+npm install -g @tt-a1i/mco@0.10.8
+./agent-loop --dry-run
+./agent-loop --once
+./agent-loop
+```
+
+Configuration: `agent-loop.toml` and `.mco/agents.yaml`. Ignored state and
+artifacts: `.agent/mco-loop-state.json` and `.agent/mco-artifacts/`. API keys
+are loaded by name from the configured external env file and must never be
+committed. Claude Fable is excluded from automatic routing; use the expensive
+read-only governor only after genuine systemic failure:
+
+```bash
+./agent-loop --govern
+```
+
 `AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex.
 
 ### Legacy: run-loop

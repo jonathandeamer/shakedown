@@ -1,0 +1,16 @@
+agents:
+  - name: claude-fable
+    transport: shim
+    command: 'claude -p --permission-mode plan --model claude-fable-5 --output-format text'
+  - name: claude-opus
+    transport: shim
+    command: 'claude -p --dangerously-skip-permissions --model opus --output-format text'
+  - name: claude-sonnet
+    transport: shim
+    command: 'claude -p --dangerously-skip-permissions --model sonnet --output-format text'
+  - name: agy-flash
+    transport: shim
+    command: 'agy --print --dangerously-skip-permissions --mode accept-edits --agent "Gemini 3.5 Flash (High)" --print-timeout 30m'
+  - name: agy-pro
+    transport: shim
+    command: 'agy --print --dangerously-skip-permissions --mode accept-edits --agent "Gemini 3.1 Pro (High)" --print-timeout 30m'

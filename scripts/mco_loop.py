@@ -1,0 +1,986 @@
+"""MCO-backed autonomous executor for Shakedown's plan roadmap."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+import tomllib
+from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
+from enum import Enum
+from pathlib import Path
+from typing import cast
+
+REPO = Path(__file__).parent.parent
+DEFAULT_CONFIG = REPO / "agent-loop.toml"
+ROADMAP = REPO / "docs" / "superpowers" / "plans" / "plan-roadmap.md"
+BLOCKERS = REPO / ".agent" / "blockers.md"
+FABLE_DIRECTIVE = REPO / ".agent" / "fable-directive.md"
+ALLOWED_SECRET_NAMES = ("XAI_API_KEY", "OPENROUTER_API_KEY")
+RATE_LIMIT_MARKERS = (
+    "retryable_rate_limit",
+    "rate_limit",
+    "rate limit",
+    "usage limit",
+    "too many requests",
+    "http 429",
+)
+TRANSIENT_MARKERS = (
+    "retryable_timeout",
+    "retryable_transient_network",
+    "timed out",
+    "service unavailable",
+)
+
+
+class ActionKind(Enum):
+    PLAN = "plan"
+    IMPLEMENT = "implement"
+    FIX = "fix"
+
+
+@dataclass(frozen=True)
+class Executor:
+    name: str
+    provider: str
+    quota_group: str
+    model: str | None = None
+    model_provider: str | None = None
+    display_model: str | None = None
+    best_effort: bool = False
+    coauthor_name: str | None = None
+    coauthor_email: str | None = None
+
+
+@dataclass(frozen=True)
+class LoopConfig:
+    env_file: Path
+    state_file: Path
+    artifact_dir: Path
+    cooldown_seconds: int
+    iteration_pause_seconds: int
+    planning: tuple[Executor, ...]
+    implementation: tuple[Executor, ...]
+
+
+@dataclass(frozen=True)
+class RoadmapRow:
+    identifier: str
+    plan_path: Path | None
+    description: str
+    status: str
+
+
+@dataclass(frozen=True)
+class NextAction:
+    kind: ActionKind
+    summary: str
+    active_plan: Path | None
+    step: str | None
+    blockers: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class InvocationResult:
+    exit_code: int
+    stdout: str
+    stderr: str
+    made_progress: bool
+
+    @property
+    def combined_output(self) -> str:
+        return f"{self.stdout}\n{self.stderr}"
+
+
+def _mapping(value: object, label: str) -> Mapping[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError(f"{label} must be a table")
+    return cast(Mapping[str, object], value)
+
+
+def _string(
+    table: Mapping[str, object], key: str, *, required: bool = True
+) -> str | None:
+    value = table.get(key)
+    if value is None and not required:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{key} must be a non-empty string")
+    return value
+
+
+def _integer(table: Mapping[str, object], key: str) -> int:
+    value = table.get(key)
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        raise ValueError(f"{key} must be a non-negative integer")
+    return value
+
+
+def _boolean(table: Mapping[str, object], key: str) -> bool:
+    value = table.get(key, False)
+    if not isinstance(value, bool):
+        raise ValueError(f"{key} must be a boolean")
+    return value
+
+
+def _resolve_repo_path(value: str) -> Path:
+    expanded = Path(value).expanduser()
+    return expanded if expanded.is_absolute() else REPO / expanded
+
+
+def _executors(raw: object, label: str) -> tuple[Executor, ...]:
+    if not isinstance(raw, list) or not raw:
+        raise ValueError(f"{label} must contain at least one executor")
+    result: list[Executor] = []
+    for index, item in enumerate(raw):
+        table = _mapping(item, f"{label}[{index}]")
+        result.append(
+            Executor(
+                name=cast(str, _string(table, "name")),
+                provider=cast(str, _string(table, "provider")),
+                quota_group=cast(str, _string(table, "quota_group")),
+                model=_string(table, "model", required=False),
+                model_provider=_string(table, "model_provider", required=False),
+                display_model=_string(table, "display_model", required=False),
+                best_effort=_boolean(table, "best_effort"),
+                coauthor_name=_string(table, "coauthor_name", required=False),
+                coauthor_email=_string(table, "coauthor_email", required=False),
+            )
+        )
+    names = [executor.name for executor in result]
+    if len(names) != len(set(names)):
+        raise ValueError(f"{label} executor names must be unique")
+    return tuple(result)
+
+
+def load_config(path: Path = DEFAULT_CONFIG) -> LoopConfig:
+    """Load and validate the project-local loop policy."""
+    with path.open("rb") as handle:
+        raw = tomllib.load(handle)
+    table = _mapping(raw, "config")
+    loop = _mapping(table.get("loop"), "loop")
+    return LoopConfig(
+        env_file=_resolve_repo_path(cast(str, _string(loop, "env_file"))),
+        state_file=_resolve_repo_path(cast(str, _string(loop, "state_file"))),
+        artifact_dir=_resolve_repo_path(cast(str, _string(loop, "artifact_dir"))),
+        cooldown_seconds=_integer(loop, "cooldown_seconds"),
+        iteration_pause_seconds=_integer(loop, "iteration_pause_seconds"),
+        planning=_executors(table.get("planning"), "planning"),
+        implementation=_executors(table.get("implementation"), "implementation"),
+    )
+
+
+def parse_roadmap(text: str) -> tuple[RoadmapRow, ...]:
+    """Parse live plan rows from the roadmap's Markdown table."""
+    rows: list[RoadmapRow] = []
+    for line in text.splitlines():
+        if not line.startswith("|") or "---" in line:
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if len(cells) < 6 or cells[0] in {"#", ""}:
+            continue
+        status = cells[-1].lower()
+        if not any(
+            word in status
+            for word in ("pending", "in flight", "shipped", "halted", "superseded")
+        ):
+            continue
+        matches = re.findall(r"`(docs/superpowers/plans/[^`]+\.md)`", line)
+        plan_path = REPO / matches[0] if matches else None
+        rows.append(
+            RoadmapRow(
+                identifier=cells[0],
+                plan_path=plan_path,
+                description=cells[1],
+                status=status,
+            )
+        )
+    return tuple(rows)
+
+
+def read_blockers(path: Path = BLOCKERS) -> tuple[str, ...]:
+    """Return active blocker lines without modifying the blocker file."""
+    try:
+        lines = path.read_text().splitlines()
+    except FileNotFoundError:
+        return ()
+    return tuple(line.strip() for line in lines if line.lstrip().startswith("- BLOCK:"))
+
+
+def first_unchecked_step(plan_text: str) -> str | None:
+    """Return the first unchecked plan checkbox in document order."""
+    match = re.search(r"^- \[ \] (.+)$", plan_text, flags=re.MULTILINE)
+    return match.group(1).strip() if match else None
+
+
+def step_is_planning(step: str) -> bool:
+    """Return whether a checkbox explicitly authors a plan/design surface."""
+    lowered = step.lower()
+    patterns = (
+        r"\bwrite\b.*\b(plan|design|specification)\b",
+        r"\bauthor\b.*\b(plan|design|specification)\b",
+        r"\breserve\b.*\bliterary\b",
+        r"\bready-to-paste literary\b",
+    )
+    return any(re.search(pattern, lowered) for pattern in patterns)
+
+
+def determine_next_action(
+    rows: Sequence[RoadmapRow], blockers: Sequence[str]
+) -> NextAction:
+    """Classify the next durable repository action."""
+    in_flight = [row for row in rows if "in flight" in row.status]
+    pending = [row for row in rows if "pending" in row.status]
+    if len(in_flight) > 1:
+        raise ValueError("roadmap has more than one in-flight plan")
+    if blockers:
+        active = in_flight[0].plan_path if in_flight else None
+        return NextAction(
+            ActionKind.FIX,
+            "Resolve the active blocker before roadmap work continues.",
+            active,
+            None,
+            tuple(blockers),
+        )
+    if not in_flight:
+        if pending:
+            target = pending[0]
+            return NextAction(
+                ActionKind.PLAN,
+                (
+                    "Write and register the implementation plan for roadmap row "
+                    f"{target.identifier}: {target.description}."
+                ),
+                None,
+                None,
+                (),
+            )
+        return NextAction(
+            ActionKind.FIX,
+            (
+                "All roadmap rows are terminal; prove the full-suite and "
+                "23-fixture completion gates."
+            ),
+            None,
+            None,
+            (),
+        )
+    row = in_flight[0]
+    if row.plan_path is None or not row.plan_path.exists():
+        return NextAction(
+            ActionKind.FIX,
+            f"Repair the missing plan path for in-flight roadmap row {row.identifier}.",
+            row.plan_path,
+            None,
+            (),
+        )
+    step = first_unchecked_step(row.plan_path.read_text())
+    if step is None:
+        return NextAction(
+            ActionKind.FIX,
+            (
+                f"Finalize roadmap row {row.identifier}: its plan has no unchecked "
+                "steps but remains in flight."
+            ),
+            row.plan_path,
+            None,
+            (),
+        )
+    kind = ActionKind.PLAN if step_is_planning(step) else ActionKind.IMPLEMENT
+    return NextAction(
+        kind,
+        f"Execute the first unchecked step in roadmap row {row.identifier}.",
+        row.plan_path,
+        step,
+        (),
+    )
+
+
+def load_named_secrets(
+    path: Path, base_env: Mapping[str, str] | None = None
+) -> dict[str, str]:
+    """Load only approved API keys, preserving already-exported values."""
+    result = dict(os.environ if base_env is None else base_env)
+    try:
+        lines = path.read_text().splitlines()
+    except FileNotFoundError:
+        return result
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export ") :].lstrip()
+        name, separator, value = line.partition("=")
+        name = name.strip()
+        if separator and name in ALLOWED_SECRET_NAMES and name not in result:
+            result[name] = value.strip().strip("'\"")
+    return result
+
+
+def load_state(path: Path) -> dict[str, object]:
+    """Load persisted non-secret supervisor state."""
+    try:
+        value = json.loads(path.read_text())
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return {"cooldowns": {}, "failures": {}, "last_failure": None}
+    if not isinstance(value, dict):
+        return {"cooldowns": {}, "failures": {}, "last_failure": None}
+    state = cast(dict[str, object], value)
+    return {
+        "cooldowns": state.get("cooldowns", {}),
+        "failures": state.get("failures", {}),
+        "last_failure": state.get("last_failure"),
+    }
+
+
+def save_state(path: Path, state: Mapping[str, object]) -> None:
+    """Persist state atomically without secrets."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(json.dumps(dict(state), indent=2, sort_keys=True) + "\n")
+    temporary.replace(path)
+
+
+def available_executor(
+    executors: Sequence[Executor], state: Mapping[str, object], now: int
+) -> tuple[Executor | None, int | None]:
+    """Return the first executor whose quota group is not cooling down."""
+    raw_cooldowns = state.get("cooldowns", {})
+    cooldowns = (
+        cast(Mapping[str, object], raw_cooldowns)
+        if isinstance(raw_cooldowns, dict)
+        else {}
+    )
+    waits: list[int] = []
+    for executor in executors:
+        group_value = cooldowns.get(executor.quota_group, 0)
+        executor_value = cooldowns.get(f"executor:{executor.name}", 0)
+        group_until = int(group_value) if isinstance(group_value, int | float) else 0
+        executor_until = (
+            int(executor_value) if isinstance(executor_value, int | float) else 0
+        )
+        until = max(group_until, executor_until)
+        if until <= now:
+            return executor, None
+        waits.append(until)
+    return None, min(waits) if waits else None
+
+
+def _git_output(arguments: Sequence[str]) -> str:
+    result = subprocess.run(
+        ["git", *arguments],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return result.stdout
+
+
+def repo_fingerprint() -> str:
+    """Hash tracked diffs plus untracked content, excluding ignored state."""
+    digest = hashlib.sha256()
+    digest.update(_git_output(["rev-parse", "HEAD"]).encode())
+    digest.update(_git_output(["diff", "--binary", "HEAD", "--", "."]).encode())
+    untracked = _git_output(["ls-files", "--others", "--exclude-standard"])
+    for relative in sorted(untracked.splitlines()):
+        if relative.startswith(".agent/"):
+            continue
+        path = REPO / relative
+        digest.update(relative.encode())
+        if path.is_file():
+            digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def build_prompt(action: NextAction, executor: Executor, last_failure: object) -> str:
+    """Build a provider-neutral handoff from durable repository state."""
+    plan_text = (
+        str(action.active_plan.relative_to(REPO)) if action.active_plan else "none"
+    )
+    blockers = "\n".join(action.blockers) if action.blockers else "none"
+    status = (
+        _git_output(["status", "--short", "--untracked-files=all"]).strip() or "clean"
+    )
+    try:
+        governor_directive = FABLE_DIRECTIVE.read_text()[-6000:]
+    except FileNotFoundError:
+        governor_directive = "none"
+    if action.kind is ActionKind.PLAN:
+        plan_destination = (
+            "Refine the existing active plan at the exact path above and amend "
+            "its cited Superpowers spec when needed; do not create a second "
+            "in-flight plan."
+            if action.active_plan
+            else (
+                "Write a complete Superpowers-style plan at "
+                "docs/superpowers/plans/YYYY-MM-DD-<slug>.md with checkboxes and "
+                "evidence gates, then update the roadmap with that exact path as "
+                "the sole in-flight plan."
+            )
+        )
+        role_rule = (
+            "This is non-interactive planning work. Do not implement production "
+            "behavior and do not wait for human input. "
+            f"{plan_destination} Write any prerequisite accepted design under "
+            "docs/superpowers/specs/YYYY-MM-DD-<slug>.md. For SPL-facing work, "
+            "obey the literary protocol, reserve ready-to-paste controlled "
+            "surfaces plus spares, and name exact compliance tests. Make and "
+            "record reasonable assumptions; stop only for a genuine safety or "
+            "authority blocker."
+        )
+    else:
+        role_rule = (
+            "This is implementation/fix work. Follow the active plan exactly, "
+            "run its stated gates, and check a step only after its evidence gate "
+            "passes."
+        )
+    objective = (
+        "Make all roadmap work ship and pass the full pytest suite plus all 23 "
+        "Markdown.mdtest fixtures. Require strict Markdown.pl bytes for every "
+        "deterministic fixture and the documented entity-normalized comparison "
+        "for Auto links."
+    )
+    model_name = executor.display_model or executor.model or "provider default"
+    coauthor = (
+        f"\nCo-authored-by: {executor.coauthor_name} <{executor.coauthor_email}>"
+        if executor.coauthor_name and executor.coauthor_email
+        else ""
+    )
+    provenance = (
+        f"Agent: {executor.name}\nModel: {model_name}\nHarness: MCO 0.10.8{coauthor}"
+    )
+    operating_rules = (
+        "Before acting, read AGENTS.md, docs/README.md, and "
+        "docs/superpowers/plans/plan-roadmap.md. Preserve existing user changes. "
+        "Never hand-edit generated SPL. Work on one step only; do not batch "
+        "later steps. At each logical checkpoint, run the relevant evidence "
+        "gate, create a small conventional commit, and push the current branch "
+        "so progress is visible on GitHub. Never create empty checkpoint commits, "
+        "force-push, tag, or expose credentials. If a required push fails, or if "
+        "otherwise blocked, record one `- BLOCK:` line in .agent/blockers.md and "
+        "exit cleanly. End every commit message with these exact provenance "
+        f"trailers after a blank line:\n{provenance}"
+    )
+    return f"""You are one iteration of Shakedown's MCO autonomous loop.
+
+Ultimate objective: {objective}
+
+Action: {action.kind.value}
+Executor: {executor.name}
+Summary: {action.summary}
+Active plan: {plan_text}
+First unchecked step: {action.step or "none"}
+Active blockers:
+{blockers}
+
+Working tree at handoff:
+{status}
+
+Previous failure summary: {last_failure or "none"}
+
+Latest optional Fable governor directive:
+{governor_directive}
+
+{role_rule}
+
+{operating_rules}
+"""
+
+
+def mco_command(
+    config: LoopConfig, executor: Executor, task_id: str, prompt_file: Path
+) -> list[str]:
+    """Build one single-provider MCO invocation."""
+    command = [
+        "mco",
+        "run",
+        "--repo",
+        str(REPO),
+        "--file",
+        str(prompt_file),
+        "--providers",
+        executor.provider,
+        "--execution-mode",
+        "yolo",
+        "--max-provider-parallelism",
+        "1",
+        "--stall-timeout",
+        "900",
+        "--review-hard-timeout",
+        "3600",
+        "--artifact-base",
+        str(config.artifact_dir),
+        "--task-id",
+        task_id,
+        "--result-mode",
+        "both",
+        "--json",
+    ]
+    if executor.model:
+        model: object = executor.model
+        if executor.model_provider:
+            model = {"provider": executor.model_provider, "model": executor.model}
+        command.extend(
+            ["--provider-models-json", json.dumps({executor.provider: model})]
+        )
+    if executor.best_effort:
+        command.extend(["--enforcement-mode", "best_effort"])
+    return command
+
+
+def invoke_mco(
+    config: LoopConfig,
+    executor: Executor,
+    action: NextAction,
+    environment: Mapping[str, str],
+    prompt_override: str | None = None,
+) -> InvocationResult:
+    """Invoke exactly one MCO provider and report repository progress."""
+    config.artifact_dir.mkdir(parents=True, exist_ok=True)
+    prompt_file = config.state_file.parent / "mco-current-prompt.md"
+    prompt_file.parent.mkdir(parents=True, exist_ok=True)
+    state = load_state(config.state_file)
+    prompt_file.write_text(
+        prompt_override
+        if prompt_override is not None
+        else build_prompt(action, executor, state.get("last_failure"))
+    )
+    task_id = f"{action.kind.value}-{int(time.time())}-{executor.name}"
+    command = mco_command(config, executor, task_id, prompt_file)
+    before = repo_fingerprint()
+    result = subprocess.run(
+        command,
+        cwd=REPO,
+        env=dict(environment),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    redact_artifacts(config.artifact_dir, environment)
+    after = repo_fingerprint()
+    return InvocationResult(
+        exit_code=result.returncode,
+        stdout=result.stdout,
+        stderr=result.stderr,
+        made_progress=before != after,
+    )
+
+
+def redact_artifacts(path: Path, environment: Mapping[str, str]) -> None:
+    """Remove allowlisted secret values from text artifacts defensively."""
+    if not path.exists():
+        return
+    for artifact in path.rglob("*"):
+        if not artifact.is_file():
+            continue
+        try:
+            text = artifact.read_text()
+        except (OSError, UnicodeDecodeError):
+            continue
+        redacted = _redact(text, environment)
+        if redacted != text:
+            artifact.write_text(redacted)
+
+
+def classify_failure(result: InvocationResult) -> str | None:
+    """Classify an MCO result for cooldown and operator reporting."""
+    output = result.combined_output.lower()
+    if any(marker in output for marker in RATE_LIMIT_MARKERS):
+        return "rate_limit"
+    if any(marker in output for marker in TRANSIENT_MARKERS):
+        return "transient"
+    if result.exit_code != 0:
+        return "backend_failure"
+    if not result.made_progress:
+        return "no_progress"
+    return None
+
+
+def apply_result(
+    config: LoopConfig,
+    state: dict[str, object],
+    executor: Executor,
+    result: InvocationResult,
+    now: int,
+) -> str | None:
+    """Update cooldown state from one invocation."""
+    failure = classify_failure(result)
+    raw_cooldowns = state.get("cooldowns", {})
+    cooldowns = (
+        dict(cast(Mapping[str, object], raw_cooldowns))
+        if isinstance(raw_cooldowns, dict)
+        else {}
+    )
+    raw_failures = state.get("failures", {})
+    failures = (
+        dict(cast(Mapping[str, object], raw_failures))
+        if isinstance(raw_failures, dict)
+        else {}
+    )
+    if failure is None:
+        failures[executor.name] = 0
+        state["last_failure"] = None
+        FABLE_DIRECTIVE.unlink(missing_ok=True)
+    else:
+        previous = failures.get(executor.name, 0)
+        failures[executor.name] = (
+            int(previous) if isinstance(previous, int) else 0
+        ) + 1
+        cooldown_key = (
+            executor.quota_group
+            if failure in {"rate_limit", "transient"}
+            else f"executor:{executor.name}"
+        )
+        cooldowns[cooldown_key] = now + config.cooldown_seconds
+        state["last_failure"] = {
+            "executor": executor.name,
+            "kind": failure,
+            "exit_code": result.exit_code,
+        }
+    state["cooldowns"] = cooldowns
+    state["failures"] = failures
+    save_state(config.state_file, state)
+    return failure
+
+
+def apply_failure_action(action: NextAction, state: Mapping[str, object]) -> NextAction:
+    """Route substantive prior failures through the fixing role."""
+    failure = state.get("last_failure")
+    if not isinstance(failure, dict):
+        return action
+    kind = failure.get("kind")
+    if kind not in {"backend_failure", "no_progress"}:
+        return action
+    return NextAction(
+        ActionKind.FIX,
+        f"Recover the current roadmap step after {kind} from the prior executor.",
+        action.active_plan,
+        action.step,
+        action.blockers,
+    )
+
+
+def apply_governor_directive(action: NextAction) -> tuple[NextAction, bool]:
+    """Apply a persisted manual Fable verdict to ordinary-agent routing."""
+    try:
+        text = FABLE_DIRECTIVE.read_text()
+    except FileNotFoundError:
+        return action, False
+    match = re.search(r"VERDICT:\s*(CONTINUE|FIX|REDIRECT|STOP)", text, re.I)
+    if not match:
+        return action, False
+    verdict = match.group(1).upper()
+    if verdict == "STOP":
+        return action, True
+    if verdict == "FIX":
+        return (
+            NextAction(
+                ActionKind.FIX,
+                "Execute the bounded repair in the latest Fable directive.",
+                action.active_plan,
+                action.step,
+                action.blockers,
+            ),
+            False,
+        )
+    if verdict == "REDIRECT":
+        return (
+            NextAction(
+                ActionKind.PLAN,
+                "Amend the active durable direction per the latest Fable directive.",
+                action.active_plan,
+                action.step,
+                action.blockers,
+            ),
+            False,
+        )
+    return action, False
+
+
+def completion_gates() -> tuple[bool, str]:
+    """Run the driver-owned terminal gates."""
+    pytest_result = subprocess.run(
+        ["uv", "run", "pytest", "-q"],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if pytest_result.returncode != 0:
+        details = f"{pytest_result.stdout[-2000:]}\n{pytest_result.stderr[-1000:]}"
+        return (
+            False,
+            f"full pytest failed:\n{details}",
+        )
+    mdtest_result = subprocess.run(
+        ["uv", "run", "pytest", "tests/test_mdtest.py", "-q"],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    mdtest_output = f"{mdtest_result.stdout}\n{mdtest_result.stderr}"
+    if (
+        mdtest_result.returncode != 0
+        or not re.search(r"\b23 passed\b", mdtest_output)
+        or re.search(r"\bskipped\b", mdtest_output)
+    ):
+        return False, f"23-fixture mdtest gate incomplete:\n{mdtest_output[-3000:]}"
+
+    fixtures_dir = Path.home() / "mdtest" / "Markdown.mdtest"
+    deterministic = [
+        fixture.stem
+        for fixture in sorted(fixtures_dir.glob("*.text"))
+        if fixture.stem != "Auto links"
+    ]
+    if len(deterministic) != 22:
+        return (
+            False,
+            "strict parity gate expected 22 deterministic fixtures "
+            f"but discovered {len(deterministic)}",
+        )
+    parity_result = subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "scripts/strict_parity_harness.py",
+            *deterministic,
+        ],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if (
+        parity_result.returncode != 0
+        or "summary: 22/22 byte-identical" not in parity_result.stdout
+    ):
+        details = f"{parity_result.stdout[-3000:]}\n{parity_result.stderr[-1000:]}"
+        return (
+            False,
+            f"strict parity incomplete:\n{details}",
+        )
+    return (
+        True,
+        "full pytest, mdtest 23/23 with no skips, and deterministic strict "
+        "parity 22/22 passed",
+    )
+
+
+def _redact(text: str, environment: Mapping[str, str]) -> str:
+    redacted = text
+    for name in ALLOWED_SECRET_NAMES:
+        value = environment.get(name)
+        if value:
+            redacted = redacted.replace(value, f"<{name}:redacted>")
+    return redacted
+
+
+def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    parser.add_argument(
+        "--once", action="store_true", help="Run at most one MCO invocation"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Classify and select without invoking MCO",
+    )
+    parser.add_argument(
+        "--status",
+        action="store_true",
+        help="Print current action, executor, and cooldown state",
+    )
+    parser.add_argument(
+        "--cooldown-seconds", type=int, help="Override configured provider cooldown"
+    )
+    parser.add_argument(
+        "--govern",
+        action="store_true",
+        help="Run one rare read-only Claude Fable architecture review",
+    )
+    return parser.parse_args(argv)
+
+
+def governor_prompt(action: NextAction, state: Mapping[str, object]) -> str:
+    """Build the bounded, read-only Fable governor request."""
+    plan = str(action.active_plan.relative_to(REPO)) if action.active_plan else "none"
+    status = _git_output(["status", "--short", "--untracked-files=all"]).strip()
+    review_scope = (
+        "Do not edit files or implement code. Inspect AGENTS.md, docs/README.md, "
+        "the roadmap, the active plan, relevant accepted specs, blockers, and "
+        "the working tree. Decide whether the process can still reach strict "
+        "parity for all 23 Markdown.pl fixtures without an architectural trap."
+    )
+    verdict_rule = (
+        "Then give a concise evidence-based directive for the ordinary agents. "
+        "CONTINUE means the present plan is sound. FIX names a bounded repair. "
+        "REDIRECT explains which existing spec, plan, or roadmap decision should "
+        "be amended without creating a second in-flight plan. STOP is only for "
+        "a genuine safety or authority problem. Do not ask for human input when "
+        "a reasonable assumption is possible."
+    )
+    return f"""You are the rare read-only governor for Shakedown's autonomous loop.
+
+{review_scope}
+
+Current action: {action.kind.value}
+Current summary: {action.summary}
+Active plan: {plan}
+Current step: {action.step or "none"}
+Loop failure state: {state.get("last_failure") or "none"}
+Working tree:
+{status or "clean"}
+
+Return exactly one leading verdict line:
+VERDICT: CONTINUE | FIX | REDIRECT | STOP
+
+{verdict_rule}
+"""
+
+
+def run_governor(
+    config: LoopConfig,
+    action: NextAction,
+    environment: Mapping[str, str],
+) -> int:
+    """Run one explicit Fable review and persist its non-secret directive."""
+    executor = Executor(
+        name="fable-governor",
+        provider="claude-fable",
+        quota_group="claude",
+        display_model="claude-fable-5",
+        best_effort=True,
+    )
+    state = load_state(config.state_file)
+    result = invoke_mco(
+        config,
+        executor,
+        action,
+        environment,
+        prompt_override=governor_prompt(action, state),
+    )
+    output = _redact(result.combined_output, environment).strip()
+    if result.exit_code != 0:
+        print(output, file=sys.stderr)
+        return result.exit_code
+    FABLE_DIRECTIVE.parent.mkdir(parents=True, exist_ok=True)
+    FABLE_DIRECTIVE.write_text(output + "\n")
+    print(output)
+    return 0
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    """Run the autonomous loop until completion or operator interruption."""
+    args = _arguments(argv)
+    config = load_config(args.config)
+    if args.cooldown_seconds is not None:
+        config = LoopConfig(
+            env_file=config.env_file,
+            state_file=config.state_file,
+            artifact_dir=config.artifact_dir,
+            cooldown_seconds=max(0, args.cooldown_seconds),
+            iteration_pause_seconds=config.iteration_pause_seconds,
+            planning=config.planning,
+            implementation=config.implementation,
+        )
+    if shutil.which("mco") is None and not args.dry_run and not args.status:
+        print("agent-loop: mco is not installed; install @tt-a1i/mco", file=sys.stderr)
+        return 2
+    environment = load_named_secrets(config.env_file)
+    try:
+        while True:
+            rows = parse_roadmap(ROADMAP.read_text())
+            blockers = read_blockers()
+            action = determine_next_action(rows, blockers)
+            if args.govern:
+                return run_governor(config, action, environment)
+            no_remaining_rows = not any(
+                "pending" in row.status or "in flight" in row.status for row in rows
+            )
+            if no_remaining_rows:
+                complete, detail = completion_gates()
+                if complete:
+                    print(f"agent-loop: complete: {detail}")
+                    return 0
+                action = NextAction(ActionKind.FIX, detail, None, None, blockers)
+            state = load_state(config.state_file)
+            action = apply_failure_action(action, state)
+            action, governor_stop = apply_governor_directive(action)
+            if governor_stop:
+                print(
+                    "agent-loop: stopped by the latest Fable governor directive",
+                    file=sys.stderr,
+                )
+                return 4
+            pool = (
+                config.planning
+                if action.kind is ActionKind.PLAN
+                else config.implementation
+            )
+            now = int(time.time())
+            executor, next_ready = available_executor(pool, state, now)
+            status_payload = {
+                "action": action.kind.value,
+                "summary": action.summary,
+                "active_plan": str(action.active_plan.relative_to(REPO))
+                if action.active_plan
+                else None,
+                "step": action.step,
+                "executor": executor.name if executor else None,
+                "next_ready": next_ready,
+                "fable_governor_recommended": executor is None,
+                "state": state,
+            }
+            if args.dry_run or args.status:
+                print(json.dumps(status_payload, indent=2, sort_keys=True))
+                return 0
+            if executor is None:
+                if args.once:
+                    print(json.dumps(status_payload, indent=2, sort_keys=True))
+                    return 3
+                print(
+                    "agent-loop: full eligible fallback chain is cooling down; "
+                    "consider ./agent-loop --govern for a rare Fable review"
+                )
+                wait_seconds = max(1, (next_ready or now + 60) - now)
+                print(
+                    "agent-loop: all eligible executors cooling down; "
+                    f"waiting {wait_seconds}s"
+                )
+                time.sleep(wait_seconds)
+                continue
+            print(
+                f"agent-loop: {action.kind.value} via {executor.name} "
+                f"({executor.provider}:"
+                f"{executor.model or executor.display_model or 'default'})"
+            )
+            result = invoke_mco(config, executor, action, environment)
+            if result.stdout:
+                print(_redact(result.stdout, environment))
+            if result.stderr:
+                print(_redact(result.stderr, environment), file=sys.stderr)
+            failure = apply_result(config, state, executor, result, int(time.time()))
+            if failure:
+                print(f"agent-loop: {executor.name} entered cooldown after {failure}")
+            if args.once:
+                return 0 if failure is None else 1
+            time.sleep(config.iteration_pause_seconds)
+    except KeyboardInterrupt:
+        print("\nagent-loop: interrupted")
+        return 130
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
