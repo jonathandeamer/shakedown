@@ -155,10 +155,12 @@ pattern = "bare_statement"
 
   Instrument only the IR-interpreter-facing test helper (not production SPL) to retain the carrier prefix before calling `ACT3`; assert that the prefix beneath the planned private floor is byte-for-byte equal after the act exits. Assert the final stream carries no leaked `ITEM_START` marker and no extra `STREAM_END`.
 
-- [ ] **Step 4: Run the structural evidence.**
+- [x] **Step 4: Run the structural evidence.**
 
   Run: `uv run pytest tests/test_act3_contracts.py tests/test_token_decode.py tests/test_token_structure.py -q`  
   Expected: prefix/stream-shape assertions PASS; intentionally expected span-output assertions remain red until Task 3.
+
+  Evidence (2026-07-12): `53 passed, 5 failed`. The five failures are exactly the intentionally-red `test_act3_does_not_yet_render_expected_span_html` cases (one per span probe); all prefix, stream-shape, floor-boundary, and decode/structure assertions pass.
 
 - [ ] **Step 5: Commit and push the carrier contract.**
 
