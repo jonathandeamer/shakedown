@@ -310,7 +310,7 @@ pattern = "scene_of_character"
   with the explicit-item representation, hand-review each against the same
   grammar, and record that deliberate G2 vocabulary migration in its commit.
 
-- [ ] **Step 6: Commit and push the block-parser result.**
+- [x] **Step 6: Commit and push the block-parser result.**
 
   Run: `git add src_ir/act2.py src/20-act2-literary.toml src/20-act2-block.spl shakedown.spl tests && git commit -m "feat: emit nested block container streams"`
   Expected: conventional commit and provenance trailers succeed, followed by `git push`.
