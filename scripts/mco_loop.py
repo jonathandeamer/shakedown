@@ -577,20 +577,33 @@ def invoke_mco(
     task_id = f"{action.kind.value}-{int(time.time())}-{executor.name}"
     command = mco_command(config, executor, task_id, prompt_file)
     before = repo_fingerprint()
-    result = subprocess.run(
-        command,
-        cwd=REPO,
-        env=dict(environment),
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    try:
+        result = subprocess.run(
+            command,
+            cwd=REPO,
+            env=dict(environment),
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=18000,  # 5 hours
+        )
+        exit_code = result.returncode
+        stdout = result.stdout
+        stderr = result.stderr
+    except subprocess.TimeoutExpired as e:
+        exit_code = 124
+        stdout = e.stdout.decode() if isinstance(e.stdout, bytes) else (e.stdout or "")
+        stderr = (
+            e.stderr.decode()
+            if isinstance(e.stderr, bytes)
+            else (e.stderr or "MCO execution timed out after 5 hours at Python level.")
+        )
     redact_artifacts(config.artifact_dir, environment)
     after = repo_fingerprint()
     return InvocationResult(
-        exit_code=result.returncode,
-        stdout=result.stdout,
-        stderr=result.stderr,
+        exit_code=exit_code,
+        stdout=stdout,
+        stderr=stderr,
         made_progress=before != after,
     )
 
