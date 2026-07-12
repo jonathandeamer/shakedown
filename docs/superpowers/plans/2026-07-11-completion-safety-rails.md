@@ -87,7 +87,7 @@ real generated SPL is byte-identical before and after the task.
       add runtime operations or rendered SPL.
 - [x] Add Act II contract tests proving that arbitrary pre-existing payload on
       Horatio's stack survives the list-looseness side-channel borrow.
-- [ ] Assert Macbeth's frame floor and all temporary carrier floors are restored
+- [x] Assert Macbeth's frame floor and all temporary carrier floors are restored
       across every existing list spike case.
 - [ ] Add an explicit empty-input test that records the current real-runtime
       failure and a fast-interpreter diagnostic. Do not silently normalize or
