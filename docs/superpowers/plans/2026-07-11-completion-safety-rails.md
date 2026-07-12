@@ -317,14 +317,23 @@ and §6.3) first, character-stack partitioning only if a valid grammar cannot
 be realized with current stack ownership. No Python/SPL behavior changed.
 - [x] Update `docs/superpowers/notes/2026-07-07-completability-review.md` so
       resolved, implemented, and still-open actions are unambiguous.
-- [ ] Mark plan 3M shipped only after Tasks 1–5 pass; leave Spike B pending
+- [x] Mark plan 3M shipped only after Tasks 1–5 pass; leave Spike B pending
       until its separate design and literary reservations are reviewed.
-- [ ] Run:
+- [x] Run:
 
 ```bash
 uv run pytest tests/test_roadmap_contract.py tests/test_prompt_literary_protocol.py -q
 uv run pytest -q
 ```
+
+**Evidence recorded 2026-07-12:** re-ran every Task 1–5 required regression
+command (ruff check/format-check, pyright, splc IR/validate tests, literary/
+assemble/codegen tests, the Amps and angle encoding mdtest case, and the
+spikes + token_dump suite — 15 passed in 206.37s) plus `scripts.splc` regen
+and `scripts/assemble.py`, all byte-identical against committed `src`,
+`debug`, and `shakedown.spl`. `tests/test_roadmap_contract.py` and
+`tests/test_prompt_literary_protocol.py` passed 9 tests. Full default suite:
+572 passed, 26 skipped, 1 deselected in 291.55s.
 
 **Final gate:** default suite green; generated artifacts byte-identical; plan
 3M evidence recorded; exactly zero plans are in flight after marking it

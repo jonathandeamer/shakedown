@@ -1,6 +1,6 @@
 # Implementation Plan Roadmap
 
-**Last updated:** 2026-07-11
+**Last updated:** 2026-07-12
 **Purpose:** live index of the staged implementation plans for Shakedown,
 so any session — interactive or autonomous — can see what has shipped,
 what is in flight, and what is still pending.
@@ -52,7 +52,7 @@ gates. The win: every plan is written against ground truth.
 | 3J | splc Act III Port (`docs/archive/plans/2026-07-05-splc-act3.md`) | §8.2 halt resolution stage 4 (design Addendum §A1; audit: `docs/superpowers/notes/act3-port-audit.md`) | Per-scene anchor override in splc; `src_ir/act3.py` (56 scenes, four stage pairs); `src/30-act3-span.spl` as generated artifact; shared 128/315/387 constant homes; spike xfails re-examined | G2 token-stream equality (primary semantic gate — the debug dump measures acts 1–3); G1 Amps fixture byte-identical; G3 full default suite green; Acts I/II/IV + debug regen byte-identical after every compiler change | shipped: 2026-07-06 at commit a2f47c5 |
 | 3K | Spike A P1 — Tokenized stream + dispatcher skeleton (`docs/archive/plans/2026-07-06-spike-a-p1-stream-skeleton.md`) | §4.2/§7.3 as revised 2026-07-06 (`docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`, stage P1) | Arity table + framing markers (`src_ir/tokens.py`, `docs/spl/token-codes.md`); Act II rebuilt as dispatcher skeleton (`PASS_PARA_*` pass + `FRAME_REVERSE_*` final reverse); sentinel-terminated stream traversal in Acts III/IV/debug; Slice-1 fixed counts (128/315/387) retired; blessed G2 dump baselines committed under `tests/fixtures/token_stream/` | G1 Amps byte-identical; G2 pre-migration dumps recorded, Amps dump byte-equal, short dump hand-reviewed against the contract and blessed as committed baseline; G3 full default suite green (list spikes stay xfailed until P2); regen byte-identical for untouched fragments after every task | shipped: 2026-07-06 at commit 269f770 |
 | 3L | Spike A P2 — List pass at spike scope (`docs/archive/plans/2026-07-07-spike-a-p2-list-pass.md`) | §7.3 as revised 2026-07-06 (`docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`, stage P2) | `LIST_OPEN`/`LIST_ITEM`/`LIST_CLOSE` at spike scope; frame sentinels on Macbeth; looseness side channel + `ITEM_START` intra-act marker; Act III arity dispatch; Act IV list emission; Macbeth's first production scenes | G2: amps/short dumps byte-equal to 3K's blessed baselines at every task boundary, six new list dumps hand-reviewed against the plan's expected streams and blessed; six list spike fixtures un-xfailed and byte-identical to the oracle; full default suite green | shipped: 2026-07-07 at commit 19b64fe |
-| 3M | Completion Safety Rails (`docs/superpowers/plans/2026-07-11-completion-safety-rails.md`) | Completability hardening (`docs/superpowers/specs/2026-07-11-completability-hardening-design.md`, stage 1) | Verification-only IR interpreter; executable stack/sentinel contracts; structural token validation; all-fixture differential smoke report; measured feedback acceleration; MCO-only roadmap executor with role-scoped model failover | Fast interpreter equals committed token dumps; borrowed-stack prefixes and sentinels validated; malformed streams rejected; all 23 fixtures reported non-gating; MCO action/model/failover tests pass without secret leakage; generated SPL byte-identical; full default suite green | in flight |
+| 3M | Completion Safety Rails (`docs/superpowers/plans/2026-07-11-completion-safety-rails.md`) | Completability hardening (`docs/superpowers/specs/2026-07-11-completability-hardening-design.md`, stage 1) | Verification-only IR interpreter; executable stack/sentinel contracts; structural token validation; all-fixture differential smoke report; measured feedback acceleration; MCO-only roadmap executor with role-scoped model failover | Fast interpreter equals committed token dumps; borrowed-stack prefixes and sentinels validated; malformed streams rejected; all 23 fixtures reported non-gating; MCO action/model/failover tests pass without secret leakage; generated SPL byte-identical; full default suite green | shipped: 2026-07-12 |
 | 3N | Agent Loop Provider Pool Refresh (`docs/superpowers/plans/2026-07-12-agent-loop-provider-pool-refresh.md`) | Loop infrastructure follow-up (`docs/superpowers/specs/2026-07-12-agent-loop-provider-pool-refresh-design.md`); requires the landed result-hardening plan | OpenRouter throttle markers; Pi credential-shadowing startup warning; verified free-model fallback pool (Nemotron 3 Ultra, gpt-oss-120b, Hy3, Laguna M.1) with explicit stateless write-capable shims; Grok/xAI removed everywhere; stale loop state reset | MCO loop tests green including throttle, preflight, and config assertions; ruff/pyright clean; full default suite green; `./agent-loop --dry-run` selects a real executor with no grok/agy/xai remnants | shipped: 2026-07-12 at commit 7c0d5c3 |
 | 4 | Spike B — Nested blockquote-in-list | §7.4 | Two-structure composition (blockquote-in-list, list-in-blockquote at minimum scope). Snippet fixtures under `tests/fixtures/architecture_spikes/nested_blocks/` | Spike snippets pass byte-identical to oracle; composition confirmed or halt-and-redesign triggered | pending |
 | 4S | Span Architecture Spike | Completability hardening §4 | Establish protected-region and buffered-scan shape before broad Act III growth: variable code spans, escapes, protected HTML/link/image regions, representative overlapping strong/emphasis | Reviewed span streams and oracle-backed probes pass; Act III model confirmed or halt-and-redesign triggered; Spike A/B snippets remain green | pending |
@@ -91,15 +91,15 @@ code and tests: P1 (row 3K, tokenized stream + dispatcher skeleton) shipped
 2026-07-06 and P2 (row 3L, list pass) shipped 2026-07-07. Spike B (row 4)
 is the next pending implementation scope.
 
-## In flight after 3L: completability hardening
+## After 3M: completability hardening shipped, Spike B is next
 
 `docs/superpowers/notes/2026-07-07-completability-review.md` records a
 2026-07-07 review of roadmap completability. Its input-size scaling action is
 resolved by B20. The broader 2026-07-11 audit adds structural token, executable
-stack-contract, early span-risk, and all-fixture smoke findings. Plan 3M is the
-sole in-flight plan and implements the safety/feedback rails before Spike B.
-The container representation itself remains Spike B scope; the span
-architecture spike follows Spike B before broad Slice 2 work.
+stack-contract, early span-risk, and all-fixture smoke findings; plan 3M
+shipped all of it (2026-07-12). No plan is currently in flight. The container
+representation itself remains Spike B scope; the span architecture spike
+follows Spike B before broad Slice 2 work.
 
 ## Source notes
 

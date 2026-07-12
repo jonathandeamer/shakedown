@@ -68,8 +68,9 @@ def test_claude_tells_prompt_authors_to_use_protocol() -> None:
 
 def test_in_flight_roadmap_row_names_exact_plan_path() -> None:
     paths = _active_plan_paths()
-    assert len(paths) == 1
-    assert paths[0].exists()
+    assert len(paths) <= 1
+    for path in paths:
+        assert path.exists()
 
 
 def test_roadmap_names_spl_literary_protocol() -> None:
