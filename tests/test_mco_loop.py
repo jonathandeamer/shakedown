@@ -84,7 +84,7 @@ def test_invoke_mco_terminates_process_group_on_timeout(
         config,
         executor,
         action,
-        {"XAI_API_KEY": "secret-value"},
+        {"OPENROUTER_API_KEY": "secret-value"},
         prompt_override="test",
     )
 
@@ -134,15 +134,21 @@ def test_live_config_has_role_scoped_model_order() -> None:
         "codex",
         "claude-opus",
         "codex",
-        "pi-grok-stateless",
+        "pi-nemotron-ultra-stateless",
+        "pi-gpt-oss-stateless",
+        "pi-nemotron-super-stateless",
         "pi-hy3-stateless",
-        "pi-nemotron-stateless",
+        "pi-laguna-stateless",
+        "pi-qwen-coder-stateless",
     ]
     assert [(item.model_provider, item.model) for item in config.implementation] == [
         (None, None),
         (None, "gpt-5.4"),
         (None, None),
         (None, "gpt-5.6-sol"),
+        (None, None),
+        (None, None),
+        (None, None),
         (None, None),
         (None, None),
         (None, None),
@@ -161,16 +167,45 @@ def test_automatic_shims_are_stateless_and_models_remain_visible() -> None:
     config = mco_loop.load_config()
 
     assert agents.count("claude -p --no-session-persistence") == 3
-    assert agents.count("pi --no-session --print") == 3
+    assert agents.count("pi --no-session --print") == 6
     assert not {"agy-flash", "agy-pro", "pi"} & {
         item.provider for item in config.implementation
     }
-    fallbacks = config.implementation[-3:]
+    fallbacks = config.implementation[-6:]
     assert [item.display_model for item in fallbacks] == [
-        "grok-build-0.1",
+        "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "openai/gpt-oss-120b:free",
+        "nvidia/nemotron-3-super-120b-a12b:free",
         "tencent/hy3:free",
-        "nvidia/nemotron-4-340b-instruct:free",
+        "poolside/laguna-m.1:free",
+        "qwen/qwen3-coder:free",
     ]
+
+
+def test_pi_shims_are_stateless_and_write_capable() -> None:
+    text = (mco_loop.REPO / ".mco" / "agents.yaml").read_text()
+
+    for name, slug in (
+        ("pi-nemotron-ultra-stateless", "nvidia/nemotron-3-ultra-550b-a55b:free"),
+        ("pi-gpt-oss-stateless", "openai/gpt-oss-120b:free"),
+        ("pi-nemotron-super-stateless", "nvidia/nemotron-3-super-120b-a12b:free"),
+        ("pi-hy3-stateless", "tencent/hy3:free"),
+        ("pi-laguna-stateless", "poolside/laguna-m.1:free"),
+        ("pi-qwen-coder-stateless", "qwen/qwen3-coder:free"),
+    ):
+        assert name in text
+        assert slug in text
+    for line in text.splitlines():
+        if "command: 'pi " in line:
+            assert "--no-session" in line
+            assert "--print" in line
+            assert "--tools read,bash,edit,write" in line
+    for remnant in ("grok", "xai", "nemotron-4-340b", "agy-"):
+        assert remnant not in text.lower()
+
+
+def test_xai_key_is_no_longer_allowlisted() -> None:
+    assert mco_loop.ALLOWED_SECRET_NAMES == ("OPENROUTER_API_KEY",)
 
 
 def test_parse_roadmap_finds_live_rows_and_plan_path() -> None:
@@ -258,25 +293,27 @@ def test_more_than_one_in_flight_plan_is_rejected(tmp_path: Path) -> None:
 def test_load_named_secrets_loads_only_allowlisted_names(tmp_path: Path) -> None:
     env_file = tmp_path / ".env"
     env_file.write_text(
-        "OPENROUTER_API_KEY=or-secret\n"
-        "XAI_API_KEY='xai-secret'\n"
+        "OPENROUTER_API_KEY='or-secret'\n"
+        "XAI_API_KEY=must-not-load\n"
         "UNRELATED_SECRET=must-not-load\n"
     )
 
     result = mco_loop.load_named_secrets(env_file, {"PATH": "/bin"})
 
     assert result["OPENROUTER_API_KEY"] == "or-secret"
-    assert result["XAI_API_KEY"] == "xai-secret"
+    assert "XAI_API_KEY" not in result
     assert "UNRELATED_SECRET" not in result
 
 
 def test_exported_secret_takes_precedence_over_env_file(tmp_path: Path) -> None:
     env_file = tmp_path / ".env"
-    env_file.write_text("XAI_API_KEY=file-value\n")
+    env_file.write_text("OPENROUTER_API_KEY=file-value\n")
 
-    result = mco_loop.load_named_secrets(env_file, {"XAI_API_KEY": "exported-value"})
+    result = mco_loop.load_named_secrets(
+        env_file, {"OPENROUTER_API_KEY": "exported-value"}
+    )
 
-    assert result["XAI_API_KEY"] == "exported-value"
+    assert result["OPENROUTER_API_KEY"] == "exported-value"
 
 
 def test_mco_argv_contains_model_policy_but_no_secret_values(tmp_path: Path) -> None:
@@ -781,12 +818,12 @@ def test_exhaustion_payload_redacts_action_text(secret: str) -> None:
         (),
         {"action_attempt": None, "cooldowns": {}},
         now=100,
-        environment={"XAI_API_KEY": secret},
+        environment={"OPENROUTER_API_KEY": secret},
     )
 
     serialized = json.dumps(payload)
     assert secret not in serialized
-    assert "XAI_API_KEY:redacted" in serialized
+    assert "OPENROUTER_API_KEY:redacted" in serialized
 
 
 def test_new_task_ids_are_unique_for_same_executor_and_action() -> None:
@@ -951,7 +988,7 @@ def test_governor_is_explicit_and_persists_redacted_directive(
     result = mco_loop.run_governor(
         config,
         action,
-        {"XAI_API_KEY": "secret-value"},
+        {"OPENROUTER_API_KEY": "secret-value"},
     )
 
     assert result == 0
@@ -962,11 +999,11 @@ def test_governor_is_explicit_and_persists_redacted_directive(
 def test_redaction_removes_secret_values() -> None:
     output = mco_loop._redact(
         "failure included secret-value",
-        {"XAI_API_KEY": "secret-value"},
+        {"OPENROUTER_API_KEY": "secret-value"},
     )
 
     assert "secret-value" not in output
-    assert "XAI_API_KEY:redacted" in output
+    assert "OPENROUTER_API_KEY:redacted" in output
 
 
 def test_artifact_redaction_removes_secret_values(tmp_path: Path) -> None:
@@ -974,7 +1011,7 @@ def test_artifact_redaction_removes_secret_values(tmp_path: Path) -> None:
     artifact.parent.mkdir()
     artifact.write_text('{"leak":"secret-value"}')
 
-    mco_loop.redact_artifacts(tmp_path, {"XAI_API_KEY": "secret-value"})
+    mco_loop.redact_artifacts(tmp_path, {"OPENROUTER_API_KEY": "secret-value"})
 
     assert "secret-value" not in artifact.read_text()
 

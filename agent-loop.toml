@@ -1,5 +1,5 @@
 [loop]
-env_file = "~/hn-qotd/evals/.env"
+env_file = ".env"
 state_file = ".agent/mco-loop-state.json"
 artifact_dir = ".agent/mco-artifacts"
 cooldown_seconds = 3600
@@ -74,12 +74,28 @@ coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
 
 [[implementation]]
-name = "grok-implement"
-provider = "pi-grok-stateless"
-display_model = "grok-build-0.1"
-quota_group = "xai"
-coauthor_name = "xAI Grok"
-coauthor_email = "noreply@x.ai"
+name = "nemotron-ultra-implement"
+provider = "pi-nemotron-ultra-stateless"
+display_model = "nvidia/nemotron-3-ultra-550b-a55b:free"
+quota_group = "openrouter"
+coauthor_name = "NVIDIA Nemotron"
+coauthor_email = "noreply@nvidia.com"
+
+[[implementation]]
+name = "gpt-oss-implement"
+provider = "pi-gpt-oss-stateless"
+display_model = "openai/gpt-oss-120b:free"
+quota_group = "openrouter"
+coauthor_name = "OpenAI gpt-oss"
+coauthor_email = "noreply@openai.com"
+
+[[implementation]]
+name = "nemotron-super-implement"
+provider = "pi-nemotron-super-stateless"
+display_model = "nvidia/nemotron-3-super-120b-a12b:free"
+quota_group = "openrouter"
+coauthor_name = "NVIDIA Nemotron"
+coauthor_email = "noreply@nvidia.com"
 
 [[implementation]]
 name = "hy3-implement"
@@ -90,9 +106,17 @@ coauthor_name = "Tencent Hy3"
 coauthor_email = "noreply@tencent.com"
 
 [[implementation]]
-name = "nemotron-implement"
-provider = "pi-nemotron-stateless"
-display_model = "nvidia/nemotron-4-340b-instruct:free"
+name = "laguna-implement"
+provider = "pi-laguna-stateless"
+display_model = "poolside/laguna-m.1:free"
 quota_group = "openrouter"
-coauthor_name = "NVIDIA Nemotron"
-coauthor_email = "noreply@nvidia.com"
+coauthor_name = "Poolside Laguna"
+coauthor_email = "noreply@poolside.ai"
+
+[[implementation]]
+name = "qwen-coder-implement"
+provider = "pi-qwen-coder-stateless"
+display_model = "qwen/qwen3-coder:free"
+quota_group = "openrouter"
+coauthor_name = "Alibaba Qwen"
+coauthor_email = "noreply@alibabacloud.com"

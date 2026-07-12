@@ -8,12 +8,21 @@ agents:
   - name: claude-sonnet
     transport: shim
     command: 'claude -p --no-session-persistence --dangerously-skip-permissions --model sonnet --output-format text'
-  - name: pi-grok-stateless
+  - name: pi-nemotron-ultra-stateless
     transport: shim
-    command: 'pi --no-session --print --provider xai --model grok-build-0.1'
+    command: 'pi --no-session --print --tools read,bash,edit,write --provider openrouter --model nvidia/nemotron-3-ultra-550b-a55b:free'
+  - name: pi-gpt-oss-stateless
+    transport: shim
+    command: 'pi --no-session --print --tools read,bash,edit,write --provider openrouter --model openai/gpt-oss-120b:free'
+  - name: pi-nemotron-super-stateless
+    transport: shim
+    command: 'pi --no-session --print --tools read,bash,edit,write --provider openrouter --model nvidia/nemotron-3-super-120b-a12b:free'
   - name: pi-hy3-stateless
     transport: shim
-    command: 'pi --no-session --print --provider openrouter --model tencent/hy3:free'
-  - name: pi-nemotron-stateless
+    command: 'pi --no-session --print --tools read,bash,edit,write --provider openrouter --model tencent/hy3:free'
+  - name: pi-laguna-stateless
     transport: shim
-    command: 'pi --no-session --print --provider openrouter --model nvidia/nemotron-4-340b-instruct:free'
+    command: 'pi --no-session --print --tools read,bash,edit,write --provider openrouter --model poolside/laguna-m.1:free'
+  - name: pi-qwen-coder-stateless
+    transport: shim
+    command: 'pi --no-session --print --tools read,bash,edit,write --provider openrouter --model qwen/qwen3-coder:free'
