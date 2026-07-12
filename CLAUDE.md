@@ -80,7 +80,8 @@ read-only governor only after genuine systemic failure:
 ./agent-loop --govern
 ```
 
-`AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex.
+`AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex. For detailed documentation on workflow states, execution mechanics, failover/cooldown policies, and real-time monitoring of the autonomous loop, see [docs/2026-07-12-mco-loop-details.md](file:///Users/jonathan/shakedown/docs/2026-07-12-mco-loop-details.md).
+
 
 ### Legacy: run-loop
 
