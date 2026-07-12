@@ -1,6 +1,6 @@
 # Implementation Plan Roadmap
 
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-11
 **Purpose:** live index of the staged implementation plans for Shakedown,
 so any session — interactive or autonomous — can see what has shipped,
 what is in flight, and what is still pending.
@@ -52,7 +52,9 @@ gates. The win: every plan is written against ground truth.
 | 3J | splc Act III Port (`docs/superpowers/plans/2026-07-05-splc-act3.md`) | §8.2 halt resolution stage 4 (design Addendum §A1; audit: `docs/superpowers/notes/act3-port-audit.md`) | Per-scene anchor override in splc; `src_ir/act3.py` (56 scenes, four stage pairs); `src/30-act3-span.spl` as generated artifact; shared 128/315/387 constant homes; spike xfails re-examined | G2 token-stream equality (primary semantic gate — the debug dump measures acts 1–3); G1 Amps fixture byte-identical; G3 full default suite green; Acts I/II/IV + debug regen byte-identical after every compiler change | shipped: 2026-07-06 at commit a2f47c5 |
 | 3K | Spike A P1 — Tokenized stream + dispatcher skeleton (`docs/superpowers/plans/2026-07-06-spike-a-p1-stream-skeleton.md`) | §4.2/§7.3 as revised 2026-07-06 (`docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`, stage P1) | Arity table + framing markers (`src_ir/tokens.py`, `docs/spl/token-codes.md`); Act II rebuilt as dispatcher skeleton (`PASS_PARA_*` pass + `FRAME_REVERSE_*` final reverse); sentinel-terminated stream traversal in Acts III/IV/debug; Slice-1 fixed counts (128/315/387) retired; blessed G2 dump baselines committed under `tests/fixtures/token_stream/` | G1 Amps byte-identical; G2 pre-migration dumps recorded, Amps dump byte-equal, short dump hand-reviewed against the contract and blessed as committed baseline; G3 full default suite green (list spikes stay xfailed until P2); regen byte-identical for untouched fragments after every task | shipped: 2026-07-06 at commit 269f770 |
 | 3L | Spike A P2 — List pass at spike scope (`docs/superpowers/plans/2026-07-07-spike-a-p2-list-pass.md`) | §7.3 as revised 2026-07-06 (`docs/superpowers/specs/2026-07-06-spike-a-ir-lists-design.md`, stage P2) | `LIST_OPEN`/`LIST_ITEM`/`LIST_CLOSE` at spike scope; frame sentinels on Macbeth; looseness side channel + `ITEM_START` intra-act marker; Act III arity dispatch; Act IV list emission; Macbeth's first production scenes | G2: amps/short dumps byte-equal to 3K's blessed baselines at every task boundary, six new list dumps hand-reviewed against the plan's expected streams and blessed; six list spike fixtures un-xfailed and byte-identical to the oracle; full default suite green | shipped: 2026-07-07 at commit 19b64fe |
+| 3M | Completion Safety Rails (`docs/superpowers/plans/2026-07-11-completion-safety-rails.md`) | Completability hardening (`docs/superpowers/specs/2026-07-11-completability-hardening-design.md`, stage 1) | Verification-only IR interpreter; executable stack/sentinel contracts; structural token validation; all-fixture differential smoke report; measured feedback acceleration; MCO-only roadmap executor with role-scoped model failover | Fast interpreter equals committed token dumps; borrowed-stack prefixes and sentinels validated; malformed streams rejected; all 23 fixtures reported non-gating; MCO action/model/failover tests pass without secret leakage; generated SPL byte-identical; full default suite green | in flight |
 | 4 | Spike B — Nested blockquote-in-list | §7.4 | Two-structure composition (blockquote-in-list, list-in-blockquote at minimum scope). Snippet fixtures under `tests/fixtures/architecture_spikes/nested_blocks/` | Spike snippets pass byte-identical to oracle; composition confirmed or halt-and-redesign triggered | pending |
+| 4S | Span Architecture Spike | Completability hardening §4 | Establish protected-region and buffered-scan shape before broad Act III growth: variable code spans, escapes, protected HTML/link/image regions, representative overlapping strong/emphasis | Reviewed span streams and oracle-backed probes pass; Act III model confirmed or halt-and-redesign triggered; Spike A/B snippets remain green | pending |
 | 5 | Slice 2 — Low-risk fixtures | §7.5 | Seven fixtures pass: Auto links (URL only), Backslash escapes, Code Spans, Tidyness, Tabs, Horizontal rules, Code Blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 6 | Slice 3 — Medium-risk fixtures | §7.6 | ~10 fixtures pass: Hard-wrapped paragraphs with list-like lines; Links (inline, reference, shortcut); Images; Literal quotes in titles; Strong and em together; Inline HTML (Simple); Inline HTML comments; Blockquotes with code blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 7 | Slice 4 — High-risk fixtures | §7.7 | Three fixtures pass: Inline HTML (Advanced); Nested blockquotes (full); Ordered and unordered lists (full) | §8.1 four-gate per fixture; spike snippets still pass | pending |
@@ -88,14 +90,15 @@ code and tests: P1 (row 3K, tokenized stream + dispatcher skeleton) shipped
 2026-07-06 and P2 (row 3L, list pass) shipped 2026-07-07. Spike B (row 4)
 is the next pending implementation scope.
 
-## Queued after 3L: completability review actions
+## In flight after 3L: completability hardening
 
 `docs/superpowers/notes/2026-07-07-completability-review.md` records a
-2026-07-07 review of roadmap completability. After 3L ships and before (or
-alongside) writing the Spike B plan: run the input-size execution-scaling
-probe (highest priority), and decide on mdtest parallelization and re-opening
-the cache spike before the Slice 3 plan is written. See the note for the
-decision rules.
+2026-07-07 review of roadmap completability. Its input-size scaling action is
+resolved by B20. The broader 2026-07-11 audit adds structural token, executable
+stack-contract, early span-risk, and all-fixture smoke findings. Plan 3M is the
+sole in-flight plan and implements the safety/feedback rails before Spike B.
+The container representation itself remains Spike B scope; the span
+architecture spike follows Spike B before broad Slice 2 work.
 
 ## Source notes
 
@@ -117,6 +120,7 @@ decision rules.
 - `docs/archive/specs/2026-04-30-literary-prevention-design.md` — approved design for TOML-backed assembler/codegen and prompt-author prevention rails.
 - `docs/archive/plans/2026-04-30-literary-prevention-rails.md` — implementation plan for the approved literary prevention rails.
 - `docs/superpowers/specs/2026-07-05-spl-ir-compiler-design.md` — approved design for the SPL-from-IR compiler (splc), resolving the Spike A halt.
+- `docs/superpowers/specs/2026-07-11-completability-hardening-design.md` — approved staging for structural stream contracts, executable stack safety, the span spike, performance gates, and all-fixture smoke reporting.
 - `docs/spl/literary-spec.md` — voice, palette, decorative-surface policy.
 - `docs/ralph-loop.md` — Huntley/Ralph loop methodology and `@file` university pattern.
 - `CLAUDE.md` — commit conventions, target interface, implementation workflow.
