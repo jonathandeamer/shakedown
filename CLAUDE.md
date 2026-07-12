@@ -68,6 +68,12 @@ npm install -g @tt-a1i/mco@0.10.8
 ./agent-loop --dry-run
 ./agent-loop --once
 ./agent-loop
+
+# Run in background with unbuffered output logged
+PYTHONUNBUFFERED=1 ./agent-loop > .agent/loop.log 2>&1 &
+
+# Tail real-time execution progress
+tail -f .agent/loop.log
 ```
 
 Configuration: `agent-loop.toml` and `.mco/agents.yaml`. Ignored state and

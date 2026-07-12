@@ -565,6 +565,9 @@ def invoke_mco(
     prompt_override: str | None = None,
 ) -> InvocationResult:
     """Invoke exactly one MCO provider and report repository progress."""
+    import datetime
+    import select
+
     config.artifact_dir.mkdir(parents=True, exist_ok=True)
     prompt_file = config.state_file.parent / "mco-current-prompt.md"
     prompt_file.parent.mkdir(parents=True, exist_ok=True)
@@ -577,32 +580,108 @@ def invoke_mco(
     task_id = f"{action.kind.value}-{int(time.time())}-{executor.name}"
     command = mco_command(config, executor, task_id, prompt_file)
     before = repo_fingerprint()
+
+    stdout_lines: list[str] = []
+
+    model_desc = (
+        f"{executor.provider}:{executor.model or executor.display_model or 'default'}"
+    )
+    print(
+        f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] "
+        f"agent-loop: starting {executor.name} ({model_desc}) "
+        f'on task: "{action.summary}"',
+        flush=True,
+    )
+
     try:
-        result = subprocess.run(
+        process = subprocess.Popen(
             command,
             cwd=REPO,
             env=dict(environment),
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
-            check=False,
-            timeout=18000,  # 5 hours
         )
-        exit_code = result.returncode
-        stdout = result.stdout
-        stderr = result.stderr
-    except subprocess.TimeoutExpired as e:
-        exit_code = 124
-        stdout = e.stdout.decode() if isinstance(e.stdout, bytes) else (e.stdout or "")
-        stderr = (
-            e.stderr.decode()
-            if isinstance(e.stderr, bytes)
-            else (e.stderr or "MCO execution timed out after 5 hours at Python level.")
+    except Exception as e:
+        return InvocationResult(
+            exit_code=1,
+            stdout="",
+            stderr=str(e),
+            made_progress=False,
         )
+
+    assert process.stdout is not None, "process.stdout is None"
+    start_time = time.time()
+    timeout = 18000  # 5 hours
+
+    while True:
+        if time.time() - start_time > timeout:
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+            return InvocationResult(
+                exit_code=124,
+                stdout="".join(stdout_lines),
+                stderr="MCO execution timed out after 5 hours at Python level.",
+                made_progress=False,
+            )
+
+        ret = process.poll()
+        rlist, _, _ = select.select([process.stdout], [], [], 1.0)
+        if rlist:
+            line = process.stdout.readline()
+            if not line:
+                if ret is not None:
+                    break
+                continue
+            stdout_lines.append(line)
+
+            try:
+                d = json.loads(line)
+                event_type = d.get("type")
+                if event_type == "tool_execution_start":
+                    tool_name = d.get("toolName", "unknown")
+                    args = d.get("args", {})
+                    cmd = (
+                        args.get("command")
+                        or args.get("CommandLine")
+                        or args.get("path")
+                        or args.get("AbsolutePath")
+                        or ""
+                    )
+                    if len(cmd) > 80:
+                        cmd = cmd[:77] + "..."
+                    print(f"  [tool] {tool_name}: {cmd}", flush=True)
+                elif event_type == "tool_execution_end":
+                    tool_name = d.get("toolName", "unknown")
+                    print(f"  [tool] {tool_name} completed", flush=True)
+                elif event_type == "message_end":
+                    msg = d.get("message", {})
+                    content = msg.get("content", [])
+                    thinking = ""
+                    for item in content:
+                        if item.get("type") == "thinking":
+                            thinking = item.get("thinking", "")
+                            break
+                    if thinking:
+                        summary = thinking.strip().splitlines()[0]
+                        if len(summary) > 80:
+                            summary = summary[:77] + "..."
+                        print(f"  [agent] thinking: {summary}", flush=True)
+            except Exception:
+                pass
+        else:
+            if ret is not None:
+                break
+
+    stderr = process.stderr.read() if process.stderr else ""
     redact_artifacts(config.artifact_dir, environment)
     after = repo_fingerprint()
     return InvocationResult(
-        exit_code=exit_code,
-        stdout=stdout,
+        exit_code=process.returncode,
+        stdout="".join(stdout_lines),
         stderr=stderr,
         made_progress=before != after,
     )
