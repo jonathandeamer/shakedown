@@ -229,7 +229,7 @@ pattern = "scene_of_character"
   Run: `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py -q`  
   Expected: structural baseline tests PASS; new real-runtime/oracle tests FAIL until Tasks 3–4 implement the behavior.
 
-- [ ] **Step 4: Commit and push the corpus and baselines.**
+- [x] **Step 4: Commit and push the corpus and baselines.**
 
   Run: `git add tests/fixtures tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py && git commit -m "test: add nested block spike corpus"`
   Expected: conventional commit and provenance trailers succeed, followed by a successful `git push`.
