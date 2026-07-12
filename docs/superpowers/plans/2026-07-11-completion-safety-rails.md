@@ -61,7 +61,7 @@ git diff --exit-code -- src debug shakedown.spl
 
 ## Task 1 — Commit the instruction-level IR interpreter
 
-- [ ] Add `scripts/splc/interpret.py` implementing expressions, conditions,
+- [x] Add `scripts/splc/interpret.py` implementing expressions, conditions,
       values, per-character stacks, input/output, branches/gotos, act halt,
       and a configurable step limit for the existing closed IR instruction
       set.
