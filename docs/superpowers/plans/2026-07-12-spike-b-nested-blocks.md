@@ -167,7 +167,7 @@ pattern = "scene_of_character"
   table and its arity table with code 15's canonical phrase
   ``the sum of a big big big cat and the sum of a big big cat and a cat``.
 
-- [ ] **Step 4: Run contract evidence.**
+- [x] **Step 4: Run contract evidence.**
 
   Run: `uv run pytest tests/test_token_codes.py tests/test_token_decode.py tests/test_token_structural_roles.py tests/test_token_structure.py -q`  
   Expected: PASS.
