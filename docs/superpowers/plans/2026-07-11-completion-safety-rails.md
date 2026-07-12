@@ -99,7 +99,7 @@ test causes a local, named contract failure rather than a downstream SPL pop.
 
 ## Task 3 — Add lexical decoding and structural token validation
 
-- [ ] Extend token metadata with verification-only structural roles without
+- [x] Extend token metadata with verification-only structural roles without
       changing numeric codes or `ARITY` behavior.
 - [ ] Add a decoder that turns integer dumps into typed tokens and rejects
       unknown codes, truncated payloads, unterminated text, and framing markers

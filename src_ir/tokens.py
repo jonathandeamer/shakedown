@@ -7,6 +7,7 @@ dispatch, and the debug dump all consume this module."""
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import Enum
 
 PARA = 1
 HEADER = 2
@@ -51,4 +52,41 @@ ARITY: dict[int, TokenArity] = {
     LIST_OPEN: TokenArity(1, False),  # kind: 1 = unordered, 2 = ordered
     LIST_ITEM: TokenArity(1, True),  # looseness: 1 = tight, 2 = loose
     LIST_CLOSE: TokenArity(0, False),
+}
+
+
+class StructuralRole(Enum):
+    """Verification-only grammar role, per the recursive container grammar
+    in docs/superpowers/specs/2026-07-11-completability-hardening-design.md
+    §1. Never consulted by ARITY, emit_token, or any dispatch scene — a
+    structural validator built on top of the lexical layer, not a change
+    to it. LIST_ITEM is classified ITEM because it currently encodes
+    ITEM_OPEN with implicit closure; Spike B may retire that mapping for
+    explicit open/close tokens without this role name changing meaning."""
+
+    LEAF_BLOCK = "leaf_block"
+    CONTAINER_OPEN = "container_open"
+    CONTAINER_CLOSE = "container_close"
+    ITEM = "item"
+    INLINE_MARKER = "inline_marker"
+
+
+# Structural roles for every currently allocated token code (docs/spl/token-codes.md),
+# including codes not yet emitted by any act. Extending this table never changes a
+# numeric code or an ARITY entry.
+ROLES: dict[int, StructuralRole] = {
+    PARA: StructuralRole.LEAF_BLOCK,
+    HEADER: StructuralRole.LEAF_BLOCK,
+    HR: StructuralRole.LEAF_BLOCK,
+    CODE_BLOCK: StructuralRole.LEAF_BLOCK,
+    RAW_HTML_HASH: StructuralRole.LEAF_BLOCK,
+    LIST_OPEN: StructuralRole.CONTAINER_OPEN,
+    LIST_ITEM: StructuralRole.ITEM,
+    LIST_CLOSE: StructuralRole.CONTAINER_CLOSE,
+    BLOCKQUOTE_OPEN: StructuralRole.CONTAINER_OPEN,
+    BLOCKQUOTE_CLOSE: StructuralRole.CONTAINER_CLOSE,
+    ANCHOR_OPEN: StructuralRole.INLINE_MARKER,
+    ANCHOR_TITLE: StructuralRole.INLINE_MARKER,
+    ANCHOR_TEXT: StructuralRole.INLINE_MARKER,
+    ANCHOR_CLOSE: StructuralRole.INLINE_MARKER,
 }
