@@ -9,6 +9,9 @@ REPO = Path(__file__).parent.parent
 SHAKEDOWN = REPO / "shakedown"
 MARKDOWN_PL = Path.home() / "markdown" / "Markdown.pl"
 LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
+NESTED_BLOCK_FIXTURES = (
+    REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"
+)
 
 
 def _first_diff(a: bytes, b: bytes) -> int | None:
@@ -35,8 +38,26 @@ def _list_cases() -> list[Path]:
     return sorted(LIST_FIXTURES.glob("*.text"))
 
 
+def _nested_block_cases() -> list[Path]:
+    return sorted(NESTED_BLOCK_FIXTURES.glob("*.text"))
+
+
 @pytest.mark.parametrize("fixture", _list_cases(), ids=lambda path: path.stem)
 def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
+    input_bytes = fixture.read_bytes()
+    actual = _run([str(SHAKEDOWN)], input_bytes)
+    expected = _run(["perl", str(MARKDOWN_PL)], input_bytes)
+
+    assert actual == expected, (
+        f"Output mismatch for {fixture.name}; first diff: "
+        f"{_first_diff(actual, expected)}\n"
+        f"--- expected\n{expected.decode(errors='replace')}\n"
+        f"+++ actual\n{actual.decode(errors='replace')}"
+    )
+
+
+@pytest.mark.parametrize("fixture", _nested_block_cases(), ids=lambda path: path.stem)
+def test_nested_block_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
     input_bytes = fixture.read_bytes()
     actual = _run([str(SHAKEDOWN)], input_bytes)
     expected = _run(["perl", str(MARKDOWN_PL)], input_bytes)

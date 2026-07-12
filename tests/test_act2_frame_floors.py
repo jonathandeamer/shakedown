@@ -25,6 +25,9 @@ from src_ir.act2 import ACT as ACT2
 
 REPO = Path(__file__).parent.parent
 LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
+NESTED_BLOCK_FIXTURES = (
+    REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"
+)
 
 STEP_LIMIT = 200_000
 
@@ -53,11 +56,12 @@ class _MinDepthObserver:
 
 @pytest.mark.parametrize("char", _TRACKED_CHARS, ids=lambda c: c.value)
 @pytest.mark.parametrize(
-    "stem",
-    sorted(path.stem for path in LIST_FIXTURES.glob("*.text")),
+    "fixture",
+    sorted((*LIST_FIXTURES.glob("*.text"), *NESTED_BLOCK_FIXTURES.glob("*.text"))),
+    ids=lambda path: path.stem,
 )
-def test_act2_restores_frame_and_carrier_floors(stem: str, char: Char) -> None:
-    input_text = (LIST_FIXTURES / f"{stem}.text").read_text()
+def test_act2_restores_frame_and_carrier_floors(fixture: Path, char: Char) -> None:
+    input_text = fixture.read_text()
     state = InterpreterState(input_text=input_text)
     state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
 

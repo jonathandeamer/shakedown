@@ -34,6 +34,10 @@ def test_debug_target_dumps_integer_token_stream() -> None:
 BASELINES = REPO / "tests" / "fixtures" / "token_stream"
 LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
 LIST_BASELINES = BASELINES / "lists"
+NESTED_BLOCK_FIXTURES = (
+    REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"
+)
+NESTED_BLOCK_BASELINES = BASELINES / "nested_blocks"
 
 
 def _dump(input_bytes: bytes) -> bytes:
@@ -66,3 +70,14 @@ def test_dump_matches_blessed_list_baseline(stem: str) -> None:
     hand-review; later slices re-bless deliberately, never casually."""
     fixture = LIST_FIXTURES / f"{stem}.text"
     assert _dump(fixture.read_bytes()) == (LIST_BASELINES / f"{stem}.dump").read_bytes()
+
+
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in NESTED_BLOCK_FIXTURES.glob("*.text")),
+)
+def test_dump_matches_blessed_nested_block_baseline(stem: str) -> None:
+    fixture = NESTED_BLOCK_FIXTURES / f"{stem}.text"
+    assert _dump(fixture.read_bytes()) == (
+        NESTED_BLOCK_BASELINES / f"{stem}.dump"
+    ).read_bytes()

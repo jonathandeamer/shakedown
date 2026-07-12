@@ -19,16 +19,20 @@ from src_ir.act2 import ACT as ACT2
 
 REPO = Path(__file__).parent.parent
 LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
+NESTED_BLOCK_FIXTURES = (
+    REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"
+)
 
 STEP_LIMIT = 200_000
 
 
 @pytest.mark.parametrize(
-    "stem",
-    sorted(path.stem for path in LIST_FIXTURES.glob("*.text")),
+    "fixture",
+    sorted((*LIST_FIXTURES.glob("*.text"), *NESTED_BLOCK_FIXTURES.glob("*.text"))),
+    ids=lambda path: path.stem,
 )
-def test_act2_preserves_prior_payload_on_horatio_stack(stem: str) -> None:
-    input_text = (LIST_FIXTURES / f"{stem}.text").read_text()
+def test_act2_preserves_prior_payload_on_horatio_stack(fixture: Path) -> None:
+    input_text = fixture.read_text()
     state = InterpreterState(input_text=input_text)
     state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
 

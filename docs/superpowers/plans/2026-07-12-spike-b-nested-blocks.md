@@ -196,7 +196,7 @@ pattern = "scene_of_character"
 
 **Produces:** Four permanent Spike B no-regression fixtures, mechanically validated reviewed streams, and all required prose before IR changes.
 
-- [ ] **Step 1: Create the fixture files and parametrize all Spike B checks.**
+- [x] **Step 1: Create the fixture files and parametrize all Spike B checks.**
 
   Write the exact Markdown from the design table. Add `NESTED_BLOCK_FIXTURES`, a
   `_nested_block_cases()` glob helper, and a second oracle-backed parametrized
