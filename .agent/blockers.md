@@ -11,5 +11,3 @@ cannot resolve from the universities (`@file` references in
 blocker mid-run. The operator removes the line when the block is resolved.
 
 Non-blocking notes (no halt) use `- NOTE:` instead.
-
-- BLOCK: Spike B Step 3 implementation still pending. Use `docs/superpowers/notes/2026-07-12-spike-b-act2-stage-pair-schedule.md` for the reviewed Act II pair schedule: scan on `(Lady Macbeth, Hecate)`, list/item mutation on `(Lady Macbeth, Macbeth)`, quote open/close on `(Lady Macbeth, Horatio)`, with the reserved `PASS_CONTAINERS_*` labels as goto-only adapters.

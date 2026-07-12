@@ -116,12 +116,21 @@ ACT: Act = act(
             goto("TRAVERSE_NEXT_TOKEN"),
             anchor=JULIET,
         ),
-        scene(
-            "TRAVERSE_COPY_PAYLOAD_TEXT",
-            pop(PUCK, recall="kept_charge"),
-            push(JULIET, val(PUCK)),
-            goto("TRAVERSE_OPEN_TEXT"),
-            anchor=JULIET,
+        *(
+            [
+                scene(
+                    "TRAVERSE_COPY_PAYLOAD_TEXT",
+                    pop(PUCK, recall="kept_charge"),
+                    push(JULIET, val(PUCK)),
+                    goto("TRAVERSE_OPEN_TEXT"),
+                    anchor=JULIET,
+                )
+            ]
+            if any(
+                arity.payloads == 1 and arity.has_text
+                for arity in tokens.ARITY.values()
+            )
+            else []
         ),
         scene(
             "TRAVERSE_OPEN_TEXT",

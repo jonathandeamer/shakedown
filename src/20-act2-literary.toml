@@ -342,6 +342,38 @@ pattern = "bare_statement"
 title = "A space must follow the brother banner."
 pattern = "bare_statement"
 
+[scenes.PASS_CONTAINERS_OPEN]
+title = "Lady Macbeth opens the inner field."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_QUOTE]
+title = "Hecate bears the dark reply within."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_REPLAY]
+title = "The herald returns the guarded word."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_REPLAY_SCAN]
+title = "The herald returns the guarded word."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_CLOSE]
+title = "Macbeth seals the folded rampart."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_BOUNDARY]
+title = "The outer field receives the broken line."
+pattern = "bare_statement"
+
+[scenes.PASS_CONTAINERS_DEPTH]
+title = "Macbeth counts the inward marches."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_EOF]
+title = "The last rampart yields to silence."
+pattern = "bare_statement"
+
 [scenes.PASS_PARA_CLOSE_BLANK]
 title = "The wall is sealed against the blank."
 pattern = "bare_statement"
@@ -358,9 +390,13 @@ pattern = "bare_statement"
 title = "The last chamber is sealed."
 pattern = "bare_statement"
 
-[scenes.PASS_PARA_ITEM]
-title = "The soldier receives his kept measure."
-pattern = "bare_statement"
+[scenes.PASS_PARA_ITEM_OPEN]
+title = "Lady Macbeth names the soldier's chamber."
+pattern = "scene_of_character"
+
+[scenes.PASS_PARA_ITEM_CLOSE]
+title = "Macbeth lowers the inner standard."
+pattern = "scene_of_character"
 
 [scenes.PASS_PARA_ITEM_TEXT]
 title = "The soldier's words pass through unchanged."

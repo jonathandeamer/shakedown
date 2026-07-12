@@ -39,7 +39,7 @@ Juliet:
  Are you as fair as the sum of a furry black cat and a cat?
 
 Puck:
- If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_TEXT.
+ If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_NEXT.
 
 Juliet:
  Let us return to scene @TRAVERSE_NEXT_TOKEN.
@@ -55,18 +55,6 @@ Puck:
 
 Juliet:
  Let us return to scene @TRAVERSE_NEXT_TOKEN.
-
-
-                    Scene @TRAVERSE_COPY_PAYLOAD_TEXT: @LIT.scenes.TRAVERSE_COPY_PAYLOAD_TEXT.title
-
-Juliet:
- @LIT.characters.juliet.recall.kept_charge
-
-Puck:
- Remember myself.
-
-Juliet:
- Let us proceed to scene @TRAVERSE_OPEN_TEXT.
 
 
                     Scene @TRAVERSE_OPEN_TEXT: @LIT.scenes.TRAVERSE_OPEN_TEXT.title

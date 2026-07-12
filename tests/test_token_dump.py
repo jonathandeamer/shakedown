@@ -56,6 +56,12 @@ def _reviewed_dump(stem: str) -> list[int]:
     ]
 
 
+def _reviewed_debug_dump(stem: str) -> bytes:
+    values = _reviewed_dump(stem)
+    assert values[-1] == tokens.STREAM_END
+    return "".join(f"{value}\n" for value in values[:-1]).encode()
+
+
 def _act2_carrier_stream(stem: str) -> list[int]:
     state = InterpreterState(
         input_text=(NESTED_BLOCK_FIXTURES / f"{stem}.text").read_text()
@@ -110,10 +116,7 @@ def test_dump_matches_blessed_list_baseline(stem: str) -> None:
 )
 def test_dump_matches_blessed_nested_block_baseline(stem: str) -> None:
     fixture = NESTED_BLOCK_FIXTURES / f"{stem}.text"
-    assert (
-        _dump(fixture.read_bytes())
-        == (NESTED_BLOCK_BASELINES / f"{stem}.dump").read_bytes()
-    )
+    assert _dump(fixture.read_bytes()) == _reviewed_debug_dump(stem)
 
 
 @pytest.mark.parametrize(

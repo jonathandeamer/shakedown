@@ -265,7 +265,7 @@ pattern = "scene_of_character"
   Run: `uv run pytest tests/test_token_dump.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py -q`  
   Expected: FAIL because current Act II emits text-bearing implicit list items and no blockquote tokens.
 
-- [ ] **Step 3: Replace implicit item text framing with recursive container frames.**
+- [x] **Step 3: Replace implicit item text framing with recursive container frames.**
 
   In `src_ir/act2.py`:
 

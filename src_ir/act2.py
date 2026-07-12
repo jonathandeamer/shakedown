@@ -2,22 +2,19 @@
 
 Carrier choreography (design spec ping-pong, §6.3):
   PASS_LISTS:   Hecate (glyphs, countdown on Lady Macbeth) -> Lady Macbeth
-  STAGE:        Lady Macbeth -> Macbeth (main); Horatio -> Puck (side)
-  PASS_PARA:    Macbeth (+ Puck side) -> Lady Macbeth
+  STAGE:        Lady Macbeth -> Macbeth
+  PASS_PARA:    Macbeth -> Lady Macbeth
   FRAME_REVERSE: Lady Macbeth -> Puck (unchanged from P1)
 
 Registers during PASS_LISTS: Lady Macbeth = input countdown; Hecate = current
 glyph; Macbeth = open-list depth (statically restored after frame pops);
-Horatio = current item looseness (1 tight / 2 loose); Puck = saved marker
-char. Macbeth's stack holds the open-list frame sentinels (kind per level)
-above a -1 floor; Horatio's stack is the per-item looseness side channel
-above a -1 floor.
+Horatio = quote-open state; Puck = saved marker char. Macbeth's stack holds
+the open-list frame sentinels (kind per level) above a -1 floor.
 
-The list pass emits item text directly onto the carrier bracketed as
-[ITEM_START(-2), glyphs..., 0]; the item's looseness is pushed onto the side
-channel at item end (completion order). PASS_PARA replaces each ITEM_START
-with the LIST_ITEM code and the next side-channel value (the STAGE reverse
-flips the side stack so first-completed pops first).
+The list pass emits item content onto the mixed carrier bracketed as
+[ITEM_START(-2), looseness, glyphs..., 0, ITEM_CLOSE]. PASS_PARA replaces each
+ITEM_START with LIST_ITEM, forms PARA blocks from raw regions, and copies
+ITEM_CLOSE and other structural tokens unchanged.
 """
 
 from __future__ import annotations
@@ -42,12 +39,14 @@ from scripts.splc.ir import (
 )
 from src_ir import tokens
 from src_ir.cast import HECATE, HORATIO, LADY_MACBETH, MACBETH, PUCK
-from src_ir.stream import emit_token
+from src_ir.stream import RECIPES, emit_token
 
 _NEWLINE = const(10)
 _SPACE = const(32)
 _TAB = const(9)
 _END = const(tokens.STREAM_END)
+_PARA_START = const(tokens.HEADER)
+_BLOCKQUOTE_MARK = RECIPES[62]
 
 
 def _read(recall: str = "hewn_glyph"):
@@ -62,12 +61,12 @@ ACT: Act = act(
     2,
     LADY_MACBETH,
     [
-        # --- Frame entry: seed the carrier, side-channel, and frame floors.
+        # --- Frame entry: seed the carrier and frame floor.
         scene(
             "ACT_II_START",
             let(LADY_MACBETH, val(HORATIO)),
             push(LADY_MACBETH, _END),
-            push(HORATIO, _END),
+            let(HORATIO, const(0)),
             goto("PASS_LISTS_SEED_FRAMES"),
         ),
         scene(
@@ -98,6 +97,7 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_GATE_UNORDERED",
+            branch(eq(val(HECATE), _BLOCKQUOTE_MARK), then="PASS_CONTAINERS_QUOTE"),
             branch(eq(val(HECATE), const(42)), then="PASS_LISTS_MARK_SAVE_UL"),
             branch(eq(val(HECATE), const(43)), then="PASS_LISTS_MARK_SAVE_UL"),
             branch(eq(val(HECATE), const(45)), then="PASS_LISTS_MARK_SAVE_UL"),
@@ -106,6 +106,7 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_GATE_ORDERED",
+            branch(gt(val(MACBETH), const(0)), then="PASS_LISTS_ITEM_GLYPH"),
             branch(lt(val(HECATE), const(48)), then="PASS_LISTS_RAW_GLYPH"),
             branch(gt(val(HECATE), const(57)), then="PASS_LISTS_RAW_GLYPH"),
             goto("PASS_LISTS_MARK_SAVE_OL"),
@@ -175,11 +176,12 @@ ACT: Act = act(
             "PASS_LISTS_RAW_AFTER_NEWLINE",
             branch(eq(val(LADY_MACBETH), const(0)), then="PASS_LISTS_DONE"),
             *_read("blank_glyph"),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_LISTS_RAW_BLANK"),
             branch(
-                eq(val(HECATE), _NEWLINE),
-                then="PASS_LISTS_RAW_BLANK",
-                else_="PASS_LISTS_RAW_GLYPH",
+                eq(val(HORATIO), const(1)),
+                then="PASS_LISTS_ITEM_SKIP_SPACES",
             ),
+            goto("PASS_LISTS_RAW_GLYPH"),
         ),
         scene(
             "PASS_LISTS_RAW_BLANK",
@@ -208,21 +210,25 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_ITEM_BEGIN_TIGHT",
-            let(HORATIO, const(1)),
             push(LADY_MACBETH, const(tokens.ITEM_START)),
+            push(LADY_MACBETH, const(1)),
             goto("PASS_LISTS_ITEM_SKIP_SPACES"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_ITEM_BEGIN_LOOSE",
-            let(HORATIO, const(2)),
             push(LADY_MACBETH, const(tokens.ITEM_START)),
+            push(LADY_MACBETH, const(2)),
             goto("PASS_LISTS_ITEM_SKIP_SPACES"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_ITEM_SKIP_SPACES",
             *_read(),
             branch(eq(val(HECATE), _SPACE), then="PASS_LISTS_ITEM_SKIP_SPACES"),
             branch(eq(val(HECATE), _TAB), then="PASS_LISTS_ITEM_SKIP_SPACES"),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_LISTS_LIST_END"),
+            branch(gt(val(HORATIO), const(0)), then="PASS_LISTS_GATE_UNORDERED"),
             goto("PASS_LISTS_ITEM_GLYPH"),
         ),
         # --- Item text: glyphs flow directly onto the carrier.
@@ -240,10 +246,71 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_ITEM_LINE_END",
+            branch(
+                eq(val(HORATIO), const(2)),
+                then="PASS_CONTAINERS_REPLAY",
+            ),
             branch(eq(val(LADY_MACBETH), const(0)), then="PASS_LISTS_END_OF_INPUT"),
             *_read(),
-            branch(eq(val(HECATE), _NEWLINE), then="PASS_LISTS_BLANK"),
+            branch(eq(val(LADY_MACBETH), const(0)), then="PASS_LISTS_END_OF_INPUT"),
+            branch(
+                eq(val(HORATIO), const(1)),
+                then="PASS_CONTAINERS_BOUNDARY",
+            ),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_CONTAINERS_OPEN"),
             branch(eq(val(HECATE), _SPACE), then="PASS_LISTS_INDENT_1"),
+            goto("PASS_LISTS_LINE_HEAD"),
+        ),
+        # A blank makes the current item loose. Rewrite the payload already
+        # emitted after ITEM_START while preserving the mixed-stream suffix
+        # on Macbeth above a temporary floor.
+        scene(
+            "PASS_CONTAINERS_OPEN",
+            push(MACBETH, val(LADY_MACBETH)),
+            push(MACBETH, const(tokens.ITEM_START)),
+            goto("PASS_CONTAINERS_DEPTH"),
+        ),
+        scene(
+            "PASS_CONTAINERS_DEPTH",
+            pop(LADY_MACBETH, recall="masons_stone"),
+            branch(
+                eq(val(LADY_MACBETH), const(tokens.ITEM_START)),
+                then="PASS_CONTAINERS_EOF",
+            ),
+            push(MACBETH, val(LADY_MACBETH)),
+            goto("PASS_CONTAINERS_DEPTH"),
+        ),
+        scene(
+            "PASS_CONTAINERS_EOF",
+            pop(MACBETH, recall="fallen_rampart"),
+            push(LADY_MACBETH, const(tokens.ITEM_START)),
+            push(LADY_MACBETH, const(2)),
+            goto("PASS_CONTAINERS_CLOSE"),
+        ),
+        scene(
+            "PASS_CONTAINERS_CLOSE",
+            pop(MACBETH, recall="fallen_rampart"),
+            branch(
+                eq(val(MACBETH), const(tokens.ITEM_START)),
+                then="FRAME_STAGE_SIDE_OPEN",
+            ),
+            push(LADY_MACBETH, val(MACBETH)),
+            goto("PASS_CONTAINERS_CLOSE"),
+        ),
+        scene(
+            "FRAME_STAGE_SIDE_OPEN",
+            pop(MACBETH, recall="fallen_rampart"),
+            let(LADY_MACBETH, val(MACBETH)),
+            pop(MACBETH, recall="fallen_rampart"),
+            push(MACBETH, val(MACBETH)),
+            goto("PASS_LISTS_BLANK"),
+        ),
+        scene(
+            "PASS_CONTAINERS_BOUNDARY",
+            *_read(),
+            branch(eq(val(HECATE), _SPACE), then="PASS_CONTAINERS_BOUNDARY"),
+            branch(eq(val(HECATE), _TAB), then="PASS_CONTAINERS_BOUNDARY"),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_LISTS_LIST_END"),
             goto("PASS_LISTS_LINE_HEAD"),
         ),
         # --- Line head at indent 0 inside a list: sibling marker or lazy text.
@@ -316,12 +383,13 @@ ACT: Act = act(
         scene(
             "PASS_LISTS_SIB_EMIT",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             branch(
                 eq(val(MACBETH), const(2)),
                 then="PASS_LISTS_SIB_OUTDENT",
                 else_="PASS_LISTS_ITEM_BEGIN_TIGHT",
             ),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_SIB_OUTDENT",
@@ -405,22 +473,24 @@ ACT: Act = act(
         scene(
             "PASS_LISTS_NEST_EMIT_UL",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             branch(
                 eq(val(MACBETH), const(1)),
                 then="PASS_LISTS_NEST_OPEN_UL",
                 else_="PASS_LISTS_ITEM_BEGIN_TIGHT",
             ),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_NEST_EMIT_OL",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             branch(
                 eq(val(MACBETH), const(1)),
                 then="PASS_LISTS_NEST_OPEN_OL",
                 else_="PASS_LISTS_ITEM_BEGIN_TIGHT",
             ),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_NEST_OPEN_UL",
@@ -493,13 +563,13 @@ ACT: Act = act(
         scene(
             "PASS_LISTS_BSIB_EMIT",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            let(HORATIO, const(2)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             branch(
                 eq(val(MACBETH), const(2)),
                 then="PASS_LISTS_BSIB_OUTDENT",
                 else_="PASS_LISTS_ITEM_BEGIN_LOOSE",
             ),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_BSIB_OUTDENT",
@@ -520,6 +590,7 @@ ACT: Act = act(
             "PASS_LISTS_BLANK_INDENT_2",
             *_read(),
             branch(eq(val(HECATE), _SPACE), then="PASS_LISTS_BLANK_INDENT_3"),
+            branch(eq(val(HECATE), _BLOCKQUOTE_MARK), then="PASS_CONTAINERS_QUOTE"),
             goto("PASS_LISTS_BLANK_JOIN"),
         ),
         scene(
@@ -535,35 +606,69 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_BLANK_JOIN",
-            let(HORATIO, const(2)),
-            push(LADY_MACBETH, _NEWLINE),
-            push(LADY_MACBETH, _NEWLINE),
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
+            push(LADY_MACBETH, _PARA_START),
             goto("PASS_LISTS_ITEM_GLYPH"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_CONTAINERS_QUOTE",
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
+            push(LADY_MACBETH, const(tokens.BLOCKQUOTE_OPEN)),
+            let(HORATIO, add(val(MACBETH), const(1))),
+            goto("PASS_LISTS_ITEM_SKIP_SPACES"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_CONTAINERS_REPLAY",
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
+            push(LADY_MACBETH, const(tokens.BLOCKQUOTE_CLOSE)),
+            let(HORATIO, const(0)),
+            branch(
+                eq(val(LADY_MACBETH), const(0)),
+                then="FRAME_STAGE_SIDE_POP",
+                else_="PASS_CONTAINERS_REPLAY_SCAN",
+            ),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_CONTAINERS_REPLAY_SCAN",
+            goto("PASS_LISTS_BLANK"),
+            companion=HECATE,
+        ),
+        scene(
+            "FRAME_STAGE_SIDE_POP",
+            goto("FRAME_STAGE_MAIN_OPEN"),
+            companion=MACBETH,
         ),
         # --- List end and input end.
         scene(
             "PASS_LISTS_LIST_END",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_CLOSE_ALL"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_LIST_END_REPLAY",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_CLOSE_ALL_REPLAY"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_LIST_END_REPLAY_DOT",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_CLOSE_ALL_REPLAY_DOT"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_END_OF_INPUT",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(HORATIO, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_CLOSE_ALL"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_LISTS_CLOSE_ALL",
@@ -580,6 +685,10 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_AFTER_LIST",
+            branch(
+                eq(val(HORATIO), const(1)),
+                then="PASS_LISTS_RAW_AFTER_NEWLINE",
+            ),
             branch(
                 eq(val(LADY_MACBETH), const(0)),
                 then="PASS_LISTS_DONE",
@@ -618,11 +727,14 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_DONE",
-            goto("FRAME_STAGE_MAIN_OPEN"),
+            branch(
+                eq(val(HORATIO), const(1)),
+                then="PASS_CONTAINERS_REPLAY",
+                else_="FRAME_STAGE_MAIN_OPEN",
+            ),
             companion=HECATE,
         ),
-        # --- Staging: reverse the mixed stream onto Macbeth and the
-        # --- looseness side channel onto Puck.
+        # --- Staging: reverse the mixed stream onto Macbeth.
         scene(
             "FRAME_STAGE_MAIN_OPEN",
             push(MACBETH, _END),
@@ -631,23 +743,9 @@ ACT: Act = act(
         scene(
             "FRAME_STAGE_MAIN_POP",
             pop(LADY_MACBETH, recall="masons_stone"),
-            branch(eq(val(LADY_MACBETH), _END), then="FRAME_STAGE_SIDE_OPEN"),
+            branch(eq(val(LADY_MACBETH), _END), then="PASS_PARA_OPEN"),
             push(MACBETH, val(LADY_MACBETH)),
             goto("FRAME_STAGE_MAIN_POP"),
-        ),
-        scene(
-            "FRAME_STAGE_SIDE_OPEN",
-            goto("FRAME_STAGE_SIDE_POP"),
-            anchor=HORATIO,
-            companion=PUCK,
-        ),
-        scene(
-            "FRAME_STAGE_SIDE_POP",
-            pop(HORATIO, recall="kept_measure"),
-            branch(eq(val(HORATIO), _END), then="PASS_PARA_OPEN"),
-            push(PUCK, val(HORATIO)),
-            goto("FRAME_STAGE_SIDE_POP"),
-            anchor=HORATIO,
         ),
         # --- Paragraph pass: walk the staged stream, form PARA tokens from
         # --- raw regions, finalize item frames from the side channel.
@@ -663,6 +761,10 @@ ACT: Act = act(
             branch(eq(val(MACBETH), _END), then="FRAME_REVERSE_OPEN"),
             branch(eq(val(MACBETH), _NEWLINE), then="PASS_PARA_NEXT"),
             branch(
+                eq(val(MACBETH), const(tokens.TEXT_END)),
+                then="PASS_PARA_NEXT",
+            ),
+            branch(
                 eq(val(MACBETH), const(tokens.LIST_OPEN)),
                 then="PASS_PARA_COPY_OPEN",
             ),
@@ -670,7 +772,23 @@ ACT: Act = act(
                 eq(val(MACBETH), const(tokens.LIST_CLOSE)),
                 then="PASS_PARA_COPY_CLOSE",
             ),
-            branch(eq(val(MACBETH), const(tokens.ITEM_START)), then="PASS_PARA_ITEM"),
+            branch(
+                eq(val(MACBETH), const(tokens.BLOCKQUOTE_OPEN)),
+                then="PASS_PARA_COPY_CLOSE",
+            ),
+            branch(
+                eq(val(MACBETH), const(tokens.BLOCKQUOTE_CLOSE)),
+                then="PASS_PARA_COPY_CLOSE",
+            ),
+            branch(
+                eq(val(MACBETH), const(tokens.ITEM_START)),
+                then="PASS_PARA_ITEM_OPEN",
+            ),
+            branch(
+                eq(val(MACBETH), const(tokens.ITEM_CLOSE)),
+                then="PASS_PARA_ITEM_CLOSE",
+            ),
+            branch(eq(val(MACBETH), _PARA_START), then="PASS_PARA_ITEM_TEXT"),
             goto("PASS_PARA_OPEN_PARA"),
         ),
         scene(
@@ -682,26 +800,28 @@ ACT: Act = act(
         ),
         scene(
             "PASS_PARA_COPY_CLOSE",
-            push(LADY_MACBETH, const(tokens.LIST_CLOSE)),
+            push(LADY_MACBETH, val(MACBETH)),
             goto("PASS_PARA_NEXT"),
             companion=MACBETH,
         ),
         scene(
-            "PASS_PARA_ITEM",
+            "PASS_PARA_ITEM_OPEN",
             push(LADY_MACBETH, const(tokens.LIST_ITEM)),
-            pop(PUCK, recall="kept_measure"),
-            push(LADY_MACBETH, val(PUCK)),
+            pop(MACBETH, recall="staged_stone"),
+            push(LADY_MACBETH, val(MACBETH)),
             goto("PASS_PARA_ITEM_TEXT"),
         ),
         scene(
             "PASS_PARA_ITEM_TEXT",
-            pop(MACBETH, recall="staged_stone"),
-            push(LADY_MACBETH, val(MACBETH)),
-            branch(
-                eq(val(MACBETH), const(tokens.TEXT_END)),
-                then="PASS_PARA_NEXT",
-                else_="PASS_PARA_ITEM_TEXT",
-            ),
+            *emit_token(LADY_MACBETH, tokens.PARA),
+            goto("PASS_PARA_TEXT"),
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_PARA_ITEM_CLOSE",
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
+            goto("PASS_PARA_NEXT"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_PARA_OPEN_PARA",
@@ -715,6 +835,10 @@ ACT: Act = act(
             pop(MACBETH, recall="staged_stone"),
             branch(eq(val(MACBETH), _NEWLINE), then="PASS_PARA_NEWLINE"),
             branch(eq(val(MACBETH), _END), then="PASS_PARA_FINAL_CLOSE"),
+            branch(
+                eq(val(MACBETH), const(tokens.TEXT_END)),
+                then="PASS_PARA_CLOSE_BLANK",
+            ),
             push(LADY_MACBETH, val(MACBETH)),
             goto("PASS_PARA_TEXT"),
         ),
