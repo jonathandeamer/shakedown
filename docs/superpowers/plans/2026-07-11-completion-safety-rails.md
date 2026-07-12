@@ -268,7 +268,7 @@ type checks passed; the full default suite passed 407 tests with the roadmap's
 **Design:**
 `docs/superpowers/specs/2026-07-12-agent-loop-result-hardening-design.md`
 
-**Evidence recorded 2026-07-12:** `tests/test_mco_loop.py` passed 50 tests;
+**Evidence recorded 2026-07-12:** `tests/test_mco_loop.py` passed 51 tests;
 ruff check and format-check passed; pyright reported zero errors; dry-run
 selected `claude-implement` with Pi retained as the stateless fallback tail;
 the full default suite passed 560 tests with 26 documented skips and one
