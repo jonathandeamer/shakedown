@@ -409,7 +409,7 @@ pattern = "scene_of_character"
   proves assembly/codegen and the retained Slice-1 fixture; the third is the
   full default regression gate.
 
-- [ ] **Step 2: Re-run exact literary compliance after regenerated SPL.**
+- [x] **Step 2: Re-run exact literary compliance after regenerated SPL.**
 
   Run: `uv run pytest tests/test_literary_toml_schema.py tests/test_literary_compliance.py tests/test_spl_style_guide_validation.py tests/test_splc_prose.py -q`  
   Expected: PASS.
