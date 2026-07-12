@@ -103,7 +103,7 @@ pattern = "bare_statement"
 
 **Produces:** Five permanent, byte-exact source/output contracts that fail against the pre-spike production runtime without changing it.
 
-- [ ] **Step 1: Add the exact source fixtures.**
+- [x] **Step 1: Add the exact source fixtures.**
 
   Create the five `.text` files with precisely these bytes (each final newline is significant):
 
