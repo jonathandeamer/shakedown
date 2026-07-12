@@ -1,0 +1,222 @@
+"""Instruction-level interpreter for the closed splc IR.
+
+Verification-only: it interprets `scripts.splc.ir` acts directly, never
+generated SPL prose, and is never invoked by `./shakedown`. It exists so
+tests can execute an act's instruction stream without a `shakespeare`
+subprocess. See docs/superpowers/specs/2026-07-11-completability-hardening-design.md
+§2.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+from scripts.splc.ir import (
+    Act,
+    BinOp,
+    Branch,
+    Char,
+    Cond,
+    Const,
+    Expr,
+    Goto,
+    HaltAct,
+    Let,
+    Pop,
+    PrintChar,
+    PrintInt,
+    Push,
+    ReadChar,
+    Val,
+)
+
+
+@dataclass
+class InterpreterState:
+    """Cross-act state: character values, stacks, stdin cursor, and output.
+
+    Injectable so tests can run one act, inspect the resulting state, and
+    hand it to the next act unchanged — mirroring how the real interpreter
+    carries values and stacks across act boundaries.
+    """
+
+    values: dict[Char, int] = field(default_factory=lambda: {c: 0 for c in Char})
+    stacks: dict[Char, list[int]] = field(default_factory=lambda: {c: [] for c in Char})
+    input_text: str = ""
+    input_pos: int = 0
+    output: list[str] = field(default_factory=list)
+
+    def output_text(self) -> str:
+        return "".join(self.output)
+
+
+class InterpreterError(RuntimeError):
+    """Base class for interpreter failures; always names act and scene."""
+
+
+class StackUnderflow(InterpreterError):
+    def __init__(self, act: int, scene: str, char: Char, step: int) -> None:
+        self.act = act
+        self.scene = scene
+        self.char = char
+        self.step = step
+        super().__init__(
+            f"act {act} scene {scene} step {step}: stack underflow popping {char.value}"
+        )
+
+
+class StepLimitExceeded(InterpreterError):
+    def __init__(self, act: int, scene: str, step_limit: int) -> None:
+        self.act = act
+        self.scene = scene
+        self.step_limit = step_limit
+        super().__init__(f"act {act} scene {scene}: exceeded step limit {step_limit}")
+
+
+class DivisionByZero(InterpreterError):
+    def __init__(self, act: int, scene: str, step: int) -> None:
+        self.act = act
+        self.scene = scene
+        self.step = step
+        super().__init__(f"act {act} scene {scene} step {step}: division by zero")
+
+
+class InvalidCharCode(InterpreterError):
+    def __init__(self, act: int, scene: str, char: Char, step: int, code: int) -> None:
+        self.act = act
+        self.scene = scene
+        self.char = char
+        self.step = step
+        self.code = code
+        super().__init__(
+            f"act {act} scene {scene} step {step}: {char.value} holds invalid "
+            f"character code {code}"
+        )
+
+
+def _trunc_div(left: int, right: int) -> int:
+    quotient = abs(left) // abs(right)
+    return -quotient if (left < 0) != (right < 0) else quotient
+
+
+def _trunc_mod(left: int, right: int) -> int:
+    return left - _trunc_div(left, right) * right
+
+
+def _eval_binop(
+    op: BinOp, state: InterpreterState, act: int, scene: str, step: int
+) -> int:
+    left = _eval(op.left, state, act, scene, step)
+    right = _eval(op.right, state, act, scene, step)
+    if op.op == "add":
+        return left + right
+    if op.op == "sub":
+        return left - right
+    if op.op == "mul":
+        return left * right
+    if right == 0:
+        raise DivisionByZero(act, scene, step)
+    if op.op == "div":
+        return _trunc_div(left, right)
+    if op.op == "mod":
+        return _trunc_mod(left, right)
+    raise TypeError(f"unknown binop {op.op!r}")
+
+
+def _eval(expr: Expr, state: InterpreterState, act: int, scene: str, step: int) -> int:
+    if isinstance(expr, Const):
+        return expr.value
+    if isinstance(expr, Val):
+        return state.values[expr.char]
+    if isinstance(expr, BinOp):
+        return _eval_binop(expr, state, act, scene, step)
+    raise TypeError(f"unknown expression node {expr!r}")
+
+
+def _eval_cond(
+    cond: Cond, state: InterpreterState, act: int, scene: str, step: int
+) -> bool:
+    left = _eval(cond.left, state, act, scene, step)
+    right = _eval(cond.right, state, act, scene, step)
+    if cond.op == "eq":
+        return left == right
+    if cond.op == "gt":
+        return left > right
+    if cond.op == "lt":
+        return left < right
+    raise TypeError(f"unknown comparator {cond.op!r}")
+
+
+def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpreterState:
+    """Execute `act` starting at its first scene, mutating and returning `state`.
+
+    Scene jumps (`Goto`, `Branch`) resolve only within this act, matching the
+    IR-level validation in `scripts.splc.validate`. `HaltAct` ends the act;
+    running off the end of a scene's ops without a jump cannot happen because
+    every scene is validated as terminal.
+    """
+    by_label = {sc.label: sc for sc in act.scenes}
+    label = act.scenes[0].label
+    step = 0
+    while True:
+        sc = by_label[label]
+        jump: str | None = None
+        halted = False
+        for op in sc.ops:
+            step += 1
+            if step > step_limit:
+                raise StepLimitExceeded(act.number, sc.label, step_limit)
+            if isinstance(op, Let):
+                state.values[op.target] = _eval(
+                    op.expr, state, act.number, sc.label, step
+                )
+            elif isinstance(op, Push):
+                state.stacks[op.target].append(
+                    _eval(op.expr, state, act.number, sc.label, step)
+                )
+            elif isinstance(op, Pop):
+                stack = state.stacks[op.target]
+                if not stack:
+                    raise StackUnderflow(act.number, sc.label, op.target, step)
+                state.values[op.target] = stack.pop()
+            elif isinstance(op, ReadChar):
+                if state.input_pos < len(state.input_text):
+                    state.values[op.target] = ord(state.input_text[state.input_pos])
+                    state.input_pos += 1
+                else:
+                    state.values[op.target] = -1
+            elif isinstance(op, PrintChar):
+                code = state.values[op.target]
+                if code < 0:
+                    raise InvalidCharCode(act.number, sc.label, op.target, step, code)
+                try:
+                    state.output.append(chr(code))
+                except ValueError as exc:
+                    raise InvalidCharCode(
+                        act.number, sc.label, op.target, step, code
+                    ) from exc
+            elif isinstance(op, PrintInt):
+                state.output.append(str(state.values[op.target]))
+            elif isinstance(op, Branch):
+                taken = _eval_cond(op.cond, state, act.number, sc.label, step)
+                if taken:
+                    jump = op.then
+                elif op.else_ is not None:
+                    jump = op.else_
+            elif isinstance(op, Goto):
+                jump = op.target
+            elif isinstance(op, HaltAct):
+                halted = True
+            else:
+                raise TypeError(f"unknown op {op!r}")
+        if halted:
+            return state
+        if jump is None:
+            # Validation guarantees every scene ends in goto/halt/exhaustive
+            # branch, so an untaken non-exhaustive branch falls through here
+            # only when the scene has no further ops after it — unreachable
+            # per `validate._check_terminal`.
+            raise InterpreterError(
+                f"act {act.number} scene {sc.label}: fell off scene without a jump"
+            )
+        label = jump
