@@ -146,7 +146,7 @@ pattern = "bare_statement"
 
   Add `_run_to_act3(stem: str) -> InterpreterState` that feeds the fixture text through `ACT1`, `ACT2`, and `ACT3` with `STEP_LIMIT = 200_000`; add `_carrier_stream(state) -> list[int]` that pops Puck through the sole terminal `STREAM_END`. Assert `stream.count(tokens.STREAM_END) == 1`, `decode_stream(stream[:-1])` succeeds, and `validate_stream(...)` accepts it. Add a parameterized test that records the pre-scan paragraph stream and proves non-text structural tokens/payloads remain unchanged across Act III; keep the expected rendered text deliberately failing until Task 3.
 
-- [ ] **Step 2: Run the contract tests to verify failure.**
+- [x] **Step 2: Run the contract tests to verify failure.**
 
   Run: `uv run pytest tests/test_act3_contracts.py -q`  
   Expected: structural-prefix assertions PASS, while expected rendered-region assertions FAIL because current Act III cannot produce the protected-region contracts.
