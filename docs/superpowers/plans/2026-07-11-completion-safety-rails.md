@@ -83,7 +83,7 @@ real generated SPL is byte-identical before and after the task.
 - [x] Add a verification-only contract module under `scripts/splc/` with typed
       snapshots and assertions for stack prefix preservation, sentinel balance,
       expected carrier termination, and no pop below a declared floor.
-- [ ] Instrument the IR interpreter with optional boundary observers; do not
+- [x] Instrument the IR interpreter with optional boundary observers; do not
       add runtime operations or rendered SPL.
 - [ ] Add Act II contract tests proving that arbitrary pre-existing payload on
       Horatio's stack survives the list-looseness side-channel borrow.

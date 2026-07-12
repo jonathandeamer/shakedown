@@ -10,6 +10,7 @@ subprocess. See docs/superpowers/specs/2026-07-11-completability-hardening-desig
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Protocol
 
 from scripts.splc.ir import (
     Act,
@@ -169,7 +170,26 @@ def _eval_cond(
     raise TypeError(f"unknown comparator {cond.op!r}")
 
 
-def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpretResult:
+class InterpreterObserver(Protocol):
+    """Verification-only boundary hooks for `run_act`.
+
+    Callers (e.g. `scripts.splc.contracts` tests) implement this to record
+    per-push/pop stack depth without the interpreter itself depending on any
+    contract module. Observing adds no runtime operations or rendered SPL —
+    it only reads state the interpreter already mutates.
+    """
+
+    def on_push(self, char: Char, value: int, stack_after: list[int]) -> None: ...
+
+    def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None: ...
+
+
+def run_act(
+    act: Act,
+    state: InterpreterState,
+    step_limit: int,
+    observer: InterpreterObserver | None = None,
+) -> InterpretResult:
     """Execute `act` starting at its first scene, mutating `state` in place.
 
     `state` is injectable: callers construct it once, pass it into one act,
@@ -198,14 +218,19 @@ def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpretResu
                     op.expr, state, act.number, sc.label, step
                 )
             elif isinstance(op, Push):
-                state.stacks[op.target].append(
-                    _eval(op.expr, state, act.number, sc.label, step)
-                )
+                value = _eval(op.expr, state, act.number, sc.label, step)
+                stack = state.stacks[op.target]
+                stack.append(value)
+                if observer is not None:
+                    observer.on_push(op.target, value, stack)
             elif isinstance(op, Pop):
                 stack = state.stacks[op.target]
                 if not stack:
                     raise StackUnderflow(act.number, sc.label, op.target, step)
-                state.values[op.target] = stack.pop()
+                value = stack.pop()
+                state.values[op.target] = value
+                if observer is not None:
+                    observer.on_pop(op.target, value, stack)
             elif isinstance(op, ReadChar):
                 if state.input_pos < len(state.input_text):
                     state.values[op.target] = ord(state.input_text[state.input_pos])
