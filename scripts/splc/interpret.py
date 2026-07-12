@@ -50,47 +50,69 @@ class InterpreterState:
         return "".join(self.output)
 
 
+@dataclass(frozen=True)
+class Diagnostic:
+    """Where an interpreter failure happened: act, scene, step, and — for
+    failures tied to a specific character's value or stack — that character.
+    """
+
+    act: int
+    scene: str
+    step: int
+    char: Char | None = None
+
+
+@dataclass(frozen=True)
+class InterpretResult:
+    """Typed success record returned by a completed act run."""
+
+    state: InterpreterState
+    steps: int
+
+
 class InterpreterError(RuntimeError):
-    """Base class for interpreter failures; always names act and scene."""
+    """Base class for typed interpreter failures; always carries a `Diagnostic`."""
+
+    def __init__(self, diagnostic: Diagnostic, message: str) -> None:
+        self.diagnostic = diagnostic
+        super().__init__(message)
 
 
 class StackUnderflow(InterpreterError):
     def __init__(self, act: int, scene: str, char: Char, step: int) -> None:
-        self.act = act
-        self.scene = scene
-        self.char = char
-        self.step = step
+        diagnostic = Diagnostic(act=act, scene=scene, step=step, char=char)
         super().__init__(
-            f"act {act} scene {scene} step {step}: stack underflow popping {char.value}"
+            diagnostic,
+            f"act {act} scene {scene} step {step}: stack underflow popping "
+            f"{char.value}",
         )
 
 
 class StepLimitExceeded(InterpreterError):
     def __init__(self, act: int, scene: str, step_limit: int) -> None:
-        self.act = act
-        self.scene = scene
         self.step_limit = step_limit
-        super().__init__(f"act {act} scene {scene}: exceeded step limit {step_limit}")
+        diagnostic = Diagnostic(act=act, scene=scene, step=step_limit)
+        super().__init__(
+            diagnostic, f"act {act} scene {scene}: exceeded step limit {step_limit}"
+        )
 
 
 class DivisionByZero(InterpreterError):
     def __init__(self, act: int, scene: str, step: int) -> None:
-        self.act = act
-        self.scene = scene
-        self.step = step
-        super().__init__(f"act {act} scene {scene} step {step}: division by zero")
+        diagnostic = Diagnostic(act=act, scene=scene, step=step)
+        super().__init__(
+            diagnostic, f"act {act} scene {scene} step {step}: division by zero"
+        )
 
 
 class InvalidCharCode(InterpreterError):
     def __init__(self, act: int, scene: str, char: Char, step: int, code: int) -> None:
-        self.act = act
-        self.scene = scene
-        self.char = char
-        self.step = step
         self.code = code
+        diagnostic = Diagnostic(act=act, scene=scene, step=step, char=char)
         super().__init__(
+            diagnostic,
             f"act {act} scene {scene} step {step}: {char.value} holds invalid "
-            f"character code {code}"
+            f"character code {code}",
         )
 
 
@@ -217,6 +239,7 @@ def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpreterSt
             # only when the scene has no further ops after it — unreachable
             # per `validate._check_terminal`.
             raise InterpreterError(
-                f"act {act.number} scene {sc.label}: fell off scene without a jump"
+                Diagnostic(act=act.number, scene=sc.label, step=step),
+                f"act {act.number} scene {sc.label}: fell off scene without a jump",
             )
         label = jump

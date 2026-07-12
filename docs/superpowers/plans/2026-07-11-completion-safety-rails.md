@@ -65,7 +65,7 @@ git diff --exit-code -- src debug shakedown.spl
       values, per-character stacks, input/output, branches/gotos, act halt,
       and a configurable step limit for the existing closed IR instruction
       set.
-- [ ] Define typed result and failure records; underflow errors must name the
+- [x] Define typed result and failure records; underflow errors must name the
       act, scene, character, and step.
 - [ ] Keep interpreter state injectable so tests can execute one act with
       preserved cross-act stacks and values.
