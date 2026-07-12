@@ -109,7 +109,7 @@ test causes a local, named contract failure rather than a downstream SPL pop.
 - [x] Represent the target recursive container grammar from the hardening
       design in tests marked as expected future cases; do not weaken current
       validation to accept an undecided representation.
-- [ ] Validate every committed dump fixture in `tests/fixtures/token_stream/`.
+- [x] Validate every committed dump fixture in `tests/fixtures/token_stream/`.
 - [ ] Add malformed-stream unit cases for each rejection class.
 - [ ] Run the required regression commands.
 
