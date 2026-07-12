@@ -25,7 +25,7 @@ PRESERVED_PLANNING_GROUPS = {"claude", "codex"}
 ```
 
 ### 2.2 available_executor Modification
-We add a `preserve_planning` parameter to [available_executor](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L352). When `preserve_planning=True`:
+We add a `preserve_planning: bool = False` parameter to [available_executor](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L352) (defaulting to `False` to preserve compatibility with existing invocations). When `preserve_planning=True`:
 1. **Pass 1**: The function searches only for executors whose `quota_group` is **not** in `PRESERVED_PLANNING_GROUPS`. If a ready executor is found, it is returned immediately.
 2. **Pass 2**: If no ready executor is found in Pass 1, the function scans the entire pool (including those in `PRESERVED_PLANNING_GROUPS`) and selects the first ready executor.
 3. If no executor is ready, it calculates the minimum wait time across the entire pool.
@@ -50,7 +50,7 @@ This guarantees that:
 ## 3. Verification Plan
 
 ### 3.1 Unit Testing
-We will add new unit tests in [tests/test_run_loop.py](file:///Users/jonathan/shakedown/tests/test_run_loop.py) (or a similar test suite) covering:
+We will add new unit tests in [tests/test_mco_loop.py](file:///Users/jonathan/shakedown/tests/test_mco_loop.py) covering:
 1. **No Preservation**: When `preserve_planning=False`, the selector uses standard priority order.
 2. **Implementation Routing with Ready Non-Preserved**: When `preserve_planning=True` and a non-preserved model (e.g. `agy`) is ready, it bypasses ready preserved models (e.g. `claude`).
 3. **Implementation Routing with No Ready Non-Preserved**: When `preserve_planning=True` but all non-preserved models are in cooldown, it falls back to a ready preserved model (e.g. `claude`).
