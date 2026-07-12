@@ -58,6 +58,77 @@ retried after their cooldown; Pi fallbacks remain last-resort. The loop
 intentionally does not wait for a Pi cooldown after the trusted and available
 fallback chain is exhausted.
 
+### Free OpenRouter Fallback Pool
+
+Six Pi-backed free OpenRouter models act as last-resort implementation
+fallbacks, in capability-and-availability priority order: NVIDIA Nemotron 3
+Ultra (550B flagship), OpenAI gpt-oss-120b, NVIDIA Nemotron 3 Super (120B),
+Tencent Hy3, Poolside Laguna M.1, and Qwen3 Coder last (strongest coder of
+the set but chronically throttled upstream). All six were verified live with
+a real tool-call task through `pi` on 2026-07-12. They share the
+`openrouter` quota group because they share one API key and one free-tier
+daily request cap — one throttle cools the whole group, which is the correct
+blast radius.
+
+Unresponsive free models cannot block the loop:
+
+* upstream throttles (`429:`, `rate-limited`) classify as `rate_limit`
+  availability failures with a group cooldown the loop never waits on;
+* silent empty completions (Pi exhausts its internal retries and exits `0`
+  with no output) leave the repository unchanged, classify as `no_progress`,
+  and skip that executor for the unchanged action;
+* true hangs are bounded by MCO's 900 s stall timeout (`backend_failure`)
+  and the 5-hour Python supervisor cap (`supervisor_timeout`).
+
+Grok and all xAI configuration were removed on 2026-07-12 because the xAI
+team has no credits and none will be purchased; `XAI_API_KEY` is no longer
+allowlisted, and the operator may delete the stale key from the git-ignored
+repo-root `.env`. Grok may return only with restored credits and a fresh
+verification run.
+
+### Machine-Local Pi Configuration
+
+Two of the six fallbacks (`nvidia/nemotron-3-super-120b-a12b:free`,
+`qwen/qwen3-coder:free`) are not in `pi`'s built-in model registry. For
+unknown model IDs, `pi` requests a 262 000-token completion budget that the
+free endpoints reject with a 400 output-budget error. The workaround is a
+machine-local `~/.pi/agent/models.json` defining both models with a capped
+`maxTokens`; a fresh machine needs exactly:
+
+```json
+{
+  "providers": {
+    "openrouter": {
+      "models": [
+        {
+          "id": "qwen/qwen3-coder:free",
+          "name": "Qwen: Qwen3 Coder 480B A35B (free)",
+          "contextWindow": 262000,
+          "maxTokens": 32768,
+          "input": ["text"]
+        },
+        {
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "name": "NVIDIA: Nemotron 3 Super (free)",
+          "contextWindow": 262000,
+          "maxTokens": 32768,
+          "input": ["text"]
+        }
+      ]
+    }
+  }
+}
+```
+
+The supervisor prints a startup warning (`pi_models_config_warning`) when
+either definition is missing. It also warns (`pi_auth_shadow_warning`) when
+`~/.pi/agent/auth.json` contains a stored `openrouter` credential, because
+`pi` silently prefers stored credentials over the loop's exported
+`OPENROUTER_API_KEY` — the exact failure that once produced
+`401: User not found` from every OpenRouter run. Any interactive `pi` login
+can reintroduce that entry; neither warning blocks execution, and the
+supervisor never edits either file.
+
 ---
 
 ## 4. Execution Mode and Git Commits
@@ -66,6 +137,7 @@ For each action, the loop builds a handoff prompt in [.agent/mco-current-prompt.
 
 * **MCO Invocation**: Commands run with `--execution-mode yolo` to allow autonomous tool calling.
 * **Session Isolation**: Claude shims use `--no-session-persistence`; project-local Pi shims use `--no-session`. Antigravity is excluded from automatic routing because the installed CLI has no verified stateless execution mode.
+* **Explicit Pi Tooling**: Every Pi shim passes `--tools read,bash,edit,write` so write capability is deliberate configuration, not an accident of `pi` defaults (MCO's built-in `pi` adapter runs read-only, which is why the project owns its shims).
 * **Commit Guidelines**: Upon completing a step and passing its evidence gate, the agent must commit changes and push.
 * **Provenance Trailers**: Every commit must end with a blank line followed by standard trailers identifying the agent executor:
   ```git
