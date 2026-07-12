@@ -131,7 +131,7 @@ but blocking the required regression gate).
 
 ## Task 4 — Add all-fixture differential smoke reporting
 
-- [ ] Add `scripts/differential_smoke.py` with typed result records, per-case
+- [x] Add `scripts/differential_smoke.py` with typed result records, per-case
       timeout, bounded stderr, first-byte-difference reporting, JSON output,
       and Markdown rendering.
 - [ ] Default mode is observational: fixture mismatches/crashes/timeouts appear

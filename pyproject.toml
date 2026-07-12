@@ -23,6 +23,10 @@ select = ["E", "F", "I", "UP"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+addopts = "-m 'not integration'"
+markers = [
+    "integration: invokes real subprocess backends; excluded from the default run",
+]
 
 [tool.pyright]
 pythonVersion = "3.12"

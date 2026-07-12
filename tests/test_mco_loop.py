@@ -537,7 +537,9 @@ def test_available_executor_preserves_planning_groups() -> None:
     state = {"cooldowns": {}}
     # When preserve_planning=True, agy-impl (index 1) should be chosen over
     # claude-impl (index 0)
-    selected, _ = mco_loop.available_executor(executors, state, now=100, preserve_planning=True)
+    selected, _ = mco_loop.available_executor(
+        executors, state, now=100, preserve_planning=True
+    )
     assert selected is not None
     assert selected.name == "agy-impl"
 
@@ -549,6 +551,85 @@ def test_available_executor_falls_back_to_preserved_groups() -> None:
     ]
     # agy is cooling down, so only claude is available
     state = {"cooldowns": {"agy": 200}}
-    selected, _ = mco_loop.available_executor(executors, state, now=100, preserve_planning=True)
+    selected, _ = mco_loop.available_executor(
+        executors, state, now=100, preserve_planning=True
+    )
     assert selected is not None
     assert selected.name == "claude-impl"
+
+
+def test_main_available_executor_preserve_planning_flag(monkeypatch, tmp_path) -> None:
+    # Mock files
+    roadmap_file = tmp_path / "roadmap.md"
+    roadmap_file.write_text("")
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap_file)
+
+    blockers_file = tmp_path / "blockers.md"
+    monkeypatch.setattr(mco_loop, "BLOCKERS", blockers_file)
+
+    # Mock config
+    config = mco_loop.LoopConfig(
+        env_file=tmp_path / ".env",
+        state_file=tmp_path / "state.json",
+        artifact_dir=tmp_path / "artifacts",
+        cooldown_seconds=600,
+        iteration_pause_seconds=0,
+        planning=(),
+        implementation=(),
+    )
+    monkeypatch.setattr(mco_loop, "load_config", lambda *args, **kwargs: config)
+
+    # Mock parse_roadmap to return a pending row so loop doesn't complete immediately
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (mco_loop.RoadmapRow("1", None, "description", "pending"),),
+    )
+
+    # Track calls to available_executor
+    calls = []
+
+    def fake_available_executor(pool, state, now, preserve_planning=False):
+        calls.append((pool, state, now, preserve_planning))
+        return None, None
+
+    monkeypatch.setattr(mco_loop, "available_executor", fake_available_executor)
+
+    # 1. ActionKind.PLAN -> preserve_planning should be False
+    monkeypatch.setattr(
+        mco_loop,
+        "determine_next_action",
+        lambda rows, blockers: mco_loop.NextAction(
+            mco_loop.ActionKind.PLAN, "plan stuff", None, None, ()
+        ),
+    )
+    mco_loop.main(["--status"])
+    assert len(calls) == 1
+    assert calls[0][3] is False
+
+    # 2. ActionKind.IMPLEMENT -> preserve_planning should be True
+    calls.clear()
+    monkeypatch.setattr(
+        mco_loop,
+        "determine_next_action",
+        lambda rows, blockers: mco_loop.NextAction(
+            mco_loop.ActionKind.IMPLEMENT, "implement stuff", None, None, ()
+        ),
+    )
+    mco_loop.main(["--status"])
+    assert len(calls) == 1
+    assert calls[0][3] is True
+
+    # 3. ActionKind.FIX -> preserve_planning should be True
+    calls.clear()
+    monkeypatch.setattr(
+        mco_loop,
+        "determine_next_action",
+        lambda rows, blockers: mco_loop.NextAction(
+            mco_loop.ActionKind.FIX, "fix stuff", None, None, ()
+        ),
+    )
+    mco_loop.main(["--status"])
+    assert len(calls) == 1
+    assert calls[0][3] is True
+
