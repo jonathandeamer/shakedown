@@ -333,6 +333,24 @@ def test_no_progress_success_also_advances_to_next_executor(tmp_path: Path) -> N
     assert cooldowns[f"executor:{config.implementation[0].name}"] == 160
 
 
+def test_progress_outranks_rate_limit_wording() -> None:
+    result = InvocationResult(0, "updated rate limit tests", "", True, False)
+
+    assert mco_loop.classify_result(result) == "progress"
+
+
+def test_supervisor_timeout_is_substantive_before_transient_markers() -> None:
+    result = InvocationResult(124, "", "MCO execution timed out", False, False)
+
+    assert mco_loop.classify_result(result) == "supervisor_timeout"
+
+
+def test_new_blocker_is_not_no_progress() -> None:
+    result = InvocationResult(0, "", "", False, True)
+
+    assert mco_loop.classify_result(result) == "blocked"
+
+
 def test_planning_pool_never_falls_through_to_implementation_only_models() -> None:
     config = mco_loop.load_config()
     state: dict[str, object] = {

@@ -97,6 +97,7 @@ class InvocationResult:
     stdout: str
     stderr: str
     made_progress: bool
+    recorded_blocker: bool = False
 
     @property
     def combined_output(self) -> str:
@@ -583,6 +584,7 @@ def invoke_mco(
     task_id = f"{action.kind.value}-{int(time.time())}-{executor.name}"
     command = mco_command(config, executor, task_id, prompt_file)
     before = repo_fingerprint()
+    blockers_before = set(read_blockers())
 
     stdout_lines: list[str] = []
 
@@ -650,6 +652,7 @@ def invoke_mco(
                     + "MCO execution timed out after 5 hours at Python level."
                 ),
                 made_progress=False,
+                recorded_blocker=bool(set(read_blockers()) - blockers_before),
             )
 
         ret = process.poll()
@@ -709,6 +712,7 @@ def invoke_mco(
         stdout="".join(stdout_lines),
         stderr=stderr,
         made_progress=before != after,
+        recorded_blocker=bool(set(read_blockers()) - blockers_before),
     )
 
 
@@ -728,8 +732,14 @@ def redact_artifacts(path: Path, environment: Mapping[str, str]) -> None:
             artifact.write_text(redacted)
 
 
-def classify_failure(result: InvocationResult) -> str | None:
-    """Classify an MCO result for cooldown and operator reporting."""
+def classify_result(result: InvocationResult) -> str:
+    """Classify an MCO result from observable supervisor evidence."""
+    if result.made_progress:
+        return "progress"
+    if result.recorded_blocker:
+        return "blocked"
+    if result.exit_code == 124:
+        return "supervisor_timeout"
     output = result.combined_output.lower()
     if any(marker in output for marker in RATE_LIMIT_MARKERS):
         return "rate_limit"
@@ -737,9 +747,7 @@ def classify_failure(result: InvocationResult) -> str | None:
         return "transient"
     if result.exit_code != 0:
         return "backend_failure"
-    if not result.made_progress:
-        return "no_progress"
-    return None
+    return "no_progress"
 
 
 def apply_result(
@@ -750,7 +758,8 @@ def apply_result(
     now: int,
 ) -> str | None:
     """Update cooldown state from one invocation."""
-    failure = classify_failure(result)
+    outcome = classify_result(result)
+    failure = None if outcome in {"progress", "blocked"} else outcome
     raw_cooldowns = state.get("cooldowns", {})
     cooldowns = (
         dict(cast(Mapping[str, object], raw_cooldowns))
