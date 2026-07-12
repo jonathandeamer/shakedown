@@ -123,7 +123,7 @@ pattern = "bare_statement"
 
   In `tests/test_architecture_spikes.py`, add `SPAN_FIXTURES`, `_span_cases()`, and a parametrized test that loads each `.text` and `.expected`, runs both `./shakedown` and `perl ~/markdown/Markdown.pl`, and requires both outputs equal the checked-in expected bytes. Reuse `_first_diff()` so a mismatch reports its byte index. Do not route this assertion through mdtest normalization.
 
-- [ ] **Step 4: Run the red gate.**
+- [x] **Step 4: Run the red gate.**
 
   Run: `uv run pytest tests/test_architecture_spikes.py -k span -q`  
   Expected: FAIL for all new span cases on the current Act III behavior; existing list and nested-block spike cases remain PASS.
