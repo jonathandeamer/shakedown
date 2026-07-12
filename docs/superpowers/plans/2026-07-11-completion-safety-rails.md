@@ -104,7 +104,7 @@ test causes a local, named contract failure rather than a downstream SPL pop.
 - [x] Add a decoder that turns integer dumps into typed tokens and rejects
       unknown codes, truncated payloads, unterminated text, and framing markers
       that escape their permitted phase.
-- [ ] Add a structural validator for the currently shipped grammar: top-level
+- [x] Add a structural validator for the currently shipped grammar: top-level
       paragraphs and balanced lists with legal item placement/nesting.
 - [ ] Represent the target recursive container grammar from the hardening
       design in tests marked as expected future cases; do not weaken current
