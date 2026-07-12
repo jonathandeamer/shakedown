@@ -7,6 +7,14 @@ from pathlib import Path
 
 import pytest
 
+from scripts.splc.interpret import InterpreterState, run_act
+from scripts.splc.ir import Char
+from scripts.splc.token_decode import decode_stream
+from scripts.splc.token_structure import validate_stream
+from src_ir import tokens
+from src_ir.act1 import ACT as ACT1
+from src_ir.act2 import ACT as ACT2
+
 REPO = Path(__file__).parent.parent
 DEBUG_WRAPPER = REPO / "shakedown-debug"
 AMPS_FIXTURE = (
@@ -38,6 +46,30 @@ NESTED_BLOCK_FIXTURES = (
     REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"
 )
 NESTED_BLOCK_BASELINES = BASELINES / "nested_blocks"
+STEP_LIMIT = 200_000
+
+
+def _reviewed_dump(stem: str) -> list[int]:
+    return [
+        int(line)
+        for line in (NESTED_BLOCK_BASELINES / f"{stem}.dump").read_text().splitlines()
+    ]
+
+
+def _act2_carrier_stream(stem: str) -> list[int]:
+    state = InterpreterState(
+        input_text=(NESTED_BLOCK_FIXTURES / f"{stem}.text").read_text()
+    )
+    state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
+    state = run_act(ACT2, state, step_limit=STEP_LIMIT).state
+
+    stream: list[int] = []
+    while state.stacks[Char.PUCK]:
+        value = state.stacks[Char.PUCK].pop()
+        stream.append(value)
+        if value == tokens.STREAM_END:
+            break
+    return stream
 
 
 def _dump(input_bytes: bytes) -> bytes:
@@ -78,6 +110,27 @@ def test_dump_matches_blessed_list_baseline(stem: str) -> None:
 )
 def test_dump_matches_blessed_nested_block_baseline(stem: str) -> None:
     fixture = NESTED_BLOCK_FIXTURES / f"{stem}.text"
-    assert _dump(fixture.read_bytes()) == (
-        NESTED_BLOCK_BASELINES / f"{stem}.dump"
-    ).read_bytes()
+    assert (
+        _dump(fixture.read_bytes())
+        == (NESTED_BLOCK_BASELINES / f"{stem}.dump").read_bytes()
+    )
+
+
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in NESTED_BLOCK_FIXTURES.glob("*.text")),
+)
+def test_act2_carrier_matches_reviewed_nested_block_dump(stem: str) -> None:
+    assert _act2_carrier_stream(stem) == _reviewed_dump(stem)
+
+
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in NESTED_BLOCK_FIXTURES.glob("*.text")),
+)
+def test_act2_nested_block_carrier_has_one_terminal_sentinel(stem: str) -> None:
+    stream = _act2_carrier_stream(stem)
+
+    assert stream[-1] == tokens.STREAM_END
+    assert stream.count(tokens.STREAM_END) == 1
+    validate_stream(decode_stream(stream[:-1]))

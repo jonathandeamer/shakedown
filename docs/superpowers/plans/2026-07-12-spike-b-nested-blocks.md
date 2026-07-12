@@ -249,7 +249,7 @@ pattern = "scene_of_character"
 
 **Produces:** Valid final streams for all old list and new nested-block fixtures; no borrowed-stack prefix is altered.
 
-- [ ] **Step 1: Add Act-II interpreter tests that compare the final carrier stream with each reviewed dump.**
+- [x] **Step 1: Add Act-II interpreter tests that compare the final carrier stream with each reviewed dump.**
 
   Add a helper that runs Act I then Act II with `scripts.splc.interpret.run_act`,
   pops Puck's stream in document order through `STREAM_END`, and compares it to
