@@ -123,6 +123,77 @@ def test_rejects_nested_list_opened_before_parent_has_an_item() -> None:
         validate_stream(decode_stream(values))
 
 
+TARGET_GRAMMAR = """\
+document   := block*
+block      := paragraph | header | horizontal_rule | code_block | raw_html
+            | list | blockquote
+list       := LIST_OPEN item+ LIST_CLOSE
+item       := ITEM_OPEN block* ITEM_CLOSE
+blockquote := BLOCKQUOTE_OPEN block* BLOCKQUOTE_CLOSE
+"""  # docs/superpowers/specs/2026-07-11-completability-hardening-design.md §1
+
+
+def test_target_grammar_transcription_matches_the_design_doc() -> None:
+    design_doc = (
+        REPO
+        / "docs"
+        / "superpowers"
+        / "specs"
+        / "2026-07-11-completability-hardening-design.md"
+    ).read_text()
+    assert TARGET_GRAMMAR.strip() in design_doc
+
+
+def test_rejects_blockquote_as_container_not_yet_shipped() -> None:
+    """Expected future case: `blockquote := BLOCKQUOTE_OPEN block*
+    BLOCKQUOTE_CLOSE` is in the target grammar and BLOCKQUOTE_OPEN/CLOSE
+    already carry CONTAINER_OPEN/CONTAINER_CLOSE roles (src_ir/tokens.py),
+    but they have no ARITY row yet, so decode_stream cannot lex them from an
+    integer dump. Feed hand-built DecodedTokens directly to prove the
+    validator still rejects the container as unshipped rather than silently
+    accepting an undecided representation."""
+    with pytest.raises(StructuralError, match="not yet shipped"):
+        validate_stream(
+            [DecodedToken(code=tokens.BLOCKQUOTE_OPEN, payloads=(), text=None)]
+        )
+
+
+def test_rejects_blockquote_close_not_yet_shipped() -> None:
+    with pytest.raises(StructuralError, match="not yet shipped"):
+        validate_stream(
+            [DecodedToken(code=tokens.BLOCKQUOTE_CLOSE, payloads=(), text=None)]
+        )
+
+
+@pytest.mark.parametrize(
+    "code", [tokens.HEADER, tokens.HR, tokens.CODE_BLOCK, tokens.RAW_HTML_HASH]
+)
+def test_rejects_other_target_grammar_leaf_blocks_not_yet_shipped(code: int) -> None:
+    """Expected future case: the target grammar's `block` production admits
+    header, horizontal_rule, code_block, and raw_html alongside paragraph.
+    Each code already has a LEAF_BLOCK role, but only PARA is shipped
+    today (`docs/superpowers/specs/2026-07-11-completability-hardening-
+    design.md` §1 says this validator "must not accept them early")."""
+    with pytest.raises(StructuralError, match="not yet shipped"):
+        validate_stream([DecodedToken(code=code, payloads=(), text=None)])
+
+
+def test_rejects_container_block_nested_inside_a_list_item() -> None:
+    """Expected future case: the target grammar's `item := ITEM_OPEN block*
+    ITEM_CLOSE` would let a blockquote sit inside an item's block* content.
+    No ITEM_OPEN/ITEM_CLOSE token exists yet — Spike B decides whether
+    LIST_ITEM's implicit closure is kept or replaced — so this feeds a
+    BLOCKQUOTE_OPEN directly after a LIST_ITEM and confirms it is rejected
+    for being an unshipped container, not accepted as nested item content."""
+    with pytest.raises(StructuralError, match="not yet shipped"):
+        validate_stream(
+            decode_stream(
+                [tokens.LIST_OPEN, 1, tokens.LIST_ITEM, 1, ord("a"), tokens.TEXT_END]
+            )
+            + [DecodedToken(code=tokens.BLOCKQUOTE_OPEN, payloads=(), text=None)]
+        )
+
+
 def test_rejects_inline_marker_at_block_level() -> None:
     """Expected future case: ANCHOR_* markers are allocated (docs/spl/token-
     codes.md) for Act III inline spans, but have no ARITY row yet, so they

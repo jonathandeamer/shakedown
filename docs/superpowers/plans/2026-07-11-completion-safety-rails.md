@@ -106,7 +106,7 @@ test causes a local, named contract failure rather than a downstream SPL pop.
       that escape their permitted phase.
 - [x] Add a structural validator for the currently shipped grammar: top-level
       paragraphs and balanced lists with legal item placement/nesting.
-- [ ] Represent the target recursive container grammar from the hardening
+- [x] Represent the target recursive container grammar from the hardening
       design in tests marked as expected future cases; do not weaken current
       validation to accept an undecided representation.
 - [ ] Validate every committed dump fixture in `tests/fixtures/token_stream/`.
