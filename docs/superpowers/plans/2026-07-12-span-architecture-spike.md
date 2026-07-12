@@ -128,7 +128,7 @@ pattern = "bare_statement"
   Run: `uv run pytest tests/test_architecture_spikes.py -k span -q`  
   Expected: FAIL for all new span cases on the current Act III behavior; existing list and nested-block spike cases remain PASS.
 
-- [ ] **Step 5: Commit and push the corpus.**
+- [x] **Step 5: Commit and push the corpus.**
 
   Run: `git add tests/fixtures/architecture_spikes/spans tests/test_architecture_spikes.py && git commit -m "test: add span architecture spike corpus"`  
   Expected: conventional commit with required provenance trailers succeeds, followed by `git push` succeeding.
