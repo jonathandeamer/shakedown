@@ -84,17 +84,7 @@ read-only governor only after genuine systemic failure:
 
 
 ### Legacy: run-loop
-
-The earlier approach used `run-loop`, a Python executor that drove autonomous
-agent sessions via `docs/prompt-shakedown.md`. The code and prompt are
-preserved for history but are no longer the active workflow.
-
-```bash
-./run-loop                            # legacy: use the active default prompt
-./run-loop docs/some-other-prompt.md  # legacy: alternate prompt
-```
-
-State: `.agent/run-loop-state.json`. Completion marker: `.agent/complete-<name>.md`.
+The older Python `run-loop` approach is legacy and no longer active (state: `.agent/run-loop-state.json`).
 
 ## SPL literary protocol for prompts and plans
 
@@ -151,27 +141,8 @@ implementation agents never invent literary surfaces mid-task.
 
 `shakespeare` is the CLI provided by the `shakespearelang` Python package (the SPL interpreter). Currently at `~/.local/bin/shakespeare` — may not be on PATH in a fresh shell.
 
-## Interpreter cost (measured)
-
-Current-repo baselines (B14, measured 2026-04-25, fresh subprocess each run):
-
-| Fixture | Lines | First run | Median |
-|---|---|---|---|
-| `spl-cost-1k.spl` | ~1255 | 3.67s | 3.30s |
-| `spl-cost-4k.spl` | ~5005 | 13.29s | 13.29s |
-| `scene-count.spl` (200 scenes) | ~2005 | 5.44s | 5.25s |
-| `reference-lookup-scale.spl` (N=20) | — | 1.68s | 1.56s |
-
-Every run pays cold startup — no warm reuse (the interpreter has no persistent-process mode).
-Scene count is not the dominant cost driver at ~200 scenes. See `docs/verification-plan.md` B14,
-B17, B18 for full details and dispositions.
-
-Historical context (prior codebase, does not transfer):
-- Prior attempt's ~4k-line `.spl`: 17–26s cold and 2–3s per input thereafter.
-- `./shakedown-dev` prototype (~372 lines): ~5.0s on empty input, ~4.8s on a small fixture.
-
-See `docs/performance/budget.md`, `docs/verification-plan.md`, and
-`docs/prior-attempt/feasibility-lessons.md` for full context.
+## Interpreter cost
+Every run of the SPL interpreter pays cold startup (no warm reuse/persistent process). Scene count is not the dominant cost driver. Baseline details are in [verification-plan.md](file:///Users/jonathan/shakedown/docs/verification-plan.md) (B14/B17/B18) and [budget.md](file:///Users/jonathan/shakedown/docs/performance/budget.md).
 
 ## Run tests
 
@@ -203,53 +174,19 @@ uv run python scripts/query_docs.py "query"  # query active documentation paragr
 - **No `print()`** in library or application code. CLI operator scripts (`run-loop`) may use `print()` for status output.
 - **Mock external calls** in unit tests (subprocesses, file I/O). Integration tests that invoke real backends must be marked `@pytest.mark.integration` and are excluded from the default `uv run pytest` run.
 
-## Reference materials
+## Documentation & Reference Truth Hierarchy
+
+For a complete map, directory, and reading order of all documentation, start at [docs/README.md](file:///Users/jonathan/shakedown/docs/README.md).
 
 > [!WARNING]
 > Do NOT read or search files inside `docs/archive/`. Those are historical, shipped, or superseded plan artifacts and are irrelevant to active development.
 
-- `~/markdown/Markdown.pl` — oracle; the thing being ported
-- `~/mdtest/Markdown.mdtest/` — 23 test fixtures (.text input, .xhtml/.html expected)
-- `docs/README.md` — entry point for the docs set
-- `docs/spl/reference.md` — SPL language reference (verified)
-- `docs/spl/verification-evidence.md` — probe programs and observed interpreter behaviour
-- `docs/spl/style-lexicon.md` — legal expressive vocabulary
-- `docs/spl/literary-spec.md` — canonical literary policy for character voice, act palettes, decorative surfaces, and future `src/literary.toml`
-- `docs/spl/codegen-style-guide.md` — implementation policy for recurring value phrases
-- `docs/spl/style-guide-validation.md` — validation status for the style lexicon and codegen guide
-- `docs/architecture/selected-architecture.md` — pointer to the adopted architecture spec
-- `docs/superpowers/plans/plan-roadmap.md` — staged implementation-plan ladder; live status of each plan
-- `docs/markdown/target.md` — Markdown.pl v1.0.1 target surface
-- `docs/markdown/divergences.md` — intentional divergences from the oracle
-- `docs/markdown/oracle-mechanics.md` — Markdown.pl transform order and parity-critical mechanics
-- `docs/markdown/oracle-fixture-audit.md` — strict local-oracle audit of the 23 fixtures
-- `docs/markdown/reference-mechanics.md` — reference definition/link mechanics
-- `docs/markdown/html-block-boundaries.md` — raw HTML block boundary rules
-- `docs/markdown/list-mechanics.md` — list exactness, nesting, and tight/loose mechanics
-- `docs/markdown/fixtures.md` — canonical fixture matrix plus feature-risk outlook
-- `docs/architecture/decision-rubric.md` — optimization target and scoring questions for architecture proposals
-- `docs/architecture/runtime-boundary.md` — runtime boundary and wrapper/SPL ownership questions
-- `docs/architecture/encoding-and-scope.md` — encoding, stdin/stdout, and target-scope assumptions
-- `docs/architecture/inherited-scaffold.md` — prototype scaffold surfacing
-- `docs/performance/budget.md` — benchmark protocol and planning thresholds
-- `docs/prior-attempt/architecture-lessons.md` — why the prior attempt stalled and which trade-offs surfaced
-- `docs/prior-attempt/feasibility-lessons.md` — consolidated feasibility findings; which claims transfer
-- `docs/verification-plan.md` — claim inventory (verified / retrospective / predicted / open)
-- `docs/ralph-loop.md` — Huntley/Ralph loop methodology reference and how it applies here
-- `docs/lineage.md` — short lineage context
-- `docs/archive/` — historical artifacts; prefer live docs unless specifically checking history
-
-## Docs Truth Hierarchy
-
-- Treat `docs/spl/reference.md` as the canonical statement of SPL legality and verified interpreter semantics.
-- Use `docs/spl/verification-evidence.md` for the probe programs and observed outputs behind those claims.
-- Treat `docs/markdown/target.md` plus `~/markdown/Markdown.pl` as the oracle behaviour surface, with intentional exceptions only from `docs/markdown/divergences.md`.
-- Use `docs/markdown/reference-mechanics.md`, `docs/markdown/html-block-boundaries.md`, `docs/markdown/list-mechanics.md`, and `docs/markdown/fixtures.md` as canonical Markdown planning inputs.
-- Use `docs/architecture/selected-architecture.md` as the canonical pointer to the adopted architecture spec.
-- Use `docs/architecture/decision-rubric.md`, `docs/architecture/runtime-boundary.md`, `docs/architecture/encoding-and-scope.md`, and `docs/performance/budget.md` as architecture-input rubrics and supporting rationale.
-- Treat `docs/architecture/inherited-scaffold.md` as inherited prototype state, not as adopted architecture.
-- Use `docs/verification-plan.md` to distinguish what is verified in this repo from retrospective evidence, predictions, and still-open questions.
-- Treat `docs/spl/style-lexicon.md`, `docs/spl/literary-spec.md`, and `docs/spl/codegen-style-guide.md` as generation/policy docs, not parser truth. `docs/spl/literary-spec.md` is the canonical source for voice and palette policy; `docs/spl/style-guide-validation.md` records which representative claims are mechanically enforceable, which are demonstrable only, and which remain advisory policy.
+* **Oracle & Fixtures**: Oracle is `~/markdown/Markdown.pl`. Test inputs/outputs are under `~/mdtest/Markdown.mdtest/`. See [target.md](file:///Users/jonathan/shakedown/docs/markdown/target.md) and [divergences.md](file:///Users/jonathan/shakedown/docs/markdown/divergences.md).
+* **Roadmap & Active Plan**: Live roadmap is [plan-roadmap.md](file:///Users/jonathan/shakedown/docs/superpowers/plans/plan-roadmap.md).
+* **SPL Semantics Truth**: [reference.md](file:///Users/jonathan/shakedown/docs/spl/reference.md) is the canonical statement of SPL legality and verified interpreter behavior.
+* **Architecture Truth**: [selected-architecture.md](file:///Users/jonathan/shakedown/docs/architecture/selected-architecture.md) points to the adopted architecture spec.
+* **Literary/Style Truth**: [style-lexicon.md](file:///Users/jonathan/shakedown/docs/spl/style-lexicon.md), [literary-spec.md](file:///Users/jonathan/shakedown/docs/spl/literary-spec.md), and [codegen-style-guide.md](file:///Users/jonathan/shakedown/docs/spl/codegen-style-guide.md) govern code generation and literary compliance.
+* **Verification & Claims**: [verification-plan.md](file:///Users/jonathan/shakedown/docs/verification-plan.md) distinguishes verified vs open claims.
 
 ## Git
 

@@ -89,10 +89,10 @@ real generated SPL is byte-identical before and after the task.
       Horatio's stack survives the list-looseness side-channel borrow.
 - [x] Assert Macbeth's frame floor and all temporary carrier floors are restored
       across every existing list spike case.
-- [ ] Add an explicit empty-input test that records the current real-runtime
+- [x] Add an explicit empty-input test that records the current real-runtime
       failure and a fast-interpreter diagnostic. Do not silently normalize or
       fix production behavior in this plan.
-- [ ] Run the required regression commands.
+- [x] Run the required regression commands.
 
 **Evidence gate:** corrupting or omitting any floor/sentinel in a mutation-style
 test causes a local, named contract failure rather than a downstream SPL pop.
