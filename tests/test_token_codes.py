@@ -17,6 +17,7 @@ REQUIRED_TOKENS = {
     "HR",
     "LIST_OPEN",
     "LIST_ITEM",
+    "ITEM_CLOSE",
     "LIST_CLOSE",
     "BLOCKQUOTE_OPEN",
     "BLOCKQUOTE_CLOSE",

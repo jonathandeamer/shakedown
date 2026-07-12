@@ -118,7 +118,7 @@ pattern = "scene_of_character"
 
 **Produces:** `ITEM_CLOSE = 15`; a decoder/validator accepting the exact grammar in the design and rejecting crossed, unclosed, empty, or item-outside-list streams.
 
-- [ ] **Step 1: Write grammar and lexical failure tests.**
+- [x] **Step 1: Write grammar and lexical failure tests.**
 
   Add a valid list-with-quote sequence and these rejection cases to `tests/test_token_structure.py`:
 

@@ -125,12 +125,10 @@ def test_rejects_nested_list_opened_before_parent_has_an_item() -> None:
 
 TARGET_GRAMMAR = """\
 document   := block*
-block      := paragraph | header | horizontal_rule | code_block | raw_html
-            | list | blockquote
-list       := LIST_OPEN item+ LIST_CLOSE
-item       := ITEM_OPEN block* ITEM_CLOSE
+block      := PARA | list | blockquote
+list       := LIST_OPEN(kind) (LIST_ITEM(looseness) block* ITEM_CLOSE)+ LIST_CLOSE
 blockquote := BLOCKQUOTE_OPEN block* BLOCKQUOTE_CLOSE
-"""  # docs/superpowers/specs/2026-07-11-completability-hardening-design.md §1
+"""  # docs/superpowers/specs/2026-07-12-spike-b-nested-blocks-design.md
 
 
 def test_target_grammar_transcription_matches_the_design_doc() -> None:
@@ -139,9 +137,52 @@ def test_target_grammar_transcription_matches_the_design_doc() -> None:
         / "docs"
         / "superpowers"
         / "specs"
-        / "2026-07-11-completability-hardening-design.md"
+        / "2026-07-12-spike-b-nested-blocks-design.md"
     ).read_text()
     assert TARGET_GRAMMAR.strip() in design_doc
+
+
+def test_list_item_with_nested_blockquote_validates() -> None:
+    values = [
+        tokens.LIST_OPEN,
+        1,
+        tokens.LIST_ITEM,
+        1,
+        tokens.PARA,
+        ord("a"),
+        tokens.TEXT_END,
+        tokens.BLOCKQUOTE_OPEN,
+        tokens.PARA,
+        ord("b"),
+        tokens.TEXT_END,
+        tokens.BLOCKQUOTE_CLOSE,
+        tokens.ITEM_CLOSE,
+        tokens.LIST_CLOSE,
+    ]
+    validate_stream(decode_stream(values))
+
+
+def test_rejects_item_close_without_matching_open_item() -> None:
+    with pytest.raises(StructuralError, match="item close has no matching open item"):
+        validate_stream(decode_stream([tokens.ITEM_CLOSE]))
+
+
+def test_item_close_is_in_arity_table_with_zero_payloads_and_no_text() -> None:
+    assert tokens.ARITY[tokens.ITEM_CLOSE] == tokens.TokenArity(0, False)
+
+
+def test_blockquote_open_and_close_are_in_arity_table_with_zero_payloads_and_no_text() -> None:
+    assert tokens.ARITY[tokens.BLOCKQUOTE_OPEN] == tokens.TokenArity(0, False)
+    assert tokens.ARITY[tokens.BLOCKQUOTE_CLOSE] == tokens.TokenArity(0, False)
+
+
+def test_item_close_has_container_close_role() -> None:
+    assert tokens.ROLES[tokens.ITEM_CLOSE] == tokens.StructuralRole.CONTAINER_CLOSE
+
+
+def test_blockquote_open_and_close_have_container_roles() -> None:
+    assert tokens.ROLES[tokens.BLOCKQUOTE_OPEN] == tokens.StructuralRole.CONTAINER_OPEN
+    assert tokens.ROLES[tokens.BLOCKQUOTE_CLOSE] == tokens.StructuralRole.CONTAINER_CLOSE
 
 
 def test_rejects_blockquote_as_container_not_yet_shipped() -> None:
