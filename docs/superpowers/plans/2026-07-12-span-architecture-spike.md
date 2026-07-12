@@ -119,7 +119,7 @@ pattern = "bare_statement"
 
   For every `.text`, run `perl ~/markdown/Markdown.pl < <fixture> > <fixture>.expected`; inspect the resulting bytes. In particular, assert the expected output contains `<code>a \` b</code>`, `<code>x &amp; &lt;y&gt;</code>`, literal `*literal*`, `<span><em>raw</em></span>`, a once-encoded autolink query ampersand, `<img src="img.png" alt="c <em>d</em>" title="i" />`, and `<strong><em>both</em></strong>`.
 
-- [ ] **Step 3: Add direct probe tests.**
+- [x] **Step 3: Add direct probe tests.**
 
   In `tests/test_architecture_spikes.py`, add `SPAN_FIXTURES`, `_span_cases()`, and a parametrized test that loads each `.text` and `.expected`, runs both `./shakedown` and `perl ~/markdown/Markdown.pl`, and requires both outputs equal the checked-in expected bytes. Reuse `_first_diff()` so a mismatch reports its byte index. Do not route this assertion through mdtest normalization.
 

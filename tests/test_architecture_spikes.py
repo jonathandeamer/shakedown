@@ -12,6 +12,7 @@ LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
 NESTED_BLOCK_FIXTURES = (
     REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"
 )
+SPAN_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "spans"
 NESTED_BLOCK_BYTE_CASES = [
     (
         "list_quote_sibling",
@@ -68,6 +69,10 @@ def _nested_block_cases() -> list[Path]:
     return sorted(NESTED_BLOCK_FIXTURES.glob("*.text"))
 
 
+def _span_cases() -> list[Path]:
+    return sorted(SPAN_FIXTURES.glob("*.text"))
+
+
 @pytest.mark.parametrize("fixture", _list_cases(), ids=lambda path: path.stem)
 def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
     input_bytes = fixture.read_bytes()
@@ -106,3 +111,26 @@ def test_nested_block_architecture_spike_emits_expected_bytes(
     expected: bytes,
 ) -> None:
     assert _run([str(SHAKEDOWN)], input_bytes) == expected
+
+
+@pytest.mark.parametrize("fixture", _span_cases(), ids=lambda path: path.stem)
+def test_span_architecture_spike_matches_checked_in_oracle_bytes(
+    fixture: Path,
+) -> None:
+    input_bytes = fixture.read_bytes()
+    expected = fixture.with_suffix(".expected").read_bytes()
+    shakedown_output = _run([str(SHAKEDOWN)], input_bytes)
+    markdown_output = _run(["perl", str(MARKDOWN_PL)], input_bytes)
+
+    assert markdown_output == expected, (
+        f"Checked-in oracle bytes drifted for {fixture.name}; first diff: "
+        f"{_first_diff(markdown_output, expected)}\n"
+        f"--- expected\n{expected.decode(errors='replace')}\n"
+        f"+++ oracle\n{markdown_output.decode(errors='replace')}"
+    )
+    assert shakedown_output == expected, (
+        f"Output mismatch for {fixture.name}; first diff: "
+        f"{_first_diff(shakedown_output, expected)}\n"
+        f"--- expected\n{expected.decode(errors='replace')}\n"
+        f"+++ actual\n{shakedown_output.decode(errors='replace')}"
+    )
