@@ -110,11 +110,24 @@ test causes a local, named contract failure rather than a downstream SPL pop.
       design in tests marked as expected future cases; do not weaken current
       validation to accept an undecided representation.
 - [x] Validate every committed dump fixture in `tests/fixtures/token_stream/`.
-- [ ] Add malformed-stream unit cases for each rejection class.
-- [ ] Run the required regression commands.
+- [x] Add malformed-stream unit cases for each rejection class.
+- [x] Run the required regression commands.
 
 **Evidence gate:** all committed dumps decode and validate; malformed nesting
 fails before Act IV; no dump baseline changes.
+
+**Evidence recorded 2026-07-12:** `tests/test_token_decode.py` and
+`tests/test_token_structure.py` already covered every `decode_stream`
+rejection class and all but one `validate_stream` rejection class; added
+`test_rejects_token_with_no_structural_role` to cover the remaining
+"no structural role" branch (`scripts/splc/token_structure.py:42-45`), reached
+via a hand-built `DecodedToken` with an unallocated code (the lexical decoder
+already refuses such a code from a real dump). Full required regression suite
+passed, including the two-minute `tests/test_architecture_spikes.py` +
+`tests/test_token_dump.py` run; splc/assemble regen produced no diff. Also
+fixed two pre-existing `ruff` line-length/format failures in
+`scripts/mco_loop.py` and `tests/test_mco_loop.py` (unrelated to this task,
+but blocking the required regression gate).
 
 ## Task 4 — Add all-fixture differential smoke reporting
 

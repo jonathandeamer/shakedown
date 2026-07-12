@@ -194,6 +194,17 @@ def test_rejects_container_block_nested_inside_a_list_item() -> None:
         )
 
 
+def test_rejects_token_with_no_structural_role() -> None:
+    """Every allocated code has a role (test_token_structural_roles.py), so
+    this can only be reached by a code that isn't allocated at all. The
+    lexical decoder already rejects such codes from a real dump
+    (test_rejects_unknown_code), so exercise this branch directly with a
+    hand-built DecodedToken to prove the structural validator also refuses
+    to guess a role for it rather than silently skipping the token."""
+    with pytest.raises(StructuralError, match="has no structural role"):
+        validate_stream([DecodedToken(code=999, payloads=(), text=None)])
+
+
 def test_rejects_inline_marker_at_block_level() -> None:
     """Expected future case: ANCHOR_* markers are allocated (docs/spl/token-
     codes.md) for Act III inline spans, but have no ARITY row yet, so they

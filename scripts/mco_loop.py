@@ -373,19 +373,20 @@ def available_executor(
         )
         return max(group_until, executor_until)
 
-    # Pass 1: Prioritize executors whose quota groups are NOT in PRESERVED_PLANNING_GROUPS
+    expiries = [(executor, get_cooldown_expiry(executor)) for executor in executors]
+
+    # Pass 1: prioritize executors whose quota groups are NOT in
+    # PRESERVED_PLANNING_GROUPS
     if preserve_planning:
-        for executor in executors:
+        for executor, until in expiries:
             if executor.quota_group in PRESERVED_PLANNING_GROUPS:
                 continue
-            until = get_cooldown_expiry(executor)
             if until <= now:
                 return executor, None
 
     # Pass 2: Fall back to checking all executors (including preserved groups)
     waits: list[int] = []
-    for executor in executors:
-        until = get_cooldown_expiry(executor)
+    for executor, until in expiries:
         if until <= now:
             return executor, None
         waits.append(until)

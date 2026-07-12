@@ -530,26 +530,25 @@ def test_completion_requires_pytest_mdtest_and_deterministic_parity(
 
 
 def test_available_executor_preserves_planning_groups() -> None:
-    from scripts.mco_loop import Executor, available_executor
     executors = [
-        Executor("claude-impl", "claude-sonnet", "claude"),
-        Executor("agy-impl", "agy-flash", "agy"),
+        mco_loop.Executor("claude-impl", "claude-sonnet", "claude"),
+        mco_loop.Executor("agy-impl", "agy-flash", "agy"),
     ]
     state = {"cooldowns": {}}
-    # When preserve_planning=True, agy-impl (index 1) should be chosen over claude-impl (index 0)
-    selected, _ = available_executor(executors, state, now=100, preserve_planning=True)
+    # When preserve_planning=True, agy-impl (index 1) should be chosen over
+    # claude-impl (index 0)
+    selected, _ = mco_loop.available_executor(executors, state, now=100, preserve_planning=True)
     assert selected is not None
     assert selected.name == "agy-impl"
 
 
 def test_available_executor_falls_back_to_preserved_groups() -> None:
-    from scripts.mco_loop import Executor, available_executor
     executors = [
-        Executor("claude-impl", "claude-sonnet", "claude"),
-        Executor("agy-impl", "agy-flash", "agy"),
+        mco_loop.Executor("claude-impl", "claude-sonnet", "claude"),
+        mco_loop.Executor("agy-impl", "agy-flash", "agy"),
     ]
     # agy is cooling down, so only claude is available
     state = {"cooldowns": {"agy": 200}}
-    selected, _ = available_executor(executors, state, now=100, preserve_planning=True)
+    selected, _ = mco_loop.available_executor(executors, state, now=100, preserve_planning=True)
     assert selected is not None
     assert selected.name == "claude-impl"
