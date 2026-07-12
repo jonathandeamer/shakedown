@@ -342,7 +342,7 @@ pattern = "scene_of_character"
   )
   ```
 
-- [ ] **Step 2: Run renderer tests to verify they fail.**
+- [x] **Step 2: Run renderer tests to verify they fail.**
 
   Run: `uv run pytest tests/test_architecture_spikes.py -q`  
   Expected: FAIL on all nested-block cases while the current emitter has no blockquote dispatch.
