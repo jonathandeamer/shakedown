@@ -67,7 +67,7 @@ git diff --exit-code -- src debug shakedown.spl
       set.
 - [x] Define typed result and failure records; underflow errors must name the
       act, scene, character, and step.
-- [ ] Keep interpreter state injectable so tests can execute one act with
+- [x] Keep interpreter state injectable so tests can execute one act with
       preserved cross-act stacks and values.
 - [ ] Add `tests/test_splc_interpret.py` covering every op, both branch arms,
       EOF, underflow diagnostics, step-limit failure, and state handoff.

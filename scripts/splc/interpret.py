@@ -169,8 +169,13 @@ def _eval_cond(
     raise TypeError(f"unknown comparator {cond.op!r}")
 
 
-def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpreterState:
-    """Execute `act` starting at its first scene, mutating and returning `state`.
+def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpretResult:
+    """Execute `act` starting at its first scene, mutating `state` in place.
+
+    `state` is injectable: callers construct it once, pass it into one act,
+    and hand the returned `InterpretResult.state` (the same mutated object)
+    into the next act, so cross-act values and stacks carry forward exactly
+    as they do across real act boundaries.
 
     Scene jumps (`Goto`, `Branch`) resolve only within this act, matching the
     IR-level validation in `scripts.splc.validate`. `HaltAct` ends the act;
@@ -232,7 +237,7 @@ def run_act(act: Act, state: InterpreterState, step_limit: int) -> InterpreterSt
             else:
                 raise TypeError(f"unknown op {op!r}")
         if halted:
-            return state
+            return InterpretResult(state=state, steps=step)
         if jump is None:
             # Validation guarantees every scene ends in goto/halt/exhaustive
             # branch, so an untaken non-exhaustive branch falls through here
