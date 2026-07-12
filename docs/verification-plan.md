@@ -300,6 +300,64 @@ Each replay was run once as part of the docs restructure. Results below capture 
   a missing zero-input guard, noted as hygiene, not currently exercised by
   any fixture.
 
+### B21 — Regression-loop acceleration measurement (Task 5, plan 3M)
+
+- **Commands (2026-07-12, commit after Task 4, clean tree):**
+  ```
+  env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_mdtest.py -q --tb=no
+  env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q --tb=no
+  env UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest-xdist pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q -n 2 --tb=no
+  env UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest-xdist pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q -n 4 --tb=no
+  env UV_CACHE_DIR=/tmp/uv-cache uv run --with pytest-xdist pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q -n auto --tb=no
+  ./shakedown < ~/mdtest/Markdown.mdtest/"Amps and angle encoding.text"
+  ```
+- **Purpose:** close the Task 5 decision gate of plan 3M
+  (`docs/superpowers/plans/2026-07-11-completion-safety-rails.md`): measure
+  whether `pytest-xdist` parallelization or a session-scoped in-process
+  parsed-play runner materially accelerates the sequential regression loop
+  before Spike B.
+- **Clean-tree sequential baseline (1 run each unless noted):** shipped
+  mdtest suite (1 pass + 22 skips): ~11.2s-12.1s wall. Spikes +
+  token_dump regression: ~200s-216s wall (six runs clustered 200.77s-215.88s).
+  Amps and angle encoding single-fixture runtime, 3 runs: 11.13s, 10.99s,
+  11.34s (first/median ~11.1s). `shakedown.spl`: 104,583 bytes, 4,538 lines,
+  211 scenes; `src/` + `debug/` fragments total 4,573 lines.
+- **`pytest-xdist` worker sweep (spikes + token_dump only; the shipped
+  mdtest suite is dominated by one live fixture plus 22 skips and shows no
+  material win from parallelization):** `-n 4`: 66.08s (15 passed), wall
+  66.55s. `-n 8` (logical CPU count): wall 60.00s, repeat 54.34s-60.00s.
+  Final confirming run with `-n auto` (8 logical): wall 52.91s.
+- **Decision:** `pytest-xdist` **adopted** as a dev dependency
+  (`pyproject.toml`) for the long spikes/token_dump regression only. It cuts
+  that regression's wall time from ~207s to ~53s-60s (~3.5x-4x), is stable
+  across repeated runs, and required no test changes (existing tests are
+  process-isolated `./shakedown` subprocess invocations). It is not applied
+  to the already-fast shipped mdtest suite, where parallel worker startup
+  overhead dominates any gain.
+- **In-process parsed-play runner prototype:** constructed
+  `shakespearelang.Shakespeare(SPL, ...)` directly in-process (bypassing the
+  `./shakedown` subprocess) and monkey-patched its input manager's buffer per
+  call. Tested repeated inputs in both orders (Amps fixture then a short
+  inline-markup string, and the reverse), an empty-input error case, and
+  stdout-byte parity against a fresh `./shakedown` subprocess for each case.
+  **State isolation held**: each fresh `Shakespeare()` construction produced
+  an independent `State`, with no leakage between calls in either order, and
+  output bytes matched the subprocess on every success path. **Construction
+  cost was ~11s-13s per `Shakespeare()` call** — statistically identical to a
+  fresh subprocess invocation of `./shakedown`, because both pay the same
+  `shakedown.spl` parse/compile cost.
+- **Decision:** the in-process runner is **not adopted** for regression
+  acceleration. Its per-call construction cost equals subprocess cost, so it
+  buys nothing that `pytest-xdist` doesn't already deliver, and it adds
+  in-process state-management risk for no measured win. Direct `./shakedown`
+  subprocess execution remains the sole binary-contract authority and is
+  used for all release-performance measurements; the prototype was inspected
+  and discarded rather than merged into test tooling.
+- **Disposition:** Green for `pytest-xdist` on the long regression path;
+  negative (documented, not adopted) for the in-process runner. Neither
+  finding changes any production `shakedown.spl` behavior — both are
+  regression-tooling decisions only.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.

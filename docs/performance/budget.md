@@ -59,6 +59,20 @@ This measures the audit tool and local Markdown.pl oracle comparison.
 
 Run each command five times and report the median plus the first-run value.
 
+### Long Regression Suite (parallelized)
+
+`pytest-xdist` is adopted (dev dependency) for the spikes + token-dump
+regression only — see B21 in `docs/verification-plan.md` for the full
+worker-count sweep and decision:
+
+```bash
+env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q -n auto
+```
+
+Do not apply `-n auto` to `tests/test_mdtest.py`; that suite is dominated by
+worker-startup overhead relative to its ~11s sequential wall time and showed
+no material win in the B21 sweep.
+
 ### Future Production Single-Fixture Runtime
 
 Once `./shakedown` stops being an oracle stub, measure representative fixtures directly:
@@ -96,6 +110,11 @@ whether the cost is debuggable in the run-loop.
 - **Current-repo reference-lookup at fixture scale:** first-run and median per B17.
 - **Current oracle-stub mdtest contract:** 23 passing tests in about 1.44s (B9).
 - **Input-size execution scaling (2026-07-07):** ~11s fixed program cost plus ~0.11s per KB of input; a Syntax-sized (27KB) synthetic input runs in ~14s median (B20).
+- **Regression-loop acceleration (2026-07-12):** `pytest-xdist -n auto` cuts the
+  spikes + token_dump regression from ~207s to ~53s-60s (~3.5x-4x); adopted for
+  that suite only. An in-process parsed-play runner prototype was proven
+  state-isolated but not adopted — its per-call construction cost (~11s-13s)
+  matches a fresh `./shakedown` subprocess, so it buys no wall-time win (B21).
 
 ### Historical / retrospective context
 

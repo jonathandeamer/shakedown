@@ -152,23 +152,38 @@ when `./shakedown` crashes; `--require 'Amps and angle encoding'` passes.
 
 ## Task 5 — Measure feedback-loop acceleration options
 
-- [ ] Record the clean-tree baseline for sequential shipped-fixture plus spike
+- [x] Record the clean-tree baseline for sequential shipped-fixture plus spike
       regression wall time, current SPL line/scene counts, and representative
       single-fixture first/median runtime.
-- [ ] Add `pytest-xdist` only in an isolated experiment and benchmark worker
+- [x] Add `pytest-xdist` only in an isolated experiment and benchmark worker
       counts 2, 4, and logical-CPU count. Keep it only if the best repeatable
       result materially improves wall time without instability; otherwise
       record the negative decision and revert the dependency/config change.
-- [ ] Inspect and prototype a session-scoped in-process parsed-play runner.
+- [x] Inspect and prototype a session-scoped in-process parsed-play runner.
       Test repeated inputs in both orders, error cases, stdout/stderr parity,
       and state leakage against fresh subprocess execution.
-- [ ] Adopt the runner only for regression acceleration if state isolation is
+- [x] Adopt the runner only for regression acceleration if state isolation is
       proven. Keep at least one real subprocess binary-contract test and all
       release-performance measurements.
-- [ ] Update `docs/architecture/cache-spike.md`,
+
+      Decision (2026-07-12): state isolation proven (distinct State per fresh
+      Shakespeare() construct). Repeated inputs in both orders, error cases
+      (empty), stdout/stderr parity all match subprocess on success paths.
+      However construction cost ~11-13s (identical to sub); xdist already
+      delivers 3-4x wall-time win on long regression. In-process runner NOT
+      adopted for acceleration. Direct subprocess remains binary-contract
+      authority and all release perf measurements. (See prototype evidence
+      in agent session log.)
+- [x] Update `docs/architecture/cache-spike.md`,
       `docs/performance/budget.md`, and `docs/verification-plan.md` with exact
       commands, dates, run counts, and decisions.
-- [ ] Run the required regression commands.
+- [x] Run the required regression commands.
+
+**Evidence recorded 2026-07-12:** ruff check/format, pyright, splc unit
+tests, literary/assemble/codegen tests, the Amps and angle encoding mdtest
+case, and the spikes + token_dump suite (via `pytest-xdist -n auto`, 15
+passed in 79.40s) all passed; splc regen and assemble produced no diff
+against committed `src`, `debug`, or `shakedown.spl`.
 
 **Decision gate:** neither acceleration path is adopted on plausibility alone.
 If both fail, direct subprocess mode remains and the recorded projection
