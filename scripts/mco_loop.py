@@ -343,9 +343,21 @@ def load_state(path: Path) -> dict[str, object]:
     try:
         value = json.loads(path.read_text())
     except (FileNotFoundError, json.JSONDecodeError, OSError):
-        return {"cooldowns": {}, "failures": {}, "last_failure": None}
+        return {
+            "cooldowns": {},
+            "failures": {},
+            "last_failure": None,
+            "action_attempt": None,
+            "exhaustion": None,
+        }
     if not isinstance(value, dict):
-        return {"cooldowns": {}, "failures": {}, "last_failure": None}
+        return {
+            "cooldowns": {},
+            "failures": {},
+            "last_failure": None,
+            "action_attempt": None,
+            "exhaustion": None,
+        }
     state = cast(dict[str, object], value)
     action_attempt = state.get("action_attempt")
     exhaustion = state.get("exhaustion")

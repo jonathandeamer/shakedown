@@ -422,6 +422,13 @@ def test_load_state_preserves_optional_action_attempt_and_exhaustion(
     assert state["exhaustion"] == {"action_key": "abc"}
 
 
+def test_missing_state_defaults_optional_records_to_none(tmp_path: Path) -> None:
+    state = mco_loop.load_state(tmp_path / "missing.json")
+
+    assert state["action_attempt"] is None
+    assert state["exhaustion"] is None
+
+
 def test_selection_skips_substantively_attempted_executor() -> None:
     action = NextAction(ActionKind.IMPLEMENT, "execute", None, "step", ())
     executors = (
@@ -595,6 +602,7 @@ def test_main_uses_canonical_action_and_exits_five_on_exhaustion(
     plan.write_text("- [ ] step\n")
     canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
     rewritten = NextAction(ActionKind.FIX, "recover", plan, "step", ())
+    governed = NextAction(ActionKind.PLAN, "redirect", plan, "step", ())
     selected_actions: list[NextAction] = []
 
     monkeypatch.setattr(mco_loop, "REPO", tmp_path)
@@ -616,7 +624,7 @@ def test_main_uses_canonical_action_and_exits_five_on_exhaustion(
         mco_loop, "apply_failure_action", lambda action, state: rewritten
     )
     monkeypatch.setattr(
-        mco_loop, "apply_governor_directive", lambda action: (action, False)
+        mco_loop, "apply_governor_directive", lambda action: (governed, False)
     )
 
     def fake_select(executors, state, action, now, preserve_planning=False):
