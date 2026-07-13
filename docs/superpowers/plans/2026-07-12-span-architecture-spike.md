@@ -33,34 +33,199 @@
 
 ## Literary reservations (ready to paste)
 
-These are Act III pastoral/natural controlled titles and Recall surfaces. Add
-only the labels and keys actually used in the IR. The four marked spares are
-pre-approved for a necessary additional scene; if they are exhausted, stop
-instead of inventing prose. No new Critical or Stable Utility phrase is
-needed.
+These are Act III pastoral/natural controlled titles and Recall surfaces.
+The buffered scanner is a scene-per-state IR machine, so its title budget is
+sized from the existing link/reference scanner rather than from the number of
+user-visible Markdown features: Task 3 reserves 23 working labels and six
+spares; Task 4 reserves 23 working labels and six spares. Add only labels
+actually used in the IR, but take every title exclusively from these pools. If
+either spare pool is exhausted, stop and request a planning amendment instead
+of inventing prose. No new Critical or Stable Utility phrase is needed.
 
 ```toml
 # src/30-act3-literary.toml
 [scenes.LYRIC_BUFFER_OPEN]
 title = "Romeo gathers the unspent morning line."
 pattern = "scene_of_character"
+[scenes.LYRIC_BUFFER_DRAIN]
+title = "Romeo gathers each dew-bright mark."
+pattern = "scene_of_character"
+[scenes.LYRIC_BUFFER_KEEP]
+title = "Juliet keeps the gathered garden mark."
+pattern = "scene_of_character"
+[scenes.LYRIC_BUFFER_DRAIN_CLOSE]
+title = "The morning line reaches its quiet hedge."
+pattern = "bare_statement"
+[scenes.LYRIC_SCAN_NEXT]
+title = "Romeo seeks the next unspent petal."
+pattern = "scene_of_character"
 [scenes.LYRIC_CODE_RUN]
 title = "Juliet shelters the silver backtick measure."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_COUNT]
+title = "Romeo counts the silver measure's leaves."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_SEEK]
+title = "Juliet seeks the answering silver measure."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_COMPARE]
+title = "The lovers weigh two moonlit measures."
+pattern = "cross_character"
+[scenes.LYRIC_CODE_MATCH]
+title = "Romeo finds the measure's faithful mate."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_BODY]
+title = "Juliet keeps the sheltered silver text."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_CLOSE]
+title = "The silver measure closes in the dawn."
+pattern = "bare_statement"
+[scenes.LYRIC_CODE_FALLBACK]
+title = "The unmatched silver mark returns to grass."
+pattern = "bare_statement"
+[scenes.LYRIC_CODE_REPLAY]
+title = "Romeo restores the loose moonlit marks."
+pattern = "scene_of_character"
+[scenes.LYRIC_ESCAPE_TEST]
+title = "Juliet tests the thorn before the rose."
 pattern = "scene_of_character"
 [scenes.LYRIC_ESCAPE_GLYPH]
 title = "Romeo frees one guarded garden mark."
 pattern = "scene_of_character"
+[scenes.LYRIC_ESCAPE_LITERAL]
+title = "Juliet lets the guarded petal pass unchanged."
+pattern = "scene_of_character"
+[scenes.LYRIC_ORDINARY_GLYPH]
+title = "Romeo tends the unguarded garden mark."
+pattern = "scene_of_character"
+[scenes.LYRIC_BUFFER_ENTITY_AMP]
+title = "Juliet names the stream's small riverbend."
+pattern = "scene_of_character"
+[scenes.LYRIC_BUFFER_ENTITY_ANGLE]
+title = "Romeo softens the hedge's bright corner."
+pattern = "scene_of_character"
+[scenes.LYRIC_BUFFER_UNWIND]
+title = "The gathered line returns by the garden gate."
+pattern = "bare_statement"
+[scenes.LYRIC_BUFFER_CLOSE]
+title = "The lovers return the finished line."
+pattern = "cross_character"
+[scenes.LYRIC_BUFFER_RETURN]
+title = "Romeo returns the finished garden line."
+pattern = "scene_of_character"
+
+# Task 3 spare pool — do not use unless an extra generated scene is necessary.
+[scenes.LYRIC_BUFFER_FALLBACK]
+title = "The loose rose returns to daylight."
+pattern = "bare_statement"
+[scenes.LYRIC_BUFFER_REVERSE]
+title = "Juliet turns the gathered petals home."
+pattern = "scene_of_character"
+[scenes.LYRIC_BUFFER_SENTINEL]
+title = "The garden gate keeps the borrowed path."
+pattern = "bare_statement"
+[scenes.LYRIC_CODE_TRIM]
+title = "Romeo lifts one balanced pair of dew."
+pattern = "scene_of_character"
+[scenes.LYRIC_ESCAPE_FALLBACK]
+title = "The thorn remains beside the rose."
+pattern = "bare_statement"
+[scenes.LYRIC_BUFFER_FINISH]
+title = "Juliet seals the line beneath the moon."
+pattern = "scene_of_character"
+
+# Task 4 protected-region pool — reserve before implementation.
 [scenes.LYRIC_HTML_TAG]
 title = "Juliet keeps the moonlit tag whole."
 pattern = "scene_of_character"
+[scenes.LYRIC_HTML_OPEN]
+title = "Romeo opens the quiet moonlit gate."
+pattern = "scene_of_character"
+[scenes.LYRIC_HTML_SCAN]
+title = "Juliet guards each mark within the gate."
+pattern = "scene_of_character"
+[scenes.LYRIC_HTML_KEEP]
+title = "Romeo bears the guarded tag unchanged."
+pattern = "scene_of_character"
+[scenes.LYRIC_HTML_CLOSE]
+title = "The moonlit gate closes without a thorn."
+pattern = "bare_statement"
+[scenes.LYRIC_AUTOLINK_TEST]
+title = "Juliet asks whether the bright path is named."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_BODY]
+title = "Romeo follows the river's shining road."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_CLOSE]
+title = "The shining road meets its silver gate."
+pattern = "bare_statement"
 [scenes.LYRIC_LINK_REGION]
 title = "Romeo binds the rose to its bright path."
+pattern = "scene_of_character"
+[scenes.LYRIC_IMAGE_TEST]
+title = "Juliet sees the little garden portrait."
+pattern = "scene_of_character"
+[scenes.LYRIC_LABEL_OPEN]
+title = "Romeo opens the rose's tender name."
+pattern = "scene_of_character"
+[scenes.LYRIC_LABEL_SCAN]
+title = "Juliet tends the petals within the name."
+pattern = "scene_of_character"
+[scenes.LYRIC_LABEL_CLOSE]
+title = "The rose's tender name reaches daylight."
+pattern = "bare_statement"
+[scenes.LYRIC_DESTINATION_OPEN]
+title = "Romeo enters the winding garden road."
+pattern = "scene_of_character"
+[scenes.LYRIC_DESTINATION_SCAN]
+title = "Juliet keeps the winding road's marks."
+pattern = "scene_of_character"
+[scenes.LYRIC_DESTINATION_BALANCE]
+title = "The lovers balance each round garden turn."
+pattern = "cross_character"
+[scenes.LYRIC_DESTINATION_CLOSE]
+title = "The winding road closes by the rose."
+pattern = "bare_statement"
+[scenes.LYRIC_TITLE_OPEN]
+title = "Juliet opens the path's quiet name."
+pattern = "scene_of_character"
+[scenes.LYRIC_TITLE_SCAN]
+title = "Romeo keeps the quiet name unbroken."
+pattern = "scene_of_character"
+[scenes.LYRIC_TITLE_CLOSE]
+title = "The quiet name returns to moonlight."
+pattern = "bare_statement"
+[scenes.LYRIC_REGION_EMIT]
+title = "Juliet sends the finished rose-path onward."
 pattern = "scene_of_character"
 [scenes.LYRIC_EMPHASIS_STRONG]
 title = "Juliet lays the star within the sunlit seal."
 pattern = "scene_of_character"
-[scenes.LYRIC_BUFFER_CLOSE]
-title = "The lovers return the finished line."
+[scenes.LYRIC_EMPHASIS_SCAN]
+title = "Romeo follows the star through the leaves."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_CLOSE]
+title = "The sunlit seal closes around the star."
+pattern = "bare_statement"
+
+# Task 4 spare pool — do not use unless an extra generated scene is necessary.
+[scenes.LYRIC_HTML_FALLBACK]
+title = "The loose moonlit gate remains a gate."
+pattern = "bare_statement"
+[scenes.LYRIC_AUTOLINK_FALLBACK]
+title = "The unmarked road returns to the field."
+pattern = "bare_statement"
+[scenes.LYRIC_LABEL_REPLAY]
+title = "Romeo sends the bound petals onward."
+pattern = "scene_of_character"
+[scenes.LYRIC_DESTINATION_REPLAY]
+title = "Juliet restores the winding path's petals."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_FALLBACK]
+title = "The unpaired star remains in the garden."
+pattern = "bare_statement"
+[scenes.LYRIC_REGION_FINISH]
+title = "The lovers leave the finished garden whole."
 pattern = "cross_character"
 
 [characters.romeo.recall]
@@ -70,20 +235,6 @@ link_label_mark = "Recall the bound rose's mark."
 [characters.juliet.recall]
 buffered_last_glyph = "Recall the night's final glyph."
 protected_tag_mark = "Recall the silver tag's mark."
-
-# Spare pool — do not use unless an extra generated scene is necessary.
-[scenes.LYRIC_BUFFER_FALLBACK]
-title = "The loose rose returns to daylight."
-pattern = "bare_statement"
-[scenes.LYRIC_PROTECTED_CLOSE]
-title = "Juliet closes the guarded silver path."
-pattern = "scene_of_character"
-[scenes.LYRIC_LABEL_REPLAY]
-title = "Romeo sends the bound petals onward."
-pattern = "scene_of_character"
-[scenes.LYRIC_EMPHASIS_FALLBACK]
-title = "The unpaired star remains in the garden."
-pattern = "bare_statement"
 ```
 
 ---
@@ -194,11 +345,22 @@ pattern = "bare_statement"
 
   Evidence (2026-07-12): `12 failed, 12 passed, 14 deselected`. The two new rendering assertions fail red as intended (alongside the pre-existing span-probe reds); the two new scan-floor invariant cases pass, keeping the borrowed-prefix contract green before the scanner lands.
 
-- [ ] **Step 3: Replace direct glyph dispatch with the bounded scanner.**
+- [ ] **Step 3: Add the floor-bounded paragraph drain and ordinary-glyph loop.**
 
-  In `src_ir/act3.py`, preserve `_traverse_dispatch()` and route `TRAVERSE_OPEN_TEXT` to scenes that: (1) push one private floor sentinel above the borrowed carrier prefix; (2) drain the entire paragraph until `TEXT_END` into the source buffer; (3) consume a maximal backtick run and seek only a same-length closing run; (4) emit `<code>`/`</code>` and encoded code content directly to Juliet; (5) consume `\\` plus an escapable punctuation glyph as one literal output glyph; and (6) drain the source floor exactly once before writing `TEXT_END` and returning to traversal. Any unmatched opener falls back byte-for-byte to literal source output. Keep structural codes/payloads on the existing copy path. Use only `LYRIC_BUFFER_OPEN`, `LYRIC_CODE_RUN`, `LYRIC_ESCAPE_GLYPH`, and `LYRIC_BUFFER_CLOSE` plus the reserved Recall keys actually referenced.
+  In `src_ir/act3.py`, preserve `_traverse_dispatch()` and route
+  `TRAVERSE_OPEN_TEXT` through `LYRIC_BUFFER_OPEN`, `LYRIC_BUFFER_DRAIN`,
+  `LYRIC_BUFFER_KEEP`, `LYRIC_BUFFER_DRAIN_CLOSE`, `LYRIC_SCAN_NEXT`,
+  `LYRIC_ORDINARY_GLYPH`, `LYRIC_BUFFER_ENTITY_AMP`,
+  `LYRIC_BUFFER_ENTITY_ANGLE`, `LYRIC_BUFFER_UNWIND`,
+  `LYRIC_BUFFER_CLOSE`, and `LYRIC_BUFFER_RETURN` as needed. Push exactly one
+  private floor above the borrowed carrier prefix, drain exactly one paragraph
+  through `TEXT_END` into a source buffer, and emit ordinary glyphs directly
+  to Juliet with amp/angle encoding. Consume the private floor exactly once,
+  then write one `TEXT_END` and resume the existing structural-copy path. Do
+  not consume structural codes or payloads in this loop, and do not return
+  emitted output to the source buffer.
 
-- [ ] **Step 4: Regenerate, assemble, and run focused evidence.**
+- [ ] **Step 4: Regenerate and prove the buffer boundary before delimiter work.**
 
   Run:
 
@@ -209,17 +371,82 @@ pattern = "bare_statement"
     tests/test_splc_generated_fragments.py \
     tests/test_act3_contracts.py::test_act3_preserves_span_fixture_structural_stream \
     tests/test_act3_contracts.py::test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels \
+    tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix \
+    -q
+  uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+  ```
+
+  Expected: generated artifacts are fresh; borrowed-prefix, stream-shape, and
+  scan-floor assertions pass; the code-span and escape rendering tests can
+  remain red; Amps remains byte-identical.
+
+- [ ] **Step 5: Add maximal backtick-run matching and byte-exact replay.**
+
+  Extend only the buffered source loop with `LYRIC_CODE_RUN`,
+  `LYRIC_CODE_COUNT`, `LYRIC_CODE_SEEK`, `LYRIC_CODE_COMPARE`,
+  `LYRIC_CODE_MATCH`, `LYRIC_CODE_BODY`, `LYRIC_CODE_CLOSE`,
+  `LYRIC_CODE_FALLBACK`, and `LYRIC_CODE_REPLAY`; use
+  `LYRIC_CODE_TRIM` only if the balanced outer-space trim needs its own scene.
+  Treat an opener as a maximal run, accept only a later maximal run of the
+  same length, keep shorter runs as code content, trim one balanced outer
+  space pair, encode `&`, `<`, and `>` only in code content, and write literal
+  `<code>` boundaries directly to Juliet. An unmatched opener and every
+  speculative source glyph must replay byte-for-byte in source order. Keep
+  all output out of the source buffer.
+
+- [ ] **Step 6: Regenerate and prove variable code spans.**
+
+  Run:
+
+  ```bash
+  uv run python -m scripts.splc
+  uv run python scripts/assemble.py
+  uv run pytest \
+    tests/test_splc_generated_fragments.py \
     tests/test_act3_contracts.py::test_act3_renders_variable_length_code_spans \
-    tests/test_act3_contracts.py::test_act3_preserves_escaped_and_literal_span_punctuation \
     tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix \
     'tests/test_architecture_spikes.py::test_span_architecture_spike_matches_checked_in_oracle_bytes[variable_code_spans]' \
     -q
   uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
   ```
 
-  Expected: generated artifacts are fresh; the code-span byte-parity probe passes; the escape-specific Act III assertions pass; structural/prefix contracts stay green; Amps remains byte-identical. The full `escapes_and_overlap`, HTML/link/image, and overlap/emphasis whole-fixture parity probes remain Task 4 work.
+  Expected: both code regions and the byte-exact `variable_code_spans` probe
+  pass; the scan-floor invariant and Amps remain green; escape rendering may
+  remain red until Step 7.
 
-- [ ] **Step 5: Commit and push the scanner foundation.**
+- [ ] **Step 7: Add escaped-glyph consumption and the unmatched-opener edge cases.**
+
+  Add `LYRIC_ESCAPE_TEST`, `LYRIC_ESCAPE_GLYPH`, and
+  `LYRIC_ESCAPE_LITERAL` to consume a backslash plus one Markdown-escapable
+  punctuation glyph as one literal output glyph. For a non-escapable next
+  glyph or trailing backslash, preserve the backslash literally; use
+  `LYRIC_ESCAPE_FALLBACK` only if that branch needs a distinct scene. Re-run
+  the unmatched-backtick fallback through the same source replay path, with
+  no output rescanning and no additional floor/sentinel.
+
+- [ ] **Step 8: Regenerate and prove code, escapes, and fallback safety.**
+
+  Run:
+
+  ```bash
+  uv run python -m scripts.splc
+  uv run python scripts/assemble.py
+  uv run pytest \
+    tests/test_splc_generated_fragments.py \
+    tests/test_act3_contracts.py::test_act3_preserves_escaped_and_literal_span_punctuation \
+    tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix \
+    tests/test_act3_contracts.py::test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels \
+    'tests/test_architecture_spikes.py::test_span_architecture_spike_matches_checked_in_oracle_bytes[variable_code_spans]' \
+    -q
+  uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+  ```
+
+  Expected: code-span and escape-specific contracts pass; all floor/prefix
+  assertions and Amps remain green. Whole-fixture parity for
+  `escapes_and_overlap`, HTML/link/image, and overlapping emphasis remains
+  Task 4 work.
+
+- [ ] **Step 9: Commit and push the scanner foundation.**
 
   Run: `git add src_ir/act3.py src/30-act3-literary.toml src/30-act3-span.spl shakedown.spl tests/test_act3_contracts.py && git commit -m "feat: add buffered code-span scanner"`  
   Expected: conventional commit with required provenance trailers succeeds, followed by `git push` succeeding.
@@ -245,7 +472,21 @@ pattern = "bare_statement"
 
 - [ ] **Step 2: Implement the remaining scanner modes in oracle order.**
 
-  Extend the Task 3 scenes so `<...>` distinguishes a literal inline HTML tag from an HTTP/HTTPS/FTP autolink; tags copy as opaque source bytes, while autolink URLs receive amp/angle encoding once. Parse the exact balanced probe link/image forms: bracketed label/alt text is recursively scanned as source text, `http://e/x_(y)` is retained verbatim as an opaque destination, and quoted titles remain opaque. Then apply amp/angle encoding, strong substitution, and emphasis substitution only to ordinary/child-label source regions, with strong before emphasis. Use only `LYRIC_HTML_TAG`, `LYRIC_LINK_REGION`, `LYRIC_EMPHASIS_STRONG`, and already reserved spare labels/Recall keys actually needed. Do not add general reference resolution or unsupported delimiter grammar.
+  Extend the Task 3 buffer using the pre-reserved Task 4 protected-region
+  pool: `LYRIC_HTML_TAG` through `LYRIC_AUTOLINK_CLOSE` for opaque tags and
+  active autolinks; `LYRIC_LINK_REGION` through `LYRIC_REGION_EMIT` for the
+  balanced link/image label, destination, and title states; and
+  `LYRIC_EMPHASIS_STRONG` through `LYRIC_EMPHASIS_CLOSE` for strong-before-em
+  output. `<...>` distinguishes a literal inline HTML tag from an
+  HTTP/HTTPS/FTP autolink; tags copy as opaque source bytes, while autolink
+  URLs receive amp/angle encoding once. Parse the exact balanced probe
+  link/image forms: bracketed label/alt text is recursively scanned as source
+  text, `http://e/x_(y)` is retained verbatim as an opaque destination, and
+  quoted titles remain opaque. Apply amp/angle encoding, strong substitution,
+  and emphasis substitution only to ordinary/child-label source regions, with
+  strong before emphasis. The six Task 4 spares are the only permitted
+  additional states; exhaustion is a planning-amendment stop. Do not add
+  general reference resolution or unsupported delimiter grammar.
 
 - [ ] **Step 3: Regenerate and run all spike evidence.**
 

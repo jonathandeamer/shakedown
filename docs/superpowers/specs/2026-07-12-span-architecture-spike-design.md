@@ -79,6 +79,20 @@ normalization surrogate.
   need. The buffered final-glyph result gives the same protection without
   destabilizing Spike B's accepted container stream.
 
+## IR scene-capacity amendment (2026-07-13)
+
+The one-way buffered design is unchanged. Its implementation is nevertheless
+a scene-per-state `splc` control-flow graph: the validator requires each scene
+to have exactly one non-anchor participant, and loop/count/replay transitions
+cannot be collapsed into a single scene. The implementation plan therefore
+must reserve controlled Act III titles at the observed density of the existing
+link/reference scanner, before any IR change: 23 working plus six spare titles
+for the Task 3 buffer/code/escape state machine, and 23 working plus six spare
+titles for Task 4 protected regions and emphasis. These are capacity budgets,
+not a broadened Markdown scope. If either pool proves insufficient, pause for
+another planning amendment; implementation agents must not invent literary
+surfaces or weaken the validator.
+
 ## Halt rule
 
 Halt and reopen Act III's transformation model if any probe requires emitted
