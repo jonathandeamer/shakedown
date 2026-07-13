@@ -654,7 +654,7 @@ reappear there; Task 4 prose must still come only from its reserved pools.
   tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`
   => `1 passed, 208 deselected`.
 
-- [ ] **Step 5: Add maximal backtick-run matching and byte-exact replay (per Amendment A1).**
+- [x] **Step 5: Add maximal backtick-run matching and byte-exact replay (per Amendment A1).**
 
   Implement the Amendment A1 scene table exactly: add the
   `branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_RUN")` entry hook to
@@ -674,6 +674,25 @@ reappear there; Task 4 prose must still come only from its reserved pools.
   Add the Amendment A1 scene titles (only those actually used) to
   `src/30-act3-literary.toml` and the Amendment A1 recall keys to
   `src/literary.toml`, both verbatim from the reserved pools.
+
+  Evidence (2026-07-13): implemented the entry hook and the thirty
+  `LYRIC_CODE_*` scenes in `src_ir/act3.py` exactly per the Amendment A1
+  table (opener/candidate counting into HECATE/MACBETH, off-stage
+  `eq(val(MACBETH), val(HECATE))` compare, ROMEO/HECATE sentinel-bounded
+  buffers, tail-trim before reverse, head-trim plus amp/angle encoding on
+  emit, byte-exact fallback replay). Added the reserved scene titles to
+  `src/30-act3-literary.toml` and the reserved recall keys to
+  `src/literary.toml`, both used verbatim. Regenerated fragments with
+  `uv run python -m scripts.splc` and `uv run python scripts/assemble.py`:
+  no drift beyond the intended scanner change. Gate:
+  `uv run pytest tests/test_splc_generated_fragments.py -q` => `2 passed`;
+  `uv run pytest tests/test_act3_contracts.py::test_act3_renders_variable_length_code_spans tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix 'tests/test_architecture_spikes.py::test_span_architecture_spike_matches_checked_in_oracle_bytes[variable_code_spans]' -q`
+  => `4 passed`; `uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`
+  => `1 passed, 208 deselected`. Full `tests/test_act3_contracts.py
+  tests/test_architecture_spikes.py -q` run: `9 failed, 29 passed` — the
+  nine failures are exactly the still-red escape/HTML/autolink/link/image/
+  overlapping-emphasis probes reserved for Steps 7 and Task 4; no
+  regression on the code-span or structural/floor assertions.
 
 - [ ] **Step 6: Regenerate and prove variable code spans.**
 

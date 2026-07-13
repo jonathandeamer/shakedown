@@ -46,6 +46,126 @@ pattern = "scene_of_character"
 title = "The gathered line returns by the garden gate."
 pattern = "bare_statement"
 
+[scenes.LYRIC_CODE_RUN]
+title = "Juliet shelters the silver backtick measure."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_COUNT]
+title = "Romeo counts the silver measure's leaves."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_COUNT_MORE]
+title = "Hecate lengthens the silver tally."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_SEEK_OPEN]
+title = "Romeo stakes the hedge before the search."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_KEEP]
+title = "Romeo pockets one unproven petal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_SEEK]
+title = "Juliet seeks the answering silver measure."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_CAND_OPEN]
+title = "Macbeth begins the answering tally."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_CAND_COUNT]
+title = "Macbeth counts the answering silver leaves."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_CAND_MORE]
+title = "Macbeth lengthens the answering tally."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_COMPARE]
+title = "The lovers weigh two moonlit measures."
+pattern = "cross_character"
+
+[scenes.LYRIC_CODE_CAND_REPLAY]
+title = "Macbeth returns the short measure to grass."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_CAND_DONE]
+title = "The short measure lies among the petals."
+pattern = "bare_statement"
+
+[scenes.LYRIC_CODE_MATCH]
+title = "Romeo finds the measure's faithful mate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_TRIM]
+title = "Romeo lifts one balanced pair of dew."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_REV_KEEP]
+title = "Hecate gathers one sheltered glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_REV]
+title = "Hecate turns the sheltered line about."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_BODY]
+title = "Juliet keeps the sheltered silver text."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_HEAD]
+title = "Juliet lifts the morning dew from the line."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_GLYPH]
+title = "Juliet weighs the sheltered glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_PLAIN]
+title = "Juliet lays the sheltered glyph plain."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_AMP]
+title = "Juliet names the sheltered riverbend."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_LT]
+title = "Juliet softens the sheltered bright corner."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_GT]
+title = "Juliet softens the sheltered far corner."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_NEXT]
+title = "Juliet tends the sheltered line's next glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_CLOSE]
+title = "The silver measure closes in the dawn."
+pattern = "bare_statement"
+
+[scenes.LYRIC_CODE_FALLBACK]
+title = "The unmatched silver mark returns to grass."
+pattern = "bare_statement"
+
+[scenes.LYRIC_CODE_REPLAY]
+title = "Romeo restores the loose moonlit marks."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_REPLAY_KEEP]
+title = "Puck bears one petal back to daylight."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_TICKS]
+title = "Juliet returns the lonely silver marks."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_CODE_TICKS_DONE]
+title = "The lonely silver marks rest in daylight."
+pattern = "bare_statement"
+
 [scenes.LYRIC_ANCHOR_INLINE]
 title = "The inline path becomes a reusable bright path."
 pattern = "bare_statement"

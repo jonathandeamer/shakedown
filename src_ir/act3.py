@@ -14,6 +14,7 @@ from scripts.splc.ir import (
     Expr,
     Op,
     act,
+    add,
     branch,
     const,
     eq,
@@ -27,7 +28,7 @@ from scripts.splc.ir import (
     val,
 )
 from src_ir import tokens
-from src_ir.cast import JULIET, PUCK, ROMEO, ROSALIND
+from src_ir.cast import HECATE, JULIET, MACBETH, PUCK, ROMEO, ROSALIND
 from src_ir.stream import RECIPES
 
 # Traversal routes per arity shape: (payloads, has_text). Codes with neither
@@ -230,11 +231,218 @@ ACT: Act = act(
                 eq(val(PUCK), const(tokens.TEXT_END)),
                 then="TRAVERSE_COPY_TERMINATOR",
             ),
+            branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_RUN"),  # '`'
             branch(
                 eq(val(PUCK), _k(91)),  # '['
                 then="LYRIC_REFERENCE_POP_AFTER_OPEN",
                 else_="LYRIC_TEST_AMPERSAND",
             ),
+        ),
+        # --- Code-span machine (Amendment A1): two-character register
+        # choreography. HECATE's value holds the opener run length; Romeo's
+        # stack (above a private STREAM_END sentinel) holds speculative
+        # source; Hecate's stack (above a private STREAM_END sentinel) holds
+        # the reversed, tail-trimmed span content. Macbeth's value holds the
+        # candidate closer run length.
+        scene(
+            "LYRIC_CODE_RUN",
+            let(HECATE, const(1)),
+            goto("LYRIC_CODE_COUNT"),
+        ),
+        scene(
+            "LYRIC_CODE_COUNT",
+            pop(PUCK, recall="silver_measures_leaf"),
+            branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_COUNT_MORE"),
+            goto("LYRIC_CODE_SEEK_OPEN"),
+        ),
+        scene(
+            "LYRIC_CODE_COUNT_MORE",
+            let(HECATE, add(val(HECATE), const(1))),
+            goto("LYRIC_CODE_COUNT"),
+        ),
+        scene(
+            "LYRIC_CODE_SEEK_OPEN",
+            push(ROMEO, const(tokens.STREAM_END)),
+            branch(eq(val(PUCK), const(tokens.TEXT_END)), then="LYRIC_CODE_FALLBACK"),
+            goto("LYRIC_CODE_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_CODE_KEEP",
+            push(ROMEO, val(PUCK)),
+            goto("LYRIC_CODE_SEEK"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_CODE_SEEK",
+            pop(PUCK, recall="sought_moonlit_glyph"),
+            branch(eq(val(PUCK), const(tokens.TEXT_END)), then="LYRIC_CODE_FALLBACK"),
+            branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_CAND_OPEN"),
+            goto("LYRIC_CODE_KEEP"),
+        ),
+        scene(
+            "LYRIC_CODE_CAND_OPEN",
+            let(MACBETH, const(1)),
+            goto("LYRIC_CODE_CAND_COUNT"),
+        ),
+        scene(
+            "LYRIC_CODE_CAND_COUNT",
+            pop(PUCK, recall="answering_measures_leaf"),
+            branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_CAND_MORE"),
+            goto("LYRIC_CODE_COMPARE"),
+        ),
+        scene(
+            "LYRIC_CODE_CAND_MORE",
+            let(MACBETH, add(val(MACBETH), const(1))),
+            goto("LYRIC_CODE_CAND_COUNT"),
+        ),
+        scene(
+            "LYRIC_CODE_COMPARE",
+            branch(
+                eq(val(MACBETH), val(HECATE)),
+                then="LYRIC_CODE_MATCH",
+                else_="LYRIC_CODE_CAND_REPLAY",
+            ),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_CODE_CAND_REPLAY",
+            branch(eq(val(MACBETH), const(0)), then="LYRIC_CODE_CAND_DONE"),
+            push(ROMEO, _k(96)),
+            let(MACBETH, sub(val(MACBETH), const(1))),
+            goto("LYRIC_CODE_CAND_REPLAY"),
+        ),
+        scene(
+            "LYRIC_CODE_CAND_DONE",
+            branch(eq(val(PUCK), const(tokens.TEXT_END)), then="LYRIC_CODE_FALLBACK"),
+            goto("LYRIC_CODE_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_CODE_MATCH",
+            push(PUCK, val(PUCK)),  # return the lookahead glyph
+            push(HECATE, const(tokens.STREAM_END)),
+            goto("LYRIC_CODE_TRIM"),
+            anchor=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_TRIM",
+            pop(ROMEO, recall="dew_hemmed_edge"),
+            branch(eq(val(ROMEO), _k(32)), then="LYRIC_CODE_TRIM"),
+            branch(eq(val(ROMEO), const(9)), then="LYRIC_CODE_TRIM"),
+            branch(eq(val(ROMEO), const(tokens.STREAM_END)), then="LYRIC_CODE_BODY"),
+            goto("LYRIC_CODE_REV_KEEP"),
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_REV_KEEP",
+            push(HECATE, val(ROMEO)),
+            goto("LYRIC_CODE_REV"),
+        ),
+        scene(
+            "LYRIC_CODE_REV",
+            pop(ROMEO, recall="gathered_nettle"),
+            branch(eq(val(ROMEO), const(tokens.STREAM_END)), then="LYRIC_CODE_BODY"),
+            goto("LYRIC_CODE_REV_KEEP"),
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_BODY",
+            *_stream(*b"<code>"),
+            goto("LYRIC_CODE_HEAD"),
+            anchor=JULIET,
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_HEAD",
+            pop(HECATE, recall="sheltered_first_glyph"),
+            branch(eq(val(HECATE), _k(32)), then="LYRIC_CODE_HEAD"),
+            branch(eq(val(HECATE), const(9)), then="LYRIC_CODE_HEAD"),
+            branch(eq(val(HECATE), const(tokens.STREAM_END)), then="LYRIC_CODE_CLOSE"),
+            goto("LYRIC_CODE_GLYPH"),
+            anchor=JULIET,
+        ),
+        scene(
+            "LYRIC_CODE_GLYPH",
+            branch(eq(val(HECATE), _k(38)), then="LYRIC_CODE_AMP"),
+            branch(eq(val(HECATE), _k(60)), then="LYRIC_CODE_LT"),
+            branch(eq(val(HECATE), _k(62)), then="LYRIC_CODE_GT"),
+            goto("LYRIC_CODE_PLAIN"),
+            anchor=JULIET,
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_PLAIN",
+            push(JULIET, val(HECATE)),
+            goto("LYRIC_CODE_NEXT"),
+            anchor=JULIET,
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_AMP",
+            *_entity(*b"&amp;"),
+            goto("LYRIC_CODE_NEXT"),
+            anchor=JULIET,
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_LT",
+            *_entity(*b"&lt;"),
+            goto("LYRIC_CODE_NEXT"),
+            anchor=JULIET,
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_GT",
+            *_entity(*b"&gt;"),
+            goto("LYRIC_CODE_NEXT"),
+            anchor=JULIET,
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_NEXT",
+            pop(HECATE, recall="sheltered_next_glyph"),
+            branch(eq(val(HECATE), const(tokens.STREAM_END)), then="LYRIC_CODE_CLOSE"),
+            goto("LYRIC_CODE_GLYPH"),
+            anchor=JULIET,
+        ),
+        scene(
+            "LYRIC_CODE_CLOSE",
+            *_stream(*b"</code>"),
+            goto("LYRIC_RETURN_TO_SCAN"),
+            anchor=JULIET,
+            companion=HECATE,
+        ),
+        scene(
+            "LYRIC_CODE_FALLBACK",
+            push(PUCK, const(tokens.TEXT_END)),
+            goto("LYRIC_CODE_REPLAY"),
+        ),
+        scene(
+            "LYRIC_CODE_REPLAY",
+            pop(ROMEO, recall="returned_petal"),
+            branch(eq(val(ROMEO), const(tokens.STREAM_END)), then="LYRIC_CODE_TICKS"),
+            goto("LYRIC_CODE_REPLAY_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_CODE_REPLAY_KEEP",
+            push(PUCK, val(ROMEO)),
+            goto("LYRIC_CODE_REPLAY"),
+        ),
+        scene(
+            "LYRIC_CODE_TICKS",
+            branch(eq(val(HECATE), const(0)), then="LYRIC_CODE_TICKS_DONE"),
+            push(JULIET, _k(96)),
+            let(HECATE, sub(val(HECATE), const(1))),
+            goto("LYRIC_CODE_TICKS"),
+            anchor=JULIET,
+        ),
+        scene(
+            "LYRIC_CODE_TICKS_DONE",
+            goto("LYRIC_RETURN_TO_SCAN"),
+            anchor=JULIET,
+            companion=HECATE,
         ),
         scene(
             "LYRIC_TEST_AMPERSAND",
