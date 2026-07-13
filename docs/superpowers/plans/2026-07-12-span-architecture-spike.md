@@ -576,7 +576,8 @@ but implementers must still keep the opener/closer run-length register
 
 | Holder | Role during Task 4, in addition to Amendment A1's map |
 |---|---|
-| HECATE (value) | Call-site code for the shared field pipeline: selects terminator and post-drain continuation. Idle between Task 4 dispatches, same reuse rule as Amendment A1. |
+| HECATE (value) | Field glyph register while draining Hecate's reverse stack, or active `RESUME_*` immediately before a private `TEXT_END`. Amendment A7 supersedes the former field-tag assignment. |
+| PROSPERO (value) | Active `FIELD_*` call-site code from `LYRIC_FIELD_RETRY` through `LYRIC_FIELD_DRAIN_CLOSE`; later, after that tag is dead, frozen `RESUME_*` close choice in `LYRIC_RESUME_DISPATCH`. |
 | MACBETH (value) | Local scratch per field: destination paren-balance counter, or emphasis opener/closer run length. Never shared concurrently between these uses. |
 | ROMEO (stack) | Field capture buffer above a private `STREAM_END` sentinel (unchanged discipline from Amendment A1). |
 | HORATIO (stack, newly on stage in Act III) | Hold buffer for captured, unprocessed label/alt glyphs and for emphasis body glyphs between capture and requeue. |
@@ -1026,6 +1027,43 @@ Expected: PASS. Event order proves every private terminator enters
 `TRAVERSE_COPY_TERMINATOR`, every resume consumes one record, and Task 1--3
 paths stay no-underflow. Any other result is `BLOCK[plan]`.
 
+## Amendment A7 (2026-07-13): move field tags to Prospero and legalize A6 restores
+
+The accepted design's [A7 holder and adapter amendment](../specs/2026-07-12-span-architecture-spike-design.md#a7-field-tag-holder-and-two-character-restore-adapters-2026-07-13)
+supersedes A2/A4's claim that Hecate retains a field tag and A6's no-spare
+rule. It is binding for Task 4 Step 2.
+
+1. A caller sets Hecate to its `FIELD_*` code and enters the already-reserved
+   `(HECATE, PROSPERO)` `LYRIC_FIELD_RETRY` adapter. It copies the tag to
+   Prospero before `LYRIC_FIELD_OPEN`; all field scan/output/close branches
+   inspect off-stage Prospero. Hecate may then be popped as the field glyph
+   register. Once `LYRIC_FIELD_DRAIN_CLOSE` selects its continuation, the
+   field tag is dead, so the existing resume dispatcher may overwrite
+   Prospero with `RESUME_*` to freeze the close choice.
+2. Add only the six exact A7 adapters:
+   `LYRIC_RESUME_POP_MACBETH`, `LYRIC_RESUME_RESTORE_MACBETH`,
+   `LYRIC_RESUME_POP_HECATE`, `LYRIC_RESUME_RESTORE_HECATE`,
+   `LYRIC_RESUME_VERIFY_FLOOR`, and `LYRIC_RESUME_FLOOR_FAIL`. Use their
+   exact pair/operation graph from A7. They consume six A2 spare-capacity
+   entries; with `LYRIC_FIELD_RETRY`, seven of ten A2 spares are allocated.
+   Add the ready-to-paste A7 TOML entries only with their corresponding IR
+   scenes; the remaining three spares are not permission to repair a carrier
+   fault.
+3. Extend the A6 observer to require the A7 label order after every private
+   terminator, exactly three Lady-Macbeth pops, no floor-failure scene, and a
+   close selected from frozen Prospero. The real terminator bypasses this
+   graph and no close scene pops Lady Macbeth.
+
+Before connecting a protected opener, run exactly:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+```
+
+Expected: PASS for Task 1--3 paths and the A7 graph gate, with no underflow,
+fall-through, leaked `TEXT_END`, or malformed record. After any Act III/TOML
+change, run the exact Global Constraints literary command too.
+
 ---
 
 ### Task 1: Commit the span-spike corpus and reviewed expected output
@@ -1359,8 +1397,9 @@ paths stay no-underflow. Any other result is `BLOCK[plan]`.
   29-title budget (stashed at `git stash list` entry "Task 4 Step 2 WIP:
   HTML/autolink/link/image/emphasis scanner, 91 scenes vs 29 reserved
   budget"; recorded in `.agent/blockers.md` history). Implement instead
-  against **Amendment A2** above: one shared `LYRIC_FIELD_*` pipeline
-  (anchored on Juliet, dispatched by an idle Hecate call-site code) for HTML
+  against **Amendments A2 and A7** above: one shared `LYRIC_FIELD_*` pipeline
+  (anchored on Juliet, with field tags retained by off-stage Prospero after
+  `LYRIC_FIELD_RETRY`) for HTML
   tag copy, autolink href/text, link/image destination, and title; the
   capture-hold-then-requeue technique (Horatio holds raw label/alt glyphs,
   which are pushed back onto Puck above a private `TEXT_END` boundary and
@@ -1386,7 +1425,8 @@ paths stay no-underflow. Any other result is `BLOCK[plan]`.
   and holder/floor rules in the accepted design's A4 table. In particular,
   use a private `TEXT_END` plus a Lady-Macbeth continuation record for every
   requeue; do not allocate a numeric sentinel, reuse Puck as a field-output
-  carrier, or use Juliet output as source. A Step 2 attempt that does not
+  carrier, or use Juliet output as source. Implement A7's exact six-scene
+  two-character restore graph. A Step 2 attempt that does not
   make the A4 focused no-underflow and scene-observer tests pass is a
   `BLOCK[plan]` condition, not a reason to add ad-hoc recovery scenes.
 

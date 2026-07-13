@@ -135,7 +135,7 @@ field-output carrier or Juliet as requeued source.
 | Puck | Unconsumed paragraph source; raw requeued label/alt/emphasis glyphs; nested private `TEXT_END` | The real paragraph `TEXT_END` remains lowest. A requeue pushes its private `TEXT_END`, then its raw glyphs in reverse order. No `STREAM_END`, HTML glyph sequence, or `val(JULIET)` is pushed before `LYRIC_OPEN_REVERSE`. |
 | Juliet | Final forward token stream and final HTML glyphs only | Its existing Act-III `STREAM_END` is never popped by a protected-region scene. |
 | Romeo | One raw field capture | Every `LYRIC_FIELD_OPEN` pushes one private `STREAM_END`; every success and fallback drains through that exact floor before its continuation. |
-| Hecate stack | One reversed field ready for output | `LYRIC_FIELD_REV` first pushes its private `STREAM_END`; `LYRIC_FIELD_HEAD/NEXT` drains it exactly once. Hecate's *value* remains the call-site code throughout. |
+| Hecate stack | One reversed field ready for output | `LYRIC_FIELD_REV` first pushes its private `STREAM_END`; `LYRIC_FIELD_HEAD/NEXT` drains it exactly once. Amendment A7 makes Hecate's value the popped glyph register, not the call-site code. |
 | Horatio | Raw link label, image alt, or emphasis body | One private `STREAM_END` per held region. It is drained only by `LYRIC_REGION_RESUME` / `LYRIC_EMPHASIS_RESUME` into Puck. |
 | Lady Macbeth | Continuation records and the duplicate autolink field | Each record is `[STREAM_END, saved Hecate code, saved Macbeth delimiter length]`; autolink's duplicate buffer has a separate `STREAM_END` above that record. A continuation is popped before its next shared-field entry. |
 | Macbeth value | Parenthesis depth while a destination is captured, or the matched emphasis run length | It is never used as a glyph register. `LYRIC_EMPHASIS_*` must not overwrite it between `MATCH` and the corresponding close. |
@@ -148,13 +148,17 @@ child. It must retain the singleton `Push(PUCK, val(JULIET))` allowance in
 
 ### Continuation codes and resume rule
 
-Use these small values in Hecate, with named constants local to `act3.py`:
+Use these small values with named constants local to `act3.py`: callers set
+`FIELD_*` in Hecate only long enough for `LYRIC_FIELD_RETRY` to copy it to
+Prospero; `RESUME_*` remains in Hecate until `LYRIC_RESUME_DISPATCH` freezes
+it in Prospero:
 `FIELD_TAG=1`, `FIELD_AUTO_HREF=2`, `FIELD_AUTO_TEXT=3`,
 `FIELD_LINK_DEST=4`, `FIELD_LINK_TITLE=5`, `FIELD_IMAGE_DEST=6`,
 `FIELD_IMAGE_TITLE=7`, `RESUME_LINK=8`, `RESUME_IMAGE=9`,
 `RESUME_EMPH=10`, and `RESUME_TRIPLE_EMPH=11`. Values are state tags, not
 token codes. Each branch into a shared `LYRIC_FIELD_*` scene must set exactly
-one field tag first. `LYRIC_POP_GLYPH` handles a popped `TEXT_END` as follows:
+one field tag first and enter `LYRIC_FIELD_RETRY`. `LYRIC_POP_GLYPH` handles a
+popped `TEXT_END` as follows:
 
 1. if Hecate is one of `RESUME_*`, jump to `LYRIC_RESUME_DISPATCH` without
    emitting or copying the zero; pop the Lady-Macbeth continuation record;
@@ -181,7 +185,7 @@ use `(HORATIO, PUCK)` or `(HORATIO, LADY_MACBETH)`.
 |---|---|
 | `LYRIC_ANGLE_TEST` → `LYRIC_HTML_OPEN` / `LYRIC_AUTOLINK_OPEN` | After `<` is popped, consume one lookahead. `http`, `https`, and `ftp` probe prefixes take the autolink path; every other probe form takes opaque tag mode. Seed Romeo with `STREAM_END`; retain `<` only for tag mode and retain no angle brackets for an autolink. A failed probe replays only captured raw source plus `<` to Juliet, then resumes ordinary scan. |
 | `LYRIC_FIELD_OPEN`, `SCAN`, `UNTERMINATED` | `OPEN` creates Romeo's floor. `SCAN` pops only Puck and pushes non-terminators to Romeo. Tag mode stops at and captures `>`; URL mode stops at but does not capture `>`; destination mode increments/decrements Macbeth on `(`/`)` and stops only when the outer depth returns to zero; title mode stops at its opening quote's mate. `UNTERMINATED` drains Romeo to Juliet as literal source, restores the private boundary if it was consumed, and never jumps to a generated-output scene. |
-| `LYRIC_FIELD_REV_KEEP`, `REV`, `HEAD`, `GLYPH`, `PLAIN`, `AMP/LT/GT`, `NEXT`, `DRAIN_CLOSE` | Reverse Romeo onto Hecate's private-floor stack. In `FIELD_AUTO_HREF`, also copy each popped raw glyph to Lady Macbeth's duplicate-floor stack. `HEAD/NEXT` drain Hecate to Juliet; tag mode uses `PLAIN` only, all other modes use the existing entity triples. `DRAIN_CLOSE` dispatches solely by Hecate's unchanged field tag. |
+| `LYRIC_FIELD_RETRY`, `REV_KEEP`, `REV`, `HEAD`, `GLYPH`, `PLAIN`, `AMP/LT/GT`, `NEXT`, `DRAIN_CLOSE` | `RETRY` copies the caller's Hecate tag to Prospero. Reverse Romeo onto Hecate's private-floor stack. In `FIELD_AUTO_HREF`, also copy each popped raw glyph to Lady Macbeth's duplicate-floor stack. `HEAD/NEXT` drain Hecate to Juliet; tag mode uses `PLAIN` only, all other modes use the existing entity triples. `DRAIN_CLOSE` dispatches solely by Prospero's unchanged field tag. |
 | Autolink close | `FIELD_AUTO_HREF` emits `<a href=\"`, drains the first field, emits `\">`, restores the duplicate into Hecate through the same reverse/head family under `FIELD_AUTO_TEXT`, drains it as text, emits `</a>`, then resumes Puck. The closing `>` was consumed once and is never pushed to Juliet. |
 | `LYRIC_LINK_REGION` / `LYRIC_IMAGE_TEST` → `LYRIC_LABEL_OPEN` / `LYRIC_ALT_OPEN` | A `[` or `![` starts Horatio's private floor. Capture raw label/alt through its matching `]`; reject missing `]` or `(` by replaying the exact raw opener and held bytes literally. On success, push a Lady-Macbeth continuation record (`RESUME_LINK` or `RESUME_IMAGE`) before entering destination capture. |
 | `LYRIC_DEST_OPEN`, `DEST_BALANCE`, `LYRIC_TITLE_OPEN` | Emit `<a href=\"` or `<img src=\"` to Juliet before `FIELD_LINK_DEST` / `FIELD_IMAGE_DEST`. Balanced destination capture owns Macbeth depth. A quoted title sets the matching title field code; no title goes directly to `LYRIC_REGION_TAG_OPEN`. Destination/title glyphs remain opaque except the shared field's required entity encoding. |
@@ -305,3 +309,86 @@ uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
 It must pass with no underflow, scene fall-through, carrier decode error,
 duplicate real terminator, or leaked `TEXT_END`. Any failure is a
 `BLOCK[plan]`, not permission for a recovery scene or spare title.
+
+## A7 field-tag holder and two-character restore adapters (2026-07-13)
+
+A6 is amended because `pop(HECATE)` changes Hecate's value: Hecate cannot
+retain a `FIELD_*` tag through `LYRIC_FIELD_HEAD` / `LYRIC_FIELD_NEXT`.
+Prospero owns the active field tag from field entry through
+`LYRIC_FIELD_DRAIN_CLOSE`; after that close selects its continuation the tag
+is dead. Hecate owns only a drained field glyph or the active `RESUME_*`
+before a private `TEXT_END`. At resume, Prospero is safely overwritten with
+the frozen close code. Thus the two Prospero uses never overlap.
+
+Every field caller sets Hecate to its `FIELD_*` code then enters the
+already-reserved `LYRIC_FIELD_RETRY`, pair `(HECATE, PROSPERO)`:
+
+```text
+let(PROSPERO, val(HECATE))
+goto(LYRIC_FIELD_OPEN)
+```
+
+All shared field scan, reverse, entity/plain, duplicate, and drain-close
+branches inspect off-stage `val(PROSPERO)`; none copies the tag back to
+Hecate. This consumes `LYRIC_FIELD_RETRY` from A2's spare pool.
+
+The A6 resume is split into these binding adapters, because a Lady-Macbeth
+pop leaves its result on Lady Macbeth before a later two-character scene can
+copy it to its destination:
+
+```text
+# LYRIC_RESUME_DISPATCH (HECATE, PROSPERO)
+let(PROSPERO, val(HECATE)); goto(LYRIC_RESUME_POP_MACBETH)
+# LYRIC_RESUME_POP_MACBETH (LADY_MACBETH, ROMEO)
+pop(LADY_MACBETH); goto(LYRIC_RESUME_RESTORE_MACBETH)
+# LYRIC_RESUME_RESTORE_MACBETH (LADY_MACBETH, MACBETH)
+let(MACBETH, val(LADY_MACBETH)); goto(LYRIC_RESUME_POP_HECATE)
+# LYRIC_RESUME_POP_HECATE (LADY_MACBETH, ROMEO)
+pop(LADY_MACBETH); goto(LYRIC_RESUME_RESTORE_HECATE)
+# LYRIC_RESUME_RESTORE_HECATE (LADY_MACBETH, HECATE)
+let(HECATE, val(LADY_MACBETH)); goto(LYRIC_RESUME_VERIFY_FLOOR)
+# LYRIC_RESUME_VERIFY_FLOOR (LADY_MACBETH, ROMEO)
+pop(LADY_MACBETH); branch(non-STREAM_END, LYRIC_RESUME_FLOOR_FAIL)
+branch(val(PROSPERO), RESUME_* close scenes)
+```
+
+`LYRIC_RESUME_FLOOR_FAIL` is terminal (`halt_act()`), forbidden on valid
+probes. Close scenes branch only on frozen off-stage Prospero, pop no Lady
+Macbeth value, and return to `LYRIC_POP_GLYPH`. This preserves A6's semantic
+order: freeze; restore Macbeth; restore Hecate; consume/verify floor; close.
+
+A7 supersedes A6's no-spare rule only for the six exact labels below. Together
+with `LYRIC_FIELD_RETRY`, this allocates seven of A2's ten spares; the other
+three stay reserved. No other holder, sentinel, Recall phrase, or label is
+authorized.
+
+```toml
+[scenes.LYRIC_RESUME_POP_MACBETH]
+title = "Lady Macbeth lifts the first held stone."
+pattern = "scene_of_character"
+[scenes.LYRIC_RESUME_RESTORE_MACBETH]
+title = "Macbeth receives the first held stone."
+pattern = "cross_character"
+[scenes.LYRIC_RESUME_POP_HECATE]
+title = "Lady Macbeth lifts the second held stone."
+pattern = "scene_of_character"
+[scenes.LYRIC_RESUME_RESTORE_HECATE]
+title = "Hecate receives the second held stone."
+pattern = "cross_character"
+[scenes.LYRIC_RESUME_VERIFY_FLOOR]
+title = "Lady Macbeth tests the record's bedrock."
+pattern = "scene_of_character"
+[scenes.LYRIC_RESUME_FLOOR_FAIL]
+title = "The broken record leaves no road behind."
+pattern = "bare_statement"
+```
+
+At the first production checkpoint run:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+```
+
+It must prove this adapter order, exactly three Lady-Macbeth pops, no
+`LYRIC_RESUME_FLOOR_FAIL`, and A6's real/private terminator contract. After
+each Act III/TOML edit also run the plan's exact literary gate.
