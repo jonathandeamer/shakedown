@@ -10,6 +10,7 @@ from scripts.literary_surfaces import load_literary_surfaces
 from scripts.splc.ir import (
     Char,
     act,
+    add,
     branch,
     const,
     eq,
@@ -17,6 +18,7 @@ from scripts.splc.ir import (
     halt_act,
     let,
     pop,
+    push,
     scene,
     val,
 )
@@ -302,3 +304,69 @@ def test_pop_recall_speaker_uses_scene_anchor() -> None:
     )
     with pytest.raises(IrError, match="rosalind"):
         validate(a, _prose())
+
+
+def test_single_participant_scenes_can_model_buffered_span_state() -> None:
+    from scripts.splc.interpret import InterpreterState, run_act
+    from scripts.splc.validate import validate
+
+    a = act(
+        3,
+        Char.ROMEO,
+        [
+            scene(
+                "ACT_III_START",
+                let(Char.ROMEO, const(2)),
+                goto("LYRIC_BUFFER_OPEN"),
+                companion=Char.PUCK,
+            ),
+            scene(
+                "LYRIC_BUFFER_OPEN",
+                let(Char.LADY_MACBETH, const(3)),
+                goto("LYRIC_BUFFER_KEEP"),
+                companion=Char.LADY_MACBETH,
+            ),
+            scene(
+                "LYRIC_BUFFER_KEEP",
+                push(Char.HECATE, const(-999)),
+                let(Char.HECATE, const(0)),
+                goto("LYRIC_BUFFER_DRAIN"),
+                companion=Char.HECATE,
+            ),
+            scene(
+                "LYRIC_BUFFER_DRAIN",
+                push(Char.HECATE, const(ord("x"))),
+                let(Char.HECATE, add(val(Char.HECATE), const(1))),
+                goto("LYRIC_BUFFER_RETURN"),
+                companion=Char.HECATE,
+            ),
+            scene(
+                "LYRIC_BUFFER_RETURN",
+                push(Char.PUCK, const(ord("!"))),
+                goto("LYRIC_SCAN_NEXT"),
+                companion=Char.PUCK,
+            ),
+            scene(
+                "LYRIC_SCAN_NEXT",
+                pop(Char.PUCK, recall="mornings_first_cut"),
+                goto("ACT_III_DONE"),
+                companion=Char.PUCK,
+            ),
+            scene(
+                "ACT_III_DONE",
+                let(Char.MACBETH, val(Char.PUCK)),
+                halt_act(),
+                companion=Char.MACBETH,
+            ),
+        ],
+    )
+
+    validate(a, _prose())
+    result = run_act(a, InterpreterState(), step_limit=100)
+
+    assert result.state.values[Char.ROMEO] == 2
+    assert result.state.values[Char.LADY_MACBETH] == 3
+    assert result.state.values[Char.HECATE] == 1
+    assert result.state.values[Char.MACBETH] == ord("!")
+    assert result.state.stacks[Char.HECATE] == [-999, ord("x")]
+    assert result.state.stacks[Char.PUCK] == []
