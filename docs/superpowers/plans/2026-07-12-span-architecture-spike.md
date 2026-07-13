@@ -785,10 +785,9 @@ reappear there; Task 4 prose must still come only from its reserved pools.
   `escapes_and_overlap`, HTML/link/image, and overlapping emphasis remains
   Task 4 work.
 
-- [ ] **Step 9: Commit and push the scanner foundation.**
+- [x] **Step 9: Commit and push the scanner foundation.**
 
-  Run: `git add src_ir/act3.py src/30-act3-literary.toml src/30-act3-span.spl shakedown.spl tests/test_act3_contracts.py && git commit -m "feat: add buffered code-span scanner"`  
-  Expected: conventional commit with required provenance trailers succeeds, followed by `git push` succeeding.
+  Evidence (2026-07-13): `uv run pytest tests/test_splc_generated_fragments.py tests/test_act3_contracts.py::test_act3_preserves_escaped_and_literal_span_punctuation tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix tests/test_act3_contracts.py::test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels 'tests/test_architecture_spikes.py::test_span_architecture_spike_matches_checked_in_oracle_bytes[variable_code_spans]' -q` => `11 passed`; `uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q` => `1 passed, 208 deselected`. Files committed in `2695819` (`feat: add maximal backtick-run code-span scanner`) and `de32b28` (`feat: add backslash-escape consumption to span scanner`). `git push` succeeded.
 
 ### Task 4: Add protected HTML/link/image regions and strong-then-emphasis output
 
