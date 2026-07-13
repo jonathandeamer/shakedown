@@ -83,11 +83,7 @@ def test_rejects_list_close_without_matching_open() -> None:
 
 def test_rejects_stream_ending_with_list_still_open() -> None:
     with pytest.raises(StructuralError, match="still open"):
-        validate_stream(
-            decode_stream(
-                [tokens.LIST_OPEN, 1, tokens.LIST_ITEM, 1]
-            )
-        )
+        validate_stream(decode_stream([tokens.LIST_OPEN, 1, tokens.LIST_ITEM, 1]))
 
 
 def test_rejects_empty_list_with_no_item() -> None:
@@ -192,8 +188,7 @@ def test_item_close_has_container_close_role() -> None:
 def test_blockquote_open_and_close_have_container_roles() -> None:
     assert tokens.ROLES[tokens.BLOCKQUOTE_OPEN] == tokens.StructuralRole.CONTAINER_OPEN
     assert (
-        tokens.ROLES[tokens.BLOCKQUOTE_CLOSE]
-        == tokens.StructuralRole.CONTAINER_CLOSE
+        tokens.ROLES[tokens.BLOCKQUOTE_CLOSE] == tokens.StructuralRole.CONTAINER_CLOSE
     )
 
 
