@@ -55,14 +55,14 @@ wrapper code, not inside the SPL play.
 
 ## Wrapper Toolchain
 
-The project's existing scripts and test harness use Python 3 via `uv` (see `pyproject.toml` and `./run-loop`). The prototype entry-point `./shakedown-dev` is a bash shim that delegates to `uv run python scripts/assemble.py` and `uv run shakespeare run shakedown.spl`. Any wrapper-assisted architecture shape should use Python via `uv` as the wrapper toolchain unless it has a concrete reason to choose otherwise.
+The project's existing scripts and test harness use Python 3 via `uv` (see `pyproject.toml` and `scripts/`). The prototype entry-point `./shakedown-dev` is a bash shim that delegates to `uv run python scripts/assemble.py` and `uv run shakespeare run shakedown.spl`. Any wrapper-assisted architecture shape should use Python via `uv` as the wrapper toolchain unless it has a concrete reason to choose otherwise.
 
 This is documentation of the toolchain already in use, not a new decision. Future implementation plans may propose a different toolchain, but must justify the change given:
 
 - existing Python scripts in `scripts/` (assembly, audit, measurement)
 - existing pytest harness at `tests/test_pre_design_probes.py` and `tests/test_mdtest.py`
 - existing `uv` dependency management via `pyproject.toml` and `uv.lock`
-- existing `run-loop` Python entrypoint
+- existing `scripts/mco_loop.py` Python loop driver (behind `./agent-loop`)
 
 ## AST-Cache Feasibility
 
@@ -78,6 +78,7 @@ The selected architecture treats cache acceleration as optional and evidence-gat
 
 ## Run-Loop Boundary
 
-The `run-loop` driver and its prompt are now legacy artifacts. Implementation work uses
-supervised superpowers sessions instead; see `CLAUDE.md` § Implementation workflow. This
-document no longer drives prompt design.
+The legacy `run-loop` driver and its prompt have been removed (git history and
+`docs/archive/` only). Implementation work uses supervised superpowers sessions or the
+MCO `./agent-loop`; see `CLAUDE.md` § Implementation workflow. This document no longer
+drives prompt design.

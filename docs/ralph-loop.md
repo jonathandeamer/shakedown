@@ -1,5 +1,10 @@
 # The Ralph Loop (Huntley Loop) — Reference
 
+> **Historical reference only.** This methodology drove the earlier `run-loop`
+> driver, which has been removed. Shakedown's active autonomous workflow is the
+> MCO-backed `./agent-loop` — see `docs/2026-07-12-mco-loop-details.md`. Read
+> this doc for lineage lessons, not for how the current loop works.
+
 > Reference for the autonomous-agent loop methodology that drove Snarkdown and Quackdown, with notes on what transfers to Shakedown. Synthesised from Geoff Huntley's writing and the Shakedown → Snarkdown → Quackdown lineage.
 
 ## One-line definition
@@ -50,7 +55,7 @@ Additions beyond the minimum (all observed in Quackdown's evolution, commit-by-c
 - OOM / resource preflight guard to fail fast when the host cannot safely relaunch the agent.
 - State file (`.agent/run-loop-state.json`) so backend choice persists across driver restarts.
 
-`run-loop` at the root of this repo is one such driver, now retained as a legacy artifact. See `CLAUDE.md` `Legacy: run-loop` subsection for the Shakedown-specific contract.
+Shakedown's `run-loop` was one such driver; it has since been removed (see git history and `docs/archive/`). The active MCO `./agent-loop` supersedes it.
 
 ## Prompt patterns
 
@@ -116,7 +121,7 @@ This matters because:
 
 Huntley calls the per-agent reference file the agent's "university". `@file` stack-allocation is how you enrol the agent without lengthening the prompt.
 
-**Implementation:** see `run-loop` in the root of this repo for the Python `expand_refs()` function. The mechanism is simple regex substitution; the discipline is in deciding what to include.
+**Implementation:** see `~/quackdown/run-loop` (or Shakedown's removed `run-loop` in git history) for the Python `expand_refs()` function. The mechanism is simple regex substitution; the discipline is in deciding what to include.
 
 ## The three-stage porting method
 
@@ -141,7 +146,7 @@ The loop driver has to survive a multi-hour unattended run. Quackdown's `run-loo
 | Agent self-loops after completing work | Completion-marker file checked by driver, not agent | `9fa4667` |
 | Claude OOM-killed on low-RAM host, loop relaunches | Preflight `/proc/meminfo` guard + post-exit OOM classifier | `43f1f60` |
 
-The Shakedown `run-loop` inherits all four. The design lesson: **the driver should be the thing that knows when to stop.** Agents cannot reliably self-terminate; operators should not have to babysit; the driver must own termination, rate-limit handling, and resource failure.
+The Shakedown `run-loop` inherited all four. The design lesson: **the driver should be the thing that knows when to stop.** Agents cannot reliably self-terminate; operators should not have to babysit; the driver must own termination, rate-limit handling, and resource failure.
 
 Completion marker convention: `docs/prompt-<name>.md` → `.agent/complete-<name>.md`. The agent writes the marker; the driver checks it at the top of every iteration. The default marker for Shakedown is `.agent/complete-shakedown.md`.
 
@@ -203,7 +208,7 @@ Shakedown's architecture-planning phase is an example of the wrong-tool case. Th
 
 ### In this repo
 
-- `CLAUDE.md` `Legacy: run-loop` subsection — Shakedown's legacy driver contract.
-- `run-loop` at repo root — the driver itself.
+- `CLAUDE.md` `Legacy: run-loop (removed)` subsection — the legacy driver's fate; the driver itself now lives only in git history.
+- `docs/2026-07-12-mco-loop-details.md` — the active MCO loop that superseded it.
 - `docs/prior-attempt/feasibility-lessons.md` — what the prior Shakedown Ralph run actually learned.
 - `docs/prior-attempt/architecture-lessons.md` — where the prior Ralph run stalled (architecture, not the loop).

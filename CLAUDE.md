@@ -89,8 +89,8 @@ read-only governor only after genuine systemic failure:
 `AGENTS.md` is a symlink to `CLAUDE.md` — same instructions served to Codex. For detailed documentation on workflow states, execution mechanics, failover/cooldown policies, and real-time monitoring of the autonomous loop, see [docs/2026-07-12-mco-loop-details.md](file:///Users/jonathan/shakedown/docs/2026-07-12-mco-loop-details.md).
 
 
-### Legacy: run-loop
-The older Python `run-loop` approach is legacy and no longer active (state: `.agent/run-loop-state.json`).
+### Legacy: run-loop (removed)
+The older Python `run-loop` driver, its prompt, and its tests were removed on 2026-07-13; they survive in git history and `docs/archive/` only. The MCO `./agent-loop` above is the sole autonomous workflow.
 
 ## SPL literary protocol for prompts and plans
 
@@ -147,6 +147,8 @@ implementation agents never invent literary surfaces mid-task.
 
 `shakespeare` is the CLI provided by the `shakespearelang` Python package (the SPL interpreter). Currently at `~/.local/bin/shakespeare` — may not be on PATH in a fresh shell.
 
+Entry points at repo root: `./shakedown` is the release entry (runs the committed `shakedown.spl` directly, no assembly); `./shakedown-dev` rebuilds `shakedown.spl` from `src/` then runs it; `./shakedown-debug` assembles with `--debug`. Tests and parity claims target `./shakedown`.
+
 ## Interpreter cost
 Every run of the SPL interpreter pays cold startup (no warm reuse/persistent process). Scene count is not the dominant cost driver. Baseline details are in [verification-plan.md](file:///Users/jonathan/shakedown/docs/verification-plan.md) (B14/B17/B18) and [budget.md](file:///Users/jonathan/shakedown/docs/performance/budget.md).
 
@@ -156,7 +158,7 @@ Every run of the SPL interpreter pays cold startup (no warm reuse/persistent pro
 uv run pytest                        # all tests
 uv run pytest tests/test_mdtest.py   # Markdown.mdtest suite (23 fixtures)
 uv run pytest -k "Auto links"        # single test by name
-uv run pytest tests/test_run_loop.py # run-loop infrastructure tests
+uv run pytest tests/test_mco_loop.py # agent-loop (MCO) infrastructure tests
 ```
 
 To validate a fixture against the Markdown.pl oracle directly:
@@ -177,7 +179,7 @@ uv run python scripts/query_docs.py "query"  # query active documentation paragr
 
 - **Type hints required** on all function signatures (parameters and return types).
 - **No bare `Any`** without an inline comment explaining why it can't be avoided.
-- **No `print()`** in library or application code. CLI operator scripts (`run-loop`) may use `print()` for status output.
+- **No `print()`** in library or application code. CLI operator scripts (e.g. `scripts/mco_loop.py`) may use `print()` for status output.
 - **Mock external calls** in unit tests (subprocesses, file I/O). Integration tests that invoke real backends must be marked `@pytest.mark.integration` and are excluded from the default `uv run pytest` run.
 
 ## Documentation & Reference Truth Hierarchy

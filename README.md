@@ -26,5 +26,6 @@ npm install -g @tt-a1i/mco@0.10.8
 ./agent-loop             # continue until interrupted or genuinely complete
 ```
 
-Model policy and fallbacks live in `agent-loop.toml`. `run-loop` and
-`docs/prompt-shakedown.md` remain legacy artifacts.
+Model policy and fallbacks live in `agent-loop.toml`. The legacy `run-loop`
+driver and its prompt have been removed; they survive only in git history
+and `docs/archive/`.

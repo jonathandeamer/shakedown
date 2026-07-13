@@ -210,7 +210,7 @@ predecessor's evidence is incorporated into the canonical architecture.
 ## 7. MCO autonomous execution
 
 The active autonomous entry point is `./agent-loop`. The historical
-`./run-loop` remains preserved but is not used by the new workflow. MCO is the
+`./run-loop` was removed on 2026-07-13 (git history only). MCO is the
 only provider orchestration layer; the supervisor does not invoke Claude,
 Codex, agy, Pi, xAI, or OpenRouter directly.
 
