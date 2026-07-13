@@ -23,6 +23,8 @@ build/
 *.egg-info/
 
 # Tools
+.crush/
+.impeccable/
 .ruff_cache/
 .pytest_cache/
 .pyright/

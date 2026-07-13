@@ -8,13 +8,6 @@ if [ -n "$staged_sh" ]; then
     echo "$staged_sh" | xargs shellcheck
 fi
 
-# Check run-loop explicitly if it is a bash script
-if git diff --cached --name-only --diff-filter=ACM | grep -qx "run-loop"; then
-    if head -1 run-loop 2>/dev/null | grep -qE "bash"; then
-        shellcheck run-loop
-    fi
-fi
-
 if [ -n "$staged_py" ]; then
     echo "$staged_py" | xargs uv run ruff check
     echo "$staged_py" | xargs uv run ruff format --check
