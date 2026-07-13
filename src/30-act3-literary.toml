@@ -201,17 +201,3 @@ pattern = "cross_character"
 [scenes.TRAVERSE_OPEN_TEXT]
 title = "The morning takes up the gilded scan."
 pattern = "bare_statement"
-
-# Spare pool — do not use unless an extra generated scene is necessary.
-[scenes.LYRIC_BUFFER_FALLBACK]
-title = "The loose rose returns to daylight."
-pattern = "bare_statement"
-[scenes.LYRIC_PROTECTED_CLOSE]
-title = "Juliet closes the guarded silver path."
-pattern = "scene_of_character"
-[scenes.LYRIC_LABEL_REPLAY]
-title = "Romeo sends the bound petals onward."
-pattern = "scene_of_character"
-[scenes.LYRIC_EMPHASIS_FALLBACK]
-title = "The unpaired star remains in the garden."
-pattern = "bare_statement"
