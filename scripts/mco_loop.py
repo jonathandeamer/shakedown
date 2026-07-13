@@ -1015,6 +1015,7 @@ def apply_result(
     action: NextAction,
     result: InvocationResult,
     now: int,
+    directive_seen: bool = False,
 ) -> str:
     """Update cooldown state from one invocation."""
     outcome = classify_result(result)
@@ -1035,7 +1036,8 @@ def apply_result(
         state["last_failure"] = None
         state["action_attempt"] = None
         state["exhaustion"] = None
-        FABLE_DIRECTIVE.unlink(missing_ok=True)
+        if directive_seen:
+            FABLE_DIRECTIVE.unlink(missing_ok=True)
     else:
         previous = failures.get(executor.name, 0)
         failures[executor.name] = (
@@ -1086,18 +1088,24 @@ def apply_failure_action(action: NextAction, state: Mapping[str, object]) -> Nex
     )
 
 
-def apply_governor_directive(action: NextAction) -> tuple[NextAction, bool]:
-    """Apply a persisted manual Fable verdict to ordinary-agent routing."""
+def apply_governor_directive(action: NextAction) -> tuple[NextAction, bool, bool]:
+    """Apply a persisted manual Fable verdict to ordinary-agent routing.
+
+    Returns (action, stop, seen). ``seen`` is True only when a directive file
+    was read at this iteration's start; only such a directive may be consumed
+    once the iteration completes. A directive written mid-iteration must
+    survive to route the next one.
+    """
     try:
         text = FABLE_DIRECTIVE.read_text()
     except FileNotFoundError:
-        return action, False
+        return action, False, False
     match = re.search(r"VERDICT:\s*(CONTINUE|FIX|REDIRECT|STOP)", text, re.I)
     if not match:
-        return action, False
+        return action, False, True
     verdict = match.group(1).upper()
     if verdict == "STOP":
-        return action, True
+        return action, True, True
     if verdict == "FIX":
         return (
             NextAction(
@@ -1108,6 +1116,7 @@ def apply_governor_directive(action: NextAction) -> tuple[NextAction, bool]:
                 action.blockers,
             ),
             False,
+            True,
         )
     if verdict == "REDIRECT":
         return (
@@ -1119,8 +1128,9 @@ def apply_governor_directive(action: NextAction) -> tuple[NextAction, bool]:
                 action.blockers,
             ),
             False,
+            True,
         )
-    return action, False
+    return action, False, True
 
 
 def completion_gates() -> tuple[bool, str]:
@@ -1356,7 +1366,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             canonical_action = action
             state = load_state(config.state_file)
             action = apply_failure_action(canonical_action, state)
-            action, governor_stop = apply_governor_directive(action)
+            action, governor_stop, directive_seen = apply_governor_directive(action)
             if governor_stop:
                 print(
                     "agent-loop: stopped by the latest Fable governor directive",
@@ -1436,6 +1446,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 canonical_action,
                 result,
                 int(time.time()),
+                directive_seen=directive_seen,
             )
             print(f"agent-loop: supervisor outcome: {outcome}")
             failed = outcome not in {"progress", "blocked"}

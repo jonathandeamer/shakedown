@@ -694,7 +694,10 @@ def test_availability_result_does_not_record_substantive_attempt(
     assert state.get("action_attempt") is None
 
 
-def test_progress_and_blocker_clear_action_attempt(tmp_path: Path) -> None:
+def test_progress_and_blocker_clear_action_attempt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(mco_loop, "FABLE_DIRECTIVE", tmp_path / "fable-directive.md")
     config, executor, action = _invocation_inputs(tmp_path)
     for result, expected in (
         (InvocationResult(0, "changed", "", True), "progress"),
@@ -764,7 +767,7 @@ def test_main_uses_canonical_action_and_exits_five_on_exhaustion(
         mco_loop, "apply_failure_action", lambda action, state: rewritten
     )
     monkeypatch.setattr(
-        mco_loop, "apply_governor_directive", lambda action: (governed, False)
+        mco_loop, "apply_governor_directive", lambda action: (governed, False, True)
     )
 
     def fake_select(executors, state, action, now, preserve_planning=False):
@@ -809,7 +812,7 @@ def test_main_once_returns_three_only_for_trusted_retry_wait(
         mco_loop, "determine_next_action", lambda rows, blockers: canonical
     )
     monkeypatch.setattr(
-        mco_loop, "apply_governor_directive", lambda action: (action, False)
+        mco_loop, "apply_governor_directive", lambda action: (action, False, False)
     )
     monkeypatch.setattr(
         mco_loop,
@@ -1099,25 +1102,56 @@ def test_fable_directives_control_routing_without_writing(
     monkeypatch.setattr(mco_loop, "FABLE_DIRECTIVE", directive)
     action = NextAction(ActionKind.IMPLEMENT, "work", None, "step", ())
 
+    missing, stopped, seen = mco_loop.apply_governor_directive(action)
+    assert missing is action
+    assert stopped is False
+    assert seen is False
+
     directive.write_text("VERDICT: FIX\n")
-    fixed, stopped = mco_loop.apply_governor_directive(action)
+    fixed, stopped, seen = mco_loop.apply_governor_directive(action)
     assert fixed.kind is ActionKind.FIX
     assert stopped is False
+    assert seen is True
 
     directive.write_text("VERDICT: REDIRECT\n")
-    redirected, stopped = mco_loop.apply_governor_directive(action)
+    redirected, stopped, seen = mco_loop.apply_governor_directive(action)
     assert redirected.kind is ActionKind.PLAN
     assert stopped is False
+    assert seen is True
 
     directive.write_text("VERDICT: STOP\n")
-    unchanged, stopped = mco_loop.apply_governor_directive(action)
+    unchanged, stopped, seen = mco_loop.apply_governor_directive(action)
     assert unchanged is action
     assert stopped is True
+    assert seen is True
 
     directive.write_text("VERDICT: CONTINUE\n")
-    unchanged, stopped = mco_loop.apply_governor_directive(action)
+    unchanged, stopped, seen = mco_loop.apply_governor_directive(action)
     assert unchanged is action
     assert stopped is False
+    assert seen is True
+
+
+def test_directive_survives_iteration_it_did_not_route(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    directive = tmp_path / "fable-directive.md"
+    monkeypatch.setattr(mco_loop, "FABLE_DIRECTIVE", directive)
+    config, executor, action = _invocation_inputs(tmp_path)
+    progress = InvocationResult(0, "changed", "", True)
+
+    directive.write_text("VERDICT: REDIRECT\n")
+    state: dict[str, object] = {"cooldowns": {}, "failures": {}, "last_failure": None}
+    mco_loop.apply_result(
+        config, state, executor, action, progress, now=100, directive_seen=False
+    )
+    assert directive.exists(), "mid-iteration directive must survive to route next"
+
+    state = {"cooldowns": {}, "failures": {}, "last_failure": None}
+    mco_loop.apply_result(
+        config, state, executor, action, progress, now=100, directive_seen=True
+    )
+    assert not directive.exists(), "directive that routed the iteration is consumed"
 
 
 def test_completion_requires_pytest_mdtest_and_deterministic_parity(
