@@ -428,6 +428,12 @@ def test_openrouter_upstream_throttle_classifies_as_rate_limit() -> None:
     assert mco_loop.classify_result(result) == "rate_limit"
 
 
+def test_session_limit_classifies_as_rate_limit() -> None:
+    session_limit = "You've hit your session limit · resets 6pm (Europe/London)"
+    result = InvocationResult(2, session_limit, "", False, False)
+    assert mco_loop.classify_result(result) == "rate_limit"
+
+
 def test_progress_still_outranks_throttle_wording() -> None:
     result = InvocationResult(
         0, "documented how rate-limited 429: responses are handled", "", True, False
