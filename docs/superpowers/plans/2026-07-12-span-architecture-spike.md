@@ -763,7 +763,7 @@ reappear there; Task 4 prose must still come only from its reserved pools.
   emphasis probes reserved for Task 4; no regression on code-span, escape, or
   structural/floor assertions.
 
-- [ ] **Step 8: Regenerate and prove code, escapes, and fallback safety.**
+- [x] **Step 8: Regenerate and prove code, escapes, and fallback safety.**
 
   Run:
 
