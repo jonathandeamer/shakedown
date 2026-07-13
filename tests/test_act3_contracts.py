@@ -192,3 +192,69 @@ def test_act3_scan_floor_matches_pre_scan_prefix(stem: str) -> None:
     )
     stream = _stack_carrier_from_floor(state, boundary)
     assert stream[0] == tokens.STREAM_END
+
+
+# --- Task 4: protected-region scanner for HTML, autolinks, links/images, emphasis ---
+#
+# These fixtures exercise the four remaining protected-region modes the buffered
+# scanner must land. They stay red on the current buffered scan implementation.
+# The negative source-buffer stack assertion is added once per mode;
+# it asserts no generated output is ever pushed back onto the source buffer.
+_TASK4_PROTECTED_FIXTURES = (
+    "inline_html_and_autolink",
+    "links_images_protected",
+    "overlapping_emphasis",
+)
+
+
+def test_act3_renders_inline_html_and_autolink() -> None:
+    text = _paragraph_text(_decode_carrier(_run_to_act3("inline_html_and_autolink")))
+
+    # Inline HTML tag preserved with its inner emphasis processed;
+    # autolink emitted with once-encoded ampersands.
+    assert "<span><em>raw</em></span>" in text
+    assert '<a href="http://example.com/a?x=1&y=2">' in text
+    assert "http://example.com/a?x=1&y=2</a>" in text
+
+
+def test_act3_renders_links_images_protected() -> None:
+    text = _paragraph_text(_decode_carrier(_run_to_act3("links_images_protected")))
+
+    # Link with inner emphasis in label; image with inner emphasis in alt.
+    assert '<a href="http://e/x_(y)" title="t">a <em>b</em></a>' in text
+    assert '<img src="img.png" alt="c <em>d</em>" title="i" />' in text
+
+
+def test_act3_renders_overlapping_emphasis() -> None:
+    text = _paragraph_text(_decode_carrier(_run_to_act3("overlapping_emphasis")))
+
+    # Nested strong/em and overlapping strong/em per Markdown.pl rules.
+    assert "<strong><em>both</em></strong>" in text
+    assert "<strong>outer <em>inner</em> outer</strong>" in text
+
+
+@pytest.mark.parametrize("stem", _TASK4_PROTECTED_FIXTURES)
+def test_act3_source_buffer_never_receives_generated_output(stem: str) -> None:
+    """Negative assertion: no generated HTML is ever pushed back onto PUCK."""
+    boundary, state = _run_to_act3_with_prefix(stem)
+
+    # The source buffer is the portion of PUCK above the private floor sentinel.
+    # After a complete paragraph scan, the buffered scanner should have consumed
+    # all source glyphs from PUCK, leaving the source region empty. Any generated
+    # output goes to JULIET (output stack), never back to PUCK.
+    floor_len = len(boundary.floor_prefix)
+    source_region = state.stacks[Char.PUCK][floor_len:]
+    assert len(source_region) == 0, (
+        f"Source buffer not empty for {stem}: {source_region}"
+    )
+
+
+def test_act3_source_buffer_never_receives_generated_output_code_spans() -> None:
+    """Negative assertion for code-span fixtures: no generated output on PUCK."""
+    for stem in ("variable_code_spans", "escapes_and_overlap"):
+        boundary, state = _run_to_act3_with_prefix(stem)
+        floor_len = len(boundary.floor_prefix)
+        source_region = state.stacks[Char.PUCK][floor_len:]
+        assert len(source_region) == 0, (
+            f"Source buffer not empty for {stem}: {source_region}"
+        )
