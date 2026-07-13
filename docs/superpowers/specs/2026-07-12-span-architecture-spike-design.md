@@ -237,3 +237,71 @@ green may the implementation refine output differences or add a reserved
 spare scene. This sequence consumes only the Amendment A2 working pool and
 its ten recorded spares; new literary prose still requires a planning
 amendment.
+
+## A6 continuation-record reset and event-order gate (2026-07-13)
+
+This clears the second Task 4 Step 2 planning blocker. The uncommitted attempt
+still combines a partial A4 graph with retired flow: it consumes Lady Macbeth
+at `LYRIC_RESUME_RESTORE_MACBETH` without a record, while its altered ordinary
+terminator route underflows Puck on `escapes_and_overlap`. These are carrier
+failures, not output-parity defects. Preserve the WIP unchanged as diagnostic
+evidence; do not repair it in place or copy production scenes from it.
+
+### Reset and continuation-record protocol
+
+In an isolated worktree, reconstruct from committed Task 3 `src_ir/act3.py`.
+Before connecting a protected opener, the Task 1--3 contracts (including
+`escapes_and_overlap`) must pass.
+
+Every requeue creates exactly one Lady-Macbeth record, above older contents:
+
+```text
+push(LADY_MACBETH, STREAM_END)       # record floor
+push(LADY_MACBETH, val(HECATE))      # parent field/resume state
+push(LADY_MACBETH, val(MACBETH))     # parent delimiter/depth
+let(HECATE, RESUME_*)                # only after saving both parent values
+push(PUCK, TEXT_END)                 # then create the private boundary
+```
+
+Drain raw Horatio content to Puck above that boundary. An autolink duplicate
+has its own floor above all records and is fully drained before any record is
+created. Titles and transient field values never occupy the continuation
+region.
+
+Only `LYRIC_RESUME_DISPATCH` consumes a record, in this order:
+
+```text
+let(PROSPERO, val(HECATE))           # freeze the RESUME_* close choice
+pop(LADY_MACBETH) -> MACBETH
+pop(LADY_MACBETH) -> HECATE
+pop(LADY_MACBETH) == STREAM_END      # consume and verify the record floor
+branch(PROSPERO, RESUME_* close)     # close scenes do not pop Lady Macbeth
+goto(LYRIC_POP_GLYPH)
+```
+
+Thus nested requeues restore a parent `RESUME_*` and the next private
+terminator resumes that parent. The real paragraph terminator is never
+preceded by `RESUME_*`; after its existing `LYRIC_POP_GLYPH` pop it proceeds
+directly to `TRAVERSE_COPY_TERMINATOR`. Do not insert an intermediate
+terminator scene or perform a second Puck pop.
+
+### Binding observer event contract
+
+The observer records scene entry plus each Puck pop with its active scene and
+Hecate value. For every `TEXT_END` popped by `LYRIC_POP_GLYPH`, assert the
+next scene is `LYRIC_RESUME_DISPATCH` when Hecate is `RESUME_*`, otherwise
+`TRAVERSE_COPY_TERMINATOR`. Each protected probe has exactly one non-resume
+real terminator and zero or more private terminators. Each resume must consume
+one complete three-pop Lady-Macbeth record; no other Lady-Macbeth pop is
+allowed except the declared autolink-duplicate drain. This event-order test
+replaces any loose ``labels contains`` assertion.
+
+At the first production checkpoint run:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+```
+
+It must pass with no underflow, scene fall-through, carrier decode error,
+duplicate real terminator, or leaked `TEXT_END`. Any failure is a
+`BLOCK[plan]`, not permission for a recovery scene or spare title.

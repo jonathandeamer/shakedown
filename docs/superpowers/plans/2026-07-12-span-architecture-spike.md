@@ -984,6 +984,48 @@ off a scene. A rendered-output mismatch after those facts hold is a normal
 Task 4 follow-up; any carrier failure is a plan blocker, not permission for
 ad-hoc scene additions.
 
+## Amendment A6 (2026-07-13): reset continuation construction and make A4 event-exact
+
+The second Step 2 attempt fails the mandatory observer gate: Lady Macbeth
+underflows in `LYRIC_RESUME_RESTORE_MACBETH` for link/image and emphasis, and
+the broad pre-handoff observer newly underflows Puck on the already-shipped
+`escapes_and_overlap` probe. The accepted design's [A6 continuation-record
+reset and event-order gate](../specs/2026-07-12-span-architecture-spike-design.md#a6-continuation-record-reset-and-event-order-gate-2026-07-13)
+is binding. It supersedes any Step 2 wording that permits incremental repair
+of the current worktree graph.
+
+1. Preserve the handoff worktree unchanged. In an isolated worktree begin
+   from committed Task 3 `src_ir/act3.py`; copy no uncommitted production
+   `LYRIC_*` scene or flow from this failed attempt.
+2. Recreate the A3/A4 observer against that baseline and extend it to record
+   Puck-pop event order. The ordinary terminator must remain
+   `LYRIC_POP_GLYPH -> TRAVERSE_COPY_TERMINATOR`, and all Task 1--3 probes,
+   especially `escapes_and_overlap`, must have no underflow before a protected
+   opener is connected.
+3. Add the A2 shared-field skeleton and A4 labels as a carrier-complete unit.
+   Every requeue follows A6's exact Lady-Macbeth push/pop order, freezes the
+   close code in Prospero, and no close scene pops Lady Macbeth. Prove the
+   focused gate before connecting any protected opener.
+4. Connect opaque tag/autolink, link/image requeue, then emphasis requeue.
+   Re-run the focused gate after each family. Do not add a recovery scene,
+   consume an A2 spare, or change real-terminator flow to mask a carrier
+   failure.
+
+A6 allocates no controlled prose, Recall key, token code, holder, or sentinel:
+only Amendment A2's 41 working plus 10 spare labels, and genuinely shared A1
+labels, remain available.
+
+Run exactly:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+```
+
+Expected: PASS. Event order proves every private terminator enters
+`LYRIC_RESUME_DISPATCH`, exactly one real terminator enters
+`TRAVERSE_COPY_TERMINATOR`, every resume consumes one record, and Task 1--3
+paths stay no-underflow. Any other result is `BLOCK[plan]`.
+
 ---
 
 ### Task 1: Commit the span-spike corpus and reviewed expected output
