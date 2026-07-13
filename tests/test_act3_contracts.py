@@ -14,8 +14,8 @@ from pathlib import Path
 import pytest
 
 from scripts.splc.contracts import StackSnapshot, assert_prefix_preserved
-from scripts.splc.interpret import InterpreterState, run_act
-from scripts.splc.ir import Char
+from scripts.splc.interpret import InterpreterState, StackUnderflow, run_act
+from scripts.splc.ir import Char, Const, Push, Val
 from scripts.splc.token_decode import DecodedToken, decode_stream
 from scripts.splc.token_structure import validate_stream
 from src_ir import tokens
@@ -33,6 +33,45 @@ _BORROWED_PREFIX = (7, 13, 42)
 class _CarrierBoundary:
     borrowed: StackSnapshot
     floor_prefix: tuple[int, ...]
+
+
+@dataclass
+class _SceneObserver:
+    labels: list[str]
+    text_end_routes: list[tuple[str, str, int]]
+    lady_macbeth_pops: list[tuple[str, int]]
+    current_label: str = ""
+    hecate: int = 0
+    pending_text_end: tuple[str, int] | None = None
+    open_reverse_puck: tuple[int, ...] | None = None
+    open_reverse_juliet: tuple[int, ...] | None = None
+
+    def on_scene(self, label: str, state: InterpreterState) -> None:
+        if self.pending_text_end is not None:
+            source, hecate = self.pending_text_end
+            self.text_end_routes.append((source, label, hecate))
+            self.pending_text_end = None
+        self.current_label = label
+        self.hecate = state.values[Char.HECATE]
+        self.labels.append(label)
+        if label == "LYRIC_OPEN_REVERSE":
+            assert self.open_reverse_puck is None
+            self.open_reverse_puck = tuple(state.stacks[Char.PUCK])
+            self.open_reverse_juliet = tuple(state.stacks[Char.JULIET])
+
+    def on_push(self, char: Char, value: int, stack_after: list[int]) -> None:
+        return None
+
+    def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None:
+        if char is Char.PUCK and value == tokens.TEXT_END:
+            assert self.pending_text_end is None
+            self.pending_text_end = (self.current_label, self.hecate)
+        elif char is Char.LADY_MACBETH:
+            self.lady_macbeth_pops.append((self.current_label, value))
+
+
+def _observer() -> _SceneObserver:
+    return _SceneObserver(labels=[], text_end_routes=[], lady_macbeth_pops=[])
 
 
 def _run_to_act2(stem: str) -> InterpreterState:
@@ -58,6 +97,21 @@ def _run_to_act3_with_prefix(stem: str) -> tuple[_CarrierBoundary, InterpreterSt
         floor_prefix=tuple(state.stacks[Char.PUCK][: borrowed.floor + 1]),
     )
     return boundary, run_act(ACT3, state, step_limit=STEP_LIMIT).state
+
+
+def _run_to_act3_observed(
+    stem: str,
+) -> tuple[_CarrierBoundary, InterpreterState, _SceneObserver]:
+    state = _run_to_act2(stem)
+    state.stacks[Char.PUCK] = list(_BORROWED_PREFIX) + state.stacks[Char.PUCK]
+    borrowed = StackSnapshot(char=Char.PUCK, values=_BORROWED_PREFIX)
+    boundary = _CarrierBoundary(
+        borrowed=borrowed,
+        floor_prefix=tuple(state.stacks[Char.PUCK][: borrowed.floor + 1]),
+    )
+    observer = _observer()
+    result = run_act(ACT3, state, step_limit=STEP_LIMIT, observer=observer)
+    return boundary, result.state, observer
 
 
 def _carrier_stream(state: InterpreterState) -> list[int]:
@@ -249,28 +303,90 @@ def test_act3_renders_overlapping_emphasis() -> None:
     assert "*" not in text, f"Unprocessed asterisks in output: {text}"
 
 
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in SPAN_FIXTURES.glob("*.text")),
+)
+def test_act3_pre_handoff_source_is_empty_and_output_is_forward(stem: str) -> None:
+    boundary, state, observer = _run_to_act3_observed(stem)
+
+    assert observer.open_reverse_puck == _BORROWED_PREFIX
+    assert observer.open_reverse_juliet is not None
+    assert observer.open_reverse_juliet
+    assert observer.open_reverse_juliet[0] == tokens.STREAM_END
+    assert_prefix_preserved(boundary.borrowed, state.stacks[Char.PUCK])
+    stream = _stack_carrier_from_floor(state, boundary)
+    assert stream.count(tokens.STREAM_END) == 1
+
+
+_RESUME_CODES = frozenset({8, 9, 10, 11})
+
+
 @pytest.mark.parametrize("stem", _TASK4_PROTECTED_FIXTURES)
-def test_act3_source_buffer_never_receives_generated_output(stem: str) -> None:
-    """Negative assertion: no generated HTML is ever pushed back onto PUCK."""
-    boundary, state = _run_to_act3_with_prefix(stem)
+def test_act3_text_end_event_order_is_carrier_safe(stem: str) -> None:
+    _, _, observer = _run_to_act3_observed(stem)
 
-    # The source buffer is the portion of PUCK above the private floor sentinel.
-    # After a complete paragraph scan, the buffered scanner should have consumed
-    # all source glyphs from PUCK, leaving the source region empty. Any generated
-    # output goes to JULIET (output stack), never back to PUCK.
-    floor_len = len(boundary.floor_prefix)
-    source_region = state.stacks[Char.PUCK][floor_len:]
-    assert len(source_region) == 0, (
-        f"Source buffer not empty for {stem}: {source_region}"
+    lyric_routes = [
+        route for route in observer.text_end_routes if route[0] == "LYRIC_POP_GLYPH"
+    ]
+    real = [route for route in lyric_routes if route[1] == "TRAVERSE_COPY_TERMINATOR"]
+    private = [route for route in lyric_routes if route[1] == "LYRIC_RESUME_DISPATCH"]
+    assert len(real) == 1
+    assert real[0][:2] == ("LYRIC_POP_GLYPH", "TRAVERSE_COPY_TERMINATOR")
+    assert private
+    assert all(
+        source == "LYRIC_POP_GLYPH" and target == "LYRIC_RESUME_DISPATCH"
+        for source, target, _ in private
     )
+    assert observer.labels.count("LYRIC_RESUME_DISPATCH") == len(private)
+    assert sum(
+        label.startswith("LYRIC_RESUME_RESTORE_")
+        for label, _ in observer.lady_macbeth_pops
+    ) == 3 * len(private)
 
 
-def test_act3_source_buffer_never_receives_generated_output_code_spans() -> None:
-    """Negative assertion for code-span fixtures: no generated output on PUCK."""
-    for stem in ("variable_code_spans", "escapes_and_overlap"):
-        boundary, state = _run_to_act3_with_prefix(stem)
-        floor_len = len(boundary.floor_prefix)
-        source_region = state.stacks[Char.PUCK][floor_len:]
-        assert len(source_region) == 0, (
-            f"Source buffer not empty for {stem}: {source_region}"
-        )
+@pytest.mark.parametrize("stem", _TASK4_PROTECTED_FIXTURES)
+def test_act3_protected_modes_do_not_underflow(stem: str) -> None:
+    try:
+        _run_to_act3_observed(stem)
+    except StackUnderflow as exc:
+        pytest.fail(str(exc))
+
+
+def test_act3_ir_requeue_and_field_floors_follow_a4_shape() -> None:
+    before_handoff = True
+    juliet_to_puck: list[str] = []
+    labels = {sc.label for sc in ACT3.scenes}
+
+    for sc in ACT3.scenes:
+        if sc.label == "LYRIC_OPEN_REVERSE":
+            before_handoff = False
+        for op in sc.ops:
+            if not isinstance(op, Push) or op.target is not Char.PUCK:
+                continue
+            if isinstance(op.expr, Val) and op.expr.char is Char.JULIET:
+                juliet_to_puck.append(sc.label)
+                continue
+            if not before_handoff:
+                continue
+            if isinstance(op.expr, Val):
+                assert op.expr.char in {Char.PUCK, Char.ROMEO, Char.HORATIO}
+            elif isinstance(op.expr, Const):
+                assert op.expr.value in {tokens.TEXT_END, ord("*"), ord("_")}
+            else:
+                pytest.fail(f"Unexpected Puck requeue in {sc.label}: {op.expr!r}")
+
+    assert juliet_to_puck == ["LYRIC_REVERSE_POP"]
+    assert {
+        "LYRIC_FIELD_OPEN",
+        "LYRIC_FIELD_DRAIN_CLOSE",
+        "LYRIC_RESUME_DISPATCH",
+    }.issubset(labels)
+    field_open = next(sc for sc in ACT3.scenes if sc.label == "LYRIC_FIELD_OPEN")
+    assert any(
+        isinstance(op, Push)
+        and op.target is Char.ROMEO
+        and isinstance(op.expr, Const)
+        and op.expr.value == tokens.STREAM_END
+        for op in field_open.ops
+    )

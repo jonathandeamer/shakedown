@@ -183,6 +183,8 @@ class InterpreterObserver(Protocol):
 
     def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None: ...
 
+    def on_scene(self, label: str, state: InterpreterState) -> None: ...
+
 
 def run_act(
     act: Act,
@@ -207,6 +209,8 @@ def run_act(
     step = 0
     while True:
         sc = by_label[label]
+        if observer is not None:
+            observer.on_scene(sc.label, state)
         jump: str | None = None
         halted = False
         for op in sc.ops:

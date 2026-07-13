@@ -53,6 +53,9 @@ class _MinDepthObserver:
         if char is self.char:
             self.min_depth = min(self.min_depth, len(stack_after))
 
+    def on_scene(self, label: str, state: InterpreterState) -> None:
+        return None
+
 
 @pytest.mark.parametrize("char", _TRACKED_CHARS, ids=lambda c: c.value)
 @pytest.mark.parametrize(
