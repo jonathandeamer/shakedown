@@ -116,3 +116,82 @@ HTML to be re-read, if a protected source region cannot be restored without
 losing bytes, if the scanner cannot consume its floor while preserving the
 borrowed prefix, or if the reviewed Act-III dumps are structurally invalid.
 Do not compensate by broadening Act IV or adding fixture-specific scenes.
+
+## Carrier-safe protected-region amendment (2026-07-13)
+
+This amendment is binding for Task 4 Step 2. It replaces the ambiguous
+"private resume sentinel" wording in the original design and Amendment A2.
+No new token code is allocated: a nested, private `TEXT_END` is the only
+resume boundary placed on Puck. It is distinguishable from the paragraph's
+real `TEXT_END` by an off-stage continuation record. The record lives above a
+private `STREAM_END` on Lady Macbeth's stack; Hecate's value is only the
+currently active field/call-site code. Therefore no scene uses Puck as a
+field-output carrier or Juliet as requeued source.
+
+### Binding ownership and floors
+
+| Holder | Permitted Task 4 content | Floor / lifecycle |
+|---|---|---|
+| Puck | Unconsumed paragraph source; raw requeued label/alt/emphasis glyphs; nested private `TEXT_END` | The real paragraph `TEXT_END` remains lowest. A requeue pushes its private `TEXT_END`, then its raw glyphs in reverse order. No `STREAM_END`, HTML glyph sequence, or `val(JULIET)` is pushed before `LYRIC_OPEN_REVERSE`. |
+| Juliet | Final forward token stream and final HTML glyphs only | Its existing Act-III `STREAM_END` is never popped by a protected-region scene. |
+| Romeo | One raw field capture | Every `LYRIC_FIELD_OPEN` pushes one private `STREAM_END`; every success and fallback drains through that exact floor before its continuation. |
+| Hecate stack | One reversed field ready for output | `LYRIC_FIELD_REV` first pushes its private `STREAM_END`; `LYRIC_FIELD_HEAD/NEXT` drains it exactly once. Hecate's *value* remains the call-site code throughout. |
+| Horatio | Raw link label, image alt, or emphasis body | One private `STREAM_END` per held region. It is drained only by `LYRIC_REGION_RESUME` / `LYRIC_EMPHASIS_RESUME` into Puck. |
+| Lady Macbeth | Continuation records and the duplicate autolink field | Each record is `[STREAM_END, saved Hecate code, saved Macbeth delimiter length]`; autolink's duplicate buffer has a separate `STREAM_END` above that record. A continuation is popped before its next shared-field entry. |
+| Macbeth value | Parenthesis depth while a destination is captured, or the matched emphasis run length | It is never used as a glyph register. `LYRIC_EMPHASIS_*` must not overwrite it between `MATCH` and the corresponding close. |
+
+The checked IR-shape test must reject any pre-handoff `Push(PUCK, ...)` that
+is not `val(PUCK)`, `val(ROMEO)`, `val(HORATIO)`, `const(TEXT_END)`, or a
+raw delimiter constant (`*`/`_`) used solely to construct the triple-emphasis
+child. It must retain the singleton `Push(PUCK, val(JULIET))` allowance in
+`LYRIC_REVERSE_POP` only.
+
+### Continuation codes and resume rule
+
+Use these small values in Hecate, with named constants local to `act3.py`:
+`FIELD_TAG=1`, `FIELD_AUTO_HREF=2`, `FIELD_AUTO_TEXT=3`,
+`FIELD_LINK_DEST=4`, `FIELD_LINK_TITLE=5`, `FIELD_IMAGE_DEST=6`,
+`FIELD_IMAGE_TITLE=7`, `RESUME_LINK=8`, `RESUME_IMAGE=9`,
+`RESUME_EMPH=10`, and `RESUME_TRIPLE_EMPH=11`. Values are state tags, not
+token codes. Each branch into a shared `LYRIC_FIELD_*` scene must set exactly
+one field tag first. `LYRIC_POP_GLYPH` handles a popped `TEXT_END` as follows:
+
+1. if Hecate is one of `RESUME_*`, jump to `LYRIC_RESUME_DISPATCH` without
+   emitting or copying the zero; pop the Lady-Macbeth continuation record;
+2. otherwise it is the real paragraph terminator and follows the existing
+   `TRAVERSE_COPY_TERMINATOR` path.
+
+`LYRIC_RESUME_DISPATCH` is the sole owner of a requeue completion. It restores
+the saved Hecate/Macbeth values before taking the link/image/emphasis close
+continuation. A nested requeue saves its parent record first, so a child
+emphasis can return to a label or outer emphasis without confusing the real
+paragraph terminator.
+
+### Required scene choreography
+
+The plan's implementation table is intentionally scene-level: an implementer
+may split a listed transition only by consuming an unused Amendment A2 spare
+and recording it in the plan, but may not merge holders or invent another
+carrier. All `FIELD_*` rows below preserve the pair conventions already
+validated by splc: source/capture rows use `(ROMEO, PUCK)`, capture/reverse
+rows use `(ROMEO, HECATE)`, output rows use `(JULIET, HECATE)`, and hold rows
+use `(HORATIO, PUCK)` or `(HORATIO, LADY_MACBETH)`.
+
+| Entry / scene family | Exact state transition and carrier effect |
+|---|---|
+| `LYRIC_ANGLE_TEST` → `LYRIC_HTML_OPEN` / `LYRIC_AUTOLINK_OPEN` | After `<` is popped, consume one lookahead. `http`, `https`, and `ftp` probe prefixes take the autolink path; every other probe form takes opaque tag mode. Seed Romeo with `STREAM_END`; retain `<` only for tag mode and retain no angle brackets for an autolink. A failed probe replays only captured raw source plus `<` to Juliet, then resumes ordinary scan. |
+| `LYRIC_FIELD_OPEN`, `SCAN`, `UNTERMINATED` | `OPEN` creates Romeo's floor. `SCAN` pops only Puck and pushes non-terminators to Romeo. Tag mode stops at and captures `>`; URL mode stops at but does not capture `>`; destination mode increments/decrements Macbeth on `(`/`)` and stops only when the outer depth returns to zero; title mode stops at its opening quote's mate. `UNTERMINATED` drains Romeo to Juliet as literal source, restores the private boundary if it was consumed, and never jumps to a generated-output scene. |
+| `LYRIC_FIELD_REV_KEEP`, `REV`, `HEAD`, `GLYPH`, `PLAIN`, `AMP/LT/GT`, `NEXT`, `DRAIN_CLOSE` | Reverse Romeo onto Hecate's private-floor stack. In `FIELD_AUTO_HREF`, also copy each popped raw glyph to Lady Macbeth's duplicate-floor stack. `HEAD/NEXT` drain Hecate to Juliet; tag mode uses `PLAIN` only, all other modes use the existing entity triples. `DRAIN_CLOSE` dispatches solely by Hecate's unchanged field tag. |
+| Autolink close | `FIELD_AUTO_HREF` emits `<a href=\"`, drains the first field, emits `\">`, restores the duplicate into Hecate through the same reverse/head family under `FIELD_AUTO_TEXT`, drains it as text, emits `</a>`, then resumes Puck. The closing `>` was consumed once and is never pushed to Juliet. |
+| `LYRIC_LINK_REGION` / `LYRIC_IMAGE_TEST` → `LYRIC_LABEL_OPEN` / `LYRIC_ALT_OPEN` | A `[` or `![` starts Horatio's private floor. Capture raw label/alt through its matching `]`; reject missing `]` or `(` by replaying the exact raw opener and held bytes literally. On success, push a Lady-Macbeth continuation record (`RESUME_LINK` or `RESUME_IMAGE`) before entering destination capture. |
+| `LYRIC_DEST_OPEN`, `DEST_BALANCE`, `LYRIC_TITLE_OPEN` | Emit `<a href=\"` or `<img src=\"` to Juliet before `FIELD_LINK_DEST` / `FIELD_IMAGE_DEST`. Balanced destination capture owns Macbeth depth. A quoted title sets the matching title field code; no title goes directly to `LYRIC_REGION_TAG_OPEN`. Destination/title glyphs remain opaque except the shared field's required entity encoding. |
+| `LYRIC_REGION_TAG_OPEN` → `LYRIC_REGION_RESUME` | After the final destination/title drain, emit `\">` for link or `\" alt=\"` for image as appropriate; for images emit the held-alt attribute closing and optional title before ` />`. Before rescanning the held label/alt, push one private `TEXT_END` to Puck, drain Horatio to Puck (raw values only), set Hecate to the saved `RESUME_*`, and jump to `LYRIC_POP_GLYPH`. At that boundary, `LYRIC_RESUME_DISPATCH` emits `</a>` or the image suffix and restores the previous continuation. |
+| `LYRIC_EMPHASIS_OPEN` through `MATCH` | Count a maximal `*` or `_` opener in Hecate only until a match is found; copy the matched length into Macbeth before changing Hecate to a resume state. Capture raw body to Horatio under a private floor. Candidate mismatch replay restores only raw delimiter glyphs to the current body capture. |
+| `LYRIC_EMPHASIS_RESUME` / close | Emit `<strong>` for a two-run or the outer layer of a three-run, otherwise `<em>`. Save the parent continuation, push one private `TEXT_END`, and requeue Horatio's raw body. For a three-run, surround the requeued raw body with one synthetic raw delimiter pair; this is a control delimiter, not generated HTML, and makes the ordinary scan produce the nested `<em>`. `LYRIC_RESUME_DISPATCH` restores Macbeth, emits the matching `</em>` or `</strong>`, then returns to the saved parent / ordinary scan. |
+| `LYRIC_REGION_FALLBACK`, `LYRIC_EMPHASIS_FALLBACK`, `REPLAY` | Drain only the relevant private capture to Juliet as literal raw Markdown and then resume Puck. The fallback must consume every temporary `STREAM_END`; it must not leave a Romeo/Horatio/Lady-Macbeth floor for the next paragraph. |
+
+This choreography is valid only if a focused interpreter test observes each
+private Puck `TEXT_END` transition and proves that its next scene is
+`LYRIC_RESUME_DISPATCH`, while the real paragraph terminator reaches
+`TRAVERSE_COPY_TERMINATOR`. That test is the carrier-validity gate before
+the production implementation is considered complete.

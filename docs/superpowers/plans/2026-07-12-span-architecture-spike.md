@@ -533,13 +533,13 @@ Three techniques eliminate essentially all of the WIP's duplication:
    for this hold only) without processing them, emit `<a href="`/`<img
    src="`, run destination and title through the shared field pipeline
    directly to Juliet, emit the closing `>`, then push the held label/alt
-   glyphs back onto Puck ahead of a private resume sentinel and fall through
+   glyphs back onto Puck above a private `TEXT_END` boundary and fall through
    to the play's ordinary top-level scan dispatch — the same dispatch that
    already handles entities, code spans, and emphasis for ordinary body
    text. This reuses the entire existing pipeline for free instead of
    duplicating it, and composes automatically with the emphasis machine
    added by this amendment (technique 3), which is why nested `<em>` inside
-   a link label needs no dedicated scene. When the resume sentinel is popped
+   a link label needs no dedicated scene. When the private boundary is popped
    back off, `LYRIC_RESUME_DISPATCH` (added to the existing glyph-dispatch
    entry point) hands control to whichever region is pending. This is
    requeuing *original, unprocessed* source glyphs, not generated output, so
@@ -551,8 +551,8 @@ Three techniques eliminate essentially all of the WIP's duplication:
 3. **Duplicate-on-reverse for autolink's two emits.** An autolink's captured
    URL is drained twice — once amp-encoded into the `href` attribute, once
    amp/lt/gt-encoded into the link text — from the *same* capture, by having
-   `LYRIC_FIELD_REV_KEEP` push a second copy back onto the held Romeo stack
-   under its private sentinel when the call-site code says "keep source"
+   `LYRIC_FIELD_REV_KEEP` copy a second raw field onto Lady Macbeth's
+   duplicate-floor stack when the call-site code says "keep source"
    (autolink href only), so a second `LYRIC_AUTOLINK_TEXT_OPEN` pass can
    re-drain it without rescanning Puck. This keeps `amp_count == 2` exactly
    as `test_act3_renders_inline_html_and_autolink` requires, with one
@@ -578,9 +578,10 @@ but implementers must still keep the opener/closer run-length register
 |---|---|
 | HECATE (value) | Call-site code for the shared field pipeline: selects terminator and post-drain continuation. Idle between Task 4 dispatches, same reuse rule as Amendment A1. |
 | MACBETH (value) | Local scratch per field: destination paren-balance counter, or emphasis opener/closer run length. Never shared concurrently between these uses. |
-| ROMEO (stack) | Field capture buffer above a private `STREAM_END` sentinel (unchanged discipline from Amendment A1); doubles as the autolink href/text hold via duplicate-on-reverse. |
+| ROMEO (stack) | Field capture buffer above a private `STREAM_END` sentinel (unchanged discipline from Amendment A1). |
 | HORATIO (stack, newly on stage in Act III) | Hold buffer for captured, unprocessed label/alt glyphs and for emphasis body glyphs between capture and requeue. |
-| A private resume sentinel on PUCK | Marks where requeued label/alt/emphasis-body content ends; recognized by `LYRIC_RESUME_DISPATCH` in the existing glyph-dispatch entry point. |
+| LADY_MACBETH (stack) | Private continuation records and the duplicate autolink buffer; see Amendment A4. |
+| A private `TEXT_END` on PUCK | Marks where requeued label/alt/emphasis-body content ends; Hecate's resume code directs it to `LYRIC_RESUME_DISPATCH`. |
 
 ### Amendment A2 literary reservations (ready to paste, supersedes the Task 4 pool above)
 
@@ -783,7 +784,7 @@ A1's Step 5 pool where genuinely shared (e.g. Task 4 must not redefine
 
 ## Amendment A3 (2026-07-13): source-buffer assertion boundary and legal handoff
 
-This amendment clears the current `BLOCK[plan]`. The Task 4 Step 1 negative
+This amendment clears the Task 4 Step 1 assertion-boundary blocker. The Task 4 Step 1 negative
 assertion incorrectly calls all values above the borrowed Puck prefix a
 "source buffer" after Act III has halted. That is false by the existing
 Act-III/Act-IV contract: `LYRIC_OPEN_REVERSE` deliberately seeds a fresh
@@ -812,8 +813,8 @@ The invariant has two separately observable parts:
    is empty above the borrowed prefix.
 2. **One-way provenance.** Inspect `src_ir.act3.ACT` as IR, not generated
    SPL. Before the reverse handoff, any `Push(PUCK, ...)` is limited to an
-   original raw glyph held in Puck/Romeo/Horatio, `TEXT_END`, or the private
-   resume sentinel. `Push(PUCK, val(JULIET))` is permitted exactly once as a
+   original raw glyph held in Puck/Romeo/Horatio, `TEXT_END`, or a raw
+   emphasis control delimiter. `Push(PUCK, val(JULIET))` is permitted exactly once as a
    scene shape, in `LYRIC_REVERSE_POP`; no other scene may transfer Juliet to
    Puck. This permits raw label/alt/emphasis requeue while forbidding
    generated HTML from becoming scan input. After the handoff, assert a
@@ -848,7 +849,7 @@ of this unchecked step:
   `LYRIC_OPEN_REVERSE` and `push(PUCK, val(JULIET))` in
   `LYRIC_REVERSE_POP`. Before that boundary, allow only `val(PUCK)`,
   `val(ROMEO)`, `val(HORATIO)`, `const(tokens.TEXT_END)`, and the
-  plan-reserved private resume sentinel. Assert no literal `<`, `>`, `&`, or
+  raw emphasis delimiter constants. Assert no literal `<`, `>`, `&`, or
   any `val(JULIET)` transfer appears in a pre-handoff source scene. Use the
   IR node types (`Push`, `Val`, `Const`) rather than rendered prose.
 
@@ -872,6 +873,50 @@ reviewed dump, and all existing spike structure tests. A failure showing
 Puck non-empty only after `ACT3` returns is not evidence against this design;
 the failure must instead be evaluated against the pre-handoff snapshot and
 the explicit transfer allowlist above.
+
+## Amendment A4 (2026-07-13): carrier-safe field/requeue choreography
+
+The A2 shared idiom is retained, but its former "private resume sentinel"
+description was not sufficient to implement safely: it left unclear how a
+requeued label/alt/emphasis region differs from the paragraph's `TEXT_END`,
+and it allowed the field duplicate/continuation state to collide with Romeo,
+Hecate, or Puck. The validated replacement is now part of the accepted design
+under [Carrier-safe protected-region amendment](../specs/2026-07-12-span-architecture-spike-design.md#carrier-safe-protected-region-amendment-2026-07-13).
+It is binding for Step 2 and supersedes only A2's resume-sentinel/register
+wording; A2's 41+10 controlled literary pool remains the sole title source.
+
+### Task 4 Step 2 additional required tests (before production IR changes)
+
+Extend the A3 observer work before adding a protected scene:
+
+- Add `on_scene` to `InterpreterObserver` as A3 specifies, then create a
+  recording observer in `tests/test_act3_contracts.py` that records
+  `(label, tuple(PUCK), tuple(JULIET), HECATE, MACBETH)` on entry.
+- Add parameterized tests for `inline_html_and_autolink`,
+  `links_images_protected`, and `overlapping_emphasis` that, once the scanner
+  exists, require every Puck-private `TEXT_END` to enter
+  `LYRIC_RESUME_DISPATCH`, require the unique real `TEXT_END` to enter
+  `TRAVERSE_COPY_TERMINATOR`, and require no observed Puck stack above the
+  borrowed prefix at `LYRIC_OPEN_REVERSE`.
+- Add an IR-shape test which permits pre-handoff Puck pushes only from the
+  A4 allowlist, asserts one `Push(PUCK, val(JULIET))` in
+  `LYRIC_REVERSE_POP`, and asserts every `LYRIC_FIELD_OPEN` has a matching
+  Romeo `STREAM_END` floor plus a `LYRIC_FIELD_DRAIN_CLOSE` path.
+- Add a focused no-underflow regression covering each of the three protected
+  stems with `STEP_LIMIT = 200_000`; it must fail on the old WIP shape with
+  `StackUnderflow`/unexpected text-end routing and pass only after the A4
+  scene choreography is present.
+
+Run the red gate before production edits:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+```
+
+Expected before Step 2 production scenes: the newly added carrier tests fail
+only because the named A4 scenes do not exist; existing Task 1–3 green tests
+remain green. After implementation, the same command passes, followed by the
+full Task 4 evidence commands already named in Steps 3–5.
 
 ---
 
@@ -1210,7 +1255,7 @@ the explicit transfer allowlist above.
   (anchored on Juliet, dispatched by an idle Hecate call-site code) for HTML
   tag copy, autolink href/text, link/image destination, and title; the
   capture-hold-then-requeue technique (Horatio holds raw label/alt glyphs,
-  which are pushed back onto Puck behind a private resume sentinel and
+  which are pushed back onto Puck above a private `TEXT_END` boundary and
   processed by the ordinary top-level scan dispatch, giving nested
   entity/emphasis handling for free) for link/image label and image alt;
   duplicate-on-reverse for autolink's two encoded emits (href, then text)
@@ -1227,6 +1272,15 @@ the explicit transfer allowlist above.
   than recursively re-implemented. The ten Amendment A2 spares are the only
   permitted additional states; exhaustion is a planning-amendment stop. Do
   not add general reference resolution or unsupported delimiter grammar.
+
+  Before writing `src_ir/act3.py`, implement the A4 verification-only
+  observer and carrier tests above. Then implement the exact scene families
+  and holder/floor rules in the accepted design's A4 table. In particular,
+  use a private `TEXT_END` plus a Lady-Macbeth continuation record for every
+  requeue; do not allocate a numeric sentinel, reuse Puck as a field-output
+  carrier, or use Juliet output as source. A Step 2 attempt that does not
+  make the A4 focused no-underflow and scene-observer tests pass is a
+  `BLOCK[plan]` condition, not a reason to add ad-hoc recovery scenes.
 
 - [ ] **Step 3: Regenerate and run all spike evidence.**
 
