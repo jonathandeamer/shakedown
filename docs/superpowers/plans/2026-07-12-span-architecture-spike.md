@@ -205,11 +205,19 @@ pattern = "bare_statement"
   ```bash
   uv run python -m scripts.splc
   uv run python scripts/assemble.py
-  uv run pytest tests/test_splc_generated_fragments.py tests/test_act3_contracts.py tests/test_architecture_spikes.py -k 'variable_code_spans or escapes_and_overlap or Amps or act3' -q
+  uv run pytest \
+    tests/test_splc_generated_fragments.py \
+    tests/test_act3_contracts.py::test_act3_preserves_span_fixture_structural_stream \
+    tests/test_act3_contracts.py::test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels \
+    tests/test_act3_contracts.py::test_act3_renders_variable_length_code_spans \
+    tests/test_act3_contracts.py::test_act3_preserves_escaped_and_literal_span_punctuation \
+    tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix \
+    'tests/test_architecture_spikes.py::test_span_architecture_spike_matches_checked_in_oracle_bytes[variable_code_spans]' \
+    -q
   uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
   ```
 
-  Expected: generated artifacts are fresh; code-span and escape assertions pass; Amps remains byte-identical; HTML/link/image/overlap probe cases may still fail.
+  Expected: generated artifacts are fresh; the code-span byte-parity probe passes; the escape-specific Act III assertions pass; structural/prefix contracts stay green; Amps remains byte-identical. The full `escapes_and_overlap`, HTML/link/image, and overlap/emphasis whole-fixture parity probes remain Task 4 work.
 
 - [ ] **Step 5: Commit and push the scanner foundation.**
 
