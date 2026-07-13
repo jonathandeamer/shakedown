@@ -345,7 +345,7 @@ protected_tag_mark = "Recall the silver tag's mark."
 
   Evidence (2026-07-12): `12 failed, 12 passed, 14 deselected`. The two new rendering assertions fail red as intended (alongside the pre-existing span-probe reds); the two new scan-floor invariant cases pass, keeping the borrowed-prefix contract green before the scanner lands.
 
-- [ ] **Step 3: Add the floor-bounded paragraph drain and ordinary-glyph loop.**
+- [x] **Step 3: Add the floor-bounded paragraph drain and ordinary-glyph loop.**
 
   In `src_ir/act3.py`, preserve `_traverse_dispatch()` and route
   `TRAVERSE_OPEN_TEXT` through `LYRIC_BUFFER_OPEN`, `LYRIC_BUFFER_DRAIN`,
@@ -359,6 +359,18 @@ protected_tag_mark = "Recall the silver tag's mark."
   then write one `TEXT_END` and resume the existing structural-copy path. Do
   not consume structural codes or payloads in this loop, and do not return
   emitted output to the source buffer.
+
+  Evidence (2026-07-13): routed `TRAVERSE_OPEN_TEXT` through the buffered
+  drain/unwind/scan loop, using a temporary `STREAM_END` floor on Puck and a
+  private Romeo source buffer. Regeneration plus the Step 3 boundary gate
+  passed: `uv run pytest tests/test_splc_generated_fragments.py
+  tests/test_act3_contracts.py::test_act3_preserves_span_fixture_structural_stream
+  tests/test_act3_contracts.py::test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels
+  tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix
+  -q` => `14 passed`; `uv run pytest tests/test_literary_compliance.py
+  tests/test_literary_toml_schema.py tests/test_assemble.py
+  tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q` =>
+  `1 passed, 208 deselected`.
 
 - [ ] **Step 4: Regenerate and prove the buffer boundary before delimiter work.**
 
