@@ -237,6 +237,255 @@ buffered_last_glyph = "Recall the night's final glyph."
 protected_tag_mark = "Recall the silver tag's mark."
 ```
 
+## Amendment A1 (2026-07-13): Step 5 code-span machine — two-character choreography, expanded pool
+
+This amendment resolves the twenty recorded Step 5 halts (`.agent/blockers.md`
+history, commits `8bb31bc`…`7940b24`). It authorizes a combination of halt
+options (a) and (c): a **two-character scanner design** that needs **no change
+to `scripts/splc/validate.py`, `scripts/splc/lower.py`, or the IR instruction
+set**, plus a **scene-title and recall-key budget increase** reserved below.
+Option (b) (three-character scenes) is rejected: SPL second-person semantics
+make a third on-stage character ambiguous, which is why the validator forbids
+it. Fix/implement executors may resume Step 5 under this amendment.
+
+### Why no scene ever needs three characters
+
+The halted analyses assumed maximal backtick matching requires ROMEO, JULIET,
+and PUCK on stage at once. It does not, because of two verified compiler and
+interpreter facts:
+
+1. **Off-stage value references are legal SPL and already implemented.**
+   `docs/spl/reference.md` (state table: "Character name — that character's
+   current value, even if off stage"; finding 8: "Characters retain values
+   off-stage") is the canonical semantics. `scripts/splc/lower.py` renders
+   `val(CHAR)` of a non-participant as the character's name in third person,
+   and `Branch` supports testing an off-stage character ("Is Macbeth as fair
+   as Hecate?" asked by the anchor, with the companion answering the Ifs).
+2. **Registers live in idle characters' values; buffers live in idle stacks.**
+   HECATE, MACBETH, LADY_MACBETH, HORATIO, and PROSPERO do nothing in Act III.
+   A run-length comparison therefore never shares a scene with the source,
+   output, and buffer stacks at once — each scene touches at most two
+   characters, and the stage pairs rotate between scenes exactly as the
+   existing `LYRIC_OPEN_*` idiom already does.
+
+A skeleton of the machine below (opener counting into HECATE, candidate
+counting into MACBETH, the off-stage `eq(val(MACBETH), val(HECATE))` branch,
+and Juliet-paired emission) was passed through `validate()` and `lower_act()`
+on 2026-07-13 and lowered cleanly with two characters on stage in every scene.
+
+### Register and stack map (binding for Step 5)
+
+| Holder | Role during one code-span attempt |
+|---|---|
+| PUCK (stack) | Source glyphs, top = next glyph, terminated by `TEXT_END` (unchanged) |
+| JULIET (stack) | One-way output stream (unchanged) |
+| ROMEO (stack) | Speculative consumed source above a private `STREAM_END` sentinel; below the sentinel the Slice-1 discard pile is untouched |
+| HECATE (value) | Opener run length N |
+| HECATE (stack) | Reversed, tail-trimmed span content above a private `STREAM_END` sentinel |
+| MACBETH (value) | Candidate closer run length M |
+| ROMEO/HECATE/MACBETH (values) | Freely clobbered by later pops once their phase is over; nothing in Act III branches on them outside this machine |
+
+ROSALIND is off-limits: her four goto lines must remain the play's only
+Rosalind speeches (`test_reference_librarian_is_visible_in_reference_scenes`).
+
+### Oracle semantics correction
+
+Markdown.pl v1.0.1 `_DoCodeSpans` strips **all** leading and trailing spaces
+and tabs from span content (`s/^[ \t]*//g`, `s/[ \t]*$//g`), not "one balanced
+outer space pair" as Step 5 previously said. The closer is the **first**
+maximal backtick run of exactly the opener's length (`(?<!`)\1(?!`)`); maximal
+runs of any other length are span content. This amendment's wording wins.
+
+### Scene table (binding for Step 5)
+
+Entry hook: in `LYRIC_POP_GLYPH`, insert
+`branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_RUN")` between the `TEXT_END`
+branch and the `'['` branch. (96 decomposes as 64+32 within the 4-operator
+bound; add a `RECIPES[96] = mul(const(8), add(const(8), const(4)))` entry in
+`src_ir/stream.py` only if `test_numeric_recipe_complexity_stays_bounded` or
+the big-cat atom test rejects the default decomposition.)
+
+Every scene below lists its ops in order; `pair` is what
+`validate.participants` derives. Recall keys name the speaker whose TOML pool
+holds them (see reservations below). Self-loops close with `goto`, never a
+branch, so `entry_pairs` stays consistent.
+
+| Scene | Ops (in order) | pair (anchor first) |
+|---|---|---|
+| `LYRIC_CODE_RUN` | `let(HECATE, const(1))`; `goto LYRIC_CODE_COUNT` | (ROMEO, HECATE) |
+| `LYRIC_CODE_COUNT` | `pop(PUCK, recall="silver_measures_leaf")` [romeo]; `branch(96 → LYRIC_CODE_COUNT_MORE)`; `goto LYRIC_CODE_SEEK_OPEN` | (ROMEO, PUCK) |
+| `LYRIC_CODE_COUNT_MORE` | `let(HECATE, add(val(HECATE), const(1)))`; `goto LYRIC_CODE_COUNT` | (ROMEO, HECATE) |
+| `LYRIC_CODE_SEEK_OPEN` | `push(ROMEO, const(tokens.STREAM_END))`; `branch(eq(val(PUCK), const(tokens.TEXT_END)) → LYRIC_CODE_FALLBACK)`; `goto LYRIC_CODE_KEEP`; `companion=PUCK` | (ROMEO, PUCK) |
+| `LYRIC_CODE_KEEP` | `push(ROMEO, val(PUCK))`; `goto LYRIC_CODE_SEEK`; `companion=PUCK` | (ROMEO, PUCK) |
+| `LYRIC_CODE_SEEK` | `pop(PUCK, recall="sought_moonlit_glyph")` [romeo]; `branch(TEXT_END → LYRIC_CODE_FALLBACK)`; `branch(96 → LYRIC_CODE_CAND_OPEN)`; `goto LYRIC_CODE_KEEP` | (ROMEO, PUCK) |
+| `LYRIC_CODE_CAND_OPEN` | `let(MACBETH, const(1))`; `goto LYRIC_CODE_CAND_COUNT` | (ROMEO, MACBETH) |
+| `LYRIC_CODE_CAND_COUNT` | `pop(PUCK, recall="answering_measures_leaf")` [romeo]; `branch(96 → LYRIC_CODE_CAND_MORE)`; `goto LYRIC_CODE_COMPARE` | (ROMEO, PUCK) |
+| `LYRIC_CODE_CAND_MORE` | `let(MACBETH, add(val(MACBETH), const(1)))`; `goto LYRIC_CODE_CAND_COUNT` | (ROMEO, MACBETH) |
+| `LYRIC_CODE_COMPARE` | `branch(eq(val(MACBETH), val(HECATE)), then=LYRIC_CODE_MATCH, else_=LYRIC_CODE_CAND_REPLAY)`; `companion=PUCK` — off-stage test, third-person question | (ROMEO, PUCK) |
+| `LYRIC_CODE_CAND_REPLAY` | `branch(eq(val(MACBETH), const(0)) → LYRIC_CODE_CAND_DONE)`; `push(ROMEO, _k(96))`; `let(MACBETH, sub(val(MACBETH), const(1)))`; `goto LYRIC_CODE_CAND_REPLAY` | (ROMEO, MACBETH) |
+| `LYRIC_CODE_CAND_DONE` | `branch(eq(val(PUCK), const(tokens.TEXT_END)) → LYRIC_CODE_FALLBACK)`; `goto LYRIC_CODE_KEEP`; `companion=PUCK` | (ROMEO, PUCK) |
+| `LYRIC_CODE_MATCH` | `push(PUCK, val(PUCK))` (return lookahead); `push(HECATE, const(tokens.STREAM_END))`; `goto LYRIC_CODE_TRIM`; `anchor=HECATE` | (HECATE, PUCK) |
+| `LYRIC_CODE_TRIM` | `pop(ROMEO, recall="dew_hemmed_edge")` [hecate]; `branch(32 → LYRIC_CODE_TRIM)`; `branch(9 → LYRIC_CODE_TRIM)`; `branch(STREAM_END → LYRIC_CODE_BODY)`; `goto LYRIC_CODE_REV_KEEP`; `companion=HECATE` | (ROMEO, HECATE) |
+| `LYRIC_CODE_REV_KEEP` | `push(HECATE, val(ROMEO))`; `goto LYRIC_CODE_REV` | (ROMEO, HECATE) |
+| `LYRIC_CODE_REV` | `pop(ROMEO, recall="gathered_nettle")` [hecate]; `branch(STREAM_END → LYRIC_CODE_BODY)`; `goto LYRIC_CODE_REV_KEEP`; `companion=HECATE` | (ROMEO, HECATE) |
+| `LYRIC_CODE_BODY` | `*_stream(*b"<code>")`; `goto LYRIC_CODE_HEAD`; `anchor=JULIET, companion=HECATE` | (JULIET, HECATE) |
+| `LYRIC_CODE_HEAD` | `pop(HECATE, recall="sheltered_first_glyph")` [juliet]; `branch(32 → LYRIC_CODE_HEAD)`; `branch(9 → LYRIC_CODE_HEAD)`; `branch(STREAM_END → LYRIC_CODE_CLOSE)`; `goto LYRIC_CODE_GLYPH`; `anchor=JULIET` | (JULIET, HECATE) |
+| `LYRIC_CODE_GLYPH` | `branch(38 → LYRIC_CODE_AMP)`; `branch(60 → LYRIC_CODE_LT)`; `branch(62 → LYRIC_CODE_GT)`; `goto LYRIC_CODE_PLAIN`; `anchor=JULIET, companion=HECATE` (branches test `val(HECATE)`) | (JULIET, HECATE) |
+| `LYRIC_CODE_PLAIN` | `push(JULIET, val(HECATE))`; `goto LYRIC_CODE_NEXT`; `anchor=JULIET, companion=HECATE` | (JULIET, HECATE) |
+| `LYRIC_CODE_AMP` | `*_entity(*b"&amp;")`; `goto LYRIC_CODE_NEXT`; `anchor=JULIET, companion=HECATE` | (JULIET, HECATE) |
+| `LYRIC_CODE_LT` | `*_entity(*b"&lt;")`; `goto LYRIC_CODE_NEXT`; `anchor=JULIET, companion=HECATE` | (JULIET, HECATE) |
+| `LYRIC_CODE_GT` | `*_entity(*b"&gt;")`; `goto LYRIC_CODE_NEXT`; `anchor=JULIET, companion=HECATE` | (JULIET, HECATE) |
+| `LYRIC_CODE_NEXT` | `pop(HECATE, recall="sheltered_next_glyph")` [juliet]; `branch(STREAM_END → LYRIC_CODE_CLOSE)`; `goto LYRIC_CODE_GLYPH`; `anchor=JULIET` | (JULIET, HECATE) |
+| `LYRIC_CODE_CLOSE` | `*_stream(*b"</code>")`; `goto LYRIC_RETURN_TO_SCAN`; `anchor=JULIET, companion=HECATE` | (JULIET, HECATE) |
+| `LYRIC_CODE_FALLBACK` | `push(PUCK, const(tokens.TEXT_END))`; `goto LYRIC_CODE_REPLAY` | (ROMEO, PUCK) |
+| `LYRIC_CODE_REPLAY` | `pop(ROMEO, recall="returned_petal")` [puck]; `branch(STREAM_END → LYRIC_CODE_TICKS)`; `goto LYRIC_CODE_REPLAY_KEEP`; `companion=PUCK` | (ROMEO, PUCK) |
+| `LYRIC_CODE_REPLAY_KEEP` | `push(PUCK, val(ROMEO))`; `goto LYRIC_CODE_REPLAY` | (ROMEO, PUCK) |
+| `LYRIC_CODE_TICKS` | `branch(eq(val(HECATE), const(0)) → LYRIC_CODE_TICKS_DONE)`; `push(JULIET, _k(96))`; `let(HECATE, sub(val(HECATE), const(1)))`; `goto LYRIC_CODE_TICKS`; `anchor=JULIET` | (JULIET, HECATE) |
+| `LYRIC_CODE_TICKS_DONE` | `goto LYRIC_RETURN_TO_SCAN`; `anchor=JULIET, companion=HECATE` | (JULIET, HECATE) |
+
+Invariants the implementer must preserve:
+
+- The fallback pushes `TEXT_END` back onto PUCK **before** replaying content,
+  so replayed glyphs are rescanned in source order ahead of the terminator;
+  the opener's literal backticks are emitted to JULIET before the rescan
+  resumes, matching source order. Each fallback consumes at least the opener
+  run, so rescanning terminates.
+- Content is never emitted from ROMEO directly: match → tail-trim while
+  popping ROMEO (`LYRIC_CODE_TRIM` skips trailing spaces/tabs first because
+  ROMEO's top is the last content glyph) → reverse into HECATE → head-trim in
+  `LYRIC_CODE_HEAD` → encode `&`, `<`, `>` (and only those) → JULIET.
+- No generated output is ever pushed back onto PUCK or ROMEO.
+- Branch arrivals into a scene must all leave the same stage pair (they do in
+  the table above); any new transition an implementer adds between different
+  pairs must go through a `goto`, mirroring the existing `LYRIC_OPEN_*` idiom.
+
+### Amendment A1 literary reservations (ready to paste)
+
+Twenty new working scene titles plus six spares for `src/30-act3-literary.toml`
+(the ten Step 5 titles already reserved above — `LYRIC_CODE_RUN`,
+`LYRIC_CODE_COUNT`, `LYRIC_CODE_SEEK`, `LYRIC_CODE_COMPARE`,
+`LYRIC_CODE_MATCH`, `LYRIC_CODE_BODY`, `LYRIC_CODE_CLOSE`,
+`LYRIC_CODE_FALLBACK`, `LYRIC_CODE_REPLAY`, `LYRIC_CODE_TRIM` — remain in
+force). Add only labels the IR actually uses. If this expanded spare pool is
+exhausted, stop and request a planning amendment.
+
+```toml
+# src/30-act3-literary.toml — Amendment A1 pool
+[scenes.LYRIC_CODE_COUNT_MORE]
+title = "Hecate lengthens the silver tally."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_SEEK_OPEN]
+title = "Romeo stakes the hedge before the search."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_KEEP]
+title = "Romeo pockets one unproven petal."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_CAND_OPEN]
+title = "Macbeth begins the answering tally."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_CAND_COUNT]
+title = "Macbeth counts the answering silver leaves."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_CAND_MORE]
+title = "Macbeth lengthens the answering tally."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_CAND_REPLAY]
+title = "Macbeth returns the short measure to grass."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_CAND_DONE]
+title = "The short measure lies among the petals."
+pattern = "bare_statement"
+[scenes.LYRIC_CODE_REV_KEEP]
+title = "Hecate gathers one sheltered glyph."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_REV]
+title = "Hecate turns the sheltered line about."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_HEAD]
+title = "Juliet lifts the morning dew from the line."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_GLYPH]
+title = "Juliet weighs the sheltered glyph."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_PLAIN]
+title = "Juliet lays the sheltered glyph plain."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_AMP]
+title = "Juliet names the sheltered riverbend."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_LT]
+title = "Juliet softens the sheltered bright corner."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_GT]
+title = "Juliet softens the sheltered far corner."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_NEXT]
+title = "Juliet tends the sheltered line's next glyph."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_REPLAY_KEEP]
+title = "Puck bears one petal back to daylight."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_TICKS]
+title = "Juliet returns the lonely silver marks."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_TICKS_DONE]
+title = "The lonely silver marks rest in daylight."
+pattern = "bare_statement"
+
+# Amendment A1 spare pool — do not use unless an extra generated scene is necessary.
+[scenes.LYRIC_CODE_HOLD]
+title = "Romeo holds the unproven line still."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_MEND]
+title = "Hecate mends the broken silver tally."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_TURN]
+title = "Puck turns the borrowed petal home."
+pattern = "scene_of_character"
+[scenes.LYRIC_CODE_GATE]
+title = "The sheltered line passes the garden gate."
+pattern = "bare_statement"
+[scenes.LYRIC_CODE_REST]
+title = "The silver measure rests beneath the hedge."
+pattern = "bare_statement"
+[scenes.LYRIC_CODE_WAKE]
+title = "Juliet wakes the waiting silver line."
+pattern = "scene_of_character"
+```
+
+New recall keys for `src/literary.toml` (recall keys live in the pool of the
+**speaker** — the character who says the Recall line, per
+`lower.py::_roles`; the bracketed speaker in the scene table above names the
+pool). One spare per speaker; do not invent others.
+
+```toml
+# src/literary.toml additions — Amendment A1
+[characters.romeo.recall]  # merge into the existing table
+silver_measures_leaf = "Recall the silver measure's leaf."
+sought_moonlit_glyph = "Recall the sought moonlit glyph."
+answering_measures_leaf = "Recall the answering measure's leaf."
+hedges_kept_glyph = "Recall the hedge's kept glyph."
+
+[characters.juliet.recall]  # merge into the existing table
+sheltered_first_glyph = "Recall the sheltered line's first glyph."
+sheltered_next_glyph = "Recall the sheltered line's next glyph."
+sheltered_kept_glyph = "Recall the sheltered kept glyph."
+
+[characters.hecate.recall]  # merge into the existing table
+dew_hemmed_edge = "Recall the dew-hemmed edge."
+gathered_nettle = "Recall the gathered nettle."
+turned_leaf = "Recall the turned leaf."
+
+[characters.puck.recall]  # merge into the existing table
+returned_petal = "Recall the returned petal."
+borrowed_petal = "Recall the borrowed petal."
+```
+
+The same two-character register choreography (idle-character values as
+registers, idle stacks as sentinel-bounded buffers, off-stage branch tests) is
+pre-authorized for Task 4's protected-region scanner should the same wall
+reappear there; Task 4 prose must still come only from its reserved pools.
+
 ---
 
 ### Task 1: Commit the span-spike corpus and reviewed expected output
@@ -405,19 +654,26 @@ protected_tag_mark = "Recall the silver tag's mark."
   tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`
   => `1 passed, 208 deselected`.
 
-- [ ] **Step 5: Add maximal backtick-run matching and byte-exact replay.**
+- [ ] **Step 5: Add maximal backtick-run matching and byte-exact replay (per Amendment A1).**
 
-  Extend only the buffered source loop with `LYRIC_CODE_RUN`,
-  `LYRIC_CODE_COUNT`, `LYRIC_CODE_SEEK`, `LYRIC_CODE_COMPARE`,
-  `LYRIC_CODE_MATCH`, `LYRIC_CODE_BODY`, `LYRIC_CODE_CLOSE`,
-  `LYRIC_CODE_FALLBACK`, and `LYRIC_CODE_REPLAY`; use
-  `LYRIC_CODE_TRIM` only if the balanced outer-space trim needs its own scene.
-  Treat an opener as a maximal run, accept only a later maximal run of the
-  same length, keep shorter runs as code content, trim one balanced outer
-  space pair, encode `&`, `<`, and `>` only in code content, and write literal
-  `<code>` boundaries directly to Juliet. An unmatched opener and every
-  speculative source glyph must replay byte-for-byte in source order. Keep
-  all output out of the source buffer.
+  Implement the Amendment A1 scene table exactly: add the
+  `branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_RUN")` entry hook to
+  `LYRIC_POP_GLYPH` and the thirty `LYRIC_CODE_*` scenes with the listed ops,
+  pairs, anchors, and companions. Use HECATE's value for the opener run
+  length, MACBETH's value for the candidate run length, ROMEO's stack (above
+  a private `STREAM_END` sentinel) for speculative source, and HECATE's stack
+  (above a private `STREAM_END` sentinel) for the reversed content buffer —
+  no scene stages more than two characters, and run-length tests use
+  off-stage value references. Treat an opener as a maximal run, accept only
+  the first later maximal run of the same length, keep runs of other lengths
+  as code content, strip all leading and trailing spaces/tabs from content
+  (Amendment A1 oracle correction), encode `&`, `<`, and `>` only in code
+  content, and write literal `<code>` boundaries directly to Juliet. An
+  unmatched opener and every speculative source glyph must replay
+  byte-for-byte in source order. Keep all output out of the source buffer.
+  Add the Amendment A1 scene titles (only those actually used) to
+  `src/30-act3-literary.toml` and the Amendment A1 recall keys to
+  `src/literary.toml`, both verbatim from the reserved pools.
 
 - [ ] **Step 6: Regenerate and prove variable code spans.**
 
@@ -445,9 +701,11 @@ protected_tag_mark = "Recall the silver tag's mark."
   `LYRIC_ESCAPE_LITERAL` to consume a backslash plus one Markdown-escapable
   punctuation glyph as one literal output glyph. For a non-escapable next
   glyph or trailing backslash, preserve the backslash literally; use
-  `LYRIC_ESCAPE_FALLBACK` only if that branch needs a distinct scene. Re-run
-  the unmatched-backtick fallback through the same source replay path, with
-  no output rescanning and no additional floor/sentinel.
+  `LYRIC_ESCAPE_FALLBACK` only if that branch needs a distinct scene. The
+  backslash branch in `LYRIC_POP_GLYPH` must come before the backtick branch
+  so an escaped backtick never opens a span (Markdown.pl's `(?<!\\)` opener
+  guard). Re-run the unmatched-backtick fallback through the same source
+  replay path, with no output rescanning and no additional floor/sentinel.
 
 - [ ] **Step 8: Regenerate and prove code, escapes, and fallback safety.**
 

@@ -55,7 +55,7 @@ gates. The win: every plan is written against ground truth.
 | 3M | Completion Safety Rails (`docs/superpowers/plans/2026-07-11-completion-safety-rails.md`) | Completability hardening (`docs/superpowers/specs/2026-07-11-completability-hardening-design.md`, stage 1) | Verification-only IR interpreter; executable stack/sentinel contracts; structural token validation; all-fixture differential smoke report; measured feedback acceleration; MCO-only roadmap executor with role-scoped model failover | Fast interpreter equals committed token dumps; borrowed-stack prefixes and sentinels validated; malformed streams rejected; all 23 fixtures reported non-gating; MCO action/model/failover tests pass without secret leakage; generated SPL byte-identical; full default suite green | shipped: 2026-07-12 |
 | 3N | Agent Loop Provider Pool Refresh (`docs/superpowers/plans/2026-07-12-agent-loop-provider-pool-refresh.md`) | Loop infrastructure follow-up (`docs/superpowers/specs/2026-07-12-agent-loop-provider-pool-refresh-design.md`); requires the landed result-hardening plan | OpenRouter throttle markers; Pi credential-shadowing startup warning; verified free-model fallback pool (Nemotron 3 Ultra, gpt-oss-120b, Hy3, Laguna M.1) with explicit stateless write-capable shims; Grok/xAI removed everywhere; stale loop state reset | MCO loop tests green including throttle, preflight, and config assertions; ruff/pyright clean; full default suite green; `./agent-loop --dry-run` selects a real executor with no grok/agy/xai remnants | shipped: 2026-07-12 at commit 7c0d5c3 |
 | 4 | Spike B — Nested blockquote-in-list (`docs/superpowers/plans/2026-07-12-spike-b-nested-blocks.md`) | §7.4 | Two-structure composition (blockquote-in-list, list-in-blockquote at minimum scope). Snippet fixtures under `tests/fixtures/architecture_spikes/nested_blocks/` | Spike snippets pass byte-identical to oracle; composition confirmed or halt-and-redesign triggered | shipped: 2026-07-12 at commit cd838116feee4e552dea032652648e3c88a6b61f |
-| 4S | Span Architecture Spike (`docs/superpowers/plans/2026-07-12-span-architecture-spike.md`) | Completability hardening §4 | Establish protected-region and buffered-scan shape before broad Act III growth: variable code spans, escapes, protected HTML/link/image regions, representative overlapping strong/emphasis | Reviewed span streams and oracle-backed probes pass; Act III model confirmed or halt-and-redesign triggered; Spike A/B snippets remain green | in flight |
+| 4S | Span Architecture Spike (`docs/superpowers/plans/2026-07-12-span-architecture-spike.md`) | Completability hardening §4 | Establish protected-region and buffered-scan shape before broad Act III growth: variable code spans, escapes, protected HTML/link/image regions, representative overlapping strong/emphasis | Reviewed span streams and oracle-backed probes pass; Act III model confirmed or halt-and-redesign triggered; Spike A/B snippets remain green. Amended 2026-07-13: Amendment A1 in the plan authorizes the two-character code-span machine and expanded literary pool; the twenty Step 5 halt records are resolved; fix/implement executors may resume Step 5 | in flight |
 | 5 | Slice 2 — Low-risk fixtures | §7.5 | Seven fixtures pass: Auto links (URL only), Backslash escapes, Code Spans, Tidyness, Tabs, Horizontal rules, Code Blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 6 | Slice 3 — Medium-risk fixtures | §7.6 | ~10 fixtures pass: Hard-wrapped paragraphs with list-like lines; Links (inline, reference, shortcut); Images; Literal quotes in titles; Strong and em together; Inline HTML (Simple); Inline HTML comments; Blockquotes with code blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 7 | Slice 4 — High-risk fixtures | §7.7 | Three fixtures pass: Inline HTML (Advanced); Nested blockquotes (full); Ordered and unordered lists (full) | §8.1 four-gate per fixture; spike snippets still pass | pending |
@@ -98,9 +98,13 @@ cleanly across Act II and Act IV.
 2026-07-07 review of roadmap completability. Its input-size scaling action is
 resolved by B20. The broader 2026-07-11 audit adds structural token, executable
 stack-contract, early span-risk, and all-fixture smoke findings; plan 3M
-shipped all of it (2026-07-12). No plan is currently in flight. The container
-representation work in Spike B is now shipped; row 4S, the span architecture
-spike, is the next pending scope before broad Slice 2 work.
+shipped all of it (2026-07-12). The container representation work in Spike B
+is now shipped; row 4S, the span architecture spike, is the sole in-flight
+plan. On 2026-07-13 an interactive planning session added Amendment A1 to the
+4S plan document, resolving the repeated Task 3 Step 5 halts: it authorizes a
+two-character code-span scanner (idle-character registers plus off-stage
+value references — no `validate.py`/`lower.py` changes) and reserves the
+expanded scene-title and recall-key pools Step 5 needs.
 
 ## Source notes
 
