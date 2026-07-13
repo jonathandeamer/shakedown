@@ -254,6 +254,7 @@ roses_kept_word = "Recall the rose's kept word."
 silver_measures_leaf = "Recall the silver measure's leaf."
 sought_moonlit_glyph = "Recall the sought moonlit glyph."
 answering_measures_leaf = "Recall the answering measure's leaf."
+hedges_kept_glyph = "Recall the hedge's kept glyph."
 [characters.romeo.stable_utility]
 v1 = "a summer's day"
 v2 = "a sunny summer's day"

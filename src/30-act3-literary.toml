@@ -166,6 +166,22 @@ pattern = "scene_of_character"
 title = "The lonely silver marks rest in daylight."
 pattern = "bare_statement"
 
+[scenes.LYRIC_ESCAPE_TEST]
+title = "Juliet tests the thorn before the rose."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ESCAPE_GLYPH]
+title = "Romeo frees one guarded garden mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ESCAPE_LITERAL]
+title = "Juliet lets the guarded petal pass unchanged."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ESCAPE_FALLBACK]
+title = "The thorn remains beside the rose."
+pattern = "bare_statement"
+
 [scenes.LYRIC_ANCHOR_INLINE]
 title = "The inline path becomes a reusable bright path."
 pattern = "bare_statement"

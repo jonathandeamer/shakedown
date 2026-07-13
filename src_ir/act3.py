@@ -231,12 +231,64 @@ ACT: Act = act(
                 eq(val(PUCK), const(tokens.TEXT_END)),
                 then="TRAVERSE_COPY_TERMINATOR",
             ),
+            branch(eq(val(PUCK), _k(92)), then="LYRIC_ESCAPE_TEST"),  # '\'
             branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_RUN"),  # '`'
             branch(
                 eq(val(PUCK), _k(91)),  # '['
                 then="LYRIC_REFERENCE_POP_AFTER_OPEN",
                 else_="LYRIC_TEST_AMPERSAND",
             ),
+        ),
+        # --- Escape machine: a backslash consumes exactly one following
+        # glyph. Markdown.pl's escapable set (_EscapeSpecialChars, lines
+        # 1271-1286): \ ` * _ { } [ ] ( ) > # + - . ! . A match emits the
+        # glyph literally with the backslash dropped; a non-match (including
+        # a trailing backslash at TEXT_END) keeps the backslash literal. The
+        # backslash branch above runs before the backtick branch so an
+        # escaped backtick never opens a code span.
+        scene(
+            "LYRIC_ESCAPE_TEST",
+            *_pop_glyph("hedges_kept_glyph"),
+            branch(eq(val(PUCK), const(tokens.TEXT_END)), then="LYRIC_ESCAPE_FALLBACK"),
+            branch(eq(val(PUCK), _k(92)), then="LYRIC_ESCAPE_GLYPH"),  # '\'
+            branch(eq(val(PUCK), _k(96)), then="LYRIC_ESCAPE_GLYPH"),  # '`'
+            branch(eq(val(PUCK), _k(42)), then="LYRIC_ESCAPE_GLYPH"),  # '*'
+            branch(eq(val(PUCK), _k(95)), then="LYRIC_ESCAPE_GLYPH"),  # '_'
+            branch(eq(val(PUCK), _k(123)), then="LYRIC_ESCAPE_GLYPH"),  # '{'
+            branch(eq(val(PUCK), _k(125)), then="LYRIC_ESCAPE_GLYPH"),  # '}'
+            branch(eq(val(PUCK), _k(91)), then="LYRIC_ESCAPE_GLYPH"),  # '['
+            branch(eq(val(PUCK), _k(93)), then="LYRIC_ESCAPE_GLYPH"),  # ']'
+            branch(eq(val(PUCK), _k(40)), then="LYRIC_ESCAPE_GLYPH"),  # '('
+            branch(eq(val(PUCK), _k(41)), then="LYRIC_ESCAPE_GLYPH"),  # ')'
+            branch(eq(val(PUCK), _k(62)), then="LYRIC_ESCAPE_GLYPH"),  # '>'
+            branch(eq(val(PUCK), _k(35)), then="LYRIC_ESCAPE_GLYPH"),  # '#'
+            branch(eq(val(PUCK), _k(43)), then="LYRIC_ESCAPE_GLYPH"),  # '+'
+            branch(eq(val(PUCK), _k(45)), then="LYRIC_ESCAPE_GLYPH"),  # '-'
+            branch(eq(val(PUCK), _k(46)), then="LYRIC_ESCAPE_GLYPH"),  # '.'
+            branch(eq(val(PUCK), _k(33)), then="LYRIC_ESCAPE_GLYPH"),  # '!'
+            goto("LYRIC_ESCAPE_LITERAL"),
+        ),
+        scene(
+            "LYRIC_ESCAPE_GLYPH",
+            *_current(),
+            goto("LYRIC_RETURN_TO_SCAN"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_ESCAPE_LITERAL",
+            *_entity(*b"\\"),
+            *_current(),
+            goto("LYRIC_RETURN_TO_SCAN"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_ESCAPE_FALLBACK",
+            *_entity(*b"\\"),
+            goto("TRAVERSE_COPY_TERMINATOR"),
+            anchor=JULIET,
+            companion=PUCK,
         ),
         # --- Code-span machine (Amendment A1): two-character register
         # choreography. HECATE's value holds the opener run length; Romeo's

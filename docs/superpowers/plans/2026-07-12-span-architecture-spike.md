@@ -727,17 +727,41 @@ reappear there; Task 4 prose must still come only from its reserved pools.
   tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q` =>
   `1 passed, 208 deselected`.
 
-- [ ] **Step 7: Add escaped-glyph consumption and the unmatched-opener edge cases.**
+- [x] **Step 7: Add escaped-glyph consumption and the unmatched-opener edge cases.**
 
-  Add `LYRIC_ESCAPE_TEST`, `LYRIC_ESCAPE_GLYPH`, and
-  `LYRIC_ESCAPE_LITERAL` to consume a backslash plus one Markdown-escapable
+  Added `LYRIC_ESCAPE_TEST`, `LYRIC_ESCAPE_GLYPH`, `LYRIC_ESCAPE_LITERAL`, and
+  `LYRIC_ESCAPE_FALLBACK` to consume a backslash plus one Markdown-escapable
   punctuation glyph as one literal output glyph. For a non-escapable next
-  glyph or trailing backslash, preserve the backslash literally; use
-  `LYRIC_ESCAPE_FALLBACK` only if that branch needs a distinct scene. The
-  backslash branch in `LYRIC_POP_GLYPH` must come before the backtick branch
-  so an escaped backtick never opens a span (Markdown.pl's `(?<!\\)` opener
-  guard). Re-run the unmatched-backtick fallback through the same source
-  replay path, with no output rescanning and no additional floor/sentinel.
+  glyph, `LYRIC_ESCAPE_LITERAL` preserves the backslash literally then emits
+  the glyph as-is; for a trailing backslash at `TEXT_END`, `LYRIC_ESCAPE_FALLBACK`
+  emits the backslash literally and goes straight to `TRAVERSE_COPY_TERMINATOR`
+  (the terminator constant is pushed fresh there, never the already-consumed
+  popped value). The escapable set matches Markdown.pl's `_EscapeSpecialChars`
+  table exactly: `\ \` * _ { } [ ] ( ) > # + - . !` (16 glyphs). The backslash
+  branch in `LYRIC_POP_GLYPH` runs before the backtick branch so an escaped
+  backtick never opens a code span. The unmatched-backtick fallback (Step 5)
+  is untouched — no new floor/sentinel was added, and it still replays through
+  the same source-replay path.
+
+  Evidence (2026-07-13): added the entry-hook branch and four `LYRIC_ESCAPE_*`
+  scenes to `src_ir/act3.py`, added their titles to `src/30-act3-literary.toml`
+  (all four taken verbatim from the Task 3 reserved/spare pool — no new prose
+  invented) and the `hedges_kept_glyph` recall key (Task 3 romeo spare) to
+  `src/literary.toml`. Regenerated with `uv run python -m scripts.splc` and
+  `uv run python scripts/assemble.py`; no unexpected drift. Gate:
+  `uv run pytest tests/test_splc_generated_fragments.py
+  tests/test_act3_contracts.py::test_act3_preserves_escaped_and_literal_span_punctuation
+  tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix
+  tests/test_act3_contracts.py::test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels
+  'tests/test_architecture_spikes.py::test_span_architecture_spike_matches_checked_in_oracle_bytes[variable_code_spans]'
+  -q` => `11 passed`; `uv run pytest tests/test_literary_compliance.py
+  tests/test_literary_toml_schema.py tests/test_assemble.py
+  tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q` =>
+  `1 passed, 208 deselected`. Full `tests/test_act3_contracts.py
+  tests/test_architecture_spikes.py -q` run: `8 failed, 30 passed` — the eight
+  failures are exactly the still-red HTML/autolink/link/image/overlapping-
+  emphasis probes reserved for Task 4; no regression on code-span, escape, or
+  structural/floor assertions.
 
 - [ ] **Step 8: Regenerate and prove code, escapes, and fallback safety.**
 
