@@ -54,6 +54,7 @@ canonical docs in this order:
 Optional historical/supporting context (Do not search or read inside `docs/archive/`):
 
 - [`superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md`](superpowers/notes/2026-04-23-shakedown-pre-design-hardening.md) — latest pre-design synthesis. Useful context, not canonical truth.
+- [`superpowers/notes/2026-07-13-completion-priorities.md`](superpowers/notes/2026-07-13-completion-priorities.md) — point-in-time ranking of the highest effort-to-value work to finish the project. Supporting context, not canonical truth.
 - [`superpowers/specs/`](superpowers/specs/) — active design/spec artifacts. Historical design specs have been moved to `docs/archive/specs/` and do not need to be read.
 - [`superpowers/plans/`](superpowers/plans/) — active plans. Shipped plans have been moved to `docs/archive/plans/` and do not need to be read.
 - [`archive/prompt-shakedown-legacy.md`](archive/prompt-shakedown-legacy.md) — legacy `run-loop` prompt; no longer the active implementation workflow.
