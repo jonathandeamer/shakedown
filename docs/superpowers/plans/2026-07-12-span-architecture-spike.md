@@ -804,9 +804,11 @@ reappear there; Task 4 prose must still come only from its reserved pools.
 
 **Produces:** Protected tags/destinations/titles, child label/alt scans, and representative nested strong/emphasis output under the one-way scan invariant.
 
-- [ ] **Step 1: Extend failing contracts for every protected mode.**
+- [x] **Step 1: Extend failing contracts for every protected mode.**
 
   Add assertions that the decoded output for `inline_html_and_autolink` contains literal `<span><em>raw</em></span>` and exactly one `&amp;` in the autolink query; `links_images_protected` contains `<a href="http://e/x_(y)" title="t">a <em>b</em></a>` and `<img src="img.png" alt="c <em>d</em>" title="i" />`; and `overlapping_emphasis` contains both exact expected strong/em nesting sequences. Add a negative assertion that no generated output is placed back on the source-buffer stack.
+
+  Evidence (2026-07-13): the four Task 4 contract tests (`test_act3_renders_inline_html_and_autolink`, `test_act3_renders_links_images_protected`, `test_act3_renders_overlapping_emphasis`, and the parameterized `test_act3_source_buffer_never_receives_generated_output`/`_code_spans` negative assertion) were already committed in `8c69d89`/`6709f1f`/`510fda4` ("test: extend failing contracts for protected span modes") but the checkbox was never flipped. Re-ran `uv run pytest tests/test_act3_contracts.py -q` against committed `HEAD` (stashing an unrelated, unfinished Task 4 Step 2 WIP diff in `src_ir/act3.py` first): `11 failed, 15 passed` — the 11 failures are exactly the new Task 4 protected-mode assertions (`_does_not_yet_render_expected_span_html` for all five span fixtures, the three `_renders_*` contracts, and the four `_source_buffer_never_receives_generated_output*` cases); all Task 1-3 contracts, including code-span/escape rendering, remain green. This is the expected red gate before Task 4 Step 2 implementation.
 
 - [ ] **Step 2: Implement the remaining scanner modes in oracle order.**
 
