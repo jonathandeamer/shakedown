@@ -24,6 +24,15 @@ RECIPES: dict[int, BinOp] = {
     91: mul(  # '[' = 7 x 13
         sub(const(8), const(1)), add(const(8), add(const(4), const(1)))
     ),
+    93: sub(  # ']' = 16x6 - 3
+        mul(const(16), add(const(4), const(2))), add(const(2), const(1))
+    ),
+    95: sub(  # '_' = 16x6 - 1
+        mul(const(16), add(const(4), const(2))), const(1)
+    ),
+    103: add(  # 'g' = 16x6 + 7
+        mul(const(16), add(const(4), const(2))), sub(const(8), const(1))
+    ),
     107: sub(  # 'k' = 16x7 - 5
         mul(const(16), sub(const(8), const(1))), add(const(1), const(4))
     ),
@@ -37,6 +46,12 @@ RECIPES: dict[int, BinOp] = {
     ),
     117: add(  # 'u' = 16x7 + 5
         mul(const(16), sub(const(8), const(1))), add(const(4), const(1))
+    ),
+    123: sub(  # '{' = 16x8 - 5
+        mul(const(16), const(8)), add(const(4), const(1))
+    ),
+    125: sub(  # '}' = 16x8 - 3
+        mul(const(16), const(8)), add(const(2), const(1))
     ),
 }
 
