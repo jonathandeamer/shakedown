@@ -213,6 +213,9 @@ def test_act3_renders_inline_html_and_autolink() -> None:
     # Inline HTML tag preserved with its inner emphasis processed;
     # autolink emitted with once-encoded ampersands.
     assert "<span><em>raw</em></span>" in text
+    # Autolink: href and link text each contain the query with exactly one &
+    amp_count = text.count('&')
+    assert amp_count == 2, f"Expected exactly two & in output, got {amp_count}: {text}"
     assert '<a href="http://example.com/a?x=1&y=2">' in text
     assert "http://example.com/a?x=1&y=2</a>" in text
 
@@ -221,16 +224,28 @@ def test_act3_renders_links_images_protected() -> None:
     text = _paragraph_text(_decode_carrier(_run_to_act3("links_images_protected")))
 
     # Link with inner emphasis in label; image with inner emphasis in alt.
-    assert '<a href="http://e/x_(y)" title="t">a <em>b</em></a>' in text
-    assert '<img src="img.png" alt="c <em>d</em>" title="i" />' in text
+    # Exact byte-for-byte expected sequences per Markdown.pl oracle.
+    expected_link = '<a href="http://e/x_(y)" title="t">a <em>b</em></a>'
+    expected_img = '<img src="img.png" alt="c <em>d</em>" title="i" />'
+    assert expected_link in text, f"Missing link: {expected_link} in {text}"
+    assert expected_img in text, f"Missing image: {expected_img} in {text}"
+    # No extra encoded entities in link destination or image src/title
+    assert text.count('&') == 0, f"Unexpected & in output: {text}"
 
 
 def test_act3_renders_overlapping_emphasis() -> None:
     text = _paragraph_text(_decode_carrier(_run_to_act3("overlapping_emphasis")))
 
     # Nested strong/em and overlapping strong/em per Markdown.pl rules.
-    assert "<strong><em>both</em></strong>" in text
-    assert "<strong>outer <em>inner</em> outer</strong>" in text
+    # Exact byte-for-byte expected sequences per Markdown.pl oracle.
+    expected_nested = "<strong><em>both</em></strong>"
+    expected_overlap = "<strong>outer <em>inner</em> outer</strong>"
+    assert expected_nested in text,
+        f"Missing nested strong/em: {expected_nested} in {text}"
+    assert expected_overlap in text,
+        f"Missing overlapping strong/em: {expected_overlap} in {text}"
+    # No stray asterisks or unprocessed emphasis markers
+    assert "*" not in text, f"Unprocessed asterisks in output: {text}"
 
 
 @pytest.mark.parametrize("stem", _TASK4_PROTECTED_FIXTURES)
