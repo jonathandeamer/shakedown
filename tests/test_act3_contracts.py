@@ -38,22 +38,24 @@ class _CarrierBoundary:
 @dataclass
 class _SceneObserver:
     labels: list[str]
-    scene_values: list[tuple[str, int, int, int]]
-    text_end_routes: list[tuple[str, str, int]]
+    scene_values: list[tuple[str, int, int, int, int]]
+    text_end_routes: list[tuple[str, str, int, int]]
     lady_macbeth_pops: list[tuple[str, int]]
     current_label: str = ""
     hecate: int = 0
-    pending_text_end: tuple[str, int] | None = None
+    lady_macbeth: int = 0
+    pending_text_end: tuple[str, int, int] | None = None
     open_reverse_puck: tuple[int, ...] | None = None
     open_reverse_juliet: tuple[int, ...] | None = None
 
     def on_scene(self, label: str, state: InterpreterState) -> None:
         if self.pending_text_end is not None:
-            source, hecate = self.pending_text_end
-            self.text_end_routes.append((source, label, hecate))
+            source, hecate, lady_macbeth = self.pending_text_end
+            self.text_end_routes.append((source, label, hecate, lady_macbeth))
             self.pending_text_end = None
         self.current_label = label
         self.hecate = state.values[Char.HECATE]
+        self.lady_macbeth = state.values[Char.LADY_MACBETH]
         self.labels.append(label)
         self.scene_values.append(
             (
@@ -61,6 +63,7 @@ class _SceneObserver:
                 state.values[Char.HECATE],
                 state.values[Char.MACBETH],
                 state.values[Char.PROSPERO],
+                state.values[Char.LADY_MACBETH],
             )
         )
         if label == "LYRIC_OPEN_REVERSE":
@@ -74,7 +77,7 @@ class _SceneObserver:
     def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None:
         if char is Char.PUCK and value == tokens.TEXT_END:
             assert self.pending_text_end is None
-            self.pending_text_end = (self.current_label, self.hecate)
+            self.pending_text_end = (self.current_label, self.hecate, self.lady_macbeth)
         elif char is Char.LADY_MACBETH:
             self.lady_macbeth_pops.append((self.current_label, value))
 
@@ -340,38 +343,56 @@ def test_act3_text_end_event_order_is_carrier_safe(stem: str) -> None:
     lyric_routes = [
         route for route in observer.text_end_routes if route[0] == "LYRIC_POP_GLYPH"
     ]
-    real = [route for route in lyric_routes if route[1] == "TRAVERSE_COPY_TERMINATOR"]
-    private = [route for route in lyric_routes if route[1] == "LYRIC_RESUME_DISPATCH"]
-    assert len(real) == 1
-    assert real[0][:2] == ("LYRIC_POP_GLYPH", "TRAVERSE_COPY_TERMINATOR")
-    assert private
+    top_level = [
+        route for route in lyric_routes if route[1] == "LYRIC_TEXT_END_DISPATCH"
+    ]
+    assert top_level
     assert all(
-        source == "LYRIC_POP_GLYPH" and target == "LYRIC_RESUME_DISPATCH"
-        for source, target, _ in private
+        source == "LYRIC_POP_GLYPH" and target == "LYRIC_TEXT_END_DISPATCH"
+        for source, target, _, _ in top_level
     )
+    real = [route for route in top_level if route[3] == 0]
+    assert len(real) == 1
+    private = [route for route in top_level if route[3] in _RESUME_CODES]
+    assert observer.labels.count("LYRIC_TEXT_END_DISPATCH") == len(top_level)
     assert observer.labels.count("LYRIC_RESUME_DISPATCH") == len(private)
     adapter_order = (
+        "LYRIC_TEXT_END_DISPATCH",
         "LYRIC_RESUME_DISPATCH",
+        "LYRIC_RESUME_POP_PARENT_SELECTOR",
+        "LYRIC_RESUME_SAVE_PARENT_SELECTOR",
         "LYRIC_RESUME_POP_MACBETH",
         "LYRIC_RESUME_RESTORE_MACBETH",
         "LYRIC_RESUME_POP_HECATE",
         "LYRIC_RESUME_RESTORE_HECATE",
         "LYRIC_RESUME_VERIFY_FLOOR",
+        "LYRIC_RESUME_RESTORE_PARENT_SELECTOR",
+        "LYRIC_RESUME_CLOSE_DISPATCH",
     )
     resume_entries = [
         index
-        for index, (label, _, _, _) in enumerate(observer.scene_values)
-        if label == "LYRIC_RESUME_DISPATCH"
+        for index, (label, _, _, _, _) in enumerate(observer.scene_values)
+        if label == "LYRIC_TEXT_END_DISPATCH"
     ]
     for index in resume_entries:
         entries = observer.scene_values[index : index + len(adapter_order) + 1]
-        assert tuple(label for label, _, _, _ in entries[:-1]) == adapter_order
-        frozen_close = entries[0][3]
+        if entries[0][4] == 0:
+            assert entries[0][0] == "LYRIC_TEXT_END_DISPATCH"
+            assert entries[1][0] == "TRAVERSE_COPY_TERMINATOR"
+            continue
+        assert tuple(label for label, _, _, _, _ in entries[:-1]) == adapter_order
+        frozen_close = entries[1][4]
         assert frozen_close in _RESUME_CODES
-        assert entries[-1][3] == frozen_close
-        assert entries[-1][0] in {"LYRIC_REGION_RESUME", "LYRIC_EMPHASIS_RESUME"}
+        assert entries[2][4] == frozen_close
+        assert entries[-2][3] == frozen_close
+        assert entries[-1][0] in {
+            "LYRIC_REGION_RESUME",
+            "LYRIC_EMPHASIS_RESUME",
+            "LYRIC_AUTOLINK_CLOSE",
+        }
 
     resume_pop_labels = {
+        "LYRIC_RESUME_POP_PARENT_SELECTOR",
         "LYRIC_RESUME_POP_MACBETH",
         "LYRIC_RESUME_POP_HECATE",
         "LYRIC_RESUME_VERIFY_FLOOR",
@@ -381,7 +402,7 @@ def test_act3_text_end_event_order_is_carrier_safe(stem: str) -> None:
         for label, value in observer.lady_macbeth_pops
         if label in resume_pop_labels
     ]
-    assert len(resume_pops) == 3 * len(private)
+    assert len(resume_pops) == 4 * len(private)
     assert all(
         label in resume_pop_labels or label == "LYRIC_AUTOLINK_TEXT_OPEN"
         for label, _ in observer.lady_macbeth_pops

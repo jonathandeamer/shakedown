@@ -28,7 +28,7 @@ from scripts.splc.ir import (
     val,
 )
 from src_ir import tokens
-from src_ir.cast import HECATE, JULIET, MACBETH, PUCK, ROMEO, ROSALIND
+from src_ir.cast import HECATE, JULIET, LADY_MACBETH, MACBETH, PUCK, ROMEO, ROSALIND
 from src_ir.stream import RECIPES
 
 # Traversal routes per arity shape: (payloads, has_text). Codes with neither
@@ -38,6 +38,8 @@ _ARITY_ROUTE = {
     (1, False): "TRAVERSE_COPY_PAYLOAD_NEXT",
     (1, True): "TRAVERSE_COPY_PAYLOAD_TEXT",
 }
+
+CONT_NONE = 0
 
 
 def _traverse_dispatch() -> list[Op]:
@@ -101,6 +103,7 @@ ACT: Act = act(
         scene(
             "ACT_III_START",
             push(JULIET, const(tokens.STREAM_END)),
+            let(LADY_MACBETH, const(CONT_NONE)),
             goto("TRAVERSE_NEXT_TOKEN"),
             anchor=JULIET,
             companion=PUCK,
@@ -229,7 +232,7 @@ ACT: Act = act(
             *_pop_glyph("mornings_first_cut"),
             branch(
                 eq(val(PUCK), const(tokens.TEXT_END)),
-                then="TRAVERSE_COPY_TERMINATOR",
+                then="LYRIC_TEXT_END_DISPATCH",
             ),
             branch(eq(val(PUCK), _k(92)), then="LYRIC_ESCAPE_TEST"),  # '\'
             branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_RUN"),  # '`'
@@ -238,6 +241,16 @@ ACT: Act = act(
                 then="LYRIC_REFERENCE_POP_AFTER_OPEN",
                 else_="LYRIC_TEST_AMPERSAND",
             ),
+        ),
+        scene(
+            "LYRIC_TEXT_END_DISPATCH",
+            branch(
+                eq(val(LADY_MACBETH), const(CONT_NONE)),
+                then="TRAVERSE_COPY_TERMINATOR",
+            ),
+            goto("TRAVERSE_COPY_TERMINATOR"),
+            anchor=LADY_MACBETH,
+            companion=PUCK,
         ),
         # --- Escape machine: a backslash consumes exactly one following
         # glyph. Markdown.pl's escapable set (_EscapeSpecialChars, lines

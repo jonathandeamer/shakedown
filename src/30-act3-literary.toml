@@ -46,6 +46,10 @@ pattern = "scene_of_character"
 title = "The gathered line returns by the garden gate."
 pattern = "bare_statement"
 
+[scenes.LYRIC_TEXT_END_DISPATCH]
+title = "Lady Macbeth names the returning garden gate."
+pattern = "scene_of_character"
+
 [scenes.LYRIC_CODE_RUN]
 title = "Juliet shelters the silver backtick measure."
 pattern = "scene_of_character"
