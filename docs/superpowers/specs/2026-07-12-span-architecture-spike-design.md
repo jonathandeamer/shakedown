@@ -195,3 +195,45 @@ private Puck `TEXT_END` transition and proves that its next scene is
 `LYRIC_RESUME_DISPATCH`, while the real paragraph terminator reaches
 `TRAVERSE_COPY_TERMINATOR`. That test is the carrier-validity gate before
 the production implementation is considered complete.
+
+## A4 reconstruction sequence (2026-07-13)
+
+The first Task 4 Step 2 attempt is evidence that the former per-feature
+implementation shape is not a viable incremental starting point: it leaks a
+`TEXT_END` into the completed paragraph carrier, lacks the three shared A4
+families, and lets its emphasis close branch inspect a glyph-clobbered value.
+Those scenes are not a partial implementation of this design. Preserve that
+uncommitted WIP for diagnosis, but do not extend, rename, or merge it into the
+shipping Act III graph.
+
+The replacement must be reconstructed in this order, with the A4 observer
+gate kept enabled throughout:
+
+1. From the committed Task 3 graph, install the A4 verification observer and
+   the exact `LYRIC_FIELD_OPEN`, `LYRIC_FIELD_DRAIN_CLOSE`, and
+   `LYRIC_RESUME_DISPATCH` scene labels from the Amendment A2 reservation.
+   No retired `LYRIC_HTML_*`, `LYRIC_LABEL_SCAN`, `LYRIC_DESTINATION_*`, or
+   `LYRIC_EMPHASIS_EMIT_*` scene may remain reachable.
+2. Build the shared field pipeline completely before routing any Markdown
+   opener into it: Romeo floor and capture; Hecate reverse/output floor;
+   entity/plain drain; and field-tag-only close dispatch. A successful field
+   exits only through `LYRIC_FIELD_DRAIN_CLOSE`; an unsuccessful field drains
+   its own Romeo floor literally and restores its consumed source boundary.
+3. Add angle/tag/autolink routing, then link/image capture and requeue, then
+   emphasis requeue. Each caller must set its field or resume code before the
+   shared scene entry. Each requeue writes one Lady-Macbeth record before its
+   Puck-private `TEXT_END`, and only `LYRIC_RESUME_DISPATCH` may consume that
+   boundary.
+4. Do not write a direct emphasis body-emitter. `MACBETH` retains the matched
+   delimiter run while ordinary scanning processes the requeued raw body; the
+   resume dispatcher, after restoring the parent record, emits the close.
+   This removes the failed `LYRIC_EMPHASIS_EMIT_CLOSE` value-clobber path.
+
+The first runnable checkpoint after reconstruction is not output parity. It
+is the three protected probes traversing exactly one real paragraph terminator
+and every private terminator through the resume dispatcher, without underflow
+or a stray `TEXT_END` in the decoded carrier. Only after that checkpoint is
+green may the implementation refine output differences or add a reserved
+spare scene. This sequence consumes only the Amendment A2 working pool and
+its ten recorded spares; new literary prose still requires a planning
+amendment.

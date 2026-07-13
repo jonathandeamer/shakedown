@@ -918,6 +918,72 @@ only because the named A4 scenes do not exist; existing Task 1–3 green tests
 remain green. After implementation, the same command passes, followed by the
 full Task 4 evidence commands already named in Steps 3–5.
 
+## Amendment A5 (2026-07-13): quarantine the retired WIP and reconstruct through the carrier gate
+
+The active blocker is resolved by a sequencing correction, not another scene
+pool. The uncommitted Task 4 attempt adds the retired per-feature families
+(`LYRIC_HTML_TAG`/`LYRIC_LABEL_SCAN`/`LYRIC_DESTINATION_*`/
+`LYRIC_EMPHASIS_EMIT_*`) and therefore cannot become carrier-safe through
+ad-hoc additions. Its observed failures are diagnostic: `TEXT_END` escapes
+the paragraph carrier, the binding shared A4 labels are absent, and
+`LYRIC_EMPHASIS_EMIT_CLOSE` falls off after Hecate was reused as a body-glyph
+register. Preserve the WIP unchanged as handoff evidence, but do not extend
+or commit any production portion of it.
+
+The accepted design gains the binding
+[A4 reconstruction sequence](../specs/2026-07-12-span-architecture-spike-design.md#a4-reconstruction-sequence-2026-07-13).
+It supersedes Task 4 Step 2's former implication that the old scene families
+could be incrementally refactored. Amendment A2 remains the sole controlled
+surface reservation; A5 allocates no titles, Recall lines, token codes, or
+new registers.
+
+### Step 2 mandatory execution order
+
+Before production IR is edited, retain the current worktree WIP without
+mutation (for example, use an isolated worktree at the committed Task 3
+baseline for the replacement). Do not use `git restore`, `reset`, or a
+destructive cleanup against the handoff worktree. In that isolated replacement
+worktree:
+
+1. Commit the A3/A4 verification-only observer protocol first:
+   `InterpreterObserver.on_scene`, the compatible no-op observer method, and
+   the observer/IR-shape/no-underflow tests. The red result at this point may
+   be the absent A4 labels and absent resume traversal only; it must not show
+   a structural-carrier decode error, `StackUnderflow`, or scene fall-through
+   in any Task 1–3 probe.
+2. Reconstruct from the committed Task 3 `src_ir/act3.py`, not from the WIP.
+   Add the shared field scenes as one coherent pipeline before connecting
+   `<`, `[`, `![`, `*`, or `_` dispatch. Every `LYRIC_FIELD_OPEN` creates a
+   Romeo `STREAM_END` floor, every success reaches
+   `LYRIC_FIELD_DRAIN_CLOSE`, and every fallback drains that same floor. Add
+   only the matching A2 TOML entries and recall keys actually used.
+3. Route protected modes in dependency order: opaque tag and autolink;
+   link/image destination plus label/alt requeue; then emphasis/strong/triple
+   emphasis requeue. A nested raw region always pushes its Lady-Macbeth
+   `[STREAM_END, saved Hecate code, saved Macbeth value]` record before its
+   private Puck `TEXT_END`. `LYRIC_RESUME_DISPATCH` alone restores that record
+   and emits the caller's close. `MACBETH` never becomes a field-glyph value.
+4. Stop immediately if the focused gate exposes a second real paragraph
+   terminator, a leaked `TEXT_END`, a pop below a private floor, or a missing
+   A2 working label. Record a new `BLOCK[plan]` with the exact first failed
+   invariant; do not consume a spare title to mask the failure.
+
+### Replacement focused evidence gate
+
+At the first production checkpoint, run exactly:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+```
+
+Expected: all tests pass, including structural decoding for every span probe;
+the three protected stems observe one `TRAVERSE_COPY_TERMINATOR`, each private
+Puck `TEXT_END` reaches `LYRIC_RESUME_DISPATCH`, every `LYRIC_FIELD_OPEN` has
+a Romeo floor and drain-close path, and no protected stem underflows or falls
+off a scene. A rendered-output mismatch after those facts hold is a normal
+Task 4 follow-up; any carrier failure is a plan blocker, not permission for
+ad-hoc scene additions.
+
 ---
 
 ### Task 1: Commit the span-spike corpus and reviewed expected output
