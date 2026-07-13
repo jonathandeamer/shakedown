@@ -372,7 +372,7 @@ protected_tag_mark = "Recall the silver tag's mark."
   tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q` =>
   `1 passed, 208 deselected`.
 
-- [ ] **Step 4: Regenerate and prove the buffer boundary before delimiter work.**
+- [x] **Step 4: Regenerate and prove the buffer boundary before delimiter work.**
 
   Run:
 
@@ -391,6 +391,19 @@ protected_tag_mark = "Recall the silver tag's mark."
   Expected: generated artifacts are fresh; borrowed-prefix, stream-shape, and
   scan-floor assertions pass; the code-span and escape rendering tests can
   remain red; Amps remains byte-identical.
+
+  Evidence (2026-07-13): regenerated the generated fragments with `uv run
+  python -m scripts.splc` and rebuilt `shakedown.spl` with `uv run python
+  scripts/assemble.py`. The structural proof gate passed unchanged:
+  `uv run pytest tests/test_splc_generated_fragments.py
+  tests/test_act3_contracts.py::test_act3_preserves_span_fixture_structural_stream
+  tests/test_act3_contracts.py::test_act3_preserves_borrowed_carrier_prefix_and_cleans_sentinels
+  tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix
+  -q` => `14 passed`; the literary/parity gate also remained green:
+  `uv run pytest tests/test_literary_compliance.py
+  tests/test_literary_toml_schema.py tests/test_assemble.py
+  tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`
+  => `1 passed, 208 deselected`.
 
 - [ ] **Step 5: Add maximal backtick-run matching and byte-exact replay.**
 
