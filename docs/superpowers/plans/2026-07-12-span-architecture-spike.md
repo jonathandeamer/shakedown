@@ -1064,6 +1064,53 @@ Expected: PASS for Task 1--3 paths and the A7 graph gate, with no underflow,
 fall-through, leaked `TEXT_END`, or malformed record. After any Act III/TOML
 change, run the exact Global Constraints literary command too.
 
+## Amendment A8 (2026-07-13): source-end restore and ordered raw requeue
+
+The A7 reconstruction diagnostic (preserved unchanged in stash
+`Task 4 Step 2 A7 reconstruction blocked by private Puck floor underflow`)
+underflows Puck in `LYRIC_FIELD_SCAN` for `links_images_protected` and in
+`LYRIC_EMPHASIS_SEEK` for `overlapping_emphasis`.  The accepted design's
+[A8 correction](../specs/2026-07-12-span-architecture-spike-design.md#a8-source-end-and-requeue-drainer-correction-2026-07-13)
+is now binding for Task 4 Step 2 and supersedes A2/A4's ambiguous
+unterminated/requeue routes.
+
+1. Reconstruct from committed Task 3; do not repair or copy the diagnostic
+   WIP.  A direct Puck pop in a scanner branches on real `TEXT_END` before
+   any other action.  Its source-end route restores that same terminator,
+   drains only its own private capture literally in source order, and returns
+   to `LYRIC_POP_GLYPH` without another Puck pop.  It never targets
+   `LYRIC_RESUME_FLOOR_FAIL`.
+2. Implement the exact A8 field/title protocol: destination owns its closing
+   `)`, title owns its matching quote and verifies one following `)`, and
+   malformed/missing close routes use the A8 literal unwind.  Do not capture
+   the final `)` or treat it as a field glyph.
+3. Replace all label/alt/emphasis requeue loops with A8's one
+   `LYRIC_REQUEUE_OPEN`/`LYRIC_REQUEUE_DRAIN` family.  The order is binding:
+   Lady-Macbeth record; Hecate `RESUME_*`; Puck private `TEXT_END`; then
+   pop Horatio and push each non-floor raw glyph to Puck.  The Horatio floor
+   is consumed, not transferred.  Triple emphasis pushes synthetic close,
+   drains the body, then pushes synthetic open, giving raw source order
+   `* body * TEXT_END`.
+4. Reserve only A8's 10 working and four spare titles from the accepted
+   design.  The A2 spare labels consumed in the failed diagnostic attempt are
+   retired; no implementation agent may reuse them.  Add the exact A8 TOML
+   entries with their IR scenes and run the plan's Global Constraints literary
+   gate after each Act III/TOML edit.
+5. Before connecting rendering refinements, extend the observer so it proves
+   a scanner-owned real terminator is restored and next reaches
+   `TRAVERSE_COPY_TERMINATOR`, every private terminator enters the A7
+   restore sequence, and both A8 source-end scenes make no further Puck pop.
+   Run exactly:
+
+   ```bash
+   uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+   ```
+
+   Expected: PASS with no Puck/Lady-Macbeth underflow, no scene fall-through,
+   exactly one real terminator per protected probe, and no
+   `LYRIC_RESUME_FLOOR_FAIL`.  Any failure is `BLOCK[plan]`; it does not
+   authorize another recovery scene or title.
+
 ---
 
 ### Task 1: Commit the span-spike corpus and reviewed expected output
@@ -1397,7 +1444,7 @@ change, run the exact Global Constraints literary command too.
   29-title budget (stashed at `git stash list` entry "Task 4 Step 2 WIP:
   HTML/autolink/link/image/emphasis scanner, 91 scenes vs 29 reserved
   budget"; recorded in `.agent/blockers.md` history). Implement instead
-  against **Amendments A2 and A7** above: one shared `LYRIC_FIELD_*` pipeline
+  against **Amendments A2, A7, and A8** above: one shared `LYRIC_FIELD_*` pipeline
   (anchored on Juliet, with field tags retained by off-stage Prospero after
   `LYRIC_FIELD_RETRY`) for HTML
   tag copy, autolink href/text, link/image destination, and title; the
@@ -1423,8 +1470,12 @@ change, run the exact Global Constraints literary command too.
   Before writing `src_ir/act3.py`, implement the A4 verification-only
   observer and carrier tests above. Then implement the exact scene families
   and holder/floor rules in the accepted design's A4 table. In particular,
-  use a private `TEXT_END` plus a Lady-Macbeth continuation record for every
-  requeue; do not allocate a numeric sentinel, reuse Puck as a field-output
+  use A8's source-end restore and ordered raw requeue: a private `TEXT_END`
+  plus a Lady-Macbeth continuation record for every successful requeue, with
+  the record written before the boundary and Horatio's floor consumed rather
+  than transferred.  A real `TEXT_END` popped by field or emphasis scanning
+  is restored and literal-unwound, never followed by another source pop. Do not
+  use a numeric sentinel, reuse Puck as a field-output
   carrier, or use Juliet output as source. Implement A7's exact six-scene
   two-character restore graph. A Step 2 attempt that does not
   make the A4 focused no-underflow and scene-observer tests pass is a

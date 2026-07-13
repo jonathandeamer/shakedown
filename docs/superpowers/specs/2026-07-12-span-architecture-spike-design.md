@@ -392,3 +392,128 @@ uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
 It must prove this adapter order, exactly three Lady-Macbeth pops, no
 `LYRIC_RESUME_FLOOR_FAIL`, and A6's real/private terminator contract. After
 each Act III/TOML edit also run the plan's exact literary gate.
+
+## A8 source-end and requeue-drainer correction (2026-07-13)
+
+The preserved A7 diagnostic graph establishes a narrower, reproducible fault:
+`LYRIC_FIELD_SCAN` and `LYRIC_EMPHASIS_SEEK` treat a popped real `TEXT_END`
+as though it were a malformed private continuation.  Their fail route then
+returns to a scene which pops Puck again.  On the link/image and overlapping
+emphasis probes that is a pop below Puck's paragraph floor.  This is not a
+new terminator kind and must not be patched by adding a recovery pop.
+
+The following protocol supersedes A4's field-unterminated and A2's generic
+requeue wording.  It keeps all A4/A6/A7 ownership rules and the A7 restore
+adapters intact.
+
+### Binding source-end rule
+
+Every scene that directly `pop(PUCK)` while it owns a temporary field or
+emphasis capture must branch on `TEXT_END` *before* it pushes, counts, or
+dispatches the popped value.  That branch enters the relevant source-end
+unwind.  The unwind must:
+
+1. push that same `TEXT_END` back onto Puck exactly once;
+2. make no further `pop(PUCK)` before returning to `LYRIC_POP_GLYPH`;
+3. drain its own private capture floor as literal source to Juliet in original
+   order, including its consumed opener/delimiters; and
+4. consume every Romeo/Horatio private `STREAM_END` it created.
+
+The next top-level pop therefore sees the restored real terminator and takes
+only `TRAVERSE_COPY_TERMINATOR`.  `LYRIC_RESUME_FLOOR_FAIL` remains reserved
+for a malformed Lady-Macbeth record and is forbidden as a field/emphasis
+source-end target.
+
+### Binding field, title, and raw-requeue choreography
+
+The scene table below is the complete correction.  `FIELD_LINK_DEST` and
+`FIELD_IMAGE_DEST` own the source `)` that closes the destination; a quoted
+title is entered only after the destination drain and owns its matching quote,
+then verifies and consumes the following `)`.  The final `)` is never put on
+Romeo, Horatio, or Puck.  A missing quote or `)` takes the source-end/literal
+unwind above.
+
+| Family | Required operations and next scene |
+|---|---|
+| `LYRIC_FIELD_SCAN` | Pop Puck once. `TEXT_END -> LYRIC_FIELD_SOURCE_END`. Otherwise test the active Prospero field tag's terminator before capture. A matching tag/destination/title terminator enters `LYRIC_FIELD_CLOSE_DISPATCH`; every other raw glyph is pushed to Romeo exactly once. |
+| `LYRIC_FIELD_SOURCE_END` | Push `TEXT_END` back to Puck; move Romeo's capture through its private floor into the literal-reverse family; emit the caller's saved raw opener before the reversed capture; then `goto(LYRIC_POP_GLYPH)`. It never targets a resume scene. |
+| destination/title hand-off | After a successful destination drain, inspect only the next source glyph: `)` emits the attribute transition; space followed by `"` sets the corresponding title tag and enters the shared field pipeline; all other glyphs are restored and use `LYRIC_FIELD_SOURCE_END`. After a title drain, consume exactly one `)` or take the same literal unwind. |
+| `LYRIC_REQUEUE_OPEN` | Before touching Horatio: push Lady Macbeth's `[STREAM_END, parent Hecate, parent Macbeth]` record; set Hecate to the child `RESUME_*`; push Puck's private `TEXT_END`; then `goto(LYRIC_REQUEUE_DRAIN)`. The record is created before the private Puck boundary. |
+| `LYRIC_REQUEUE_DRAIN` | Pop Horatio. If it is the Horatio `STREAM_END`, consume it and `goto(LYRIC_POP_GLYPH)` without pushing it to Puck. Otherwise push `val(HORATIO)` to Puck and loop. Because Horatio is popped last-to-first above a Puck floor, the next Puck pop is the first captured raw glyph. |
+| `LYRIC_EMPHASIS_SEEK` | Pop Puck once. `TEXT_END -> LYRIC_EMPHASIS_SOURCE_END`; a nonmatching candidate delimiter is copied as raw source into Horatio and the seek continues; no candidate path writes a delimiter directly to Juliet or Puck. A matching maximal run is copied to Macbeth before any requeue state is set. |
+| `LYRIC_EMPHASIS_SOURCE_END` | Push the real `TEXT_END` back to Puck; literal-reverse the opener plus Horatio body to Juliet; consume Horatio's floor; `goto(LYRIC_POP_GLYPH)`. No Lady-Macbeth record exists on this path. |
+| matched emphasis requeue | Emit the outer opener chosen from Macbeth, then use `LYRIC_REQUEUE_OPEN` / `LYRIC_REQUEUE_DRAIN`. For a three-run, push the synthetic closing raw delimiter to Puck immediately after the private `TEXT_END`, drain Horatio, then push the synthetic opening delimiter immediately before entering the drain's completion. This makes the requeued source order `*`, body, `*`, private `TEXT_END`; the child ordinary scan emits `<em>`, and the restored parent emits `</strong>`. |
+
+No new numeric sentinel, holder, or Recall phrase is introduced.  The source
+end is a real paragraph `TEXT_END`; the requeue end is a private `TEXT_END`
+whose preceding `RESUME_*` causes the existing A7 restore graph to run.
+
+### A8 literary reservation (ready to paste)
+
+The three uncommitted A2 spare labels used by the diagnostic attempt are
+retired along with that attempt.  This correction has 10 working scenes and
+four spares (40%, above the mandatory 20% floor).  Add only labels reached by
+the reconstructed IR; do not reuse a retired A2 spare or invent prose.
+
+```toml
+# src/30-act3-literary.toml — Amendment A8 correction pool
+[scenes.LYRIC_FIELD_SOURCE_END]
+title = "The field returns its lost gate to morning."
+pattern = "bare_statement"
+[scenes.LYRIC_FIELD_LITERAL_REVERSE]
+title = "Romeo turns the unclosed field toward daylight."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_LITERAL_EMIT]
+title = "Juliet lets the unclosed field pass whole."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_TITLE_TEST]
+title = "Romeo asks whether the road keeps a name."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_TITLE_CLOSE]
+title = "The road's quiet name meets its round gate."
+pattern = "bare_statement"
+[scenes.LYRIC_REQUEUE_OPEN]
+title = "Horatio prepares the held petals for return."
+pattern = "scene_of_character"
+[scenes.LYRIC_REQUEUE_DRAIN]
+title = "Horatio sends one held petal back to Puck."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_SOURCE_END]
+title = "The unpaired star returns before the hedge."
+pattern = "bare_statement"
+[scenes.LYRIC_EMPHASIS_LITERAL_REVERSE]
+title = "Romeo turns the loose starlight home."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_LITERAL_EMIT]
+title = "Juliet lets the loose starlight pass unchanged."
+pattern = "scene_of_character"
+
+# Amendment A8 spare pool — do not use without recording its exact transition.
+[scenes.LYRIC_FIELD_TITLE_RESTORE]
+title = "Romeo restores the road's waiting mark."
+pattern = "scene_of_character"
+[scenes.LYRIC_REQUEUE_TRIPLE_CLOSE]
+title = "Horatio lays the star beneath the held petals."
+pattern = "scene_of_character"
+[scenes.LYRIC_REQUEUE_TRIPLE_OPEN]
+title = "Horatio crowns the held petals with a star."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_LITERAL_CLOSE]
+title = "The loose star comes safely into daylight."
+pattern = "bare_statement"
+```
+
+### A8 mandatory first checkpoint
+
+Before any byte-parity adjustment, extend the observer contract and run:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q
+```
+
+The test must record, for every protected fixture, that a scanner-owned real
+`TEXT_END` is restored then reaches `TRAVERSE_COPY_TERMINATOR` on the next
+top-level pop; that each private requeue terminator reaches the A7 restore
+sequence; that `LYRIC_FIELD_SOURCE_END` and `LYRIC_EMPHASIS_SOURCE_END` make
+no second Puck pop; and that neither `LYRIC_FIELD_SCAN` nor
+`LYRIC_EMPHASIS_SEEK` underflows.  Failure is a fresh `BLOCK[plan]`.
