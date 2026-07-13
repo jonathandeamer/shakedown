@@ -694,7 +694,7 @@ reappear there; Task 4 prose must still come only from its reserved pools.
   overlapping-emphasis probes reserved for Steps 7 and Task 4; no
   regression on the code-span or structural/floor assertions.
 
-- [ ] **Step 6: Regenerate and prove variable code spans.**
+- [x] **Step 6: Regenerate and prove variable code spans.**
 
   Run:
 
@@ -713,6 +713,19 @@ reappear there; Task 4 prose must still come only from its reserved pools.
   Expected: both code regions and the byte-exact `variable_code_spans` probe
   pass; the scan-floor invariant and Amps remain green; escape rendering may
   remain red until Step 7.
+
+  Evidence (2026-07-13): regenerated fragments with `uv run python -m
+  scripts.splc` and rebuilt `shakedown.spl` with `uv run python
+  scripts/assemble.py`; `git status --short` showed no drift after
+  regeneration (Step 5's committed generated fragments were already fresh).
+  Gate: `uv run pytest tests/test_splc_generated_fragments.py
+  tests/test_act3_contracts.py::test_act3_renders_variable_length_code_spans
+  tests/test_act3_contracts.py::test_act3_scan_floor_matches_pre_scan_prefix
+  'tests/test_architecture_spikes.py::test_span_architecture_spike_matches_checked_in_oracle_bytes[variable_code_spans]'
+  -q` => `6 passed`; `uv run pytest tests/test_literary_compliance.py
+  tests/test_literary_toml_schema.py tests/test_assemble.py
+  tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q` =>
+  `1 passed, 208 deselected`.
 
 - [ ] **Step 7: Add escaped-glyph consumption and the unmatched-opener edge cases.**
 
