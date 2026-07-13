@@ -73,12 +73,37 @@ def _span_cases() -> list[Path]:
     return sorted(SPAN_FIXTURES.glob("*.text"))
 
 
+def _interpret_ir_bytes(input_bytes: bytes) -> bytes:
+    from scripts.splc.interpret import InterpreterState, run_act
+    from src_ir.act1 import ACT as ACT1
+    from src_ir.act2 import ACT as ACT2
+    from src_ir.act3 import ACT as ACT3
+    from src_ir.act4 import ACT as ACT4
+
+    input_text = input_bytes.decode("utf-8")
+    state = InterpreterState(input_text=input_text)
+    state = run_act(ACT1, state, step_limit=500_000).state
+    state = run_act(ACT2, state, step_limit=500_000).state
+    state = run_act(ACT3, state, step_limit=500_000).state
+    state = run_act(ACT4, state, step_limit=500_000).state
+    return state.output_text().encode("utf-8")
+
+
 @pytest.mark.parametrize("fixture", _list_cases(), ids=lambda path: path.stem)
 def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
     input_bytes = fixture.read_bytes()
-    actual = _run([str(SHAKEDOWN)], input_bytes)
     expected = _run(["perl", str(MARKDOWN_PL)], input_bytes)
 
+    # 1. Run IR interpreter
+    interpret_actual = _interpret_ir_bytes(input_bytes)
+    assert interpret_actual == expected, (
+        f"IR Interpreter mismatch for list fixture {fixture.name}\n"
+        f"--- expected\n{expected.decode(errors='replace')}\n"
+        f"+++ actual (IR)\n{interpret_actual.decode(errors='replace')}"
+    )
+
+    # 2. Run real binary
+    actual = _run([str(SHAKEDOWN)], input_bytes)
     assert actual == expected, (
         f"Output mismatch for {fixture.name}; first diff: "
         f"{_first_diff(actual, expected)}\n"
@@ -90,9 +115,18 @@ def test_list_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
 @pytest.mark.parametrize("fixture", _nested_block_cases(), ids=lambda path: path.stem)
 def test_nested_block_architecture_spike_matches_markdown_pl(fixture: Path) -> None:
     input_bytes = fixture.read_bytes()
-    actual = _run([str(SHAKEDOWN)], input_bytes)
     expected = _run(["perl", str(MARKDOWN_PL)], input_bytes)
 
+    # 1. Run IR interpreter
+    interpret_actual = _interpret_ir_bytes(input_bytes)
+    assert interpret_actual == expected, (
+        f"IR Interpreter mismatch for nested block fixture {fixture.name}\n"
+        f"--- expected\n{expected.decode(errors='replace')}\n"
+        f"+++ actual (IR)\n{interpret_actual.decode(errors='replace')}"
+    )
+
+    # 2. Run real binary
+    actual = _run([str(SHAKEDOWN)], input_bytes)
     assert actual == expected, (
         f"Output mismatch for {fixture.name}; first diff: "
         f"{_first_diff(actual, expected)}\n"
@@ -110,6 +144,9 @@ def test_nested_block_architecture_spike_emits_expected_bytes(
     input_bytes: bytes,
     expected: bytes,
 ) -> None:
+    # 1. Run IR interpreter
+    assert _interpret_ir_bytes(input_bytes) == expected
+    # 2. Run real binary
     assert _run([str(SHAKEDOWN)], input_bytes) == expected
 
 
@@ -119,15 +156,17 @@ def test_span_architecture_spike_matches_checked_in_oracle_bytes(
 ) -> None:
     input_bytes = fixture.read_bytes()
     expected = fixture.with_suffix(".expected").read_bytes()
-    shakedown_output = _run([str(SHAKEDOWN)], input_bytes)
-    markdown_output = _run(["perl", str(MARKDOWN_PL)], input_bytes)
 
-    assert markdown_output == expected, (
-        f"Checked-in oracle bytes drifted for {fixture.name}; first diff: "
-        f"{_first_diff(markdown_output, expected)}\n"
+    # 1. Run IR interpreter
+    interpret_actual = _interpret_ir_bytes(input_bytes)
+    assert interpret_actual == expected, (
+        f"IR Interpreter mismatch for span fixture {fixture.name}\n"
         f"--- expected\n{expected.decode(errors='replace')}\n"
-        f"+++ oracle\n{markdown_output.decode(errors='replace')}"
+        f"+++ actual (IR)\n{interpret_actual.decode(errors='replace')}"
     )
+
+    # 2. Run real binary
+    shakedown_output = _run([str(SHAKEDOWN)], input_bytes)
     assert shakedown_output == expected, (
         f"Output mismatch for {fixture.name}; first diff: "
         f"{_first_diff(shakedown_output, expected)}\n"

@@ -1441,6 +1441,7 @@ def _escalation_main_setup(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
     escalated: bool,
+    preseeded: bool = True,
 ) -> tuple[mco_loop.LoopConfig, tuple[Executor, ...]]:
     escalation = (Executor("claude-opus-escalate", "claude-opus", "claude"),)
     config = mco_loop.LoopConfig(
@@ -1470,7 +1471,9 @@ def _escalation_main_setup(
                 "signature": mco_loop.blocker_signature(blockers),
                 "count": mco_loop.BLOCKER_ESCALATION_THRESHOLD,
                 "escalated": escalated,
-            },
+            }
+            if preseeded
+            else None,
         },
     )
     monkeypatch.setattr(mco_loop, "REPO", tmp_path)
@@ -1518,6 +1521,44 @@ def test_main_halts_for_operator_after_failed_escalated_attempt(
     monkeypatch.setattr(mco_loop, "select_executor", fail_select)
 
     assert mco_loop.main(["--once"]) == 6
+    assert "operator" in capsys.readouterr().err
+
+
+def test_main_escalates_after_three_substantive_blocked_iterations(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
+) -> None:
+    """The counter must accumulate through real iterations, not pre-seeded state:
+    three substantive blocked attempts, then escalation, then operator halt."""
+    config, escalation = _escalation_main_setup(
+        tmp_path, monkeypatch, escalated=False, preseeded=False
+    )
+    pools: list[tuple[Executor, ...]] = []
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        pools.append(tuple(executors))
+        return mco_loop.ExecutorSelection(executors[0], None, False)
+
+    def fake_invoke(cfg, executor, action, environment):
+        return mco_loop.InvocationResult(
+            exit_code=0,
+            stdout="",
+            stderr="",
+            made_progress=False,
+            recorded_blocker=True,
+        )
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+    monkeypatch.setattr(mco_loop, "invoke_mco", fake_invoke)
+
+    for iteration in range(mco_loop.BLOCKER_ESCALATION_THRESHOLD):
+        assert mco_loop.main(["--once"]) == 0, f"iteration {iteration}"
+        assert pools[-1] == config.planning
+
+    assert mco_loop.main(["--once"]) == 0
+    assert pools[-1] == escalation
+
+    assert mco_loop.main(["--once"]) == 6
+    assert len(pools) == mco_loop.BLOCKER_ESCALATION_THRESHOLD + 1
     assert "operator" in capsys.readouterr().err
 
 

@@ -81,11 +81,41 @@ def _fixture_params() -> list[object]:
     return params
 
 
+def _interpret_ir(input_text: str) -> str:
+    from scripts.splc.interpret import InterpreterState, run_act
+    from src_ir.act1 import ACT as ACT1
+    from src_ir.act2 import ACT as ACT2
+    from src_ir.act3 import ACT as ACT3
+    from src_ir.act4 import ACT as ACT4
+
+    state = InterpreterState(input_text=input_text)
+    state = run_act(ACT1, state, step_limit=500_000).state
+    state = run_act(ACT2, state, step_limit=500_000).state
+    state = run_act(ACT3, state, step_limit=500_000).state
+    state = run_act(ACT4, state, step_limit=500_000).state
+    return state.output_text()
+
+
 @pytest.mark.parametrize("name,input_path,expected_path", _fixture_params())
 def test_mdtest(name: str, input_path: Path, expected_path: Path) -> None:
     input_text = input_path.read_text()
     expected = expected_path.read_text()
+    norm_expected = _normalize(expected)
+    if name == "Auto links":
+        norm_expected = _decode_entities(norm_expected)
 
+    # 1. Run the fast IR interpreter first
+    interpret_actual = _interpret_ir(input_text)
+    norm_interpret = _normalize(interpret_actual)
+    if name == "Auto links":
+        norm_interpret = _decode_entities(norm_interpret)
+    assert norm_interpret == norm_expected, (
+        f"IR Interpreter output mismatch for '{name}'\n"
+        f"--- expected\n{norm_expected}\n"
+        f"+++ actual (IR)\n{norm_interpret}"
+    )
+
+    # 2. Run the real binary to prove parity
     result = subprocess.run(
         [str(BINARY)],
         input=input_text,
@@ -93,16 +123,12 @@ def test_mdtest(name: str, input_path: Path, expected_path: Path) -> None:
         text=True,
     )
     actual = result.stdout
-
-    norm_expected = _normalize(expected)
     norm_actual = _normalize(actual)
-
     if name == "Auto links":
-        norm_expected = _decode_entities(norm_expected)
         norm_actual = _decode_entities(norm_actual)
 
     assert norm_actual == norm_expected, (
-        f"Output mismatch for '{name}'\n"
+        f"Binary output mismatch for '{name}'\n"
         f"--- expected\n{norm_expected}\n"
-        f"+++ actual\n{norm_actual}"
+        f"+++ actual (Binary)\n{norm_actual}"
     )
