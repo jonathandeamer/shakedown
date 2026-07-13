@@ -10,6 +10,42 @@ pattern = "scene_of_character"
 title = "The ampersand tests its old name."
 pattern = "bare_statement"
 
+[scenes.LYRIC_BUFFER_CLOSE]
+title = "The lovers return the finished line."
+pattern = "cross_character"
+
+[scenes.LYRIC_BUFFER_DRAIN]
+title = "Romeo gathers each dew-bright mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_BUFFER_DRAIN_CLOSE]
+title = "The morning line reaches its quiet hedge."
+pattern = "bare_statement"
+
+[scenes.LYRIC_BUFFER_ENTITY_AMP]
+title = "Juliet names the stream's small riverbend."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_BUFFER_ENTITY_ANGLE]
+title = "Romeo softens the hedge's bright corner."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_BUFFER_KEEP]
+title = "Juliet keeps the gathered garden mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_BUFFER_OPEN]
+title = "Romeo gathers the unspent morning line."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_BUFFER_RETURN]
+title = "Romeo returns the finished garden line."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_BUFFER_UNWIND]
+title = "The gathered line returns by the garden gate."
+pattern = "bare_statement"
+
 [scenes.LYRIC_ANCHOR_INLINE]
 title = "The inline path becomes a reusable bright path."
 pattern = "bare_statement"
@@ -142,6 +178,10 @@ pattern = "bare_statement"
 title = "The sharp angle turns to light."
 pattern = "bare_statement"
 
+[scenes.LYRIC_ORDINARY_GLYPH]
+title = "Romeo tends the unguarded garden mark."
+pattern = "scene_of_character"
+
 [scenes.LYRIC_POP_GLYPH]
 title = "Puck hands one mark to the sun."
 pattern = "scene_of_character"
@@ -176,6 +216,10 @@ pattern = "scene_of_character"
 
 [scenes.LYRIC_REVERSE_POP]
 title = "Juliet lifts one starlit glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_SCAN_NEXT]
+title = "Romeo seeks the next unspent petal."
 pattern = "scene_of_character"
 
 [scenes.LYRIC_TEST_AMPERSAND]

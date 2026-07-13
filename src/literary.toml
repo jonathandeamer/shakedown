@@ -223,6 +223,7 @@ palette = "pastoral_natural"
 voice_register = "lyrical_sun_imagery"
 blurb = "Romeo, who pushes candidate substitutions like sunlit petals."
 [characters.romeo.recall]
+buffered_first_glyph = "Recall the morning buffer's first glyph."
 mornings_first_cut = "Recall the morning's first cut."
 brackets_first_petal = "Recall the bracket's first petal."
 links_second_petal = "Recall the link's second petal."
@@ -266,6 +267,7 @@ palette = "pastoral_natural"
 voice_register = "lyrical_night_imagery"
 blurb = "Juliet, night-star lyric, who lays final roses on the silver path."
 [characters.juliet.recall]
+buffered_last_glyph = "Recall the night's final glyph."
 kept_charge = "Recall the kept charge."
 nights_next_word = "Recall the night's next word."
 [characters.juliet.stable_utility]

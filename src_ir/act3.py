@@ -134,7 +134,92 @@ ACT: Act = act(
         ),
         scene(
             "TRAVERSE_OPEN_TEXT",
-            goto("LYRIC_POP_GLYPH"),
+            goto("LYRIC_BUFFER_OPEN"),
+            companion=PUCK,
+        ),
+        # --- Buffered source-region scan: drain one text run into Romeo,
+        # restore source order above a temporary floor on Puck, then emit
+        # ordinary glyphs one-way onto Juliet.
+        scene(
+            "LYRIC_BUFFER_OPEN",
+            push(ROMEO, const(tokens.STREAM_END)),
+            goto("LYRIC_BUFFER_DRAIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_BUFFER_DRAIN",
+            pop(PUCK, recall="buffered_first_glyph"),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_BUFFER_DRAIN_CLOSE",
+                else_="LYRIC_BUFFER_KEEP",
+            ),
+        ),
+        scene(
+            "LYRIC_BUFFER_KEEP",
+            push(ROMEO, val(PUCK)),
+            goto("LYRIC_BUFFER_DRAIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_BUFFER_DRAIN_CLOSE",
+            push(PUCK, const(tokens.STREAM_END)),
+            goto("LYRIC_BUFFER_UNWIND"),
+            companion=ROMEO,
+        ),
+        scene(
+            "LYRIC_BUFFER_UNWIND",
+            pop(ROMEO, recall="buffered_last_glyph"),
+            branch(
+                eq(val(ROMEO), const(tokens.STREAM_END)),
+                then="LYRIC_SCAN_NEXT",
+                else_="LYRIC_BUFFER_RETURN",
+            ),
+            anchor=JULIET,
+        ),
+        scene(
+            "LYRIC_BUFFER_RETURN",
+            push(PUCK, val(ROMEO)),
+            goto("LYRIC_BUFFER_UNWIND"),
+            companion=ROMEO,
+        ),
+        scene(
+            "LYRIC_SCAN_NEXT",
+            pop(PUCK, recall="buffered_first_glyph"),
+            branch(
+                eq(val(PUCK), const(tokens.STREAM_END)),
+                then="LYRIC_BUFFER_CLOSE",
+            ),
+            branch(eq(val(PUCK), _k(38)), then="LYRIC_BUFFER_ENTITY_AMP"),
+            branch(eq(val(PUCK), _k(60)), then="LYRIC_BUFFER_ENTITY_ANGLE"),
+            goto("LYRIC_ORDINARY_GLYPH"),
+        ),
+        scene(
+            "LYRIC_ORDINARY_GLYPH",
+            *_current(),
+            goto("LYRIC_SCAN_NEXT"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_BUFFER_ENTITY_AMP",
+            *_entity(*b"&amp;"),
+            goto("LYRIC_SCAN_NEXT"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_BUFFER_ENTITY_ANGLE",
+            *_entity(*b"&lt;"),
+            goto("LYRIC_SCAN_NEXT"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_BUFFER_CLOSE",
+            push(JULIET, const(tokens.TEXT_END)),
+            goto("TRAVERSE_NEXT_TOKEN"),
+            anchor=JULIET,
             companion=PUCK,
         ),
         # --- Scan phase: (Puck, Romeo) ---

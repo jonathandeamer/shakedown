@@ -64,7 +64,231 @@ Juliet:
 [Enter Romeo]
 
 Romeo:
- Let us proceed to scene @LYRIC_POP_GLYPH.
+ Let us proceed to scene @LYRIC_BUFFER_OPEN.
+
+
+                    Scene @LYRIC_BUFFER_OPEN: @LIT.scenes.LYRIC_BUFFER_OPEN.title
+
+Puck:
+ Remember a wolf.
+
+Romeo:
+ Let us proceed to scene @LYRIC_BUFFER_DRAIN.
+
+
+                    Scene @LYRIC_BUFFER_DRAIN: @LIT.scenes.LYRIC_BUFFER_DRAIN.title
+
+Romeo:
+ @LIT.characters.romeo.recall.buffered_first_glyph
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_BUFFER_DRAIN_CLOSE.
+
+Puck:
+ If not, let us proceed to scene @LYRIC_BUFFER_KEEP.
+
+
+                    Scene @LYRIC_BUFFER_KEEP: @LIT.scenes.LYRIC_BUFFER_KEEP.title
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Let us return to scene @LYRIC_BUFFER_DRAIN.
+
+
+                    Scene @LYRIC_BUFFER_DRAIN_CLOSE: @LIT.scenes.LYRIC_BUFFER_DRAIN_CLOSE.title
+
+Romeo:
+ Remember a wolf.
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Romeo:
+ Let us proceed to scene @LYRIC_BUFFER_UNWIND.
+
+
+                    Scene @LYRIC_BUFFER_UNWIND: @LIT.scenes.LYRIC_BUFFER_UNWIND.title
+
+Juliet:
+ @LIT.characters.juliet.recall.buffered_last_glyph
+
+Juliet:
+ Are you as sweet as a wolf?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_SCAN_NEXT.
+
+Romeo:
+ If not, let us proceed to scene @LYRIC_BUFFER_RETURN.
+
+
+                    Scene @LYRIC_BUFFER_RETURN: @LIT.scenes.LYRIC_BUFFER_RETURN.title
+
+[Exit Juliet]
+
+[Enter Puck]
+
+Romeo:
+ Remember myself.
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Romeo:
+ Let us return to scene @LYRIC_BUFFER_UNWIND.
+
+
+                    Scene @LYRIC_SCAN_NEXT: @LIT.scenes.LYRIC_SCAN_NEXT.title
+
+[Exit Juliet]
+
+[Enter Puck]
+
+Romeo:
+ @LIT.characters.romeo.recall.buffered_first_glyph
+
+Romeo:
+ Are you as fair as a wolf?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_BUFFER_CLOSE.
+
+Romeo:
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_BUFFER_ENTITY_AMP.
+
+Romeo:
+ Are you as sunny as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_BUFFER_ENTITY_ANGLE.
+
+Romeo:
+ Let us proceed to scene @LYRIC_ORDINARY_GLYPH.
+
+
+                    Scene @LYRIC_ORDINARY_GLYPH: @LIT.scenes.LYRIC_ORDINARY_GLYPH.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ You are as rotten as myself.
+
+Puck:
+ Remember yourself.
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_SCAN_NEXT.
+
+
+                    Scene @LYRIC_BUFFER_ENTITY_AMP: @LIT.scenes.LYRIC_BUFFER_ENTITY_AMP.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ You are as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ You are as noble as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ You are as fair as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ You are as rotten as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+
+Puck:
+ Remember yourself.
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_SCAN_NEXT.
+
+
+                    Scene @LYRIC_BUFFER_ENTITY_ANGLE: @LIT.scenes.LYRIC_BUFFER_ENTITY_ANGLE.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ You are as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Puck:
+ Remember yourself.
+
+Puck:
+ You are as noble as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+
+Puck:
+ Remember yourself.
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_SCAN_NEXT.
+
+
+                    Scene @LYRIC_BUFFER_CLOSE: @LIT.scenes.LYRIC_BUFFER_CLOSE.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ Remember nothing.
+
+Juliet:
+ Let us return to scene @TRAVERSE_NEXT_TOKEN.
 
 
                     Scene @LYRIC_POP_GLYPH: @LIT.scenes.LYRIC_POP_GLYPH.title
