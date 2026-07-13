@@ -1113,6 +1113,42 @@ unterminated/requeue routes.
 
 ---
 
+## Amendment A10 (2026-07-14): image-title ordering and nested-floor correction
+
+The A2 shared field pipeline must not emit an image title when it captures it:
+doing so produces `src, title, alt`, while Markdown.pl requires `src, alt,
+title`.  The accepted design's [A10 correction](../specs/2026-07-12-span-architecture-spike-design.md#a10-image-title-ordering-and-nested-floor-correction-2026-07-14)
+is binding for Task 4 Step 2.
+
+- `FIELD_IMAGE_TITLE` captures raw bytes onto Romeo above its own private
+  `STREAM_END`, consumes the source closing syntax, and skips the normal
+  `LYRIC_FIELD_RETRY` drain until the alt has been requeued and scanned.
+- Use `RESUME_IMAGE_TITLE=12` for that alt requeue.  The complete A9 adapter
+  freezes it in Prospero, then dispatches to the sole new working scene
+  `LYRIC_IMAGE_TITLE_CLOSE`.  That scene alone is authorized to set Hecate
+  back to `FIELD_IMAGE_TITLE` and enter the existing shared field reverse /
+  entity / drain family; its field-close branch emits `" />`.
+- The title Romeo floor must remain untouched while the Horatio/Puck alt
+  requeue runs.  This is legal and was confirmed by the focused IR interpreter
+  probe recorded in the accepted design.  Add the specified
+  `test_image_title_floor_survives_alt_requeue` regression before production
+  IR changes and extend the existing image observer assertions to witness
+  selector `12`, `LYRIC_IMAGE_TITLE_CLOSE`, no early Romeo pop, and one final
+  image-title drain.
+- Reserve only the one A10 working label and four A10 spares quoted in the
+  accepted design.  The spares are not implementation authority.  Run the
+  exact Global Constraints literary gate after each Act III/TOML change.
+
+This amendment leaves the original A2 emphasis family unchanged.  Implement
+that self-contained family first: `PROSPERO` holds opener code `42`/`95`,
+`HECATE` the opener run length, `MACBETH` the candidate/matched run length,
+and `HORATIO` raw body bytes requeued only via A8's shared requeue family.
+The reserved ten-label emphasis family must fold seek initialization and the
+count loop into `LYRIC_EMPHASIS_OPEN` / `LYRIC_EMPHASIS_COUNT_MORE` rather
+than inventing a label; if that cannot be expressed, stop with `BLOCK[plan]`.
+This emphasis-first checkpoint must make `escapes_and_overlap` and
+`overlapping_emphasis` green before HTML/link/image work is connected.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
@@ -1464,6 +1500,27 @@ unterminated/requeue routes.
   `BLOCK[plan]`, not permission to patch the WIP, add a recovery pop, or use a
   spare title.
 
+  **A10 image-title constraint (2026-07-14; binding before image production
+  edit):** Add and pass
+  `tests/test_splc_interpret.py::test_image_title_floor_survives_alt_requeue`
+  before editing `src_ir/act3.py`.  For `FIELD_IMAGE_TITLE`, retain Romeo's
+  raw title floor across the independent alt requeue; set
+  `RESUME_IMAGE_TITLE=12`, and have only `LYRIC_IMAGE_TITLE_CLOSE` re-enter
+  `LYRIC_FIELD_RETRY` after alt scanning, so its existing field drain emits
+  the title followed by `" />`.  Do not use an A2/A8/A9 spare.  Extend the
+  image observer contract to prove selector 12, the new close scene, no
+  Romeo pop during alt drain, and exactly one delayed title drain.  The exact
+  pre-production gate is:
+
+  ```bash
+  uv run pytest tests/test_splc_interpret.py::test_image_title_floor_survives_alt_requeue tests/test_act3_contracts.py -q
+  ```
+
+  Expected before protected production scenes: the new focused floor test
+  passes; existing named Task 4 rendering contracts remain red only because
+  their implementation is absent.  Any floor or ordering failure is a fresh
+  `BLOCK[plan]`.
+
   The original per-feature Task 4 pool (`LYRIC_HTML_TAG` through
   `LYRIC_AUTOLINK_CLOSE`, `LYRIC_LINK_REGION` through `LYRIC_REGION_EMIT`,
   `LYRIC_EMPHASIS_STRONG` through `LYRIC_EMPHASIS_CLOSE`) is retired — a
@@ -1490,9 +1547,11 @@ unterminated/requeue routes.
   probe link/image forms: `http://e/x_(y)` is retained verbatim as an
   opaque destination and quoted titles remain opaque (both through the
   shared field pipeline), while bracketed label/alt text is requeued rather
-  than recursively re-implemented. The ten Amendment A2 spares are the only
-  permitted additional states; exhaustion is a planning-amendment stop. Do
-  not add general reference resolution or unsupported delimiter grammar.
+  than recursively re-implemented. The ten Amendment A2 spares and the
+  separately reserved A10 image-title working/spare pool are the only
+  permitted additional states; exhaustion of either pool is a
+  planning-amendment stop. Do not add general reference resolution or
+  unsupported delimiter grammar.
 
   Before writing `src_ir/act3.py`, implement the A4 verification-only
   observer and carrier tests above. Then implement the exact scene families

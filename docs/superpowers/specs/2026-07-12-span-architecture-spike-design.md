@@ -669,3 +669,106 @@ pattern = "scene_of_character"
 title = "The elder path refuses a broken sign."
 pattern = "bare_statement"
 ```
+
+## A10 image-title ordering and nested-floor correction (2026-07-14)
+
+The A2 field table incorrectly said that every destination and title drains to
+Juliet before the held label/alt requeue.  That preserves source order for a
+link (`href`, `title`, then label), but cannot preserve Markdown.pl's image
+attribute order.  The checked oracle contract for
+`links_images_protected.expected` requires:
+
+```html
+<img src="img.png" alt="c <em>d</em>" title="i" />
+```
+
+The image alt is source-earlier than its title but is emitted only after the
+destination.  Therefore `FIELD_IMAGE_TITLE` is the sole field mode that must
+defer its successful drain until after the alt requeue.  This correction
+supersedes A2's universal immediate-title-drain wording and A9's categorical
+ban on a resume close using Romeo; all other A2/A9 ownership rules remain
+binding.
+
+### Binding image-title choreography
+
+1. `LYRIC_TITLE_OPEN` captures an image title exactly as the shared field
+   scanner otherwise would: it pushes Romeo's private `STREAM_END`, captures
+   raw title glyphs above it, consumes the matching quote and final `)`, and
+   validates the source-end/literal-unwind path.  For `FIELD_IMAGE_TITLE` it
+   **does not** enter `LYRIC_FIELD_RETRY`, `REV`, or any Juliet-emission
+   scene at capture time.  The title floor remains intact and Romeo is then
+   quiescent.
+2. `LYRIC_REGION_TAG_OPEN` emits `" alt="`, sets the child continuation to
+   `RESUME_IMAGE_TITLE=12`, and performs the ordinary A8/A9 alt requeue.
+   The Horatio floor and its private Puck `TEXT_END` are independent of the
+   held Romeo title floor.  No alt operation may pop Romeo.
+3. The private terminator reaches the complete A9 adapter.  With `12` frozen
+   in Prospero, `LYRIC_RESUME_CLOSE_DISPATCH` enters the new close-only
+   `LYRIC_IMAGE_TITLE_CLOSE` scene.  That scene sets Hecate to
+   `FIELD_IMAGE_TITLE` and enters the existing `LYRIC_FIELD_RETRY` family.
+   The family reverses and entity-encodes the held Romeo title exactly once;
+   its `FIELD_IMAGE_TITLE` drain-close branch emits `" />` and returns to
+   `LYRIC_POP_GLYPH`.  It must not create another continuation record or
+   private Puck boundary.
+4. An image with no title continues to use `RESUME_IMAGE=9` and emits `" />`
+   after the alt requeue.  Links retain their immediate title drain and
+   `RESUME_LINK=8`; this correction changes neither link ordering nor
+   autolink behavior.
+
+This creates no new token code and no third on-stage character.  It adds only
+the state-tag value `RESUME_IMAGE_TITLE=12`, which is a local Act III value
+and must be included in the `RESUME_*` membership checks and observer
+assertions.
+
+### Nested-floor proof and required regression
+
+The composition is legal: stacks are per-character and `run_act` pops only
+the operation's target stack.  A focused IR-interpreter probe on 2026-07-14
+held `[STREAM_END, 'i']` on Romeo while it created and completely drained an
+independent `[STREAM_END, 'c', 'd']` Horatio requeue floor; the Romeo title
+remained available, then both floors drained without `StackUnderflow`.
+
+Before production scenes, add
+`test_image_title_floor_survives_alt_requeue` to
+`tests/test_splc_interpret.py`.  Construct a four-scene, two-character IR
+act that: (a) pushes Romeo's title floor and `ord("i")`; (b) pushes Horatio's
+alt floor and `ord("c"), ord("d")`; (c) drains only Horatio through its
+floor; then (d) drains Romeo's title through its floor.  Assert both stacks
+are empty and the final values on both characters are `tokens.STREAM_END`.
+Run:
+
+```bash
+uv run pytest tests/test_splc_interpret.py::test_image_title_floor_survives_alt_requeue -q
+```
+
+Expected: `1 passed`.  The Task 4 observer test must additionally assert for
+`links_images_protected` that the alt private boundary freezes `12`, enters
+`LYRIC_IMAGE_TITLE_CLOSE`, does not pop Romeo before that scene, and reaches
+exactly one `FIELD_IMAGE_TITLE` reverse/drain before emitting `" />`.
+
+### A10 literary reservation (ready to paste)
+
+One working scene is derived from the one new A10 transition above.  Its four
+spares meet the required minimum spare pool for this act; none grants
+authority unless a later planning amendment records its exact transition. No
+new Recall phrase is required.
+
+```toml
+[scenes.LYRIC_IMAGE_TITLE_CLOSE]
+title = "Romeo releases the portrait's quiet name."
+pattern = "scene_of_character"
+
+# A10 spare pool — do not use without another planning amendment.
+[scenes.LYRIC_IMAGE_TITLE_REVERSE_GUARD]
+title = "Romeo finds the portrait name's rooted stone."
+pattern = "scene_of_character"
+[scenes.LYRIC_IMAGE_TITLE_DRAIN_GUARD]
+title = "Juliet keeps the portrait name's clear course."
+pattern = "scene_of_character"
+[scenes.LYRIC_IMAGE_TITLE_FLOOR_FAIL]
+title = "The portrait name refuses a broken gate."
+pattern = "bare_statement"
+[scenes.LYRIC_IMAGE_TITLE_RETURN]
+title = "The portrait leaves its quiet garden whole."
+pattern = "bare_statement"
+```
