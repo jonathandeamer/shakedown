@@ -781,6 +781,98 @@ from this pool (superseding the retired Task 4 pool above) plus Amendment
 A1's Step 5 pool where genuinely shared (e.g. Task 4 must not redefine
 `LYRIC_CODE_*`).
 
+## Amendment A3 (2026-07-13): source-buffer assertion boundary and legal handoff
+
+This amendment clears the current `BLOCK[plan]`. The Task 4 Step 1 negative
+assertion incorrectly calls all values above the borrowed Puck prefix a
+"source buffer" after Act III has halted. That is false by the existing
+Act-III/Act-IV contract: `LYRIC_OPEN_REVERSE` deliberately seeds a fresh
+`STREAM_END` on Puck, and `LYRIC_REVERSE_POP` deliberately transfers the
+completed Juliet stream onto it. The non-empty region observed at exit is
+therefore the required Act IV carrier, not requeued input. This also explains
+why the assertion fails for the already-landed code-span fixtures at HEAD.
+
+The accepted design is amended in
+`docs/superpowers/specs/2026-07-12-span-architecture-spike-design.md` under
+"Boundaries and invariants". That wording is binding for Task 4 and
+supersedes Step 1's phrase "the source-buffer stack" and every assertion in
+`test_act3_source_buffer_never_receives_generated_output*` that requires
+Puck to be empty after `ACT3` returns.
+
+### Binding replacement contract
+
+The invariant has two separately observable parts:
+
+1. **Pre-handoff emptiness.** At interpreter entry to
+   `LYRIC_OPEN_REVERSE` — before that scene pushes the new output-carrier
+   `STREAM_END` — Puck must equal the injected borrowed prefix exactly. Its
+   original Act-II stream, every temporary source value, and every allowed
+   raw-glyph requeue have been consumed. Juliet must hold the completed
+   forward stream. This is the only valid point at which to assert that Puck
+   is empty above the borrowed prefix.
+2. **One-way provenance.** Inspect `src_ir.act3.ACT` as IR, not generated
+   SPL. Before the reverse handoff, any `Push(PUCK, ...)` is limited to an
+   original raw glyph held in Puck/Romeo/Horatio, `TEXT_END`, or the private
+   resume sentinel. `Push(PUCK, val(JULIET))` is permitted exactly once as a
+   scene shape, in `LYRIC_REVERSE_POP`; no other scene may transfer Juliet to
+   Puck. This permits raw label/alt/emphasis requeue while forbidding
+   generated HTML from becoming scan input. After the handoff, assert a
+   structurally valid `PARA ... TEXT_END, STREAM_END` carrier rather than
+   emptiness.
+
+### Task 4 Step 2 required test-infrastructure change
+
+Before adding a protected scanner scene, amend only verification code as part
+of this unchecked step:
+
+- In `scripts/splc/interpret.py`, extend the existing verification-only
+  `InterpreterObserver` with `on_scene(label: str, state: InterpreterState)`
+  and invoke it immediately after `sc = by_label[label]`, before that scene's
+  first operation. Existing observers receive a no-op `on_scene` method.
+  This changes neither the IR nor generated SPL.
+- In `tests/test_act3_contracts.py`, replace both exit-state
+  `source_buffer_never_receives_generated_output` assertions with one
+  parameterized observer-based test over all five span stems. Give the
+  observer the injected `_CarrierBoundary`; when `label ==
+  "LYRIC_OPEN_REVERSE"`, snapshot `tuple(state.stacks[Char.PUCK])` and
+  `tuple(state.stacks[Char.JULIET])`. Assert exactly one snapshot, assert its
+  Puck stack equals `_BORROWED_PREFIX`, and assert the Juliet snapshot is
+  non-empty and begins with the forward stream's `STREAM_END` floor. Continue
+  the act, then retain the existing borrowed-prefix and decoded-carrier
+  structural assertions at exit.
+- Add a focused IR-shape test in that same file. Iterate `ACT3.scenes`, find
+  `Push` operations targeting `PUCK`, and assert every occurrence with
+  `expr == val(JULIET)` belongs to the singleton set
+  `{("LYRIC_REVERSE_POP", <the output-carrier push>)}`. In the two handoff
+  scenes, allow exactly `push(PUCK, const(tokens.STREAM_END))` in
+  `LYRIC_OPEN_REVERSE` and `push(PUCK, val(JULIET))` in
+  `LYRIC_REVERSE_POP`. Before that boundary, allow only `val(PUCK)`,
+  `val(ROMEO)`, `val(HORATIO)`, `const(tokens.TEXT_END)`, and the
+  plan-reserved private resume sentinel. Assert no literal `<`, `>`, `&`, or
+  any `val(JULIET)` transfer appears in a pre-handoff source scene. Use the
+  IR node types (`Push`, `Val`, `Const`) rather than rendered prose.
+
+Task 4's file list is correspondingly extended with
+`scripts/splc/interpret.py` and `tests/test_act2_frame_floors.py`: the latter
+is the existing observer implementation that must gain the no-op
+`on_scene` method so the verification-only protocol remains type-complete.
+
+No controlled title, Recall line, or production scene is introduced by this
+amendment. Task 4 continues to use only Amendment A2's 41+10 literary pool;
+the exact literary gate already named in Global Constraints remains required
+after the subsequent Act III/TOML change.
+
+### Revised Task 4 evidence expectation
+
+Task 4 Step 3's first pytest command must include
+`tests/test_splc_interpret.py`, because the observer hook is
+verification-only interpreter behavior. Its expected result is PASS for the
+new pre-handoff/provenance assertions, the protected-mode contracts, every
+reviewed dump, and all existing spike structure tests. A failure showing
+Puck non-empty only after `ACT3` returns is not evidence against this design;
+the failure must instead be evaluated against the pre-handoff snapshot and
+the explicit transfer allowlist above.
+
 ---
 
 ### Task 1: Commit the span-spike corpus and reviewed expected output

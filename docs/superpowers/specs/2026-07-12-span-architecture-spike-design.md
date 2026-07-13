@@ -39,8 +39,24 @@ or quote.
 - A backtick opener is a maximal run. Only a later maximal run of the same
   length closes it; shorter runs are content. Multiple spans in a paragraph
   are separate regions.
-- The scanner's floor sentinel is consumed exactly once before Act III passes
-  its carrier to Act IV. Tests must prove the original Puck prefix is intact.
+- The input carrier sentinel is consumed exactly once when traversal reaches
+  the end of the Act-II stream. At that point the borrowed Puck prefix is
+  intact and Puck has no scan-source values above it. Act III then performs
+  its required, distinct reverse handoff: it seeds a new `STREAM_END` on
+  Puck and transfers the completed Juliet stream onto it for Act IV. Thus an
+  Act-III exit necessarily has a non-empty Puck region above the borrowed
+  prefix; that region is the output carrier, not a source buffer.
+- The one-way rule is phase-scoped: before `LYRIC_OPEN_REVERSE`, no generated
+  HTML may be pushed onto Puck. The only permitted Juliet-to-Puck transfer is
+  `LYRIC_REVERSE_POP`, after that boundary, to establish the Act-III→Act-IV
+  carrier. Requeuing original raw label/alt/emphasis glyphs and their private
+  resume sentinel remains permitted before the boundary.
+- Tests must snapshot the interpreter at entry to `LYRIC_OPEN_REVERSE` and
+  prove Puck is exactly the borrowed prefix while Juliet owns the completed
+  stream. They must separately inspect Act III's IR and allow
+  `push(PUCK, val(JULIET))` only in `LYRIC_REVERSE_POP`; an empty-Puck
+  assertion after Act III halts is invalid because it rejects the required
+  handoff.
 - The recognition order is exactly `_DoCodeSpans`, `_EscapeSpecialChars`,
   images, anchors, autolinks, amp/angle encoding, strong, emphasis, hard
   breaks. The spike implements only its stated probe forms, but it may not
