@@ -1264,3 +1264,56 @@ def test_main_select_executor_preserve_planning_flag(
     mco_loop.main(["--status"])
     assert len(calls) == 1
     assert calls[0][4] is True
+
+
+class _FakeCompletedProcess:
+    def __init__(self, stdout: str = "", stderr: str = "", returncode: int = 0) -> None:
+        self.stdout = stdout
+        self.stderr = stderr
+        self.returncode = returncode
+
+
+def test_ensure_git_hooks_noop_when_already_active(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    calls: list[list[str]] = []
+
+    def fake_run(cmd: list[str], **kwargs: object) -> _FakeCompletedProcess:
+        calls.append(cmd)
+        return _FakeCompletedProcess(stdout=".githooks\n")
+
+    monkeypatch.setattr(mco_loop.subprocess, "run", fake_run)
+    assert mco_loop.ensure_git_hooks(tmp_path) is None
+    assert len(calls) == 1
+    assert calls[0][-1] == "core.hooksPath"
+
+
+def test_ensure_git_hooks_activates_when_unset(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    calls: list[list[str]] = []
+
+    def fake_run(cmd: list[str], **kwargs: object) -> _FakeCompletedProcess:
+        calls.append(cmd)
+        if cmd[-1] == ".githooks":
+            return _FakeCompletedProcess(returncode=0)
+        return _FakeCompletedProcess(stdout="", returncode=1)
+
+    monkeypatch.setattr(mco_loop.subprocess, "run", fake_run)
+    message = mco_loop.ensure_git_hooks(tmp_path)
+    assert message is not None and "activated .githooks" in message
+    assert calls[-1][-2:] == ["core.hooksPath", ".githooks"]
+
+
+def test_ensure_git_hooks_reports_activation_failure(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    def fake_run(cmd: list[str], **kwargs: object) -> _FakeCompletedProcess:
+        if cmd[-1] == ".githooks":
+            return _FakeCompletedProcess(stderr="permission denied", returncode=1)
+        return _FakeCompletedProcess(stdout="", returncode=1)
+
+    monkeypatch.setattr(mco_loop.subprocess, "run", fake_run)
+    message = mco_loop.ensure_git_hooks(tmp_path)
+    assert message is not None and "could not set core.hooksPath" in message
+    assert "permission denied" in message

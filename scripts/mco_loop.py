@@ -55,6 +55,34 @@ PI_MODELS_REQUIRED_IDS = (
 PI_MODELS_MAX_TOKENS_CAP = 32768
 
 
+def ensure_git_hooks(repo: Path = REPO) -> str | None:
+    """Point core.hooksPath at .githooks so lint/commit-msg hooks bind agent commits.
+
+    core.hooksPath is per-clone local config; a fresh checkout silently skips
+    every committed hook until it is set.
+    """
+    current = subprocess.run(
+        ["git", "-C", str(repo), "config", "core.hooksPath"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if current.stdout.strip() == ".githooks":
+        return None
+    activation = subprocess.run(
+        ["git", "-C", str(repo), "config", "core.hooksPath", ".githooks"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if activation.returncode != 0:
+        return (
+            "agent-loop: could not set core.hooksPath to .githooks: "
+            f"{activation.stderr.strip()}"
+        )
+    return "agent-loop: activated .githooks (core.hooksPath was unset)"
+
+
 def pi_auth_shadow_warning(path: Path = PI_AUTH_FILE) -> str | None:
     """Warn when a stored Pi credential would shadow the loop's env key."""
     try:
@@ -1302,7 +1330,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         print("agent-loop: mco is not installed; install @tt-a1i/mco", file=sys.stderr)
         return 2
     environment = load_named_secrets(config.env_file)
-    for preflight_warning in (pi_auth_shadow_warning(), pi_models_config_warning()):
+    for preflight_warning in (
+        ensure_git_hooks(),
+        pi_auth_shadow_warning(),
+        pi_models_config_warning(),
+    ):
         if preflight_warning:
             print(preflight_warning, file=sys.stderr)
     try:
