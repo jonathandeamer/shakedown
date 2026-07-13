@@ -38,6 +38,7 @@ class _CarrierBoundary:
 @dataclass
 class _SceneObserver:
     labels: list[str]
+    scene_values: list[tuple[str, int, int, int]]
     text_end_routes: list[tuple[str, str, int]]
     lady_macbeth_pops: list[tuple[str, int]]
     current_label: str = ""
@@ -54,6 +55,14 @@ class _SceneObserver:
         self.current_label = label
         self.hecate = state.values[Char.HECATE]
         self.labels.append(label)
+        self.scene_values.append(
+            (
+                label,
+                state.values[Char.HECATE],
+                state.values[Char.MACBETH],
+                state.values[Char.PROSPERO],
+            )
+        )
         if label == "LYRIC_OPEN_REVERSE":
             assert self.open_reverse_puck is None
             self.open_reverse_puck = tuple(state.stacks[Char.PUCK])
@@ -71,7 +80,9 @@ class _SceneObserver:
 
 
 def _observer() -> _SceneObserver:
-    return _SceneObserver(labels=[], text_end_routes=[], lady_macbeth_pops=[])
+    return _SceneObserver(
+        labels=[], scene_values=[], text_end_routes=[], lady_macbeth_pops=[]
+    )
 
 
 def _run_to_act2(stem: str) -> InterpreterState:
@@ -339,10 +350,43 @@ def test_act3_text_end_event_order_is_carrier_safe(stem: str) -> None:
         for source, target, _ in private
     )
     assert observer.labels.count("LYRIC_RESUME_DISPATCH") == len(private)
-    assert sum(
-        label.startswith("LYRIC_RESUME_RESTORE_")
+    adapter_order = (
+        "LYRIC_RESUME_DISPATCH",
+        "LYRIC_RESUME_POP_MACBETH",
+        "LYRIC_RESUME_RESTORE_MACBETH",
+        "LYRIC_RESUME_POP_HECATE",
+        "LYRIC_RESUME_RESTORE_HECATE",
+        "LYRIC_RESUME_VERIFY_FLOOR",
+    )
+    resume_entries = [
+        index
+        for index, (label, _, _, _) in enumerate(observer.scene_values)
+        if label == "LYRIC_RESUME_DISPATCH"
+    ]
+    for index in resume_entries:
+        entries = observer.scene_values[index : index + len(adapter_order) + 1]
+        assert tuple(label for label, _, _, _ in entries[:-1]) == adapter_order
+        frozen_close = entries[0][3]
+        assert frozen_close in _RESUME_CODES
+        assert entries[-1][3] == frozen_close
+        assert entries[-1][0] in {"LYRIC_REGION_RESUME", "LYRIC_EMPHASIS_RESUME"}
+
+    resume_pop_labels = {
+        "LYRIC_RESUME_POP_MACBETH",
+        "LYRIC_RESUME_POP_HECATE",
+        "LYRIC_RESUME_VERIFY_FLOOR",
+    }
+    resume_pops = [
+        (label, value)
+        for label, value in observer.lady_macbeth_pops
+        if label in resume_pop_labels
+    ]
+    assert len(resume_pops) == 3 * len(private)
+    assert all(
+        label in resume_pop_labels or label == "LYRIC_AUTOLINK_TEXT_OPEN"
         for label, _ in observer.lady_macbeth_pops
-    ) == 3 * len(private)
+    )
+    assert "LYRIC_RESUME_FLOOR_FAIL" not in observer.labels
 
 
 @pytest.mark.parametrize("stem", _TASK4_PROTECTED_FIXTURES)
@@ -381,6 +425,12 @@ def test_act3_ir_requeue_and_field_floors_follow_a4_shape() -> None:
         "LYRIC_FIELD_OPEN",
         "LYRIC_FIELD_DRAIN_CLOSE",
         "LYRIC_RESUME_DISPATCH",
+        "LYRIC_RESUME_POP_MACBETH",
+        "LYRIC_RESUME_RESTORE_MACBETH",
+        "LYRIC_RESUME_POP_HECATE",
+        "LYRIC_RESUME_RESTORE_HECATE",
+        "LYRIC_RESUME_VERIFY_FLOOR",
+        "LYRIC_RESUME_FLOOR_FAIL",
     }.issubset(labels)
     field_open = next(sc for sc in ACT3.scenes if sc.label == "LYRIC_FIELD_OPEN")
     assert any(
