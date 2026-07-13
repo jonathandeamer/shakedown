@@ -39,6 +39,23 @@ quota_group = "codex"
 coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
 
+[[escalation]]
+name = "codex-terra-escalate"
+provider = "codex"
+model = "gpt-5.6-terra"
+quota_group = "codex"
+coauthor_name = "OpenAI Codex"
+coauthor_email = "noreply@openai.com"
+
+[[escalation]]
+name = "claude-opus-escalate"
+provider = "claude-opus"
+display_model = "opus"
+quota_group = "claude"
+best_effort = true
+coauthor_name = "Claude"
+coauthor_email = "noreply@anthropic.com"
+
 [[implementation]]
 name = "claude-implement"
 provider = "claude-sonnet"

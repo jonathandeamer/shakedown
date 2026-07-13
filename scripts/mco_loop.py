@@ -46,6 +46,15 @@ TRANSIENT_MARKERS = (
     "service unavailable",
 )
 MCO_TIMEOUT_SECONDS = 18000
+BLOCKER_ESCALATION_THRESHOLD = 3
+ESCALATION_EXEMPT_OUTCOMES = {"rate_limit", "transient", "supervisor_timeout"}
+ESCALATION_SUMMARY = (
+    "Escalated amendment: repeated iterations recorded the same blocker. "
+    "Amend the active plan so the blocker can be cleared using resources the "
+    "plan has already reserved; if that is impossible without compiler or "
+    "validator changes or new scene budgets, record the exact operator "
+    "decision needed and exit."
+)
 PI_AUTH_FILE = Path.home() / ".pi" / "agent" / "auth.json"
 PI_MODELS_FILE = Path.home() / ".pi" / "agent" / "models.json"
 PI_MODELS_REQUIRED_IDS = (
@@ -169,6 +178,7 @@ class LoopConfig:
     iteration_pause_seconds: int
     planning: tuple[Executor, ...]
     implementation: tuple[Executor, ...]
+    escalation: tuple[Executor, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -283,6 +293,11 @@ def load_config(path: Path = DEFAULT_CONFIG) -> LoopConfig:
         iteration_pause_seconds=_integer(loop, "iteration_pause_seconds"),
         planning=_executors(table.get("planning"), "planning"),
         implementation=_executors(table.get("implementation"), "implementation"),
+        escalation=(
+            _executors(table.get("escalation"), "escalation")
+            if table.get("escalation") is not None
+            else ()
+        ),
     )
 
 
@@ -320,7 +335,69 @@ def read_blockers(path: Path = BLOCKERS) -> tuple[str, ...]:
         lines = path.read_text().splitlines()
     except FileNotFoundError:
         return ()
-    return tuple(line.strip() for line in lines if line.lstrip().startswith("- BLOCK:"))
+    return tuple(
+        line.strip()
+        for line in lines
+        if line.lstrip().startswith(("- BLOCK:", "- BLOCK[plan]:"))
+    )
+
+
+def blockers_require_planning(blockers: Sequence[str]) -> bool:
+    """Return whether any active blocker is tagged as planner-only."""
+    return any(line.startswith("- BLOCK[plan]:") for line in blockers)
+
+
+def blocker_signature(blockers: Sequence[str]) -> str:
+    """Hash the active blocker set independent of line order."""
+    encoded = json.dumps(sorted(blockers), separators=(",", ":"))
+    return hashlib.sha256(encoded.encode()).hexdigest()
+
+
+def blocker_escalation_phase(
+    state: Mapping[str, object],
+    blockers: Sequence[str],
+    threshold: int = BLOCKER_ESCALATION_THRESHOLD,
+) -> str:
+    """Classify blocker persistence as none, normal, escalate, or halt."""
+    if not blockers:
+        return "none"
+    record = state.get("blocker_escalation")
+    if not isinstance(record, dict) or record.get("signature") != blocker_signature(
+        blockers
+    ):
+        return "normal"
+    if record.get("escalated"):
+        return "halt"
+    count = record.get("count")
+    if isinstance(count, int) and count >= threshold:
+        return "escalate"
+    return "normal"
+
+
+def record_blocker_attempt(
+    state: dict[str, object],
+    blockers: Sequence[str],
+    outcome: str,
+    escalated: bool,
+) -> None:
+    """Advance blocker persistence tracking after one substantive invocation."""
+    if outcome in ESCALATION_EXEMPT_OUTCOMES:
+        return
+    if not blockers:
+        state["blocker_escalation"] = None
+        return
+    signature = blocker_signature(blockers)
+    record = state.get("blocker_escalation")
+    count = 1
+    if isinstance(record, dict) and record.get("signature") == signature:
+        previous = record.get("count")
+        count = (previous if isinstance(previous, int) else 0) + 1
+        escalated = bool(record.get("escalated")) or escalated
+    state["blocker_escalation"] = {
+        "signature": signature,
+        "count": count,
+        "escalated": escalated,
+    }
 
 
 def first_unchecked_step(plan_text: str) -> str | None:
@@ -351,6 +428,15 @@ def determine_next_action(
         raise ValueError("roadmap has more than one in-flight plan")
     if blockers:
         active = in_flight[0].plan_path if in_flight else None
+        if blockers_require_planning(blockers):
+            return NextAction(
+                ActionKind.PLAN,
+                "Amend the active plan to clear the planner-only blocker "
+                "without creating a second in-flight plan.",
+                active,
+                None,
+                tuple(blockers),
+            )
         return NextAction(
             ActionKind.FIX,
             "Resolve the active blocker before roadmap work continues.",
@@ -445,6 +531,7 @@ def load_state(path: Path) -> dict[str, object]:
             "last_failure": None,
             "action_attempt": None,
             "exhaustion": None,
+            "blocker_escalation": None,
         }
     if not isinstance(value, dict):
         return {
@@ -453,16 +540,21 @@ def load_state(path: Path) -> dict[str, object]:
             "last_failure": None,
             "action_attempt": None,
             "exhaustion": None,
+            "blocker_escalation": None,
         }
     state = cast(dict[str, object], value)
     action_attempt = state.get("action_attempt")
     exhaustion = state.get("exhaustion")
+    blocker_escalation = state.get("blocker_escalation")
     return {
         "cooldowns": state.get("cooldowns", {}),
         "failures": state.get("failures", {}),
         "last_failure": state.get("last_failure"),
         "action_attempt": action_attempt if isinstance(action_attempt, dict) else None,
         "exhaustion": exhaustion if isinstance(exhaustion, dict) else None,
+        "blocker_escalation": (
+            blocker_escalation if isinstance(blocker_escalation, dict) else None
+        ),
     }
 
 
@@ -735,7 +827,8 @@ def build_prompt(
         "gate, create a small conventional commit, and push the current branch "
         "so progress is visible on GitHub. Never create empty checkpoint commits, "
         "force-push, tag, or expose credentials. If a required push fails, or if "
-        "otherwise blocked, record one `- BLOCK:` line in .agent/blockers.md and "
+        "otherwise blocked, record one `- BLOCK:` line in .agent/blockers.md "
+        "(use `- BLOCK[plan]:` when only a planning amendment can clear it) and "
         "exit cleanly. End every commit message with these exact provenance "
         f"trailers after a blank line:\n{provenance}"
     )
@@ -1296,15 +1389,16 @@ def run_governor(
     action: NextAction,
     environment: Mapping[str, str],
 ) -> int:
-    """Run one explicit Fable review and persist its non-secret directive."""
-    executor = Executor(
-        name="fable-governor",
-        provider="claude-fable",
-        quota_group="claude",
-        display_model="claude-fable-5",
-        best_effort=True,
-    )
+    """Run one explicit governor-tier review and persist its directive."""
     state = load_state(config.state_file)
+    pool = config.escalation or config.planning
+    executor, _ = available_executor(pool, state, int(time.time()))
+    if executor is None:
+        print(
+            "agent-loop: no governor-tier executor is currently available",
+            file=sys.stderr,
+        )
+        return 5
     result = invoke_mco(
         config,
         executor,
@@ -1335,6 +1429,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             iteration_pause_seconds=config.iteration_pause_seconds,
             planning=config.planning,
             implementation=config.implementation,
+            escalation=config.escalation,
         )
     if shutil.which("mco") is None and not args.dry_run and not args.status:
         print("agent-loop: mco is not installed; install @tt-a1i/mco", file=sys.stderr)
@@ -1373,11 +1468,29 @@ def main(argv: Sequence[str] | None = None) -> int:
                     file=sys.stderr,
                 )
                 return 4
-            pool = (
-                config.planning
-                if action.kind is ActionKind.PLAN
-                else config.implementation
-            )
+            escalation_phase = blocker_escalation_phase(state, blockers)
+            if escalation_phase == "halt":
+                print(
+                    "agent-loop: escalated planning already ran once and the "
+                    "same blocker persists; operator decision required "
+                    "(see .agent/blockers.md)",
+                    file=sys.stderr,
+                )
+                return 6
+            escalated = escalation_phase == "escalate"
+            if escalated:
+                action = NextAction(
+                    ActionKind.PLAN,
+                    ESCALATION_SUMMARY,
+                    action.active_plan,
+                    action.step,
+                    action.blockers,
+                )
+                pool = config.escalation or config.planning
+            elif action.kind is ActionKind.PLAN:
+                pool = config.planning
+            else:
+                pool = config.implementation
             now = int(time.time())
             selection = select_executor(
                 pool,
@@ -1439,6 +1552,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(_redact(result.stdout, environment))
             if result.stderr:
                 print(_redact(result.stderr, environment), file=sys.stderr)
+            record_blocker_attempt(
+                state, read_blockers(), classify_result(result), escalated
+            )
             outcome = apply_result(
                 config,
                 state,

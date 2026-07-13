@@ -1351,3 +1351,205 @@ def test_ensure_git_hooks_reports_activation_failure(
     message = mco_loop.ensure_git_hooks(tmp_path)
     assert message is not None and "could not set core.hooksPath" in message
     assert "permission denied" in message
+
+
+def test_read_blockers_includes_plan_tagged_lines(tmp_path: Path) -> None:
+    path = tmp_path / "blockers.md"
+    path.write_text(
+        "# Blockers\n"
+        "- BLOCK: broken contract\n"
+        "- BLOCK[plan]: step 5 needs a planning amendment\n"
+        "unrelated prose\n"
+    )
+
+    assert mco_loop.read_blockers(path) == (
+        "- BLOCK: broken contract",
+        "- BLOCK[plan]: step 5 needs a planning amendment",
+    )
+
+
+def test_plan_tagged_blocker_routes_to_planning(tmp_path: Path) -> None:
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] Implement it\n")
+
+    action = mco_loop.determine_next_action(
+        [_row("4S", "in flight", plan)],
+        ["- BLOCK[plan]: scanner needs a planning amendment"],
+    )
+
+    assert action.kind is ActionKind.PLAN
+    assert action.active_plan == plan
+    assert action.blockers == ("- BLOCK[plan]: scanner needs a planning amendment",)
+
+
+def test_blocker_escalation_walks_normal_escalate_halt() -> None:
+    state: dict[str, object] = {"blocker_escalation": None}
+    blockers = ("- BLOCK[plan]: same blocker",)
+
+    assert mco_loop.blocker_escalation_phase(state, ()) == "none"
+    assert mco_loop.blocker_escalation_phase(state, blockers) == "normal"
+    for _ in range(mco_loop.BLOCKER_ESCALATION_THRESHOLD):
+        mco_loop.record_blocker_attempt(state, blockers, "blocked", escalated=False)
+    assert mco_loop.blocker_escalation_phase(state, blockers) == "escalate"
+
+    mco_loop.record_blocker_attempt(state, blockers, "progress", escalated=True)
+    assert mco_loop.blocker_escalation_phase(state, blockers) == "halt"
+
+    changed = ("- BLOCK: a different blocker",)
+    assert mco_loop.blocker_escalation_phase(state, changed) == "normal"
+    mco_loop.record_blocker_attempt(state, (), "progress", escalated=False)
+    assert state["blocker_escalation"] is None
+
+
+def test_availability_failures_do_not_advance_blocker_escalation() -> None:
+    state: dict[str, object] = {"blocker_escalation": None}
+    blockers = ("- BLOCK[plan]: same blocker",)
+
+    for outcome in ("rate_limit", "transient", "supervisor_timeout"):
+        mco_loop.record_blocker_attempt(state, blockers, outcome, escalated=False)
+
+    assert state["blocker_escalation"] is None
+    assert mco_loop.blocker_escalation_phase(state, blockers) == "normal"
+
+
+def test_load_state_preserves_blocker_escalation(tmp_path: Path) -> None:
+    path = tmp_path / "state.json"
+    record = {"signature": "abc", "count": 3, "escalated": False}
+    path.write_text(json.dumps({"blocker_escalation": record}))
+
+    assert mco_loop.load_state(path)["blocker_escalation"] == record
+    assert mco_loop.load_state(tmp_path / "missing.json")["blocker_escalation"] is None
+
+
+def test_live_config_escalation_tier_is_terra_then_opus_without_fable() -> None:
+    config = mco_loop.load_config()
+
+    assert [(item.provider, item.model) for item in config.escalation] == [
+        ("codex", "gpt-5.6-terra"),
+        ("claude-opus", None),
+    ]
+    assert all("fable" not in item.provider for item in config.escalation)
+
+
+def _escalation_main_setup(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    escalated: bool,
+) -> tuple[mco_loop.LoopConfig, tuple[Executor, ...]]:
+    escalation = (Executor("claude-opus-escalate", "claude-opus", "claude"),)
+    config = mco_loop.LoopConfig(
+        env_file=tmp_path / ".env",
+        state_file=tmp_path / "state.json",
+        artifact_dir=tmp_path / "artifacts",
+        cooldown_seconds=60,
+        iteration_pause_seconds=0,
+        planning=(Executor("sonnet-plan", "claude-sonnet", "claude"),),
+        implementation=(Executor("claude", "claude", "claude"),),
+        escalation=escalation,
+    )
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    blockers = ("- BLOCK[plan]: scanner needs a planning amendment",)
+    mco_loop.save_state(
+        config.state_file,
+        {
+            "cooldowns": {},
+            "failures": {},
+            "last_failure": None,
+            "action_attempt": None,
+            "exhaustion": None,
+            "blocker_escalation": {
+                "signature": mco_loop.blocker_signature(blockers),
+                "count": mco_loop.BLOCKER_ESCALATION_THRESHOLD,
+                "escalated": escalated,
+            },
+        },
+    )
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(mco_loop, "FABLE_DIRECTIVE", tmp_path / "directive.md")
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop, "parse_roadmap", lambda text: (_row("4S", "in flight", plan),)
+    )
+    monkeypatch.setattr(
+        mco_loop, "read_blockers", lambda path=mco_loop.BLOCKERS: blockers
+    )
+    return config, escalation
+
+
+def test_main_routes_persistent_blocker_to_escalation_pool(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
+) -> None:
+    _, escalation = _escalation_main_setup(tmp_path, monkeypatch, escalated=False)
+    pools: list[tuple[Executor, ...]] = []
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        pools.append(tuple(executors))
+        return mco_loop.ExecutorSelection(None, None, True)
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+
+    assert mco_loop.main(["--once"]) == 5
+    assert pools == [escalation]
+    capsys.readouterr()
+
+
+def test_main_halts_for_operator_after_failed_escalated_attempt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys
+) -> None:
+    _escalation_main_setup(tmp_path, monkeypatch, escalated=True)
+
+    def fail_select(*args, **kwargs):
+        raise AssertionError("halt must occur before executor selection")
+
+    monkeypatch.setattr(mco_loop, "select_executor", fail_select)
+
+    assert mco_loop.main(["--once"]) == 6
+    assert "operator" in capsys.readouterr().err
+
+
+def test_prompt_teaches_plan_tagged_blocker_lines(monkeypatch) -> None:
+    monkeypatch.setattr(mco_loop, "_git_output", lambda arguments: "")
+    action = NextAction(ActionKind.IMPLEMENT, "work", None, "step", ())
+    executor = Executor("claude", "claude", "claude")
+
+    prompt = mco_loop.build_prompt(action, executor, None, "invocation-1")
+
+    assert "- BLOCK[plan]:" in prompt
+
+
+def test_governor_runs_on_escalation_tier_not_fable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    captured: dict[str, Executor] = {}
+
+    def fake_invoke(config, executor, action, environment, prompt_override=None):
+        captured["executor"] = executor
+        return InvocationResult(0, "VERDICT: CONTINUE\n", "", False)
+
+    monkeypatch.setattr(mco_loop, "invoke_mco", fake_invoke)
+    monkeypatch.setattr(mco_loop, "FABLE_DIRECTIVE", tmp_path / "directive.md")
+    config = mco_loop.LoopConfig(
+        env_file=tmp_path / ".env",
+        state_file=tmp_path / "state.json",
+        artifact_dir=tmp_path / "artifacts",
+        cooldown_seconds=60,
+        iteration_pause_seconds=0,
+        planning=(Executor("sonnet-plan", "claude-sonnet", "claude"),),
+        implementation=(Executor("claude", "claude", "claude"),),
+        escalation=(
+            Executor("codex-terra-escalate", "codex", "codex", model="gpt-5.6-terra"),
+        ),
+    )
+    action = NextAction(ActionKind.FIX, "stuck", None, None, ())
+
+    assert mco_loop.run_governor(config, action, {}) == 0
+    assert captured["executor"].name == "codex-terra-escalate"
+    assert captured["executor"].provider != "claude-fable"

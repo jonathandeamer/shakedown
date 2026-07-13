@@ -151,11 +151,17 @@ For each action, the loop builds a handoff prompt in [.agent/mco-current-prompt.
 
 ## 5. Architectural Review (Governor Mode)
 
-Running `./agent-loop --govern` executes a read-only Claude Fable review. It analyzes the workspace and writes a directive to [.agent/fable-directive.md](file:///Users/jonathan/shakedown/.agent/fable-directive.md) with a leading verdict line:
+Running `./agent-loop --govern` executes a read-only review on the governor tier — the first available `[[escalation]]` executor from `agent-loop.toml` (gpt-5.6-terra, then Opus), falling back to the planning pool. Claude Fable is not used; it stays outside all automatic and governor routing. The review analyzes the workspace and writes a directive to [.agent/fable-directive.md](file:///Users/jonathan/shakedown/.agent/fable-directive.md) with a leading verdict line:
 * `VERDICT: CONTINUE` (sound plan)
 * `VERDICT: FIX` (names a bounded repair)
 * `VERDICT: REDIRECT` (amend existing specs or plans)
 * `VERDICT: STOP` (halt for safety or authority)
+
+## 5a. Blocker Escalation
+
+Blockers tagged `- BLOCK[plan]:` in `.agent/blockers.md` route to the planning pool (`ActionKind.PLAN`) instead of the fix path, so planner-only halts are amended by planning models rather than re-recorded by implementation models. Untagged `- BLOCK:` lines keep the existing fix routing.
+
+The supervisor also tracks blocker persistence in `.agent/mco-loop-state.json` (`blocker_escalation`): after `BLOCKER_ESCALATION_THRESHOLD` (3) consecutive substantive invocations that leave the identical blocker set in place, the next iteration is forced to an escalated planning amendment on the `[[escalation]]` tier. Availability failures (rate limits, transient errors, supervisor timeouts) do not advance the counter. Exactly one escalated attempt is allowed per blocker signature; if the same blockers survive it, the loop exits `6` and asks for an operator decision.
 
 ---
 
@@ -186,7 +192,8 @@ tail -f .agent/loop.log
 | `2` | Setup, configuration, or MCO availability failure |
 | `3` | `--once` found no executor available while a trusted transient cooldown remains retryable |
 | `4` | Explicit Fable governor stop |
-| `5` | Substantive executor chain exhausted for the unchanged action |
+| `5` | Substantive executor chain exhausted for the unchanged action, or no governor-tier executor available for `--govern` |
+| `6` | Escalated planning attempt already ran once and the same blocker persists; operator decision required |
 | `124` | Explicit governor invocation reached the Python supervisor timeout |
 | `130` | Operator interrupt |
 

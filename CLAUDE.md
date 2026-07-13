@@ -79,8 +79,12 @@ tail -f .agent/loop.log
 Configuration: `agent-loop.toml` and `.mco/agents.yaml`. Ignored state and
 artifacts: `.agent/mco-loop-state.json` and `.agent/mco-artifacts/`. API keys
 are loaded by name from the configured env file (the git-ignored repo-root
-`.env`) and must never be committed. Claude Fable is excluded from automatic routing; use the expensive
-read-only governor only after genuine systemic failure:
+`.env`) and must never be committed. Claude Fable is excluded from all loop routing,
+including the governor. Planner-only blockers (`- BLOCK[plan]:` lines) route to the
+planning pool, and a blocker surviving three substantive iterations unchanged triggers
+one escalated amendment on the `[[escalation]]` tier (gpt-5.6-terra, then Opus) before
+the loop halts for the operator (exit 6). The read-only governor runs on the same
+escalation tier; use it only after genuine systemic failure:
 
 ```bash
 ./agent-loop --govern
