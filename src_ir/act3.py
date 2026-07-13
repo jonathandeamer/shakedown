@@ -163,7 +163,7 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_BUFFER_DRAIN_CLOSE",
-            push(PUCK, const(tokens.STREAM_END)),
+            push(PUCK, const(tokens.TEXT_END)),
             goto("LYRIC_BUFFER_UNWIND"),
             companion=ROMEO,
         ),
@@ -172,7 +172,7 @@ ACT: Act = act(
             pop(ROMEO, recall="buffered_last_glyph"),
             branch(
                 eq(val(ROMEO), const(tokens.STREAM_END)),
-                then="LYRIC_SCAN_NEXT",
+                then="LYRIC_POP_GLYPH",
                 else_="LYRIC_BUFFER_RETURN",
             ),
             anchor=JULIET,

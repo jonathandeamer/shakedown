@@ -103,7 +103,7 @@ Romeo:
                     Scene @LYRIC_BUFFER_DRAIN_CLOSE: @LIT.scenes.LYRIC_BUFFER_DRAIN_CLOSE.title
 
 Romeo:
- Remember a wolf.
+ Remember nothing.
 
 [Exit Puck]
 
@@ -122,7 +122,7 @@ Juliet:
  Are you as sweet as a wolf?
 
 Romeo:
- If so, let us proceed to scene @LYRIC_SCAN_NEXT.
+ If so, let us proceed to scene @LYRIC_POP_GLYPH.
 
 Romeo:
  If not, let us proceed to scene @LYRIC_BUFFER_RETURN.
@@ -149,7 +149,7 @@ Romeo:
 
 [Exit Juliet]
 
-[Enter Puck]
+[Enter Romeo]
 
 Romeo:
  @LIT.characters.romeo.recall.buffered_first_glyph
@@ -187,10 +187,6 @@ Puck:
 
 Puck:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Romeo]
 
 Juliet:
  Let us return to scene @LYRIC_SCAN_NEXT.
@@ -232,10 +228,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Romeo]
-
 Juliet:
  Let us return to scene @LYRIC_SCAN_NEXT.
 
@@ -270,10 +262,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Romeo]
-
 Juliet:
  Let us return to scene @LYRIC_SCAN_NEXT.
 
@@ -292,6 +280,10 @@ Juliet:
 
 
                     Scene @LYRIC_POP_GLYPH: @LIT.scenes.LYRIC_POP_GLYPH.title
+
+[Exit Juliet]
+
+[Enter Puck]
 
 Romeo:
  @LIT.characters.romeo.recall.mornings_first_cut
@@ -1295,6 +1287,10 @@ Juliet:
 [Exit Juliet]
 
 [Enter Romeo]
+
+[Exit Puck]
+
+[Enter Juliet]
 
 Romeo:
  Let us return to scene @LYRIC_POP_GLYPH.
