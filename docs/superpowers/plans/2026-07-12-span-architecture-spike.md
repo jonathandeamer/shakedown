@@ -486,6 +486,301 @@ registers, idle stacks as sentinel-bounded buffers, off-stage branch tests) is
 pre-authorized for Task 4's protected-region scanner should the same wall
 reappear there; Task 4 prose must still come only from its reserved pools.
 
+## Amendment A2 (2026-07-13): Task 4 shared-idiom redesign, expanded pool
+
+This amendment clears the `BLOCK[plan]` recorded 2026-07-13: a stashed,
+uncommitted Task 4 Step 2 attempt (`git stash list` entry "Task 4 Step 2 WIP:
+HTML/autolink/link/image/emphasis scanner, 91 scenes vs 29 reserved budget")
+implemented every protected mode correctly but needed 91 distinct `LYRIC_*`
+scene labels — over 3x the 23-working/6-spare pool reserved below the base
+literary reservations. Root cause: the WIP gave HTML tag emit, autolink
+href, autolink text, link/image destination, link/image title, and emphasis
+body each their own amp/lt/gt entity-encode triple, and gave label,
+alt, destination, and title each their own open/scan/keep/close/fallback
+quintet, instead of sharing one of each. This amendment supersedes the Task 4
+pool above (the 23 working + 6 spare titles under "Task 4 protected-region
+pool" / "Task 4 spare pool" are retired — do not use them) with a smaller
+shared-idiom design plus its own reserved pool, sized from the design below
+rather than from feature count.
+
+### Why one scan pipeline and one requeue trick cover every protected mode
+
+Three techniques eliminate essentially all of the WIP's duplication:
+
+1. **One shared field pipeline (`LYRIC_FIELD_*`), anchored on Juliet,
+   parameterized by an idle call-site register.** HTML tags, autolink
+   href/text, link/image destinations, and link/image titles all reduce to
+   "capture raw glyphs from Puck up to a terminator, optionally reverse and
+   entity-encode, emit to Juliet, then dispatch to a per-call-site
+   continuation." The dispatch and the terminator are both selected by a
+   single idle value register (Hecate, reused the same way Amendment A1
+   already established: "idle once phase is over") holding a small integer
+   call-site code set by the caller before jumping into `LYRIC_FIELD_OPEN`.
+   `branch` chains (already used for the amp/lt/gt tests) select the right
+   terminator and the right post-drain continuation from that one code, the
+   same way `LYRIC_CODE_GLYPH` already chains three branches for amp/lt/gt.
+   HTML tag content takes the same pipeline with entity-encoding skipped
+   (the call-site code doubles as the opaque-copy flag), so it needs no
+   separate scan/keep/close trio.
+2. **Capture-hold-then-requeue for content that must itself be rescanned.**
+   Link/image label and alt text must receive entity encoding *and* nested
+   strong/emphasis (`test_act3_renders_links_images_protected` expects
+   `<a href="http://e/x_(y)" title="t">a <em>b</em></a>`), but that content
+   is scanned *before* the destination/title that must precede it in
+   HTML-attribute-order output. Rather than duplicate the emphasis/entity
+   pipeline anchored at a second output character, capture the raw
+   label/alt glyphs onto Horatio's stack (newly brought on stage in Act III
+   for this hold only) without processing them, emit `<a href="`/`<img
+   src="`, run destination and title through the shared field pipeline
+   directly to Juliet, emit the closing `>`, then push the held label/alt
+   glyphs back onto Puck ahead of a private resume sentinel and fall through
+   to the play's ordinary top-level scan dispatch — the same dispatch that
+   already handles entities, code spans, and emphasis for ordinary body
+   text. This reuses the entire existing pipeline for free instead of
+   duplicating it, and composes automatically with the emphasis machine
+   added by this amendment (technique 3), which is why nested `<em>` inside
+   a link label needs no dedicated scene. When the resume sentinel is popped
+   back off, `LYRIC_RESUME_DISPATCH` (added to the existing glyph-dispatch
+   entry point) hands control to whichever region is pending. This is
+   requeuing *original, unprocessed* source glyphs, not generated output, so
+   it does not violate
+   `test_act3_source_buffer_never_receives_generated_output`: that test only
+   checks Puck's source region is empty *after* the scan completes, which
+   still holds since every requeued glyph is fully re-consumed before the
+   paragraph scan ends.
+3. **Duplicate-on-reverse for autolink's two emits.** An autolink's captured
+   URL is drained twice — once amp-encoded into the `href` attribute, once
+   amp/lt/gt-encoded into the link text — from the *same* capture, by having
+   `LYRIC_FIELD_REV_KEEP` push a second copy back onto the held Romeo stack
+   under its private sentinel when the call-site code says "keep source"
+   (autolink href only), so a second `LYRIC_AUTOLINK_TEXT_OPEN` pass can
+   re-drain it without rescanning Puck. This keeps `amp_count == 2` exactly
+   as `test_act3_renders_inline_html_and_autolink` requires, with one
+   capture instead of two.
+
+Strong-then-emphasis reuses the code-span run-length technique from
+Amendment A1 directly (opener count into an idle value register, candidate
+count into a second idle value register, off-stage `eq` compare), with one
+correction carried over from the stashed WIP's real bug: emit-open and
+emit-close must branch on the register holding the **matched run length**
+(Macbeth), never on the register also used to drain body content glyph by
+glyph (Hecate) — the WIP's `LYRIC_EMPHASIS_EMIT_CLOSE` fell off the scene
+because draining Hecate's content buffer clobbered the same register the
+close branch tested. Because emphasis bodies are requeued through the
+ordinary dispatch (technique 2) rather than drained and encoded in place,
+there is no separate content-buffer register to clobber in this redesign,
+but implementers must still keep the opener/closer run-length register
+(Macbeth) untouched by anything that walks body content.
+
+### Register and stack map addition (binding for Task 4)
+
+| Holder | Role during Task 4, in addition to Amendment A1's map |
+|---|---|
+| HECATE (value) | Call-site code for the shared field pipeline: selects terminator and post-drain continuation. Idle between Task 4 dispatches, same reuse rule as Amendment A1. |
+| MACBETH (value) | Local scratch per field: destination paren-balance counter, or emphasis opener/closer run length. Never shared concurrently between these uses. |
+| ROMEO (stack) | Field capture buffer above a private `STREAM_END` sentinel (unchanged discipline from Amendment A1); doubles as the autolink href/text hold via duplicate-on-reverse. |
+| HORATIO (stack, newly on stage in Act III) | Hold buffer for captured, unprocessed label/alt glyphs and for emphasis body glyphs between capture and requeue. |
+| A private resume sentinel on PUCK | Marks where requeued label/alt/emphasis-body content ends; recognized by `LYRIC_RESUME_DISPATCH` in the existing glyph-dispatch entry point. |
+
+### Amendment A2 literary reservations (ready to paste, supersedes the Task 4 pool above)
+
+41 new working scene titles plus 10 spares for `src/30-act3-literary.toml`.
+Add only labels the IR actually uses. If this spare pool is exhausted, stop
+and request a further planning amendment instead of inventing prose.
+
+```toml
+# src/30-act3-literary.toml — Amendment A2 pool (replaces the retired Task 4 pool)
+[scenes.LYRIC_FIELD_OPEN]
+title = "Romeo opens the unnamed field's gate."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_SCAN]
+title = "Romeo walks the unnamed field's edge."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_UNTERMINATED]
+title = "The unnamed field ends without its gate."
+pattern = "bare_statement"
+[scenes.LYRIC_FIELD_REV_KEEP]
+title = "Romeo gathers one field-worn mark."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_REV]
+title = "Romeo turns the field's line about."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_CLOSE_DISPATCH]
+title = "Romeo asks which road the field leads to."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_HEAD]
+title = "Juliet lifts the field's first glyph."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_GLYPH]
+title = "Juliet weighs the field's kept glyph."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_PLAIN]
+title = "Juliet lays the field's glyph plain."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_AMP]
+title = "Juliet names the field's small riverbend."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_LT]
+title = "Juliet softens the field's bright corner."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_GT]
+title = "Juliet softens the field's far corner."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_NEXT]
+title = "Juliet tends the field's next glyph."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_DRAIN_CLOSE]
+title = "The field's drained line reaches its gate."
+pattern = "bare_statement"
+[scenes.LYRIC_FIELD_HOLD]
+title = "Horatio keeps the unspoken field whole."
+pattern = "scene_of_character"
+[scenes.LYRIC_ANGLE_TEST]
+title = "Juliet asks what the bright angle names."
+pattern = "scene_of_character"
+[scenes.LYRIC_HTML_OPEN]
+title = "Romeo keeps the moonlit tag whole."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_OPEN]
+title = "Juliet opens the shining road."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_TEXT_OPEN]
+title = "Romeo walks the shining road again."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_CLOSE]
+title = "The shining road meets its silver gate."
+pattern = "bare_statement"
+[scenes.LYRIC_LINK_REGION]
+title = "Romeo binds the rose to its bright path."
+pattern = "scene_of_character"
+[scenes.LYRIC_IMAGE_TEST]
+title = "Juliet sees the little garden portrait."
+pattern = "scene_of_character"
+[scenes.LYRIC_LABEL_OPEN]
+title = "Horatio opens the rose's tender name."
+pattern = "scene_of_character"
+[scenes.LYRIC_ALT_OPEN]
+title = "Horatio opens the portrait's quiet name."
+pattern = "scene_of_character"
+[scenes.LYRIC_DEST_OPEN]
+title = "Romeo enters the winding garden road."
+pattern = "scene_of_character"
+[scenes.LYRIC_DEST_BALANCE]
+title = "Macbeth balances each round garden turn."
+pattern = "cross_character"
+[scenes.LYRIC_TITLE_OPEN]
+title = "Romeo opens the path's quiet name."
+pattern = "scene_of_character"
+[scenes.LYRIC_REGION_TAG_OPEN]
+title = "Juliet seals the gate before the name."
+pattern = "scene_of_character"
+[scenes.LYRIC_REGION_RESUME]
+title = "Horatio releases the tender name at last."
+pattern = "scene_of_character"
+[scenes.LYRIC_REGION_FALLBACK]
+title = "The unbound rose returns to the field."
+pattern = "bare_statement"
+[scenes.LYRIC_RESUME_DISPATCH]
+title = "Romeo asks which held name has returned."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_OPEN]
+title = "Juliet lays the star within the sunlit seal."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_COUNT_MORE]
+title = "Juliet lengthens the sunlit tally."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_SEEK]
+title = "Romeo follows the star through the leaves."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_CAND_COUNT]
+title = "Macbeth counts the answering starlight."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_CAND_MORE]
+title = "Macbeth lengthens the answering starlight."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_COMPARE]
+title = "The lovers weigh two sunlit measures."
+pattern = "cross_character"
+[scenes.LYRIC_EMPHASIS_MATCH]
+title = "Romeo finds the star's faithful mate."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_RESUME]
+title = "The sunlit seal closes around the star."
+pattern = "bare_statement"
+[scenes.LYRIC_EMPHASIS_FALLBACK]
+title = "The unpaired star remains in the garden."
+pattern = "bare_statement"
+[scenes.LYRIC_EMPHASIS_REPLAY]
+title = "Romeo restores the unpaired starlight."
+pattern = "scene_of_character"
+
+# Amendment A2 spare pool — do not use unless an extra generated scene is necessary.
+[scenes.LYRIC_FIELD_RETRY]
+title = "Romeo tries the unnamed field once more."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_HOLD_REPLAY]
+title = "Horatio restores the unspoken field."
+pattern = "scene_of_character"
+[scenes.LYRIC_HTML_FALLBACK]
+title = "The loose moonlit gate remains a gate."
+pattern = "bare_statement"
+[scenes.LYRIC_AUTOLINK_FALLBACK]
+title = "The unmarked road returns to the field."
+pattern = "bare_statement"
+[scenes.LYRIC_LABEL_FALLBACK]
+title = "The unnamed rose remains among the leaves."
+pattern = "bare_statement"
+[scenes.LYRIC_DEST_FALLBACK]
+title = "The unclosed road rests beside the rose."
+pattern = "bare_statement"
+[scenes.LYRIC_TITLE_FALLBACK]
+title = "The unclosed name rests beside the path."
+pattern = "bare_statement"
+[scenes.LYRIC_REGION_SPARE]
+title = "The lovers leave the finished garden whole."
+pattern = "cross_character"
+[scenes.LYRIC_EMPHASIS_SPARE]
+title = "The lonely star rests beneath the hedge."
+pattern = "bare_statement"
+[scenes.LYRIC_RESUME_SPARE]
+title = "Romeo wakes the waiting held name."
+pattern = "scene_of_character"
+```
+
+New recall keys for `src/literary.toml` (recall keys live in the pool of the
+**speaker** who says the Recall line, per `lower.py::_roles`, matching
+Amendment A1's convention). Add only the ones the IR actually needs, drawing
+from this reserved list; do not invent others.
+
+```toml
+# src/literary.toml additions — Amendment A2
+[characters.romeo.recall]  # merge into the existing table
+field_first_glyph = "Recall the field's first glyph."
+field_kept_mark = "Recall the field's kept mark."
+held_name_returned = "Recall the held name's return."
+
+[characters.juliet.recall]  # merge into the existing table
+fields_first_glyph = "Recall the field's opening glyph."
+fields_next_glyph = "Recall the field's next glyph."
+
+[characters.hecate.recall]  # merge into the existing table
+field_call_site = "Recall the field's chosen road."
+
+[characters.macbeth.recall]  # merge into the existing table
+answering_starlight = "Recall the answering starlight."
+
+[characters.horatio.recall]  # merge into the existing table
+held_label_glyph = "Recall the held label's glyph."
+held_alt_glyph = "Recall the held portrait's glyph."
+```
+
+The same reuse rule as Amendment A1 applies: these registers and stacks are
+freely clobbered once their phase is over, and every branch arrival into a
+shared scene must leave the same stage pair. Task 4 prose must come only
+from this pool (superseding the retired Task 4 pool above) plus Amendment
+A1's Step 5 pool where genuinely shared (e.g. Task 4 must not redefine
+`LYRIC_CODE_*`).
+
 ---
 
 ### Task 1: Commit the span-spike corpus and reviewed expected output
@@ -810,23 +1105,36 @@ reappear there; Task 4 prose must still come only from its reserved pools.
 
   Evidence (2026-07-13): the four Task 4 contract tests (`test_act3_renders_inline_html_and_autolink`, `test_act3_renders_links_images_protected`, `test_act3_renders_overlapping_emphasis`, and the parameterized `test_act3_source_buffer_never_receives_generated_output`/`_code_spans` negative assertion) were already committed in `8c69d89`/`6709f1f`/`510fda4` ("test: extend failing contracts for protected span modes") but the checkbox was never flipped. Re-ran `uv run pytest tests/test_act3_contracts.py -q` against committed `HEAD` (stashing an unrelated, unfinished Task 4 Step 2 WIP diff in `src_ir/act3.py` first): `11 failed, 15 passed` — the 11 failures are exactly the new Task 4 protected-mode assertions (`_does_not_yet_render_expected_span_html` for all five span fixtures, the three `_renders_*` contracts, and the four `_source_buffer_never_receives_generated_output*` cases); all Task 1-3 contracts, including code-span/escape rendering, remain green. This is the expected red gate before Task 4 Step 2 implementation.
 
-- [ ] **Step 2: Implement the remaining scanner modes in oracle order.**
+- [ ] **Step 2: Implement the remaining scanner modes using the Amendment A2 shared design.**
 
-  Extend the Task 3 buffer using the pre-reserved Task 4 protected-region
-  pool: `LYRIC_HTML_TAG` through `LYRIC_AUTOLINK_CLOSE` for opaque tags and
-  active autolinks; `LYRIC_LINK_REGION` through `LYRIC_REGION_EMIT` for the
-  balanced link/image label, destination, and title states; and
-  `LYRIC_EMPHASIS_STRONG` through `LYRIC_EMPHASIS_CLOSE` for strong-before-em
-  output. `<...>` distinguishes a literal inline HTML tag from an
-  HTTP/HTTPS/FTP autolink; tags copy as opaque source bytes, while autolink
-  URLs receive amp/angle encoding once. Parse the exact balanced probe
-  link/image forms: bracketed label/alt text is recursively scanned as source
-  text, `http://e/x_(y)` is retained verbatim as an opaque destination, and
-  quoted titles remain opaque. Apply amp/angle encoding, strong substitution,
-  and emphasis substitution only to ordinary/child-label source regions, with
-  strong before emphasis. The six Task 4 spares are the only permitted
-  additional states; exhaustion is a planning-amendment stop. Do not add
-  general reference resolution or unsupported delimiter grammar.
+  The original per-feature Task 4 pool (`LYRIC_HTML_TAG` through
+  `LYRIC_AUTOLINK_CLOSE`, `LYRIC_LINK_REGION` through `LYRIC_REGION_EMIT`,
+  `LYRIC_EMPHASIS_STRONG` through `LYRIC_EMPHASIS_CLOSE`) is retired — a
+  2026-07-13 attempt following that shape needed 91 scenes against a
+  29-title budget (stashed at `git stash list` entry "Task 4 Step 2 WIP:
+  HTML/autolink/link/image/emphasis scanner, 91 scenes vs 29 reserved
+  budget"; recorded in `.agent/blockers.md` history). Implement instead
+  against **Amendment A2** above: one shared `LYRIC_FIELD_*` pipeline
+  (anchored on Juliet, dispatched by an idle Hecate call-site code) for HTML
+  tag copy, autolink href/text, link/image destination, and title; the
+  capture-hold-then-requeue technique (Horatio holds raw label/alt glyphs,
+  which are pushed back onto Puck behind a private resume sentinel and
+  processed by the ordinary top-level scan dispatch, giving nested
+  entity/emphasis handling for free) for link/image label and image alt;
+  duplicate-on-reverse for autolink's two encoded emits (href, then text)
+  from one capture; and the Amendment A1 code-span run-length technique for
+  strong-then-emphasis, with emit-open/emit-close branching on the
+  opener/closer run-length register (Macbeth) rather than whatever register
+  drains body content — the stashed WIP's actual bug was branching on the
+  content-draining register instead. `<...>` distinguishes a literal inline
+  HTML tag from an HTTP/HTTPS/FTP autolink; tags copy as opaque source
+  bytes via the shared pipeline's opaque mode. Parse the exact balanced
+  probe link/image forms: `http://e/x_(y)` is retained verbatim as an
+  opaque destination and quoted titles remain opaque (both through the
+  shared field pipeline), while bracketed label/alt text is requeued rather
+  than recursively re-implemented. The ten Amendment A2 spares are the only
+  permitted additional states; exhaustion is a planning-amendment stop. Do
+  not add general reference resolution or unsupported delimiter grammar.
 
 - [ ] **Step 3: Regenerate and run all spike evidence.**
 
