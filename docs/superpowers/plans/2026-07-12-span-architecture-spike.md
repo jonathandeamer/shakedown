@@ -1437,6 +1437,33 @@ unterminated/requeue routes.
 
 - [ ] **Step 2: Implement the remaining scanner modes using the Amendment A2 shared design.**
 
+  **A9 resumption constraint (2026-07-13; binding before any production edit):**
+  Amendments A2/A7/A8 remain the shared-field and source-end basis, but A9
+  supersedes their live-continuation rule. Reconstruct from committed Task 3;
+  do not repair the current `src_ir/act3.py` WIP. Store the live `RESUME_*`
+  selector in Lady Macbeth's value, preserve the parent selector in each
+  four-cell continuation record, route every top-level `TEXT_END` through
+  `LYRIC_TEXT_END_DISPATCH`, and freeze the child selector in Prospero only
+  inside the A9 resume family. Romeo is field capture only: no deferred close
+  HTML may be stacked there, and resume closes emit directly to Juliet. Drain
+  every Horatio glyph to Puck once; triple emphasis adds only its synthetic
+  delimiter pair. Use exclusively the five A9 working scene labels and the
+  ready-to-paste TOML entries in the accepted design; its three spares are not
+  implementation authority. The exact first checkpoint is:
+
+  ```bash
+  uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+    "protected_modes_do_not_underflow or pre_handoff_source_is_empty_and_output_is_forward or text_end_event_order_is_carrier_safe"
+  ```
+
+  Expected: `11 passed`. The observer must show a `LYRIC_TEXT_END_DISPATCH`
+  after each top-level terminator pop, private ends reaching the complete A9
+  resume adapter with an unchanged frozen `RESUME_*`, and exactly one real end
+  reaching `TRAVERSE_COPY_TERMINATOR` with `CONT_NONE`. Run the plan's exact
+  literary compliance gate after every Act III/TOML change. Any miss is a new
+  `BLOCK[plan]`, not permission to patch the WIP, add a recovery pop, or use a
+  spare title.
+
   The original per-feature Task 4 pool (`LYRIC_HTML_TAG` through
   `LYRIC_AUTOLINK_CLOSE`, `LYRIC_LINK_REGION` through `LYRIC_REGION_EMIT`,
   `LYRIC_EMPHASIS_STRONG` through `LYRIC_EMPHASIS_CLOSE`) is retired — a

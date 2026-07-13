@@ -517,3 +517,155 @@ top-level pop; that each private requeue terminator reaches the A7 restore
 sequence; that `LYRIC_FIELD_SOURCE_END` and `LYRIC_EMPHASIS_SOURCE_END` make
 no second Puck pop; and that neither `LYRIC_FIELD_SCAN` nor
 `LYRIC_EMPHASIS_SEEK` underflows.  Failure is a fresh `BLOCK[plan]`.
+
+## A9 continuation ownership and field-capture separation (2026-07-13)
+
+The A8 reconstruction reached the intended private boundaries but fails the
+carrier gate in three reproducible ways: a triple-emphasis requeue drains
+Puck below its floor, a link/image destination later underflows Romeo at
+`LYRIC_FIELD_REV`, and the observer sees `-1` or a changed code at a resume
+close.  These are one ownership error, not three output defects.  A8 leaves
+the live `RESUME_*` selector in Hecate even though ordinary child scanning
+legitimately clobbers Hecate; it also permits planned close HTML to share
+Romeo with a field capture.  The current WIP is diagnostic evidence only.
+Do not repair it in place: reconstruct Task 4 Step 2 from committed Task 3
+under the rules below.
+
+### Binding lifetime model
+
+`LADY_MACBETH`'s **value**, not Hecate's value, is the sole live private
+continuation selector.  It is `CONT_NONE=0` outside a requeue and exactly one
+of `RESUME_LINK=8`, `RESUME_IMAGE=9`, `RESUME_EMPH=10`, or
+`RESUME_TRIPLE_EMPH=11` while raw requeued glyphs sit above Puck's private
+`TEXT_END`.  Hecate remains a disposable field glyph/count register; Prospero
+continues to own a field tag and, during resume only, the frozen child close
+code.  Horatio's value is a restore scratch only after its held stack reaches
+its private floor.
+
+Each continuation record is pushed in this exact order (bottom to top):
+
+```text
+push(LADY_MACBETH, STREAM_END)          # record floor
+push(LADY_MACBETH, val(HECATE))         # parent Hecate
+push(LADY_MACBETH, val(MACBETH))        # parent Macbeth
+push(LADY_MACBETH, val(LADY_MACBETH))   # parent continuation selector
+let(LADY_MACBETH, RESUME_*)             # child selector
+push(PUCK, TEXT_END)                    # child private boundary
+```
+
+`LYRIC_POP_GLYPH` must branch on `TEXT_END` *before* any continuation-code
+test, to `LYRIC_TEXT_END_DISPATCH`.  That scene tests only
+`val(LADY_MACBETH)`: a `RESUME_*` value enters `LYRIC_RESUME_DISPATCH`; only
+`CONT_NONE` enters `TRAVERSE_COPY_TERMINATOR`.  It performs no pop.  This
+supersedes A6's direct-pop-to-resume rule; it eliminates the false-positive
+square-plus-register test and makes the selector's lifetime explicit.
+
+The resume family is binding:
+
+```text
+LYRIC_RESUME_DISPATCH:
+    let(PROSPERO, val(LADY_MACBETH))        # freeze child close selector
+    goto(LYRIC_RESUME_POP_PARENT_SELECTOR)
+LYRIC_RESUME_POP_PARENT_SELECTOR:
+    pop(LADY_MACBETH)
+    goto(LYRIC_RESUME_SAVE_PARENT_SELECTOR)
+LYRIC_RESUME_SAVE_PARENT_SELECTOR:
+    let(HORATIO, val(LADY_MACBETH))         # held stack is already drained
+    goto(LYRIC_RESUME_POP_MACBETH)
+# retain A7's pop/restore Macbeth, pop/restore Hecate, and floor verification
+LYRIC_RESUME_VERIFY_FLOOR:
+    pop(LADY_MACBETH); branch(non-STREAM_END, LYRIC_RESUME_FLOOR_FAIL)
+    goto(LYRIC_RESUME_RESTORE_PARENT_SELECTOR)
+LYRIC_RESUME_RESTORE_PARENT_SELECTOR:
+    let(LADY_MACBETH, val(HORATIO))
+    goto(LYRIC_RESUME_CLOSE_DISPATCH)
+LYRIC_RESUME_CLOSE_DISPATCH:
+    branch(val(PROSPERO), RESUME_* close scenes)
+```
+
+Close scenes inspect only frozen Prospero, emit their literal close directly
+to Juliet, and return to `LYRIC_POP_GLYPH`.  They never pop Romeo, Horatio,
+or Lady Macbeth.  A nested requeue therefore restores the parent selector
+before its later private `TEXT_END`; the real paragraph terminator always sees
+`CONT_NONE`.
+
+### Binding field and requeue restrictions
+
+- Romeo is a field-capture stack only between `LYRIC_FIELD_OPEN` and the
+  matching `LYRIC_FIELD_DRAIN_CLOSE`/literal unwind.  No `_stack_text(ROMEO,
+  ...)`, deferred close, label output, or resume scene may use it.  Successful
+  link/image resume closes emit `</a>` or the image suffix directly from the
+  frozen Prospero code; `LYRIC_REGION_RESUME` must not pop Romeo.
+- `FIELD_TAG` has its own drain-close branch: emit the consumed literal `>`
+  and return to the ordinary scan.  `FIELD_AUTO_HREF` alone starts the
+  duplicate-text drain; neither tag nor autolink may fall through to title or
+  link/image completion.
+- `LYRIC_REQUEUE_DRAIN` pushes each non-floor Horatio glyph to Puck exactly
+  once.  The triple-emphasis path may add only its one synthetic opening and
+  one synthetic closing `*`, positioned as A8 specifies; it must never
+  duplicate a held raw glyph.  The Horatio floor is consumed and is never
+  copied to Puck.
+- Before every `LYRIC_FIELD_REV`, assert by construction that the immediately
+  preceding `LYRIC_FIELD_OPEN` pushed Romeo's private `STREAM_END` and no
+  non-field code has popped Romeo.  A destination/title transition that needs
+  a later close uses the continuation record, not Romeo.
+
+### A9 mandatory reconstruction checkpoint
+
+First add/update the observer contract, then reconstruct the protected graph
+from Task 3 and run this gate before adjusting any output bytes:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+  "protected_modes_do_not_underflow or pre_handoff_source_is_empty_and_output_is_forward or text_end_event_order_is_carrier_safe"
+```
+
+It must pass all eleven selected cases.  The observer must prove: every
+`LYRIC_POP_GLYPH` `TEXT_END` enters `LYRIC_TEXT_END_DISPATCH`; each private
+boundary then enters the complete A9 resume adapter and freezes a `RESUME_*`
+code unchanged through the close; exactly one final boundary enters
+`TRAVERSE_COPY_TERMINATOR` with `CONT_NONE`; every field reverse has one
+Romeo floor; and each requeue drains every raw Horatio glyph once.  A failure
+is a `BLOCK[plan]`; it does not authorize a recovery pop, a new token code,
+or an unreserved scene.
+
+After each Act III/TOML edit, also run the plan's exact literary gate:
+
+```bash
+uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+```
+
+### A9 literary reservation (ready to paste)
+
+This correction needs five working labels and three spares.  It does not add a
+Recall phrase.  Add only reached working labels; do not use a spare without a
+new planning amendment.
+
+```toml
+[scenes.LYRIC_TEXT_END_DISPATCH]
+title = "Lady Macbeth names the returning garden gate."
+pattern = "scene_of_character"
+[scenes.LYRIC_RESUME_POP_PARENT_SELECTOR]
+title = "Lady Macbeth lifts the hidden path's sign."
+pattern = "scene_of_character"
+[scenes.LYRIC_RESUME_SAVE_PARENT_SELECTOR]
+title = "Horatio keeps the elder path's sign."
+pattern = "scene_of_character"
+[scenes.LYRIC_RESUME_RESTORE_PARENT_SELECTOR]
+title = "Lady Macbeth receives the elder path's sign."
+pattern = "cross_character"
+[scenes.LYRIC_RESUME_CLOSE_DISPATCH]
+title = "Prospero chooses the garden's closing gate."
+pattern = "scene_of_character"
+
+# A9 spare pool — do not use without another planning amendment.
+[scenes.LYRIC_FIELD_REVERSE_GUARD]
+title = "Romeo finds the field's rooted stone."
+pattern = "scene_of_character"
+[scenes.LYRIC_REQUEUE_SINGLE_KEEP]
+title = "Horatio returns one petal without echo."
+pattern = "scene_of_character"
+[scenes.LYRIC_RESUME_PARENT_FAIL]
+title = "The elder path refuses a broken sign."
+pattern = "bare_statement"
+```
