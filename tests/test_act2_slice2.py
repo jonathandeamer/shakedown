@@ -109,6 +109,13 @@ def test_hr_candidate_fallback_preserves_unordered_list_handoff() -> None:
     assert not any(isinstance(op, Pop) for op in handoff.ops)
 
 
+def test_rejected_repeated_asterisk_hr_candidate_stays_paragraph_text() -> None:
+    decoded = decode_stream(_act2_stream("***both*** and **outer *inner* outer**\n"))
+
+    assert [token.code for token in decoded] == [tokens.PARA]
+    assert decoded[0].text == "***both*** and **outer *inner* outer**"
+
+
 STEP_LIMIT = 200_000
 FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
 

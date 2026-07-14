@@ -287,6 +287,18 @@ Hecate:
  If so, let us proceed to scene @PASS_HR_CONFIRM.
 
 Lady Macbeth:
+ Is Puck as bold as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HR_REPLAY.
+
+Lady Macbeth:
+ Is Macbeth as mighty as a hero?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
+
+Lady Macbeth:
  Let us proceed to scene @PASS_HR_REPLAY.
 
 
@@ -424,22 +436,34 @@ Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLOCK_BLANK.
 
 Lady Macbeth:
- Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Is Macbeth more bold than a hero?
 
 Hecate:
- If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
-
-Lady Macbeth:
- Is Puck as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
-
-Hecate:
- If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
+ If so, let us proceed to scene @PASS_CODE_REPLAY.
 
 Lady Macbeth:
  Is Puck as bold as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
 
 Hecate:
  If so, let us proceed to scene @PASS_CODE_REPLAY.
+
+Lady Macbeth:
+ Is Horatio as bold as nothing?
+
+Hecate:
+ If so, let us proceed to scene @PASS_CODE_REPLAY.
+
+Lady Macbeth:
+ Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
+
+Lady Macbeth:
+ Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_RAW_GLYPH.

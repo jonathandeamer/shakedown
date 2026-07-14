@@ -3458,7 +3458,7 @@ Hecate:
  Are you as cursed as nothing?
 
 Puck:
- If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
 
 Hecate:
  Are you as cursed as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
@@ -3503,13 +3503,13 @@ Romeo:
  Are you as fair as the product of a normal little furry black cat and a black cat?
 
 Puck:
- If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
 
 Romeo:
  Are you as fair as the sum of a little furry black cat and a cat?
 
 Puck:
- If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
 
 [Exit Romeo]
 
@@ -3521,9 +3521,12 @@ Puck:
 
                     Scene @LYRIC_EMPHASIS_SOURCE_END_PAIR: @LIT.scenes.LYRIC_EMPHASIS_SOURCE_END_PAIR.title
 
-[Exit Romeo]
+Hecate:
+ Remember nothing.
 
-[Enter Hecate]
+[Exit Hecate]
+
+[Enter Romeo]
 
 Puck:
  Let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
@@ -3547,7 +3550,7 @@ Hecate:
  Are you as rotten as nothing?
 
 Puck:
- If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
+ If so, let us return to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
 
 Hecate:
  Are you as horrid as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
@@ -3710,11 +3713,7 @@ Puck:
 Romeo:
  Remember nothing.
 
-[Exit Romeo]
-
-[Enter Hecate]
-
-Puck:
+Romeo:
  Let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
 
 
@@ -3884,7 +3883,9 @@ Puck:
 
 [Exit Puck]
 
-[Enter Juliet]
+[Exit Romeo]
+
+[Enter Hecate and Juliet]
 
 Juliet:
  Remember a wolf.

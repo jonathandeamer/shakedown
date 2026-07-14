@@ -1564,7 +1564,7 @@ ACT: Act = act(
             pop(PUCK, recall="answering_starlight"),
             branch(
                 eq(val(PUCK), const(tokens.TEXT_END)),
-                then="LYRIC_EMPHASIS_SOURCE_END",
+                then="LYRIC_EMPHASIS_SOURCE_END_PAIR",
             ),
             branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_CAND_MORE"),
             goto("LYRIC_EMPHASIS_COUNT_HOLD"),
@@ -1581,13 +1581,14 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_EMPHASIS_SPARE",
-            branch(eq(val(PUCK), _k(32)), then="LYRIC_EMPHASIS_SOURCE_END_PAIR"),
-            branch(eq(val(PUCK), _k(9)), then="LYRIC_EMPHASIS_SOURCE_END_PAIR"),
+            branch(eq(val(PUCK), _k(32)), then="LYRIC_EMPHASIS_SOURCE_END"),
+            branch(eq(val(PUCK), _k(9)), then="LYRIC_EMPHASIS_SOURCE_END"),
             goto("LYRIC_EMPHASIS_SEEK"),
             companion=PUCK,
         ),
         scene(
             "LYRIC_EMPHASIS_SOURCE_END_PAIR",
+            push(PUCK, const(tokens.TEXT_END)),
             goto("LYRIC_EMPHASIS_SOURCE_END"),
             anchor=PUCK,
             companion=HECATE,
@@ -1604,7 +1605,7 @@ ACT: Act = act(
             pop(PUCK, recall="answering_starlight"),
             branch(
                 eq(val(PUCK), const(tokens.TEXT_END)),
-                then="LYRIC_EMPHASIS_SOURCE_END",
+                then="LYRIC_EMPHASIS_SOURCE_END_PAIR",
             ),
             branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_CAND_COUNT"),
             goto("LYRIC_EMPHASIS_SEEK_HOLD"),
