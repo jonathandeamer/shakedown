@@ -64,6 +64,7 @@ RESUME_IMAGE = 9
 RESUME_EMPH = 10
 RESUME_TRIPLE_EMPH = 11
 RESUME_IMAGE_TITLE = 12
+RESUME_STRONG = 13
 
 
 def _traverse_dispatch() -> list[Op]:
@@ -297,6 +298,10 @@ ACT: Act = act(
             ),
             branch(
                 eq(val(LADY_MACBETH), const(RESUME_IMAGE_TITLE)),
+                then="LYRIC_RESUME_DISPATCH",
+            ),
+            branch(
+                eq(val(LADY_MACBETH), const(RESUME_STRONG)),
                 then="LYRIC_RESUME_DISPATCH",
             ),
             branch(
@@ -667,7 +672,27 @@ ACT: Act = act(
                 then="LYRIC_DEST_BALANCE",
             ),
             branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(432)),
+                then="LYRIC_FIELD_CLOSE_DISPATCH",
+            ),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(640)),
+                then="LYRIC_DEST_BALANCE",
+            ),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(641)),
+                then="LYRIC_DEST_BALANCE",
+            ),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(632)),
+                then="LYRIC_FIELD_CLOSE_DISPATCH",
+            ),
+            branch(
                 eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(534)),
+                then="LYRIC_FIELD_CLOSE_DISPATCH",
+            ),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(734)),
                 then="LYRIC_FIELD_CLOSE_DISPATCH",
             ),
             push(ROMEO, val(PUCK)),
@@ -704,6 +729,10 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_FIELD_CLOSE_DISPATCH",
+            branch(
+                eq(val(PROSPERO), const(FIELD_IMAGE_TITLE)),
+                then="LYRIC_FIELD_TITLE_CAPTURE",
+            ),
             push(HECATE, const(tokens.STREAM_END)),
             goto("LYRIC_FIELD_REV"),
             anchor=HECATE,
@@ -795,8 +824,12 @@ ACT: Act = act(
                 then="LYRIC_AUTOLINK_CLOSE",
             ),
             branch(
-                eq(val(PROSPERO), const(FIELD_IMAGE_TITLE)),
-                then="LYRIC_IMAGE_TITLE_CLOSE",
+                eq(val(PROSPERO), const(FIELD_LINK_TITLE)),
+                then="LYRIC_FIELD_TITLE_CAPTURE",
+            ),
+            branch(
+                eq(val(PROSPERO), const(RESUME_IMAGE_TITLE)),
+                then="LYRIC_REGION_RESUME",
             ),
             goto("LYRIC_FIELD_TITLE_TEST"),
             anchor=JULIET,
@@ -809,7 +842,7 @@ ACT: Act = act(
                 then="LYRIC_AUTOLINK_TEXT_DONE",
             ),
             *_stream(*b'">'),
-            push(ROMEO, const(tokens.STREAM_END)),
+            push(HECATE, const(tokens.STREAM_END)),
             let(PROSPERO, const(FIELD_AUTO_TEXT)),
             goto("LYRIC_AUTOLINK_TEXT_OPEN"),
             anchor=JULIET,
@@ -817,10 +850,11 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_AUTOLINK_TEXT_DONE",
+            *_stream(*b"</a>"),
             let(LADY_MACBETH, const(CONT_NONE)),
             goto("LYRIC_RETURN_TO_SCAN"),
-            anchor=LADY_MACBETH,
-            companion=PUCK,
+            anchor=JULIET,
+            companion=LADY_MACBETH,
         ),
         scene(
             "LYRIC_FIELD_TITLE_RESTORE",
@@ -834,12 +868,12 @@ ACT: Act = act(
             pop(LADY_MACBETH, recall="staged_stone"),
             branch(
                 eq(val(LADY_MACBETH), const(tokens.STREAM_END)),
-                then="LYRIC_FIELD_CLOSE_DISPATCH",
+                then="LYRIC_FIELD_HEAD",
             ),
-            push(ROMEO, val(LADY_MACBETH)),
+            push(HECATE, val(LADY_MACBETH)),
             goto("LYRIC_AUTOLINK_TEXT_OPEN"),
             anchor=LADY_MACBETH,
-            companion=ROMEO,
+            companion=HECATE,
         ),
         scene(
             "LYRIC_FIELD_SOURCE_END",
@@ -914,7 +948,6 @@ ACT: Act = act(
         scene(
             "LYRIC_ALT_OPEN",
             push(HORATIO, const(tokens.STREAM_END)),
-            push(HORATIO, val(PUCK)),
             goto("LYRIC_IMAGE_TEST_LABEL"),
             companion=HORATIO,
         ),
@@ -946,21 +979,13 @@ ACT: Act = act(
             "LYRIC_FIELD_TITLE_TEST",
             branch(eq(val(PROSPERO), const(FIELD_LINK_DEST)), then="LYRIC_TITLE_OPEN"),
             branch(eq(val(PROSPERO), const(FIELD_IMAGE_DEST)), then="LYRIC_TITLE_OPEN"),
-            branch(
-                eq(val(PROSPERO), const(FIELD_LINK_TITLE)),
-                then="LYRIC_REQUEUE_OPEN",
-            ),
-            branch(
-                eq(val(PROSPERO), const(FIELD_IMAGE_TITLE)),
-                then="LYRIC_REQUEUE_OPEN",
-            ),
             goto("LYRIC_REGION_FALLBACK"),
             anchor=JULIET,
             companion=PUCK,
         ),
         scene(
             "LYRIC_TITLE_OPEN",
-            branch(eq(val(PUCK), _k(41)), then="LYRIC_REQUEUE_OPEN"),
+            branch(eq(val(PUCK), _k(41)), then="LYRIC_FIELD_UNTERMINATED"),
             branch(eq(val(PUCK), _k(32)), then="LYRIC_FIELD_TITLE_CLOSE"),
             goto("LYRIC_REGION_FALLBACK"),
             anchor=JULIET,
@@ -975,17 +1000,36 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_FIELD_UNTERMINATED",
-            pop(PUCK, recall="field_first_glyph"),
-            let(MACBETH, val(PUCK)),
-            pop(PUCK, recall="field_first_glyph"),
-            branch(eq(val(PUCK), _k(34)), then="LYRIC_FIELD_TITLE_CAPTURE"),
-            goto("LYRIC_REGION_FALLBACK"),
-            companion=PUCK,
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(441)),
+                then="LYRIC_REQUEUE_OPEN",
+            ),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(641)),
+                then="LYRIC_REQUEUE_OPEN",
+            ),
+            let(HECATE, const(FIELD_IMAGE_TITLE)),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(634)),
+                then="LYRIC_FIELD_RETRY",
+            ),
+            *_stream(*b'" title="'),
+            let(HECATE, const(FIELD_LINK_TITLE)),
+            goto("LYRIC_FIELD_RETRY"),
+            anchor=JULIET,
+            companion=PROSPERO,
         ),
         scene(
             "LYRIC_FIELD_TITLE_CAPTURE",
             pop(PUCK, recall="field_first_glyph"),
-            branch(eq(val(PUCK), _k(41)), then="LYRIC_REQUEUE_OPEN"),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(541)),
+                then="LYRIC_REQUEUE_OPEN",
+            ),
+            branch(
+                eq(add(mul(const(100), val(PROSPERO)), val(PUCK)), const(741)),
+                then="LYRIC_REQUEUE_OPEN",
+            ),
             goto("LYRIC_REGION_FALLBACK"),
             companion=PUCK,
         ),
@@ -995,6 +1039,15 @@ ACT: Act = act(
             push(LADY_MACBETH, val(HECATE)),
             push(LADY_MACBETH, val(MACBETH)),
             push(LADY_MACBETH, val(LADY_MACBETH)),
+            branch(eq(val(PROSPERO), const(RESUME_EMPH)), then="LYRIC_LABEL_FALLBACK"),
+            branch(
+                eq(val(PROSPERO), const(RESUME_STRONG)),
+                then="LYRIC_LABEL_FALLBACK",
+            ),
+            branch(
+                eq(val(PROSPERO), const(RESUME_TRIPLE_EMPH)),
+                then="LYRIC_LABEL_FALLBACK",
+            ),
             branch(
                 eq(val(PROSPERO), const(FIELD_LINK_DEST)),
                 then="LYRIC_LABEL_REQUEUE",
@@ -1047,8 +1100,12 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_LABEL_FALLBACK",
-            let(LADY_MACBETH, const(RESUME_EMPH)),
+            let(LADY_MACBETH, val(PROSPERO)),
             push(PUCK, const(tokens.TEXT_END)),
+            branch(
+                eq(val(LADY_MACBETH), const(RESUME_TRIPLE_EMPH)),
+                then="LYRIC_REQUEUE_TRIPLE_CLOSE",
+            ),
             goto("LYRIC_REQUEUE_DRAIN"),
             anchor=LADY_MACBETH,
             companion=PUCK,
@@ -1057,26 +1114,27 @@ ACT: Act = act(
             "LYRIC_REQUEUE_DRAIN",
             pop(HORATIO, recall="held_label_glyph"),
             branch(
-                eq(val(HORATIO), const(tokens.STREAM_END)),
+                eq(
+                    add(mul(const(100), val(LADY_MACBETH)), val(HORATIO)),
+                    const(RESUME_TRIPLE_EMPH * 100 + tokens.STREAM_END),
+                ),
                 then="LYRIC_REQUEUE_TRIPLE_OPEN",
             ),
+            branch(eq(val(HORATIO), const(tokens.STREAM_END)), then="LYRIC_POP_GLYPH"),
             push(PUCK, val(HORATIO)),
             goto("LYRIC_REQUEUE_DRAIN"),
             companion=PUCK,
         ),
         scene(
             "LYRIC_REQUEUE_TRIPLE_OPEN",
-            branch(
-                eq(val(LADY_MACBETH), const(RESUME_TRIPLE_EMPH)),
-                then="LYRIC_REQUEUE_TRIPLE_CLOSE",
-            ),
+            push(PUCK, _k(42)),
             goto("LYRIC_POP_GLYPH"),
             companion=PUCK,
         ),
         scene(
             "LYRIC_REQUEUE_TRIPLE_CLOSE",
             push(PUCK, _k(42)),
-            goto("LYRIC_POP_GLYPH"),
+            goto("LYRIC_REQUEUE_DRAIN"),
             companion=PUCK,
         ),
         scene(
@@ -1127,11 +1185,11 @@ ACT: Act = act(
             "LYRIC_EMPHASIS_COMPARE",
             pop(PUCK, recall="answering_starlight"),
             branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_MATCH_MORE"),
+            branch(eq(val(MACBETH), val(HECATE)), then="LYRIC_EMPHASIS_MATCH"),
             branch(
                 eq(val(PUCK), const(tokens.TEXT_END)),
                 then="LYRIC_EMPHASIS_CAND_SOURCE_END",
             ),
-            branch(eq(val(MACBETH), val(HECATE)), then="LYRIC_EMPHASIS_MATCH"),
             goto("LYRIC_EMPHASIS_FALLBACK"),
             companion=PUCK,
         ),
@@ -1174,34 +1232,26 @@ ACT: Act = act(
             "LYRIC_EMPHASIS_MATCH",
             push(PUCK, val(PUCK)),
             branch(eq(val(HECATE), const(1)), then="LYRIC_EMPHASIS_EMIT_OPEN"),
-            *_stream(*b"<strong>"),
-            push(LADY_MACBETH, const(tokens.STREAM_END)),
-            push(LADY_MACBETH, val(PROSPERO)),
-            push(LADY_MACBETH, const(0)),
-            push(LADY_MACBETH, val(LADY_MACBETH)),
-            let(LADY_MACBETH, const(RESUME_TRIPLE_EMPH)),
-            push(PUCK, const(tokens.TEXT_END)),
+            let(PROSPERO, const(RESUME_STRONG)),
             branch(eq(val(HECATE), const(3)), then="LYRIC_EMPHASIS_TRIPLE_CLOSE"),
-            goto("LYRIC_REQUEUE_DRAIN"),
+            *_stream(*b"<strong>"),
+            goto("LYRIC_REQUEUE_OPEN"),
             anchor=JULIET,
             companion=PUCK,
         ),
         scene(
             "LYRIC_EMPHASIS_TRIPLE_CLOSE",
-            push(PUCK, _k(42)),
-            goto("LYRIC_REQUEUE_DRAIN"),
+            let(PROSPERO, const(RESUME_TRIPLE_EMPH)),
+            *_stream(*b"<strong>"),
+            goto("LYRIC_REQUEUE_OPEN"),
+            anchor=JULIET,
             companion=PUCK,
         ),
         scene(
             "LYRIC_EMPHASIS_EMIT_OPEN",
+            let(PROSPERO, const(RESUME_EMPH)),
             *_stream(*b"<em>"),
-            push(LADY_MACBETH, const(tokens.STREAM_END)),
-            push(LADY_MACBETH, val(PROSPERO)),
-            push(LADY_MACBETH, const(0)),
-            push(LADY_MACBETH, val(LADY_MACBETH)),
-            let(LADY_MACBETH, const(RESUME_EMPH)),
-            push(PUCK, const(tokens.TEXT_END)),
-            goto("LYRIC_REQUEUE_DRAIN"),
+            goto("LYRIC_REQUEUE_OPEN"),
             anchor=JULIET,
             companion=PUCK,
         ),
@@ -1324,6 +1374,10 @@ ACT: Act = act(
                 eq(val(PROSPERO), const(RESUME_EMPH)),
                 then="LYRIC_EMPHASIS_RESUME",
             ),
+            branch(
+                eq(val(PROSPERO), const(RESUME_STRONG)),
+                then="LYRIC_EMPHASIS_RESUME",
+            ),
             goto("LYRIC_EMPHASIS_RESUME"),
             anchor=PROSPERO,
             companion=LADY_MACBETH,
@@ -1348,10 +1402,11 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_IMAGE_TITLE_CLOSE",
-            let(HECATE, const(FIELD_IMAGE_TITLE)),
-            goto("LYRIC_FIELD_RETRY"),
-            anchor=HECATE,
-            companion=PROSPERO,
+            *_stream(*b'" title="'),
+            push(HECATE, const(tokens.STREAM_END)),
+            goto("LYRIC_FIELD_REV"),
+            anchor=JULIET,
+            companion=ROMEO,
         ),
         scene(
             "LYRIC_EMPHASIS_RESUME",

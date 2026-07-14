@@ -41,7 +41,10 @@ class _SceneObserver:
     scene_values: list[tuple[str, int, int, int, int]]
     text_end_routes: list[tuple[str, str, int, int]]
     lady_macbeth_pops: list[tuple[str, int]]
+    romeo_pops: list[tuple[str, int]]
+    puck_pushes: list[tuple[int, str, int]]
     current_label: str = ""
+    current_scene_index: int = -1
     hecate: int = 0
     lady_macbeth: int = 0
     pending_text_end: tuple[str, int, int] | None = None
@@ -57,6 +60,7 @@ class _SceneObserver:
         self.hecate = state.values[Char.HECATE]
         self.lady_macbeth = state.values[Char.LADY_MACBETH]
         self.labels.append(label)
+        self.current_scene_index = len(self.labels) - 1
         self.scene_values.append(
             (
                 label,
@@ -72,7 +76,10 @@ class _SceneObserver:
             self.open_reverse_juliet = tuple(state.stacks[Char.JULIET])
 
     def on_push(self, char: Char, value: int, stack_after: list[int]) -> None:
-        return None
+        if char is Char.PUCK:
+            self.puck_pushes.append(
+                (self.current_scene_index, self.current_label, value)
+            )
 
     def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None:
         if char is Char.PUCK and value == tokens.TEXT_END:
@@ -80,11 +87,18 @@ class _SceneObserver:
             self.pending_text_end = (self.current_label, self.hecate, self.lady_macbeth)
         elif char is Char.LADY_MACBETH:
             self.lady_macbeth_pops.append((self.current_label, value))
+        elif char is Char.ROMEO:
+            self.romeo_pops.append((self.current_label, value))
 
 
 def _observer() -> _SceneObserver:
     return _SceneObserver(
-        labels=[], scene_values=[], text_end_routes=[], lady_macbeth_pops=[]
+        labels=[],
+        scene_values=[],
+        text_end_routes=[],
+        lady_macbeth_pops=[],
+        romeo_pops=[],
+        puck_pushes=[],
     )
 
 
@@ -284,8 +298,8 @@ def test_act3_renders_inline_html_and_autolink() -> None:
     # Autolink: href and link text each contain the query with exactly one &
     amp_count = text.count("&")
     assert amp_count == 2, f"Expected exactly two & in output, got {amp_count}: {text}"
-    assert '<a href="http://example.com/a?x=1&y=2">' in text
-    assert "http://example.com/a?x=1&y=2</a>" in text
+    assert '<a href="http://example.com/a?x=1&amp;y=2">' in text
+    assert "http://example.com/a?x=1&amp;y=2</a>" in text
 
 
 def test_act3_renders_links_images_protected() -> None:
@@ -333,7 +347,7 @@ def test_act3_pre_handoff_source_is_empty_and_output_is_forward(stem: str) -> No
     assert stream.count(tokens.STREAM_END) == 1
 
 
-_RESUME_CODES = frozenset({8, 9, 10, 11})
+_RESUME_CODES = frozenset({8, 9, 10, 11, 12, 13})
 
 
 @pytest.mark.parametrize("stem", _TASK4_PROTECTED_FIXTURES)
@@ -389,6 +403,7 @@ def test_act3_text_end_event_order_is_carrier_safe(stem: str) -> None:
             "LYRIC_REGION_RESUME",
             "LYRIC_EMPHASIS_RESUME",
             "LYRIC_AUTOLINK_CLOSE",
+            "LYRIC_IMAGE_TITLE_CLOSE",
         }
 
     resume_pop_labels = {
@@ -460,6 +475,124 @@ def test_act3_emphasis_candidate_restores_real_text_end_once() -> None:
     ]
     real = [route for route in routes if route[3] == 0]
     assert len(real) == 1
+
+
+def test_act3_terminal_emphasis_match_uses_resume_close() -> None:
+    _, state, observer = _run_to_act3_observed("overlapping_emphasis")
+
+    labels = observer.labels
+    terminal_compare = next(
+        index
+        for index in range(len(labels) - 1)
+        if labels[index] == "LYRIC_EMPHASIS_COMPARE"
+        and labels[index + 1] == "LYRIC_EMPHASIS_MATCH"
+    )
+    tail = labels[terminal_compare:]
+
+    assert "LYRIC_EMPHASIS_MATCH" in tail
+    assert (
+        "LYRIC_EMPHASIS_CAND_SOURCE_END"
+        not in tail[: tail.index("LYRIC_EMPHASIS_MATCH")]
+    )
+    assert "LYRIC_EMPHASIS_RESUME" in tail
+    assert _paragraph_text(_decode_carrier(state)).endswith("</strong>")
+
+
+def test_act3_link_and_image_titles_follow_delayed_drain_order() -> None:
+    _, _, observer = _run_to_act3_observed("links_images_protected")
+
+    labels = observer.labels
+    link_requeue = labels.index("LYRIC_REQUEUE_OPEN")
+    assert "LYRIC_FIELD_TITLE_CLOSE" in labels[:link_requeue]
+    assert "LYRIC_FIELD_TITLE_CAPTURE" in labels[:link_requeue]
+
+    image_dest = labels.index("LYRIC_IMAGE_DEST_OPEN")
+    assert "LYRIC_IMAGE_TITLE_CLOSE" in labels[image_dest:]
+    image_title_close = labels.index("LYRIC_IMAGE_TITLE_CLOSE", image_dest)
+    region_resume = labels.index("LYRIC_REGION_RESUME", image_dest)
+    assert image_title_close < region_resume
+
+    alt_drain_start = labels.index("LYRIC_ALT_REQUEUE", image_dest)
+    alt_drain_end = labels.index("LYRIC_TEXT_END_DISPATCH", alt_drain_start)
+    assert not any(
+        label.startswith("LYRIC_FIELD_") and label != "LYRIC_FIELD_DRAIN_CLOSE"
+        for label in labels[alt_drain_start:alt_drain_end]
+    )
+    assert not any(
+        label.startswith("LYRIC_FIELD_") or label == "LYRIC_IMAGE_TITLE_CLOSE"
+        for label, _ in observer.romeo_pops
+        if alt_drain_start <= labels.index(label) < alt_drain_end
+    )
+
+
+def test_act3_triple_emphasis_requeue_order() -> None:
+    _, state, observer = _run_to_act3_observed("overlapping_emphasis")
+
+    pushes = observer.puck_pushes
+    triple_tail = next(
+        index
+        for index, (_, label, value) in enumerate(pushes)
+        if label == "LYRIC_REQUEUE_TRIPLE_CLOSE" and value == 42
+    )
+    triple_head = next(
+        index
+        for index, (_, label, value) in enumerate(
+            pushes[triple_tail + 1 :], triple_tail + 1
+        )
+        if label == "LYRIC_REQUEUE_TRIPLE_OPEN" and value == 42
+    )
+    between = pushes[triple_tail + 1 : triple_head]
+
+    assert between
+    assert all(label == "LYRIC_REQUEUE_DRAIN" for _, label, _ in between)
+    assert all(value != 42 for _, _, value in between)
+    assert _paragraph_text(_decode_carrier(state)).startswith(
+        "<strong><em>both</em></strong>"
+    )
+
+
+def test_act3_matched_emphasis_requeue_preserves_parent_lookahead() -> None:
+    _, _, observer = _run_to_act3_observed("overlapping_emphasis")
+
+    labels = observer.labels
+    first_match = labels.index("LYRIC_EMPHASIS_MATCH")
+    tail = labels[first_match:]
+    requeue_entry = next(label for label in tail if label.startswith("LYRIC_REQUEUE_"))
+
+    assert requeue_entry == "LYRIC_REQUEUE_OPEN"
+
+
+def test_act3_label_and_alt_requeue_contains_payload_only() -> None:
+    _, _, observer = _run_to_act3_observed("links_images_protected")
+
+    labels = observer.labels
+    pushes = observer.puck_pushes
+
+    label_start = labels.index("LYRIC_LABEL_REQUEUE")
+    alt_start = labels.index("LYRIC_ALT_REQUEUE")
+    label_pop = labels.index("LYRIC_POP_GLYPH", label_start)
+    alt_end = labels.index("LYRIC_POP_GLYPH", alt_start)
+
+    label_payload = [
+        value
+        for scene_index, label, value in pushes
+        if label == "LYRIC_REQUEUE_DRAIN" and label_start <= scene_index < label_pop
+    ]
+    alt_payload = [
+        value
+        for scene_index, label, value in pushes
+        if label == "LYRIC_REQUEUE_DRAIN" and alt_start <= scene_index < alt_end
+    ]
+
+    assert sorted(label_payload) == sorted(
+        [ord("a"), ord(" "), ord("*"), ord("b"), ord("*")]
+    )
+    assert sorted(alt_payload) == sorted(
+        [ord("c"), ord(" "), ord("*"), ord("d"), ord("*")]
+    )
+    forbidden = {ord("["), ord("]"), ord("("), ord(")"), ord('"')}
+    assert forbidden.isdisjoint(label_payload)
+    assert forbidden.isdisjoint(alt_payload)
 
 
 def test_act3_ir_requeue_and_field_floors_follow_a4_shape() -> None:
