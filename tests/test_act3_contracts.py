@@ -108,22 +108,22 @@ _A3_RECOVERY_PAIRS = {
     "LYRIC_DEFINITION_DRAIN_CLOSE": (Char.ROMEO, Char.PUCK),
     "LYRIC_DEFINITION_UNWIND": (Char.ROMEO, Char.PUCK),
     "LYRIC_DEFINITION_UNWIND_KEEP": (Char.ROMEO, Char.PUCK),
-    "LYRIC_DEFINITION_GARDEN_GUARD": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_LINE_OPEN": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_LABEL_FIRST": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_LABEL_REST": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_COLON": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_DESTINATION": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_DESTINATION_TAIL": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_DISCARD_DRAIN": (Char.HECATE, Char.JULIET),
-    "LYRIC_DEFINITION_DISCARD_KEEP": (Char.HECATE, Char.JULIET),
-    "LYRIC_DEFINITION_DISCARD_CLOSE": (Char.HECATE, Char.JULIET),
-    "LYRIC_DEFINITION_REPLAY_BEGIN": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_REPLAY_POP": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_REPLAY_KEEP": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_REPLAY_CLOSE": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_REPLAY_GUARD": (Char.HECATE, Char.PUCK),
-    "LYRIC_DEFINITION_CHAMBER_GUARD": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_GARDEN_GUARD": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_LINE_OPEN": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_LABEL_FIRST": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_LABEL_REST": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_COLON": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DESTINATION": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DESTINATION_TAIL": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DISCARD_DRAIN": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DISCARD_KEEP": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DISCARD_CLOSE": (Char.JULIET, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_BEGIN": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_POP": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_KEEP": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_CLOSE": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_GUARD": (Char.JULIET, Char.PUCK),
+    "LYRIC_DEFINITION_CHAMBER_GUARD": (Char.JULIET, Char.PUCK),
 }
 _A3_SPARES = {
     "LYRIC_DEFINITION_CLOSE_GUARD",
@@ -144,6 +144,7 @@ class _SceneObserver:
     lady_macbeth_pops: list[tuple[str, int]]
     romeo_pops: list[tuple[str, int]]
     puck_pushes: list[tuple[int, str, int]]
+    replay_source_pops: list[int]
     current_label: str = ""
     current_scene_index: int = -1
     hecate: int = 0
@@ -151,6 +152,9 @@ class _SceneObserver:
     pending_text_end: tuple[str, int, int] | None = None
     open_reverse_puck: tuple[int, ...] | None = None
     open_reverse_juliet: tuple[int, ...] | None = None
+    definition_replay_armed: bool = False
+    replay_source_active: bool = False
+    stop_on_replay_terminator: bool = False
 
     def on_scene(self, label: str, state: InterpreterState) -> None:
         if self.pending_text_end is not None:
@@ -175,6 +179,10 @@ class _SceneObserver:
             assert self.open_reverse_puck is None
             self.open_reverse_puck = tuple(state.stacks[Char.PUCK])
             self.open_reverse_juliet = tuple(state.stacks[Char.JULIET])
+        elif label == "LYRIC_DEFINITION_REPLAY_BEGIN":
+            self.definition_replay_armed = True
+        elif label == "LYRIC_POP_GLYPH" and self.definition_replay_armed:
+            self.replay_source_active = True
 
     def on_push(self, char: Char, value: int, stack_after: list[int]) -> None:
         if char is Char.PUCK:
@@ -186,10 +194,21 @@ class _SceneObserver:
         if char is Char.PUCK and value == tokens.TEXT_END:
             assert self.pending_text_end is None
             self.pending_text_end = (self.current_label, self.hecate, self.lady_macbeth)
+        if char is Char.PUCK and self.replay_source_active:
+            self.replay_source_pops.append(value)
+            if value == tokens.TEXT_END:
+                self.replay_source_active = False
+                self.definition_replay_armed = False
+                if self.stop_on_replay_terminator:
+                    raise _DefinitionReplayObserved
         elif char is Char.LADY_MACBETH:
             self.lady_macbeth_pops.append((self.current_label, value))
         elif char is Char.ROMEO:
             self.romeo_pops.append((self.current_label, value))
+
+
+class _DefinitionReplayObserved(RuntimeError):
+    pass
 
 
 def _observer() -> _SceneObserver:
@@ -200,6 +219,7 @@ def _observer() -> _SceneObserver:
         lady_macbeth_pops=[],
         romeo_pops=[],
         puck_pushes=[],
+        replay_source_pops=[],
     )
 
 
@@ -262,6 +282,19 @@ def _run_text_to_act3_observed(
 
 def _run_text_to_act3(text: str) -> InterpreterState:
     return _run_text_to_act3_observed(text)[1]
+
+
+def _definition_replay_source_pops(text: str) -> list[int]:
+    state = InterpreterState(input_text=text)
+    state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
+    state = run_act(ACT2, state, step_limit=STEP_LIMIT).state
+    observer = _observer()
+    observer.stop_on_replay_terminator = True
+    try:
+        run_act(ACT3, state, step_limit=STEP_LIMIT, observer=observer)
+    except _DefinitionReplayObserved:
+        return observer.replay_source_pops
+    raise AssertionError("definition replay source boundary was not observed")
 
 
 def _carrier_stream(state: InterpreterState) -> list[int]:
@@ -407,7 +440,6 @@ def test_act3_discards_definition_only_paragraphs(
         "[not]:\n",
         "[not]:   \n",
         "[x] : destination\n",
-        "ordinary prose\n",
         "[]: destination\n",
         "[x]: destination\nplain words\n",
     ],
@@ -415,15 +447,21 @@ def test_act3_discards_definition_only_paragraphs(
         "missing-destination",
         "space-only-destination",
         "space-before-colon",
-        "plain-prose",
         "empty-label",
         "mixed-definition-and-prose",
     ],
 )
 def test_act3_replays_rejected_definition_candidates_byte_for_byte(text: str) -> None:
-    decoded = _decode_carrier(_run_text_to_act3(text))
+    assert _definition_replay_source_pops(text) == [
+        *text.removesuffix("\n").encode("utf-8"),
+        tokens.TEXT_END,
+    ]
 
-    assert _paragraph_text(decoded) == text.removesuffix("\n")
+
+def test_act3_plain_prose_bypasses_definition_replay() -> None:
+    decoded = _decode_carrier(_run_text_to_act3("ordinary prose\n"))
+
+    assert _paragraph_text(decoded) == "ordinary prose"
 
 
 def test_act3_fixture_reference_paragraphs_do_not_enter_definition_discard() -> None:

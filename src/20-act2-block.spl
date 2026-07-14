@@ -435,14 +435,47 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as mighty as nothing.
+ You are as mighty as Macbeth.
 
 Horatio:
  Remember Puck.
 
+Lady Macbeth:
+ Let us proceed to scene @PASS_HR_REPLAY_OPEN.
+
+
+                    Scene @PASS_HR_REPLAY_OPEN: @LIT.scenes.PASS_HR_REPLAY_OPEN.title
+
+Lady Macbeth:
+ Are you as mighty as a hero?
+
+Horatio:
+ If so, let us proceed to scene @PASS_HR_REPLAY_KEEP.
+
+Lady Macbeth:
+ You are as mighty as the difference between yourself and a hero.
+
+Horatio:
+ Remember Puck.
+
+Lady Macbeth:
+ Let us return to scene @PASS_HR_REPLAY_OPEN.
+
+
+                    Scene @PASS_HR_REPLAY_KEEP: @LIT.scenes.PASS_HR_REPLAY_KEEP.title
+
+Lady Macbeth:
+ You are as villainous as nothing.
+
 [Exit Horatio]
 
 [Enter Hecate]
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_HR_REPLAY_CLOSE.
+
+
+                    Scene @PASS_HR_REPLAY_CLOSE: @LIT.scenes.PASS_HR_REPLAY_CLOSE.title
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_RAW_GLYPH.

@@ -209,10 +209,29 @@ ACT: Act = act(
         ),
         scene(
             "PASS_CODE_REPLAY",
-            let(HORATIO, const(0)),
+            let(HORATIO, val(MACBETH)),
             push(LADY_MACBETH, val(PUCK)),
-            goto("PASS_LISTS_RAW_GLYPH"),
+            goto("PASS_HR_REPLAY_OPEN"),
             companion=HORATIO,
+        ),
+        scene(
+            "PASS_HR_REPLAY_OPEN",
+            branch(eq(val(HORATIO), const(1)), then="PASS_HR_REPLAY_KEEP"),
+            let(HORATIO, sub(val(HORATIO), const(1))),
+            push(LADY_MACBETH, val(PUCK)),
+            goto("PASS_HR_REPLAY_OPEN"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_HR_REPLAY_KEEP",
+            let(HORATIO, const(0)),
+            goto("PASS_HR_REPLAY_CLOSE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_HR_REPLAY_CLOSE",
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
         ),
         scene(
             "PASS_BLOCK_RETURN",

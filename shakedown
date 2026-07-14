@@ -22,8 +22,4 @@ if grep -qE '^SPL (runtime|parse) error:' "$stderr_file"; then
   exit 1
 fi
 
-output="$(cat "$stdout_file")"
-output="${output%$'\n\n<p>'}"
-output="${output%$'\n<p>'}"
-output="${output%'<p>'}"
-printf '%s' "$output"
+perl -0pe 's/\n\n<p>\z//; s/\n<p>\z//; s/<p>\z//' "$stdout_file"

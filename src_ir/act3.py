@@ -418,7 +418,7 @@ ACT: Act = act(
             pop(ROMEO, recall="returned_petal"),
             branch(
                 eq(val(ROMEO), const(tokens.STREAM_END)),
-                then="LYRIC_DEFINITION_REPLAY_GUARD",
+                then="LYRIC_POP_GLYPH",
             ),
             push(PUCK, val(ROMEO)),
             goto("LYRIC_DEFINITION_REPLAY_CLOSE"),

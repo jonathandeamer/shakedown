@@ -520,7 +520,7 @@ Puck:
  Are you as fair as a wolf?
 
 Romeo:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_GUARD.
+ If so, let us proceed to scene @LYRIC_POP_GLYPH.
 
 Romeo:
  Remember myself.
@@ -530,10 +530,6 @@ Romeo:
 
 
                     Scene @LYRIC_DEFINITION_REPLAY_GUARD: @LIT.scenes.LYRIC_DEFINITION_REPLAY_GUARD.title
-
-[Exit Romeo]
-
-[Enter Juliet]
 
 Juliet:
  @LIT.characters.juliet.recall.kept_charge
@@ -547,11 +543,7 @@ Puck:
 Puck:
  Remember myself.
 
-[Exit Juliet]
-
-[Enter Romeo]
-
-Puck:
+Juliet:
  Let us return to scene @LYRIC_DEFINITION_REPLAY_GUARD.
 
 
