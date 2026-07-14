@@ -926,3 +926,63 @@ unchanged image-title path proceed: its nested-floor regression must pass,
 followed by observer proof of selector `12`, `LYRIC_IMAGE_TITLE_CLOSE`, no
 early Romeo pop, and one delayed title drain. Any miss is `BLOCK[plan]`; no
 spare scene or recovery pop is authorized.
+
+## A13 terminal-match ownership and held-title drain (2026-07-14)
+
+The Task 4 Step 2 checkpoint leaves two successful-boundary cases
+underspecified. This correction changes neither A8's raw-requeue order, A9's
+continuation records, nor A10's independent Romeo/Horatio floors.
+
+### Terminal emphasis is a match, not literal fallback
+
+`LYRIC_EMPHASIS_COMPARE` owns one post-candidate lookahead in Puck. Count a
+maximal candidate run first. When that run ends, compare `MACBETH` with the
+opener length in `HECATE` **before** testing the lookahead for `TEXT_END`.
+Equality enters `LYRIC_EMPHASIS_MATCH` for every lookahead, including real
+`TEXT_END`; only a non-equal `TEXT_END` uses A11 literal unwind and only a
+non-equal ordinary glyph uses A12 replay.
+
+The matched route first restores its exact lookahead to Puck, then builds the
+existing A8 child boundary and requeues the held body. Its next-pop order is
+raw body, private `TEXT_END`, restored lookahead. Thus a terminal match closes
+before ordinary `LYRIC_POP_GLYPH -> LYRIC_TEXT_END_DISPATCH` consumes the one
+real terminator. It may not visit unmatched-source-end or seek first.
+
+Length one emits `<em>` / `</em>`; length two emits `<strong>` / `</strong>`;
+length three emits `<strong><em>` / `</em></strong>`. Triple synthetic stars
+are child source only and never reach Juliet. Preserve the matched length
+until close selection; do not use it as a body-draining register.
+
+### A held image title resumes at drain, never capture
+
+After alt requeue selector `12`, `LYRIC_IMAGE_TITLE_CLOSE` sets the field tag
+in `PROSPERO`, seeds only the existing Hecate reverse floor, and enters the
+shared reverse/drain stage. It must not enter `LYRIC_FIELD_RETRY`,
+`LYRIC_FIELD_OPEN`, or `LYRIC_FIELD_SCAN`: those create a second Romeo floor
+and later pop Puck after the alt boundary is consumed. Its one drain-close
+emits `" />`, returns to `LYRIC_POP_GLYPH`, and creates no record or private
+`TEXT_END`.
+
+Destinations stop before their first ASCII space or closing `)`; a quoted
+title owns its quote and final `)`. Link titles drain before label requeue.
+Image titles are held on Romeo until selector `12`. None of the delimiters is
+captured as field text.
+
+### Mandatory reconstruction and evidence
+
+Reconstruct from committed Task 3 plus accepted A10/A11/A12 shapes. Before
+production edits, add observers proving: (1) terminal `***both***` matches,
+closes, and reaches exactly one real terminator route; (2) nested
+`**outer *inner* outer**` preserves the outer close and emits no synthetic
+star; and (3) link/image title order, selector `12`, no early Romeo pop, and
+one delayed image-title drain. Run:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+  "terminal_emphasis_match or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+```
+
+Expected: PASS. Then run the plan's exact literary gate. No new scene, Recall
+key, token code, stack, or controlled prose is authorized; use only existing
+A2/A10/A11 working labels. Any underflow, duplicate real terminator, early
+Romeo pop, or literal synthetic delimiter is `BLOCK[plan]`.

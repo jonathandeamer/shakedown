@@ -1217,6 +1217,46 @@ not authorize a new carrier, scene title, or alteration of A8/A9.
    then prove selector `12`, `LYRIC_IMAGE_TITLE_CLOSE`, no early Romeo pop,
    and one delayed title drain before image production scenes.
 
+## Amendment A13 (2026-07-14): terminal emphasis match and delayed title drain
+
+The active planner-only blocker is cleared by [A13 in the accepted
+design](../specs/2026-07-12-span-architecture-spike-design.md#a13-terminal-match-ownership-and-held-title-drain-2026-07-14).
+It is binding for Task 4 Step 2 and supersedes checkpoint behavior that treats
+an equal candidate followed by `TEXT_END` as unmatched, or re-enters image
+title capture after alt resumption.
+
+1. Reconstruct from committed Task 3 plus A10/A11/A12; copy no production
+   scene from the failed protected-scanner checkpoint. Count a maximal
+   candidate, compare `MACBETH` and `HECATE`, then branch on its lookahead.
+   Equality is a match even when the lookahead is real `TEXT_END`: restore it
+   below the child private boundary, close the child, then dispatch it once.
+   Non-equal terminal and ordinary paths retain A11 and A12 respectively.
+2. Emit successful emphasis exactly: one star `<em>` / `</em>`, two
+   `<strong>` / `</strong>`, three `<strong><em>` / `</em></strong>`.
+   Synthetic triple stars are child source only; never emit them to Juliet.
+   Preserve the matched length until close selection.
+3. Stop destinations before ASCII space or `)`, and let quoted titles consume
+   their quote/final `)` as syntax. Drain link title before its label requeue.
+   Hold image title on Romeo across alt requeue. Selector `12` makes
+   `LYRIC_IMAGE_TITLE_CLOSE` enter existing field reverse/drain only—never
+   `LYRIC_FIELD_RETRY`, `LYRIC_FIELD_OPEN`, or `LYRIC_FIELD_SCAN`—so it emits
+   `" />` once without a second record or private `TEXT_END`.
+4. Add the A13 terminal-match, nested-close/no-synthetic-star, and
+   link/image ordering observer contracts before production edits. Run:
+
+   ```bash
+   uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+     "terminal_emphasis_match or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+   ```
+
+   Expected: PASS. Then run the exact Global Constraints literary gate. Any
+   carrier failure, early Romeo pop, duplicate real terminator, or literal
+   synthetic delimiter is `BLOCK[plan]`; it does not authorize a spare scene,
+   recovery pop, or altered A8/A9 ownership.
+
+No new controlled prose is needed: only existing A2/A10/A11 working labels
+are authorized and their spares remain unavailable.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
@@ -1573,9 +1613,10 @@ not authorize a new carrier, scene title, or alteration of A8/A9.
   `tests/test_splc_interpret.py::test_image_title_floor_survives_alt_requeue`
   before editing `src_ir/act3.py`.  For `FIELD_IMAGE_TITLE`, retain Romeo's
   raw title floor across the independent alt requeue; set
-  `RESUME_IMAGE_TITLE=12`, and have only `LYRIC_IMAGE_TITLE_CLOSE` re-enter
-  `LYRIC_FIELD_RETRY` after alt scanning, so its existing field drain emits
-  the title followed by `" />`.  Do not use an A2/A8/A9 spare.  Extend the
+  `RESUME_IMAGE_TITLE=12`, and have only `LYRIC_IMAGE_TITLE_CLOSE` enter the
+  existing field reverse/drain stage after alt scanning (never fresh field
+  capture), so its existing field drain emits the title followed by `" />`.
+  Do not use an A2/A8/A9 spare. Extend the
   image observer contract to prove selector 12, the new close scene, no
   Romeo pop during alt drain, and exactly one delayed title drain.  The exact
   pre-production gate is:
@@ -1596,6 +1637,16 @@ not authorize a new carrier, scene title, or alteration of A8/A9.
   lookahead capture. Pass A12's exact focused and literary gates before
   connecting HTML, autolink, link, or image scenes. A10 remains the sole
   image-title ordering rule.
+
+  **A13 terminal-match and title-drain prerequisite (2026-07-14; binding
+  before every protected opener):** Apply Amendment A13 before connecting
+  HTML, autolink, link, or image scenes. Equal terminal delimiter runs are
+  successful matches whose restored real terminator sits below the child
+  private boundary; triple synthetic stars never reach Juliet. Link titles
+  drain before label requeue; a held image title resumes only at shared
+  reverse/drain after selector `12`, never fresh capture. Add A13's three
+  observer contracts and pass its exact focused gate plus the Global
+  Constraints literary gate. No A2/A10/A11 spare is implementation authority.
 
   The original per-feature Task 4 pool (`LYRIC_HTML_TAG` through
   `LYRIC_AUTOLINK_CLOSE`, `LYRIC_LINK_REGION` through `LYRIC_REGION_EMIT`,
