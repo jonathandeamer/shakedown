@@ -102,9 +102,8 @@ def _fixture_params() -> list[object]:
 
 
 def _run_acts(input_text: str, through_act: int) -> str | list[int]:
-    from src_ir.characters import Char
-
     from scripts.splc.interpret import InterpreterState, run_act
+    from scripts.splc.ir import Char
     from src_ir import tokens
     from src_ir.act1 import ACT as ACT1
     from src_ir.act2 import ACT as ACT2
