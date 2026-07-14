@@ -312,7 +312,7 @@ Expected: every Python gate exits zero.  The dry run contains no unresolved inve
 
 - [ ] **Step 3: Mark the recovery shipped without resuming Slice 2.**
 
-Update the roadmap row for this plan to `shipped: <date> at commit <sha>`.  Keep Slice 2’s halted status and add a current-reconciliation paragraph stating that a new interactive planning decision is required before it can resume.  Clear the blocker only if its branch entry is terminal and all final gates passed.
+After the closure commit in Step 4 is pushed, make one follow-up documentation commit that changes this row to shipped and records that already-created closure commit hash.  Keep Slice 2’s halted status and add a current-reconciliation paragraph stating that a new interactive planning decision is required before it can resume.  Clear the blocker only if its branch entry is terminal and all final gates passed.
 
 - [ ] **Step 4: Commit and push the closure.**
 
