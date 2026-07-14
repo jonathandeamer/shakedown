@@ -399,7 +399,7 @@ files.
 - Modify: this plan
 - Modify: `.agent/blockers.md`
 
-- [ ] **Step 1: Run the final recovery gate after the continuation ships.**
+- [x] **Step 1: Run the final recovery gate after the continuation ships.**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -q
@@ -413,6 +413,15 @@ git status --short
 
 Expected: every Python gate exits zero; the dry run has no unresolved
 inventory/artifact diagnostic and reports a normal non-running action.
+
+Evidence re-run on 2026-07-14:
+- `uv run pytest tests/test_mco_loop.py -q` exited zero (`111 passed`).
+- `uv run ruff check .` exited zero.
+- `uv run ruff format --check .` exited zero.
+- `uv run pyright` exited zero (`0 errors, 0 warnings, 0 informations`).
+- `uv run pytest -q` exited zero (`733 passed, 23 skipped, 2 deselected`).
+- `./agent-loop --dry-run` exited zero and reported the active plan plus a normal non-running recovery action.
+- `git status --short` showed only the unrelated dirty `.agent/branch-dispositions.toml` before the closure-state docs update.
 
 - [ ] **Step 2: Mark the recovery shipped and clear its resolved blocker.**
 
