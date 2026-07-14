@@ -12,3 +12,23 @@ reason = "Focused branch suite failed 15 tests with Act-II and Act-III stack und
 head = "888b200675edec0148a592b9cfe9110755da59fb"
 disposition = "superseded"
 reason = "Focused branch suite failed 22 Act-III protected-region contracts with stack underflows; its stale observer changes are not safe to integrate."
+
+[branches."codex-span-wip"]
+head = "713b2f24af5569babe5c6a9c9404032b35f0ebe1"
+disposition = "integrated"
+reason = "Branch head is already reachable from main as commit 713b2f24af5569babe5c6a9c9404032b35f0ebe1 (`docs: mark Task 4 Step 1 protected-span contracts complete`); `git log main..codex-span-wip` and `git diff --stat main...codex-span-wip` are both empty."
+
+[branches."implement-0ad669387c454d7ca6062eedef3e99fb-codex-implement"]
+head = "05dd4679aab7632f1a6cdc363695940e165bfcee"
+disposition = "integrated"
+reason = "Branch head is already reachable from main as commit 05dd4679aab7632f1a6cdc363695940e165bfcee (`docs: reset span continuation reconstruction`); `git log main..implement-0ad669387c454d7ca6062eedef3e99fb-codex-implement` and `git diff --stat main...implement-0ad669387c454d7ca6062eedef3e99fb-codex-implement` are both empty."
+
+[branches."implement-db215041bf5d4acb948da5d80cafc3a7-codex-implement"]
+head = "d06727deb0626fed3e30d87347ad6d4872252f8f"
+disposition = "integrated"
+reason = "Branch head is already reachable from main as commit d06727deb0626fed3e30d87347ad6d4872252f8f (`test: prove buffered span state fits scene model`); `git log main..implement-db215041bf5d4acb948da5d80cafc3a7-codex-implement` and `git diff --stat main...implement-db215041bf5d4acb948da5d80cafc3a7-codex-implement` are both empty."
+
+[branches."implement-fded64f2f07b445e810d4b3ac8c40429-codex-implement"]
+head = "6e7626735df3623d5b57a9c87ea9913630c3579e"
+disposition = "integrated"
+reason = "Branch head is already reachable from main as commit 6e7626735df3623d5b57a9c87ea9913630c3579e (`docs: record slice 3 task 2 step 1 evidence`); `git log main..implement-fded64f2f07b445e810d4b3ac8c40429-codex-implement` and `git diff --stat main...implement-fded64f2f07b445e810d4b3ac8c40429-codex-implement` are both empty."
