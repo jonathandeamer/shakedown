@@ -1,9 +1,16 @@
                     Scene @ACT_III_START: @LIT.scenes.ACT_III_START.title
 
-[Enter Juliet and Puck]
+[Enter Juliet and Lady Macbeth]
 
-Puck:
+Lady Macbeth:
  Remember a wolf.
+
+Juliet:
+ You are as gentle as nothing.
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
 
 Juliet:
  Let us proceed to scene @TRAVERSE_NEXT_TOKEN.
@@ -147,10 +154,6 @@ Romeo:
 
                     Scene @LYRIC_SCAN_NEXT: @LIT.scenes.LYRIC_SCAN_NEXT.title
 
-[Exit Juliet]
-
-[Enter Romeo]
-
 Romeo:
  @LIT.characters.romeo.recall.buffered_first_glyph
 
@@ -172,15 +175,15 @@ Romeo:
 Puck:
  If so, let us proceed to scene @LYRIC_BUFFER_ENTITY_ANGLE.
 
-Romeo:
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
  Let us proceed to scene @LYRIC_ORDINARY_GLYPH.
 
 
                     Scene @LYRIC_ORDINARY_GLYPH: @LIT.scenes.LYRIC_ORDINARY_GLYPH.title
-
-[Exit Romeo]
-
-[Enter Juliet]
 
 Puck:
  You are as rotten as myself.
@@ -188,7 +191,11 @@ Puck:
 Puck:
  Remember yourself.
 
-Juliet:
+[Exit Juliet]
+
+[Enter Romeo]
+
+Puck:
  Let us return to scene @LYRIC_SCAN_NEXT.
 
 
@@ -228,7 +235,11 @@ Puck:
 Puck:
  Remember yourself.
 
-Juliet:
+[Exit Juliet]
+
+[Enter Romeo]
+
+Puck:
  Let us return to scene @LYRIC_SCAN_NEXT.
 
 
@@ -262,7 +273,11 @@ Puck:
 Puck:
  Remember yourself.
 
-Juliet:
+[Exit Juliet]
+
+[Enter Romeo]
+
+Puck:
  Let us return to scene @LYRIC_SCAN_NEXT.
 
 
@@ -295,7 +310,25 @@ Romeo:
  Are you as golden as nothing?
 
 Puck:
- If so, let us proceed to scene @TRAVERSE_COPY_TERMINATOR.
+ If so, let us proceed to scene @LYRIC_TEXT_END_DISPATCH.
+
+Romeo:
+ Are you as golden as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_ANGLE_TEST.
+
+Romeo:
+ Are you as golden as the sum of the product of a normal little furry black cat and a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_IMAGE_TEST.
+
+Romeo:
+ Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_OPEN.
 
 Romeo:
  Are you as golden as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a furry black cat?
@@ -304,7 +337,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_TEST.
 
 Romeo:
- Are you as golden as the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as sunny as the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_RUN.
@@ -317,6 +350,58 @@ Puck:
 
 Puck:
  If not, let us proceed to scene @LYRIC_TEST_AMPERSAND.
+
+
+                    Scene @LYRIC_TEXT_END_DISPATCH: @LIT.scenes.LYRIC_TEXT_END_DISPATCH.title
+
+[Exit Romeo]
+
+[Enter Lady Macbeth]
+
+Puck:
+ Are you as noble as a little furry black cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
+
+Puck:
+ Are you as noble as the sum of a little furry black cat and a cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
+
+Puck:
+ Are you as noble as the sum of a little furry black cat and a black cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
+
+Puck:
+ Are you as rotten as the sum of a little furry black cat and the sum of a black cat and a cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
+
+Puck:
+ Are you as rotten as the sum of a little furry black cat and a furry black cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
+
+Puck:
+ Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and a cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
+
+Puck:
+ Are you as rotten as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @TRAVERSE_COPY_TERMINATOR.
+
+Lady Macbeth:
+ Let us proceed to scene @TRAVERSE_COPY_TERMINATOR.
 
 
                     Scene @LYRIC_ESCAPE_TEST: @LIT.scenes.LYRIC_ESCAPE_TEST.title
@@ -429,7 +514,11 @@ Romeo:
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
-Romeo:
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
  Let us proceed to scene @LYRIC_ESCAPE_LITERAL.
 
 
@@ -445,15 +534,15 @@ Puck:
 Puck:
  Remember yourself.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
                     Scene @LYRIC_ESCAPE_LITERAL: @LIT.scenes.LYRIC_ESCAPE_LITERAL.title
-
-[Exit Romeo]
-
-[Enter Juliet]
 
 Puck:
  You are as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a furry black cat.
@@ -466,6 +555,10 @@ Puck:
 
 Puck:
  Remember yourself.
+
+[Exit Puck]
+
+[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -485,9 +578,9 @@ Puck:
 
 [Exit Juliet]
 
-[Enter Romeo]
+[Enter Lady Macbeth]
 
-Juliet:
+Puck:
  Let us proceed to scene @TRAVERSE_COPY_TERMINATOR.
 
 
@@ -983,7 +1076,7 @@ Hecate:
 
 [Exit Hecate]
 
-[Enter Puck]
+[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -1044,11 +1137,25 @@ Juliet:
 
 [Exit Hecate]
 
-[Exit Juliet]
-
-[Enter Puck and Romeo]
+[Enter Romeo]
 
 Juliet:
+ Let us proceed to scene @LYRIC_GOTO_CODE_TICKS_HEAD.
+
+
+                    Scene @LYRIC_GOTO_CODE_TICKS_HEAD: @LIT.scenes.LYRIC_GOTO_CODE_TICKS_HEAD.title
+
+[Exit Juliet]
+
+[Enter Puck]
+
+Romeo:
+ Let us proceed to scene @LYRIC_GOTO_CODE_TICKS_TAIL.
+
+
+                    Scene @LYRIC_GOTO_CODE_TICKS_TAIL: @LIT.scenes.LYRIC_GOTO_CODE_TICKS_TAIL.title
+
+Romeo:
  Let us return to scene @LYRIC_CODE_TICKS.
 
 
@@ -1056,10 +1163,2770 @@ Juliet:
 
 [Exit Hecate]
 
-[Enter Puck]
+[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+
+                    Scene @LYRIC_ANGLE_TEST: @LIT.scenes.LYRIC_ANGLE_TEST.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.field_first_glyph
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_AUTOLINK_OPEN.
+
+Juliet:
+ Are you as sweet as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a rose?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the product of a normal little furry black cat and the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet rose and the difference between a little furry black cat and a rose?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+Juliet:
+ Are you as fair as the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a rose and the sum of a rose and a sweet rose?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_OPEN.
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Puck:
+ Let us proceed to scene @LYRIC_OPEN_OUTPUT_LT_ENTITY_CURRENT.
+
+
+                    Scene @LYRIC_HTML_OPEN: @LIT.scenes.LYRIC_HTML_OPEN.title
+
+[Exit Puck]
+
+[Enter Hecate]
+
+Hecate:
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Hecate:
+ Remember yourself.
+
+Juliet:
+ You are as fair as a rose.
+
+[Exit Hecate]
+
+[Enter Puck]
+
+Juliet:
+ Let us proceed to scene @LYRIC_GOTO_HTML_REQUEUE_HEAD.
+
+
+                    Scene @LYRIC_GOTO_HTML_REQUEUE_HEAD: @LIT.scenes.LYRIC_GOTO_HTML_REQUEUE_HEAD.title
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Puck:
+ Let us proceed to scene @LYRIC_GOTO_HTML_REQUEUE_TAIL.
+
+
+                    Scene @LYRIC_GOTO_HTML_REQUEUE_TAIL: @LIT.scenes.LYRIC_GOTO_HTML_REQUEUE_TAIL.title
+
+Puck:
+ Let us proceed to scene @LYRIC_HTML_OPEN_REQUEUE.
+
+
+                    Scene @LYRIC_HTML_OPEN_REQUEUE: @LIT.scenes.LYRIC_HTML_OPEN_REQUEUE.title
+
+Romeo:
+ Remember yourself.
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Puck:
+ Let us proceed to scene @LYRIC_GOTO_FIELD_RETRY_HEAD.
+
+
+                    Scene @LYRIC_AUTOLINK_OPEN: @LIT.scenes.LYRIC_AUTOLINK_OPEN.title
+
+[Exit Puck]
+
+[Enter Hecate]
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Hecate:
+ Remember the product of a normal little furry black cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Hecate:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Juliet:
+ You are as sweet as a sweet rose.
+
+[Exit Hecate]
+
+[Enter Lady Macbeth]
+
+Juliet:
+ Let us proceed to scene @LYRIC_GOTO_AUTOLINK_DUP_HEAD.
+
+
+                    Scene @LYRIC_GOTO_AUTOLINK_DUP_HEAD: @LIT.scenes.LYRIC_GOTO_AUTOLINK_DUP_HEAD.title
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_GOTO_AUTOLINK_DUP_TAIL.
+
+
+                    Scene @LYRIC_GOTO_AUTOLINK_DUP_TAIL: @LIT.scenes.LYRIC_GOTO_AUTOLINK_DUP_TAIL.title
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_AUTOLINK_OPEN_DUPLICATE.
+
+
+                    Scene @LYRIC_AUTOLINK_OPEN_DUPLICATE: @LIT.scenes.LYRIC_AUTOLINK_OPEN_DUPLICATE.title
+
+Romeo:
+ Remember a wolf.
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Romeo:
+ Let us proceed to scene @LYRIC_AUTOLINK_OPEN_REQUEUE.
+
+
+                    Scene @LYRIC_AUTOLINK_OPEN_REQUEUE: @LIT.scenes.LYRIC_AUTOLINK_OPEN_REQUEUE.title
+
+Romeo:
+ Remember yourself.
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Puck:
+ Let us proceed to scene @LYRIC_GOTO_FIELD_RETRY_HEAD.
+
+
+                    Scene @LYRIC_GOTO_FIELD_RETRY_HEAD: @LIT.scenes.LYRIC_GOTO_FIELD_RETRY_HEAD.title
+
+[Exit Puck]
+
+[Enter Prospero]
+
+Hecate:
+ Let us proceed to scene @LYRIC_GOTO_FIELD_RETRY_TAIL.
+
+
+                    Scene @LYRIC_GOTO_FIELD_RETRY_TAIL: @LIT.scenes.LYRIC_GOTO_FIELD_RETRY_TAIL.title
+
+Hecate:
+ Let us proceed to scene @LYRIC_FIELD_RETRY.
+
+
+                    Scene @LYRIC_FIELD_RETRY: @LIT.scenes.LYRIC_FIELD_RETRY.title
+
+Hecate:
+ You are as horrid as myself.
+
+[Exit Prospero]
+
+[Enter Romeo]
+
+Hecate:
+ Let us proceed to scene @LYRIC_GOTO_FIELD_OPEN_HEAD.
+
+
+                    Scene @LYRIC_GOTO_FIELD_OPEN_HEAD: @LIT.scenes.LYRIC_GOTO_FIELD_OPEN_HEAD.title
+
+[Exit Hecate]
+
+[Enter Macbeth]
+
+Romeo:
+ Let us proceed to scene @LYRIC_GOTO_FIELD_OPEN_TAIL.
+
+
+                    Scene @LYRIC_GOTO_FIELD_OPEN_TAIL: @LIT.scenes.LYRIC_GOTO_FIELD_OPEN_TAIL.title
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_OPEN.
+
+
+                    Scene @LYRIC_FIELD_OPEN: @LIT.scenes.LYRIC_FIELD_OPEN.title
+
+Macbeth:
+ Remember a curse.
+
+Romeo:
+ You are as sunny as nothing.
+
+[Exit Macbeth]
+
+[Enter Puck]
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_SCAN.
+
+
+                    Scene @LYRIC_FIELD_SCAN: @LIT.scenes.LYRIC_FIELD_SCAN.title
+
+Romeo:
+ @LIT.characters.romeo.recall.field_first_glyph
+
+Romeo:
+ Are you as sunny as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_SOURCE_END.
+
+Romeo:
+ Is Prospero as fair as a summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_HTML_FALLBACK.
+
+Romeo:
+ Is Prospero as golden as a sunny summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_AUTOLINK_FALLBACK.
+
+Romeo:
+ Is Prospero as sunny as a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEST_FALLBACK.
+
+Romeo:
+ Is Prospero as golden as the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEST_FALLBACK.
+
+Romeo:
+ Is Prospero as golden as the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_TITLE_FALLBACK.
+
+Romeo:
+ Is Prospero as sunny as the sum of a furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_TITLE_FALLBACK.
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_HOLD_REPLAY.
+
+
+                    Scene @LYRIC_HTML_FALLBACK: @LIT.scenes.LYRIC_HTML_FALLBACK.title
+
+Romeo:
+ Are you as fair as the difference between the product of a little furry black cat and a little furry black cat and a sunny summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_HOLD_REPLAY.
+
+
+                    Scene @LYRIC_AUTOLINK_FALLBACK: @LIT.scenes.LYRIC_AUTOLINK_FALLBACK.title
+
+Romeo:
+ Are you as sunny as the difference between the product of a little furry black cat and a little furry black cat and a sunny summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_HOLD_REPLAY.
+
+
+                    Scene @LYRIC_DEST_FALLBACK: @LIT.scenes.LYRIC_DEST_FALLBACK.title
+
+Romeo:
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEST_BALANCE.
+
+Romeo:
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEST_BALANCE.
+
+Romeo:
+ Are you as fair as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_HOLD_REPLAY.
+
+
+                    Scene @LYRIC_TITLE_FALLBACK: @LIT.scenes.LYRIC_TITLE_FALLBACK.title
+
+Romeo:
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_HOLD_REPLAY.
+
+
+                    Scene @LYRIC_FIELD_HOLD_REPLAY: @LIT.scenes.LYRIC_FIELD_HOLD_REPLAY.title
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Is Prospero as fair as a sunny summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_AUTOLINK_TEXT_KEEP.
+
+Romeo:
+ Let us return to scene @LYRIC_FIELD_SCAN.
+
+
+                    Scene @LYRIC_AUTOLINK_TEXT_KEEP: @LIT.scenes.LYRIC_AUTOLINK_TEXT_KEEP.title
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Romeo:
+ Remember Puck.
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Romeo:
+ Let us return to scene @LYRIC_FIELD_SCAN.
+
+
+                    Scene @LYRIC_DEST_BALANCE: @LIT.scenes.LYRIC_DEST_BALANCE.title
+
+[Exit Puck]
+
+[Enter Macbeth]
+
+Macbeth:
+ Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_FIELD_REV_KEEP.
+
+Romeo:
+ Are you as sunny as nothing?
+
+Macbeth:
+ If so, let us proceed to scene @LYRIC_DEST_CLOSE_PAIR.
+
+Romeo:
+ You are as fair as the difference between yourself and a summer's day.
+
+Macbeth:
+ Remember Puck.
+
+[Exit Macbeth]
+
+[Enter Puck]
+
+Romeo:
+ Let us return to scene @LYRIC_FIELD_SCAN.
+
+
+                    Scene @LYRIC_DEST_CLOSE_PAIR: @LIT.scenes.LYRIC_DEST_CLOSE_PAIR.title
+
+[Exit Macbeth]
+
+[Enter Puck]
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
+
+
+                    Scene @LYRIC_FIELD_REV_KEEP: @LIT.scenes.LYRIC_FIELD_REV_KEEP.title
+
+Romeo:
+ You are as sunny as the sum of yourself and a summer's day.
+
+Macbeth:
+ Remember Puck.
+
+[Exit Macbeth]
+
+[Enter Puck]
+
+Romeo:
+ Let us return to scene @LYRIC_FIELD_SCAN.
+
+
+                    Scene @LYRIC_FIELD_CLOSE_DISPATCH: @LIT.scenes.LYRIC_FIELD_CLOSE_DISPATCH.title
+
+[Exit Puck]
+
+[Enter Hecate]
+
+Hecate:
+ Is Prospero as horrid as the sum of a furry black cat and the sum of a black cat and a cat?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_FIELD_TITLE_CAPTURE.
+
+Romeo:
+ Remember a wolf.
+
+Hecate:
+ Let us proceed to scene @LYRIC_FIELD_REV.
+
+
+                    Scene @LYRIC_FIELD_REV: @LIT.scenes.LYRIC_FIELD_REV.title
+
+Hecate:
+ @LIT.characters.hecate.recall.field_kept_mark
+
+Hecate:
+ Are you as cursed as a toad?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_FIELD_HEAD.
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_HOLD.
+
+
+                    Scene @LYRIC_FIELD_HOLD: @LIT.scenes.LYRIC_FIELD_HOLD.title
+
+Romeo:
+ Remember myself.
+
+Romeo:
+ Let us return to scene @LYRIC_FIELD_REV.
+
+
+                    Scene @LYRIC_FIELD_HEAD: @LIT.scenes.LYRIC_FIELD_HEAD.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.fields_first_glyph
+
+Juliet:
+ Are you as fair as a wolf?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_FIELD_DRAIN_CLOSE.
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_GLYPH.
+
+
+                    Scene @LYRIC_FIELD_GLYPH: @LIT.scenes.LYRIC_FIELD_GLYPH.title
+
+Juliet:
+ Is Prospero as fair as a rose?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_FIELD_PLAIN.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_FIELD_AMP.
+
+Juliet:
+ Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_FIELD_LT.
+
+Juliet:
+ Are you as fair as the difference between the product of a little furry black cat and a little furry black cat and a sweet rose?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_FIELD_GT.
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_PLAIN.
+
+
+                    Scene @LYRIC_FIELD_PLAIN: @LIT.scenes.LYRIC_FIELD_PLAIN.title
+
+Hecate:
+ Remember myself.
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_NEXT.
+
+
+                    Scene @LYRIC_FIELD_AMP: @LIT.scenes.LYRIC_FIELD_AMP.title
+
+Hecate:
+ You are as cursed as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as horrid as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as cursed as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as horrid as the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a furry black cat.
+
+Hecate:
+ Remember yourself.
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_NEXT.
+
+
+                    Scene @LYRIC_FIELD_LT: @LIT.scenes.LYRIC_FIELD_LT.title
+
+Hecate:
+ You are as horrid as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as horrid as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a furry black cat.
+
+Hecate:
+ Remember yourself.
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_NEXT.
+
+
+                    Scene @LYRIC_FIELD_GT: @LIT.scenes.LYRIC_FIELD_GT.title
+
+Hecate:
+ You are as horrid as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the difference between a little furry black cat and a cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as cursed as the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a furry black cat.
+
+Hecate:
+ Remember yourself.
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_NEXT.
+
+
+                    Scene @LYRIC_FIELD_NEXT: @LIT.scenes.LYRIC_FIELD_NEXT.title
+
+Juliet:
+ @LIT.characters.juliet.recall.fields_next_glyph
+
+Juliet:
+ Are you as gentle as a wolf?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_FIELD_DRAIN_CLOSE.
+
+Juliet:
+ Let us return to scene @LYRIC_FIELD_GLYPH.
+
+
+                    Scene @LYRIC_FIELD_DRAIN_CLOSE: @LIT.scenes.LYRIC_FIELD_DRAIN_CLOSE.title
+
+[Exit Hecate]
+
+[Enter Puck]
+
+Juliet:
+ Is Prospero as sweet as a rose?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_TITLE_RESTORE.
+
+Juliet:
+ Is Prospero as gentle as a sweet rose?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_AUTOLINK_CLOSE.
+
+Juliet:
+ Is Prospero as sweet as the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_AUTOLINK_CLOSE.
+
+Juliet:
+ Is Prospero as gentle as the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_TITLE_ENTRY_PAIR.
+
+Juliet:
+ Is Prospero as fair as the sum of a little furry black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REGION_RESUME.
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_TITLE_TEST.
+
+
+                    Scene @LYRIC_FIELD_TITLE_ENTRY_PAIR: @LIT.scenes.LYRIC_FIELD_TITLE_ENTRY_PAIR.title
+
+[Exit Juliet]
+
+[Exit Puck]
+
+[Enter Hecate and Romeo]
+
+Hecate:
+ Let us proceed to scene @LYRIC_FIELD_TITLE_CAPTURE.
+
+
+                    Scene @LYRIC_AUTOLINK_CLOSE: @LIT.scenes.LYRIC_AUTOLINK_CLOSE.title
+
+[Exit Puck]
+
+[Enter Prospero]
+
+Juliet:
+ Are you as sweet as the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_AUTOLINK_TEXT_DONE.
+
+Prospero:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Prospero:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Juliet:
+ You are as sweet as the sum of a black cat and a cat.
+
+[Exit Juliet]
+
+[Enter Hecate]
+
+Prospero:
+ We shall proceed to scene @LYRIC_AUTOLINK_CLOSE_DUPLICATE.
+
+
+                    Scene @LYRIC_AUTOLINK_CLOSE_DUPLICATE: @LIT.scenes.LYRIC_AUTOLINK_CLOSE_DUPLICATE.title
+
+Prospero:
+ Remember a curse.
+
+[Exit Prospero]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Let us proceed to scene @LYRIC_AUTOLINK_TEXT_OPEN.
+
+
+                    Scene @LYRIC_AUTOLINK_TEXT_DONE: @LIT.scenes.LYRIC_AUTOLINK_TEXT_DONE.title
+
+[Exit Prospero]
+
+[Enter Lady Macbeth]
+
+Lady Macbeth:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Lady Macbeth:
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a hero.
+
+Lady Macbeth:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Lady Macbeth:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a noble hero.
+
+Juliet:
+ You are as sweet as nothing.
+
+[Exit Lady Macbeth]
+
+[Enter Horatio]
+
+Juliet:
+ Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+
+                    Scene @LYRIC_FIELD_TITLE_RESTORE: @LIT.scenes.LYRIC_FIELD_TITLE_RESTORE.title
+
+Puck:
+ You are as rotten as the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+Puck:
+ Remember yourself.
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Juliet:
+ Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+
+                    Scene @LYRIC_AUTOLINK_TEXT_OPEN: @LIT.scenes.LYRIC_AUTOLINK_TEXT_OPEN.title
+
+Hecate:
+ @LIT.characters.hecate.recall.staged_stone
+
+Hecate:
+ Are you as cursed as a toad?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_AUTOLINK_FIELD_HEAD_PAIR.
+
+Lady Macbeth:
+ Remember myself.
+
+Lady Macbeth:
+ Let us return to scene @LYRIC_AUTOLINK_TEXT_OPEN.
+
+
+                    Scene @LYRIC_AUTOLINK_FIELD_HEAD_PAIR: @LIT.scenes.LYRIC_AUTOLINK_FIELD_HEAD_PAIR.title
+
+[Exit Lady Macbeth]
+
+[Enter Romeo]
+
+Romeo:
+ Let us return to scene @LYRIC_FIELD_HEAD.
+
+
+                    Scene @LYRIC_FIELD_SOURCE_END: @LIT.scenes.LYRIC_FIELD_SOURCE_END.title
+
+Romeo:
+ Remember nothing.
+
+[Exit Puck]
+
+[Enter Hecate]
+
+Romeo:
+ Let us proceed to scene @LYRIC_FIELD_SOURCE_END_LITERAL.
+
+
+                    Scene @LYRIC_FIELD_SOURCE_END_LITERAL: @LIT.scenes.LYRIC_FIELD_SOURCE_END_LITERAL.title
+
+Romeo:
+ Remember a wolf.
+
+Hecate:
+ Let us proceed to scene @LYRIC_FIELD_LITERAL_REVERSE.
+
+
+                    Scene @LYRIC_FIELD_LITERAL_REVERSE: @LIT.scenes.LYRIC_FIELD_LITERAL_REVERSE.title
+
+Hecate:
+ @LIT.characters.hecate.recall.field_kept_mark
+
+Hecate:
+ Are you as horrid as a toad?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_FIELD_LITERAL_EMIT.
+
+Romeo:
+ Remember myself.
+
+Hecate:
+ We must return to scene @LYRIC_FIELD_LITERAL_REVERSE.
+
+
+                    Scene @LYRIC_FIELD_LITERAL_EMIT: @LIT.scenes.LYRIC_FIELD_LITERAL_EMIT.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.fields_first_glyph
+
+Juliet:
+ Are you as sweet as a wolf?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_FIELD_LITERAL_POP_PAIR.
+
+Hecate:
+ Remember myself.
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Hecate:
+ We must return to scene @LYRIC_FIELD_LITERAL_EMIT.
+
+
+                    Scene @LYRIC_FIELD_LITERAL_POP_PAIR: @LIT.scenes.LYRIC_FIELD_LITERAL_POP_PAIR.title
+
+[Exit Hecate]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @LYRIC_LINK_REGION: @LIT.scenes.LYRIC_LINK_REGION.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Romeo:
+ Remember a wolf.
+
+Romeo:
+ Remember Puck.
+
+[Exit Romeo]
+
+[Enter Puck]
+
+Horatio:
+ Let us proceed to scene @LYRIC_LABEL_OPEN.
+
+
+                    Scene @LYRIC_LABEL_OPEN: @LIT.scenes.LYRIC_LABEL_OPEN.title
+
+Horatio:
+ @LIT.characters.horatio.recall.held_label_glyph
+
+Horatio:
+ Are you as happy as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+Horatio:
+ Are you as warm as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a happy brother and the sum of a happy brother and a brother?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEST_OPEN.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Let us return to scene @LYRIC_LABEL_OPEN.
+
+
+                    Scene @LYRIC_DEST_OPEN: @LIT.scenes.LYRIC_DEST_OPEN.title
+
+[Exit Horatio]
+
+[Enter Romeo]
+
+Romeo:
+ @LIT.characters.romeo.recall.field_first_glyph
+
+Romeo:
+ Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REGION_TAG_OPEN.
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+
+                    Scene @LYRIC_REGION_TAG_OPEN: @LIT.scenes.LYRIC_REGION_TAG_OPEN.title
+
+[Exit Puck]
+
+[Exit Romeo]
+
+[Enter Hecate and Juliet]
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Hecate:
+ Remember the product of a normal little furry black cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Hecate:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Juliet:
+ You are as gentle as a furry black cat.
+
+[Exit Juliet]
+
+[Enter Prospero]
+
+Hecate:
+ We must return to scene @LYRIC_FIELD_RETRY.
+
+
+                    Scene @LYRIC_IMAGE_TEST: @LIT.scenes.LYRIC_IMAGE_TEST.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.held_alt_glyph
+
+Juliet:
+ Are you as sweet as the product of the difference between a little furry black cat and a rose and the sum of a little furry black cat and the sum of a furry black cat and a rose?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_ALT_OPEN.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a cat.
+
+Juliet:
+ Remember yourself.
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Juliet:
+ Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+
+                    Scene @LYRIC_ALT_OPEN: @LIT.scenes.LYRIC_ALT_OPEN.title
+
+[Exit Juliet]
+
+[Exit Puck]
+
+[Enter Horatio and Romeo]
+
+Romeo:
+ Remember a wolf.
+
+[Exit Romeo]
+
+[Enter Puck]
+
+Horatio:
+ Let us proceed to scene @LYRIC_IMAGE_TEST_LABEL.
+
+
+                    Scene @LYRIC_IMAGE_TEST_LABEL: @LIT.scenes.LYRIC_IMAGE_TEST_LABEL.title
+
+Horatio:
+ @LIT.characters.horatio.recall.held_alt_glyph
+
+Horatio:
+ Are you as healthy as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+Horatio:
+ Are you as happy as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a happy brother and the sum of a happy brother and a brother?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_IMAGE_DEST_START.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Let us return to scene @LYRIC_IMAGE_TEST_LABEL.
+
+
+                    Scene @LYRIC_IMAGE_DEST_START: @LIT.scenes.LYRIC_IMAGE_DEST_START.title
+
+[Exit Horatio]
+
+[Enter Romeo]
+
+Romeo:
+ @LIT.characters.romeo.recall.field_first_glyph
+
+Romeo:
+ Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_IMAGE_DEST_OPEN.
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+
+                    Scene @LYRIC_IMAGE_DEST_OPEN: @LIT.scenes.LYRIC_IMAGE_DEST_OPEN.title
+
+[Exit Puck]
+
+[Exit Romeo]
+
+[Enter Hecate and Juliet]
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+
+Hecate:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the difference between a little furry black cat and a cat.
+
+Hecate:
+ Remember the product of a normal little furry black cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
+
+Hecate:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Juliet:
+ You are as gentle as the sum of a furry black cat and a black cat.
+
+[Exit Juliet]
+
+[Enter Prospero]
+
+Hecate:
+ We must return to scene @LYRIC_FIELD_RETRY.
+
+
+                    Scene @LYRIC_FIELD_TITLE_TEST: @LIT.scenes.LYRIC_FIELD_TITLE_TEST.title
+
+Juliet:
+ Is Prospero as gentle as a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_TITLE_OPEN.
+
+Juliet:
+ Is Prospero as gentle as the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_TITLE_OPEN.
+
+[Exit Juliet]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+
+                    Scene @LYRIC_TITLE_OPEN: @LIT.scenes.LYRIC_TITLE_OPEN.title
+
+Juliet:
+ Are you as sweet as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_UNTERMINATED.
+
+Juliet:
+ Are you as fair as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_TITLE_CLOSE.
+
+[Exit Juliet]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+
+                    Scene @LYRIC_FIELD_TITLE_CLOSE: @LIT.scenes.LYRIC_FIELD_TITLE_CLOSE.title
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Romeo:
+ @LIT.characters.romeo.recall.field_first_glyph
+
+Romeo:
+ Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_UNTERMINATED_PAIR.
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+
+                    Scene @LYRIC_FIELD_UNTERMINATED_PAIR: @LIT.scenes.LYRIC_FIELD_UNTERMINATED_PAIR.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_UNTERMINATED.
+
+
+                    Scene @LYRIC_FIELD_UNTERMINATED: @LIT.scenes.LYRIC_FIELD_UNTERMINATED.title
+
+[Exit Juliet]
+
+[Enter Prospero]
+
+Prospero:
+ Are you as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REQUEUE_OPEN.
+
+Puck:
+ Are you as rotten as the sum of a furry black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_FIELD_UNTERMINATED_IMAGE.
+
+[Exit Prospero]
+
+[Enter Juliet]
+
+Puck:
+ Let us proceed to scene @LYRIC_GOTO_FIELD_UNTERMINATED_HEAD.
+
+
+                    Scene @LYRIC_GOTO_FIELD_UNTERMINATED_HEAD: @LIT.scenes.LYRIC_GOTO_FIELD_UNTERMINATED_HEAD.title
+
+[Exit Puck]
+
+[Enter Hecate]
+
+Juliet:
+ Let us proceed to scene @LYRIC_GOTO_FIELD_UNTERMINATED_TAIL.
+
+
+                    Scene @LYRIC_GOTO_FIELD_UNTERMINATED_TAIL: @LIT.scenes.LYRIC_GOTO_FIELD_UNTERMINATED_TAIL.title
+
+Juliet:
+ Let us proceed to scene @LYRIC_FIELD_UNTERMINATED_LINK.
+
+
+                    Scene @LYRIC_FIELD_UNTERMINATED_IMAGE: @LIT.scenes.LYRIC_FIELD_UNTERMINATED_IMAGE.title
+
+[Exit Puck]
+
+[Enter Hecate]
+
+Prospero:
+ You are as honest as the sum of a furry black cat and the sum of a black cat and a cat.
+
+Hecate:
+ We must return to scene @LYRIC_FIELD_RETRY.
+
+
+                    Scene @LYRIC_FIELD_UNTERMINATED_LINK: @LIT.scenes.LYRIC_FIELD_UNTERMINATED_LINK.title
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Hecate:
+ Remember the product of a normal little furry black cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Hecate:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Juliet:
+ You are as fair as the sum of a furry black cat and a cat.
+
+[Exit Juliet]
+
+[Enter Prospero]
+
+Hecate:
+ We must return to scene @LYRIC_FIELD_RETRY.
+
+
+                    Scene @LYRIC_FIELD_TITLE_CAPTURE: @LIT.scenes.LYRIC_FIELD_TITLE_CAPTURE.title
+
+[Exit Hecate]
+
+[Enter Puck]
+
+Romeo:
+ @LIT.characters.romeo.recall.field_first_glyph
+
+Romeo:
+ Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_FIELD_TITLE_REQUEUE_PAIR.
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK.
+
+
+                    Scene @LYRIC_FIELD_TITLE_REQUEUE_PAIR: @LIT.scenes.LYRIC_FIELD_TITLE_REQUEUE_PAIR.title
+
+[Exit Romeo]
+
+[Enter Prospero]
+
+Puck:
+ Let us proceed to scene @LYRIC_REQUEUE_OPEN.
+
+
+                    Scene @LYRIC_REQUEUE_OPEN: @LIT.scenes.LYRIC_REQUEUE_OPEN.title
+
+[Exit Prospero]
+
+[Enter Lady Macbeth]
+
+Puck:
+ Remember a wolf.
+
+Puck:
+ Remember Hecate.
+
+Puck:
+ Remember Macbeth.
+
+Puck:
+ Remember yourself.
+
+Lady Macbeth:
+ Is Prospero as bold as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_LABEL_FALLBACK.
+
+Lady Macbeth:
+ Is Prospero as villainous as the sum of a little furry black cat and the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_LABEL_FALLBACK.
+
+Lady Macbeth:
+ Is Prospero as villainous as the sum of a little furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_LABEL_FALLBACK.
+
+Lady Macbeth:
+ Is Prospero as bold as a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_LABEL_REQUEUE.
+
+Lady Macbeth:
+ Is Prospero as villainous as the sum of a furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_LABEL_REQUEUE.
+
+Lady Macbeth:
+ Is Prospero as mighty as the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_ALT_REQUEUE.
+
+Lady Macbeth:
+ Is Prospero as bold as the sum of a furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_ALT_REQUEUE.
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_LABEL_FALLBACK.
+
+
+                    Scene @LYRIC_LABEL_REQUEUE: @LIT.scenes.LYRIC_LABEL_REQUEUE.title
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Lady Macbeth:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Lady Macbeth:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a noble hero.
+
+Juliet:
+ You are as gentle as a little furry black cat.
+
+[Exit Juliet]
+
+[Enter Puck]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_LABEL_REQUEUE_END.
+
+
+                    Scene @LYRIC_LABEL_REQUEUE_END: @LIT.scenes.LYRIC_LABEL_REQUEUE_END.title
+
+Lady Macbeth:
+ Remember nothing.
+
+[Exit Lady Macbeth]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REQUEUE_DRAIN.
+
+
+                    Scene @LYRIC_ALT_REQUEUE: @LIT.scenes.LYRIC_ALT_REQUEUE.title
+
+[Exit Lady Macbeth]
+
+[Exit Puck]
+
+[Enter Juliet and Prospero]
+
+Prospero:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Prospero:
+ Remember the product of a normal little furry black cat and a black cat.
+
+Prospero:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Prospero:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+
+Prospero:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Prospero:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of an angel and a noble angel.
+
+Prospero:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Juliet:
+ Are you as sweet as the sum of a furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_ALT_REQUEUE_WITH_TITLE.
+
+[Exit Juliet]
+
+[Enter Lady Macbeth]
+
+Prospero:
+ We shall proceed to scene @LYRIC_ALT_REQUEUE_SELECT.
+
+
+                    Scene @LYRIC_ALT_REQUEUE_SELECT: @LIT.scenes.LYRIC_ALT_REQUEUE_SELECT.title
+
+Prospero:
+ You are as honest as the sum of a little furry black cat and a cat.
+
+[Exit Prospero]
+
+[Enter Puck]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_ALT_REQUEUE_END.
+
+
+                    Scene @LYRIC_ALT_REQUEUE_END: @LIT.scenes.LYRIC_ALT_REQUEUE_END.title
+
+Lady Macbeth:
+ Remember nothing.
+
+[Exit Lady Macbeth]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REQUEUE_DRAIN.
+
+
+                    Scene @LYRIC_ALT_REQUEUE_WITH_TITLE: @LIT.scenes.LYRIC_ALT_REQUEUE_WITH_TITLE.title
+
+[Exit Juliet]
+
+[Exit Prospero]
+
+[Enter Lady Macbeth and Puck]
+
+Puck:
+ You are as fair as the sum of a little furry black cat and a furry black cat.
+
+Lady Macbeth:
+ Remember nothing.
+
+[Exit Lady Macbeth]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REQUEUE_DRAIN.
+
+
+                    Scene @LYRIC_LABEL_FALLBACK: @LIT.scenes.LYRIC_LABEL_FALLBACK.title
+
+Puck:
+ You are as noble as Prospero.
+
+Lady Macbeth:
+ Remember nothing.
+
+Puck:
+ Are you as rotten as the sum of a little furry black cat and the sum of a black cat and a cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_REQUEUE_TRIPLE_CLOSE.
+
+[Exit Lady Macbeth]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_REQUEUE_DRAIN.
+
+
+                    Scene @LYRIC_REQUEUE_DRAIN: @LIT.scenes.LYRIC_REQUEUE_DRAIN.title
+
+Puck:
+ @LIT.characters.puck.recall.held_label_glyph
+
+Puck:
+ Are you as rotten as a wolf?
+
+Horatio:
+ If so, let us proceed to scene @LYRIC_RESUME_SPARE.
+
+Horatio:
+ Remember myself.
+
+Horatio:
+ Let us return to scene @LYRIC_REQUEUE_DRAIN.
+
+
+                    Scene @LYRIC_RESUME_SPARE: @LIT.scenes.LYRIC_RESUME_SPARE.title
+
+[Exit Horatio]
+
+[Enter Romeo]
+
+Romeo:
+ Is Lady Macbeth as golden as the sum of a little furry black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REQUEUE_TRIPLE_OPEN.
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Romeo:
+ Let us proceed to scene @LYRIC_REQUEUE_POP_PAIR.
+
+
+                    Scene @LYRIC_REQUEUE_POP_PAIR: @LIT.scenes.LYRIC_REQUEUE_POP_PAIR.title
+
+Juliet:
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @LYRIC_REQUEUE_TRIPLE_OPEN: @LIT.scenes.LYRIC_REQUEUE_TRIPLE_OPEN.title
+
+Romeo:
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Romeo:
+ Let us return to scene @LYRIC_REQUEUE_POP_PAIR.
+
+
+                    Scene @LYRIC_REQUEUE_TRIPLE_CLOSE: @LIT.scenes.LYRIC_REQUEUE_TRIPLE_CLOSE.title
+
+[Exit Lady Macbeth]
+
+[Enter Romeo]
+
+Romeo:
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Puck:
+ Let us return to scene @LYRIC_REQUEUE_DRAIN.
+
+
+                    Scene @LYRIC_EMPHASIS_OPEN: @LIT.scenes.LYRIC_EMPHASIS_OPEN.title
+
+[Exit Puck]
+
+[Exit Romeo]
+
+[Enter Hecate and Prospero]
+
+Hecate:
+ You are as horrid as myself.
+
+Prospero:
+ You are as noble as an angel.
+
+[Exit Prospero]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @LYRIC_EMPHASIS_OPEN_BUFFER.
+
+
+                    Scene @LYRIC_EMPHASIS_OPEN_BUFFER: @LIT.scenes.LYRIC_EMPHASIS_OPEN_BUFFER.title
+
+Hecate:
+ Remember a toad.
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @LYRIC_EMPHASIS_COUNT_MORE.
+
+
+                    Scene @LYRIC_EMPHASIS_COUNT_MORE: @LIT.scenes.LYRIC_EMPHASIS_COUNT_MORE.title
+
+Hecate:
+ @LIT.characters.hecate.recall.answering_starlight
+
+Hecate:
+ Are you as cursed as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
+
+Hecate:
+ Are you as cursed as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_MORE.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_COUNT_HOLD.
+
+
+                    Scene @LYRIC_EMPHASIS_COUNT_HOLD: @LIT.scenes.LYRIC_EMPHASIS_COUNT_HOLD.title
+
+Puck:
+ Remember myself.
+
+Puck:
+ Is Hecate as fair as a flower?
+
+Horatio:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SPARE.
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_SEEK.
+
+
+                    Scene @LYRIC_EMPHASIS_SPARE: @LIT.scenes.LYRIC_EMPHASIS_SPARE.title
+
+[Exit Horatio]
+
+[Enter Romeo]
+
+Romeo:
+ Are you as fair as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
+
+Romeo:
+ Are you as fair as the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_SEEK.
+
+
+                    Scene @LYRIC_EMPHASIS_SOURCE_END_PAIR: @LIT.scenes.LYRIC_EMPHASIS_SOURCE_END_PAIR.title
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
+
+
+                    Scene @LYRIC_EMPHASIS_CAND_MORE: @LIT.scenes.LYRIC_EMPHASIS_CAND_MORE.title
+
+Puck:
+ You are as fair as the sum of yourself and a flower.
+
+Hecate:
+ We must return to scene @LYRIC_EMPHASIS_COUNT_MORE.
+
+
+                    Scene @LYRIC_EMPHASIS_SEEK: @LIT.scenes.LYRIC_EMPHASIS_SEEK.title
+
+Hecate:
+ @LIT.characters.hecate.recall.answering_starlight
+
+Hecate:
+ Are you as rotten as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
+
+Hecate:
+ Are you as horrid as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_COUNT.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_SEEK_HOLD.
+
+
+                    Scene @LYRIC_EMPHASIS_SEEK_HOLD: @LIT.scenes.LYRIC_EMPHASIS_SEEK_HOLD.title
+
+Puck:
+ Remember myself.
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Puck:
+ Let us return to scene @LYRIC_EMPHASIS_SEEK.
+
+
+                    Scene @LYRIC_EMPHASIS_CAND_COUNT: @LIT.scenes.LYRIC_EMPHASIS_CAND_COUNT.title
+
+[Exit Hecate]
+
+[Enter Macbeth]
+
+Puck:
+ You are as rotten as a flower.
+
+[Exit Macbeth]
+
+[Enter Romeo]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_COMPARE.
+
+
+                    Scene @LYRIC_EMPHASIS_COMPARE: @LIT.scenes.LYRIC_EMPHASIS_COMPARE.title
+
+Romeo:
+ @LIT.characters.romeo.recall.answering_starlight
+
+Romeo:
+ Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_MATCH_MORE.
+
+Romeo:
+ Is Macbeth as golden as Hecate?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_MATCH.
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_SOURCE_END.
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Romeo:
+ Let us proceed to scene @LYRIC_EMPHASIS_FALLBACK.
+
+
+                    Scene @LYRIC_EMPHASIS_MATCH_MORE: @LIT.scenes.LYRIC_EMPHASIS_MATCH_MORE.title
+
+[Exit Romeo]
+
+[Enter Macbeth]
+
+Puck:
+ You are as rotten as the sum of yourself and a flower.
+
+[Exit Macbeth]
+
+[Enter Romeo]
+
+Puck:
+ Let us return to scene @LYRIC_EMPHASIS_COMPARE.
+
+
+                    Scene @LYRIC_EMPHASIS_FALLBACK: @LIT.scenes.LYRIC_EMPHASIS_FALLBACK.title
+
+Romeo:
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+
+[Exit Romeo]
+
+[Enter Macbeth]
+
+Horatio:
+ Let us proceed to scene @LYRIC_EMPHASIS_REPLAY.
+
+
+                    Scene @LYRIC_EMPHASIS_REPLAY: @LIT.scenes.LYRIC_EMPHASIS_REPLAY.title
+
+Horatio:
+ Are you as warm as a brother?
+
+Macbeth:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD.
+
+Horatio:
+ You are as healthy as the difference between yourself and a brother.
+
+Macbeth:
+ Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+
+Macbeth:
+ Let us return to scene @LYRIC_EMPHASIS_REPLAY.
+
+
+                    Scene @LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD: @LIT.scenes.LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD.title
+
+[Exit Macbeth]
+
+[Enter Romeo]
+
+Romeo:
+ Remember Puck.
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Romeo:
+ Let us proceed to scene @LYRIC_GOTO_EMPHASIS_SEEK_HEAD.
+
+
+                    Scene @LYRIC_GOTO_EMPHASIS_SEEK_HEAD: @LIT.scenes.LYRIC_GOTO_EMPHASIS_SEEK_HEAD.title
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Puck:
+ Let us proceed to scene @LYRIC_GOTO_EMPHASIS_SEEK_TAIL.
+
+
+                    Scene @LYRIC_GOTO_EMPHASIS_SEEK_TAIL: @LIT.scenes.LYRIC_GOTO_EMPHASIS_SEEK_TAIL.title
+
+Puck:
+ Let us return to scene @LYRIC_EMPHASIS_SEEK.
+
+
+                    Scene @LYRIC_EMPHASIS_CAND_SOURCE_END: @LIT.scenes.LYRIC_EMPHASIS_CAND_SOURCE_END.title
+
+Romeo:
+ Remember nothing.
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
+
+
+                    Scene @LYRIC_EMPHASIS_MATCH: @LIT.scenes.LYRIC_EMPHASIS_MATCH.title
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Hecate:
+ Remember yourself.
+
+Puck:
+ Are you as rotten as a flower?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_EMIT_OPEN.
+
+[Exit Hecate]
+
+[Enter Prospero]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_MATCH_STRONG.
+
+
+                    Scene @LYRIC_EMPHASIS_MATCH_STRONG: @LIT.scenes.LYRIC_EMPHASIS_MATCH_STRONG.title
+
+Puck:
+ You are as rotten as the sum of a little furry black cat and the sum of a furry black cat and a cat.
+
+Puck:
+ Is Hecate as noble as the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_EMPHASIS_TRIPLE_CLOSE.
+
+[Exit Prospero]
+
+[Enter Juliet]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_MATCH_OUTPUT.
+
+
+                    Scene @LYRIC_EMPHASIS_MATCH_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_MATCH_OUTPUT.title
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet flower and the difference between a little furry black cat and a flower.
+
+Puck:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+[Exit Juliet]
+
+[Enter Prospero]
+
+Puck:
+ Let us return to scene @LYRIC_REQUEUE_OPEN.
+
+
+                    Scene @LYRIC_EMPHASIS_TRIPLE_CLOSE: @LIT.scenes.LYRIC_EMPHASIS_TRIPLE_CLOSE.title
+
+Puck:
+ You are as noble as the sum of a little furry black cat and the sum of a black cat and a cat.
+
+[Exit Prospero]
+
+[Enter Juliet]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_TRIPLE_OUTPUT.
+
+
+                    Scene @LYRIC_EMPHASIS_TRIPLE_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_TRIPLE_OUTPUT.title
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet flower and the difference between a little furry black cat and a flower.
+
+Puck:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+[Exit Juliet]
+
+[Enter Prospero]
+
+Puck:
+ Let us return to scene @LYRIC_REQUEUE_OPEN.
+
+
+                    Scene @LYRIC_EMPHASIS_EMIT_OPEN: @LIT.scenes.LYRIC_EMPHASIS_EMIT_OPEN.title
+
+[Exit Hecate]
+
+[Enter Prospero]
+
+Puck:
+ You are as noble as the sum of a little furry black cat and a black cat.
+
+[Exit Prospero]
+
+[Enter Juliet]
+
+Puck:
+ Let us proceed to scene @LYRIC_EMPHASIS_EMIT_OUTPUT.
+
+
+                    Scene @LYRIC_EMPHASIS_EMIT_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_EMIT_OUTPUT.title
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+
+Puck:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+[Exit Juliet]
+
+[Enter Prospero]
+
+Puck:
+ Let us return to scene @LYRIC_REQUEUE_OPEN.
+
+
+                    Scene @LYRIC_EMPHASIS_SOURCE_END: @LIT.scenes.LYRIC_EMPHASIS_SOURCE_END.title
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Juliet:
+ Remember a wolf.
+
+Hecate:
+ You are as rotten as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+[Exit Juliet]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @LYRIC_EMPHASIS_LITERAL_REVERSE.
+
+
+                    Scene @LYRIC_EMPHASIS_LITERAL_REVERSE: @LIT.scenes.LYRIC_EMPHASIS_LITERAL_REVERSE.title
+
+Hecate:
+ @LIT.characters.hecate.recall.held_label_glyph
+
+Hecate:
+ Are you as rotten as a toad?
+
+Horatio:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_LITERAL_EMIT.
+
+Horatio:
+ Remember myself.
+
+Horatio:
+ Let us return to scene @LYRIC_EMPHASIS_LITERAL_REVERSE.
+
+
+                    Scene @LYRIC_EMPHASIS_LITERAL_EMIT: @LIT.scenes.LYRIC_EMPHASIS_LITERAL_EMIT.title
+
+[Exit Horatio]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.fields_first_glyph
+
+Juliet:
+ Are you as gentle as a wolf?
+
+Hecate:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_LITERAL_POP_PAIR.
+
+Hecate:
+ Remember myself.
+
+[Exit Juliet]
+
+[Enter Horatio]
+
+Hecate:
+ We must return to scene @LYRIC_EMPHASIS_LITERAL_EMIT.
+
+
+                    Scene @LYRIC_EMPHASIS_LITERAL_POP_PAIR: @LIT.scenes.LYRIC_EMPHASIS_LITERAL_POP_PAIR.title
+
+[Exit Hecate]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @LYRIC_REGION_FALLBACK: @LIT.scenes.LYRIC_REGION_FALLBACK.title
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.held_label_glyph
+
+Juliet:
+ Are you as fair as a wolf?
+
+Horatio:
+ If so, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+Horatio:
+ Remember myself.
+
+[Exit Juliet]
+
+[Enter Puck]
+
+Horatio:
+ Let us return to scene @LYRIC_REGION_FALLBACK.
+
+
+                    Scene @LYRIC_RESUME_DISPATCH: @LIT.scenes.LYRIC_RESUME_DISPATCH.title
+
+[Exit Puck]
+
+[Enter Prospero]
+
+Lady Macbeth:
+ You are as bold as myself.
+
+[Exit Prospero]
+
+[Enter Romeo]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_POP_PARENT_SELECTOR.
+
+
+                    Scene @LYRIC_RESUME_POP_PARENT_SELECTOR: @LIT.scenes.LYRIC_RESUME_POP_PARENT_SELECTOR.title
+
+Romeo:
+ @LIT.characters.romeo.recall.staged_stone
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_SAVE_PARENT_SELECTOR.
+
+
+                    Scene @LYRIC_RESUME_SAVE_PARENT_SELECTOR: @LIT.scenes.LYRIC_RESUME_SAVE_PARENT_SELECTOR.title
+
+Lady Macbeth:
+ You are as villainous as myself.
+
+[Exit Horatio]
+
+[Enter Romeo]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_POP_MACBETH.
+
+
+                    Scene @LYRIC_RESUME_POP_MACBETH: @LIT.scenes.LYRIC_RESUME_POP_MACBETH.title
+
+Romeo:
+ @LIT.characters.romeo.recall.staged_stone
+
+[Exit Romeo]
+
+[Enter Macbeth]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_RESTORE_MACBETH.
+
+
+                    Scene @LYRIC_RESUME_RESTORE_MACBETH: @LIT.scenes.LYRIC_RESUME_RESTORE_MACBETH.title
+
+Lady Macbeth:
+ You are as mighty as myself.
+
+[Exit Macbeth]
+
+[Enter Romeo]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_POP_HECATE.
+
+
+                    Scene @LYRIC_RESUME_POP_HECATE: @LIT.scenes.LYRIC_RESUME_POP_HECATE.title
+
+Romeo:
+ @LIT.characters.romeo.recall.staged_stone
+
+[Exit Romeo]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_RESTORE_HECATE.
+
+
+                    Scene @LYRIC_RESUME_RESTORE_HECATE: @LIT.scenes.LYRIC_RESUME_RESTORE_HECATE.title
+
+Lady Macbeth:
+ You are as mighty as myself.
+
+[Exit Hecate]
+
+[Enter Romeo]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_VERIFY_FLOOR.
+
+
+                    Scene @LYRIC_RESUME_VERIFY_FLOOR: @LIT.scenes.LYRIC_RESUME_VERIFY_FLOOR.title
+
+Romeo:
+ @LIT.characters.romeo.recall.staged_stone
+
+Romeo:
+ Are you as fair as a wolf?
+
+Lady Macbeth:
+ If so, let us proceed to scene @LYRIC_RESUME_RESTORE_PARENT_SELECTOR.
+
+Lady Macbeth:
+ If not, let us proceed to scene @LYRIC_RESUME_FLOOR_FAIL.
+
+
+                    Scene @LYRIC_RESUME_RESTORE_PARENT_SELECTOR: @LIT.scenes.LYRIC_RESUME_RESTORE_PARENT_SELECTOR.title
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Horatio:
+ You are as warm as myself.
+
+[Exit Horatio]
+
+[Enter Prospero]
+
+Lady Macbeth:
+ Let us proceed to scene @LYRIC_RESUME_CLOSE_DISPATCH.
+
+
+                    Scene @LYRIC_RESUME_CLOSE_DISPATCH: @LIT.scenes.LYRIC_RESUME_CLOSE_DISPATCH.title
+
+Lady Macbeth:
+ Are you as bold as a little furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_REGION_RESUME_PAIR.
+
+Lady Macbeth:
+ Are you as villainous as the sum of a little furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_REGION_RESUME_PAIR.
+
+Lady Macbeth:
+ Are you as mighty as the sum of a little furry black cat and a furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_IMAGE_TITLE_CLOSE.
+
+Lady Macbeth:
+ Are you as bold as the sum of a little furry black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_EMPHASIS_RESUME.
+
+Lady Macbeth:
+ Are you as bold as the sum of a little furry black cat and the sum of a furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @LYRIC_EMPHASIS_RESUME.
+
+Prospero:
+ We shall proceed to scene @LYRIC_EMPHASIS_RESUME.
+
+
+                    Scene @LYRIC_REGION_RESUME_PAIR: @LIT.scenes.LYRIC_REGION_RESUME_PAIR.title
+
+[Exit Lady Macbeth]
+
+[Exit Prospero]
+
+[Enter Juliet and Puck]
+
+Juliet:
+ Let us proceed to scene @LYRIC_REGION_RESUME.
+
+
+                    Scene @LYRIC_REGION_RESUME: @LIT.scenes.LYRIC_REGION_RESUME.title
+
+Juliet:
+ Is Prospero as fair as a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REGION_LINK_CLOSE.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Puck:
+ Remember the product of a normal little furry black cat and a black cat.
+
+Puck:
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+
+Puck:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @LYRIC_REGION_LINK_CLOSE: @LIT.scenes.LYRIC_REGION_LINK_CLOSE.title
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Puck:
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Puck:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @LYRIC_IMAGE_TITLE_CLOSE: @LIT.scenes.LYRIC_IMAGE_TITLE_CLOSE.title
+
+[Exit Lady Macbeth]
+
+[Exit Prospero]
+
+[Enter Hecate and Juliet]
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Hecate:
+ Remember the product of a normal little furry black cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Hecate:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a cat and a black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Juliet:
+ Remember a wolf.
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Hecate:
+ We must return to scene @LYRIC_FIELD_REV.
+
+
+                    Scene @LYRIC_EMPHASIS_RESUME: @LIT.scenes.LYRIC_EMPHASIS_RESUME.title
+
+[Exit Lady Macbeth]
+
+[Exit Prospero]
+
+[Enter Juliet and Puck]
+
+Juliet:
+ Is Prospero as gentle as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_CLOSE_EM.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Puck:
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet flower and the difference between a little furry black cat and a flower.
+
+Puck:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @LYRIC_EMPHASIS_CLOSE_EM: @LIT.scenes.LYRIC_EMPHASIS_CLOSE_EM.title
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+
+Puck:
+ Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+
+Puck:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Puck:
+ Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+
+Puck:
+ Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us return to scene @LYRIC_POP_GLYPH.
+
+
+                    Scene @LYRIC_RESUME_FLOOR_FAIL: @LIT.scenes.LYRIC_RESUME_FLOOR_FAIL.title
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+[Exeunt]
 
 
                     Scene @LYRIC_TEST_AMPERSAND: @LIT.scenes.LYRIC_TEST_AMPERSAND.title
@@ -1101,7 +3968,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_ATT_POP_BODY.
 
 Puck:
- If not, let us proceed to scene @LYRIC_OPEN_REFERENCE_FALLBACK.
+ If not, let us return to scene @LYRIC_LINK_REGION.
 
 
                     Scene @LYRIC_REFERENCE_LINK_POP_BODY: @LIT.scenes.LYRIC_REFERENCE_LINK_POP_BODY.title
@@ -1362,6 +4229,10 @@ Puck:
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -1386,7 +4257,11 @@ Romeo:
 Puck:
  You are as fair as the difference between yourself and a flower.
 
-Romeo:
+[Exit Romeo]
+
+[Enter Rosalind]
+
+Puck:
  Let us proceed to scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE.
 
 
@@ -1440,15 +4315,15 @@ Romeo:
 Puck:
  You are as noble as the difference between yourself and a flower.
 
-Romeo:
+[Exit Romeo]
+
+[Enter Rosalind]
+
+Puck:
  Let us proceed to scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO.
 
 
                     Scene @LYRIC_OPEN_CONSULT_REFERENCE_ONE: @LIT.scenes.LYRIC_OPEN_CONSULT_REFERENCE_ONE.title
-
-[Exit Romeo]
-
-[Enter Rosalind]
 
 Rosalind:
  Let us proceed to scene @LYRIC_CONSULT_REFERENCE_ONE.
@@ -1465,15 +4340,15 @@ Puck:
 Puck:
  @LIT.characters.puck.recall.first_forest_name
 
-Rosalind:
+[Exit Rosalind]
+
+[Enter Juliet]
+
+Puck:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE.
 
 
                     Scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE: @LIT.scenes.LYRIC_OPEN_OUTPUT_REFERENCE_ONE.title
-
-[Exit Rosalind]
-
-[Enter Juliet]
 
 Juliet:
  Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_ONE.
@@ -1607,15 +4482,15 @@ Puck:
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
                     Scene @LYRIC_OPEN_CONSULT_REFERENCE_TWO: @LIT.scenes.LYRIC_OPEN_CONSULT_REFERENCE_TWO.title
-
-[Exit Romeo]
-
-[Enter Rosalind]
 
 Rosalind:
  Let us proceed to scene @LYRIC_CONSULT_REFERENCE_TWO.
@@ -1632,15 +4507,15 @@ Puck:
 Puck:
  @LIT.characters.puck.recall.second_forest_name
 
-Rosalind:
+[Exit Rosalind]
+
+[Enter Juliet]
+
+Puck:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO.
 
 
                     Scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO: @LIT.scenes.LYRIC_OPEN_OUTPUT_REFERENCE_TWO.title
-
-[Exit Rosalind]
-
-[Enter Juliet]
 
 Juliet:
  Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_TWO.
@@ -1753,6 +4628,10 @@ Puck:
 Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -1787,27 +4666,9 @@ Puck:
 Puck:
  Remember the sum of the product of a normal little furry black cat and a black cat and a little furry black cat.
 
-Juliet:
- Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+[Exit Puck]
 
-
-                    Scene @LYRIC_OPEN_REFERENCE_FALLBACK: @LIT.scenes.LYRIC_OPEN_REFERENCE_FALLBACK.title
-
-[Exit Romeo]
-
-[Enter Juliet]
-
-Juliet:
- Let us proceed to scene @LYRIC_REFERENCE_FALLBACK.
-
-
-                    Scene @LYRIC_REFERENCE_FALLBACK: @LIT.scenes.LYRIC_REFERENCE_FALLBACK.title
-
-Puck:
- Remember the product of the difference between a little furry black cat and a flower and the sum of a little furry black cat and the sum of a furry black cat and a flower.
-
-Puck:
- Remember myself.
+[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -1879,6 +4740,10 @@ Puck:
 Puck:
  Remember yourself.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -1931,6 +4796,10 @@ Puck:
 Puck:
  Remember yourself.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -1958,6 +4827,10 @@ Puck:
 
 Puck:
  Remember yourself.
+
+[Exit Puck]
+
+[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -2005,6 +4878,10 @@ Puck:
 Puck:
  Remember yourself.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -2033,15 +4910,21 @@ Puck:
 Puck:
  Remember yourself.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
                     Scene @LYRIC_RETURN_TO_SCAN: @LIT.scenes.LYRIC_RETURN_TO_SCAN.title
 
+[Exit Horatio]
+
 [Exit Juliet]
 
-[Enter Romeo]
+[Enter Puck and Romeo]
 
 [Exit Puck]
 
@@ -2053,7 +4936,7 @@ Romeo:
 
                     Scene @TRAVERSE_COPY_TERMINATOR: @LIT.scenes.TRAVERSE_COPY_TERMINATOR.title
 
-[Exit Romeo]
+[Exit Lady Macbeth]
 
 [Enter Juliet]
 

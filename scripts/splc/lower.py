@@ -200,15 +200,18 @@ def lower_act(a: Act, prose: ProseEngine, next_act_heading: str | None = None) -
                         )
                     )
             elif isinstance(op, Goto):
-                target_entry = entry.get(op.target)
+                target_entry = entry[op.target]
+                speaker = anchor
                 if target_entry is not None and set(pair) != set(target_entry):
                     for direction in _stage_directions(pair, target_entry):
                         lines.append(direction)
                         lines.append("")
+                    if anchor not in target_entry:
+                        speaker = next(char for char in pair if char in target_entry)
                 lines.append(
                     _speech(
-                        anchor,
-                        _jump_sentence(prose, anchor, index, op.target, order, seed),
+                        speaker,
+                        _jump_sentence(prose, speaker, index, op.target, order, seed),
                     )
                 )
             elif isinstance(op, HaltAct):

@@ -22,6 +22,7 @@ from scripts.splc.ir import (
     scene,
     val,
 )
+from scripts.splc.lower import lower_act
 
 LITERARY_TOML = Path(__file__).parent.parent / "src" / "literary.toml"
 
@@ -370,3 +371,75 @@ def test_single_participant_scenes_can_model_buffered_span_state() -> None:
     assert result.state.values[Char.MACBETH] == ord("!")
     assert result.state.stacks[Char.HECATE] == [-999, ord("x")]
     assert result.state.stacks[Char.PUCK] == []
+
+
+def test_goto_uses_surviving_source_stage_speaker_before_directions() -> None:
+    a = act(
+        1,
+        Char.HECATE,
+        [
+            scene(
+                "ACT_I_START",
+                branch(
+                    eq(val(Char.ROSALIND), const(0)),
+                    then="ACT_I_DONE",
+                    else_="HECATE_READ_INPUT",
+                ),
+                anchor=Char.PUCK,
+                companion=Char.ROSALIND,
+            ),
+            scene(
+                "HECATE_READ_INPUT",
+                let(Char.PUCK, const(1)),
+                goto("ACT_I_DONE"),
+            ),
+            scene(
+                "ACT_I_DONE",
+                halt_act(),
+                anchor=Char.PUCK,
+                companion=Char.ROSALIND,
+            ),
+        ],
+    )
+
+    text = lower_act(a, _prose())
+
+    assert "Hecate:\n Let us proceed to scene @ACT_I_DONE.\n" not in text
+    jump_index = text.index("Puck:\n Let us proceed to scene @ACT_I_DONE.\n")
+    assert text.index("[Exit Hecate]\n", 0, jump_index) < jump_index
+    assert text.index("[Enter Rosalind]\n", 0, jump_index) < jump_index
+
+
+def test_disjoint_goto_entry_pair_is_rejected() -> None:
+    from scripts.splc.validate import IrError, validate
+
+    bad = act(
+        1,
+        Char.HECATE,
+        [
+            scene(
+                "ACT_I_START",
+                branch(
+                    eq(val(Char.ROSALIND), const(0)),
+                    then="ACT_I_DONE",
+                    else_="HECATE_READ_INPUT",
+                ),
+                anchor=Char.PUCK,
+                companion=Char.ROSALIND,
+            ),
+            scene(
+                "HECATE_READ_INPUT",
+                let(Char.JULIET, const(1)),
+                goto("ACT_I_DONE"),
+            ),
+            scene(
+                "ACT_I_DONE",
+                halt_act(),
+                anchor=Char.PUCK,
+                companion=Char.ROSALIND,
+            ),
+        ],
+    )
+
+    with pytest.raises(IrError, match="HECATE_READ_INPUT.*ACT_I_DONE"):
+        validate(bad, _prose())

@@ -18,6 +18,7 @@ from scripts.splc.interpret import InterpreterState, StackUnderflow, run_act
 from scripts.splc.ir import Char, Const, Push, Val
 from scripts.splc.token_decode import DecodedToken, decode_stream
 from scripts.splc.token_structure import validate_stream
+from scripts.splc.validate import IrError, entry_pairs, participants
 from src_ir import tokens
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
@@ -27,6 +28,73 @@ REPO = Path(__file__).parent.parent
 SPAN_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "spans"
 STEP_LIMIT = 200_000
 _BORROWED_PREFIX = (7, 13, 42)
+_A17_ADAPTER_PAIRS = {
+    "LYRIC_HTML_OPEN_REQUEUE": (Char.PUCK, Char.ROMEO),
+    "LYRIC_AUTOLINK_OPEN_DUPLICATE": (Char.LADY_MACBETH, Char.ROMEO),
+    "LYRIC_AUTOLINK_OPEN_REQUEUE": (Char.PUCK, Char.ROMEO),
+    "LYRIC_AUTOLINK_CLOSE_DUPLICATE": (Char.HECATE, Char.PROSPERO),
+    "LYRIC_FIELD_SOURCE_END_LITERAL": (Char.HECATE, Char.ROMEO),
+    "LYRIC_FIELD_UNTERMINATED_IMAGE": (Char.HECATE, Char.PROSPERO),
+    "LYRIC_FIELD_UNTERMINATED_LINK": (Char.JULIET, Char.HECATE),
+    "LYRIC_LABEL_REQUEUE_END": (Char.LADY_MACBETH, Char.PUCK),
+    "LYRIC_ALT_REQUEUE_SELECT": (Char.LADY_MACBETH, Char.PROSPERO),
+    "LYRIC_ALT_REQUEUE_END": (Char.LADY_MACBETH, Char.PUCK),
+    "LYRIC_EMPHASIS_OPEN_BUFFER": (Char.HECATE, Char.HORATIO),
+    "LYRIC_EMPHASIS_COUNT_HOLD": (Char.PUCK, Char.HORATIO),
+    "LYRIC_EMPHASIS_SEEK_HOLD": (Char.PUCK, Char.HORATIO),
+    "LYRIC_EMPHASIS_MATCH_STRONG": (Char.PUCK, Char.PROSPERO),
+    "LYRIC_EMPHASIS_MATCH_OUTPUT": (Char.JULIET, Char.PUCK),
+    "LYRIC_EMPHASIS_TRIPLE_OUTPUT": (Char.JULIET, Char.PUCK),
+    "LYRIC_EMPHASIS_EMIT_OUTPUT": (Char.JULIET, Char.PUCK),
+}
+_A17_SPARES = {
+    "LYRIC_FIELD_TWO_PERSON_GUARD",
+    "LYRIC_REQUEUE_TWO_PERSON_GUARD",
+    "LYRIC_EMPHASIS_TWO_PERSON_GUARD",
+    "LYRIC_AUTOLINK_TWO_PERSON_GUARD",
+    "LYRIC_REGION_TWO_PERSON_GUARD",
+}
+_A18_ADAPTER_PAIRS = {
+    "LYRIC_DEST_CLOSE_PAIR": (Char.ROMEO, Char.PUCK),
+    "LYRIC_FIELD_TITLE_ENTRY_PAIR": (Char.HECATE, Char.ROMEO),
+    "LYRIC_AUTOLINK_FIELD_HEAD_PAIR": (Char.ROMEO, Char.HECATE),
+    "LYRIC_FIELD_LITERAL_POP_PAIR": (Char.JULIET, Char.ROMEO),
+    "LYRIC_FIELD_UNTERMINATED_PAIR": (Char.JULIET, Char.PUCK),
+    "LYRIC_FIELD_TITLE_REQUEUE_PAIR": (Char.PUCK, Char.PROSPERO),
+    "LYRIC_REQUEUE_POP_PAIR": (Char.JULIET, Char.ROMEO),
+    "LYRIC_EMPHASIS_SOURCE_END_PAIR": (Char.PUCK, Char.HECATE),
+    "LYRIC_EMPHASIS_LITERAL_POP_PAIR": (Char.JULIET, Char.ROMEO),
+    "LYRIC_REGION_RESUME_PAIR": (Char.JULIET, Char.PUCK),
+}
+_A18_SPARES = {
+    "LYRIC_FIELD_ENTRY_GUARD",
+    "LYRIC_REQUEUE_ENTRY_GUARD",
+    "LYRIC_EMPHASIS_ENTRY_GUARD",
+    "LYRIC_REGION_ENTRY_GUARD",
+}
+_A19_ADAPTER_PAIRS = {
+    "LYRIC_GOTO_CODE_TICKS_HEAD": (Char.JULIET, Char.ROMEO),
+    "LYRIC_GOTO_CODE_TICKS_TAIL": (Char.ROMEO, Char.PUCK),
+    "LYRIC_GOTO_HTML_REQUEUE_HEAD": (Char.JULIET, Char.PUCK),
+    "LYRIC_GOTO_HTML_REQUEUE_TAIL": (Char.PUCK, Char.ROMEO),
+    "LYRIC_GOTO_FIELD_RETRY_HEAD": (Char.PUCK, Char.HECATE),
+    "LYRIC_GOTO_FIELD_RETRY_TAIL": (Char.HECATE, Char.PROSPERO),
+    "LYRIC_GOTO_AUTOLINK_DUP_HEAD": (Char.JULIET, Char.LADY_MACBETH),
+    "LYRIC_GOTO_AUTOLINK_DUP_TAIL": (Char.LADY_MACBETH, Char.ROMEO),
+    "LYRIC_GOTO_FIELD_OPEN_HEAD": (Char.HECATE, Char.ROMEO),
+    "LYRIC_GOTO_FIELD_OPEN_TAIL": (Char.ROMEO, Char.MACBETH),
+    "LYRIC_GOTO_FIELD_UNTERMINATED_HEAD": (Char.PUCK, Char.JULIET),
+    "LYRIC_GOTO_FIELD_UNTERMINATED_TAIL": (Char.JULIET, Char.HECATE),
+    "LYRIC_GOTO_EMPHASIS_SEEK_HEAD": (Char.ROMEO, Char.PUCK),
+    "LYRIC_GOTO_EMPHASIS_SEEK_TAIL": (Char.PUCK, Char.HECATE),
+}
+_A19_SPARES = {
+    "LYRIC_GOTO_FIELD_GUARD",
+    "LYRIC_GOTO_REQUEUE_GUARD",
+    "LYRIC_GOTO_EMPHASIS_GUARD",
+    "LYRIC_GOTO_REGION_GUARD",
+    "LYRIC_GOTO_LAST_GUARD",
+}
 
 
 @dataclass(frozen=True)
@@ -406,22 +474,29 @@ def test_act3_text_end_event_order_is_carrier_safe(stem: str) -> None:
         if label == "LYRIC_TEXT_END_DISPATCH"
     ]
     for index in resume_entries:
-        entries = observer.scene_values[index : index + len(adapter_order) + 1]
+        entries = observer.scene_values[index : index + len(adapter_order) + 2]
         if entries[0][4] == 0:
             assert entries[0][0] == "LYRIC_TEXT_END_DISPATCH"
             assert entries[1][0] == "TRAVERSE_COPY_TERMINATOR"
             continue
-        assert tuple(label for label, _, _, _, _ in entries[:-1]) == adapter_order
+        assert (
+            tuple(label for label, _, _, _, _ in entries[: len(adapter_order)])
+            == adapter_order
+        )
         frozen_close = entries[1][4]
         assert frozen_close in _RESUME_CODES
         assert entries[2][4] == frozen_close
-        assert entries[-2][3] == frozen_close
-        assert entries[-1][0] in {
-            "LYRIC_REGION_RESUME",
-            "LYRIC_EMPHASIS_RESUME",
-            "LYRIC_AUTOLINK_CLOSE",
-            "LYRIC_IMAGE_TITLE_CLOSE",
-        }
+        close_target = entries[len(adapter_order)]
+        assert close_target[3] == frozen_close
+        if close_target[0] == "LYRIC_REGION_RESUME_PAIR":
+            assert entries[len(adapter_order) + 1][0] == "LYRIC_REGION_RESUME"
+        else:
+            assert close_target[0] in {
+                "LYRIC_REGION_RESUME",
+                "LYRIC_EMPHASIS_RESUME",
+                "LYRIC_AUTOLINK_CLOSE",
+                "LYRIC_IMAGE_TITLE_CLOSE",
+            }
 
     resume_pop_labels = {
         "LYRIC_RESUME_POP_PARENT_SELECTOR",
@@ -464,7 +539,11 @@ def test_act3_emphasis_candidate_keeps_nonmatching_lookahead() -> None:
     assert tail[1] == "LYRIC_EMPHASIS_FALLBACK"
     keep = tail.index("LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD")
     assert "LYRIC_EMPHASIS_REPLAY" in tail[2:keep]
-    assert tail[keep + 1] == "LYRIC_EMPHASIS_SEEK"
+    assert tail[keep + 1 : keep + 4] == [
+        "LYRIC_GOTO_EMPHASIS_SEEK_HEAD",
+        "LYRIC_GOTO_EMPHASIS_SEEK_TAIL",
+        "LYRIC_EMPHASIS_SEEK",
+    ]
 
     # The unmatched candidate path must preserve source order when requeued.
     text = _paragraph_text(_decode_carrier(state))
@@ -656,3 +735,31 @@ def test_act3_ir_requeue_and_field_floors_follow_a4_shape() -> None:
         and op.expr.value == tokens.STREAM_END
         for op in field_open.ops
     )
+
+
+def test_act3_scenes_are_binary_and_reserved_adapters_match_pairs() -> None:
+    labels = {sc.label for sc in ACT3.scenes}
+    invalid: list[str] = []
+
+    for sc in ACT3.scenes:
+        try:
+            pair = participants(sc, ACT3.anchor)
+        except IrError:
+            invalid.append(sc.label)
+            continue
+        expected = (
+            _A17_ADAPTER_PAIRS.get(sc.label)
+            or _A18_ADAPTER_PAIRS.get(sc.label)
+            or _A19_ADAPTER_PAIRS.get(sc.label)
+        )
+        if expected is not None:
+            assert pair == expected
+
+    assert invalid == []
+    assert _A17_SPARES.isdisjoint(labels)
+    assert _A18_SPARES.isdisjoint(labels)
+    assert _A19_SPARES.isdisjoint(labels)
+
+
+def test_act3_entry_pairs_validate() -> None:
+    entry_pairs(ACT3)

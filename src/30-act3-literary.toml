@@ -286,10 +286,6 @@ pattern = "scene_of_character"
 title = "Juliet receives the titled star path."
 pattern = "scene_of_character"
 
-[scenes.LYRIC_OPEN_REFERENCE_FALLBACK]
-title = "Juliet keeps the starlit reference rose."
-pattern = "scene_of_character"
-
 [scenes.LYRIC_OPEN_REVERSE]
 title = "The rose turns the line back to Puck."
 pattern = "cross_character"
@@ -328,10 +324,6 @@ pattern = "scene_of_character"
 
 [scenes.LYRIC_REFERENCE_ATT_POP_BODY]
 title = "The house name keeps its ampersand."
-pattern = "bare_statement"
-
-[scenes.LYRIC_REFERENCE_FALLBACK]
-title = "The stray bracket returns to the line."
 pattern = "bare_statement"
 
 [scenes.LYRIC_REFERENCE_LINK_POP_BODY]
@@ -385,3 +377,527 @@ pattern = "cross_character"
 [scenes.TRAVERSE_OPEN_TEXT]
 title = "The morning takes up the gilded scan."
 pattern = "bare_statement"
+
+[scenes.LYRIC_ANGLE_TEST]
+title = "Juliet asks what the bright angle names."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_HTML_OPEN]
+title = "Romeo opens the quiet moonlit gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_HTML_OPEN_REQUEUE]
+title = "Romeo returns the moonlit gate's first mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_OPEN]
+title = "Juliet opens the shining road."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_OPEN_DUPLICATE]
+title = "Lady Macbeth lays the shining road's second bed."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_OPEN_REQUEUE]
+title = "Romeo returns the shining road's first mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_RETRY]
+title = "Romeo tries the unnamed field once more."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_OPEN]
+title = "Romeo opens the unnamed field's gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_SCAN]
+title = "Romeo walks the unnamed field's edge."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_HTML_FALLBACK]
+title = "The loose moonlit gate remains a gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_AUTOLINK_FALLBACK]
+title = "The unmarked road returns to the field."
+pattern = "bare_statement"
+
+[scenes.LYRIC_DEST_FALLBACK]
+title = "The unclosed road rests beside the rose."
+pattern = "bare_statement"
+
+[scenes.LYRIC_TITLE_FALLBACK]
+title = "The unclosed name rests beside the path."
+pattern = "bare_statement"
+
+[scenes.LYRIC_FIELD_HOLD_REPLAY]
+title = "Horatio restores the unspoken field."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_TEXT_KEEP]
+title = "Lady Macbeth keeps the shining road's echo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEST_BALANCE]
+title = "Macbeth balances each round garden turn."
+pattern = "cross_character"
+
+[scenes.LYRIC_DEST_CLOSE_PAIR]
+title = "Romeo leads the balanced road to its true gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_REV_KEEP]
+title = "Romeo gathers one field-worn mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_CLOSE_DISPATCH]
+title = "Romeo asks which road the field leads to."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_REV]
+title = "Romeo turns the field's line about."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_HOLD]
+title = "Horatio keeps the unspoken field whole."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_HEAD]
+title = "Juliet lifts the field's first glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_GLYPH]
+title = "Juliet weighs the field's kept glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_PLAIN]
+title = "Juliet lays the field's glyph plain."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_AMP]
+title = "Juliet names the field's small riverbend."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_LT]
+title = "Juliet softens the field's bright corner."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_GT]
+title = "Juliet softens the field's far corner."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_NEXT]
+title = "Juliet tends the field's next glyph."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_DRAIN_CLOSE]
+title = "The field's drained line reaches its gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_FIELD_TITLE_ENTRY_PAIR]
+title = "Hecate brings the field-name to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_CLOSE]
+title = "The shining road meets its silver gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_AUTOLINK_CLOSE_DUPLICATE]
+title = "Hecate readies the shining road's echo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_TEXT_DONE]
+title = "Juliet closes the shining road in peace."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_TITLE_RESTORE]
+title = "Romeo restores the road's waiting mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_TEXT_OPEN]
+title = "Romeo walks the shining road again."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_AUTOLINK_FIELD_HEAD_PAIR]
+title = "Romeo yields the shining road's first leaf to Hecate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_SOURCE_END]
+title = "The field returns its lost gate to morning."
+pattern = "bare_statement"
+
+[scenes.LYRIC_FIELD_SOURCE_END_LITERAL]
+title = "Hecate gathers the field's last loose mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_LITERAL_REVERSE]
+title = "Romeo turns the unclosed field toward daylight."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_LITERAL_EMIT]
+title = "Juliet lets the unclosed field pass whole."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_LITERAL_POP_PAIR]
+title = "Juliet returns the loose field-mark to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_LINK_REGION]
+title = "Romeo binds the rose to its bright path."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_LABEL_OPEN]
+title = "Romeo opens the rose's tender name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEST_OPEN]
+title = "Romeo enters the winding garden road."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REGION_TAG_OPEN]
+title = "Juliet seals the gate before the name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_IMAGE_TEST]
+title = "Juliet sees the little garden portrait."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ALT_OPEN]
+title = "Horatio opens the portrait's quiet name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_IMAGE_TEST_LABEL]
+title = "Horatio seeks the portrait's closing leaf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_IMAGE_DEST_START]
+title = "Romeo tests the portrait's garden gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_IMAGE_DEST_OPEN]
+title = "Juliet opens the portrait's winding road."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_TITLE_TEST]
+title = "Romeo asks whether the road keeps a name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_TITLE_OPEN]
+title = "Juliet opens the path's quiet name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_TITLE_CLOSE]
+title = "The road's quiet name meets its round gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_FIELD_UNTERMINATED_PAIR]
+title = "Juliet carries the unfinished field to Puck."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_UNTERMINATED]
+title = "The unnamed field ends without its gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_FIELD_UNTERMINATED_IMAGE]
+title = "Hecate keeps the portrait's delayed name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_UNTERMINATED_LINK]
+title = "Juliet opens the rose-path's quiet name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_TITLE_CAPTURE]
+title = "Romeo catches the path's delayed name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_FIELD_TITLE_REQUEUE_PAIR]
+title = "Puck bears the quiet field-name to Prospero."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REQUEUE_OPEN]
+title = "Horatio prepares the held petals for return."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_LABEL_REQUEUE]
+title = "Juliet returns the rose's held name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_LABEL_REQUEUE_END]
+title = "Lady Macbeth sets the rose-name's private gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ALT_REQUEUE]
+title = "Juliet returns the portrait's held name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ALT_REQUEUE_SELECT]
+title = "Lady Macbeth chooses the portrait's return."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ALT_REQUEUE_END]
+title = "Lady Macbeth sets the portrait-name's private gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_ALT_REQUEUE_WITH_TITLE]
+title = "Juliet keeps the portrait name for evening."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_LABEL_FALLBACK]
+title = "The unnamed rose remains among the leaves."
+pattern = "bare_statement"
+
+[scenes.LYRIC_REQUEUE_DRAIN]
+title = "Horatio sends one held petal back to Puck."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REQUEUE_POP_PAIR]
+title = "Juliet sends the requeued petal back to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REQUEUE_TRIPLE_OPEN]
+title = "Horatio crowns the held petals with a star."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REQUEUE_TRIPLE_CLOSE]
+title = "Horatio lays the star beneath the held petals."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_OPEN]
+title = "Juliet lays the star within the sunlit seal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_OPEN_BUFFER]
+title = "Hecate gathers the star's first hidden leaf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_COUNT_MORE]
+title = "Juliet lengthens the sunlit tally."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_COUNT_HOLD]
+title = "Horatio holds the answering star's first leaf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_SPARE]
+title = "The lonely star rests beneath the hedge."
+pattern = "bare_statement"
+
+[scenes.LYRIC_RESUME_SPARE]
+title = "Romeo wakes the waiting held name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_CAND_MORE]
+title = "Macbeth lengthens the answering starlight."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_SEEK]
+title = "Romeo follows the star through the leaves."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_SEEK_HOLD]
+title = "Horatio holds each wandering star-leaf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_SOURCE_END_PAIR]
+title = "Puck brings the star's last mark to Hecate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_CAND_COUNT]
+title = "Macbeth counts the answering starlight."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_COMPARE]
+title = "The lovers weigh two sunlit measures."
+pattern = "cross_character"
+
+[scenes.LYRIC_EMPHASIS_MATCH_MORE]
+title = "Macbeth counts one more answering star."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_FALLBACK]
+title = "The unpaired star remains in the garden."
+pattern = "bare_statement"
+
+[scenes.LYRIC_EMPHASIS_REPLAY]
+title = "Romeo restores the unpaired starlight."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD]
+title = "Horatio shelters the star's following petal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_CAND_SOURCE_END]
+title = "The last star restores the garden gate."
+pattern = "bare_statement"
+
+[scenes.LYRIC_EMPHASIS_MATCH]
+title = "Romeo finds the star's faithful mate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_MATCH_STRONG]
+title = "Prospero chooses the sunlit strong seal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_MATCH_OUTPUT]
+title = "Juliet sends the sunlit strong seal onward."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_TRIPLE_CLOSE]
+title = "Juliet prepares the triple star's strong seal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_TRIPLE_OUTPUT]
+title = "Juliet sends the triple star's strong seal onward."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_EMIT_OPEN]
+title = "Juliet opens the single star's sunlit seal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_EMIT_OUTPUT]
+title = "Juliet sends the single star's seal onward."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_SOURCE_END]
+title = "The unpaired star returns before the hedge."
+pattern = "bare_statement"
+
+[scenes.LYRIC_EMPHASIS_LITERAL_REVERSE]
+title = "Romeo turns the loose starlight home."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_LITERAL_EMIT]
+title = "Juliet lets the loose starlight pass unchanged."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_LITERAL_POP_PAIR]
+title = "Juliet returns the loose star-mark to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REGION_FALLBACK]
+title = "The unbound rose returns to the field."
+pattern = "bare_statement"
+
+[scenes.LYRIC_RESUME_DISPATCH]
+title = "Romeo asks which held name has returned."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RESUME_POP_PARENT_SELECTOR]
+title = "Lady Macbeth lifts the hidden path's sign."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RESUME_SAVE_PARENT_SELECTOR]
+title = "Horatio keeps the elder path's sign."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RESUME_POP_MACBETH]
+title = "Lady Macbeth lifts the first held stone."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RESUME_RESTORE_MACBETH]
+title = "Macbeth receives the first held stone."
+pattern = "cross_character"
+
+[scenes.LYRIC_RESUME_POP_HECATE]
+title = "Lady Macbeth lifts the second held stone."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RESUME_RESTORE_HECATE]
+title = "Hecate receives the second held stone."
+pattern = "cross_character"
+
+[scenes.LYRIC_RESUME_VERIFY_FLOOR]
+title = "Lady Macbeth tests the record's bedrock."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RESUME_RESTORE_PARENT_SELECTOR]
+title = "Lady Macbeth receives the elder path's sign."
+pattern = "cross_character"
+
+[scenes.LYRIC_RESUME_CLOSE_DISPATCH]
+title = "Prospero chooses the garden's closing gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REGION_RESUME_PAIR]
+title = "Juliet carries the finished rose-path to Puck."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REGION_RESUME]
+title = "Horatio releases the tender name at last."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REGION_LINK_CLOSE]
+title = "Juliet closes the rose's bright path."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_IMAGE_TITLE_CLOSE]
+title = "Romeo releases the portrait's quiet name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_EMPHASIS_RESUME]
+title = "The sunlit seal closes around the star."
+pattern = "bare_statement"
+
+[scenes.LYRIC_EMPHASIS_CLOSE_EM]
+title = "Juliet closes the single star's sunlit seal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_RESUME_FLOOR_FAIL]
+title = "The broken record leaves no road behind."
+pattern = "bare_statement"
+
+[scenes.LYRIC_GOTO_CODE_TICKS_HEAD]
+title = "Juliet yields the silver mark to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_CODE_TICKS_TAIL]
+title = "Romeo bears the silver mark to Puck."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_HTML_REQUEUE_HEAD]
+title = "Juliet carries the moonlit gate to Puck."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_HTML_REQUEUE_TAIL]
+title = "Puck bears the moonlit gate to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_FIELD_RETRY_HEAD]
+title = "Puck leads the guarded field to Hecate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_FIELD_RETRY_TAIL]
+title = "Hecate bears the guarded field to Prospero."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_AUTOLINK_DUP_HEAD]
+title = "Juliet gives the shining road to Lady Macbeth."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_AUTOLINK_DUP_TAIL]
+title = "Lady Macbeth bears the shining road to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_FIELD_OPEN_HEAD]
+title = "Hecate opens the guarded field to Romeo."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_FIELD_OPEN_TAIL]
+title = "Romeo brings the guarded field to Macbeth."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_FIELD_UNTERMINATED_HEAD]
+title = "Puck carries the unfinished field to Juliet."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_FIELD_UNTERMINATED_TAIL]
+title = "Juliet brings the unfinished field to Hecate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_EMPHASIS_SEEK_HEAD]
+title = "Romeo yields the wandering star to Puck."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_GOTO_EMPHASIS_SEEK_TAIL]
+title = "Puck bears the wandering star to Hecate."
+pattern = "scene_of_character"

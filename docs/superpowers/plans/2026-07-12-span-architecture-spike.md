@@ -2044,7 +2044,7 @@ graph.
   `uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`
   => `1 passed, 208 deselected`.
 
-- [ ] **Step 3: Regenerate and run all spike evidence.**
+- [x] **Step 3: Regenerate and run all spike evidence.**
 
   Run:
 
@@ -2056,6 +2056,18 @@ graph.
   ```
 
   Expected: all five span probes, every reviewed span dump, existing list/nested-block spikes, and Amps pass.
+
+  Evidence (2026-07-14): Applied Amendment A19's compiler contract and the
+  fourteen ledgered Act III bridge scenes. The exact proof sequence passed:
+  `uv run pytest tests/test_splc_validate.py tests/test_act3_contracts.py tests/test_splc_interpret_parity.py -q`
+  => `68 passed`; `uv run python -m scripts.splc` regenerated all fragments;
+  `uv run python scripts/assemble.py` rebuilt `shakedown.spl`;
+  `uv run pytest tests/test_token_dump.py::test_debug_target_dumps_integer_token_stream tests/test_splc_generated_fragments.py -q`
+  => `3 passed`; `uv run pytest tests/test_architecture_spikes.py tests/test_act3_contracts.py tests/test_token_dump.py tests/test_token_decode.py tests/test_token_structure.py -q`
+  => `127 passed`; and the Global Constraints literary gate
+  `uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`
+  => `1 passed, 208 deselected`. The prior `Puck is not on stage!` binary
+  runtime error is cleared for Amps, list, nested-block, and span-spike checks.
 
 - [ ] **Step 4: Record and enforce reviewed final dumps.**
 
