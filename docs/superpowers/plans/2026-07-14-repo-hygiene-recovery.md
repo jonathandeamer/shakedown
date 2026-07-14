@@ -101,7 +101,7 @@ repair, one planner-only blocker instead.
   `- BLOCK[plan]:` line to `.agent/blockers.md` with the failing command and
   diagnostic, then stop without proceeding.
 
-- [ ] **Step 3: Run the original completion gate and full default suite.**
+- [x] **Step 3: Run the original completion gate and full default suite.**
 
   Run:
 
@@ -117,6 +117,15 @@ repair, one planner-only blocker instead.
 `Amps and angle encoding` fixture byte-identical. Treat any failure as a
   blocker with its exact command and output, not permission to broaden this
   plan.
+
+  **Evidence (2026-07-14):**
+  - `uv run pytest -q` → `660 passed, 26 skipped, 2 deselected` (exit 0)
+  - `uv run pytest tests/test_architecture_spikes.py -q` → `19 passed` (exit 0)
+  - `uv run pytest tests/test_splc_generated_fragments.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q` → `1 passed, 210 deselected` (exit 0)
+  - `uv run python scripts/strict_parity_harness.py 'Amps and angle encoding'` → `summary: 1/1 byte-identical` (exit 0)
+
+  All four completion-gate commands passed with fresh 2026-07-14 evidence.
+  Step 4 remains for closure records, commit, and push in the next iteration.
 
 - [ ] **Step 4: Record closure, commit, and push.**
 
