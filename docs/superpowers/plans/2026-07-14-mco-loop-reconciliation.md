@@ -423,13 +423,18 @@ Evidence re-run on 2026-07-14:
 - `./agent-loop --dry-run` exited zero and reported the active plan plus a normal non-running recovery action.
 - `git status --short` showed only the unrelated dirty `.agent/branch-dispositions.toml` before the closure-state docs update.
 
-- [ ] **Step 2: Mark the recovery shipped and clear its resolved blocker.**
+- [x] **Step 2: Mark the recovery shipped and clear its resolved blocker.**
 
 After the continuation's own repair and closure gates pass, change row 5R from
 `halted` to `shipped: <date> at commit <continuation-closure-sha>`. Retain the
 original Slice-2 plan as halted pending its later explicit resume/replacement
 plan. The scope-transfer blocker was removed when Task 6 Step 3 registered the
 continuation; do not recreate it unless a new planning defect is found.
+
+Implemented on 2026-07-14 by marking roadmap row 5R `shipped: 2026-07-14 at
+commit 48ef7df`, while row 5 remains halted pending an explicit resume or
+replacement plan. `.agent/blockers.md` stayed empty because the Task 6 Step 3
+scope-transfer blocker was already cleared and no new planning defect emerged.
 
 - [ ] **Step 3: Commit and push closure.**
 
