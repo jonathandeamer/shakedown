@@ -234,7 +234,7 @@ git push origin HEAD
 - Add `BranchBlocker(branch: str, head: str, base: str, request: str, detail: str)` and `parse_branch_blocker(line: str) -> BranchBlocker | None`.
 - Add `invalid_branch_blockers(blockers: Sequence[str], repo: Path = REPO) -> tuple[str, ...]` and `unregistered_planning_artifacts(repo: Path = REPO) -> tuple[Path, ...]`.
 
-- [ ] **Step 1: Add failing validation and artifact-detection tests.**
+- [x] **Step 1: Add failing validation and artifact-detection tests.**
 
 Cover a valid structured line; missing field; invalid request; branch/head/base mismatch; legacy free-text planning blocker; no artifacts; an untracked `docs/superpowers/plans/example.md`; an untracked `docs/superpowers/specs/example.md`; and ignored `.agent/mco-loop-state.json`.
 
@@ -250,6 +250,8 @@ def test_unregistered_planning_artifacts_excludes_ignored_agent_state(
         tmp_path / "docs/superpowers/plans/example.md",
     )
 ```
+
+Implemented by commits `6341fa2` and `29a3e09`. Evidence gate reproduced on 2026-07-14 with `uv run pytest tests/test_mco_loop.py -k 'branch_blocker or unregistered_planning' -q`, failing because `parse_branch_blocker`, `invalid_branch_blockers`, and `unregistered_planning_artifacts` do not yet exist.
 
 Run: `uv run pytest tests/test_mco_loop.py -k 'branch_blocker or unregistered_planning' -q`
 
