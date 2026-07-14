@@ -1878,7 +1878,7 @@ ACT: Act = act(
         scene(
             "LYRIC_OPEN_OUTPUT_REFERENCE_ONE",
             goto("LYRIC_ANCHOR_REFERENCE_ONE"),
-            anchor=JULIET,
+            anchor=ROSALIND,
             companion=PUCK,
         ),
         scene(
@@ -1912,7 +1912,7 @@ ACT: Act = act(
         scene(
             "LYRIC_OPEN_OUTPUT_REFERENCE_TWO",
             goto("LYRIC_ANCHOR_REFERENCE_TWO"),
-            anchor=JULIET,
+            anchor=ROSALIND,
             companion=PUCK,
         ),
         scene(

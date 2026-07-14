@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 from scripts.literary_surfaces import load_literary_surfaces
@@ -11,6 +10,15 @@ _ROOT = Path(__file__).parent.parent
 _LITERARY_TOML = _ROOT / "src" / "literary.toml"
 _ATOM_BY_VALUE = load_literary_surfaces(_LITERARY_TOML).value_atoms("default")
 _ATOM_TO_VALUE = {phrase: value for value, phrase in _ATOM_BY_VALUE.items()}
+
+# Arithmetic operator phrases and their limits (per literary compliance)
+ARITHMETIC_OPERATORS = (
+    "the sum of",
+    "the product of",
+    "the square of",
+    "the difference between",
+)
+MAX_ARITHMETIC_OPERATORS_PER_STATEMENT = 4
 
 
 def emit_value(value: int) -> str:
@@ -30,27 +38,121 @@ def emit_byte(value: int) -> str:
 
 
 def _decompose(value: int) -> str:
+    """Return an SPL value phrase with <= 4 arithmetic operators."""
+    # Try multiple decomposition strategies and pick the best
+    candidates = []
+
+    # Strategy 1: Original greedy with products for multiples
+    candidates.append(_decompose_greedy_products(value))
+
+    # Strategy 2: Difference from next multiple of 16/32/64/128/256
+    for base in [16, 32, 64, 128, 256]:
+        multiple = ((value // base) + 1) * base
+        diff = multiple - value
+        if 0 < diff < base:
+            candidates.append(_decompose_difference(multiple, diff))
+
+    # Strategy 3: Difference from square
+    if value > 256:
+        root = int(value**0.5)
+        if root > 16:
+            square = root * root
+            if square > value:
+                diff = square - value
+                candidates.append(_decompose_difference(square, diff))
+
+    # Strategy 4: Pure sum of atoms (no products/squares)
+    candidates.append(_decompose_pure_sum(value))
+
+    # Pick candidate with fewest operators (must be <= 4)
+    best = None
+    best_ops = 999
+    for cand in candidates:
+        ops = sum(cand.count(op) for op in ARITHMETIC_OPERATORS)
+        if ops <= MAX_ARITHMETIC_OPERATORS_PER_STATEMENT and ops < best_ops:
+            best = cand
+            best_ops = ops
+
+    if best is None:
+        # Fallback: return the greedy one even if over budget
+        return _decompose_greedy_products(value)
+    return best
+
+
+def _decompose_greedy_products(value: int) -> str:
+    """Original greedy algorithm with products for multiples."""
     terms: list[str] = []
     if value >= 256:
         count = value // 256
         terms.extend([f"the square of {_ATOM_BY_VALUE[16]}"] * count)
         value %= 256
 
-    sixteens = value // 16
-    if sixteens == 1:
-        terms.append(_ATOM_BY_VALUE[16])
-    elif sixteens > 1:
-        terms.append(f"the product of {_ATOM_BY_VALUE[16]} and {emit_value(sixteens)}")
-    value %= 16
-
-    for atom_value in sorted(_ATOM_BY_VALUE, reverse=True):
+    for atom_value in sorted([v for v in _ATOM_BY_VALUE if v >= 16], reverse=True):
         if atom_value == 0:
             continue
+        if atom_value <= value:
+            count = value // atom_value
+            if count == 1:
+                terms.append(_ATOM_BY_VALUE[atom_value])
+            else:
+                terms.append(
+                    f"the product of {_ATOM_BY_VALUE[atom_value]} and "
+                    f"{emit_value_simple(count)}"
+                )
+            value -= atom_value * count
+
+    for atom_value in sorted([v for v in _ATOM_BY_VALUE if 0 < v < 16], reverse=True):
         if atom_value <= value:
             terms.append(_ATOM_BY_VALUE[atom_value])
             value -= atom_value
 
     return _sum_terms(terms)
+
+
+def emit_value_simple(value: int) -> str:
+    """Simple emit_value without recursive decomposition (for multipliers)."""
+    if value in _ATOM_BY_VALUE:
+        return _ATOM_BY_VALUE[value]
+    # For small multipliers, use greedy with products for multiples of 16
+    terms: list[str] = []
+    if value >= 16:
+        for atom_value in sorted([v for v in _ATOM_BY_VALUE if v >= 16], reverse=True):
+            if atom_value == 0:
+                continue
+            if atom_value <= value:
+                count = value // atom_value
+                if count == 1:
+                    terms.append(_ATOM_BY_VALUE[atom_value])
+                else:
+                    terms.append(
+                        f"the product of {_ATOM_BY_VALUE[atom_value]} and "
+                        f"{emit_value_simple(count)}"
+                    )
+                value -= atom_value * count
+
+    for atom_value in sorted([v for v in _ATOM_BY_VALUE if 0 < v < 16], reverse=True):
+        while atom_value <= value:
+            terms.append(_ATOM_BY_VALUE[atom_value])
+            value -= atom_value
+
+    return _sum_terms(terms)
+
+
+def _decompose_pure_sum(value: int) -> str:
+    """Greedy sum of atoms only (no products/squares)."""
+    terms: list[str] = []
+    for atom_value in sorted([v for v in _ATOM_BY_VALUE if v > 0], reverse=True):
+        while atom_value <= value:
+            terms.append(_ATOM_BY_VALUE[atom_value])
+            value -= atom_value
+    return _sum_terms(terms)
+
+
+def _decompose_difference(multiple: int, diff: int) -> str:
+    """Express value as difference between multiple and diff."""
+    multiple_phrase = emit_value_simple(multiple)
+    diff_phrase = emit_value_simple(diff)
+    return f"the difference between {multiple_phrase} and {diff_phrase}"
 
 
 def _sum_terms(terms: list[str]) -> str:
@@ -80,44 +182,98 @@ def emit_speak_lines(literal: bytes, speaker: str) -> list[str]:
     return lines
 
 
+class _ValueParser:
+    """Recursive descent parser for SPL value phrases."""
+
+    def __init__(self, text: str):
+        self.text = text.lower()
+        self.pos = 0
+        self.original = text  # Keep original for error messages
+
+    def parse(self) -> int:
+        val = self._parse_value()
+        self._skip_whitespace()
+        if self.pos != len(self.text):
+            raise ValueError(f"trailing text: {self.original[self.pos :]}")
+        return val
+
+    def _parse_value(self) -> int:
+        self._skip_whitespace()
+
+        # Check for operators
+        if self._match("the square of "):
+            val = self._parse_value()
+            return val * val
+
+        if self._match("the product of "):
+            left = self._parse_value()
+            self._expect(" and ")
+            right = self._parse_value()
+            return left * right
+
+        if self._match("the sum of "):
+            left = self._parse_value()
+            self._expect(" and ")
+            right = self._parse_value()
+            return left + right
+
+        if self._match("the difference between "):
+            left = self._parse_value()
+            self._expect(" and ")
+            right = self._parse_value()
+            return left - right
+
+        # Must be an atom
+        return self._parse_atom()
+
+    def _parse_atom(self) -> int:
+        self._skip_whitespace()
+        start = self.pos
+
+        # Scan until next operator, ' and ', or end
+        while self.pos < len(self.text):
+            if self.text[self.pos :].startswith(" and "):
+                break
+            if any(
+                self.text[self.pos :].startswith(op)
+                for op in [
+                    "the square of ",
+                    "the product of ",
+                    "the sum of ",
+                    "the difference between ",
+                ]
+            ):
+                break
+            self.pos += 1
+
+        atom_text = self.original[start : self.pos].strip()
+        if atom_text in _ATOM_TO_VALUE:
+            return _ATOM_TO_VALUE[atom_text]
+        raise ValueError(f"unknown atom: {atom_text}")
+
+    def _match(self, keyword: str) -> bool:
+        self._skip_whitespace()
+        if self.text[self.pos :].startswith(keyword):
+            self.pos += len(keyword)
+            return True
+        return False
+
+    def _expect(self, keyword: str):
+        # Keywords like ' and ' include their own surrounding spaces
+        if self.text[self.pos :].startswith(keyword):
+            self.pos += len(keyword)
+        else:
+            # Try after skipping whitespace
+            self._skip_whitespace()
+            if self.text[self.pos :].startswith(keyword):
+                self.pos += len(keyword)
+            else:
+                raise ValueError(f"expected '{keyword}' at pos {self.pos}")
+
+    def _skip_whitespace(self):
+        while self.pos < len(self.text) and self.text[self.pos].isspace():
+            self.pos += 1
+
+
 def parse_value_phrase(phrase: str) -> int:
-    """Reverse `emit_byte`; used by round-trip tests."""
-    text = phrase.strip()
-    if text in _ATOM_TO_VALUE:
-        return _ATOM_TO_VALUE[text]
-    if text.lower().startswith("the square of "):
-        inner = text[len("the square of ") :]
-        value = parse_value_phrase(inner)
-        return value * value
-    if text.lower().startswith("the product of "):
-        rest = text[len("the product of ") :]
-        left, right = _split_binary(rest, phrase)
-        return parse_value_phrase(left) * parse_value_phrase(right)
-    if text.lower().startswith("the sum of "):
-        rest = text[len("the sum of ") :]
-        left, right = _split_binary(rest, phrase)
-        return parse_value_phrase(left) + parse_value_phrase(right)
-    raise ValueError(f"unrecognised atom: {phrase!r}")
-
-
-def _split_binary(rest: str, phrase: str) -> tuple[str, str]:
-    for match in reversed(list(re.finditer(r" and ", rest))):
-        left = rest[: match.start()]
-        right = rest[match.end() :]
-        try:
-            parse_value_phrase(left)
-            parse_value_phrase(right)
-        except ValueError:
-            continue
-        return left, right
-    raise ValueError(f"malformed binary expression: {phrase!r}")
-
-
-def main() -> None:
-    """CLI smoke test: emit phrases for `&amp;`."""
-    for byte, phrase in zip(b"&amp;", emit_literal(b"&amp;"), strict=True):
-        print(f"{byte:>3} ({chr(byte)!r}): {phrase}")
-
-
-if __name__ == "__main__":
-    main()
+    return _ValueParser(phrase).parse()

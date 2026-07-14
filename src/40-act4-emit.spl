@@ -84,7 +84,7 @@ Puck:
                     Scene @SCRIBE_ITEM_END: @LIT.scenes.SCRIBE_ITEM_END.title
 
 Prospero:
- Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as noble as the difference between a normal little furry black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @SCRIBE_ITEM_CLOSE.
@@ -207,13 +207,13 @@ Puck:
  Remember the sum of a normal little furry black cat and a little furry black cat.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Prospero:
  Speak your mind!
@@ -246,13 +246,13 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Prospero:
  Speak your mind!
@@ -273,13 +273,13 @@ Puck:
  Remember yourself.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Prospero:
  Speak your mind!
@@ -342,7 +342,7 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -354,7 +354,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Prospero:
  Speak your mind!
@@ -372,7 +372,7 @@ Prospero:
                     Scene @SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE: @LIT.scenes.SCRIBE_EMIT_FINAL_PARAGRAPH_CLOSE.title
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -384,7 +384,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Prospero:
  Speak your mind!
@@ -420,7 +420,7 @@ Puck:
  Remember myself.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -432,7 +432,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -468,7 +468,7 @@ Puck:
  Remember myself.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -480,7 +480,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -528,7 +528,7 @@ Prospero:
  If so, we shall proceed to scene @SCRIBE_EMIT_UL_OPEN_NESTED.
 
 Puck:
- Are you as fair as the sum of a normal little furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as fair as the difference between the product of a normal little furry black cat and a black cat and a cat?
 
 Prospero:
  If so, we shall proceed to scene @SCRIBE_EMIT_UL_OPEN_NESTED.
@@ -594,7 +594,7 @@ Puck:
  Remember the sum of a normal little furry black cat and the sum of a furry black cat and a black cat.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -606,7 +606,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -624,7 +624,7 @@ Prospero:
                     Scene @SCRIBE_EMIT_OL_OPEN_NESTED: @LIT.scenes.SCRIBE_EMIT_OL_OPEN_NESTED.title
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -642,7 +642,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -690,7 +690,7 @@ Puck:
  Remember the sum of a normal little furry black cat and the sum of a furry black cat and a black cat.
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -702,7 +702,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -729,7 +729,7 @@ Puck:
  Remember the sum of a normal little furry black cat and the sum of a furry black cat and a cat.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -741,7 +741,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -783,7 +783,7 @@ Prospero:
  If so, we shall proceed to scene @SCRIBE_LOOSE_NEWLINE.
 
 Puck:
- Are you as fair as the sum of a normal little furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as fair as the difference between the product of a normal little furry black cat and a black cat and a cat?
 
 Prospero:
  If so, we shall return to scene @SCRIBE_ITEM_SUBSEQUENT.
@@ -819,7 +819,7 @@ Prospero:
                     Scene @SCRIBE_ITEM_TEXT_LOOSE: @LIT.scenes.SCRIBE_ITEM_TEXT_LOOSE.title
 
 Puck:
- Remember the sum of a normal little furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a black cat and a cat.
 
 Puck:
  Remember myself.
@@ -870,13 +870,13 @@ Puck:
  @LIT.characters.puck.recall.sealed_gates_colour
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -936,7 +936,7 @@ Prospero:
                     Scene @SCRIBE_AFTER_NESTED_CLOSE: @LIT.scenes.SCRIBE_AFTER_NESTED_CLOSE.title
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -948,7 +948,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -966,7 +966,7 @@ Prospero:
  Speak your mind!
 
 Puck:
- Remember the sum of a normal little furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a black cat and a cat.
 
 Prospero:
  We shall return to scene @SCRIBE_POP_TOKEN.
@@ -978,7 +978,7 @@ Puck:
  @LIT.characters.puck.recall.sealed_gates_colour
 
 Puck:
- Are you as noble as the sum of a normal little furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as noble as the difference between the product of a normal little furry black cat and a black cat and a cat?
 
 Prospero:
  If so, we shall proceed to scene @SCRIBE_STASH_UL_CLOSE_NESTED.
@@ -1050,7 +1050,7 @@ Prospero:
  If so, we shall proceed to scene @SCRIBE_UL_CLOSE_LEADING_SEP.
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1068,7 +1068,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1092,7 +1092,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1110,7 +1110,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1158,7 +1158,7 @@ Prospero:
  If so, we shall proceed to scene @SCRIBE_OL_CLOSE_LEADING_SEP.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1176,7 +1176,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1200,7 +1200,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1218,7 +1218,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1245,7 +1245,7 @@ Prospero:
  If so, we shall return to scene @SCRIBE_AFTER_NESTED_CLOSE.
 
 Puck:
- Are you as rotten as the sum of a normal little furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as rotten as the difference between the product of a normal little furry black cat and a black cat and a cat?
 
 Prospero:
  If so, we shall return to scene @SCRIBE_AFTER_NESTED_CLOSE.
@@ -1368,7 +1368,7 @@ Prospero:
  If so, we shall proceed to scene @SCRIBE_LOOSE_NEWLINE_GLYPH.
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1380,7 +1380,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1422,7 +1422,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1479,7 +1479,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1491,7 +1491,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1533,7 +1533,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1581,7 +1581,7 @@ Puck:
  Remember the sum of a normal little furry black cat and the sum of a furry black cat and a cat.
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1593,7 +1593,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1620,7 +1620,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1638,7 +1638,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1680,7 +1680,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1797,7 +1797,7 @@ Puck:
                     Scene @SCRIBE_TEST_ANCHOR_CLOSE: @LIT.scenes.SCRIBE_TEST_ANCHOR_CLOSE.title
 
 Prospero:
- Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as noble as the difference between a normal little furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @SCRIBE_EMIT_ANCHOR_CLOSE.
@@ -1818,7 +1818,7 @@ Prospero:
                     Scene @SCRIBE_EMIT_ANCHOR_OPEN: @LIT.scenes.SCRIBE_EMIT_ANCHOR_OPEN.title
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1890,7 +1890,7 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1902,13 +1902,13 @@ Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
 
 Prospero:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!
@@ -1956,7 +1956,7 @@ Prospero:
                     Scene @SCRIBE_EMIT_ANCHOR_CLOSE: @LIT.scenes.SCRIBE_EMIT_ANCHOR_CLOSE.title
 
 Prospero:
- You are as honest as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Prospero:
  Speak your mind!

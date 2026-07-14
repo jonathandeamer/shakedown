@@ -193,7 +193,7 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as mighty as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_MARK_TEST_OL.
@@ -253,7 +253,7 @@ Puck:
  Remember myself.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
 
 [Exit Puck]
 
@@ -763,7 +763,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as bold as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_TEST_OL.
@@ -829,7 +829,7 @@ Puck:
  Remember myself.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
 
 [Exit Puck]
 
@@ -849,7 +849,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Are you as villainous as a noble hero?
@@ -1064,7 +1064,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as bold as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_NEST_TEST_OL.
@@ -1115,7 +1115,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Are you as bold as a hero?
@@ -1137,7 +1137,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Are you as bold as a hero?
@@ -1328,7 +1328,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as villainous as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BSIB_TEST_OL.
@@ -1379,7 +1379,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Are you as mighty as a noble hero?
@@ -1590,7 +1590,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL.
@@ -1602,7 +1602,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL_REPLAY.
@@ -1614,7 +1614,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL_REPLAY_DOT.
@@ -1630,7 +1630,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL.
@@ -1862,7 +1862,7 @@ Macbeth:
  If so, let us proceed to scene @PASS_PARA_ITEM_OPEN.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as villainous as the difference between a normal little furry black cat and a cat?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_ITEM_CLOSE.
@@ -1928,7 +1928,7 @@ Lady Macbeth:
                     Scene @PASS_PARA_ITEM_CLOSE: @LIT.scenes.PASS_PARA_ITEM_CLOSE.title
 
 Macbeth:
- Remember the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us return to scene @PASS_PARA_NEXT.

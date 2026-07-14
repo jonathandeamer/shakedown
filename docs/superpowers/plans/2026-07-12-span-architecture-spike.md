@@ -2123,7 +2123,7 @@ graph.
 
   No measured claim in `docs/verification-plan.md` changes: the small-fixture Yellow band and the ~11s fixed cost are already recorded (B14/B20/B21); these numbers reconfirm them for the shipped Act III span program.
 
-- [ ] **Step 2: Run the completion gate.**
+- [x] **Step 2: Run the completion gate.**
 
   Run:
 
@@ -2136,11 +2136,15 @@ graph.
 
   Expected: all default tests pass; all list, nested-block, and span spikes are byte-identical; generated/literary gates pass; the one shipped deterministic mdtest fixture is strict-oracle byte-identical. Do not claim unshipped fixtures are parity gates.
 
-- [ ] **Step 3: Apply the halt rule from the accepted design.**
+  **Evidence (2026-07-14):** All four completion gate commands pass. The 19 architecture spike tests (6 list, 4 nested-block, 5 span, 4 list byte-contracts) are byte-identical to the oracle. The literary compliance gate (188 tests) passes. The Amps and angle encoding fixture is strict-oracle byte-identical (505 bytes).
+
+- [x] **Step 3: Apply the halt rule from the accepted design.**
 
   If a protected region required output rescanning, could not preserve bytes, left a floor/prefix corrupted, or produced an invalid reviewed stream, append `- BLOCK:` to `.agent/blockers.md`, leave this plan in flight, and stop. Otherwise add concise measured evidence and checked boxes to this plan, mark 4S `shipped: <date> at commit <sha>` in the roadmap, and leave row 5 pending.
 
-- [ ] **Step 4: Commit and push the outcome.**
+  **Evidence (2026-07-14):** No halt conditions triggered. All protected regions preserve bytes, no floor/prefix corruption, all reviewed streams valid. No blocker recorded.
 
-  Run: `git add docs/superpowers/plans/2026-07-12-span-architecture-spike.md docs/superpowers/plans/plan-roadmap.md docs/verification-plan.md && git commit -m "docs: record span spike outcome"`  
+- [x] **Step 4: Commit and push the outcome.**
+
+  Run: `git add docs/superpowers/plans/2026-07-12-span-architecture-spike.md docs/superpowers/plans/plan-roadmap.md && git commit -m "docs: record span spike outcome"`  
   Expected: conventional commit with required provenance trailers succeeds, followed by `git push` succeeding. Omit `docs/verification-plan.md` from the command if no measured claim changed; never create an empty commit.

@@ -170,7 +170,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_BUFFER_ENTITY_AMP.
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as sunny as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_BUFFER_ENTITY_ANGLE.
@@ -224,7 +224,7 @@ Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as fair as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
  Remember yourself.
@@ -256,13 +256,13 @@ Puck:
  Remember yourself.
 
 Puck:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember yourself.
@@ -313,7 +313,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_TEXT_END_DISPATCH.
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as golden as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ANGLE_TEST.
@@ -331,7 +331,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_OPEN.
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_TEST.
@@ -419,7 +419,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_FALLBACK.
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as fair as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
@@ -503,7 +503,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as golden as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
@@ -545,7 +545,7 @@ Juliet:
                     Scene @LYRIC_ESCAPE_LITERAL: @LIT.scenes.LYRIC_ESCAPE_LITERAL.title
 
 Puck:
- You are as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as fair as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
 
 Puck:
  Remember yourself.
@@ -571,7 +571,7 @@ Juliet:
 [Enter Juliet]
 
 Puck:
- You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
 
 Puck:
  Remember yourself.
@@ -859,7 +859,7 @@ Romeo:
 [Enter Juliet]
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
@@ -916,7 +916,7 @@ Hecate:
  If so, let us proceed to scene @LYRIC_CODE_AMP.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as gentle as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_CODE_LT.
@@ -961,7 +961,7 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as rotten as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as rotten as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Hecate:
  Remember yourself.
@@ -985,13 +985,13 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as cursed as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as cursed as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Hecate:
  Remember yourself.
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as rotten as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
  Remember yourself.
@@ -1021,7 +1021,7 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as horrid as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as horrid as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
  Remember yourself.
@@ -1054,7 +1054,7 @@ Juliet:
                     Scene @LYRIC_CODE_CLOSE: @LIT.scenes.LYRIC_CODE_CLOSE.title
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Hecate:
  Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a cat.
@@ -1269,13 +1269,13 @@ Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as sweet as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a cat and a black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as sweet as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a cat and a cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
@@ -1323,7 +1323,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as fair as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
@@ -1409,7 +1409,7 @@ Puck:
 [Enter Hecate]
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as rotten as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Hecate:
  Remember yourself.
@@ -1461,7 +1461,7 @@ Puck:
 [Enter Hecate]
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
@@ -1879,7 +1879,7 @@ Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_AMP.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as gentle as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_LT.
@@ -1924,7 +1924,7 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as cursed as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as cursed as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Hecate:
  Remember yourself.
@@ -1948,13 +1948,13 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as rotten as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Hecate:
  Remember yourself.
 
 Hecate:
- You are as horrid as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as horrid as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
  Remember yourself.
@@ -1984,7 +1984,7 @@ Hecate:
  Remember yourself.
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as rotten as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
  Remember yourself.
@@ -2115,7 +2115,7 @@ Hecate:
 [Enter Lady Macbeth]
 
 Lady Macbeth:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Lady Macbeth:
  Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a hero.
@@ -2333,7 +2333,7 @@ Puck:
 [Enter Hecate and Juliet]
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
@@ -2474,7 +2474,7 @@ Puck:
 [Enter Hecate and Juliet]
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
@@ -2655,16 +2655,16 @@ Hecate:
  Remember the product of a normal little furry black cat and a black cat.
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
@@ -2837,10 +2837,10 @@ Prospero:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Prospero:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Prospero:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Prospero:
  Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of an angel and a noble angel.
@@ -3355,13 +3355,13 @@ Puck:
                     Scene @LYRIC_EMPHASIS_MATCH_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_MATCH_OUTPUT.title
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
@@ -3402,13 +3402,13 @@ Puck:
                     Scene @LYRIC_EMPHASIS_TRIPLE_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_TRIPLE_OUTPUT.title
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
@@ -3453,7 +3453,7 @@ Puck:
                     Scene @LYRIC_EMPHASIS_EMIT_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_EMIT_OUTPUT.title
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
@@ -3781,7 +3781,7 @@ Juliet:
                     Scene @LYRIC_REGION_LINK_CLOSE: @LIT.scenes.LYRIC_REGION_LINK_CLOSE.title
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Puck:
  Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
@@ -3815,16 +3815,16 @@ Hecate:
  Remember the product of a normal little furry black cat and a black cat.
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Hecate:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Hecate:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
@@ -3861,7 +3861,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_CLOSE_EM.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Puck:
  Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
@@ -3870,7 +3870,7 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
@@ -3898,7 +3898,7 @@ Juliet:
                     Scene @LYRIC_EMPHASIS_CLOSE_EM: @LIT.scenes.LYRIC_EMPHASIS_CLOSE_EM.title
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Puck:
  Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
@@ -3950,7 +3950,7 @@ Puck:
  You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat?
+ Are you as fair as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_LINK_POP_BODY.
@@ -4046,7 +4046,7 @@ Puck:
                     Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: @LIT.scenes.LYRIC_INLINE_TEST_BRACKETED_DESTINATION.title
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as golden as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
@@ -4158,10 +4158,10 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and a flower.
@@ -4191,7 +4191,7 @@ Puck:
  Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
@@ -4215,7 +4215,7 @@ Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
@@ -4227,7 +4227,7 @@ Puck:
  Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between a normal little furry black cat and a black cat.
 
 [Exit Puck]
 
@@ -4340,17 +4340,17 @@ Puck:
 Puck:
  @LIT.characters.puck.recall.first_forest_name
 
-[Exit Rosalind]
-
-[Enter Juliet]
-
-Puck:
+Rosalind:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE.
 
 
                     Scene @LYRIC_OPEN_OUTPUT_REFERENCE_ONE: @LIT.scenes.LYRIC_OPEN_OUTPUT_REFERENCE_ONE.title
 
-Juliet:
+[Exit Rosalind]
+
+[Enter Juliet]
+
+Puck:
  Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_ONE.
 
 
@@ -4363,16 +4363,16 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat.
 
 Puck:
  Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
@@ -4384,7 +4384,7 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a little furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a little furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
@@ -4393,16 +4393,16 @@ Puck:
  Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
@@ -4444,7 +4444,7 @@ Puck:
  Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
@@ -4468,7 +4468,7 @@ Puck:
  Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
@@ -4480,7 +4480,7 @@ Puck:
  Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between a normal little furry black cat and a black cat.
 
 [Exit Puck]
 
@@ -4507,17 +4507,17 @@ Puck:
 Puck:
  @LIT.characters.puck.recall.second_forest_name
 
-[Exit Rosalind]
-
-[Enter Juliet]
-
-Puck:
+Rosalind:
  Let us proceed to scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO.
 
 
                     Scene @LYRIC_OPEN_OUTPUT_REFERENCE_TWO: @LIT.scenes.LYRIC_OPEN_OUTPUT_REFERENCE_TWO.title
 
-Juliet:
+[Exit Rosalind]
+
+[Enter Juliet]
+
+Puck:
  Let us proceed to scene @LYRIC_ANCHOR_REFERENCE_TWO.
 
 
@@ -4530,16 +4530,16 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a black cat.
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat.
 
 Puck:
  Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
@@ -4551,13 +4551,13 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
@@ -4590,7 +4590,7 @@ Puck:
  Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
@@ -4617,7 +4617,7 @@ Puck:
  Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
@@ -4626,7 +4626,7 @@ Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between a normal little furry black cat and a black cat.
 
 [Exit Puck]
 
@@ -4652,7 +4652,7 @@ Puck:
  Remember the product of the difference between a little furry black cat and a flower and the sum of a little furry black cat and the sum of a furry black cat and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Puck:
  Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
@@ -4677,7 +4677,7 @@ Juliet:
                     Scene @LYRIC_TEST_LEFT_ANGLE: @LIT.scenes.LYRIC_TEST_LEFT_ANGLE.title
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat?
+ Are you as sunny as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LEFT_ANGLE_POP_NEXT.
@@ -4779,7 +4779,7 @@ Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as fair as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
 
 Puck:
  Remember yourself.
@@ -4855,13 +4855,13 @@ Puck:
  Remember yourself.
 
 Puck:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a furry black cat.
+ You are as rotten as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a furry black cat.
+ You are as fair as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
 
 Puck:
  Remember yourself.
@@ -4899,7 +4899,7 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LITERAL_LEFT_CURRENT.title
 
 Puck:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a furry black cat.
+ You are as rotten as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
 Puck:
  Remember yourself.
