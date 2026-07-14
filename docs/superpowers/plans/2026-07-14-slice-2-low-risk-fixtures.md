@@ -224,7 +224,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 - Produces a normalized glyph carrier with a faithful final `\n\n`, tabs expanded to four-column stops, and no unconditional deletion of trailing lines.
 - Preserves Act I's existing handoff: `HORATIO` holds the count and `PUCK` supplies the forward glyph stream to Act II.
 
-- [ ] **Step 1: Add the failing Act-I contracts.**
+- [x] **Step 1: Add the failing Act-I contracts.**
 
   Add interpreter-level tests that feed (a) `"one\n\ntwo\n"`, (b) `"\tX\n \tY\n  \tZ\n   \tQ\n"`, and (c) the ending of `Code Blocks.text` into Act I. Assert that the downstream glyph sequence retains every non-reference line, ends in exactly two newlines, and expands each tab to the next multiple of four columns. Assert that the literal trailing spaces in `"all contain trailing spaces  \n"` are retained.
 
