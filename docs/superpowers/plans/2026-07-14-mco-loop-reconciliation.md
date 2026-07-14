@@ -257,7 +257,7 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'branch_blocker or unregistered_pl
 
 Expected: FAIL until the validators and artifact fence exist.
 
-- [ ] **Step 2: Implement validation without breaking legacy blockers.**
+- [x] **Step 2: Implement validation without breaking legacy blockers.**
 
 Parse only lines beginning `- BLOCK[plan]: branch=` with `; `-separated `key=value` fields.  Require exactly `branch`, `head`, `base`, `request`, and `detail`; permit only `review`, `integrate`, and `supersede` requests.  Validate the branch head and merge base via read-only Git calls.  An invalid structured blocker produces a `FIX` action whose summary contains the validation failure; a valid one continues through existing planner routing.  `unregistered_planning_artifacts` filters `git ls-files --others --exclude-standard` to the two documentation directories and returns sorted paths.
 

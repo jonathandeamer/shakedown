@@ -67,6 +67,8 @@ PI_MODELS_REQUIRED_IDS = (
 PI_MODELS_MAX_TOKENS_CAP = 32768
 BRANCH_DISPOSITIONS = REPO / ".agent" / "branch-dispositions.toml"
 BRANCH_DISPOSITION_VALUES = {"review", "preserve", "superseded", "integrated"}
+BRANCH_BLOCKER_PREFIX = "- BLOCK[plan]: branch="
+BRANCH_BLOCKER_REQUESTS = {"review", "integrate", "supersede"}
 HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
@@ -218,6 +220,15 @@ class BranchIssue:
     name: str
     head: str
     base: str | None
+    detail: str
+
+
+@dataclass(frozen=True)
+class BranchBlocker:
+    branch: str
+    head: str
+    base: str
+    request: str
     detail: str
 
 
@@ -495,6 +506,83 @@ def read_blockers(path: Path = BLOCKERS) -> tuple[str, ...]:
     )
 
 
+def parse_branch_blocker(line: str) -> BranchBlocker | None:
+    """Parse a structured planner blocker, leaving legacy free-text lines alone."""
+    if not line.startswith(BRANCH_BLOCKER_PREFIX):
+        return None
+    fields = line[len("- BLOCK[plan]: ") :].split("; ")
+    values: dict[str, str] = {}
+    for field in fields:
+        key, separator, value = field.partition("=")
+        if not separator or not key or not value or key in values:
+            return None
+        values[key] = value
+    if set(values) != {"branch", "head", "base", "request", "detail"}:
+        return None
+    return BranchBlocker(
+        values["branch"],
+        values["head"],
+        values["base"],
+        values["request"],
+        values["detail"],
+    )
+
+
+def invalid_branch_blockers(
+    blockers: Sequence[str], repo: Path = REPO
+) -> tuple[str, ...]:
+    """Return validation failures for structured branch blockers only."""
+    failures: list[str] = []
+    for line in blockers:
+        if not line.startswith(BRANCH_BLOCKER_PREFIX):
+            continue
+        blocker = parse_branch_blocker(line)
+        if blocker is None:
+            failures.append(f"invalid structured blocker syntax: {line}")
+            continue
+        if blocker.request not in BRANCH_BLOCKER_REQUESTS:
+            failures.append(
+                f"invalid structured blocker request for {blocker.branch}: "
+                f"{blocker.request}"
+            )
+            continue
+        if not HEX40_RE.fullmatch(blocker.head):
+            failures.append(
+                f"invalid structured blocker head for {blocker.branch}: {blocker.head}"
+            )
+        if not HEX40_RE.fullmatch(blocker.base):
+            failures.append(
+                f"invalid structured blocker base for {blocker.branch}: {blocker.base}"
+            )
+        actual_head = _git_output(["rev-parse", blocker.branch], repo=repo).strip()
+        if actual_head != blocker.head:
+            failures.append(
+                f"invalid structured blocker branch/head for {blocker.branch}: "
+                f"expected {actual_head or 'missing branch'}, found {blocker.head}"
+            )
+        actual_base = _git_output(
+            ["merge-base", blocker.branch, "main"], repo=repo
+        ).strip()
+        if actual_base != blocker.base:
+            failures.append(
+                f"invalid structured blocker base for {blocker.branch}: "
+                f"expected {actual_base or 'unknown'}, found {blocker.base}"
+            )
+    return tuple(failures)
+
+
+def unregistered_planning_artifacts(repo: Path = REPO) -> tuple[Path, ...]:
+    """Return non-ignored untracked plan/spec artifacts under docs/superpowers."""
+    raw = _git_output(["ls-files", "--others", "--exclude-standard"], repo=repo)
+    matches = [
+        repo / relative
+        for relative in raw.splitlines()
+        if relative.startswith("docs/superpowers/plans/")
+        or relative.startswith("docs/superpowers/specs/")
+    ]
+    return tuple(sorted(matches))
+
+
 def blockers_require_planning(blockers: Sequence[str]) -> bool:
     """Return whether any active blocker is tagged as planner-only."""
     return any(line.startswith("- BLOCK[plan]:") for line in blockers)
@@ -572,7 +660,7 @@ def step_is_planning(step: str) -> bool:
 
 
 def determine_next_action(
-    rows: Sequence[RoadmapRow], blockers: Sequence[str]
+    rows: Sequence[RoadmapRow], blockers: Sequence[str], repo: Path = REPO
 ) -> NextAction:
     """Classify the next durable repository action."""
     in_flight = [row for row in rows if "in flight" in row.status]
@@ -581,6 +669,16 @@ def determine_next_action(
         raise ValueError("roadmap has more than one in-flight plan")
     if blockers:
         active = in_flight[0].plan_path if in_flight else None
+        invalid = invalid_branch_blockers(blockers, repo=repo)
+        if invalid:
+            return NextAction(
+                ActionKind.FIX,
+                "Validate the active structured blocker before roadmap work "
+                f"continues: {'; '.join(invalid)}",
+                active,
+                None,
+                tuple(blockers),
+            )
         if blockers_require_planning(blockers):
             return NextAction(
                 ActionKind.PLAN,
