@@ -374,6 +374,35 @@ def branch_inventory_issues(
     return tuple(issues)
 
 
+def reconciliation_action(
+    rows: Sequence[RoadmapRow], repo: Path = REPO
+) -> NextAction | None:
+    """Route unresolved branch reconciliation to the planning pool."""
+    ledger = load_branch_dispositions()
+    issues = branch_inventory_issues(repo, ledger)
+    if not issues:
+        return None
+    active_plan = next(
+        (row.plan_path for row in rows if "in flight" in row.status),
+        None,
+    )
+    detail = "; ".join(
+        (
+            f"{issue.name}@{issue.head} "
+            f"(base {issue.base if issue.base is not None else 'unknown'}): "
+            f"{issue.detail}"
+        )
+        for issue in issues
+    )
+    return NextAction(
+        ActionKind.PLAN,
+        f"Resolve branch reconciliation before normal roadmap execution: {detail}",
+        active_plan,
+        None,
+        (),
+    )
+
+
 def _executors(raw: object, label: str) -> tuple[Executor, ...]:
     if not isinstance(raw, list) or not raw:
         raise ValueError(f"{label} must contain at least one executor")
@@ -1579,6 +1608,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             rows = parse_roadmap(ROADMAP.read_text())
             blockers = read_blockers()
             action = determine_next_action(rows, blockers)
+            reconciled = reconciliation_action(rows)
+            if reconciled is not None:
+                action = reconciled
             if args.govern:
                 return run_governor(config, action, environment)
             no_remaining_rows = not any(

@@ -206,7 +206,7 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'branch_inventory or branch_dispos
 
 Expected: all inventory cases pass without changing any branch.
 
-- [ ] **Step 3: Convert branch issues to a planner-only action before normal step selection.**
+- [x] **Step 3: Convert branch issues to a planner-only action before normal step selection.**
 
 Add `reconciliation_action(rows, repo=REPO) -> NextAction | None`.  It returns `ActionKind.PLAN`, the active plan path, and a summary containing every `BranchIssue` when inventory is nonempty; otherwise it returns `None`.  In `main()`, call it after `determine_next_action()` and before `apply_failure_action()`, replacing the canonical action only when non-`None`.
 

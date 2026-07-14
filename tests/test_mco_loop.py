@@ -297,6 +297,202 @@ def test_branch_inventory_reports_missing_local_branch_from_ledger(
     )
 
 
+def test_reconciliation_action_returns_planner_action_for_branch_issues(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] Implement it\n")
+    rows = (_row("5R", "in flight", plan),)
+    review_issue = mco_loop.BranchIssue(
+        "topic",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "review pending",
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "load_branch_dispositions",
+        lambda path=mco_loop.BRANCH_DISPOSITIONS: {
+            "topic": mco_loop.BranchDisposition(
+                "topic",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "review",
+                "Needs review.",
+            )
+        },
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "branch_inventory_issues",
+        lambda repo, ledger: (review_issue,),
+    )
+
+    action = mco_loop.reconciliation_action(rows, repo=tmp_path)
+
+    assert action == NextAction(
+        ActionKind.PLAN,
+        "Resolve branch reconciliation before normal roadmap execution: "
+        "topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+        "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending",
+        plan,
+        None,
+        (),
+    )
+
+
+def _main_test_config_with_planning(tmp_path: Path) -> mco_loop.LoopConfig:
+    return mco_loop.LoopConfig(
+        env_file=tmp_path / ".env",
+        state_file=tmp_path / "state.json",
+        artifact_dir=tmp_path / "artifacts",
+        cooldown_seconds=60,
+        iteration_pause_seconds=0,
+        planning=(Executor("planner", "claude", "claude"),),
+        implementation=(Executor("implementer", "codex", "codex"),),
+    )
+
+
+def test_main_routes_review_branch_disposition_to_planning_pool(
+    tmp_path: Path, monkeypatch
+) -> None:
+    config = _main_test_config_with_planning(tmp_path)
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
+    selected_actions: list[NextAction] = []
+    selected_pools: list[tuple[Executor, ...]] = []
+
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("5R", "in flight", plan),),
+    )
+    monkeypatch.setattr(
+        mco_loop, "determine_next_action", lambda rows, blockers: canonical
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "load_branch_dispositions",
+        lambda path=mco_loop.BRANCH_DISPOSITIONS: {
+            "topic": mco_loop.BranchDisposition(
+                "topic",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "review",
+                "Needs review.",
+            )
+        },
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "branch_inventory_issues",
+        lambda repo, ledger: (
+            mco_loop.BranchIssue(
+                "topic",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "review pending",
+            ),
+        ),
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_governor_directive", lambda action: (action, False, False)
+    )
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        selected_pools.append(tuple(executors))
+        selected_actions.append(action)
+        return mco_loop.ExecutorSelection(None, None, True)
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+
+    result = mco_loop.main(["--once"])
+
+    assert result == 5
+    assert selected_pools == [config.planning]
+    assert selected_actions == [
+        NextAction(
+            ActionKind.PLAN,
+            "Resolve branch reconciliation before normal roadmap execution: "
+            "topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+            "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending",
+            plan,
+            None,
+            (),
+        )
+    ]
+
+
+def test_main_keeps_ordinary_action_after_terminal_branch_reconciliation(
+    tmp_path: Path, monkeypatch
+) -> None:
+    config = _main_test_config_with_planning(tmp_path)
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
+    selected_actions: list[NextAction] = []
+    selected_pools: list[tuple[Executor, ...]] = []
+
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("5R", "in flight", plan),),
+    )
+    monkeypatch.setattr(
+        mco_loop, "determine_next_action", lambda rows, blockers: canonical
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "load_branch_dispositions",
+        lambda path=mco_loop.BRANCH_DISPOSITIONS: {
+            "topic": mco_loop.BranchDisposition(
+                "topic",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "integrated",
+                "Already landed.",
+            )
+        },
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "branch_inventory_issues",
+        lambda repo, ledger: (),
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_governor_directive", lambda action: (action, False, False)
+    )
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        selected_pools.append(tuple(executors))
+        selected_actions.append(action)
+        return mco_loop.ExecutorSelection(None, None, True)
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+
+    result = mco_loop.main(["--once"])
+
+    assert result == 5
+    assert selected_pools == [config.implementation]
+    assert selected_actions == [canonical]
+
+
 def _invocation_inputs(
     tmp_path: Path,
 ) -> tuple[mco_loop.LoopConfig, Executor, NextAction]:
@@ -1108,6 +1304,9 @@ def test_main_uses_canonical_action_and_exits_five_on_exhaustion(
         mco_loop, "determine_next_action", lambda rows, blockers: canonical
     )
     monkeypatch.setattr(
+        mco_loop, "reconciliation_action", lambda rows, repo=mco_loop.REPO: None
+    )
+    monkeypatch.setattr(
         mco_loop, "apply_failure_action", lambda action, state: rewritten
     )
     monkeypatch.setattr(
@@ -1594,6 +1793,9 @@ def test_main_select_executor_preserve_planning_flag(
         mco_loop,
         "parse_roadmap",
         lambda text: (mco_loop.RoadmapRow("1", None, "description", "pending"),),
+    )
+    monkeypatch.setattr(
+        mco_loop, "reconciliation_action", lambda rows, repo=mco_loop.REPO: None
     )
 
     # Track calls to select_executor
