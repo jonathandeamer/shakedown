@@ -46,7 +46,7 @@
 - Produces a ledger whose entries have `head: str`, `disposition: Literal["preserve", "superseded", "integrated"]`, and nonempty `reason: str`.
 - Removes the active blocker only after `fix-665750fcbb154a4dadcddbfc55ab3326-codex-implement` has a terminal, evidence-backed disposition.
 
-- [ ] **Step 1: Capture immutable review evidence for both candidate branches.**
+- [x] **Step 1: Capture immutable review evidence for both candidate branches.**
 
 Run the following read-only comparison and add its command, merge base, changed-file list, and conclusion to the relevant `reason` fields; do not edit code during this step.
 
@@ -60,7 +60,7 @@ uv run pytest tests/test_act3_contracts.py tests/test_act2_frame_floors.py -q
 
 Expected: the Slice-2 repair is assessed against current main rather than merged by assumption; the carrier-observer branch is assessed against shipped 4S contract coverage.
 
-- [ ] **Step 2: Write terminal branch dispositions and replace the opaque blocker.**
+- [x] **Step 2: Write terminal branch dispositions and replace the opaque blocker.**
 
 Use the recorded current 40-character heads below.  Preserve the historical WIP exactly as shown.  If the Step-1 comparison finds behavior absent from main, reproduce it with a new focused test and a fresh mainline implementation commit before recording `integrated`; otherwise record `superseded` and cite the current-main test evidence.  Never merge either original branch.
 
@@ -87,7 +87,7 @@ Replace the free-text merge-conflict blocker, while review is active, with this 
 - BLOCK[plan]: branch=fix-665750fcbb154a4dadcddbfc55ab3326-codex-implement; head=cd89aa80d8da93793fe9c749754702e3cd10f1c7; base=17f7f306adac7071368668c1475b12cfeb841b19; request=supersede; detail=Review stale Slice-2 repair against current main before resuming roadmap work.
 ```
 
-- [ ] **Step 3: Register the development-efficiency work without pretending it was loop progress.**
+- [x] **Step 3: Register the development-efficiency work without pretending it was loop progress.**
 
 Commit both currently untracked documents.  In the plan, check only steps whose named commits and stated evidence are present on `main` (`8f2aab8`, `ef53139`, `6cd7fe5`, `f0dd88e`, `48f7fc8`, `55b6a5b`, `8a4fa1a`, `74704ad`, and `a1891ce`); annotate each checked step with its exact commit and test evidence.  If a proposed step lacks evidence, replace it with a completed historical limitation rather than claiming it shipped.  Add a concise design status note that this is operator-directed infrastructure history, not a second roadmap plan.
 

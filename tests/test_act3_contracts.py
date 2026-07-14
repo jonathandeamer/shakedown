@@ -479,7 +479,7 @@ def test_act3_code_block_payload_bypasses_span_scanner() -> None:
 
     assert len(decoded) == 1
     assert decoded[0].code == tokens.CODE_BLOCK
-    assert decoded[0].text == "\\\\* `tick` <http://example.com/>"
+    assert decoded[0].text == "\\\\* `tick` <http://example.com/>\n"
 
     reverse_open = observer.labels.index("LYRIC_OPEN_REVERSE")
     code_route = observer.labels[:reverse_open]

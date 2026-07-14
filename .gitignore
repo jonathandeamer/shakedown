@@ -1,6 +1,7 @@
 # Claude Code / agent state
 .agent/*
 !.agent/blockers.md
+!.agent/branch-dispositions.toml
 .codex
 
 # Secrets (loaded by name via agent-loop.toml env_file; never commit)

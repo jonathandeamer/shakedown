@@ -1,0 +1,14 @@
+[branches."spike-a-lists-wip"]
+head = "a31e61cfa18f462ab2028b9428b23ff7eaf640fb"
+disposition = "preserve"
+reason = "Documented non-parsing pre-splc Spike-A redesign reference; never a merge candidate."
+
+[branches."fix-665750fcbb154a4dadcddbfc55ab3326-codex-implement"]
+head = "cd89aa80d8da93793fe9c749754702e3cd10f1c7"
+disposition = "superseded"
+reason = "Focused branch suite failed 15 tests with Act-II and Act-III stack underflows; current main passed 73 focused contracts after correcting the oracle-required code-payload newline assertion."
+
+[branches."codex/implement-a9e381f6"]
+head = "888b200675edec0148a592b9cfe9110755da59fb"
+disposition = "superseded"
+reason = "Focused branch suite failed 22 Act-III protected-region contracts with stack underflows; its stale observer changes are not safe to integrate."
