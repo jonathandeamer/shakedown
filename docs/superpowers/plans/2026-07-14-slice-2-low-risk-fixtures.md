@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- Authority and scope: roadmap row 5; architecture spec `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` §§4.2, 4.3, 7.5, 7.8a, and 8.1; accepted span design `docs/superpowers/specs/2026-07-12-span-architecture-spike-design.md`; and, for Task 2 Step 2 only, accepted binary-gate design `docs/superpowers/specs/2026-07-14-slice-2-binary-block-gates-design.md`.
+- Authority and scope: roadmap row 5; architecture spec `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` §§4.2, 4.3, 7.5, 7.8a, and 8.1; accepted span design `docs/superpowers/specs/2026-07-12-span-architecture-spike-design.md`; and, for Task 2 Step 2 only, accepted binary-gate design (including Amendment B) `docs/superpowers/specs/2026-07-14-slice-2-binary-block-gates-design.md`.
 - Production Markdown behavior remains SPL-owned. Do not add a Python/Perl fallback, fixture-name branch, canned output, or an oracle invocation to `./shakedown`.
 - Generated acts are edited only in `src_ir/act1.py`, `src_ir/act2.py`, `src_ir/act3.py`, and `src_ir/act4.py`; regenerate with `uv run python -m scripts.splc` and assemble with `uv run python scripts/assemble.py`. Never hand-edit `src/10-act1-preprocess.spl`, `src/20-act2-block.spl`, `src/30-act3-span.spl`, `src/40-act4-emit.spl`, or `shakedown.spl`.
 - Keep the Span Spike's one-way invariant: generated HTML never returns to the Act-III source buffer; code spans, escapes, URL autolinks, and inline tags remain protected regions in the existing scan order.
@@ -43,7 +43,7 @@ Before editing any listed IR, implementation agents must read `docs/superpowers/
 | Act | State-family enumeration | Working | Spares |
 |---|---|---:|---:|
 | I | normalize final newline (2), expand tab column 0/1/2/3 (4), blank-line normalization (2), reverse/count handoff (2) | 10 | 4 |
-| II | HR gate/save/scan/confirm/replay/emit (7), code-indent gate/open/copy/line-end/continue/close (6), paragraph boundary integration (3) | 16 | 4 |
+| II | HR gate/save/scan/confirm/replay/emit plus pair-safe replay adapter (8), code-indent gate/open/copy/line-end/continue/close (6), paragraph boundary integration (3), and binary-gate reconstruction splits (9) | 26 | 6 |
 | IV | HR dispatch/emit/separate (3), code dispatch/open/payload/close/separate (5), parent-frame return (2) | 10 | 4 |
 
 Ready-to-paste controlled surfaces (append only the labels actually used):
@@ -266,12 +266,12 @@ code_leaf_mark = "Recall the indented chamber mark."
 - Modify: `tests/test_slice2_low_risk.py`
 
 **Interfaces:**
-- Act II emits `[HR]` for a line of one repeated `-`, `*`, or `_` marker with optional spaces, at least three markers, and no more than two leading spaces; it replays every rejected candidate as normal paragraph text.
+- Act II emits `[HR]` for a line of one repeated `-`, `*`, or `_` marker with optional spaces, at least three markers, and no more than three leading spaces; whitespace-only separator lines are blank; it replays every rejected candidate as normal paragraph text.
 - Act IV renders an `HR` leaf exactly as `<hr />`, inserting the same block separator policy as sibling paragraphs and never pushing a container frame.
 
 - [x] **Step 1: Add failing HR stream and byte tests.**
 
-  In `test_act2_slice2.py`, assert that `---\n\n`, `- - -\n\n`, `***\n\n`, and `_ _ _\n\n` emit `tokens.HR`, while `  ---\n\n` is accepted and `   ---\n\n` remains `PARA`; assert tab-expanded four-space candidates become `CODE_BLOCK`, not `HR`. In `test_act4_slice2.py`, feed `[STREAM_END, HR]` in Act-IV pop order and assert `<hr />\n`. Add `Horizontal rules` to the enabled set only after both interpreter and binary fixture tests are present.
+  In `test_act2_slice2.py`, assert that `---\n\n`, `- - -\n\n`, `***\n\n`, and `_ _ _\n\n` emit `tokens.HR`, and that both `  ---\n\n` and `   ---\n\n` are accepted; assert whitespace-only separator lines before compact and space-separated HR candidates emit no paragraph token; assert tab-expanded four-space candidates become `CODE_BLOCK`, not `HR`. In `test_act4_slice2.py`, feed `[STREAM_END, HR]` in Act-IV pop order and assert `<hr />\n`. Add `Horizontal rules` to the enabled set only after both interpreter and binary fixture tests are present.
 
   Run: `uv run pytest tests/test_act2_slice2.py tests/test_act4_slice2.py tests/test_mdtest.py -k 'Horizontal rules' -q`
 
@@ -279,7 +279,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 
 - [ ] **Step 2: Add the HR block pass and renderer dispatch.**
 
-  At Act-II block boundaries, inspect up to two leading spaces then buffer one candidate marker/count; consume spaces only between identical markers; accept only a newline after count >= 3; otherwise replay the exact buffered bytes to the paragraph path. Run this pass after future-header entry but before list/code/paragraph processing. Emit only `tokens.HR`. In Act IV route `tokens.HR` before paragraph/list dispatch, output `<hr />`, and restore/update the parent frame exactly once. Use only the Task-2 Act-II/IV reserved labels.
+  At Act-II block boundaries, inspect up to three leading spaces then buffer one candidate marker/count; consume spaces only between identical markers; accept only a newline after count >= 3; otherwise replay the exact buffered bytes to the paragraph path. Treat a whitespace-only line as a blank separator before restarting the block gate. Run this pass after future-header entry but before list/code/paragraph processing. Emit only `tokens.HR`. Apply the binary-gate design's Amendment-B `PASS_HR_PAIR_RETURN` adapter exactly: the Puck-stage `PASS_HR_SAVE` newline/rejection branches enter it, it declares Hecate as its companion and terminally goes to `PASS_HR_REPLAY`; do not consume any remaining spare title. In Act IV route `tokens.HR` before paragraph/list dispatch, output `<hr />`, and restore/update the parent frame exactly once. Use only the Task-2 Act-II/IV reserved labels.
 
   Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act2_slice2.py tests/test_act4_slice2.py tests/test_mdtest.py -k 'Horizontal rules' -q && uv run python scripts/strict_parity_harness.py 'Horizontal rules'`
 

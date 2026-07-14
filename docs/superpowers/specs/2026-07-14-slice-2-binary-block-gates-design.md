@@ -1,7 +1,7 @@
 # Slice 2 Act II Binary Block-Gates — Design
 
 **Date:** 2026-07-14
-**Status:** accepted for Slice 2 Task 2 Step 2
+**Status:** accepted for Slice 2 Task 2 Step 2 (Amendment B, 2026-07-14)
 **Amends:** `docs/superpowers/plans/2026-07-14-slice-2-low-risk-fixtures.md`
 
 ## Decision
@@ -14,10 +14,30 @@ name off-stage registers, as permitted by `docs/spl/reference.md`; this
 amendment does not change `scripts/splc/validate.py`, lowering, carrier
 ownership, token allocation, replay order, or Act IV rendering.
 
-Each split is a terminal `goto` handoff.  It separates already-planned writes
+Each split is a terminal `goto` handoff. It separates already-planned writes
 without adding a Pop, Recall key, sentinel, token, Markdown branch, or byte.
 The existing `PASS_CODE_BLANK` spare becomes the sixth working split label;
 five new working titles and five new spares restore the required 20% reserve.
+
+### Amendment B — whitespace-only blank lines and the Puck-to-Hecate replay bridge
+
+Fresh local `Markdown.pl` establishes two binding corrections to the original
+Task-2 seam: an HR candidate may have three leading spaces, and a line
+containing spaces only is a blank separator before that candidate. The latter
+path enters `PASS_HR_SAVE` with Puck on stage. Its newline and rejected-input
+branches must not arrive directly at `PASS_HR_REPLAY`, because that scene also
+has Hecate-stage branch predecessors. The compiler correctly rejects those
+inconsistent branch-entry pairs.
+
+Promote the pre-reserved `PASS_HR_PAIR_RETURN` title to one working adapter.
+`PASS_HR_SAVE` sends its newline and final rejected-input branches to it.
+The adapter has no state operation, declares `companion=HECATE`, and terminally
+goes to `PASS_HR_REPLAY`. Thus its branch entry is `(LADY_MACBETH, PUCK)`, its
+operating pair is `(LADY_MACBETH, HECATE)`, and its goto shares Lady Macbeth
+with `PASS_HR_REPLAY`. It changes only SPL staging, not carrier bytes or
+Markdown control flow. All other Hecate-stage replay branches continue to
+target `PASS_HR_REPLAY`; the `PASS_HR_EMIT` Macbeth-stage fallback remains a
+goto and is legal through the shared anchor.
 
 ## Binding reconstruction ledger
 
@@ -33,6 +53,7 @@ original branch targets.  Every pair is `(LADY_MACBETH, companion)`.
 | `PASS_HR_SCAN` | redirect marker branches to `PASS_HR_MARKER_SAVE`, which saves the marker on Puck; retain `PASS_HR_SCAN` for Macbeth's count seed; goto `PASS_HR_SCAN_READ`, which performs `_read()` and the existing compare/space/replay branches | `(LADY_MACBETH, PUCK)` → `(LADY_MACBETH, MACBETH)` → `(LADY_MACBETH, HECATE)` |
 | `PASS_HR_CONFIRM` | retain Macbeth's count increment; goto `PASS_HR_CONFIRM_READ`, which performs `_read()` and the existing compare/space/newline/replay branches | `(LADY_MACBETH, MACBETH)` → `(LADY_MACBETH, HECATE)` |
 | `PASS_CODE_OPEN` | retain Horatio's four-space register setup and the `CODE_BLOCK` emit; goto the repurposed `PASS_CODE_BLANK`, which performs the existing first `_read()` before `PASS_CODE_GLYPH` | `(LADY_MACBETH, HORATIO)` → `(LADY_MACBETH, HECATE)` |
+| `PASS_HR_SAVE` (Amendment B) | redirect its newline and final rejected-input branches to `PASS_HR_PAIR_RETURN`; the adapter makes no write and terminally goes to `PASS_HR_REPLAY` | entry `(LADY_MACBETH, PUCK)`; operating pair `(LADY_MACBETH, HECATE)` |
 
 `PASS_HR_SAVE` must redirect marker branches to `PASS_HR_MARKER_SAVE` and use
 Puck as its companion so both branch arrivals have the same entry pair.  The
@@ -69,12 +90,12 @@ pattern = "scene_of_character"
 # `PASS_CODE_BLANK` is the former Slice-2 spare and now the sixth working
 # split state.  Keep its already-reserved title; do not create a duplicate.
 
+# `PASS_HR_PAIR_RETURN` is promoted to a working pair adapter by Amendment B.
+# It keeps its already-reserved title; do not create a duplicate.
+
 # Slice 2 binary-gate spare pool — unavailable without another plan amendment.
 [scenes.PASS_HR_PAIR_GUARD]
 title = "The level iron keeps its faithful pair."
-pattern = "bare_statement"
-[scenes.PASS_HR_PAIR_RETURN]
-title = "The iron measure returns by its faithful pair."
 pattern = "bare_statement"
 [scenes.PASS_CODE_PAIR_GUARD]
 title = "The chamber keeps its faithful pair."
@@ -85,21 +106,32 @@ pattern = "bare_statement"
 [scenes.PASS_BLOCK_PAIR_GUARD]
 title = "The shaped block keeps its faithful pair."
 pattern = "bare_statement"
+[scenes.PASS_HR_PAIR_WATCH]
+title = "The level iron watches its faithful pair."
+pattern = "bare_statement"
+[scenes.PASS_BLOCK_PAIR_WATCH]
+title = "The shaped block watches its faithful pair."
+pattern = "bare_statement"
 ```
 
 The pre-amendment pool had 19 active working labels and one remaining spare:
 three original spares were already consumed by the in-progress block pass.
 This reconstruction consumes that final spare and adds five working labels,
-for 25 working labels.  The five new spares yield exactly 20%; none is
-implementation authority.
+for 25 working labels. Amendment B promotes one of those five spares to the
+26th working label and adds two new spares. The remaining six spares exceed
+20% of the 26-working-label pool; none is implementation authority.
 
 ## Required proof and stop condition
 
 Before regeneration, extend `tests/test_act2_slice2.py` with a focused
-`participants(scene, ACT.anchor)` assertion over every Act II scene.  It must
-assert the ledger's exact pairs for the eleven split/retained labels above,
-assert none of the five new spare labels is reachable from `ACT.scenes`, and
-then run:
+`participants(scene, ACT.anchor)` assertion over every Act II scene. It must
+assert the ledger's exact pairs for the twelve split/retained labels above,
+including `PASS_HR_PAIR_RETURN=HECATE`; assert
+`entry_pairs(ACT2)["PASS_HR_PAIR_RETURN"] == (LADY_MACBETH, PUCK)`; and assert
+none of the six remaining spare labels is reachable from `ACT.scenes`. The HR
+contract must assert that `   ---` emits `tokens.HR` and that whitespace-only
+separator lines before both compact and space-separated HR candidates emit no
+paragraph token. Then run:
 
 ```bash
 uv run pytest tests/test_act2_slice2.py tests/test_splc_validate.py -q
