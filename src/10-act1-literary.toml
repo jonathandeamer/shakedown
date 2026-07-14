@@ -62,10 +62,6 @@ pattern = "bare_statement"
 title = "Hecate measures the tab's dark stride."
 pattern = "scene_of_character"
 
-[scenes.HECATE_DETAB_COLUMN_ONE]
-title = "The first column yields its pale space."
-pattern = "bare_statement"
-
 [scenes.HECATE_DETAB_COLUMN_TWO]
 title = "The second column yields its pale space."
 pattern = "bare_statement"
@@ -89,10 +85,6 @@ pattern = "scene_of_character"
 [scenes.HECATE_HAND_NORMALIZED]
 title = "Horatio receives the measured tally."
 pattern = "scene_of_character"
-
-[scenes.HECATE_DETAB_FALLBACK]
-title = "A loose tab returns to the cauldron."
-pattern = "bare_statement"
 
 [scenes.HECATE_NORMALIZE_CLOSE]
 title = "The brew closes beneath one clear moon."

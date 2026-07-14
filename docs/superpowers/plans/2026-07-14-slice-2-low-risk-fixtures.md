@@ -240,7 +240,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 
   Expected: PASS.
 
-- [ ] **Step 3: Run the literary/generated evidence gate and checkpoint.**
+- [x] **Step 3: Run the literary/generated evidence gate and checkpoint.**
 
   Run:
 
