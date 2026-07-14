@@ -2148,3 +2148,14 @@ graph.
 
   Run: `git add docs/superpowers/plans/2026-07-12-span-architecture-spike.md docs/superpowers/plans/plan-roadmap.md && git commit -m "docs: record span spike outcome"`  
   Expected: conventional commit with required provenance trailers succeeds, followed by `git push` succeeding. Omit `docs/verification-plan.md` from the command if no measured claim changed; never create an empty commit.
+
+**Amendment (2026-07-14): Repo Hygiene Recovery reconciliation.** A stale
+Task 5 Step 2 hygiene blocker was reported after this task shipped. Recovery
+plan `docs/superpowers/plans/2026-07-14-repo-hygiene-recovery.md` re-ran the
+exact Step 1 diagnostics and Step 3 completion gate fresh on 2026-07-14: all
+passed cleanly (`ruff check` clean, `ruff format --check` clean, hygiene
+tests 2 passed, full default suite 660 passed/26 skipped/2 deselected,
+19 architecture spike tests passed, generated/literary/Amps gate passed,
+strict parity 1/1 byte-identical). No source repair was needed —
+`scripts/codegen_html.py` was untouched. This confirms the span result
+recorded above is still current and no active hygiene blocker remains.

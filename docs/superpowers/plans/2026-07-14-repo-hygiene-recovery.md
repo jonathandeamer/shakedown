@@ -127,7 +127,20 @@ repair, one planner-only blocker instead.
   All four completion-gate commands passed with fresh 2026-07-14 evidence.
   Step 4 remains for closure records, commit, and push in the next iteration.
 
-- [ ] **Step 4: Record closure, commit, and push.**
+- [x] **Step 4: Record closure, commit, and push.**
+
+  **Evidence (2026-07-14):** Step 2 was skipped — Step 1's three diagnostics
+  (`uv run ruff check .`, `uv run ruff format --check .`,
+  `uv run pytest tests/test_repo_hygiene.py -q`) all passed on the first run,
+  so the pre-authorized `scripts/codegen_html.py` fallback was never
+  triggered and that file is not part of this closure commit. Step 3's four
+  completion-gate commands all exited zero: `uv run pytest -q` (660 passed,
+  26 skipped, 2 deselected), `uv run pytest tests/test_architecture_spikes.py -q`
+  (19 passed), the generated/literary/Amps command (1 passed, 210 deselected),
+  and `uv run python scripts/strict_parity_harness.py 'Amps and angle encoding'`
+  (1/1 byte-identical). `.agent/blockers.md` already had no hygiene line to
+  remove — the log's only content is its header. See
+  `2026-07-12-span-architecture-spike.md` Task 5 for the linked amendment.
 
   Add dated evidence to this plan stating whether Step 2 was skipped or used
   and listing the Step 1 and Step 3 exit results. Remove the resolved hygiene
