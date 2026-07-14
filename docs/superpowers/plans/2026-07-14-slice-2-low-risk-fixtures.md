@@ -269,7 +269,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 - Act II emits `[HR]` for a line of one repeated `-`, `*`, or `_` marker with optional spaces, at least three markers, and no more than two leading spaces; it replays every rejected candidate as normal paragraph text.
 - Act IV renders an `HR` leaf exactly as `<hr />`, inserting the same block separator policy as sibling paragraphs and never pushing a container frame.
 
-- [ ] **Step 1: Add failing HR stream and byte tests.**
+- [x] **Step 1: Add failing HR stream and byte tests.**
 
   In `test_act2_slice2.py`, assert that `---\n\n`, `- - -\n\n`, `***\n\n`, and `_ _ _\n\n` emit `tokens.HR`, while `  ---\n\n` is accepted and `   ---\n\n` remains `PARA`; assert tab-expanded four-space candidates become `CODE_BLOCK`, not `HR`. In `test_act4_slice2.py`, feed `[STREAM_END, HR]` in Act-IV pop order and assert `<hr />\n`. Add `Horizontal rules` to the enabled set only after both interpreter and binary fixture tests are present.
 
