@@ -64,6 +64,8 @@ RESUME_EMPH = 10
 RESUME_TRIPLE_EMPH = 11
 RESUME_IMAGE_TITLE = 12
 RESUME_STRONG = 13
+_NEWLINE = const(10)
+_SPACE = const(32)
 
 
 def _traverse_dispatch() -> list[Op]:
@@ -76,6 +78,11 @@ def _traverse_dispatch() -> list[Op]:
         push(JULIET, val(PUCK)),
     ]
     for code, arity in sorted(tokens.ARITY.items()):
+        if code == tokens.CODE_BLOCK:
+            ops.append(
+                branch(eq(val(PUCK), const(code)), then="TRAVERSE_COPY_CODE_TEXT")
+            )
+            continue
         shape = (arity.payloads, arity.has_text)
         if shape == (0, False):
             continue
@@ -168,6 +175,29 @@ ACT: Act = act(
             else []
         ),
         scene(
+            "TRAVERSE_COPY_CODE_TEXT",
+            pop(PUCK, recall="kept_charge"),
+            goto("TRAVERSE_COPY_CODE_GLYPH"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "TRAVERSE_COPY_CODE_GLYPH",
+            push(JULIET, val(PUCK)),
+            branch(eq(val(PUCK), const(tokens.TEXT_END)), then="TRAVERSE_NEXT_TOKEN"),
+            goto("TRAVERSE_COPY_CODE_TEXT"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_OPEN",
+            push(ROMEO, const(tokens.STREAM_END)),
+            pop(PUCK, recall="brackets_first_petal"),
+            push(ROMEO, val(PUCK)),
+            goto("LYRIC_DEFINITION_LEAF_GUARD"),
+            companion=PUCK,
+        ),
+        scene(
             "TRAVERSE_OPEN_TEXT",
             goto("LYRIC_BUFFER_OPEN"),
             companion=PUCK,
@@ -207,7 +237,7 @@ ACT: Act = act(
             pop(ROMEO, recall="buffered_last_glyph"),
             branch(
                 eq(val(ROMEO), const(tokens.STREAM_END)),
-                then="LYRIC_POP_GLYPH",
+                then="LYRIC_DEFINITION_OPEN",
                 else_="LYRIC_BUFFER_RETURN",
             ),
             anchor=JULIET,
@@ -217,6 +247,201 @@ ACT: Act = act(
             push(PUCK, val(ROMEO)),
             goto("LYRIC_BUFFER_UNWIND"),
             companion=ROMEO,
+        ),
+        scene(
+            "LYRIC_DEFINITION_LEAF_GUARD",
+            branch(eq(val(PUCK), _k(91)), then="LYRIC_DEFINITION_LINE_OPEN"),
+            goto("LYRIC_DEFINITION_UNWIND"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DRAIN",
+            pop(PUCK, recall="links_second_petal"),
+            push(ROMEO, val(PUCK)),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_DRAIN_CLOSE",
+            ),
+            branch(eq(val(PUCK), _NEWLINE), then="LYRIC_DEFINITION_GARDEN_GUARD"),
+            goto("LYRIC_DEFINITION_DRAIN_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DRAIN_KEEP",
+            goto("LYRIC_DEFINITION_DRAIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DRAIN_CLOSE",
+            goto("LYRIC_DEFINITION_DISCARD_DRAIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_UNWIND",
+            pop(ROMEO, recall="returned_petal"),
+            branch(eq(val(ROMEO), const(tokens.STREAM_END)), then="LYRIC_POP_GLYPH"),
+            push(PUCK, val(ROMEO)),
+            goto("LYRIC_DEFINITION_UNWIND_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_UNWIND_KEEP",
+            goto("LYRIC_DEFINITION_UNWIND"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_GARDEN_GUARD",
+            pop(PUCK, recall="links_third_petal"),
+            push(ROMEO, val(PUCK)),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_DISCARD_DRAIN",
+            ),
+            branch(eq(val(PUCK), _k(91)), then="LYRIC_DEFINITION_LINE_OPEN"),
+            goto("LYRIC_DEFINITION_REPLAY_BEGIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_LINE_OPEN",
+            pop(PUCK, recall="links_fourth_petal"),
+            push(ROMEO, val(PUCK)),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_REPLAY_BEGIN",
+            ),
+            branch(eq(val(PUCK), _NEWLINE), then="LYRIC_DEFINITION_REPLAY_BEGIN"),
+            branch(eq(val(PUCK), _k(93)), then="LYRIC_DEFINITION_REPLAY_BEGIN"),
+            goto("LYRIC_DEFINITION_LABEL_FIRST"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_LABEL_FIRST",
+            goto("LYRIC_DEFINITION_LABEL_REST"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_LABEL_REST",
+            pop(PUCK, recall="links_closing_petal"),
+            push(ROMEO, val(PUCK)),
+            branch(eq(val(PUCK), _k(93)), then="LYRIC_DEFINITION_COLON"),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_REPLAY_BEGIN",
+            ),
+            branch(eq(val(PUCK), _NEWLINE), then="LYRIC_DEFINITION_REPLAY_BEGIN"),
+            goto("LYRIC_DEFINITION_LABEL_REST"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_COLON",
+            pop(PUCK, recall="links_following_air"),
+            push(ROMEO, val(PUCK)),
+            branch(eq(val(PUCK), _k(58)), then="LYRIC_DEFINITION_DESTINATION"),
+            goto("LYRIC_DEFINITION_REPLAY_BEGIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DESTINATION",
+            pop(PUCK, recall="inline_paths_first_gate"),
+            push(ROMEO, val(PUCK)),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_REPLAY_BEGIN",
+            ),
+            branch(eq(val(PUCK), _NEWLINE), then="LYRIC_DEFINITION_REPLAY_BEGIN"),
+            branch(eq(val(PUCK), _SPACE), then="LYRIC_DEFINITION_DESTINATION_TAIL"),
+            goto("LYRIC_DEFINITION_DRAIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DESTINATION_TAIL",
+            pop(PUCK, recall="inline_paths_next_gate"),
+            push(ROMEO, val(PUCK)),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_REPLAY_BEGIN",
+            ),
+            branch(eq(val(PUCK), _NEWLINE), then="LYRIC_DEFINITION_REPLAY_BEGIN"),
+            branch(eq(val(PUCK), _SPACE), then="LYRIC_DEFINITION_DESTINATION_TAIL"),
+            goto("LYRIC_DEFINITION_DRAIN"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DISCARD_DRAIN",
+            goto("LYRIC_DEFINITION_DISCARD_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DISCARD_KEEP",
+            pop(ROMEO, recall="returned_petal"),
+            branch(
+                eq(val(ROMEO), const(tokens.STREAM_END)),
+                then="LYRIC_DEFINITION_DISCARD_CLOSE",
+            ),
+            goto("LYRIC_DEFINITION_DISCARD_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_DISCARD_CLOSE",
+            pop(JULIET, recall="returned_petal"),
+            goto("TRAVERSE_NEXT_TOKEN"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_REPLAY_BEGIN",
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_REPLAY_CLOSE",
+            ),
+            goto("LYRIC_DEFINITION_REPLAY_POP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_REPLAY_POP",
+            pop(PUCK, recall="bracketed_paths_next_gate"),
+            push(ROMEO, val(PUCK)),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_REPLAY_CLOSE",
+            ),
+            goto("LYRIC_DEFINITION_REPLAY_KEEP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_REPLAY_KEEP",
+            goto("LYRIC_DEFINITION_REPLAY_POP"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_REPLAY_CLOSE",
+            pop(ROMEO, recall="returned_petal"),
+            branch(
+                eq(val(ROMEO), const(tokens.STREAM_END)),
+                then="LYRIC_DEFINITION_REPLAY_GUARD",
+            ),
+            push(PUCK, val(ROMEO)),
+            goto("LYRIC_DEFINITION_REPLAY_CLOSE"),
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_REPLAY_GUARD",
+            pop(PUCK, recall="kept_charge"),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_DEFINITION_CHAMBER_GUARD",
+            ),
+            push(JULIET, val(PUCK)),
+            goto("LYRIC_DEFINITION_REPLAY_GUARD"),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_DEFINITION_CHAMBER_GUARD",
+            push(JULIET, const(tokens.TEXT_END)),
+            goto("TRAVERSE_NEXT_TOKEN"),
+            anchor=JULIET,
+            companion=PUCK,
         ),
         scene(
             "LYRIC_SCAN_NEXT",

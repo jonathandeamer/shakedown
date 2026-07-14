@@ -6,6 +6,106 @@ pattern = "bare_statement"
 title = "The lovers begin their substitutions."
 pattern = "scene_of_character"
 
+[scenes.TRAVERSE_COPY_CODE_TEXT]
+title = "Juliet keeps the sheltered chamber line."
+pattern = "scene_of_character"
+
+[scenes.TRAVERSE_COPY_CODE_GLYPH]
+title = "Romeo carries one sheltered chamber mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_OPEN]
+title = "Romeo opens the garden ledger's quiet gate."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_LEAF_GUARD]
+title = "One loose garden leaf rests beside the rose."
+pattern = "bare_statement"
+
+[scenes.LYRIC_DEFINITION_DRAIN]
+title = "Juliet gathers the garden ledger's leaves."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_DRAIN_KEEP]
+title = "Romeo keeps one unproved garden leaf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_DRAIN_CLOSE]
+title = "The garden ledger reaches its shaded hedge."
+pattern = "bare_statement"
+
+[scenes.LYRIC_DEFINITION_UNWIND]
+title = "Juliet returns the garden ledger in order."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_UNWIND_KEEP]
+title = "Romeo restores one garden leaf to daylight."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_GARDEN_GUARD]
+title = "The garden ledger keeps one patient hedge."
+pattern = "bare_statement"
+
+[scenes.LYRIC_DEFINITION_LINE_OPEN]
+title = "Juliet seeks the garden ledger's opening mark."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_LABEL_FIRST]
+title = "Romeo tests the first leaf of a garden name."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_LABEL_REST]
+title = "Juliet gathers the garden name's remaining leaves."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_COLON]
+title = "Romeo seeks the garden name's quiet seal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_DESTINATION]
+title = "Juliet finds the garden path beyond the seal."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_DESTINATION_TAIL]
+title = "Romeo follows the garden path through morning dew."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_DISCARD_DRAIN]
+title = "Juliet clears the proven garden ledger."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_DISCARD_KEEP]
+title = "Romeo frees one proven garden leaf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_DISCARD_CLOSE]
+title = "The proven garden ledger leaves no song behind."
+pattern = "bare_statement"
+
+[scenes.LYRIC_DEFINITION_REPLAY_BEGIN]
+title = "Juliet returns the unproved garden path."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_REPLAY_POP]
+title = "Romeo recalls the unproved garden leaf."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_REPLAY_KEEP]
+title = "Juliet restores one garden leaf to the song."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_DEFINITION_REPLAY_CLOSE]
+title = "The unproved garden ledger returns to daylight."
+pattern = "bare_statement"
+
+[scenes.LYRIC_DEFINITION_REPLAY_GUARD]
+title = "The garden path waits beneath the morning light."
+pattern = "bare_statement"
+
+[scenes.LYRIC_DEFINITION_CHAMBER_GUARD]
+title = "The sheltered chamber keeps its silver door."
+pattern = "bare_statement"
+
 [scenes.LYRIC_AMP_POP_NEXT]
 title = "The ampersand tests its old name."
 pattern = "bare_statement"

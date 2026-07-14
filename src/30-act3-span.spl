@@ -49,6 +49,12 @@ Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_NEXT.
 
 Juliet:
+ Are you as fair as the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @TRAVERSE_COPY_CODE_TEXT.
+
+Juliet:
  Let us return to scene @TRAVERSE_NEXT_TOKEN.
 
 
@@ -62,6 +68,49 @@ Puck:
 
 Juliet:
  Let us return to scene @TRAVERSE_NEXT_TOKEN.
+
+
+                    Scene @TRAVERSE_COPY_CODE_TEXT: @LIT.scenes.TRAVERSE_COPY_CODE_TEXT.title
+
+Juliet:
+ @LIT.characters.juliet.recall.kept_charge
+
+Juliet:
+ Let us proceed to scene @TRAVERSE_COPY_CODE_GLYPH.
+
+
+                    Scene @TRAVERSE_COPY_CODE_GLYPH: @LIT.scenes.TRAVERSE_COPY_CODE_GLYPH.title
+
+Puck:
+ Remember myself.
+
+Juliet:
+ Are you as gentle as nothing?
+
+Puck:
+ If so, let us return to scene @TRAVERSE_NEXT_TOKEN.
+
+Juliet:
+ Let us return to scene @TRAVERSE_COPY_CODE_TEXT.
+
+
+                    Scene @LYRIC_DEFINITION_OPEN: @LIT.scenes.LYRIC_DEFINITION_OPEN.title
+
+[Exit Juliet]
+
+[Enter Puck]
+
+Puck:
+ Remember a wolf.
+
+Romeo:
+ @LIT.characters.romeo.recall.brackets_first_petal
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_LEAF_GUARD.
 
 
                     Scene @TRAVERSE_OPEN_TEXT: @LIT.scenes.TRAVERSE_OPEN_TEXT.title
@@ -129,7 +178,7 @@ Juliet:
  Are you as sweet as a wolf?
 
 Romeo:
- If so, let us proceed to scene @LYRIC_POP_GLYPH.
+ If so, let us return to scene @LYRIC_DEFINITION_OPEN.
 
 Romeo:
  If not, let us proceed to scene @LYRIC_BUFFER_RETURN.
@@ -150,6 +199,369 @@ Romeo:
 
 Romeo:
  Let us return to scene @LYRIC_BUFFER_UNWIND.
+
+
+                    Scene @LYRIC_DEFINITION_LEAF_GUARD: @LIT.scenes.LYRIC_DEFINITION_LEAF_GUARD.title
+
+Romeo:
+ Are you as fair as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_LINE_OPEN.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_UNWIND.
+
+
+                    Scene @LYRIC_DEFINITION_DRAIN: @LIT.scenes.LYRIC_DEFINITION_DRAIN.title
+
+Romeo:
+ @LIT.characters.romeo.recall.links_second_petal
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as sunny as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_DRAIN_CLOSE.
+
+Romeo:
+ Are you as fair as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_GARDEN_GUARD.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_DRAIN_KEEP.
+
+
+                    Scene @LYRIC_DEFINITION_DRAIN_KEEP: @LIT.scenes.LYRIC_DEFINITION_DRAIN_KEEP.title
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_DRAIN.
+
+
+                    Scene @LYRIC_DEFINITION_DRAIN_CLOSE: @LIT.scenes.LYRIC_DEFINITION_DRAIN_CLOSE.title
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_DISCARD_DRAIN.
+
+
+                    Scene @LYRIC_DEFINITION_UNWIND: @LIT.scenes.LYRIC_DEFINITION_UNWIND.title
+
+Puck:
+ @LIT.characters.puck.recall.returned_petal
+
+Puck:
+ Are you as rotten as a wolf?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_POP_GLYPH.
+
+Romeo:
+ Remember myself.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_UNWIND_KEEP.
+
+
+                    Scene @LYRIC_DEFINITION_UNWIND_KEEP: @LIT.scenes.LYRIC_DEFINITION_UNWIND_KEEP.title
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_UNWIND.
+
+
+                    Scene @LYRIC_DEFINITION_GARDEN_GUARD: @LIT.scenes.LYRIC_DEFINITION_GARDEN_GUARD.title
+
+Romeo:
+ @LIT.characters.romeo.recall.links_third_petal
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_DISCARD_DRAIN.
+
+Romeo:
+ Are you as fair as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_LINE_OPEN.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+
+                    Scene @LYRIC_DEFINITION_LINE_OPEN: @LIT.scenes.LYRIC_DEFINITION_LINE_OPEN.title
+
+Romeo:
+ @LIT.characters.romeo.recall.links_fourth_petal
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as sunny as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Are you as sunny as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_LABEL_FIRST.
+
+
+                    Scene @LYRIC_DEFINITION_LABEL_FIRST: @LIT.scenes.LYRIC_DEFINITION_LABEL_FIRST.title
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_LABEL_REST.
+
+
+                    Scene @LYRIC_DEFINITION_LABEL_REST: @LIT.scenes.LYRIC_DEFINITION_LABEL_REST.title
+
+Romeo:
+ @LIT.characters.romeo.recall.links_closing_petal
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_COLON.
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Are you as golden as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_LABEL_REST.
+
+
+                    Scene @LYRIC_DEFINITION_COLON: @LIT.scenes.LYRIC_DEFINITION_COLON.title
+
+Romeo:
+ @LIT.characters.romeo.recall.links_following_air
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as fair as the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_DESTINATION.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+
+                    Scene @LYRIC_DEFINITION_DESTINATION: @LIT.scenes.LYRIC_DEFINITION_DESTINATION.title
+
+Romeo:
+ @LIT.characters.romeo.recall.inline_paths_first_gate
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Are you as fair as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Are you as fair as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_DESTINATION_TAIL.
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_DRAIN.
+
+
+                    Scene @LYRIC_DEFINITION_DESTINATION_TAIL: @LIT.scenes.LYRIC_DEFINITION_DESTINATION_TAIL.title
+
+Romeo:
+ @LIT.characters.romeo.recall.inline_paths_next_gate
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Are you as fair as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
+
+Romeo:
+ Are you as golden as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us return to scene @LYRIC_DEFINITION_DESTINATION_TAIL.
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_DRAIN.
+
+
+                    Scene @LYRIC_DEFINITION_DISCARD_DRAIN: @LIT.scenes.LYRIC_DEFINITION_DISCARD_DRAIN.title
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_DISCARD_KEEP.
+
+
+                    Scene @LYRIC_DEFINITION_DISCARD_KEEP: @LIT.scenes.LYRIC_DEFINITION_DISCARD_KEEP.title
+
+Puck:
+ @LIT.characters.puck.recall.returned_petal
+
+Puck:
+ Are you as noble as a wolf?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_DEFINITION_DISCARD_CLOSE.
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_DISCARD_KEEP.
+
+
+                    Scene @LYRIC_DEFINITION_DISCARD_CLOSE: @LIT.scenes.LYRIC_DEFINITION_DISCARD_CLOSE.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ @LIT.characters.puck.recall.returned_petal
+
+Juliet:
+ Let us return to scene @TRAVERSE_NEXT_TOKEN.
+
+
+                    Scene @LYRIC_DEFINITION_REPLAY_BEGIN: @LIT.scenes.LYRIC_DEFINITION_REPLAY_BEGIN.title
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_REPLAY_POP.
+
+
+                    Scene @LYRIC_DEFINITION_REPLAY_POP: @LIT.scenes.LYRIC_DEFINITION_REPLAY_POP.title
+
+Romeo:
+ @LIT.characters.romeo.recall.bracketed_paths_next_gate
+
+Puck:
+ Remember myself.
+
+Romeo:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
+
+Romeo:
+ Let us proceed to scene @LYRIC_DEFINITION_REPLAY_KEEP.
+
+
+                    Scene @LYRIC_DEFINITION_REPLAY_KEEP: @LIT.scenes.LYRIC_DEFINITION_REPLAY_KEEP.title
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_REPLAY_POP.
+
+
+                    Scene @LYRIC_DEFINITION_REPLAY_CLOSE: @LIT.scenes.LYRIC_DEFINITION_REPLAY_CLOSE.title
+
+Puck:
+ @LIT.characters.puck.recall.returned_petal
+
+Puck:
+ Are you as fair as a wolf?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_GUARD.
+
+Romeo:
+ Remember myself.
+
+Romeo:
+ Let us return to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
+
+
+                    Scene @LYRIC_DEFINITION_REPLAY_GUARD: @LIT.scenes.LYRIC_DEFINITION_REPLAY_GUARD.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.kept_charge
+
+Juliet:
+ Are you as fair as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_DEFINITION_CHAMBER_GUARD.
+
+Puck:
+ Remember myself.
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Puck:
+ Let us return to scene @LYRIC_DEFINITION_REPLAY_GUARD.
+
+
+                    Scene @LYRIC_DEFINITION_CHAMBER_GUARD: @LIT.scenes.LYRIC_DEFINITION_CHAMBER_GUARD.title
+
+Puck:
+ Remember nothing.
+
+Juliet:
+ Let us return to scene @TRAVERSE_NEXT_TOKEN.
 
 
                     Scene @LYRIC_SCAN_NEXT: @LIT.scenes.LYRIC_SCAN_NEXT.title
@@ -295,10 +707,6 @@ Juliet:
 
 
                     Scene @LYRIC_POP_GLYPH: @LIT.scenes.LYRIC_POP_GLYPH.title
-
-[Exit Juliet]
-
-[Enter Puck]
 
 Romeo:
  @LIT.characters.romeo.recall.mornings_first_cut
@@ -2253,7 +2661,11 @@ Hecate:
 
 [Enter Romeo]
 
-Juliet:
+[Exit Juliet]
+
+[Enter Puck]
+
+Romeo:
  Let us return to scene @LYRIC_POP_GLYPH.
 
 
@@ -2972,7 +3384,11 @@ Romeo:
 
                     Scene @LYRIC_REQUEUE_POP_PAIR: @LIT.scenes.LYRIC_REQUEUE_POP_PAIR.title
 
-Juliet:
+[Exit Juliet]
+
+[Enter Puck]
+
+Romeo:
  Let us return to scene @LYRIC_POP_GLYPH.
 
 
@@ -3545,7 +3961,11 @@ Hecate:
 
 [Enter Romeo]
 
-Juliet:
+[Exit Juliet]
+
+[Enter Puck]
+
+Romeo:
  Let us return to scene @LYRIC_POP_GLYPH.
 
 
@@ -3770,11 +4190,11 @@ Puck:
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
 
-[Exit Puck]
+[Exit Juliet]
 
 [Enter Romeo]
 
-Juliet:
+Puck:
  Let us return to scene @LYRIC_POP_GLYPH.
 
 
@@ -3792,11 +4212,11 @@ Puck:
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
 
-[Exit Puck]
+[Exit Juliet]
 
 [Enter Romeo]
 
-Juliet:
+Puck:
  Let us return to scene @LYRIC_POP_GLYPH.
 
 
@@ -3887,11 +4307,11 @@ Puck:
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
 
-[Exit Puck]
+[Exit Juliet]
 
 [Enter Romeo]
 
-Juliet:
+Puck:
  Let us return to scene @LYRIC_POP_GLYPH.
 
 
@@ -3912,11 +4332,11 @@ Puck:
 Puck:
  Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
 
-[Exit Puck]
+[Exit Juliet]
 
 [Enter Romeo]
 
-Juliet:
+Puck:
  Let us return to scene @LYRIC_POP_GLYPH.
 
 
@@ -4925,10 +5345,6 @@ Juliet:
 [Exit Juliet]
 
 [Enter Puck and Romeo]
-
-[Exit Puck]
-
-[Enter Juliet]
 
 Romeo:
  Let us return to scene @LYRIC_POP_GLYPH.

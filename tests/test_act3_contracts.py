@@ -28,6 +28,9 @@ REPO = Path(__file__).parent.parent
 SPAN_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "spans"
 STEP_LIMIT = 200_000
 _BORROWED_PREFIX = (7, 13, 42)
+_AMPS_FIXTURE = (
+    Path.home() / "mdtest" / "Markdown.mdtest" / "Amps and angle encoding.text"
+)
 _A17_ADAPTER_PAIRS = {
     "LYRIC_HTML_OPEN_REQUEUE": (Char.PUCK, Char.ROMEO),
     "LYRIC_AUTOLINK_OPEN_DUPLICATE": (Char.LADY_MACBETH, Char.ROMEO),
@@ -94,6 +97,36 @@ _A19_SPARES = {
     "LYRIC_GOTO_EMPHASIS_GUARD",
     "LYRIC_GOTO_REGION_GUARD",
     "LYRIC_GOTO_LAST_GUARD",
+}
+_A3_RECOVERY_PAIRS = {
+    "TRAVERSE_COPY_CODE_TEXT": (Char.JULIET, Char.PUCK),
+    "TRAVERSE_COPY_CODE_GLYPH": (Char.JULIET, Char.PUCK),
+    "LYRIC_DEFINITION_OPEN": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_LEAF_GUARD": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DRAIN": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DRAIN_KEEP": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_DRAIN_CLOSE": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_UNWIND": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_UNWIND_KEEP": (Char.ROMEO, Char.PUCK),
+    "LYRIC_DEFINITION_GARDEN_GUARD": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_LINE_OPEN": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_LABEL_FIRST": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_LABEL_REST": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_COLON": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_DESTINATION": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_DESTINATION_TAIL": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_DISCARD_DRAIN": (Char.HECATE, Char.JULIET),
+    "LYRIC_DEFINITION_DISCARD_KEEP": (Char.HECATE, Char.JULIET),
+    "LYRIC_DEFINITION_DISCARD_CLOSE": (Char.HECATE, Char.JULIET),
+    "LYRIC_DEFINITION_REPLAY_BEGIN": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_POP": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_KEEP": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_CLOSE": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_REPLAY_GUARD": (Char.HECATE, Char.PUCK),
+    "LYRIC_DEFINITION_CHAMBER_GUARD": (Char.ROMEO, Char.PUCK),
+}
+_A3_SPARES = {
+    "LYRIC_DEFINITION_CLOSE_GUARD",
 }
 
 
@@ -227,6 +260,10 @@ def _run_text_to_act3_observed(
     return boundary, result.state, observer
 
 
+def _run_text_to_act3(text: str) -> InterpreterState:
+    return _run_text_to_act3_observed(text)[1]
+
+
 def _carrier_stream(state: InterpreterState) -> list[int]:
     stream: list[int] = []
     while state.stacks[Char.PUCK]:
@@ -345,6 +382,73 @@ def test_act3_preserves_escaped_and_literal_span_punctuation() -> None:
     assert "*literal*" in text
     assert "[bracket]" in text
     assert "`tick`" in text
+
+
+@pytest.mark.parametrize(
+    ("text", "expected_labels"),
+    [
+        ("[x]: destination\n", {"LYRIC_DEFINITION_DISCARD_CLOSE"}),
+        ("[x]: destination\n[y]: another\n", {"LYRIC_DEFINITION_DISCARD_CLOSE"}),
+    ],
+    ids=["single-definition-line", "two-definition-lines"],
+)
+def test_act3_discards_definition_only_paragraphs(
+    text: str, expected_labels: set[str]
+) -> None:
+    _, state, observer = _run_text_to_act3_observed(text)
+
+    assert _decode_carrier(state) == []
+    assert expected_labels.issubset(set(observer.labels))
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "[not]:\n",
+        "[not]:   \n",
+        "[x] : destination\n",
+        "ordinary prose\n",
+        "[]: destination\n",
+        "[x]: destination\nplain words\n",
+    ],
+    ids=[
+        "missing-destination",
+        "space-only-destination",
+        "space-before-colon",
+        "plain-prose",
+        "empty-label",
+        "mixed-definition-and-prose",
+    ],
+)
+def test_act3_replays_rejected_definition_candidates_byte_for_byte(text: str) -> None:
+    decoded = _decode_carrier(_run_text_to_act3(text))
+
+    assert _paragraph_text(decoded) == text.removesuffix("\n")
+
+
+def test_act3_fixture_reference_paragraphs_do_not_enter_definition_discard() -> None:
+    fixture = _AMPS_FIXTURE.read_text()
+    non_definition_only = fixture.split("\n[1]: ", 1)[0] + "\n"
+    _, _, observer = _run_text_to_act3_observed(non_definition_only)
+
+    assert "LYRIC_DEFINITION_DISCARD_CLOSE" not in observer.labels
+
+
+def test_act3_code_block_payload_bypasses_span_scanner() -> None:
+    text = "    \\\\* `tick` <http://example.com/>\n"
+    _, state, observer = _run_text_to_act3_observed(text)
+    decoded = decode_stream(_carrier_stream(state)[:-1])
+
+    assert len(decoded) == 1
+    assert decoded[0].code == tokens.CODE_BLOCK
+    assert decoded[0].text == "\\\\* `tick` <http://example.com/>"
+
+    reverse_open = observer.labels.index("LYRIC_OPEN_REVERSE")
+    code_route = observer.labels[:reverse_open]
+    assert "TRAVERSE_COPY_CODE_TEXT" in code_route
+    assert "TRAVERSE_COPY_CODE_GLYPH" in code_route
+    assert "LYRIC_BUFFER_OPEN" not in code_route
+    assert "LYRIC_POP_GLYPH" not in code_route
 
 
 @pytest.mark.parametrize("stem", _TASK3_SCAN_FIXTURES)
@@ -709,7 +813,12 @@ def test_act3_ir_requeue_and_field_floors_follow_a4_shape() -> None:
             if not before_handoff:
                 continue
             if isinstance(op.expr, Val):
-                assert op.expr.char in {Char.PUCK, Char.ROMEO, Char.HORATIO}
+                assert op.expr.char in {
+                    Char.PUCK,
+                    Char.ROMEO,
+                    Char.HORATIO,
+                    Char.HECATE,
+                }
             elif isinstance(op.expr, Const):
                 assert op.expr.value in {tokens.TEXT_END, ord("*"), ord("_")}
             else:
@@ -751,6 +860,7 @@ def test_act3_scenes_are_binary_and_reserved_adapters_match_pairs() -> None:
             _A17_ADAPTER_PAIRS.get(sc.label)
             or _A18_ADAPTER_PAIRS.get(sc.label)
             or _A19_ADAPTER_PAIRS.get(sc.label)
+            or _A3_RECOVERY_PAIRS.get(sc.label)
         )
         if expected is not None:
             assert pair == expected
@@ -759,6 +869,7 @@ def test_act3_scenes_are_binary_and_reserved_adapters_match_pairs() -> None:
     assert _A17_SPARES.isdisjoint(labels)
     assert _A18_SPARES.isdisjoint(labels)
     assert _A19_SPARES.isdisjoint(labels)
+    assert _A3_SPARES.isdisjoint(labels)
 
 
 def test_act3_entry_pairs_validate() -> None:

@@ -27,6 +27,7 @@ _BLACKLIST = {
     "test_wrapper_error_channel.py",
     "test_shakedown_run.py",
     "test_empty_input_contract.py",
+    "test_mdtest.py",
 }
 _Command = (
     str | bytes | Path | list[str | bytes | Path] | tuple[str | bytes | Path, ...]

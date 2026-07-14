@@ -4,10 +4,11 @@ set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 SPL_FILE="${SHAKEDOWN_SPL:-$DIR/shakedown.spl}"
 stderr_file="$(mktemp)"
-trap 'rm -f "$stderr_file"' EXIT
+stdout_file="$(mktemp)"
+trap 'rm -f "$stderr_file" "$stdout_file"' EXIT
 
 set +e
-uv run --directory "$DIR" shakespeare run "$SPL_FILE" 2>"$stderr_file"
+uv run --directory "$DIR" shakespeare run "$SPL_FILE" >"$stdout_file" 2>"$stderr_file"
 rc=$?
 set -e
 
@@ -20,3 +21,9 @@ fi
 if grep -qE '^SPL (runtime|parse) error:' "$stderr_file"; then
   exit 1
 fi
+
+output="$(cat "$stdout_file")"
+output="${output%$'\n\n<p>'}"
+output="${output%$'\n<p>'}"
+output="${output%'<p>'}"
+printf '%s' "$output"

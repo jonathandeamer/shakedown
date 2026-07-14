@@ -523,23 +523,6 @@ pattern = "scene_of_character"
 title = "Hecate brings the iron line's confirming stroke."
 pattern = "scene_of_character"
 
-# Slice 2 binary-gate spare pool — unavailable without another plan amendment.
-[scenes.PASS_HR_PAIR_GUARD]
-title = "The level iron keeps its faithful pair."
-pattern = "bare_statement"
-
 [scenes.PASS_HR_PAIR_RETURN]
 title = "The iron measure returns by its faithful pair."
-pattern = "bare_statement"
-
-[scenes.PASS_CODE_PAIR_GUARD]
-title = "The chamber keeps its faithful pair."
-pattern = "bare_statement"
-
-[scenes.PASS_CODE_PAIR_RETURN]
-title = "The chamber measure returns by its faithful pair."
-pattern = "bare_statement"
-
-[scenes.PASS_BLOCK_PAIR_GUARD]
-title = "The shaped block keeps its faithful pair."
 pattern = "bare_statement"
