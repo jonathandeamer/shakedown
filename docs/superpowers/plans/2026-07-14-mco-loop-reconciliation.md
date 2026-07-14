@@ -198,7 +198,7 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'branch_inventory or branch_dispos
 
 Expected: FAIL until the dataclasses and helpers exist.
 
-- [ ] **Step 2: Implement fail-closed ledger parsing and inventory.**
+- [x] **Step 2: Implement fail-closed ledger parsing and inventory.**
 
 Load TOML with `tomllib`; reject unknown keys, non-40-hex heads, empty reasons, and dispositions outside `{"review", "preserve", "superseded", "integrated"}` using `ValueError`.  For each local branch except `main`, use `git merge-base --is-ancestor <branch> main`; skip only branches already merged.  Emit issues for missing entries, `review`, head drift, and remote-only unmerged refs.  Sort results by branch name for stable prompts and tests.
 

@@ -96,6 +96,37 @@ reason = "Not allowed."
         mco_loop.load_branch_dispositions(ledger)
 
 
+def test_load_branch_dispositions_rejects_unknown_keys(tmp_path: Path) -> None:
+    ledger = tmp_path / "branch-dispositions.toml"
+    ledger.write_text(
+        """
+[branches."topic"]
+head = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+disposition = "preserve"
+reason = "Keep historical work."
+extra = "unexpected"
+"""
+    )
+
+    with pytest.raises(ValueError, match="unknown keys"):
+        mco_loop.load_branch_dispositions(ledger)
+
+
+def test_load_branch_dispositions_rejects_non_hex_head(tmp_path: Path) -> None:
+    ledger = tmp_path / "branch-dispositions.toml"
+    ledger.write_text(
+        """
+[branches."topic"]
+head = "not-a-40-hex-head"
+disposition = "preserve"
+reason = "Keep historical work."
+"""
+    )
+
+    with pytest.raises(ValueError, match="head"):
+        mco_loop.load_branch_dispositions(ledger)
+
+
 def test_branch_inventory_returns_empty_when_no_candidates(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -235,6 +266,35 @@ def test_branch_inventory_accepts_matching_preserve_entry(
     }
 
     assert mco_loop.branch_inventory_issues(tmp_path, ledger) == ()
+
+
+def test_branch_inventory_reports_missing_local_branch_from_ledger(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            FOR_EACH_REF_HEADS: "",
+        }.get(tuple(args), ""),
+    )
+    ledger = {
+        "topic": mco_loop.BranchDisposition(
+            "topic",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "integrated",
+            "Already landed.",
+        )
+    }
+
+    assert mco_loop.branch_inventory_issues(tmp_path, ledger) == (
+        mco_loop.BranchIssue(
+            "topic",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            None,
+            "branch missing locally",
+        ),
+    )
 
 
 def _invocation_inputs(

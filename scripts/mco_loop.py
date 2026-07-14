@@ -65,6 +65,9 @@ PI_MODELS_REQUIRED_IDS = (
     "qwen/qwen3-coder:free",
 )
 PI_MODELS_MAX_TOKENS_CAP = 32768
+BRANCH_DISPOSITIONS = REPO / ".agent" / "branch-dispositions.toml"
+BRANCH_DISPOSITION_VALUES = {"review", "preserve", "superseded", "integrated"}
+HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
 def ensure_git_hooks(repo: Path = REPO) -> str | None:
@@ -203,6 +206,22 @@ class NextAction:
 
 
 @dataclass(frozen=True)
+class BranchDisposition:
+    name: str
+    head: str
+    disposition: str
+    reason: str
+
+
+@dataclass(frozen=True)
+class BranchIssue:
+    name: str
+    head: str
+    base: str | None
+    detail: str
+
+
+@dataclass(frozen=True)
 class InvocationResult:
     exit_code: int
     stdout: str
@@ -256,6 +275,103 @@ def _boolean(table: Mapping[str, object], key: str) -> bool:
 def _resolve_repo_path(value: str) -> Path:
     expanded = Path(value).expanduser()
     return expanded if expanded.is_absolute() else REPO / expanded
+
+
+def load_branch_dispositions(
+    path: Path = BRANCH_DISPOSITIONS,
+) -> dict[str, BranchDisposition]:
+    """Load the tracked branch-disposition ledger and reject malformed entries."""
+    with path.open("rb") as handle:
+        raw = tomllib.load(handle)
+    table = _mapping(raw, "branch disposition ledger")
+    allowed_root_keys = {"branches"}
+    unknown_root = set(table) - allowed_root_keys
+    if unknown_root:
+        raise ValueError(
+            "branch disposition ledger has unknown keys: "
+            + ", ".join(sorted(unknown_root))
+        )
+    raw_branches = table.get("branches")
+    if raw_branches is None:
+        return {}
+    branches = _mapping(raw_branches, "branches")
+    dispositions: dict[str, BranchDisposition] = {}
+    for name, raw_entry in branches.items():
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("branch disposition names must be non-empty strings")
+        entry = _mapping(raw_entry, f'branches."{name}"')
+        allowed_keys = {"head", "disposition", "reason"}
+        unknown_keys = set(entry) - allowed_keys
+        if unknown_keys:
+            raise ValueError(
+                f'branches."{name}" has unknown keys: '
+                + ", ".join(sorted(unknown_keys))
+            )
+        head = cast(str, _string(entry, "head"))
+        if not HEX40_RE.fullmatch(head):
+            raise ValueError(f'branches."{name}".head must be a 40-character hex sha')
+        disposition = cast(str, _string(entry, "disposition"))
+        if disposition not in BRANCH_DISPOSITION_VALUES:
+            raise ValueError(
+                f'branches."{name}".disposition must be one of '
+                + ", ".join(sorted(BRANCH_DISPOSITION_VALUES))
+            )
+        reason = cast(str, _string(entry, "reason"))
+        dispositions[name] = BranchDisposition(name, head, disposition, reason)
+    return dispositions
+
+
+def branch_inventory_issues(
+    repo: Path, ledger: Mapping[str, BranchDisposition]
+) -> tuple[BranchIssue, ...]:
+    """Return stable branch inventory diagnostics for unmerged local work."""
+    raw_refs = _git_output(
+        ["for-each-ref", "--format=%(refname:short) %(objectname)", "refs/heads"],
+        repo=repo,
+    )
+    local_heads: dict[str, str] = {}
+    for line in raw_refs.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        name, _, head = line.partition(" ")
+        if not name or not head:
+            continue
+        local_heads[name] = head.strip()
+
+    issues: list[BranchIssue] = []
+    for name, head in sorted(local_heads.items()):
+        if name == "main":
+            continue
+        merged = _git_output(
+            ["merge-base", "--is-ancestor", name, "main"],
+            repo=repo,
+        ).strip()
+        if merged:
+            continue
+        base_text = _git_output(["merge-base", name, "main"], repo=repo).strip()
+        base = base_text or None
+        disposition = ledger.get(name)
+        if disposition is None:
+            issues.append(BranchIssue(name, head, base, "missing disposition"))
+            continue
+        if disposition.disposition == "review":
+            issues.append(BranchIssue(name, head, base, "review pending"))
+            continue
+        if disposition.head != head:
+            issues.append(BranchIssue(name, head, base, "ledger head mismatch"))
+
+    for name in sorted(set(ledger) - set(local_heads)):
+        disposition = ledger[name]
+        issues.append(
+            BranchIssue(
+                name,
+                disposition.head,
+                None,
+                "branch missing locally",
+            )
+        )
+    return tuple(issues)
 
 
 def _executors(raw: object, label: str) -> tuple[Executor, ...]:
