@@ -178,7 +178,7 @@ git push origin HEAD
 - Add `load_branch_dispositions(path: Path) -> dict[str, BranchDisposition]` and `branch_inventory_issues(repo: Path, ledger: Mapping[str, BranchDisposition]) -> tuple[BranchIssue, ...]`.
 - `branch_inventory_issues` uses only `git for-each-ref`, `git rev-parse`, and `git merge-base`; it returns issues and never calls a mutating Git command.
 
-- [ ] **Step 1: Add pure-helper tests using a mocked Git output seam.**
+- [x] **Step 1: Add pure-helper tests using a mocked Git output seam.**
 
 Refactor `_git_output` to accept `repo: Path = REPO`, then monkeypatch it in tests.  Cover: no candidates; a merged branch; an unledgered unmerged branch; a `review` disposition; a stale ledger head; an invalid TOML disposition; and a `preserve` entry whose head matches.
 
