@@ -157,3 +157,48 @@ The loop must fail closed for missing, stale, or malformed disposition entries:
 it reports a planner-only reconciliation action and makes no branch mutation.
 An inability to inspect Git inventory is a `FIX`-class infrastructure error.
 No action may remove a user worktree, branch, stash, or untracked artifact.
+
+## Amendment A1 — List-regression closure prerequisite (accepted 2026-07-14)
+
+### Scope correction
+
+The final default-suite gate exposed a pre-existing Markdown regression that
+the governance-only non-goal could not repair: the Act-II horizontal-rule and
+indented-code candidate gate consumes a leading unordered-list marker and its
+separator before list recognition.  For `* alpha`, Act II subsequently emits
+a paragraph stream rather than the established `LIST_OPEN(1)`,
+`LIST_ITEM(1)`, paragraph, `ITEM_CLOSE`, `LIST_CLOSE` stream.  This amendment
+authorizes exactly the smallest Act-II/source-regeneration repair needed to
+restore the shipped Spike-A list contract; it does not resume Slice 2 or add
+new Markdown surface area.
+
+### Accepted design
+
+Keep HR and indented-code recognition ahead of ordinary block recognition,
+but make the non-HR fallback for `*` and `-` followed by a separator enter the
+existing unordered-list item path with the marker already consumed and the
+first text glyph still live in `HECATE`.  It must emit, in carrier order,
+`LIST_OPEN(1)`, its matching frame, `ITEM_START(1)`, then continue at
+`PASS_LISTS_ITEM_GLYPH`; it must not reread the first glyph.  `_` remains an
+HR-only candidate and must retain its ordinary-paragraph fallback.  The
+repair belongs in `src_ir/act2.py`; render `src/20-act2-block.spl` and then
+assemble `shakedown.spl`.  Neither generated artifact is hand-edited.
+
+### Literary reservation
+
+This is a one-scene control-flow repair using the existing Act-II cast,
+labels, Recall keys, and TOML-backed value atoms.  It authorizes no new scene
+title, Recall surface, recurring value phrase, or `src/literary.toml` key.
+The scene-count budget is therefore zero and no spare pool is consumed.  If
+the repair cannot be expressed by modifying existing scenes plus one generated
+lowering scene using its compiler-owned title mechanism, stop and record
+`BLOCK[plan]`; a fresh literary reservation is required before adding a
+controlled surface.
+
+### Required proof
+
+Before closure, the six list dump baselines stay byte-identical in both the
+real debug play and fast interpreter; all list and nested-block spike fixtures
+match Markdown.pl; generated-fragment, literary-compliance, and TOML-schema
+tests pass; and the full Python gate is green.  The exact commands are named
+in the amended implementation plan.
