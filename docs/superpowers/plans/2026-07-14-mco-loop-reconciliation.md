@@ -383,7 +383,16 @@ on 2026-07-14:
   failed as expected, asserting `marker_targets[42] == "PASS_HR_FALLBACK_LIST_HANDOFF"`
   but observing `PASS_CODE_REPLAY`.
 
-- [ ] **Step 3: Repair the handoff in authored IR and regenerate only from source.**
+- [ ] **Step 3: Write and register a separate Slice-2 continuation plan, then halt 5R.**
+
+**Superseding scope fence (2026-07-14):** Do not execute the remaining
+Task-6 IR, literary, generated-artifact, test, or commit instructions in this
+plan.  They are retained solely as diagnostic evidence for the fresh Slice-2
+continuation plan.  The planning action must preserve all dirty files, mark
+row 5R `halted` with the recorded list/HR regression, and make the new
+continuation the sole in-flight roadmap row.  It must not alter
+`src_ir/act2.py`, `src/20-act2-literary.toml`, generated SPL, or Markdown
+fixture behavior.
 
 In `src/20-act2-literary.toml`, add exactly the A2
 `PASS_HR_FALLBACK_LIST_HANDOFF` block from the accepted reconciliation design;
@@ -518,6 +527,16 @@ ready-to-paste TOML entry alongside the IR scene and generated artifacts.
 This clears the prior planner-only blocker. No other Recall, value atom, scene
 title, or Slice-2 behavior is authorized; an additional surface still requires
 a new `BLOCK[plan]` and amendment.
+
+## Amendment A4 — Restore governance-only scope
+
+**Accepted 2026-07-14.** Task 6 and Amendments A1–A3 are superseded as
+implementation authority.  They diagnosed a real Slice-2 regression but
+improperly coupled its repair to the MCO governance recovery.  The first
+remaining unchecked step is therefore a planning-only handoff: create a
+separate Slice-2 continuation plan, halt row 5R, and leave the new plan as the
+sole in-flight row.  No governance-plan amendment may authorize changes to
+`src_ir/`, `src/`, `shakedown.spl`, `scripts/splc/`, or Markdown behavior.
 
 ## Plan self-review
 
