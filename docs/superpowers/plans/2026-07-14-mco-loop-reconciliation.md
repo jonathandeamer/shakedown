@@ -275,13 +275,15 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'fence_precedence or unregistered_
 
 Expected: every ambiguity has a deterministic, safe action kind.
 
-- [ ] **Step 4: Commit the actionable-blocker and artifact fences.**
+- [x] **Step 4: Commit the actionable-blocker and artifact fences.**
 
 ```bash
 git add scripts/mco_loop.py tests/test_mco_loop.py
 git commit -m "feat: fence ambiguous mco reconciliation state"
 git push origin HEAD
 ```
+
+Implemented by pushed commits `1ee3bd5` (`feat: fence ambiguous mco reconciliation state`) and `d3342f2` (`feat: prioritize mco reconciliation fences`). Evidence re-run on 2026-07-14: `uv run pytest tests/test_mco_loop.py -k 'fence_precedence or unregistered_planning or failed_planner' -q`, `uv run pytest tests/test_mco_loop.py -q`, `uv run ruff check .`, and `uv run pyright`.
 
 ### Task 5: Verify recovery controls and close the governance plan
 
