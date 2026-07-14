@@ -218,6 +218,82 @@ pattern = "bare_statement"
 title = "The ranks are dismissed by a false banner."
 pattern = "bare_statement"
 
+[scenes.PASS_HR_GATE]
+title = "Macbeth tests the level iron stroke."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_SAVE]
+title = "Lady Macbeth keeps the iron mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_SCAN]
+title = "Macbeth counts the level iron strokes."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_SPACE]
+title = "The iron strokes leave a narrow hush."
+pattern = "bare_statement"
+
+[scenes.PASS_HR_CONFIRM]
+title = "The thane confirms the level iron line."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_REPLAY]
+title = "Lady Macbeth restores the loose iron marks."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_EMIT]
+title = "Macbeth raises the level iron bar."
+pattern = "scene_of_character"
+
+[scenes.PASS_CODE_GATE]
+title = "Lady Macbeth tests the fourfold threshold."
+pattern = "scene_of_character"
+
+[scenes.PASS_CODE_OPEN]
+title = "Macbeth opens the indented chamber."
+pattern = "scene_of_character"
+
+[scenes.PASS_CODE_GLYPH]
+title = "Lady Macbeth keeps one chamber mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_CODE_LINE_END]
+title = "The chamber line reaches its stone edge."
+pattern = "bare_statement"
+
+[scenes.PASS_CODE_CONTINUE]
+title = "Macbeth continues the indented chamber."
+pattern = "scene_of_character"
+
+[scenes.PASS_CODE_CLOSE]
+title = "Lady Macbeth seals the indented chamber."
+pattern = "scene_of_character"
+
+[scenes.PASS_BLOCK_REPLAY]
+title = "Macbeth restores the unclaimed block mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_BLOCK_BOUNDARY]
+title = "The kingdom keeps its measured boundary."
+pattern = "bare_statement"
+
+[scenes.PASS_BLOCK_RETURN]
+title = "Lady Macbeth returns the shaped block stream."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_FALLBACK]
+title = "The broken iron line returns to earth."
+pattern = "bare_statement"
+
+[scenes.PASS_CODE_REPLAY]
+title = "Macbeth restores the chamber's loose mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_BLOCK_FINISH]
+title = "The kingdom releases the finished measure."
+pattern = "bare_statement"
+
 [scenes.PASS_LISTS_LIST_END_REPLAY_DOT]
 title = "The ranks are dismissed by a false number."
 pattern = "bare_statement"
@@ -420,4 +496,50 @@ pattern = "bare_statement"
 
 [scenes.PASS_PARA_TEXT]
 title = "One glyph is laid within the wall."
+pattern = "bare_statement"
+
+# Slice 2 binary-gate working additions (2026-07-14 Amendment A1)
+[scenes.PASS_CODE_BLANK]
+title = "The chamber holds one quiet interval."
+pattern = "bare_statement"
+
+[scenes.PASS_HR_GATE_MARKER]
+title = "Puck takes the level iron's first mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_CODE_GATE_READ]
+title = "Hecate reads the fourfold threshold's next mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_MARKER_SAVE]
+title = "Puck keeps the level iron's chosen mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_SCAN_READ]
+title = "Hecate brings the next level iron stroke."
+pattern = "scene_of_character"
+
+[scenes.PASS_HR_CONFIRM_READ]
+title = "Hecate brings the iron line's confirming stroke."
+pattern = "scene_of_character"
+
+# Slice 2 binary-gate spare pool — unavailable without another plan amendment.
+[scenes.PASS_HR_PAIR_GUARD]
+title = "The level iron keeps its faithful pair."
+pattern = "bare_statement"
+
+[scenes.PASS_HR_PAIR_RETURN]
+title = "The iron measure returns by its faithful pair."
+pattern = "bare_statement"
+
+[scenes.PASS_CODE_PAIR_GUARD]
+title = "The chamber keeps its faithful pair."
+pattern = "bare_statement"
+
+[scenes.PASS_CODE_PAIR_RETURN]
+title = "The chamber measure returns by its faithful pair."
+pattern = "bare_statement"
+
+[scenes.PASS_BLOCK_PAIR_GUARD]
+title = "The shaped block keeps its faithful pair."
 pattern = "bare_statement"

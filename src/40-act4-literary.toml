@@ -218,6 +218,54 @@ pattern = "scene_of_character"
 title = "Prospero seals the anchor close."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_TEST_HR]
+title = "Prospero weighs the level iron bar."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_HR]
+title = "Prospero inscribes the level iron bar."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_HR_RETURN]
+title = "The scribe releases the iron measure."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_TEST_CODE_BLOCK]
+title = "Prospero tests the indented chamber seal."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_CODE_OPEN]
+title = "Prospero opens the indented chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_CODE_GLYPH]
+title = "The scribe releases one chamber mark."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_EMIT_CODE_AMP]
+title = "Prospero gilds the chamber's broken river."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_CODE_ANGLE]
+title = "Prospero softens the chamber's bright corner."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_CODE_CLOSE]
+title = "Prospero seals the indented chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_LEAF_RETURN]
+title = "The scribe returns from the leaf's quiet chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_HR_SEPARATOR]
+title = "The iron bar leaves one clear pause."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_CODE_BLANK]
+title = "The chamber keeps one silent interval."
+pattern = "bare_statement"
+
 [scenes.SCRIBE_TEST_ANCHOR_OPEN]
 title = "Prospero weighs the anchor gate."
 pattern = "scene_of_character"
@@ -245,3 +293,6 @@ pattern = "scene_of_character"
 [scenes.SCRIBE_TOP_CLOSE]
 title = "Prospero pronounces on the outer gate."
 pattern = "scene_of_character"
+
+[characters.prospero.recall]
+code_leaf_mark = "Recall the indented chamber mark."

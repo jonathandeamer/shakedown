@@ -277,7 +277,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 
   Expected: FAIL.
 
-- [ ] **Step 2: Add the HR block pass and renderer dispatch.**
+- [x] **Step 2: Add the HR block pass and renderer dispatch.**
 
   At Act-II block boundaries, inspect up to three leading spaces then buffer one candidate marker/count; consume spaces only between identical markers; accept only a newline after count >= 3; otherwise replay the exact buffered bytes to the paragraph path. Treat a whitespace-only line as a blank separator before restarting the block gate. Run this pass after future-header entry but before list/code/paragraph processing. Emit only `tokens.HR`. Apply the binary-gate design's Amendment-B `PASS_HR_PAIR_RETURN` adapter exactly: the Puck-stage `PASS_HR_SAVE` newline/rejection branches enter it, it declares Hecate as its companion and terminally goes to `PASS_HR_REPLAY`; do not consume any remaining spare title. In Act IV route `tokens.HR` before paragraph/list dispatch, output `<hr />`, and restore/update the parent frame exactly once. Use only the Task-2 Act-II/IV reserved labels.
 

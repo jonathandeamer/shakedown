@@ -103,6 +103,21 @@ ACT: Act = act(
             branch(
                 eq(val(PUCK), const(tokens.PARA)),
                 then="SCRIBE_EMIT_PARAGRAPH_OPEN",
+                else_="SCRIBE_TEST_HR",
+            ),
+            companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_TEST_HR",
+            branch(eq(val(PUCK), const(tokens.HR)), then="SCRIBE_EMIT_HR"),
+            goto("SCRIBE_TEST_CODE_BLOCK"),
+            companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_TEST_CODE_BLOCK",
+            branch(
+                eq(val(PUCK), const(tokens.CODE_BLOCK)),
+                then="SCRIBE_EMIT_CODE_OPEN",
                 else_="SCRIBE_TEST_PARAGRAPH_CLOSE",
             ),
             companion=PUCK,
@@ -169,6 +184,132 @@ ACT: Act = act(
                 else_="SCRIBE_TEST_ANCHOR_OPEN",
             ),
             companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_EMIT_HR",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)),
+                then="SCRIBE_HR_SEPARATOR",
+            ),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_HR_SEPARATOR"),
+            branch(
+                eq(val(PROSPERO), const(ITEM_TIGHT_USED)),
+                then="SCRIBE_HR_SEPARATOR",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
+                then="SCRIBE_HR_SEPARATOR",
+            ),
+            *_emit(*_bytes("<hr />")),
+            goto("SCRIBE_HR_RETURN"),
+        ),
+        scene(
+            "SCRIBE_HR_SEPARATOR",
+            *_emit(10, 10, *_bytes("<hr />")),
+            goto("SCRIBE_HR_RETURN"),
+        ),
+        scene(
+            "SCRIBE_HR_RETURN",
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_OUTER_RELEASE"
+            ),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_OUTER_RELEASE"
+            ),
+            branch(
+                eq(val(PROSPERO), const(QUOTE_EMPTY)),
+                then="SCRIBE_CONTAINER_RETURN",
+            ),
+            branch(
+                eq(val(PROSPERO), const(QUOTE_USED)),
+                then="SCRIBE_CONTAINER_RETURN",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_EMPTY)),
+                then="SCRIBE_QUOTED_PARAGRAPH",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
+                then="SCRIBE_QUOTED_PARAGRAPH",
+            ),
+            goto("SCRIBE_CONTAINER_LOOKAHEAD"),
+        ),
+        scene(
+            "SCRIBE_EMIT_CODE_OPEN",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)),
+                then="SCRIBE_CODE_BLANK",
+            ),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_CODE_BLANK"),
+            branch(
+                eq(val(PROSPERO), const(ITEM_TIGHT_USED)),
+                then="SCRIBE_CODE_BLANK",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
+                then="SCRIBE_CODE_BLANK",
+            ),
+            *_emit(*_bytes("<pre><code>")),
+            goto("SCRIBE_EMIT_CODE_GLYPH"),
+        ),
+        scene(
+            "SCRIBE_CODE_BLANK",
+            *_emit(10, 10, *_bytes("<pre><code>")),
+            goto("SCRIBE_EMIT_CODE_GLYPH"),
+        ),
+        scene(
+            "SCRIBE_EMIT_CODE_GLYPH",
+            pop(PUCK, recall="code_leaf_mark"),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)), then="SCRIBE_EMIT_CODE_CLOSE"
+            ),
+            branch(eq(val(PUCK), const(38)), then="SCRIBE_EMIT_CODE_AMP"),
+            branch(eq(val(PUCK), const(60)), then="SCRIBE_EMIT_CODE_ANGLE"),
+            print_char(PUCK),
+            goto("SCRIBE_EMIT_CODE_GLYPH"),
+        ),
+        scene(
+            "SCRIBE_EMIT_CODE_AMP",
+            *_emit(*_bytes("&amp;")),
+            goto("SCRIBE_EMIT_CODE_GLYPH"),
+        ),
+        scene(
+            "SCRIBE_EMIT_CODE_ANGLE",
+            *_emit(*_bytes("&lt;")),
+            goto("SCRIBE_EMIT_CODE_GLYPH"),
+        ),
+        scene(
+            "SCRIBE_EMIT_CODE_CLOSE",
+            *_emit(10, *_bytes("</code></pre>")),
+            goto("SCRIBE_LEAF_RETURN"),
+        ),
+        scene(
+            "SCRIBE_LEAF_RETURN",
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_OUTER_RELEASE"
+            ),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)), then="SCRIBE_OUTER_RELEASE"
+            ),
+            branch(
+                eq(val(PROSPERO), const(QUOTE_EMPTY)),
+                then="SCRIBE_CONTAINER_RETURN",
+            ),
+            branch(
+                eq(val(PROSPERO), const(QUOTE_USED)),
+                then="SCRIBE_CONTAINER_RETURN",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_EMPTY)),
+                then="SCRIBE_QUOTED_PARAGRAPH",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
+                then="SCRIBE_QUOTED_PARAGRAPH",
+            ),
+            goto("SCRIBE_CONTAINER_LOOKAHEAD"),
         ),
         # Paragraph opening peeks at the parent frame.  A used frame inserts a
         # blank-line block separator; loose items retain paragraph tags while

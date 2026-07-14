@@ -50,11 +50,13 @@ class TokenArity:
 # and in docs/spl/token-codes.md together (test_arity_table_matches_doc).
 ARITY: dict[int, TokenArity] = {
     PARA: TokenArity(0, True),
+    HR: TokenArity(0, False),
     LIST_OPEN: TokenArity(1, False),  # kind: 1 = unordered, 2 = ordered
     LIST_ITEM: TokenArity(1, False),  # looseness: 1 = tight, 2 = loose
     LIST_CLOSE: TokenArity(0, False),
     BLOCKQUOTE_OPEN: TokenArity(0, False),
     BLOCKQUOTE_CLOSE: TokenArity(0, False),
+    CODE_BLOCK: TokenArity(0, True),
     ITEM_CLOSE: TokenArity(0, False),
 }
 

@@ -42,6 +42,30 @@ Puck:
  If so, let us proceed to scene @SCRIBE_EMIT_PARAGRAPH_OPEN.
 
 Puck:
+ If not, let us proceed to scene @SCRIBE_TEST_HR.
+
+
+                    Scene @SCRIBE_TEST_HR: @LIT.scenes.SCRIBE_TEST_HR.title
+
+Prospero:
+ Are you as honest as the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_HR.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_TEST_CODE_BLOCK.
+
+
+                    Scene @SCRIBE_TEST_CODE_BLOCK: @LIT.scenes.SCRIBE_TEST_CODE_BLOCK.title
+
+Prospero:
+ Are you as honest as the sum of a little furry black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_CODE_OPEN.
+
+Puck:
  If not, let us proceed to scene @SCRIBE_TEST_PARAGRAPH_CLOSE.
 
 
@@ -127,6 +151,582 @@ Puck:
 
 Puck:
  If not, let us proceed to scene @SCRIBE_TEST_ANCHOR_OPEN.
+
+
+                    Scene @SCRIBE_EMIT_HR: @LIT.scenes.SCRIBE_EMIT_HR.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_HR_SEPARATOR.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_HR_SEPARATOR.
+
+Puck:
+ Are you as noble as the sum of the product of a normal little furry black cat and a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_HR_SEPARATOR.
+
+Puck:
+ Are you as noble as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_HR_SEPARATOR.
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the product of a normal little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall proceed to scene @SCRIBE_HR_RETURN.
+
+
+                    Scene @SCRIBE_HR_SEPARATOR: @LIT.scenes.SCRIBE_HR_SEPARATOR.title
+
+Prospero:
+ You are as honest as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the product of a normal little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall proceed to scene @SCRIBE_HR_RETURN.
+
+
+                    Scene @SCRIBE_HR_RETURN: @LIT.scenes.SCRIBE_HR_RETURN.title
+
+Puck:
+ Are you as fair as a normal little furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_OUTER_RELEASE.
+
+Puck:
+ Are you as fair as the sum of a normal little furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_OUTER_RELEASE.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CONTAINER_RETURN.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CONTAINER_RETURN.
+
+Puck:
+ Are you as rotten as the sum of a normal little furry black cat and a little furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTED_PARAGRAPH.
+
+Puck:
+ Are you as noble as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTED_PARAGRAPH.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_CONTAINER_LOOKAHEAD.
+
+
+                    Scene @SCRIBE_EMIT_CODE_OPEN: @LIT.scenes.SCRIBE_EMIT_CODE_OPEN.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Are you as fair as the sum of a normal little furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CODE_BLANK.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CODE_BLANK.
+
+Puck:
+ Are you as rotten as the sum of the product of a normal little furry black cat and a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CODE_BLANK.
+
+Puck:
+ Are you as noble as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CODE_BLANK.
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and an angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall proceed to scene @SCRIBE_EMIT_CODE_GLYPH.
+
+
+                    Scene @SCRIBE_CODE_BLANK: @LIT.scenes.SCRIBE_CODE_BLANK.title
+
+Prospero:
+ You are as honest as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and an angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall proceed to scene @SCRIBE_EMIT_CODE_GLYPH.
+
+
+                    Scene @SCRIBE_EMIT_CODE_GLYPH: @LIT.scenes.SCRIBE_EMIT_CODE_GLYPH.title
+
+Prospero:
+ @LIT.characters.prospero.recall.code_leaf_mark
+
+Prospero:
+ Are you as honest as nothing?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_CODE_CLOSE.
+
+Prospero:
+ Are you as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_CODE_AMP.
+
+Prospero:
+ Are you as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_EMIT_CODE_ANGLE.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall return to scene @SCRIBE_EMIT_CODE_GLYPH.
+
+
+                    Scene @SCRIBE_EMIT_CODE_AMP: @LIT.scenes.SCRIBE_EMIT_CODE_AMP.title
+
+Prospero:
+ You are as honest as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and an angel and the sum of an angel and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a little furry black cat and a little furry black cat and the sum of an angel and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall return to scene @SCRIBE_EMIT_CODE_GLYPH.
+
+
+                    Scene @SCRIBE_EMIT_CODE_ANGLE: @LIT.scenes.SCRIBE_EMIT_CODE_ANGLE.title
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a little furry black cat and a little furry black cat and the sum of an angel and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall return to scene @SCRIBE_EMIT_CODE_GLYPH.
+
+
+                    Scene @SCRIBE_EMIT_CODE_CLOSE: @LIT.scenes.SCRIBE_EMIT_CODE_CLOSE.title
+
+Prospero:
+ You are as honest as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and an angel and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and an angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as noble as the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall proceed to scene @SCRIBE_LEAF_RETURN.
+
+
+                    Scene @SCRIBE_LEAF_RETURN: @LIT.scenes.SCRIBE_LEAF_RETURN.title
+
+Puck:
+ Are you as rotten as a normal little furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_OUTER_RELEASE.
+
+Puck:
+ Are you as fair as the sum of a normal little furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_OUTER_RELEASE.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CONTAINER_RETURN.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_CONTAINER_RETURN.
+
+Puck:
+ Are you as rotten as the sum of a normal little furry black cat and a little furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTED_PARAGRAPH.
+
+Puck:
+ Are you as noble as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTED_PARAGRAPH.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_CONTAINER_LOOKAHEAD.
 
 
                     Scene @SCRIBE_EMIT_PARAGRAPH_OPEN: @LIT.scenes.SCRIBE_EMIT_PARAGRAPH_OPEN.title
