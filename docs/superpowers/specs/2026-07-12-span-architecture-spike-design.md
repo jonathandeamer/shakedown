@@ -1085,3 +1085,114 @@ underflow, no literal synthetic star, and no extra continuation record. Then
 run the plan's exact Global Constraints literary gate. A failure is a
 `BLOCK[plan]`; it does not authorize a third synthetic delimiter, a recovery
 pop, or use of any spare scene.
+
+## A15 matched-requeue entry and payload-boundary correction (2026-07-14)
+
+The A14 checkpoint WIP still underflows both `overlapping_emphasis` and
+`links_images_protected` in `LYRIC_EMPHASIS_SEEK`.  The event trace isolates
+two violations of the accepted ownership model, rather than a new carrier
+model failure:
+
+1. `LYRIC_EMPHASIS_MATCH` and `LYRIC_EMPHASIS_EMIT_OPEN` construct a private
+   boundary directly, bypassing the A14 tail/drain/head choreography.  The
+   two-star path also labels itself `RESUME_TRIPLE_EMPH`, so a normal strong
+   match is incorrectly given synthetic child delimiters.
+2. The image-alt replay reaches `LYRIC_REFERENCE_POP_AFTER_OPEN`; its held
+   region therefore includes structural `[`/`]` syntax rather than precisely
+   the alt payload.  That nested structural attempt consumes the image
+   requeue's private end as though it were an ordinary source end and resumes
+   the image close before the terminal parent end has been preserved.
+
+The partial WIP is diagnostic only.  Reconstruct from committed Task 3 plus
+A10--A14; copy no protected-scanner production scene from the handoff
+worktree.  This correction authorizes no new scene, Recall key, controlled
+prose, stack, or token code.  `RESUME_STRONG = 13` is a local Act III state
+tag (not a token code) and is the sole new value: it identifies a two-star
+outer close.  Add it to every verification-only resume-code set.
+
+### Binding matched-emphasis entry
+
+Every successful emphasis match restores its one already-popped lookahead to
+Puck before creating the child private `TEXT_END`.  It then creates exactly
+one A9 record and selects one child close code:
+
+| Matched length | Opening HTML | Child selector | Synthetic delimiters |
+|---|---|---|---|
+| 1 | `<em>` | `RESUME_EMPH` | none |
+| 2 | `<strong>` | `RESUME_STRONG` | none |
+| 3 | `<strong>` | `RESUME_TRIPLE_EMPH` | one tail and one head, through A14's two helpers only |
+
+`LYRIC_EMPHASIS_MATCH` / `LYRIC_EMPHASIS_EMIT_OPEN` may be the two-character
+entry adapters that save the A9 record, but they must not independently drain
+Horatio or push a synthetic delimiter.  Their only post-boundary target is
+`LYRIC_REQUEUE_TRIPLE_CLOSE` for selector 11, otherwise
+`LYRIC_REQUEUE_DRAIN`.  `LYRIC_REQUEUE_TRIPLE_CLOSE` pushes the tail then
+enters the drainer; when the drainer consumes Horatio's floor it enters
+`LYRIC_REQUEUE_TRIPLE_OPEN`, which pushes the head only for selector 11 and
+otherwise falls straight through to `LYRIC_POP_GLYPH`.
+
+The A9 record remains `[STREAM_END, parent Hecate, parent Macbeth, parent
+selector]`.  At a matched delimiter, the old candidate count is dead; the
+implementation may store `0` as the parent Macbeth cell only after the
+observer has proved no parent candidate loop remains live.  The restored
+selector chooses the close: `RESUME_EMPH` emits `</em>` and both
+`RESUME_STRONG` and `RESUME_TRIPLE_EMPH` emit `</strong>`.  No close scene
+pops Puck, Romeo, Horatio, or Lady Macbeth.
+
+Before the first child pop, the three-star Puck stack remains A14's exact
+bottom-to-top sequence: restored parent lookahead, private `TEXT_END`,
+synthetic tail, raw body (first source glyph topmost), synthetic head.  For
+one- and two-star matches it is restored parent lookahead, private `TEXT_END`,
+raw body (first source glyph topmost).  Thus the parent lookahead, including
+a real `TEXT_END`, is below rather than consumed by the child.
+
+### Binding label/alt payload boundary
+
+`LYRIC_LABEL_OPEN` and `LYRIC_ALT_OPEN` retain only bytes strictly between
+their matching `[` and `]` on Horatio.  The opener, closer, destination
+syntax, and title syntax are consumed by their owning callers and never
+requeued.  At `LYRIC_REQUEUE_DRAIN`, the Puck region above the private end is
+therefore exactly the label or alt payload in source order.  A label/alt
+child may run the ordinary one-star emphasis path, but it must not reach
+`LYRIC_REFERENCE_POP_AFTER_OPEN`, `LYRIC_LINK_REGION`, `LYRIC_IMAGE_TEST`, or
+either triple helper solely because its parent was a link or image.
+
+### Mandatory observer-first gate
+
+Before editing `src_ir/act3.py`, extend `_SceneObserver` to retain every Puck
+push as `(scene, value, stack_after)` and add these tests in
+`tests/test_act3_contracts.py`:
+
+1. `test_act3_matched_emphasis_requeue_preserves_parent_lookahead` observes
+   `overlapping_emphasis`.  It asserts the length-one child of `***both***`
+   has two A14 synthetic-star pushes surrounding the held body, the later
+   two-star outer match has no synthetic-star push, and each child private end
+   is popped before (never instead of) its restored parent lookahead.  It
+   asserts exact `<strong><em>both</em></strong>` output, no
+   `LYRIC_EMPHASIS_SOURCE_END` inside the successful child, and exactly one
+   real terminator route.
+2. `test_act3_label_and_alt_requeue_contains_payload_only` observes
+   `links_images_protected`.  Between each label/alt requeue boundary and its
+   matching A9 resume, it asserts no reference/link/image opener label occurs,
+   the held child source is respectively `a *b*` and `c *d*`, and the
+   one-star child closes before its parent private end.  It asserts no Puck or
+   Lady Macbeth underflow and one real terminator route.
+3. Extend `test_act3_text_end_event_order_is_carrier_safe` so selector `13`
+   is accepted as private and a frozen `13` is required to take the strong
+   close without a synthetic-star helper.
+
+Run this exact checkpoint after the tests are red and again after the fresh
+reconstruction:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+  "matched_emphasis_requeue_preserves_parent_lookahead or label_and_alt_requeue_contains_payload_only or triple_emphasis_requeue_order or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+```
+
+Expected: PASS.  `overlapping_emphasis` has one nested triple child and one
+ordinary strong child; `links_images_protected` has payload-only label/alt
+children; every private boundary closes before its preserved parent
+lookahead; each probe has exactly one real terminator route.  Then run the
+plan's exact Global Constraints literary gate.  Any deviation is a new
+`BLOCK[plan]`; it does not authorize a recovery pop, another selector, a
+third synthetic delimiter, or an unused literary title.

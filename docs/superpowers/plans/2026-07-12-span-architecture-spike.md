@@ -1301,6 +1301,45 @@ is binding for Task 4 Step 2.
    Global Constraints literary gate. Any failure remains `BLOCK[plan]` and
    does not authorize a third synthetic delimiter or use of a spare label.
 
+## Amendment A15 (2026-07-14): matched requeue entry and payload-only label/alt replay
+
+The A14 reconstruction checkpoint still underflows `LYRIC_EMPHASIS_SEEK` for
+both `overlapping_emphasis` and `links_images_protected`.  The accepted
+design's [A15 correction](../specs/2026-07-12-span-architecture-spike-design.md#a15-matched-requeue-entry-and-payload-boundary-correction-2026-07-14)
+is binding for Task 4 Step 2.  It identifies two concrete WIP defects:
+matched emphasis bypasses A14's shared tail/drain/head order, and image-alt
+replay requeues structural brackets rather than its payload.  Reconstruct
+from committed Task 3 plus A10--A14; do not repair or copy production scenes
+from the handoff WIP.
+
+1. Add only local state tag `RESUME_STRONG=13`; it selects the two-star
+   `</strong>` close and is not a token code or literary surface.  One-star,
+   two-star, and three-star matches select `RESUME_EMPH`, `RESUME_STRONG`, and
+   `RESUME_TRIPLE_EMPH` respectively.  Only selector 11 may invoke A14's two
+   synthetic-star helpers.  Every successful match restores its lookahead
+   below a private child end, writes exactly one A9 record, and enters the
+   shared tail/drain/head family without independently draining Horatio.
+2. Make label/alt capture payload-only: Horatio holds bytes strictly between
+   `[` and `]`, and requeue never exposes `[`/`]`, destination, or title
+   syntax to the child scanner.  A label/alt child may use ordinary one-star
+   emphasis, but may not reach reference/link/image dispatch or a triple
+   helper merely because its parent was protected syntax.
+3. Before production edits, add A15's two Puck-push/scene observers and
+   extend the A9 event-order assertion to accept selector `13` only on the
+   non-synthetic strong-close route. Run:
+
+   ```bash
+   uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+     "matched_emphasis_requeue_preserves_parent_lookahead or label_and_alt_requeue_contains_payload_only or triple_emphasis_requeue_order or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+   ```
+
+   Expected: PASS. The observer proves parent lookahead remains below each
+   child private end, strong has no synthetic star, triple has exactly the A14
+   pair, label/alt children are payload-only, and every protected probe has
+   one real terminator route. Then run the exact Global Constraints literary
+   gate. No new scene title, Recall key, token code, stack, or spare is
+   authorized; any miss is a new `BLOCK[plan]`.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
