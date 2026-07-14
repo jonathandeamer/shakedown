@@ -147,3 +147,75 @@ A participant or branch-entry-pair failure, a missing TOML label, changed
 token stream, lost replay byte, or parity regression is a new `BLOCK[plan]`.
 It does not authorize consuming a spare, changing the compiler, or editing a
 generated SPL fragment.
+
+## Amendment C (2026-07-14): lossless rejected-HR replay
+
+**Status:** accepted for the unchecked Slice-2 Task-2 checkpoint. The HR
+accept path is correct, but rejection retains only indentation and a marker;
+it loses consumed markers from ordinary prose. The concrete regression is
+`***both*** and **outer *inner* outer**`, which Act II currently passes to Act
+III as `*both*** ...`.
+
+Once the gate sees a leading space or HR marker, save every consumed byte on a
+Romeo stack above one `STREAM_END` floor: indentation, markers, inter-marker
+spaces, newline, and the first rejecting byte. A confirmed HR drains that
+floor and emits only `tokens.HR`. A rejected candidate pops Romeo and pushes
+the saved bytes onto Lady Macbeth in the same carrier orientation as
+`PASS_LISTS_RAW_GLYPH`, then resumes that raw path without another read. The
+disproving byte is replayed once; the replay does not synthesize `TEXT_END`,
+enter the code gate, or discard a four-space code candidate.
+
+Keep the current accepted Amendment-B labels and entry-pair contract. Add only
+these working `(LADY_MACBETH, ROMEO)` labels:
+`PASS_HR_BUFFER_OPEN`, `PASS_HR_BUFFER_KEEP`, `PASS_HR_REPLAY_OPEN`,
+`PASS_HR_REPLAY_POP`, `PASS_HR_REPLAY_KEEP`, and `PASS_HR_REPLAY_CLOSE`.
+Append these exact Incidental surfaces plus four unavailable spares:
+
+```toml
+[scenes.PASS_HR_BUFFER_OPEN]
+title = "Romeo opens the level iron's private casket."
+pattern = "scene_of_character"
+[scenes.PASS_HR_BUFFER_KEEP]
+title = "Romeo keeps one doubtful iron stroke."
+pattern = "scene_of_character"
+[scenes.PASS_HR_REPLAY_OPEN]
+title = "Romeo unlocks the doubtful iron casket."
+pattern = "scene_of_character"
+[scenes.PASS_HR_REPLAY_POP]
+title = "Romeo recalls one doubtful iron stroke."
+pattern = "scene_of_character"
+[scenes.PASS_HR_REPLAY_KEEP]
+title = "Romeo restores one iron stroke to the field."
+pattern = "scene_of_character"
+[scenes.PASS_HR_REPLAY_CLOSE]
+title = "The doubtful iron line returns unbroken."
+pattern = "bare_statement"
+[scenes.PASS_HR_BUFFER_GUARD]
+title = "The iron casket waits beneath a quiet cloud."
+pattern = "bare_statement"
+[scenes.PASS_HR_REPLAY_GUARD]
+title = "The iron field keeps one patient boundary."
+pattern = "bare_statement"
+[scenes.PASS_HR_CASKET_GUARD]
+title = "A sealed iron casket rests beside the road."
+pattern = "bare_statement"
+[scenes.PASS_HR_RETURN_GUARD]
+title = "The iron path returns beneath clear morning."
+pattern = "bare_statement"
+```
+
+Add pair/unreachable assertions and decoded-`PARA` contracts for
+`***both***`, `**not an hr**`, `---x`, and `- - x`. Then run:
+
+```bash
+uv run pytest tests/test_act2_slice2.py tests/test_act3_contracts.py tests/test_splc_validate.py -q
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -k "(Amps and angle and encoding) or (Horizontal and rules)" -q
+uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizontal rules'
+```
+
+Require `summary: 2/2 byte-identical`. A changed accepted HR, rejected byte,
+entry-pair, title outside this six-plus-four pool, or an Act-III underflow
+after the exact `***both***` carrier contract is `BLOCK[plan]`.

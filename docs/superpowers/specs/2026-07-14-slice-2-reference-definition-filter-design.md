@@ -261,3 +261,55 @@ uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizo
 ```
 
 Require `summary: 2/2 byte-identical`. Any altered rejected byte, missing private terminator, span-scene visit from `CODE_BLOCK`, binary/entry-pair failure, title mismatch, or need beyond these 21 labels is `BLOCK[plan]`; do not consume a spare, alter the compiler, or hand-edit generated SPL.
+
+## Amendment A2 (2026-07-14): baseline-first routing and observable replay
+
+**Status:** accepted; this narrows A1 rather than extending its 21-scene
+pool.  The dirty A1 attempt established two facts that A1 did not state
+plainly enough: a `PARA` branch must actually enter the verifier, and rendered
+Act-III text is not evidence that a rejected candidate replayed byte-for-byte
+because the ordinary scanner deliberately consumes Markdown punctuation.
+
+Before touching the definition scenes, restore the Span Spike baseline through
+the Act-II HR repair in the companion binary-gate Amendment C.  `***both***
+and **outer *inner* outer**` must reach Act III with all three opening stars;
+this is a prerequisite, not a new span change.  The Act-III repair must then
+make these exact dispatch choices in `_traverse_dispatch()` after copying the
+token code to Juliet:
+
+1. `tokens.CODE_BLOCK` goes to `TRAVERSE_COPY_CODE_TEXT`.
+2. `tokens.PARA` goes to `LYRIC_DEFINITION_OPEN`.
+3. every other text-bearing token goes to `TRAVERSE_OPEN_TEXT`.
+
+Remove the disconnected A1 scaffolding and its three reachable former-spare
+guards (`LYRIC_DEFINITION_LEAF_GUARD`, `LYRIC_DEFINITION_GARDEN_GUARD`, and
+`LYRIC_DEFINITION_CHAMBER_GUARD`).  The 21 working labels remain the entire
+authority; the five listed spares remain unreachable.  `LYRIC_DEFINITION_OPEN`
+may be reached only from the `PARA` dispatch branch, never from a requeue,
+link/image route, or code leaf.
+
+For a rejected candidate, A1's replay sequence is binding but its test oracle
+is corrected: immediately before `LYRIC_POP_GLYPH`, Puck's private floor must
+be followed, pop-first, by the original candidate glyphs in source order and
+one private `TEXT_END`.  Extend `_SceneObserver` with a source-pop ledger that
+records values popped by `LYRIC_POP_GLYPH` until that terminator.  The invalid
+and mixed cases assert this ledger equals the original paragraph bytes plus
+`TEXT_END`; they must not assert decoded Act-III output equals Markdown source.
+The existing ordinary scanner remains responsible for the resulting Markdown
+interpretation.  Valid definition-only paragraphs still decode to no `PARA`.
+
+The focused red/green sequence is:
+
+```bash
+uv run pytest tests/test_act2_slice2.py -q
+uv run pytest tests/test_act3_contracts.py tests/test_splc_validate.py -q
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_act3_contracts.py tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+```
+
+The first command must prove both rejected HR candidates and the overlapping
+emphasis carrier prefix.  The second must prove all protected-region fixtures
+without underflow before definition assertions are treated as green.  Any
+remaining lost candidate byte, missing private terminator, span underflow, new
+Act-III title, or scene outside A1's 21-label pool is `BLOCK[plan]`.

@@ -608,3 +608,39 @@ The replacement pool is 21 working labels plus five unused spares (24%). It
 is the complete authority for this recovery; A2's retired labels are not
 implementation authority. Slice 3 still replaces temporary discard with the
 real reference-definition table.
+
+## Amendment A4 (2026-07-14): restore block replay before definition recovery
+
+The A3 worktree exposed a pre-existing prerequisite rather than a new span
+design: Task 2's HR rejection cursor drops bytes from non-HR prose. In
+particular, Act II turns `***both*** and **outer *inner* outer**` into
+`*both*** ...`; the existing protected-emphasis route then correctly has too
+little source and underflows. The accepted [binary-gate Amendment C](../specs/2026-07-14-slice-2-binary-block-gates-design.md#amendment-c-2026-07-14-lossless-rejected-hr-replay) is therefore the first, narrow prerequisite
+for this still-unchecked checkpoint. It does not reopen a completed plan or
+permit a change to the Span Spike grammar.
+
+1. Remove the disconnected dirty A3 definition scaffold before writing the
+   first red test: it never routed `PARA` to the verifier and consumed three
+   unavailable A3 spares. Add the Amendment-C Act-II contracts and exact
+   six-working/four-spare pair ledger. Make rejected HR candidates lossless,
+   regenerate, and prove the full `***both***` paragraph reaches Act III.
+   Run `uv run pytest tests/test_act2_slice2.py tests/test_act3_contracts.py
+   tests/test_splc_validate.py -q`; it must be green before any definition
+   scene is reachable.
+2. Apply the narrowed [reference-definition Amendment A2](../specs/2026-07-14-slice-2-reference-definition-filter-design.md#amendment-a2-2026-07-14-baseline-first-routing-and-observable-replay): route only `PARA` through A3's existing 21-label verifier, preserve the protected `CODE_BLOCK` copy route, and leave every other text token on `TRAVERSE_OPEN_TEXT`. Test rejected candidates at the `LYRIC_POP_GLYPH` source-pop boundary, not against post-scan decoded Markdown text. Append only Amendment C's six Act-II labels/four spares and A3's existing 21 Act-III labels/five spares; no new Act-III controlled surface is authorized.
+3. Regenerate and assemble. Run both amendments' exact proof commands, the
+   Global Constraints literary/generated gate, the real-wrapper gate below,
+   and strict parity for `Amps and angle encoding` plus `Horizontal rules`.
+   The checkpoint `git add` includes the amended Act-II/III IR, their literary
+   TOML files, generated Act-II/III fragments, tests, `shakedown.spl`, and
+   these two accepted design documents. Commit `fix: preserve rejected block
+   candidates` with the required provenance trailers and non-force push.
+
+```bash
+uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -k "(Amps and angle and encoding) or (Horizontal and rules)" -q
+uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizontal rules'
+```
+
+Require `summary: 2/2 byte-identical`. Any lost rejected byte, protected-mode
+underflow, missing private terminator, binary/entry-pair failure, generated
+drift, title outside either stated pool, or failed push is a new `BLOCK[plan]`.
