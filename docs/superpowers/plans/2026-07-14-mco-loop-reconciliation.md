@@ -95,7 +95,7 @@ Run: `git diff --check && uv run pytest tests/test_inprocess_interceptor.py test
 
 Expected: the artifacts are tracked, their historical scope is auditable, and no untracked planning document remains.
 
-- [ ] **Step 4: Commit the reconciliation record.**
+- [x] **Step 4: Commit the reconciliation record.**
 
 ```bash
 git add .gitignore .agent/branch-dispositions.toml .agent/blockers.md \
