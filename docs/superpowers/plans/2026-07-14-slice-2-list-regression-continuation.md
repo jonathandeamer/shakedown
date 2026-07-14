@@ -17,6 +17,18 @@
 - The sole new controlled surface is the ready-to-paste `PASS_HR_FALLBACK_LIST_HANDOFF` block below. It is Incidental, `bare_statement`, uses `(LADY_MACBETH, MACBETH)`, and leaves the six named Act-II spares unreachable. If another title, Recall, or value surface is needed, add exactly one `- BLOCK[plan]:` line to `.agent/blockers.md` and stop.
 - Every autonomous commit must end after a blank line with `Agent: <executor>`, `Model: <model>`, `Harness: MCO 0.10.8`, and `Co-authored-by: OpenAI Codex <noreply@openai.com>`; non-force push after each logical checkpoint. A failed push records one `- BLOCK:` line and stops.
 
+## File map
+
+| File | Responsibility |
+|---|---|
+| `src_ir/act2.py` | Authoritative Act-II fallback routing and the new handoff scene. |
+| `src/20-act2-literary.toml` | The one reserved Incidental scene title. |
+| `tests/test_act2_slice2.py` | Pair ledger and source-level no-reread handoff contract. |
+| `src/20-act2-block.spl` | Generated Act-II fragment; rendered only by `scripts.splc`. |
+| `shakedown.spl` | Assembled release play; rebuilt only by `scripts/assemble.py`. |
+| `docs/superpowers/plans/plan-roadmap.md` | Sole-in-flight transition to and from this continuation. |
+| `.agent/blockers.md` | Records only a newly discovered planning deficit or failed push. |
+
 ## Literary reservation
 
 | Label | State / transition | Operating pair | Pattern |
@@ -46,28 +58,37 @@ The six explicit spares remain `PASS_HR_PAIR_GUARD`, `PASS_CODE_PAIR_GUARD`, `PA
 - Consumes: `PUCK` as saved marker and `HECATE` as the first non-HR glyph at `PASS_HR_FALLBACK`.
 - Produces: `PASS_LISTS_ITEM_GLYPH` receives `HECATE == ord('a')` for `* alpha` without a second read; `tests/fixtures/token_stream/lists/flat_unordered_tight.dump` stays byte-identical.
 
-- [ ] **Step 1: Confirm the focused contract fails against the unmodified source.**
+- [x] **Step 1: Capture and validate the dirty handoff candidate.**
 
 Run:
 
 ```bash
 uv run pytest tests/test_act2_slice2.py -k unordered_list_handoff -q
+uv run pytest tests/test_token_dump.py -k flat_unordered_tight -q
+git diff -- src_ir/act2.py src/20-act2-literary.toml \
+  src/20-act2-block.spl shakedown.spl tests/test_act2_slice2.py
 ```
 
-Expected: FAIL because the `*` and `-` entries in `PASS_HR_FALLBACK` target `PASS_CODE_REPLAY`, not `PASS_HR_FALLBACK_LIST_HANDOFF`.
+Observed 2026-07-14: both tests pass (one selected test each). The unstaged
+candidate changes only the expected repair/test/generated files; it must remain
+unstaged until Step 2 confirms it matches this plan. The unrelated dirty
+`.agent/branch-dispositions.toml` is out of scope and must not be staged.
 
-- [ ] **Step 2: Implement the one-scene handoff and its source-level contract.**
+- [ ] **Step 2: Verify and complete the one-scene handoff and its source-level contract.**
 
 In `tests/test_act2_slice2.py`, retain or add `test_hr_candidate_fallback_preserves_unordered_list_handoff`. It must assert that `*` and `-` target `PASS_HR_FALLBACK_LIST_HANDOFF`, `_` targets `PASS_CODE_REPLAY`, the new scene's companion is `Char.MACBETH`, it emits in order `LIST_OPEN`, kind `1`, `ITEM_START`, tightness `1`, then goes to `PASS_LISTS_ITEM_GLYPH`, has no `_read()`, and the six named spares remain unreachable. Extend the pair ledger with `PASS_HR_FALLBACK_LIST_HANDOFF: Char.MACBETH`.
 
-Append only the reserved TOML block above. In `src_ir/act2.py`, change `PASS_HR_FALLBACK` so `PUCK == 42` and `PUCK == 45` target the handoff; leave `PUCK == 95` and the raw-glyph route unchanged. Add exactly:
+Compare the dirty candidate to this contract before editing it. Append only the
+reserved TOML block above if it is absent. In `src_ir/act2.py`, make `PUCK ==
+42` and `PUCK == 45` target the handoff; leave `PUCK == 95` and the raw-glyph
+route unchanged. The handoff must be exactly:
 
 ```python
 scene(
     "PASS_HR_FALLBACK_LIST_HANDOFF",
     *emit_token(LADY_MACBETH, tokens.LIST_OPEN, 1),
     push(MACBETH, const(1)),
-    let(MACBETH, add(val(MACBETH), const(1))),
+    let(MACBETH, const(1)),
     push(LADY_MACBETH, const(tokens.ITEM_START)),
     push(LADY_MACBETH, const(1)),
     goto("PASS_LISTS_ITEM_GLYPH"),
