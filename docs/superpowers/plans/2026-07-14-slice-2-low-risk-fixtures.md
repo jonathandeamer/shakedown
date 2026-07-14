@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- Authority and scope: roadmap row 5; architecture spec `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` §§4.2, 4.3, 7.5, 7.8a, and 8.1; accepted span design `docs/superpowers/specs/2026-07-12-span-architecture-spike-design.md`.
+- Authority and scope: roadmap row 5; architecture spec `docs/superpowers/specs/2026-04-26-shakedown-architecture-design.md` §§4.2, 4.3, 7.5, 7.8a, and 8.1; accepted span design `docs/superpowers/specs/2026-07-12-span-architecture-spike-design.md`; and, for Task 2 Step 2 only, accepted binary-gate design `docs/superpowers/specs/2026-07-14-slice-2-binary-block-gates-design.md`.
 - Production Markdown behavior remains SPL-owned. Do not add a Python/Perl fallback, fixture-name branch, canned output, or an oracle invocation to `./shakedown`.
 - Generated acts are edited only in `src_ir/act1.py`, `src_ir/act2.py`, `src_ir/act3.py`, and `src_ir/act4.py`; regenerate with `uv run python -m scripts.splc` and assemble with `uv run python scripts/assemble.py`. Never hand-edit `src/10-act1-preprocess.spl`, `src/20-act2-block.spl`, `src/30-act3-span.spl`, `src/40-act4-emit.spl`, or `shakedown.spl`.
 - Keep the Span Spike's one-way invariant: generated HTML never returns to the Act-III source buffer; code spans, escapes, URL autolinks, and inline tags remain protected regions in the existing scan order.
@@ -485,5 +485,42 @@ code_leaf_mark = "Recall the indented chamber mark."
 ## Plan self-review
 
 - Coverage: preprocessing/detab (Tasks 1 and 3), HR (Task 2), code leaves/Tabs (Task 3), accepted protected spans and escapes (Task 4), URL autolinks plus email comparison policy (Task 5), nested composition/Tidyness (Task 6), and all §8.1 gates/performance/roadmap closure (Task 7).
-- No new architecture/spec is needed: the durable architecture and accepted span design are sufficient; this plan does not alter their ownership or scan model.
+- The accepted binary-gate design amends only Task 2 Step 2's Act-II scene choreography.  The durable architecture and accepted span design remain sufficient; this plan does not alter ownership or the scan model.
 - No placeholders: every planned production file, interface, fixture, selection command, strict-parity exception, literary pool, and stop condition is explicit. The only conditional code changes are deliberately evidence-gated to avoid speculative repair of accepted Spike B/Span machinery.
+
+## Amendment A1 (2026-07-14): Task 2 Step 2 binary Act-II block gates
+
+`uv run python -m scripts.splc` correctly rejected the in-progress HR/code
+gate because five scenes write two or three off-anchor holders.  This is a
+scene-choreography defect, not an authority to change the HR/code grammar or
+the compiler.  The accepted
+[`Slice 2 Act II Binary Block-Gates` design](../specs/2026-07-14-slice-2-binary-block-gates-design.md)
+is binding for the still-unchecked Task 2 Step 2 and supersedes its former
+instruction to use only the original Act-II reservation.
+
+1. Before changing `src_ir/act2.py`, add the design's Act-II
+   `participants(scene, ACT.anchor)` contract to `tests/test_act2_slice2.py`.
+   It must enumerate every Act-II scene, name an invalid label, assert the
+   exact eleven retained/split pairs in the design ledger, and prove the five
+   new spare labels are absent.  Run
+   `uv run pytest tests/test_act2_slice2.py tests/test_splc_validate.py -q`;
+   it is expected to fail against the present five multi-target scenes.
+2. Apply only the six ledgered splits: consume the existing `PASS_CODE_BLANK`
+   spare as the code-open read state, add the five design working labels, and
+   make the six explicit companion corrections.  Preserve every existing
+   branch condition, replay byte, token emit, and `_read()` recall.  Add only
+   the ready-to-paste working TOML entries from the design, and add all five
+   ready-to-paste spare entries in the same change.  Do not use a spare in
+   production, add a Recall line, change `scripts/splc`, or hand-edit a
+   generated fragment.
+3. Run the design's exact proof sequence, then Task 2 Step 3's unchanged
+   regression/checkpoint commands.  `Horizontal rules` must report
+   `summary: 1/1 byte-identical`; generated-fragment, parse, validation,
+   literary, assembly, codegen, and Amps gates must pass.  A pair or
+   entry-pair failure, missing title, token/replay change, or parity failure
+   is a new `BLOCK[plan]` and stops the task without consuming a spare.
+
+The revised Act-II state-family ledger is 25 working labels (the original 16,
+three already-consumed former spares, the repurposed `PASS_CODE_BLANK`, and
+five new split labels) plus five unused spares, meeting the required 20%
+reserve exactly.  No additional Recall label is needed.
