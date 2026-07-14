@@ -44,11 +44,13 @@ from scripts.splc.ir import (
     sub,
     val,
 )
+from src_ir import tokens
 
 BinOpBuilder = Callable[[Expr, Expr], BinOp]
 
 ROSALIND = Char.ROSALIND
 HORATIO = Char.HORATIO
+ROMEO = Char.ROMEO
 
 
 def _one_scene_act(number: int, *ops: Op) -> Act:
@@ -261,3 +263,71 @@ def test_state_handoff_carries_values_and_stacks_across_acts() -> None:
     assert second.state.values[ROSALIND] == 3
     assert second.state.values[HORATIO] == 11
     assert second.state.stacks[HORATIO] == []
+
+
+def test_image_title_floor_survives_alt_requeue() -> None:
+    """Amendment A10 nested-floor proof: an image title held on Romeo's
+    private floor survives an independent Horatio alt requeue floor being
+    opened and fully drained above it, matching the choreography
+    LYRIC_TITLE_OPEN / LYRIC_REGION_TAG_OPEN / LYRIC_IMAGE_TITLE_CLOSE will
+    use in production (per-character stacks, so draining Horatio never
+    touches Romeo)."""
+    open_romeo_title = scene(
+        "OPEN_ROMEO_TITLE",
+        push(ROMEO, const(tokens.STREAM_END)),
+        push(ROMEO, const(ord("i"))),
+        goto("OPEN_HORATIO_ALT"),
+        anchor=ROMEO,
+        companion=HORATIO,
+    )
+    open_horatio_alt = scene(
+        "OPEN_HORATIO_ALT",
+        push(HORATIO, const(tokens.STREAM_END)),
+        push(HORATIO, const(ord("c"))),
+        push(HORATIO, const(ord("d"))),
+        goto("DRAIN_HORATIO_ALT"),
+        anchor=HORATIO,
+        companion=ROMEO,
+    )
+    drain_horatio_alt = scene(
+        "DRAIN_HORATIO_ALT",
+        pop(HORATIO, recall="alt_glyph"),
+        branch(
+            eq(val(HORATIO), const(tokens.STREAM_END)),
+            then="DRAIN_ROMEO_TITLE",
+            else_="DRAIN_HORATIO_ALT",
+        ),
+        anchor=HORATIO,
+        companion=ROMEO,
+    )
+    drain_romeo_title = scene(
+        "DRAIN_ROMEO_TITLE",
+        pop(ROMEO, recall="title_glyph"),
+        branch(
+            eq(val(ROMEO), const(tokens.STREAM_END)),
+            then="DONE",
+            else_="DRAIN_ROMEO_TITLE",
+        ),
+        anchor=ROMEO,
+        companion=HORATIO,
+    )
+    done = scene("DONE", halt_act(), anchor=ROMEO, companion=HORATIO)
+
+    a = act(
+        1,
+        ROMEO,
+        [
+            open_romeo_title,
+            open_horatio_alt,
+            drain_horatio_alt,
+            drain_romeo_title,
+            done,
+        ],
+    )
+
+    result = run_act(a, InterpreterState(), step_limit=100)
+
+    assert result.state.stacks[ROMEO] == []
+    assert result.state.stacks[HORATIO] == []
+    assert result.state.values[ROMEO] == tokens.STREAM_END
+    assert result.state.values[HORATIO] == tokens.STREAM_END
