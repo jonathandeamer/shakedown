@@ -18,6 +18,12 @@ from scripts.mco_loop import (
     RoadmapRow,
 )
 
+FOR_EACH_REF_HEADS = (
+    "for-each-ref",
+    "--format=%(refname:short) %(objectname)",
+    "refs/heads",
+)
+
 
 def _row(
     identifier: str,
@@ -48,6 +54,187 @@ def test_failed_implementation_action_becomes_fix_action() -> None:
 
     assert recovered.kind is ActionKind.FIX
     assert recovered.step == "step"
+
+
+def test_load_branch_dispositions_accepts_terminal_entries(tmp_path: Path) -> None:
+    ledger = tmp_path / "branch-dispositions.toml"
+    ledger.write_text(
+        """
+[branches."topic"]
+head = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+disposition = "preserve"
+reason = "Keep historical work."
+"""
+    )
+
+    dispositions = mco_loop.load_branch_dispositions(ledger)
+
+    assert dispositions == {
+        "topic": mco_loop.BranchDisposition(
+            "topic",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "preserve",
+            "Keep historical work.",
+        )
+    }
+
+
+def test_load_branch_dispositions_rejects_invalid_disposition(
+    tmp_path: Path,
+) -> None:
+    ledger = tmp_path / "branch-dispositions.toml"
+    ledger.write_text(
+        """
+[branches."topic"]
+head = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+disposition = "pending"
+reason = "Not allowed."
+"""
+    )
+
+    with pytest.raises(ValueError, match="disposition"):
+        mco_loop.load_branch_dispositions(ledger)
+
+
+def test_branch_inventory_returns_empty_when_no_candidates(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            FOR_EACH_REF_HEADS: "",
+        }.get(tuple(args), ""),
+    )
+
+    assert mco_loop.branch_inventory_issues(tmp_path, {}) == ()
+
+
+def test_branch_inventory_skips_merged_branch(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    branch_head = "topic aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            FOR_EACH_REF_HEADS: branch_head,
+            ("merge-base", "--is-ancestor", "topic", "main"): "merged\n",
+        }.get(tuple(args), ""),
+    )
+
+    assert mco_loop.branch_inventory_issues(tmp_path, {}) == ()
+
+
+def test_branch_inventory_reports_unledgered_unmerged_branch(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    branch_head = "topic abc\n"
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            FOR_EACH_REF_HEADS: branch_head,
+            ("merge-base", "--is-ancestor", "topic", "main"): "",
+            ("merge-base", "topic", "main"): "base\n",
+        }.get(tuple(args), ""),
+    )
+
+    assert mco_loop.branch_inventory_issues(tmp_path, {}) == (
+        mco_loop.BranchIssue("topic", "abc", "base", "missing disposition"),
+    )
+
+
+def test_branch_inventory_reports_review_disposition(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    branch_head = "topic aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+    base = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            FOR_EACH_REF_HEADS: branch_head,
+            ("merge-base", "--is-ancestor", "topic", "main"): "",
+            ("merge-base", "topic", "main"): base,
+        }.get(tuple(args), ""),
+    )
+    ledger = {
+        "topic": mco_loop.BranchDisposition(
+            "topic",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "review",
+            "Needs review.",
+        )
+    }
+
+    assert mco_loop.branch_inventory_issues(tmp_path, ledger) == (
+        mco_loop.BranchIssue(
+            "topic",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "review pending",
+        ),
+    )
+
+
+def test_branch_inventory_reports_stale_ledger_head(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    branch_head = "topic bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+    base = "cccccccccccccccccccccccccccccccccccccccc\n"
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            FOR_EACH_REF_HEADS: branch_head,
+            ("merge-base", "--is-ancestor", "topic", "main"): "",
+            ("merge-base", "topic", "main"): base,
+        }.get(tuple(args), ""),
+    )
+    ledger = {
+        "topic": mco_loop.BranchDisposition(
+            "topic",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "integrated",
+            "Already landed.",
+        )
+    }
+
+    assert mco_loop.branch_inventory_issues(tmp_path, ledger) == (
+        mco_loop.BranchIssue(
+            "topic",
+            "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "cccccccccccccccccccccccccccccccccccccccc",
+            "ledger head mismatch",
+        ),
+    )
+
+
+def test_branch_inventory_accepts_matching_preserve_entry(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    branch_head = "topic aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+    base = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            FOR_EACH_REF_HEADS: branch_head,
+            ("merge-base", "--is-ancestor", "topic", "main"): "",
+            ("merge-base", "topic", "main"): base,
+        }.get(tuple(args), ""),
+    )
+    ledger = {
+        "topic": mco_loop.BranchDisposition(
+            "topic",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "preserve",
+            "Historical branch retained intentionally.",
+        )
+    }
+
+    assert mco_loop.branch_inventory_issues(tmp_path, ledger) == ()
 
 
 def _invocation_inputs(

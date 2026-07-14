@@ -738,10 +738,10 @@ def exhaustion_payload(
     return cast(dict[str, object], _redact_structure(payload, environment))
 
 
-def _git_output(arguments: Sequence[str]) -> str:
+def _git_output(arguments: Sequence[str], repo: Path = REPO) -> str:
     result = subprocess.run(
         ["git", *arguments],
-        cwd=REPO,
+        cwd=repo,
         capture_output=True,
         text=True,
         check=False,
