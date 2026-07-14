@@ -644,3 +644,78 @@ uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizo
 Require `summary: 2/2 byte-identical`. Any lost rejected byte, protected-mode
 underflow, missing private terminator, binary/entry-pair failure, generated
 drift, title outside either stated pool, or failed push is a new `BLOCK[plan]`.
+
+## Amendment A5 (2026-07-14): recover the failed Task-2 working tree in scope
+
+The Task-2 Step-3 checkpoint is blocked by a single failed implementation
+attempt, not by an independent Slice-3 deliverable.  Its dirty Act-II change
+deleted the already-reserved working `PASS_HR_PAIR_RETURN` TOML surface; its
+dirty Act-III change is the disconnected A3 scaffold that A4 explicitly
+retired.  Treating either as unrelated WIP would leave the active checkpoint
+without an authorized way to produce its required green evidence.  This
+amendment therefore makes their *replacement by the already accepted A4 /
+definition-filter ledgers* the first action of Task 2 Step 3.  It creates no
+second in-flight plan and authorizes no work from Slice 3.
+
+1. Preserve the current dirty diff for review with `git diff --binary` before
+   changing it; do not reset, checkout, stash, discard, or hand-edit any
+   generated fragment.  Add a red recovery assertion to
+   `tests/test_act2_slice2.py` that `PASS_HR_PAIR_RETURN` is present in
+   `src/20-act2-literary.toml` and remains the `(LADY_MACBETH, HECATE)`
+   operating adapter with `(LADY_MACBETH, PUCK)` entry pair.  Restore exactly
+   the already-reserved entry specified by binary-gate Amendment D—no new
+   label and no spare consumption.  Run:
+
+   ```bash
+   uv run pytest tests/test_act2_slice2.py tests/test_splc_validate.py -q
+   ```
+
+   Expected: PASS.  This establishes the Act-II literary/generation baseline;
+   it does not by itself authorize or claim the final Task-2 checkpoint.
+
+2. Replace, rather than repair in place, the dirty Act-III A1 scaffold.  Apply
+   A4's binding order: first retain the Amendment-C lossless rejected-HR
+   replay, then apply the reference-filter design's Amendment A2 dispatch
+   (`CODE_BLOCK -> TRAVERSE_COPY_CODE_TEXT`, `PARA ->
+   LYRIC_DEFINITION_OPEN`, all other text-bearing tokens ->
+   `TRAVERSE_OPEN_TEXT`).  Delete the disconnected routes and the three
+   formerly reachable guard labels named by A2.  Keep only its existing
+   21-working / five-unreachable-spare Act-III reservation; do not create a
+   new title, alter Acts I/II/IV beyond Amendment C/D, alter token allocation,
+   change `scripts/splc`, or hand-edit `src/30-act3-span.spl` or
+   `shakedown.spl`.
+
+   Replace the dirty output-based rejected-candidate assertions with A2's
+   source-pop observer ledger: immediately before `LYRIC_POP_GLYPH`, it must
+   observe the original rejected paragraph bytes in source order followed by
+   its private `TEXT_END`.  The focused recovery gate is:
+
+   ```bash
+   uv run pytest tests/test_act2_slice2.py -q
+   uv run pytest tests/test_act3_contracts.py tests/test_splc_validate.py -q
+   ```
+
+   Expected: both commands pass, including `***both*** and **outer *inner*
+   outer**` without a protected-emphasis underflow, valid definition-only
+   paragraphs discarded, rejected candidates source-replayed, and code-block
+   payloads bypassing span scenes.
+
+3. Regenerate only through the prescribed build, then run the exact Task-2
+   checkpoint evidence without weakening it:
+
+   ```bash
+   uv run python -m scripts.splc
+   uv run python scripts/assemble.py
+   uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -k "(Amps and angle and encoding) or (Horizontal and rules)" -q
+   uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizontal rules'
+   ```
+
+   Require `summary: 2/2 byte-identical`.  The resulting checkpoint stages
+   only the Task-2 Act-II/III IR, their listed literary TOML, their regenerated
+   fragments, `shakedown.spl`, focused tests, this plan, and the two cited
+   accepted designs; commit `fix: preserve rejected block candidates` with
+   the required trailers and non-force push.  A residual dirty change outside
+   that list, any missing reserved title, a protected-mode underflow, a
+   changed rejected source-pop ledger, a failed generated/literary gate, or a
+   failed push is one new `- BLOCK[plan]:` line and stops the iteration.

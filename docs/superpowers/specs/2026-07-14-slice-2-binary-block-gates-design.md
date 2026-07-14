@@ -219,3 +219,29 @@ uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizo
 Require `summary: 2/2 byte-identical`. A changed accepted HR, rejected byte,
 entry-pair, title outside this six-plus-four pool, or an Act-III underflow
 after the exact `***both***` carrier contract is `BLOCK[plan]`.
+
+## Amendment D (2026-07-14): recovered working-tree boundary
+
+**Status:** accepted for the still-unchecked Slice-2 Task-2 checkpoint.  A
+failed, uncommitted attempt removed the already-reserved
+`PASS_HR_PAIR_RETURN` TOML entry while leaving its IR scene reachable.  This is
+not a request for a new literary surface, a new spare, or an Act-II grammar
+change.  Before running the generated/literary gate, restore the committed
+working adapter entry exactly:
+
+```toml
+[scenes.PASS_HR_PAIR_RETURN]
+title = "The iron measure returns by its faithful pair."
+pattern = "bare_statement"
+```
+
+The entry remains a *working* adapter under Amendment B, not a spare.  The
+implementation must preserve the adjacent six unused Amendment-B spare labels
+and the four Amendment-C spares.  It must not retain a deletion merely to make
+the local generated fragment appear current, and it must not invent a
+replacement title.
+
+This restoration is performed with the Task-2 rejection-replay repair and its
+existing proof sequence.  A missing entry after restoration is a direct
+literary-schema/generation failure; record `BLOCK[plan]` rather than adding a
+new title or changing the compiler.
