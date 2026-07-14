@@ -119,7 +119,7 @@ Lady Macbeth:
  Is Hecate as mighty as the product of a normal little furry black cat and a black cat?
 
 Puck:
- If so, let us proceed to scene @PASS_CODE_GATE.
+ If so, let us proceed to scene @PASS_HR_PAIR_RETURN.
 
 Lady Macbeth:
  Is Hecate as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
@@ -145,7 +145,7 @@ Lady Macbeth:
 
                     Scene @PASS_CODE_GATE: @LIT.scenes.PASS_CODE_GATE.title
 
-[Exit Puck]
+[Exit Hecate]
 
 [Enter Horatio]
 
@@ -156,7 +156,13 @@ Lady Macbeth:
  Are you as villainous as a furry black cat?
 
 Horatio:
- If so, let us proceed to scene @PASS_CODE_OPEN.
+ If so, let us proceed to scene @PASS_CODE_BLANK.
+
+Lady Macbeth:
+ Are you as mighty as the difference between nothing and the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_BLOCK_FINISH.
 
 [Exit Horatio]
 
@@ -168,24 +174,32 @@ Lady Macbeth:
 
                     Scene @PASS_CODE_GATE_READ: @LIT.scenes.PASS_CODE_GATE_READ.title
 
+Hecate:
+ Are you as horrid as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_CODE_CLOSE.
+
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.hewn_glyph
 
 Hecate:
- You are as rotten as the difference between yourself and a cat.
+ You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the sum of a little furry black cat and a black cat?
 
 Hecate:
  If so, let us proceed to scene @PASS_CODE_CONTINUE.
 
-[Exit Hecate]
+Lady Macbeth:
+ Are you as villainous as the product of a normal little furry black cat and a black cat?
 
-[Enter Puck]
+Hecate:
+ If so, we must return to scene @PASS_CODE_GATE.
 
 Lady Macbeth:
- Let us return to scene @PASS_HR_SAVE.
+ Let us proceed to scene @PASS_CODE_CLOSE.
 
 
                     Scene @PASS_CODE_CONTINUE: @LIT.scenes.PASS_CODE_CONTINUE.title
@@ -195,13 +209,10 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as villainous as the sum of yourself and a hero.
+ You are as villainous as the difference between nothing and the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
 
 Lady Macbeth:
- Are you as bold as a furry black cat?
-
-Horatio:
- If so, let us proceed to scene @PASS_CODE_OPEN.
+ Remember the sum of a little furry black cat and a black cat.
 
 [Exit Horatio]
 
@@ -356,6 +367,12 @@ Lady Macbeth:
 [Enter Hecate]
 
 Lady Macbeth:
+ Are you as mighty as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @PASS_CODE_GATE.
+
+Lady Macbeth:
  Let us proceed to scene @PASS_HR_REPLAY.
 
 
@@ -491,7 +508,7 @@ Macbeth:
  Remember the sum of a black cat and a cat.
 
 Lady Macbeth:
- You are as mighty as nothing.
+ You are as mighty as a wolf.
 
 [Exit Macbeth]
 
@@ -504,26 +521,36 @@ Lady Macbeth:
                     Scene @PASS_CODE_OPEN: @LIT.scenes.PASS_CODE_OPEN.title
 
 Lady Macbeth:
- You are as bold as a furry black cat.
+ @LIT.characters.lady_macbeth.recall.code_chamber_mark
+
+Lady Macbeth:
+ You are as villainous as the sum of yourself and a hero.
+
+Lady Macbeth:
+ Are you as mighty as nothing?
 
 Horatio:
- Remember the sum of a little furry black cat and a cat.
+ If so, let us proceed to scene @PASS_CODE_GLYPH.
+
+Horatio:
+ Remember the sum of a little furry black cat and a black cat.
+
+Lady Macbeth:
+ Let us return to scene @PASS_CODE_OPEN.
+
+
+                    Scene @PASS_CODE_BLANK: @LIT.scenes.PASS_CODE_BLANK.title
 
 [Exit Horatio]
 
 [Enter Hecate]
 
-Lady Macbeth:
- Let us proceed to scene @PASS_CODE_BLANK.
-
-
-                    Scene @PASS_CODE_BLANK: @LIT.scenes.PASS_CODE_BLANK.title
-
-Lady Macbeth:
- @LIT.characters.lady_macbeth.recall.hewn_glyph
-
 Hecate:
- You are as horrid as the difference between yourself and a cat.
+ Remember the sum of a little furry black cat and a cat.
+
+[Exit Hecate]
+
+[Enter Horatio]
 
 Lady Macbeth:
  Let us proceed to scene @PASS_CODE_GLYPH.
@@ -531,32 +558,12 @@ Lady Macbeth:
 
                     Scene @PASS_CODE_GLYPH: @LIT.scenes.PASS_CODE_GLYPH.title
 
-Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+[Exit Horatio]
+
+[Enter Hecate]
 
 Hecate:
- If so, let us proceed to scene @PASS_CODE_LINE_END.
-
-Hecate:
- Remember myself.
-
-Lady Macbeth:
- @LIT.characters.lady_macbeth.recall.hewn_glyph
-
-Hecate:
- You are as horrid as the difference between yourself and a cat.
-
-Lady Macbeth:
- Let us return to scene @PASS_CODE_GLYPH.
-
-
-                    Scene @PASS_CODE_LINE_END: @LIT.scenes.PASS_CODE_LINE_END.title
-
-Hecate:
- Remember nothing.
-
-Hecate:
- Are you as horrid as nothing?
+ Are you as rotten as nothing?
 
 Lady Macbeth:
  If so, let us proceed to scene @PASS_CODE_CLOSE.
@@ -571,42 +578,76 @@ Lady Macbeth:
  Are you as villainous as the sum of a little furry black cat and a black cat?
 
 Hecate:
- If so, let us proceed to scene @PASS_CODE_CLOSE.
-
-Lady Macbeth:
- Let us return to scene @PASS_HR_REPLAY.
-
-
-                    Scene @PASS_CODE_CLOSE: @LIT.scenes.PASS_CODE_CLOSE.title
+ If so, let us proceed to scene @PASS_CODE_LINE_END.
 
 Hecate:
- Are you as horrid as nothing?
-
-Lady Macbeth:
- If so, let us proceed to scene @PASS_LISTS_DONE.
-
-Lady Macbeth:
- Let us return to scene @PASS_LISTS_BLOCK_START.
-
-
-                    Scene @PASS_LISTS_BLOCK_BLANK: @LIT.scenes.PASS_LISTS_BLOCK_BLANK.title
+ Remember myself.
 
 [Exit Hecate]
 
 [Enter Horatio]
 
 Lady Macbeth:
- You are as villainous as nothing.
+ Let us return to scene @PASS_CODE_GLYPH.
+
+
+                    Scene @PASS_CODE_LINE_END: @LIT.scenes.PASS_CODE_LINE_END.title
+
+[Exit Hecate]
+
+[Enter Horatio]
 
 Horatio:
- Remember Hecate.
+ Remember the sum of a little furry black cat and a black cat.
+
+Lady Macbeth:
+ You are as villainous as the difference between nothing and the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Lady Macbeth:
+ Remember a wolf.
 
 [Exit Horatio]
 
 [Enter Hecate]
 
 Lady Macbeth:
- Let us return to scene @PASS_CODE_CLOSE.
+ Let us return to scene @PASS_CODE_GATE_READ.
+
+
+                    Scene @PASS_CODE_CLOSE: @LIT.scenes.PASS_CODE_CLOSE.title
+
+Lady Macbeth:
+ Is Macbeth as villainous as a wolf?
+
+Hecate:
+ If so, let us proceed to scene @PASS_LISTS_BLOCK_BLANK.
+
+Hecate:
+ Remember nothing.
+
+Hecate:
+ Are you as cursed as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_LISTS_DONE.
+
+Lady Macbeth:
+ Let us return to scene @PASS_HR_GATE.
+
+
+                    Scene @PASS_LISTS_BLOCK_BLANK: @LIT.scenes.PASS_LISTS_BLOCK_BLANK.title
+
+Hecate:
+ Remember myself.
+
+Hecate:
+ Are you as cursed as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_LISTS_DONE.
+
+Lady Macbeth:
+ Let us return to scene @PASS_LISTS_BLOCK_START.
 
 
                     Scene @PASS_LISTS_GATE_UNORDERED: @LIT.scenes.PASS_LISTS_GATE_UNORDERED.title
@@ -2444,14 +2485,14 @@ Lady Macbeth:
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.staged_stone
 
-Lady Macbeth:
- Are you as bold as nothing?
-
-Macbeth:
- If so, let us proceed to scene @PASS_BLOCK_FINISH.
-
 Macbeth:
  Remember myself.
+
+Lady Macbeth:
+ Are you as mighty as nothing?
+
+Macbeth:
+ If so, let us return to scene @PASS_PARA_NEXT.
 
 Lady Macbeth:
  Let us return to scene @PASS_BLOCK_REPLAY.
@@ -2459,11 +2500,34 @@ Lady Macbeth:
 
                     Scene @PASS_BLOCK_FINISH: @LIT.scenes.PASS_BLOCK_FINISH.title
 
-Macbeth:
- Remember nothing.
+[Exit Horatio]
+
+[Enter Hecate]
 
 Lady Macbeth:
- Let us return to scene @PASS_PARA_NEXT.
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as rotten as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as mighty as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @PASS_CODE_CONTINUE.
+
+Lady Macbeth:
+ Remember yourself.
+
+Hecate:
+ You are as horrid as the sum of yourself and a cat.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Lady Macbeth:
+ Let us return to scene @PASS_CODE_OPEN.
 
 
                     Scene @PASS_PARA_COPY_OPEN: @LIT.scenes.PASS_PARA_COPY_OPEN.title

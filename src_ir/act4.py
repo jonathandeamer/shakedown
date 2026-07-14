@@ -262,11 +262,10 @@ ACT: Act = act(
         scene(
             "SCRIBE_EMIT_CODE_GLYPH",
             pop(PUCK, recall="code_leaf_mark"),
-            branch(
-                eq(val(PUCK), const(tokens.TEXT_END)), then="SCRIBE_EMIT_CODE_CLOSE"
-            ),
+            branch(eq(val(PUCK), const(tokens.TEXT_END)), then="SCRIBE_LEAF_RETURN"),
             branch(eq(val(PUCK), const(38)), then="SCRIBE_EMIT_CODE_AMP"),
             branch(eq(val(PUCK), const(60)), then="SCRIBE_EMIT_CODE_ANGLE"),
+            branch(eq(val(PUCK), const(62)), then="SCRIBE_EMIT_CODE_CLOSE"),
             print_char(PUCK),
             goto("SCRIBE_EMIT_CODE_GLYPH"),
         ),
@@ -282,11 +281,12 @@ ACT: Act = act(
         ),
         scene(
             "SCRIBE_EMIT_CODE_CLOSE",
-            *_emit(10, *_bytes("</code></pre>")),
-            goto("SCRIBE_LEAF_RETURN"),
+            *_emit(*_bytes("&gt;")),
+            goto("SCRIBE_EMIT_CODE_GLYPH"),
         ),
         scene(
             "SCRIBE_LEAF_RETURN",
+            *_emit(*_bytes("</code></pre>")),
             branch(
                 eq(val(PROSPERO), const(DOCUMENT_EMPTY)), then="SCRIBE_OUTER_RELEASE"
             ),

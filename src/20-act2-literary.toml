@@ -538,3 +538,6 @@ pattern = "scene_of_character"
 [scenes.PASS_HR_REPLAY_CLOSE]
 title = "The doubtful iron line returns unbroken."
 pattern = "bare_statement"
+
+[characters.lady_macbeth.recall]
+code_chamber_mark = "Recall the indented chamber mark."

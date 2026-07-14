@@ -321,7 +321,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 
   Expected: FAIL.
 
-- [ ] **Step 2: Implement the code-block leaf path.**
+- [x] **Step 2: Implement the code-block leaf path.**
 
   Add a block-start four-space gate after list recognition. On success emit `CODE_BLOCK`, copy each line after exactly four spaces, retain blank lines inside the block, and close with `TEXT_END` when the next nonblank line has fewer than four spaces; replay that line for the next block decision. In Act IV add a direct `CODE_BLOCK` branch before paragraph/list handling; emit literal `<pre><code>`, scan payload only for `&`, `<`, `>`, emit literal `</code></pre>`, then apply the ordinary sibling-block separator. Do not add a new token code or an inline token.
 
