@@ -1914,6 +1914,132 @@ def test_read_blockers_includes_plan_tagged_lines(tmp_path: Path) -> None:
     )
 
 
+def test_parse_branch_blocker_accepts_valid_structured_line() -> None:
+    line = (
+        "- BLOCK[plan]: branch=topic; "
+        "head=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; "
+        "base=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; "
+        "request=review; detail=Need disposition."
+    )
+
+    assert mco_loop.parse_branch_blocker(line) == mco_loop.BranchBlocker(
+        "topic",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "review",
+        "Need disposition.",
+    )
+
+
+def test_parse_branch_blocker_rejects_missing_field() -> None:
+    line = (
+        "- BLOCK[plan]: branch=topic; "
+        "head=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; "
+        "base=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; "
+        "request=review"
+    )
+
+    assert mco_loop.parse_branch_blocker(line) is None
+
+
+def test_invalid_branch_blockers_rejects_invalid_request(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    line = (
+        "- BLOCK[plan]: branch=topic; "
+        "head=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; "
+        "base=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; "
+        "request=punt; detail=Need disposition."
+    )
+    monkeypatch.setattr(mco_loop, "_git_output", lambda args, repo=tmp_path: "")
+
+    failures = mco_loop.invalid_branch_blockers((line,), repo=tmp_path)
+
+    assert len(failures) == 1
+    assert "request" in failures[0]
+
+
+def test_invalid_branch_blockers_rejects_branch_head_and_base_mismatch(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    line = (
+        "- BLOCK[plan]: branch=topic; "
+        "head=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; "
+        "base=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; "
+        "request=supersede; detail=Need disposition."
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            ("rev-parse", "topic"): "cccccccccccccccccccccccccccccccccccccccc\n",
+            (
+                "merge-base",
+                "topic",
+                "main",
+            ): "dddddddddddddddddddddddddddddddddddddddd\n",
+        }.get(tuple(args), ""),
+    )
+
+    failures = mco_loop.invalid_branch_blockers((line,), repo=tmp_path)
+
+    assert len(failures) == 2
+    assert any("head" in failure for failure in failures)
+    assert any("base" in failure for failure in failures)
+
+
+def test_invalid_branch_blockers_preserves_legacy_planning_blocker(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    line = "- BLOCK[plan]: scanner needs a planning amendment"
+    monkeypatch.setattr(mco_loop, "_git_output", lambda args, repo=tmp_path: "")
+
+    assert mco_loop.invalid_branch_blockers((line,), repo=tmp_path) == ()
+
+
+def test_unregistered_planning_artifacts_returns_empty_when_none_found(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(mco_loop, "_git_output", lambda args, repo=tmp_path: "")
+
+    assert mco_loop.unregistered_planning_artifacts(tmp_path) == ()
+
+
+def test_unregistered_planning_artifacts_reports_untracked_plan_and_spec(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: (
+            "docs/superpowers/specs/example.md\n"
+            "README.md\n"
+            "docs/superpowers/plans/example.md\n"
+        ),
+    )
+
+    assert mco_loop.unregistered_planning_artifacts(tmp_path) == (
+        tmp_path / "docs/superpowers/plans/example.md",
+        tmp_path / "docs/superpowers/specs/example.md",
+    )
+
+
+def test_unregistered_planning_artifacts_excludes_ignored_agent_state(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: (
+            "docs/superpowers/plans/example.md\n.agent/mco-loop-state.json\n"
+        ),
+    )
+
+    assert mco_loop.unregistered_planning_artifacts(tmp_path) == (
+        tmp_path / "docs/superpowers/plans/example.md",
+    )
+
+
 def test_plan_tagged_blocker_routes_to_planning(tmp_path: Path) -> None:
     plan = tmp_path / "plan.md"
     plan.write_text("- [ ] Implement it\n")
