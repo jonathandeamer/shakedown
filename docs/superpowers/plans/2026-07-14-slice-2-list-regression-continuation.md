@@ -126,7 +126,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 Expected: every command exits zero. If a dirty handoff file prevents safe attribution, stop and record `- BLOCK[plan]:` rather than staging unrelated changes.
 
-- [ ] **Step 4: Commit and push the isolated repair.**
+- [x] **Step 4: Commit and push the isolated repair.**
 
 ```bash
 git add src_ir/act2.py src/20-act2-literary.toml tests/test_act2_slice2.py \
