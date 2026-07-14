@@ -81,6 +81,14 @@ _SLICE3_FIXTURES = {
     "Strong and em together",
 }
 
+_SLICE3_TASK3_FIXTURES = (
+    "Links, inline style",
+    "Links, reference style",
+    "Links, shortcut references",
+    "Images",
+    "Literal quotes in titles",
+)
+
 
 def _fixture_params() -> list[object]:
     """Return pytest params, skipping fixtures not yet shipped by the roadmap."""
@@ -165,3 +173,11 @@ def test_mdtest(name: str, input_path: Path, expected_path: Path) -> None:
         f"--- expected\n{norm_expected}\n"
         f"+++ actual (Binary)\n{norm_actual}"
     )
+
+
+@pytest.mark.parametrize("name", _SLICE3_TASK3_FIXTURES)
+def test_slice3_task3_fixture_red_contract(name: str) -> None:
+    input_path, expected_path = _FIXTURES_BY_NAME[name]
+    actual = _run_acts(input_path.read_text(), through_act=4)
+    assert isinstance(actual, str)
+    assert _normalize(actual) == _normalize(expected_path.read_text())
