@@ -63,10 +63,11 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
                 bool(kwargs.get("capture_output"))
                 or kwargs.get("stdout") == subprocess.PIPE
             )
+            stderr_to_stdout = kwargs.get("stderr") == subprocess.STDOUT
             capture_stderr = (
                 bool(kwargs.get("capture_output"))
                 or kwargs.get("stderr") == subprocess.PIPE
-            )
+            ) and not stderr_to_stdout
             text_mode = bool(
                 kwargs.get("text")
                 or kwargs.get("universal_newlines")
@@ -116,6 +117,9 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
                 else:
                     spl_path = Path(cmd).parent / "shakedown.spl"
 
+                if not spl_path.exists():
+                    return original_run(args, *p_args, **kwargs)
+
                 play_text = spl_path.read_text()
                 content_hash = hashlib.sha256(play_text.encode()).hexdigest()
                 cache_key = (spl_path, content_hash)
@@ -151,6 +155,9 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
 
             stdout_val = stdout_buf.getvalue()
             stderr_val = stderr_buf.getvalue()
+            if stderr_to_stdout:
+                stdout_val += stderr_val
+                stderr_val = ""
             if not capture_stdout:
                 sys.stdout.write(stdout_val)
             if not capture_stderr:
