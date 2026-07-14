@@ -171,7 +171,7 @@ pattern = "bare_statement"
 
   Expected: all selected tests PASS and `summary: 1/1 byte-identical`. The direct mdtest node is deliberately quoted; do not use `-k 'Hard-wrapped paragraphs'`, which pytest cannot parse.
 
-- [ ] **Step 2: Checkpoint the promotion without a production regeneration.** Run the global SPL gate and the enabled-fixture/spike regression; the green contract from Step 1 is the focused proof. Commit only `tests/test_act2_slice3.py`, `tests/test_slice3_medium_risk.py`, and `tests/test_mdtest.py` with `test: enable hard-wrapped paragraph fixture`, then push. If any command exposes a real Act-II divergence, append `- BLOCK[plan]:` and stop rather than applying the retired bounded-replay design.
+- [x] **Step 2: Checkpoint the promotion without a production regeneration.** Run the global SPL gate and the enabled-fixture/spike regression; the green contract from Step 1 is the focused proof. Commit only `tests/test_act2_slice3.py`, `tests/test_slice3_medium_risk.py`, and `tests/test_mdtest.py` with `test: enable hard-wrapped paragraph fixture`, then push. If any command exposes a real Act-II divergence, append `- BLOCK[plan]:` and stop rather than applying the retired bounded-replay design.
 
   Run:
 
@@ -287,3 +287,15 @@ also replaces the invalid `-k 'Hard-wrapped paragraphs'` expression with a
 valid identifier selector and a fully quoted mdtest node id. Task 2 makes no
 SPL-facing change, consumes none of its reserved literary labels, and leaves
 all later tasks unchanged.
+
+## Amendment A2 (2026-07-14): Task 2 Step 2 checkpoint reconciliation
+
+Task 2 Step 2's file delta landed on `main` as commit `1b1bdfb`
+(`test: promote hard-wrap baseline contracts`) before a later loop iteration
+attempted to mint the plan's narrower checkpoint message
+`test: enable hard-wrapped paragraph fixture`. By that point `HEAD` already
+matched `origin/main` for `tests/test_act2_slice3.py`,
+`tests/test_slice3_medium_risk.py`, and `tests/test_mdtest.py`, so a second
+checkpoint commit would have been empty. Rerun the Step 2 evidence gate, then
+treat the task as complete without fabricating a redundant commit and advance
+the loop to Task 3 Step 1.
