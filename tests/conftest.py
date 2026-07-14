@@ -1,6 +1,7 @@
 import contextlib
 import hashlib
 import io
+import locale
 import os
 import subprocess
 import sys
@@ -10,6 +11,7 @@ from typing import cast
 
 import pytest
 from shakespearelang import Shakespeare
+from shakespearelang._parser import shakespeareParser
 from tatsu.ast import AST
 
 _AST_CACHE: dict[tuple[Path, str], AST] = {}
@@ -57,62 +59,80 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
         )
 
         if is_shakedown and isinstance(cmd, str) and not is_blacklisted:
-            if wrapper_name in {"shakedown-dev", "shakedown-debug"}:
-                from scripts.assemble import assemble
-
-                root = Path(cmd).resolve().parent
-                debug = wrapper_name == "shakedown-debug"
-                assembled_path = (
-                    root / ".cache" / "shakedown-debug.spl"
-                    if debug
-                    else root / "shakedown.spl"
-                )
-                assembled_path.parent.mkdir(exist_ok=True)
-                assemble(
-                    src_dir=root / "src",
-                    manifest=root / "src" / "manifest.toml",
-                    output=assembled_path,
-                    parse_check=False,
-                    replace=(
-                        {"40-act4-emit.spl": root / "debug" / "40-act4-token-dump.spl"}
-                        if debug
-                        else None
-                    ),
-                )
-
-            env = cast(dict[str, str], kwargs.get("env", {}))
-            env_spl = env.get("SHAKEDOWN_SPL") or os.environ.get("SHAKEDOWN_SPL")
-            if env_spl:
-                spl_path = Path(env_spl)
-            elif wrapper_name == "shakedown-debug":
-                spl_path = Path(cmd).parent / ".cache" / "shakedown-debug.spl"
-            else:
-                spl_path = Path(cmd).parent / "shakedown.spl"
-
-            if not spl_path.exists():
-                return original_run(args, *p_args, **kwargs)
-
-            play_text = spl_path.read_text()
-            content_hash = hashlib.sha256(play_text.encode()).hexdigest()
-            cache_key = (spl_path, content_hash)
-            if cache_key not in _AST_CACHE:
-                temp_interpreter = Shakespeare(play_text)
-                _AST_CACHE[cache_key] = temp_interpreter.parser.parse(play_text, "play")
-            play_ast = _AST_CACHE[cache_key]
-
-            input_data = kwargs.get("input", "")
-            is_bytes = isinstance(input_data, bytes)
-            input_str = (
-                input_data.decode("utf-8", errors="replace")
-                if is_bytes
-                else input_data or ""
+            capture_stdout = (
+                bool(kwargs.get("capture_output"))
+                or kwargs.get("stdout") == subprocess.PIPE
             )
-
-            stdin_buf = io.StringIO(cast(str, input_str))
+            capture_stderr = (
+                bool(kwargs.get("capture_output"))
+                or kwargs.get("stderr") == subprocess.PIPE
+            )
+            text_mode = bool(
+                kwargs.get("text")
+                or kwargs.get("universal_newlines")
+                or kwargs.get("encoding")
+                or kwargs.get("errors")
+            )
+            encoding = cast(str | None, kwargs.get("encoding")) or locale.getencoding()
+            errors = cast(str | None, kwargs.get("errors")) or "strict"
             stdout_buf = io.StringIO()
             stderr_buf = io.StringIO()
             exit_code = 0
+            execution_started = False
             try:
+                if wrapper_name in {"shakedown-dev", "shakedown-debug"}:
+                    from scripts.assemble import assemble
+
+                    root = Path(cmd).resolve().parent
+                    debug = wrapper_name == "shakedown-debug"
+                    assembled_path = (
+                        root / ".cache" / "shakedown-debug.spl"
+                        if debug
+                        else root / "shakedown.spl"
+                    )
+                    assembled_path.parent.mkdir(exist_ok=True)
+                    assemble(
+                        src_dir=root / "src",
+                        manifest=root / "src" / "manifest.toml",
+                        output=assembled_path,
+                        parse_check=False,
+                        replace=(
+                            {
+                                "40-act4-emit.spl": (
+                                    root / "debug" / "40-act4-token-dump.spl"
+                                )
+                            }
+                            if debug
+                            else None
+                        ),
+                    )
+
+                env = cast(dict[str, str], kwargs.get("env", {}))
+                env_spl = env.get("SHAKEDOWN_SPL") or os.environ.get("SHAKEDOWN_SPL")
+                if env_spl:
+                    spl_path = Path(env_spl)
+                elif wrapper_name == "shakedown-debug":
+                    spl_path = Path(cmd).parent / ".cache" / "shakedown-debug.spl"
+                else:
+                    spl_path = Path(cmd).parent / "shakedown.spl"
+
+                play_text = spl_path.read_text()
+                content_hash = hashlib.sha256(play_text.encode()).hexdigest()
+                cache_key = (spl_path, content_hash)
+                if cache_key not in _AST_CACHE:
+                    _AST_CACHE[cache_key] = shakespeareParser().parse(
+                        play_text, rule_name="play"
+                    )
+                play_ast = _AST_CACHE[cache_key]
+
+                input_data = kwargs.get("input", "")
+                input_str = (
+                    input_data.decode(encoding, errors=errors)
+                    if isinstance(input_data, bytes)
+                    else cast(str, input_data or "")
+                )
+                stdin_buf = io.StringIO(input_str)
+                execution_started = True
                 with (
                     contextlib.redirect_stdout(stdout_buf),
                     contextlib.redirect_stderr(stderr_buf),
@@ -125,24 +145,42 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
                     finally:
                         sys.stdin = old_stdin
             except Exception as error:
-                stderr_buf.write(f"SPL runtime error: {error}\n")
+                phase = "runtime" if execution_started else "preparation"
+                stderr_buf.write(f"SPL {phase} error: {error}\n")
                 exit_code = 1
 
             stdout_val = stdout_buf.getvalue()
             stderr_val = stderr_buf.getvalue()
-            if is_bytes:
-                stdout_res: str | bytes = stdout_val.encode("utf-8")
-                stderr_res: str | bytes = stderr_val.encode("utf-8")
+            if not capture_stdout:
+                sys.stdout.write(stdout_val)
+            if not capture_stderr:
+                sys.stderr.write(stderr_val)
+            if text_mode:
+                stdout_res: str | bytes | None = stdout_val if capture_stdout else None
+                stderr_res: str | bytes | None = stderr_val if capture_stderr else None
             else:
-                stdout_res = stdout_val
-                stderr_res = stderr_val
+                stdout_res = (
+                    stdout_val.encode(encoding, errors=errors)
+                    if capture_stdout
+                    else None
+                )
+                stderr_res = (
+                    stderr_val.encode(encoding, errors=errors)
+                    if capture_stderr
+                    else None
+                )
 
-            return subprocess.CompletedProcess(
+            result = subprocess.CompletedProcess(
                 args=args,
                 returncode=exit_code,
                 stdout=stdout_res,
                 stderr=stderr_res,
             )
+            if exit_code and kwargs.get("check"):
+                raise subprocess.CalledProcessError(
+                    exit_code, args, output=stdout_res, stderr=stderr_res
+                )
+            return result
 
         return original_run(args, *p_args, **kwargs)
 

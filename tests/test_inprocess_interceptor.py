@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 import pytest
-from shakespearelang import Shakespeare
+from shakespearelang._parser import shakespeareParser
 from tatsu.ast import AST
 
 MINIMAL_VALID_PLAY = """\
@@ -56,14 +56,16 @@ def test_repeated_wrapper_calls_parse_each_play_hash_once(
     tmp_path: Path,
 ) -> None:
     parse_calls = 0
-    original_parse = Shakespeare.parse
+    original_parse = shakespeareParser.parse
 
-    def counting_parse(self: Shakespeare, item: str, rule_name: str) -> AST:
+    def counting_parse(
+        self: shakespeareParser, item: str, rule_name: str = "start"
+    ) -> AST:
         nonlocal parse_calls
         parse_calls += 1
-        return original_parse(self, item, rule_name)
+        return original_parse(self, item, rule_name=rule_name)
 
-    monkeypatch.setattr(Shakespeare, "parse", counting_parse)
+    monkeypatch.setattr(shakespeareParser, "parse", counting_parse)
     play_path = tmp_path / "valid.spl"
     play_path.write_text(MINIMAL_VALID_PLAY)
 
@@ -80,3 +82,67 @@ def test_repeated_wrapper_calls_parse_each_play_hash_once(
         assert result.returncode == 0
 
     assert parse_calls == 1
+
+
+def test_invalid_override_play_returns_captured_preparation_error(
+    tmp_path: Path,
+) -> None:
+    invalid_play = tmp_path / "invalid.spl"
+    invalid_play.write_text("this is not a valid play")
+
+    result = subprocess.run(
+        [str(Path.cwd() / "shakedown")],
+        input="",
+        capture_output=True,
+        text=True,
+        check=False,
+        env={**os.environ, "SHAKEDOWN_SPL": str(invalid_play)},
+    )
+
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert result.stderr is not None
+    assert "SPL preparation error:" in result.stderr
+
+
+def test_captured_result_type_follows_subprocess_text_mode(tmp_path: Path) -> None:
+    play_path = tmp_path / "valid.spl"
+    play_path.write_text(MINIMAL_VALID_PLAY)
+
+    text_result = subprocess.run(
+        [str(Path.cwd() / "shakedown")],
+        input=b"",
+        check=False,
+        env={**os.environ, "SHAKEDOWN_SPL": str(play_path)},
+        capture_output=True,
+        text=True,
+    )
+    bytes_result = subprocess.run(
+        [str(Path.cwd() / "shakedown")],
+        input="",
+        check=False,
+        env={**os.environ, "SHAKEDOWN_SPL": str(play_path)},
+        capture_output=True,
+    )
+
+    assert isinstance(text_result.stdout, str)
+    assert isinstance(text_result.stderr, str)
+    assert isinstance(bytes_result.stdout, bytes)
+    assert isinstance(bytes_result.stderr, bytes)
+
+
+def test_uncaptured_wrapper_result_does_not_fabricate_output(tmp_path: Path) -> None:
+    play_path = tmp_path / "valid.spl"
+    play_path.write_text(MINIMAL_VALID_PLAY)
+
+    result = subprocess.run(
+        [str(Path.cwd() / "shakedown")],
+        input="",
+        text=True,
+        check=False,
+        env={**os.environ, "SHAKEDOWN_SPL": str(play_path)},
+    )
+
+    assert result.returncode == 0
+    assert result.stdout is None
+    assert result.stderr is None
