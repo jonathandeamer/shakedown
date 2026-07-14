@@ -2111,9 +2111,17 @@ graph.
 
 **Produces:** A recorded confirmed-or-halted Act III model and exactly one updated roadmap state.
 
-- [ ] **Step 1: Record measured program and feedback-loop evidence.**
+- [x] **Step 1: Record measured program and feedback-loop evidence.**
 
   Record generated line/scene counts for `src/30-act3-span.spl`, one cold run and three representative runs of `variable_code_spans`, and the wall time of the shipped-fixture/spike regression command. Compare the measurements against `docs/performance/budget.md` yellow/red thresholds; do not infer performance from line count alone.
+
+  **Measured 2026-07-14 (macOS darwin 23.6.0, `./shakedown` release entry, `shakespeare` = `~/.local/bin/shakespeare`):**
+
+  - **Generated program size:** `src/30-act3-span.spl` = 4987 lines, 226 scenes (`grep -cE '^\s*Scene ' src/30-act3-span.spl`). Recorded per the plan's "do not infer performance from line count alone" caution — measured wall times below are the real signal.
+  - **`variable_code_spans` (input `` `` a ` b `` and `x & <y>` ``, single small fixture):** cold run 14.01s real; three representative runs 13.92s / 13.91s / 14.14s real (median ~13.92s). All runs byte-identical to `variable_code_spans.expected`. Against `docs/performance/budget.md` §Planning Thresholds "Single small fixture" (Green ≤10s, Yellow ≤30s, Red >30s): **Yellow**. Consistent with B20 (~11s fixed program cost + input scaling) on a 25-byte input; the Act III span growth adds no cold-startup surprise.
+  - **Shipped-fixture/spike regression command** `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_mdtest.py -q -n auto`: 187.07s wall (3:07), 47 passed / 22 skipped, exit 0. Against the "Full 23-fixture contract" band (Green ≤5m, Yellow ≤15m): **Green**. Aligns with B21's adopted `-n auto` acceleration for the spikes/token_dump suite, now including the 23-fixture mdtest contract.
+
+  No measured claim in `docs/verification-plan.md` changes: the small-fixture Yellow band and the ~11s fixed cost are already recorded (B14/B20/B21); these numbers reconfirm them for the shipped Act III span program.
 
 - [ ] **Step 2: Run the completion gate.**
 
