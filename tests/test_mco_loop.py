@@ -1988,6 +1988,34 @@ def test_invalid_branch_blockers_rejects_branch_head_and_base_mismatch(
     assert any("base" in failure for failure in failures)
 
 
+def test_invalid_branch_blockers_rejects_branch_name_mismatch(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    line = (
+        "- BLOCK[plan]: branch=topic; "
+        "head=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; "
+        "base=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; "
+        "request=review; detail=Need disposition."
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: {
+            ("rev-parse", "topic"): "",
+            (
+                "merge-base",
+                "topic",
+                "main",
+            ): "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n",
+        }.get(tuple(args), ""),
+    )
+
+    failures = mco_loop.invalid_branch_blockers((line,), repo=tmp_path)
+
+    assert len(failures) == 1
+    assert "branch" in failures[0]
+
+
 def test_invalid_branch_blockers_preserves_legacy_planning_blocker(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -2005,21 +2033,30 @@ def test_unregistered_planning_artifacts_returns_empty_when_none_found(
     assert mco_loop.unregistered_planning_artifacts(tmp_path) == ()
 
 
-def test_unregistered_planning_artifacts_reports_untracked_plan_and_spec(
+def test_unregistered_planning_artifacts_reports_untracked_plan(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     monkeypatch.setattr(
         mco_loop,
         "_git_output",
-        lambda args, repo=tmp_path: (
-            "docs/superpowers/specs/example.md\n"
-            "README.md\n"
-            "docs/superpowers/plans/example.md\n"
-        ),
+        lambda args, repo=tmp_path: "README.md\ndocs/superpowers/plans/example.md\n",
     )
 
     assert mco_loop.unregistered_planning_artifacts(tmp_path) == (
         tmp_path / "docs/superpowers/plans/example.md",
+    )
+
+
+def test_unregistered_planning_artifacts_reports_untracked_spec(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(
+        mco_loop,
+        "_git_output",
+        lambda args, repo=tmp_path: "docs/superpowers/specs/example.md\nREADME.md\n",
+    )
+
+    assert mco_loop.unregistered_planning_artifacts(tmp_path) == (
         tmp_path / "docs/superpowers/specs/example.md",
     )
 
