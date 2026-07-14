@@ -355,7 +355,7 @@ Evidence re-run on 2026-07-14:
 - `uv run pytest tests/test_splc_interpret_parity.py -k flat_unordered_tight -q` failed with the same fast-interpreter dump mismatch.
 - `uv run pytest tests/test_architecture_spikes.py -k flat_unordered_tight -q` failed because the rendered output was `<p><em>alpha\n</em> beta\n* gamma</p>\n` instead of the expected `<ul>` list HTML.
 
-- [ ] **Step 2: Add a source-level regression assertion for the consumed-marker handoff.**
+- [x] **Step 2: Add a source-level regression assertion for the consumed-marker handoff.**
 
 In `tests/test_act2_slice2.py`, add a focused assertion that loads the Act-II
 scene labels and requires the HR non-match path for `*`/`-` to target the
@@ -371,6 +371,13 @@ uv run pytest tests/test_act2_slice2.py -k unordered_list_handoff -q
 
 Expected: FAIL because the current non-HR fallback sends `*` to
 `PASS_CODE_REPLAY` and loses the separator-aware list handoff.
+
+Implemented in the current branch state via
+`test_hr_candidate_fallback_preserves_unordered_list_handoff`. Evidence re-run
+on 2026-07-14:
+- `uv run pytest tests/test_act2_slice2.py -k unordered_list_handoff -q`
+  failed as expected, asserting `marker_targets[42] == "PASS_HR_FALLBACK_LIST_HANDOFF"`
+  but observing `PASS_CODE_REPLAY`.
 
 - [ ] **Step 3: Repair the handoff in authored IR and regenerate only from source.**
 
