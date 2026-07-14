@@ -1,6 +1,6 @@
 # MCO Autonomous Loop Details
 
-**Last Updated:** 2026-07-12
+**Last Updated:** 2026-07-14
 
 This document provides a detailed reference for the MCO-backed autonomous roadmap execution loop in this repository. Use this guide to understand how it operates, how to monitor it, and how to troubleshoot or interact with it.
 
@@ -34,6 +34,14 @@ graph TD
 * **Roadmap Parsing**: [parse_roadmap](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L180) extracts row statuses from [plan-roadmap.md](file:///Users/jonathan/shakedown/docs/superpowers/plans/plan-roadmap.md).
 * **Blocker Check**: [read_blockers](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L208) reads [.agent/blockers.md](file:///Users/jonathan/shakedown/.agent/blockers.md). Any line matching `- BLOCK:` halts normal execution and forces the supervisor into a `FIX` role to resolve it.
 * **Step Selection**: [determine_next_action](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L235) finds the first unchecked checkbox (`- [ ]`) in the active plan. If the description matches planning words (e.g. `write spec` or `reserve literary`), the action kind becomes `PLAN`; otherwise, it is `IMPLEMENT`.
+
+Before ordinary roadmap selection runs, [canonical_action](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L444) applies three reconciliation fences in fixed order:
+
+1. invalid structured branch blockers become a `FIX` action;
+2. untracked planning artifacts under `docs/superpowers/plans/` or `docs/superpowers/specs/` become a `PLAN` action;
+3. unresolved unmerged-branch inventory becomes a `PLAN` action.
+
+Only when all three fences are clear does the loop dispatch the next normal roadmap step.
 
 ---
 
@@ -161,7 +169,29 @@ Running `./agent-loop --govern` executes a read-only review on the governor tier
 
 Blockers tagged `- BLOCK[plan]:` in `.agent/blockers.md` route to the planning pool (`ActionKind.PLAN`) instead of the fix path, so planner-only halts are amended by planning models rather than re-recorded by implementation models. Untagged `- BLOCK:` lines keep the existing fix routing.
 
+Structured branch-reconciliation blockers are a stricter planner-only subset. Their grammar is:
+
+```text
+- BLOCK[plan]: branch=<branch>; head=<40-hex sha>; base=<40-hex sha>; request=<review|integrate|supersede>; detail=<free text>
+```
+
+Only lines with the exact `branch=...; head=...; base=...; request=...; detail=...` field set are parsed as structured blockers. The supervisor validates the branch head with `git rev-parse` and the recorded merge base with `git merge-base <branch> main`. A malformed line, unsupported `request`, or mismatched head/base is not treated as planning work; it becomes an immediate `FIX` action so the operator-visible blocker context cannot silently drift.
+
 The supervisor also tracks blocker persistence in `.agent/mco-loop-state.json` (`blocker_escalation`): after `BLOCKER_ESCALATION_THRESHOLD` (3) consecutive substantive invocations that leave the identical blocker set in place, the next iteration is forced to an escalated planning amendment on the `[[escalation]]` tier. Availability failures (rate limits, transient errors, supervisor timeouts) do not advance the counter. Exactly one escalated attempt is allowed per blocker signature; if the same blockers survive it, the loop exits `6` and asks for an operator decision.
+
+## 5b. Branch Disposition Ledger and Artifact Fence
+
+Unmerged local branches are tracked in [.agent/branch-dispositions.toml](file:///Users/jonathan/shakedown/.agent/branch-dispositions.toml). The ledger is intentionally committed even though the rest of `.agent/` remains runtime state. Each entry records:
+
+* `head`: required 40-character commit SHA for the reviewed branch tip.
+* `disposition`: one of `review`, `preserve`, `superseded`, or `integrated`.
+* `reason`: non-empty operator-readable evidence for that disposition.
+
+The loop inventories local heads with `git for-each-ref`, ignores only branches already merged into `main`, and compares every remaining branch against the ledger. It routes to the planning pool when any unmerged branch is missing from the ledger, still marked `review`, has a ledger/head mismatch, or exists in the ledger but no longer exists locally. This is an audit fence, not a merge assistant: branch deletion, rebasing, or merging are never performed automatically.
+
+Planning artifacts have a parallel fence. Any non-ignored untracked file under `docs/superpowers/plans/` or `docs/superpowers/specs/` becomes a planner action until it is either committed intentionally or removed intentionally. Ignored runtime files such as `.agent/mco-loop-state.json` are excluded.
+
+Failed planning actions remain planning work. [apply_failure_action](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L1472) now preserves `ActionKind.PLAN` after `backend_failure` and `no_progress` outcomes; only ordinary implementation/fix actions are rewritten into bounded recovery `FIX` work.
 
 ---
 
@@ -182,6 +212,17 @@ tail -f .agent/loop.log
 * Check status: `./agent-loop --status`
 * Dry run (inspect next step/model selection): `./agent-loop --dry-run`
 * Check supervisor state: `cat .agent/mco-loop-state.json`
+
+### Safe Operator Reconciliation Workflow
+
+When the loop reports reconciliation work, use this order:
+
+1. Inspect the cited branch or artifact state without mutating history.
+2. Record or update the terminal branch disposition in `.agent/branch-dispositions.toml`, or fix the structured blocker line in `.agent/blockers.md`.
+3. Commit the documentation/ledger change with the required provenance trailers.
+4. Run `./agent-loop --dry-run` and confirm the next action is the expected planner or roadmap action.
+
+Do not delete a branch merely to satisfy inventory, and do not treat a stale ledger head as implicit approval to merge or discard work. The ledger is the durable decision record; the dry run is the confirmation that the loop now agrees with that record.
 
 ### Exit Statuses
 

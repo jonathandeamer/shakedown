@@ -296,9 +296,11 @@ Implemented by pushed commits `1ee3bd5` (`feat: fence ambiguous mco reconciliati
 - The ordinary loop dry run reports a planner action for an unresolved review and normal active-plan action only with terminal ledger entries and no unregistered planning artifacts.
 - After this plan ships, Slice 2 remains halted until an operator-approved fresh plan marks it in flight.
 
-- [ ] **Step 1: Add the operational documentation.**
+- [x] **Step 1: Add the operational documentation.**
 
 Document the ledger location, allowed dispositions, structured blocker grammar, unregistered-artifact fence, and the rule that a failed planning action remains planning work.  Include the safe operator workflow: inspect → record disposition → commit → `./agent-loop --dry-run`; never delete a branch merely to satisfy the inventory.
+
+Implemented by updating `docs/2026-07-12-mco-loop-details.md`. Evidence re-run on 2026-07-14: `uv run pytest tests/test_mco_loop.py -q` (111 passed), `uv run ruff check .`, and `uv run pyright` all exited zero.
 
 - [ ] **Step 2: Run the complete evidence gate.**
 
