@@ -1530,6 +1530,65 @@ ledger is sufficient for lowering.
 4. Only after Step 3 is green resume Task 4 Step 3's unchanged full spike
    evidence command.
 
+## Amendment A19 (2026-07-14): source-aware goto staging
+
+Post-A18 regeneration exposed a runtime compiler-lowering defect rather than
+another protected-region algorithm defect.  SPL transfers immediately on a
+goto: directions placed after the jump do not execute, while directions
+blindly placed before it can exit the jump speaker.  The first form failed at
+runtime with `Juliet is not on stage!`; the second form then failed with
+`Puck is not on stage!`.  The accepted [A19 source-aware goto-staging
+design](../specs/2026-07-14-act3-two-person-reconstruction-design.md#amendment-a19-2026-07-14-source-aware-goto-staging-and-disconnected-entry-bridges)
+is binding for this still-unchecked Task 4 Step 3 and supersedes A18's
+assumption that passing `entry_pairs()` is sufficient to execute the lowered
+graph.
+
+1. First add A19's two compiler-focused tests in `tests/test_splc_validate.py`:
+   one proves that a non-surviving source anchor hands its goto speech to the
+   companion who survives into the target entry pair, with directions before
+   that speech; one proves `validate()` rejects a disconnected goto edge with
+   both labels in its diagnostic.  Extend the existing A17/A18 Act-III
+   contract map with the exact fourteen A19 adapter pairs and prove its five
+   reserved spares are absent.  Run:
+
+   ```bash
+   uv run pytest tests/test_splc_validate.py tests/test_act3_contracts.py -q
+   ```
+
+   Expected before implementation: the new lowering/validation tests fail;
+   the existing A17/A18 structural tests remain green.
+
+2. Implement only A19's binding compiler contract in
+   `scripts/splc/validate.py` and `scripts/splc/lower.py`: compute the full
+   entry mapping before checking gotos; reject a disjoint source/entry pair;
+   emit every differing-pair goto's stage directions before its jump; and
+   select a source-stage speaker that survives into the target entry pair,
+   preferring the source anchor.  Do not recompute target pairs in the lowerer
+   or emit a direction after a jump.  Add only the seven ledgered two-hop
+   chains (fourteen no-op terminal-goto scenes), the seven listed source
+   redirects, and the fourteen ready-to-paste A19 TOML working reservations.
+   Do not consume an A19 spare or add an operation, Recall, sentinel,
+   selector, carrier, token code, output byte, or fallback to a bridge.
+
+3. Run the A19 proof sequence exactly as specified in the accepted design:
+
+   ```bash
+   uv run pytest tests/test_splc_validate.py tests/test_act3_contracts.py tests/test_splc_interpret_parity.py -q
+   uv run python -m scripts.splc
+   uv run python scripts/assemble.py
+   uv run pytest tests/test_token_dump.py::test_debug_target_dumps_integer_token_stream tests/test_splc_generated_fragments.py -q
+   uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+   ```
+
+   Expected: no stage runtime error; the debug target emits integer tokens;
+   generated fragments and the strict Amps gate pass.  A newly discovered
+   disconnected edge, a bridge that must move data, or a carrier/byte failure
+   is `BLOCK[plan]`; it does not authorize an A19 spare, an unplanned compiler
+   rewrite, or a hand edit of generated SPL.
+
+4. Only after Step 3 is green resume Task 4 Step 3's unchanged full spike
+   evidence command.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**

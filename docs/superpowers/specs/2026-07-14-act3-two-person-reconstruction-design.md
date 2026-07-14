@@ -282,3 +282,154 @@ uv run pytest tests/test_splc_generated_fragments.py tests/test_literary_complia
 Expected: PASS.  If another `entry_pairs` conflict appears, or any adapter
 requires an operation beyond a terminal `goto`, record `BLOCK[plan]`; do not
 consume an A18 spare, alter the validator, or hand-edit generated SPL.
+
+## Amendment A19 (2026-07-14): source-aware goto staging and disconnected-entry bridges
+
+The A18 graph validates and renders, but its generated SPL reaches a runtime
+stage error.  The cause is a compiler contract that A18 did not cover:
+`goto` transfers control immediately, so directions emitted after its speech
+are unreachable; directions emitted before it may not remove the character
+who must speak the jump.  The failed post-A18 experiment demonstrated both
+halves (`Juliet is not on stage!` with post-goto directions, then `Puck is not
+on stage!` with unconditional pre-goto directions).  This amendment changes
+only splc's stage choreography and adds no Markdown, stack, token, selector,
+or carrier behavior.
+
+### Binding lowering contract
+
+`entry_pairs()` remains the static stage pair at the first executable line of
+a target scene.  A branch arrives with its source pair (hence A18's
+normalization requirement).  A goto arrives with the target's recorded entry
+pair.  For every goto with distinct source and entry pairs, lower the
+directions **before** the jump sentence, choose a currently staged speaker
+that survives into the entry pair, and then emit that speaker's jump.  Prefer
+the source scene anchor when it survives; otherwise choose the surviving
+source-pair member in declaration order.  Scene-start directions still adapt
+the recorded entry pair to the target scene's own operation pair.
+
+`validate.py` must reject every goto whose source pair and target entry pair
+are disjoint, naming both labels and pairs.  It must make this check only
+after branch entries and goto-only defaults have been established, so the
+diagnostic describes the lowered graph rather than a partial traversal.
+`lower.py` must consume the validated entry mapping; it must not recompute a
+target pair or emit directions after any jump sentence.
+
+### A19 disconnected-entry ledger
+
+The following are the exhaustive disjoint goto edges in the current post-A18
+Act III graph.  Each source is redirected to its `HEAD`; `HEAD` is a no-op
+terminal-goto scene whose pair retains the source anchor and introduces the
+first character of the target entry pair.  `TAIL` is another no-op
+terminal-goto scene with the target entry pair and jumps to the original
+target.  This creates two legal pre-jump handoffs without changing data.
+The two `LYRIC_*_REQUEUE` sources share the same FIELD_RETRY chain.
+
+| Redirect source goto(s) | HEAD pair | TAIL pair / original target |
+|---|---|---|
+| `LYRIC_CODE_TICKS` → `LYRIC_CODE_TICKS` | `LYRIC_GOTO_CODE_TICKS_HEAD` `(JULIET, ROMEO)` | `LYRIC_GOTO_CODE_TICKS_TAIL` `(ROMEO, PUCK)` → `LYRIC_CODE_TICKS` |
+| `LYRIC_HTML_OPEN` → `LYRIC_HTML_OPEN_REQUEUE` | `LYRIC_GOTO_HTML_REQUEUE_HEAD` `(JULIET, PUCK)` | `LYRIC_GOTO_HTML_REQUEUE_TAIL` `(PUCK, ROMEO)` → `LYRIC_HTML_OPEN_REQUEUE` |
+| `LYRIC_HTML_OPEN_REQUEUE`, `LYRIC_AUTOLINK_OPEN_REQUEUE` → `LYRIC_FIELD_RETRY` | `LYRIC_GOTO_FIELD_RETRY_HEAD` `(PUCK, HECATE)` | `LYRIC_GOTO_FIELD_RETRY_TAIL` `(HECATE, PROSPERO)` → `LYRIC_FIELD_RETRY` |
+| `LYRIC_AUTOLINK_OPEN` → `LYRIC_AUTOLINK_OPEN_DUPLICATE` | `LYRIC_GOTO_AUTOLINK_DUP_HEAD` `(JULIET, LADY_MACBETH)` | `LYRIC_GOTO_AUTOLINK_DUP_TAIL` `(LADY_MACBETH, ROMEO)` → `LYRIC_AUTOLINK_OPEN_DUPLICATE` |
+| `LYRIC_FIELD_RETRY` → `LYRIC_FIELD_OPEN` | `LYRIC_GOTO_FIELD_OPEN_HEAD` `(HECATE, ROMEO)` | `LYRIC_GOTO_FIELD_OPEN_TAIL` `(ROMEO, MACBETH)` → `LYRIC_FIELD_OPEN` |
+| `LYRIC_FIELD_UNTERMINATED` → `LYRIC_FIELD_UNTERMINATED_LINK` | `LYRIC_GOTO_FIELD_UNTERMINATED_HEAD` `(PUCK, JULIET)` | `LYRIC_GOTO_FIELD_UNTERMINATED_TAIL` `(JULIET, HECATE)` → `LYRIC_FIELD_UNTERMINATED_LINK` |
+| `LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD` → `LYRIC_EMPHASIS_SEEK` | `LYRIC_GOTO_EMPHASIS_SEEK_HEAD` `(ROMEO, PUCK)` | `LYRIC_GOTO_EMPHASIS_SEEK_TAIL` `(PUCK, HECATE)` → `LYRIC_EMPHASIS_SEEK` |
+
+### A19 controlled reservation (ready to paste)
+
+Add exactly these fourteen working labels to `src/30-act3-literary.toml`.
+They are stage-only scenes: no Recall entries are required.  The five spares
+are unavailable without a further planning amendment.
+
+```toml
+[scenes.LYRIC_GOTO_CODE_TICKS_HEAD]
+title = "Juliet yields the silver mark to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_CODE_TICKS_TAIL]
+title = "Romeo bears the silver mark to Puck."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_HTML_REQUEUE_HEAD]
+title = "Juliet carries the moonlit gate to Puck."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_HTML_REQUEUE_TAIL]
+title = "Puck bears the moonlit gate to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_FIELD_RETRY_HEAD]
+title = "Puck leads the guarded field to Hecate."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_FIELD_RETRY_TAIL]
+title = "Hecate bears the guarded field to Prospero."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_AUTOLINK_DUP_HEAD]
+title = "Juliet gives the shining road to Lady Macbeth."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_AUTOLINK_DUP_TAIL]
+title = "Lady Macbeth bears the shining road to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_FIELD_OPEN_HEAD]
+title = "Hecate opens the guarded field to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_FIELD_OPEN_TAIL]
+title = "Romeo brings the guarded field to Macbeth."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_FIELD_UNTERMINATED_HEAD]
+title = "Puck carries the unfinished field to Juliet."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_FIELD_UNTERMINATED_TAIL]
+title = "Juliet brings the unfinished field to Hecate."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_EMPHASIS_SEEK_HEAD]
+title = "Romeo yields the wandering star to Puck."
+pattern = "scene_of_character"
+[scenes.LYRIC_GOTO_EMPHASIS_SEEK_TAIL]
+title = "Puck bears the wandering star to Hecate."
+pattern = "scene_of_character"
+
+# A19 spare pool — do not use without another planning amendment.
+[scenes.LYRIC_GOTO_FIELD_GUARD]
+title = "The guarded field keeps its gentle passage."
+pattern = "bare_statement"
+[scenes.LYRIC_GOTO_REQUEUE_GUARD]
+title = "The private path keeps its gentle passage."
+pattern = "bare_statement"
+[scenes.LYRIC_GOTO_EMPHASIS_GUARD]
+title = "The wandering star keeps its gentle passage."
+pattern = "bare_statement"
+[scenes.LYRIC_GOTO_REGION_GUARD]
+title = "The rose-path keeps its gentle passage."
+pattern = "bare_statement"
+[scenes.LYRIC_GOTO_LAST_GUARD]
+title = "The last bright path keeps its gentle passage."
+pattern = "bare_statement"
+```
+
+### Required implementation and proof
+
+1. In `tests/test_splc_validate.py`, add a minimal two-scene mixed-entry act
+   that makes a goto source anchor non-surviving but leaves its companion in
+   the target entry pair.  Assert the lowered fragment orders the exit/enter
+   directions before `Puck:`'s goto line and never gives that line to the
+   exited anchor.  Add a disjoint-pair fixture that `validate()` rejects with
+   both source and target labels.  Keep the existing mixed branch/goto test.
+2. Update `scripts/splc/validate.py` and `scripts/splc/lower.py` to implement
+   the binding contract; this is compiler behavior, not an Act III exception.
+   Add the fourteen ledgered no-op scenes and only the seven listed source
+   redirects in `src_ir/act3.py`, plus the fourteen working TOML entries.
+   Extend the existing A17/A18 contract map with all A19 pairs and assert all
+   five A19 spares are absent.
+3. Run exactly:
+
+```bash
+uv run pytest tests/test_splc_validate.py tests/test_act3_contracts.py tests/test_splc_interpret_parity.py -q
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_token_dump.py::test_debug_target_dumps_integer_token_stream tests/test_splc_generated_fragments.py -q
+uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+```
+
+Expected: the unit tests prove pre-jump staging and safe speaker selection;
+the debug target produces integer output without a stage runtime error; all
+generated-artifact and Amps gates pass.  Then, and only then, resume the
+unchanged Task 4 Step 3 full spike evidence.  Any newly discovered disjoint
+edge, a required data-moving bridge, or a failed carrier/byte invariant is a
+new `BLOCK[plan]`; it does not authorize an A19 spare, a generated-SPL edit,
+or an unplanned compiler rewrite.
