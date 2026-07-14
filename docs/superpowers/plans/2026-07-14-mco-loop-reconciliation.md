@@ -469,8 +469,27 @@ git commit -m "docs: complete mco loop reconciliation"
 git push origin HEAD
 ```
 
+## Amendment A2 — Dispatch the already-authorized list-recovery task
+
+**Accepted 2026-07-14.** The planner-only blocker recorded before Amendment
+A1 is now stale: Amendment A1 in the accepted reconciliation design and Task
+6 above supply the required authority, exact source boundary, generated-file
+workflow, literary reservation, and closure evidence.  Remove that blocker so
+the loop can dispatch Task 6 Step 1; this amendment neither changes Markdown
+behavior nor authorizes work beyond Task 6.
+
+**Assumption recorded:** the dirty `shakedown.spl` and
+`.agent/branch-dispositions.toml` files are handoff context belonging to the
+next bounded implementation task or the operator.  This planning checkpoint
+does not inspect, stage, regenerate, or alter them.  A Task-6 implementer must
+preserve unrelated dirty changes and stop if the authorized IR regeneration
+cannot be isolated safely.
+
 ## Plan self-review
 
 - Coverage: Task 1 resolves the actual branch/artifact debt; Task 2 fixes the observed planner-routing failure; Task 3 adds durable branch state; Task 4 validates structured blockers and planning artifacts; Task 5 records the red gate; Task 6 restores the previously shipped list invariant without expanding Slice 2; Task 7 verifies and documents the resulting operating model.
 - Safety: all Git inspection is read-only and all branch outcomes require a documented human/evidence-backed decision.  No task performs a destructive branch operation.
-- Scope: Amendment A1 is limited to restoring the already-shipped spike-list invariant that blocks the governance gate.  Slice 2 remains halted, so no new Slice-2 Markdown feature can continue without a later explicit planning decision.
+- Scope: Amendments A1–A2 are limited to restoring the already-shipped
+  spike-list invariant that blocks the governance gate and dispatching that
+  repair.  Slice 2 remains halted, so no new Slice-2 Markdown feature can
+  continue without a later explicit planning decision.
