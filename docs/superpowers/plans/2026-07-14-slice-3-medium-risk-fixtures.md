@@ -189,7 +189,7 @@ pattern = "bare_statement"
 
 **Interfaces:** Act I stores lower-case `(label, destination, title-present, title)` records and strips only valid definitions. Act III copies/restores records during lookup, resolves images before anchors, and replays unresolved source. Act IV receives final emitted bytes only.
 
-- [ ] **Step 1: Write red tests** for 3-space/case-folded/angle-wrapped definitions, optional wrapped title, full/collapsed/spaced/missing refs, inline and reference images, two uses of one record, and `&quot;` title escaping.
+- [x] **Step 1: Write red tests** for 3-space/case-folded/angle-wrapped definitions, optional wrapped title, full/collapsed/spaced/missing refs, inline and reference images, two uses of one record, and `&quot;` title escaping.
 
   Run: `uv run pytest tests/test_act1_slice3.py tests/test_act3_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Links or Images or Literal quotes' -q`
 
