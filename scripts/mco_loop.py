@@ -1179,6 +1179,8 @@ def apply_result(
 
 def apply_failure_action(action: NextAction, state: Mapping[str, object]) -> NextAction:
     """Route substantive prior failures through the fixing role."""
+    if action.kind is ActionKind.PLAN:
+        return action
     failure = state.get("last_failure")
     if not isinstance(failure, dict):
         return action

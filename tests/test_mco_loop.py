@@ -28,6 +28,28 @@ def _row(
     return RoadmapRow(identifier, plan_path, description, status)
 
 
+def test_failed_planner_action_remains_planner_action() -> None:
+    action = NextAction(ActionKind.PLAN, "amend blocker", None, None, ())
+
+    assert (
+        mco_loop.apply_failure_action(
+            action, {"last_failure": {"kind": "backend_failure"}}
+        )
+        == action
+    )
+
+
+def test_failed_implementation_action_becomes_fix_action() -> None:
+    action = NextAction(ActionKind.IMPLEMENT, "execute step", None, "step", ())
+
+    recovered = mco_loop.apply_failure_action(
+        action, {"last_failure": {"kind": "no_progress"}}
+    )
+
+    assert recovered.kind is ActionKind.FIX
+    assert recovered.step == "step"
+
+
 def _invocation_inputs(
     tmp_path: Path,
 ) -> tuple[mco_loop.LoopConfig, Executor, NextAction]:

@@ -117,7 +117,7 @@ Expected: the commit contains documentation/ledger state only; neither candidate
 - Consumes: `apply_failure_action(action: NextAction, state: Mapping[str, object]) -> NextAction`.
 - Produces: unchanged `PLAN` actions on `backend_failure`/`no_progress`, and `FIX` actions only for non-planning canonical actions.
 
-- [ ] **Step 1: Add focused failing recovery tests.**
+- [x] **Step 1: Add focused failing recovery tests.**
 
 Add these assertions beside the existing action-routing tests:
 
@@ -143,7 +143,7 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'failed_planner or failed_implemen
 
 Expected: the planner test fails because the current implementation returns `FIX`.
 
-- [ ] **Step 2: Make recovery conditional on the canonical action kind.**
+- [x] **Step 2: Make recovery conditional on the canonical action kind.**
 
 At the start of `apply_failure_action`, preserve planner actions:
 
