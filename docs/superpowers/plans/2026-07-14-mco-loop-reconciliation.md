@@ -265,7 +265,7 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'branch_blocker or unregistered_pl
 
 Expected: legacy lines retain their present behavior, while malformed branch context cannot send an agent on an ambiguous repair.
 
-- [ ] **Step 3: Integrate both fences into canonical action selection.**
+- [x] **Step 3: Integrate both fences into canonical action selection.**
 
 In `main()`, before applying failed-action recovery, give precedence to invalid structured-blocker diagnostics (`FIX`), then unregistered active-plan/spec artifacts (`PLAN`), then branch reconciliation (`PLAN`), then the normal roadmap/blocker action.  Use the current active plan path in every generated action and include all affected paths/branches in the summary.
 

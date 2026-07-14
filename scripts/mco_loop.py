@@ -437,6 +437,32 @@ def unregistered_planning_action(
     )
 
 
+def canonical_action(
+    rows: Sequence[RoadmapRow],
+    blockers: Sequence[str],
+    repo: Path = REPO,
+) -> NextAction:
+    """Select the pre-recovery action with reconciliation fences first."""
+    active_plan = active_plan_path(rows)
+    invalid = invalid_branch_blockers(blockers, repo=repo)
+    if invalid:
+        return NextAction(
+            ActionKind.FIX,
+            "Validate the active structured blocker before roadmap work "
+            f"continues: {'; '.join(invalid)}",
+            active_plan,
+            None,
+            tuple(blockers),
+        )
+    artifact_action = unregistered_planning_action(rows, repo=repo)
+    if artifact_action is not None:
+        return artifact_action
+    reconciled = reconciliation_action(rows, repo=repo)
+    if reconciled is not None:
+        return reconciled
+    return determine_next_action(rows, blockers)
+
+
 def _executors(raw: object, label: str) -> tuple[Executor, ...]:
     if not isinstance(raw, list) or not raw:
         raise ValueError(f"{label} must contain at least one executor")
@@ -1728,27 +1754,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         while True:
             rows = parse_roadmap(ROADMAP.read_text())
             blockers = read_blockers()
-            active_plan = active_plan_path(rows)
-            invalid = invalid_branch_blockers(blockers, repo=REPO)
-            if invalid:
-                action = NextAction(
-                    ActionKind.FIX,
-                    "Validate the active structured blocker before roadmap work "
-                    f"continues: {'; '.join(invalid)}",
-                    active_plan,
-                    None,
-                    tuple(blockers),
-                )
-            else:
-                artifact_action = unregistered_planning_action(rows, repo=REPO)
-                if artifact_action is not None:
-                    action = artifact_action
-                else:
-                    reconciled = reconciliation_action(rows, repo=REPO)
-                    if reconciled is not None:
-                        action = reconciled
-                    else:
-                        action = determine_next_action(rows, blockers)
+            action = canonical_action(rows, blockers, repo=REPO)
             if args.govern:
                 return run_governor(config, action, environment)
             no_remaining_rows = not any(
@@ -1760,9 +1766,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                     print(f"agent-loop: complete: {detail}")
                     return 0
                 action = NextAction(ActionKind.FIX, detail, None, None, blockers)
-            canonical_action = action
+            base_action = action
             state = load_state(config.state_file)
-            action = apply_failure_action(canonical_action, state)
+            action = apply_failure_action(base_action, state)
             action, governor_stop, directive_seen = apply_governor_directive(action)
             if governor_stop:
                 print(
@@ -1797,7 +1803,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             selection = select_executor(
                 pool,
                 state,
-                canonical_action,
+                base_action,
                 now,
                 preserve_planning=(action.kind is not ActionKind.PLAN),
             )
@@ -1821,9 +1827,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(json.dumps(status_payload, indent=2, sort_keys=True))
                 return 0
             if selection.exhausted:
-                payload = exhaustion_payload(
-                    canonical_action, pool, state, now, environment
-                )
+                payload = exhaustion_payload(base_action, pool, state, now, environment)
                 state["exhaustion"] = payload
                 save_state(config.state_file, state)
                 print(json.dumps(payload, indent=2, sort_keys=True))
@@ -1861,7 +1865,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 config,
                 state,
                 executor,
-                canonical_action,
+                base_action,
                 result,
                 int(time.time()),
                 directive_seen=directive_seen,

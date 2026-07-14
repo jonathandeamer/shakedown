@@ -493,6 +493,132 @@ def test_main_keeps_ordinary_action_after_terminal_branch_reconciliation(
     assert selected_actions == [canonical]
 
 
+def test_canonical_action_fence_precedence_invalid_blocker(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    plan = Path("/tmp/plan.md")
+    rows = (_row("5R", "in flight", plan),)
+    blockers = (
+        "- BLOCK[plan]: branch=topic; "
+        "head=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; "
+        "base=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; "
+        "request=review; detail=Need disposition.",
+    )
+
+    expected = NextAction(
+        ActionKind.FIX,
+        "Validate the active structured blocker before roadmap work "
+        "continues: branch/head mismatch",
+        plan,
+        None,
+        blockers,
+    )
+
+    monkeypatch.setattr(
+        mco_loop,
+        "invalid_branch_blockers",
+        lambda active_blockers, repo=Path("/tmp"): ("branch/head mismatch",),
+    )
+
+    assert (
+        mco_loop.canonical_action(
+            rows,
+            blockers,
+            repo=Path("/tmp"),
+        )
+        == expected
+    )
+
+
+def test_canonical_action_fence_precedence_unregistered_artifacts(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    plan = Path("/tmp/plan.md")
+    rows = (_row("5R", "in flight", plan),)
+    blockers: tuple[str, ...] = ()
+    artifact_a = Path("/tmp/docs/superpowers/plans/example.md")
+    artifact_b = Path("/tmp/docs/superpowers/specs/example.md")
+
+    monkeypatch.setattr(
+        mco_loop,
+        "invalid_branch_blockers",
+        lambda active_blockers, repo=Path("/tmp"): (),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "unregistered_planning_artifacts",
+        lambda repo=Path("/tmp"): (artifact_a, artifact_b),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "reconciliation_action",
+        lambda action_rows, repo=Path("/tmp"): NextAction(
+            ActionKind.PLAN,
+            "Resolve branch reconciliation before normal roadmap execution: "
+            "topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+            "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending",
+            plan,
+            None,
+            (),
+        ),
+    )
+
+    assert mco_loop.canonical_action(rows, blockers, repo=Path("/tmp")) == NextAction(
+        ActionKind.PLAN,
+        "Register or clean up untracked planning artifacts before roadmap "
+        f"execution: {artifact_a}; {artifact_b}",
+        plan,
+        None,
+        (),
+    )
+
+
+def test_canonical_action_fence_precedence_reconciliation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    plan = Path("/tmp/plan.md")
+    rows = (_row("5R", "in flight", plan),)
+    blockers: tuple[str, ...] = ()
+    expected = NextAction(
+        ActionKind.PLAN,
+        "Resolve branch reconciliation before normal roadmap execution: "
+        "topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+        "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending",
+        plan,
+        None,
+        (),
+    )
+
+    monkeypatch.setattr(
+        mco_loop,
+        "invalid_branch_blockers",
+        lambda active_blockers, repo=Path("/tmp"): (),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "unregistered_planning_artifacts",
+        lambda repo=Path("/tmp"): (),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "reconciliation_action",
+        lambda action_rows, repo=Path("/tmp"): expected,
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "determine_next_action",
+        lambda action_rows, active_blockers, repo=Path("/tmp"): NextAction(
+            ActionKind.IMPLEMENT,
+            "execute",
+            plan,
+            "step",
+            (),
+        ),
+    )
+
+    assert mco_loop.canonical_action(rows, blockers, repo=Path("/tmp")) == expected
+
+
 def test_main_prefers_invalid_structured_blocker_over_other_fences(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
