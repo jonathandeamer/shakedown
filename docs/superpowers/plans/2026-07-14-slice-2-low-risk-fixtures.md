@@ -719,3 +719,70 @@ second in-flight plan and authorizes no work from Slice 3.
    that list, any missing reserved title, a protected-mode underflow, a
    changed rejected source-pop ledger, a failed generated/literary gate, or a
    failed push is one new `- BLOCK[plan]:` line and stops the iteration.
+
+## Amendment A6 (2026-07-14): sequence the Span-Spike prerequisite and exact definition replay
+
+The A5 focused gate reproduced two failures that must not be conflated:
+`overlapping_emphasis` underflows in the existing protected-span requeue path
+before any definition candidate is routed, while the dirty definition adapter
+only forwards to `LYRIC_BUFFER_OPEN` and cannot discard or source-replay a
+paragraph.  The accepted [reference-definition Amendment A3](../specs/2026-07-14-slice-2-reference-definition-filter-design.md#amendment-a3-2026-07-14-two-floor-definition-replay-after-span-spike-restoration)
+is binding for this same unchecked Task 2 Step 3.  It does not create another
+plan, consume an Act-III spare, broaden Slice 2, or authorize work beyond the
+existing A14/A15 Span-Spike labels and A1's 21-label definition pool.
+
+1. Preserve the dirty diff with `git diff --binary`; do not reset, stash,
+   checkout, discard, or hand-edit generated SPL.  First restore only the
+   already-accepted A14/A15 matched-emphasis/requeue choreography in
+   `src_ir/act3.py`, using its existing controlled surfaces.  Before adding
+   or enabling any definition assertion, run:
+
+   ```bash
+   uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k "matched_emphasis_requeue_preserves_parent_lookahead or triple_emphasis_requeue_order or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+   ```
+
+   Expected: PASS.  This is a narrow prerequisite to make the pre-existing
+   protected-span contract green, not authority to alter its grammar, add a
+   scene, add prose, change Act II, or consume any A1/A14/A15 spare.
+
+2. Replace the dirty definition scaffold and its decoded-output assertions
+   with Amendment A3's exact two-floor ledger.  After the token code is copied
+   to Juliet, route only `PARA` to `LYRIC_DEFINITION_OPEN`; keep
+   `CODE_BLOCK -> TRAVERSE_COPY_CODE_TEXT` and all other text tokens on
+   `TRAVERSE_OPEN_TEXT`.  Romeo drains and restores the complete paragraph;
+   Hecate then owns the verifier floor and every real candidate glyph.  On
+   rejection, push Puck's private `TEXT_END` first, drain Hecate back to Puck,
+   and enter `LYRIC_POP_GLYPH` exactly once; on acceptance, drain Hecate then
+   pop Juliet's provisional `PARA`.  The test observer must assert source-pop
+   bytes plus the one private end, not post-scan rendered Markdown.  Retain
+   exactly 21 working pairs and all five unreachable A1 spares; do not add a
+   title, Recall key, token, compiler change, Act I/II/IV edit, or generated
+   fragment edit.
+
+   ```bash
+   uv run pytest tests/test_act2_slice2.py -q
+   uv run pytest tests/test_act3_contracts.py tests/test_splc_validate.py -q
+   ```
+
+   Expected: PASS, including the overlapping-emphasis carrier, valid
+   definition-only discard, source-pop replay for every rejected candidate,
+   and the protected code-block route.
+
+3. Regenerate only through the prescribed build, then run A3's complete
+   proof sequence followed by A5's unchanged checkpoint evidence:
+
+   ```bash
+   uv run python -m scripts.splc
+   uv run python scripts/assemble.py
+   uv run pytest tests/test_act3_contracts.py tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -k "(Amps and angle and encoding) or (Horizontal and rules)" -q
+   uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizontal rules'
+   ```
+
+   Require `summary: 2/2 byte-identical`.  The checkpoint stages only the
+   A5-listed Task-2 files plus this plan and the cited definition-filter
+   design; retain A5's commit, provenance trailers, and non-force-push rule.
+   Any remaining span underflow, source-pop mismatch, extra/missing private
+   terminator, binary or entry-pair error, unreserved title, generated drift,
+   parity failure, residual out-of-scope dirty file, or failed push is one
+   new `- BLOCK[plan]:` line and stops the iteration.

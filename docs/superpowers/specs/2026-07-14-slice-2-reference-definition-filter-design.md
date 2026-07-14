@@ -313,3 +313,124 @@ emphasis carrier prefix.  The second must prove all protected-region fixtures
 without underflow before definition assertions are treated as green.  Any
 remaining lost candidate byte, missing private terminator, span underflow, new
 Act-III title, or scene outside A1's 21-label pool is `BLOCK[plan]`.
+
+## Amendment A3 (2026-07-14): two-floor definition replay after Span-Spike restoration
+
+**Status:** accepted; supersedes A2 only where A2 left the definition-scenes'
+operation order implicit.  It consumes none of the five A1 spares and adds no
+Act-III title, Recall key, token, compiler change, or generated-SPL edit.
+
+The A5 recovery gate establishes two separate facts.  First,
+`overlapping_emphasis` underflows in `LYRIC_EMPHASIS_SEEK` before a definition
+candidate is involved; this is the already-authorized A14/A15 matched-requeue
+repair, and it must be restored before the definition filter is evaluated.
+Second, the dirty `LYRIC_DEFINITION_OPEN -> LYRIC_BUFFER_OPEN` adapter proves
+that the 21-label reservation alone is not an implementation choreography.
+The recovery must not use a direct buffer path, rendered paragraph text, or a
+new guard label as a substitute for either proof.
+
+### Gate 0: restore the accepted protected-span baseline
+
+Before routing any `PARA` through a definition scene, reconstruct the
+emphasis/requeue portion of `src_ir/act3.py` from the committed Task-3 graph
+using Span-Architecture Spike A14 and A15 verbatim.  This is a narrow
+correctness repair inside the existing accepted working labels, not Slice-3
+work: a successful match restores its already-popped parent lookahead to Puck,
+creates exactly one A9 continuation record, and enters
+`LYRIC_REQUEUE_TRIPLE_CLOSE` only for `RESUME_TRIPLE_EMPH`; ordinary strong
+uses `RESUME_STRONG` and enters `LYRIC_REQUEUE_DRAIN` without a synthetic
+delimiter.  The drainer consumes only Horatio through its private floor, and
+`LYRIC_REQUEUE_TRIPLE_OPEN` is the only scene that adds the synthetic opening
+star.  In every child scan, the private `TEXT_END` is consumed before the
+restored parent lookahead.
+
+Run this gate before adding definition contracts:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+  "matched_emphasis_requeue_preserves_parent_lookahead or triple_emphasis_requeue_order or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+```
+
+Expected: PASS.  An underflow, a second continuation record, a literal
+synthetic star, or a consumed parent lookahead is `BLOCK[plan]`; it does not
+authorize a definition-scene change, an A1 spare, or a new literary surface.
+
+### Binding two-floor verifier and replay choreography
+
+After Gate 0 is green, retain A2's dispatch exactly: after copying the token
+code to Juliet, `CODE_BLOCK` takes `TRAVERSE_COPY_CODE_TEXT`, `PARA` takes
+`LYRIC_DEFINITION_OPEN`, and all other text-bearing tokens take
+`TRAVERSE_OPEN_TEXT`.  `LYRIC_DEFINITION_OPEN` is not a forwarding adapter.
+It and the following existing 21 A1 working labels perform this exact
+sequence:
+
+1. `LYRIC_DEFINITION_OPEN` pushes Romeo's `STREAM_END`.  The
+   `DRAIN`/`DRAIN_KEEP` loop pops Puck and copies every paragraph glyph to
+   Romeo.  On the real source `TEXT_END`, `DRAIN_CLOSE` consumes that real
+   end, pushes exactly one private `TEXT_END` to Puck, and begins
+   `UNWIND`/`UNWIND_KEEP`.  Unwind restores the complete paragraph to Puck in
+   forward pop order; when Romeo's floor is consumed, Romeo holds
+   `STREAM_END`, matching the ordinary buffered scanner's entry state.
+2. `LYRIC_DEFINITION_LINE_OPEN` is the verifier's only entry.  In its legal
+   `(HECATE, PUCK)` pair it first pushes Hecate's `STREAM_END`, then pops the
+   first Puck glyph, copies that real glyph to Hecate, and accepts only `[`
+   into `LABEL_FIRST`.  Every subsequent verifier read copies its non-end
+   glyph to Hecate *before* testing it.  `LABEL_FIRST` requires a non-`]`,
+   non-newline glyph; `LABEL_REST` requires `]`; `COLON` requires the
+   immediate `:`; `DESTINATION` requires one non-space, non-newline glyph.
+   `DESTINATION_TAIL` copies its tail, copies a newline before returning to
+   `LINE_OPEN`, and accepts only its private Puck `TEXT_END`.  A private end
+   is never copied to Hecate.
+3. On every rejection, including ordinary prose at `LINE_OPEN`, branch to
+   `LYRIC_DEFINITION_REPLAY_BEGIN` with Hecate containing exactly
+   `[STREAM_END, original-source-glyphs]` bottom-to-top and Puck empty above
+   the outer carrier floor.  `REPLAY_BEGIN` pushes one private Puck
+   `TEXT_END`.  `REPLAY_POP` drains Hecate; each non-floor value goes through
+   `REPLAY_KEEP` to Puck.  This LIFO transfer makes Puck's next pop sequence
+   the original source glyphs in forward order followed by that one private
+   `TEXT_END`.  On Hecate's floor, `REPLAY_CLOSE` goes directly to
+   `LYRIC_POP_GLYPH`; it does not call `TRAVERSE_OPEN_TEXT`, does not create a
+   second buffer floor, and does not pop Juliet's provisional `PARA`.
+4. On accepted private Puck `TEXT_END`, `DISCARD_DRAIN`/`DISCARD_KEEP` drain
+   Hecate through its one floor without emitting any glyph.  Only after that
+   floor is consumed may `DISCARD_CLOSE`, in its `(HECATE, JULIET)` pair, pop
+   Juliet's provisional `PARA` and return to `TRAVERSE_NEXT_TOKEN`.  It never
+   sees or restores the real source terminator.
+
+The only allowed `TEXT_END` counts are therefore: one real terminator consumed
+by `DRAIN_CLOSE`; one private terminator reconstructed by `REPLAY_BEGIN` on a
+reject; and no terminator re-emitted on an accepted discard.  The code-block
+copy route remains outside this choreography and never visits any definition,
+buffer, or glyph-pop scene.
+
+### Required red/green proof
+
+Replace the dirty decoded-output rejected-candidate assertions with a
+`_SceneObserver` source-pop ledger.  For every rejected candidate, record
+Puck values popped by `LYRIC_POP_GLYPH` from the first replay pop through its
+private `TEXT_END`; assert that sequence is
+`[ord(glyph) for glyph in original_text.removesuffix("\\n")] + [TEXT_END]`
+for a one-line paragraph, retaining embedded newlines for mixed candidates.
+The observer must separately prove that valid one- and two-line definitions
+reach `LYRIC_DEFINITION_DISCARD_CLOSE`, leave no `PARA`, and that a code block
+does not enter `LYRIC_BUFFER_OPEN`, `LYRIC_POP_GLYPH`, or any
+`LYRIC_DEFINITION_*` label.
+
+Run the following in order after Gate 0 and before regeneration:
+
+```bash
+uv run pytest tests/test_act2_slice2.py -q
+uv run pytest tests/test_act3_contracts.py tests/test_splc_validate.py -q
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_act3_contracts.py tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+```
+
+The Act-III reservation test must name exactly A1's 21 working labels and
+five unreachable spares; `LYRIC_DEFINITION_GARDEN_GUARD`,
+`LYRIC_DEFINITION_REPLAY_GUARD`, `LYRIC_DEFINITION_CHAMBER_GUARD`,
+`LYRIC_DEFINITION_LEAF_GUARD`, and `LYRIC_DEFINITION_CLOSE_GUARD` remain TOML
+reservations only and must be absent from `ACT.scenes`.  Any deviation from
+the two-floor order, a failed Gate 0, a source-pop mismatch, missing private
+end, binary/entry-pair failure, or need for an unreserved label is
+`BLOCK[plan]`.
