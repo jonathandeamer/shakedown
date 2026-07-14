@@ -74,7 +74,7 @@ candidate changes only the expected repair/test/generated files; it must remain
 unstaged until Step 2 confirms it matches this plan. The unrelated dirty
 `.agent/branch-dispositions.toml` is out of scope and must not be staged.
 
-- [ ] **Step 2: Verify and complete the one-scene handoff and its source-level contract.**
+- [x] **Step 2: Verify and complete the one-scene handoff and its source-level contract.**
 
 In `tests/test_act2_slice2.py`, retain or add `test_hr_candidate_fallback_preserves_unordered_list_handoff`. It must assert that `*` and `-` target `PASS_HR_FALLBACK_LIST_HANDOFF`, `_` targets `PASS_CODE_REPLAY`, the new scene's companion is `Char.MACBETH`, it emits in order `LIST_OPEN`, kind `1`, `ITEM_START`, tightness `1`, then goes to `PASS_LISTS_ITEM_GLYPH`, has no `_read()`, and the six named spares remain unreachable. Extend the pair ledger with `PASS_HR_FALLBACK_LIST_HANDOFF: Char.MACBETH`.
 
