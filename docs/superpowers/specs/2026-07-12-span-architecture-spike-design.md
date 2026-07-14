@@ -772,3 +772,101 @@ pattern = "bare_statement"
 title = "The portrait leaves its quiet garden whole."
 pattern = "bare_statement"
 ```
+
+## A11 emphasis candidate lookahead ownership (2026-07-14)
+
+The A9/A10 reconstruction diagnostic makes the remaining first-gate failure
+precise. On `escapes_and_overlap`, an unmatched one-star opener eventually
+sees a maximal `***` candidate at the real paragraph boundary.
+`LYRIC_EMPHASIS_COMPARE` pops the first non-star after that candidate before
+it decides whether the run matches. The diagnostic graph sends that popped
+`TEXT_END` through ordinary fallback, loses the only real terminator, and then
+`LYRIC_EMPHASIS_SEEK` pops Puck below its private floor. The same shape would
+silently drop a non-terminator lookahead after any mismatched candidate run.
+This is an emphasis-local ownership error; it does not authorize a change to
+A8's requeue protocol, A9's continuation records, or the carrier model.
+
+### Binding comparator rule
+
+`LYRIC_EMPHASIS_COMPARE` owns precisely one post-candidate lookahead. It must
+branch in this order after its `pop(PUCK, ...)`:
+
+| Lookahead | Required action | Next scene |
+|---|---|---|
+| `*` | Increment `MACBETH`; continue counting the maximal candidate run. | `LYRIC_EMPHASIS_MATCH_MORE` |
+| `TEXT_END` | Restore exactly one real `TEXT_END` to Puck; begin literal opener/body unwind without returning to seek. | `LYRIC_EMPHASIS_CAND_SOURCE_END` |
+| Any other glyph | Push that glyph to Horatio above the held-body floor, then replay the candidate stars to Horatio. | `LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD` → existing `LYRIC_EMPHASIS_FALLBACK` |
+
+`LYRIC_EMPHASIS_CAND_SOURCE_END` pushes the restored real terminator and goes
+to the pre-existing literal-unwind entry. Refactor the pre-existing
+`LYRIC_EMPHASIS_SOURCE_END` to be the one owner of literal-unwind setup (the
+Hecate floor and literal opener emission) after its caller has restored the
+terminator. It must not push a second `TEXT_END`. Thus both source-end arrivals
+have exactly one terminator before `LYRIC_EMPHASIS_LITERAL_REVERSE`.
+
+`LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD` performs only
+`push(HORATIO, val(PUCK)); goto(LYRIC_EMPHASIS_FALLBACK)`. Because Horatio is
+drained into Puck in reverse-stack order, the held body, candidate stars, and
+lookahead are subsequently rescanned in their original left-to-right order.
+No branch in this correction writes a candidate delimiter or lookahead to
+Juliet, creates a continuation record, or pops Lady Macbeth/Romeo.
+
+### Mandatory test-first checkpoint
+
+Before touching `src_ir/act3.py`, add these observer-level tests to
+`tests/test_act3_contracts.py`:
+
+1. `test_act3_emphasis_candidate_keeps_nonmatching_lookahead` runs
+   `escapes_and_overlap` and asserts that each entry to
+   `LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD` is immediately followed by the
+   existing fallback/replay family, and that the eventual decoded paragraph
+   still contains the byte sequence `" and "` that follows the unmatched
+   candidate. It must also assert no `StackUnderflow`.
+2. `test_act3_emphasis_candidate_restores_real_text_end_once` runs the same
+   fixture and asserts the order `LYRIC_EMPHASIS_COMPARE`,
+   `LYRIC_EMPHASIS_CAND_SOURCE_END`, `LYRIC_EMPHASIS_SOURCE_END`,
+   `LYRIC_EMPHASIS_LITERAL_REVERSE`, then `LYRIC_POP_GLYPH`,
+   `LYRIC_TEXT_END_DISPATCH`; assert there is no later
+   `LYRIC_EMPHASIS_SEEK` before that text-end dispatch and exactly one final
+   `TRAVERSE_COPY_TERMINATOR` route with `CONT_NONE`.
+
+Run this focused gate after the test is red and again after the two working
+scenes land:
+
+```bash
+uv run pytest tests/test_act3_contracts.py -q -k \
+  "emphasis_candidate_keeps_nonmatching_lookahead or emphasis_candidate_restores_real_text_end_once or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+```
+
+Expected after implementation: all selected cases pass, including
+`escapes_and_overlap`; no `StackUnderflow`, duplicate `TEXT_END`, or source
+pop follows the real terminator. Then run the plan's exact literary gate.
+
+### A11 literary reservation (ready to paste)
+
+The table derives two new scenes. Four spares satisfy the protocol's minimum
+proportional spare pool. Add only the two working entries with corresponding
+IR scenes; no Recall line or recurring phrase is needed.
+
+```toml
+[scenes.LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD]
+title = "Horatio shelters the star's following petal."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_CAND_SOURCE_END]
+title = "The last star restores the garden gate."
+pattern = "bare_statement"
+
+# A11 spare pool — do not use without another planning amendment.
+[scenes.LYRIC_EMPHASIS_CAND_REPLAY_GUARD]
+title = "Horatio finds the star's rooted path."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_CAND_END_GUARD]
+title = "The star refuses a second garden gate."
+pattern = "bare_statement"
+[scenes.LYRIC_EMPHASIS_CAND_ORDER_GUARD]
+title = "Juliet keeps the stars in faithful order."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_CAND_RETURN]
+title = "The wandering star returns to the hedge."
+pattern = "bare_statement"
+```

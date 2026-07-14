@@ -1149,6 +1149,40 @@ than inventing a label; if that cannot be expressed, stop with `BLOCK[plan]`.
 This emphasis-first checkpoint must make `escapes_and_overlap` and
 `overlapping_emphasis` green before HTML/link/image work is connected.
 
+## Amendment A11 (2026-07-14): emphasis candidate lookahead ownership
+
+The first A9/A10 focused-gate failure is an emphasis comparator ownership
+bug, specified in the accepted design's [A11 amendment](../specs/2026-07-12-span-architecture-spike-design.md#a11-emphasis-candidate-lookahead-ownership-2026-07-14).
+The preserved diagnostic consumes the lookahead after an unmatched candidate
+run. At the real terminator it routes that `TEXT_END` through fallback, then
+`LYRIC_EMPHASIS_SEEK` pops an empty Puck stack. Before any HTML/link/image
+work, add A11's two observer tests and make the emphasis-first checkpoint
+green.
+
+In `LYRIC_EMPHASIS_COMPARE`, distinguish `TEXT_END` from a non-star
+lookahead before fallback: the former restores exactly one real terminator and
+enters the shared literal unwind without another source pop; the latter is
+held on Horatio before candidate-star replay. Add only
+`LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD` and
+`LYRIC_EMPHASIS_CAND_SOURCE_END`, with exactly the A11 TOML entries. Refactor
+the existing source-end entry so it owns literal-unwind setup but does not
+duplicate a caller-restored terminator. This correction must not alter A8's
+raw requeue drain, A9's Lady-Macbeth record, A10's image-title flow, or use
+Juliet/Romeo as a fallback carrier. The four A11 spares are not implementation
+authority.
+
+Run this exact gate before expanding protected modes:
+
+```bash
+uv run pytest tests/test_act3_contracts.py -q -k \
+  "emphasis_candidate_keeps_nonmatching_lookahead or emphasis_candidate_restores_real_text_end_once or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+```
+
+Expected: all selected cases pass, especially `escapes_and_overlap`, with no
+`StackUnderflow`, no duplicate `TEXT_END`, and exactly one real terminator
+route. Then run the Global Constraints exact literary gate. A failure remains
+a `BLOCK[plan]`; it does not authorize a recovery pop or any other new scene.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
