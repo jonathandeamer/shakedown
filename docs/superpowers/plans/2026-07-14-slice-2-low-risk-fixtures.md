@@ -285,7 +285,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 
   Expected: all commands pass and strict parity reports `summary: 1/1 byte-identical`.
 
-- [ ] **Step 3: Run regression gates and checkpoint.**
+- [x] **Step 3: Run regression gates and checkpoint.**
 
   Run:
 
