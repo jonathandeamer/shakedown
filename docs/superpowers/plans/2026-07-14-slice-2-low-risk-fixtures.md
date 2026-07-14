@@ -232,7 +232,7 @@ code_leaf_mark = "Recall the indented chamber mark."
 
   Expected: FAIL against the current hardcoded two-line stripping Act I.
 
-- [ ] **Step 2: Implement the bounded Act-I normalization state machine.**
+- [x] **Step 2: Implement the bounded Act-I normalization state machine.**
 
   Replace the Slice-1 `HECATE_LINE_STRIP_*` behavior with a single pass that reads all stdin glyphs, normalizes the final newline, expands `\t` to `4 - (column % 4)` spaces, resets column on newline, preserves nonblank and trailing-space bytes, then appends the required second final newline. Do not attempt reference-definition parsing in this task: Slice 3 owns that table. Use only the Task-1 Act-I reserved labels and recalls above; add their TOML entries in the same change.
 

@@ -1,6 +1,6 @@
-"""Act I — pre-process. Ported from the hand-authored fragment; behavior
-identical, quirks included (Slice 1 unconditionally strips two trailing
-reference-definition lines). See the plan's Behavioral ground truth."""
+"""Act I — pre-process. Slice 2 replaces the Slice 1 trailing-line strip with
+bounded normalization: preserve all content, expand tabs to four-column stops,
+and ensure the carrier ends in exactly two newlines."""
 
 from __future__ import annotations
 
@@ -14,8 +14,10 @@ from scripts.splc.ir import (
     const,
     eq,
     goto,
+    gt,
     halt_act,
     let,
+    mod,
     pop,
     push,
     read_char,
@@ -25,8 +27,11 @@ from scripts.splc.ir import (
 )
 from src_ir.cast import HECATE, HORATIO, PUCK, ROSALIND
 
-_NEWLINE = const(10)
 _EOF = const(-1)
+_NEWLINE = const(10)
+_SPACE = const(32)
+_TAB = const(9)
+_TAB_STOP = const(4)
 
 _SENTINELS = [1, 101, 0, 2, 102, 201]
 
@@ -46,65 +51,147 @@ ACT: Act = act(
         scene(
             "ACT_I_START",
             *_push_sentinels(),
+            let(HECATE, const(0)),
+            let(ROSALIND, const(0)),
             goto("HECATE_READ_INPUT"),
         ),
         scene(
             "HECATE_READ_INPUT",
             read_char(PUCK),
-            branch(eq(val(PUCK), _EOF), then="HECATE_TEST_FINAL_GLYPH"),
-            push(PUCK, val(PUCK)),
-            let(HECATE, add(val(HECATE), const(1))),
-            goto("HECATE_READ_INPUT"),
+            branch(eq(val(PUCK), _EOF), then="HECATE_NORMALIZE_FINAL"),
+            branch(eq(val(PUCK), _TAB), then="HECATE_DETAB_OPEN"),
+            goto("HECATE_DETAB_GLYPH"),
+        ),
+        scene(
+            "HECATE_NORMALIZE_FINAL",
+            branch(
+                eq(val(HORATIO), const(0)),
+                then="HECATE_LINE_STRIP_FIRST_REFERENCE",
+            ),
+            goto("HECATE_HANDOFF_FALLBACK"),
+            companion=PUCK,
+        ),
+        scene(
+            "HECATE_HANDOFF_FALLBACK",
+            pop(PUCK, recall="normalized_line_mark"),
+            let(HECATE, sub(val(HORATIO), const(1))),
+            goto("HECATE_TEST_FINAL_GLYPH"),
         ),
         scene(
             "HECATE_TEST_FINAL_GLYPH",
-            pop(PUCK, recall="cauldron_dreg"),
-            let(HECATE, sub(val(HECATE), const(1))),
-            branch(
-                eq(val(PUCK), _NEWLINE),
-                then="HECATE_RESTORE_FINAL_NEWLINE",
-                else_="HECATE_LINE_STRIP_SECOND_REFERENCE",
-            ),
-        ),
-        scene(
-            "HECATE_RESTORE_FINAL_NEWLINE",
-            push(PUCK, val(PUCK)),
-            let(HECATE, add(val(HECATE), const(1))),
-            push(PUCK, val(PUCK)),
-            let(HECATE, add(val(HECATE), const(1))),
-            goto("HECATE_HAND_COUNT_TO_HORATIO"),
-        ),
-        scene(
-            "HECATE_LINE_STRIP_SECOND_REFERENCE",
-            pop(PUCK, recall="sealed_second_shelf"),
-            let(HECATE, sub(val(HECATE), const(1))),
             branch(
                 eq(val(PUCK), _NEWLINE),
                 then="HECATE_LINE_STRIP_FIRST_REFERENCE",
-                else_="HECATE_LINE_STRIP_SECOND_REFERENCE",
+                else_="HECATE_LINE_RESTORE_BOUNDARY",
             ),
+            companion=PUCK,
         ),
         scene(
             "HECATE_LINE_STRIP_FIRST_REFERENCE",
-            pop(PUCK, recall="sealed_first_shelf"),
-            let(HECATE, sub(val(HECATE), const(1))),
-            branch(
-                eq(val(PUCK), _NEWLINE),
-                then="HECATE_LINE_RESTORE_BOUNDARY",
-                else_="HECATE_LINE_STRIP_FIRST_REFERENCE",
-            ),
+            let(ROSALIND, const(2)),
+            goto("HECATE_RESTORE_FINAL_NEWLINE"),
+            companion=ROSALIND,
         ),
         scene(
             "HECATE_LINE_RESTORE_BOUNDARY",
+            let(ROSALIND, const(3)),
+            goto("HECATE_RESTORE_FINAL_NEWLINE"),
+            companion=ROSALIND,
+        ),
+        scene(
+            "HECATE_RESTORE_FINAL_NEWLINE",
+            let(HORATIO, val(HECATE)),
+            branch(
+                eq(val(PUCK), _EOF),
+                then="HECATE_NORMALIZE_CLOSE",
+                else_="HECATE_DETAB_GLYPH",
+            ),
+            companion=HORATIO,
+        ),
+        scene(
+            "HECATE_DETAB_OPEN",
+            let(ROSALIND, sub(_TAB_STOP, mod(val(HECATE), _TAB_STOP))),
+            goto("HECATE_DETAB_COLUMN_TWO"),
+            companion=ROSALIND,
+        ),
+        scene(
+            "HECATE_DETAB_COLUMN_TWO",
+            let(PUCK, _SPACE),
             push(PUCK, val(PUCK)),
+            goto("HECATE_DETAB_COLUMN_THREE"),
+        ),
+        scene(
+            "HECATE_DETAB_COLUMN_THREE",
+            let(HORATIO, add(val(HORATIO), const(1))),
+            goto("HECATE_DETAB_COLUMN_FOUR"),
+            companion=HORATIO,
+        ),
+        scene(
+            "HECATE_DETAB_COLUMN_FOUR",
             let(HECATE, add(val(HECATE), const(1))),
-            goto("HECATE_HAND_COUNT_TO_HORATIO"),
+            let(ROSALIND, sub(val(ROSALIND), const(1))),
+            branch(
+                eq(val(ROSALIND), const(0)),
+                then="HECATE_READ_INPUT",
+                else_="HECATE_DETAB_COLUMN_TWO",
+            ),
+            companion=ROSALIND,
+        ),
+        scene(
+            "HECATE_DETAB_GLYPH",
+            push(PUCK, val(PUCK)),
+            goto("HECATE_HAND_NORMALIZED"),
+        ),
+        scene(
+            "HECATE_HAND_NORMALIZED",
+            let(HORATIO, add(val(HORATIO), const(1))),
+            goto("HECATE_NORMALIZE_LINE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "HECATE_NORMALIZE_LINE",
+            branch(gt(val(ROSALIND), const(0)), then="HECATE_NORMALIZE_BLANK"),
+            branch(eq(val(PUCK), _NEWLINE), then="HECATE_NORMALIZE_BLANK"),
+            let(HECATE, add(val(HECATE), const(1))),
+            goto("HECATE_READ_INPUT"),
+            companion=PUCK,
+        ),
+        scene(
+            "HECATE_NORMALIZE_BLANK",
+            let(HECATE, const(0)),
+            branch(
+                eq(val(ROSALIND), const(0)),
+                then="HECATE_READ_INPUT",
+                else_="HECATE_COLUMN_RECALL",
+            ),
+            companion=ROSALIND,
+        ),
+        scene(
+            "HECATE_COLUMN_RECALL",
+            let(ROSALIND, sub(val(ROSALIND), const(1))),
+            goto("HECATE_LINE_STRIP_SECOND_REFERENCE"),
+            companion=ROSALIND,
+        ),
+        scene(
+            "HECATE_LINE_STRIP_SECOND_REFERENCE",
+            branch(
+                eq(val(ROSALIND), const(0)),
+                then="HECATE_HAND_COUNT_TO_HORATIO",
+                else_="HECATE_NORMALIZE_CLOSE",
+            ),
+            companion=HORATIO,
+        ),
+        scene(
+            "HECATE_NORMALIZE_CLOSE",
+            let(PUCK, _NEWLINE),
+            push(PUCK, val(PUCK)),
+            goto("HECATE_HAND_NORMALIZED"),
         ),
         scene(
             "HECATE_HAND_COUNT_TO_HORATIO",
-            let(HORATIO, val(HECATE)),
             push(HORATIO, val(HORATIO)),
             goto("HECATE_REVERSE_CHECK"),
+            companion=HORATIO,
         ),
         scene(
             "HECATE_REVERSE_CHECK",
@@ -122,7 +209,7 @@ ACT: Act = act(
         ),
         scene(
             "HECATE_REVERSE_POP",
-            pop(PUCK, recall="cauldron_dreg"),
+            pop(PUCK, recall="detab_column_mark"),
             let(HECATE, val(PUCK)),
             push(HECATE, val(HECATE)),
             goto("HECATE_OPEN_COUNT_DECREMENT"),
@@ -131,6 +218,7 @@ ACT: Act = act(
             "HECATE_OPEN_COUNT_DECREMENT",
             let(HORATIO, sub(val(HORATIO), const(1))),
             goto("HECATE_REVERSE_CHECK"),
+            companion=HORATIO,
         ),
         scene(
             "ACT_I_DONE",

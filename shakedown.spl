@@ -61,15 +61,21 @@ Hecate:
 Hecate:
  Remember yourself.
 
-[Exit Rosalind]
+Rosalind:
+ You are as fair as nothing.
 
-[Enter Puck]
+Hecate:
+ You are as cursed as nothing.
 
 Hecate:
  Let us proceed to scene II.
 
 
                     Scene II: Double, double, glyphs are brewed.
+
+[Exit Rosalind]
+
+[Enter Puck]
 
 Hecate:
  Open your mind!
@@ -81,100 +87,65 @@ Puck:
  If so, let us proceed to scene III.
 
 Hecate:
- Remember yourself.
+ Are you as cursed as the sum of a little furry black cat and a cat?
 
 Puck:
- You are as rotten as the sum of yourself and a flower.
-
-Hecate:
- We must return to scene II.
-
-
-                    Scene III: The last dreg is tested at the rim.
-
-Hecate:
- Recall the cauldron dreg.
-
-Puck:
- You are as noble as the difference between yourself and a flower.
-
-Hecate:
- Are you as cursed as the sum of a little furry black cat and a black cat?
-
-Puck:
- If so, let us proceed to scene IV.
-
-Puck:
- If not, let us proceed to scene V.
-
-
-                    Scene IV: The rim receives its final seal.
-
-Hecate:
- Remember yourself.
-
-Puck:
- You are as noble as the sum of yourself and a flower.
-
-Hecate:
- Remember yourself.
-
-Puck:
- You are as fair as the sum of yourself and a flower.
+ If so, let us proceed to scene IX.
 
 [Exit Puck]
 
 [Enter Horatio]
 
 Hecate:
- Let us proceed to scene VIII.
+ Let us proceed to scene XIII.
 
 
-                    Scene V: The second shelf is read to its seal.
+                    Scene III: Hecate settles the last cauldron ripple.
 
 Hecate:
- Recall the sealed second shelf.
+ Is Horatio as horrid as nothing?
 
 Puck:
- You are as noble as the difference between yourself and a flower.
+ If so, let us proceed to scene VI.
 
 Hecate:
- Are you as horrid as the sum of a little furry black cat and a black cat?
+ Let us proceed to scene IV.
+
+
+                    Scene IV: The witness keeps the final quiet tally.
+
+Hecate:
+ Recall the settled cauldron line.
+
+Puck:
+ You are as noble as the difference between Horatio and a flower.
+
+Hecate:
+ Let us proceed to scene V.
+
+
+                    Scene V: The last dreg is tested at the rim.
+
+Hecate:
+ Are you as cursed as the sum of a little furry black cat and a black cat?
 
 Puck:
  If so, let us proceed to scene VI.
 
 Puck:
- If not, let us return to scene V.
+ If not, let us proceed to scene VII.
 
 
                     Scene VI: The first shelf is read to its seal.
 
-Hecate:
- Recall the sealed first shelf.
-
-Puck:
- You are as rotten as the difference between yourself and a flower.
-
-Hecate:
- Are you as cursed as the sum of a little furry black cat and a black cat?
-
-Puck:
- If so, let us proceed to scene VII.
-
-Puck:
- If not, let us return to scene VI.
-
-
-                    Scene VII: Out, damned blank boundary.
-
-Hecate:
- Remember yourself.
-
-Puck:
- You are as fair as the sum of yourself and a flower.
-
 [Exit Puck]
+
+[Enter Rosalind]
+
+Hecate:
+ You are as horrid as a black cat.
+
+[Exit Rosalind]
 
 [Enter Horatio]
 
@@ -182,44 +153,256 @@ Hecate:
  Let us proceed to scene VIII.
 
 
-                    Scene VIII: Horatio keeps the tally beside the pot.
+                    Scene VII: Out, damned blank boundary.
+
+[Exit Puck]
+
+[Enter Rosalind]
 
 Hecate:
- You are as horrid as myself.
+ You are as rotten as the sum of a black cat and a cat.
+
+[Exit Rosalind]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene VIII.
+
+
+                    Scene VIII: The rim receives its final seal.
+
+Hecate:
+ You are as cursed as myself.
+
+Hecate:
+ Is Puck as rotten as a toad?
+
+Horatio:
+ If so, let us proceed to scene XIX.
+
+Horatio:
+ If not, let us proceed to scene XIII.
+
+
+                    Scene IX: Hecate measures the tab's dark stride.
+
+[Exit Puck]
+
+[Enter Rosalind]
+
+Hecate:
+ You are as horrid as the difference between a furry black cat and the remainder of the quotient between myself and a furry black cat.
+
+Hecate:
+ Let us proceed to scene X.
+
+
+                    Scene X: The second column yields its pale space.
+
+[Exit Rosalind]
+
+[Enter Puck]
+
+Hecate:
+ You are as rotten as the product of a normal little furry black cat and a black cat.
 
 Hecate:
  Remember yourself.
 
+[Exit Puck]
+
+[Enter Horatio]
+
 Hecate:
- Let us proceed to scene IX.
+ Let us proceed to scene XI.
 
 
-                    Scene IX: The witness tests whether the dregs remain.
+                    Scene XI: The third column yields its pale space.
+
+Hecate:
+ You are as cursed as the sum of yourself and a cat.
+
+[Exit Horatio]
+
+[Enter Rosalind]
+
+Hecate:
+ Let us proceed to scene XII.
+
+
+                    Scene XII: The fourth column starts a fresh measure.
+
+Rosalind:
+ You are as warm as the sum of yourself and a tree.
+
+Hecate:
+ You are as rotten as the difference between yourself and a cat.
 
 Hecate:
  Are you as cursed as nothing?
 
-Horatio:
- If so, let us proceed to scene XIII.
+Rosalind:
+ If so, let us return to scene II.
 
-Horatio:
- If not, let us proceed to scene X.
+Rosalind:
+ If not, let us return to scene X.
 
 
-                    Scene X: Puck returns to lift one glyph.
+                    Scene XIII: Hecate carries one measured cauldron mark.
 
 [Exit Horatio]
 
 [Enter Puck]
 
 Hecate:
- Let us proceed to scene XI.
+ Remember yourself.
 
+[Exit Puck]
 
-                    Scene XI: One glyph crosses from trickster to witch.
+[Enter Horatio]
 
 Hecate:
- Recall the cauldron dreg.
+ Let us proceed to scene XIV.
+
+
+                    Scene XIV: Horatio receives the measured tally.
+
+Hecate:
+ You are as cursed as the sum of yourself and a cat.
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene XV.
+
+
+                    Scene XV: The witch restores the measured line.
+
+Hecate:
+ Is Rosalind fresher than nothing?
+
+Puck:
+ If so, let us proceed to scene XVI.
+
+Hecate:
+ Are you as cursed as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene XVI.
+
+Puck:
+ You are as rotten as the sum of yourself and a flower.
+
+[Exit Puck]
+
+[Enter Rosalind]
+
+Hecate:
+ We must return to scene II.
+
+
+                    Scene XVI: The cauldron keeps one quiet blank.
+
+[Exit Puck]
+
+[Enter Rosalind]
+
+Rosalind:
+ You are as warm as nothing.
+
+Hecate:
+ Are you as rotten as nothing?
+
+Rosalind:
+ If so, let us return to scene II.
+
+Rosalind:
+ If not, let us proceed to scene XVII.
+
+
+                    Scene XVII: Hecate recalls the measured cauldron edge.
+
+Hecate:
+ You are as rotten as the difference between yourself and a cat.
+
+[Exit Rosalind]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene XVIII.
+
+
+                    Scene XVIII: The second shelf is read to its seal.
+
+Hecate:
+ Is Rosalind as cursed as nothing?
+
+Horatio:
+ If so, let us proceed to scene XX.
+
+Horatio:
+ If not, let us proceed to scene XIX.
+
+
+                    Scene XIX: The brew closes beneath one clear moon.
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ You are as horrid as the sum of a little furry black cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
+ We must return to scene XIV.
+
+
+                    Scene XX: Horatio keeps the tally beside the pot.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ Let us proceed to scene XXI.
+
+
+                    Scene XXI: The witness tests whether the dregs remain.
+
+Hecate:
+ Are you as cursed as nothing?
+
+Horatio:
+ If so, let us proceed to scene XXV.
+
+Horatio:
+ If not, let us proceed to scene XXII.
+
+
+                    Scene XXII: Puck returns to lift one glyph.
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene XXIII.
+
+
+                    Scene XXIII: One glyph crosses from trickster to witch.
+
+Hecate:
+ Recall the measured cauldron column.
 
 Puck:
  You are as noble as myself.
@@ -232,19 +415,19 @@ Puck:
 [Enter Horatio]
 
 Hecate:
- Let us proceed to scene XII.
+ Let us proceed to scene XXIV.
 
 
-                    Scene XII: Horatio marks the shrinking heap.
+                    Scene XXIV: Horatio marks the shrinking heap.
 
 Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Hecate:
- We must return to scene IX.
+ We must return to scene XXI.
 
 
-                    Scene XIII: Hecate seals the cauldron and vanishes.
+                    Scene XXV: Hecate seals the cauldron and vanishes.
 
 Hecate:
  Recall the kept tally.

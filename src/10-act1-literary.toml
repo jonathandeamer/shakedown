@@ -22,6 +22,10 @@ pattern = "bare_statement"
 title = "The second shelf is read to its seal."
 pattern = "bare_statement"
 
+[scenes.HECATE_READ_INPUT]
+title = "Double, double, glyphs are brewed."
+pattern = "iconic_echo"
+
 [scenes.HECATE_OPEN_COUNT_DECREMENT]
 title = "Horatio marks the shrinking heap."
 pattern = "scene_of_character"
@@ -29,14 +33,6 @@ pattern = "scene_of_character"
 [scenes.HECATE_OPEN_REVERSE_POP]
 title = "Puck returns to lift one glyph."
 pattern = "scene_of_character"
-
-[scenes.HECATE_READ_INPUT]
-title = "Double, double, glyphs are brewed."
-pattern = "iconic_echo"
-
-[scenes.HECATE_RESTORE_FINAL_NEWLINE]
-title = "The rim receives its final seal."
-pattern = "bare_statement"
 
 [scenes.HECATE_REVERSE_CHECK]
 title = "The witness tests whether the dregs remain."
@@ -46,6 +42,66 @@ pattern = "scene_of_character"
 title = "One glyph crosses from trickster to witch."
 pattern = "cross_character"
 
+[scenes.HECATE_RESTORE_FINAL_NEWLINE]
+title = "The rim receives its final seal."
+pattern = "bare_statement"
+
 [scenes.HECATE_TEST_FINAL_GLYPH]
 title = "The last dreg is tested at the rim."
 pattern = "bare_statement"
+
+[scenes.HECATE_NORMALIZE_FINAL]
+title = "Hecate settles the last cauldron ripple."
+pattern = "scene_of_character"
+
+[scenes.HECATE_NORMALIZE_BLANK]
+title = "The cauldron keeps one quiet blank."
+pattern = "bare_statement"
+
+[scenes.HECATE_DETAB_OPEN]
+title = "Hecate measures the tab's dark stride."
+pattern = "scene_of_character"
+
+[scenes.HECATE_DETAB_COLUMN_ONE]
+title = "The first column yields its pale space."
+pattern = "bare_statement"
+
+[scenes.HECATE_DETAB_COLUMN_TWO]
+title = "The second column yields its pale space."
+pattern = "bare_statement"
+
+[scenes.HECATE_DETAB_COLUMN_THREE]
+title = "The third column yields its pale space."
+pattern = "bare_statement"
+
+[scenes.HECATE_DETAB_COLUMN_FOUR]
+title = "The fourth column starts a fresh measure."
+pattern = "bare_statement"
+
+[scenes.HECATE_DETAB_GLYPH]
+title = "Hecate carries one measured cauldron mark."
+pattern = "scene_of_character"
+
+[scenes.HECATE_NORMALIZE_LINE]
+title = "The witch restores the measured line."
+pattern = "scene_of_character"
+
+[scenes.HECATE_HAND_NORMALIZED]
+title = "Horatio receives the measured tally."
+pattern = "scene_of_character"
+
+[scenes.HECATE_DETAB_FALLBACK]
+title = "A loose tab returns to the cauldron."
+pattern = "bare_statement"
+
+[scenes.HECATE_NORMALIZE_CLOSE]
+title = "The brew closes beneath one clear moon."
+pattern = "bare_statement"
+
+[scenes.HECATE_COLUMN_RECALL]
+title = "Hecate recalls the measured cauldron edge."
+pattern = "scene_of_character"
+
+[scenes.HECATE_HANDOFF_FALLBACK]
+title = "The witness keeps the final quiet tally."
+pattern = "scene_of_character"

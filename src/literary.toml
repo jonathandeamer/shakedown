@@ -167,6 +167,8 @@ field_kept_mark = "Recall the field's kept mark."
 held_label_glyph = "Recall the held label's glyph."
 answering_starlight = "Recall the answering starlight."
 staged_stone = "Recall the staged stone."
+detab_column_mark = "Recall the measured cauldron column."
+normalized_line_mark = "Recall the settled cauldron line."
 [characters.hecate.stable_utility]
 v1 = "a cat"
 v2 = "a black cat"
