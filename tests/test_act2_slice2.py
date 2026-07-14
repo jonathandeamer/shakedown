@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from scripts.splc.interpret import InterpreterState, run_act
-from scripts.splc.ir import Branch, Char, Const, Goto, Let, Pop, Push, Val, add
+from scripts.splc.ir import Branch, Char, Const, Goto, Let, Pop, Push, Val
 from scripts.splc.token_decode import decode_stream
 from scripts.splc.validate import entry_pairs, participants
 from src_ir import tokens
@@ -33,6 +33,7 @@ _EXPECTED_PAIRS: dict[str, Char] = {
     "PASS_HR_SCAN_READ": Char.HECATE,
     "PASS_HR_CONFIRM": Char.MACBETH,
     "PASS_HR_CONFIRM_READ": Char.HECATE,
+    "PASS_HR_FALLBACK_LIST_HANDOFF": Char.MACBETH,
     "PASS_CODE_OPEN": Char.HORATIO,
     "PASS_CODE_BLANK": Char.HECATE,
 }
@@ -100,7 +101,7 @@ def test_hr_candidate_fallback_preserves_unordered_list_handoff() -> None:
         Push(Char.LADY_MACBETH, Const(tokens.LIST_OPEN)),
         Push(Char.LADY_MACBETH, Const(1)),
         Push(Char.MACBETH, Const(1)),
-        Let(Char.MACBETH, add(Val(Char.MACBETH), Const(1))),
+        Let(Char.MACBETH, Const(1)),
         Push(Char.LADY_MACBETH, Const(tokens.ITEM_START)),
         Push(Char.LADY_MACBETH, Const(1)),
         Goto("PASS_LISTS_ITEM_GLYPH"),

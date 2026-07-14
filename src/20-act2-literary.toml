@@ -242,6 +242,11 @@ pattern = "scene_of_character"
 title = "Lady Macbeth restores the loose iron marks."
 pattern = "scene_of_character"
 
+# MCO reconciliation A2 working scene
+[scenes.PASS_HR_FALLBACK_LIST_HANDOFF]
+title = "The broken iron yields the list's first measure."
+pattern = "bare_statement"
+
 [scenes.PASS_HR_EMIT]
 title = "Macbeth raises the level iron bar."
 pattern = "scene_of_character"

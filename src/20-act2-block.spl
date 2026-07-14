@@ -427,13 +427,13 @@ Lady Macbeth:
  Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
 
 Hecate:
- If so, let us proceed to scene @PASS_CODE_REPLAY.
+ If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
 
 Lady Macbeth:
  Is Puck as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
 
 Hecate:
- If so, let us proceed to scene @PASS_CODE_REPLAY.
+ If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
 
 Lady Macbeth:
  Is Puck as bold as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
@@ -443,6 +443,38 @@ Hecate:
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
+
+
+                    Scene @PASS_HR_FALLBACK_LIST_HANDOFF: @LIT.scenes.PASS_HR_FALLBACK_LIST_HANDOFF.title
+
+[Exit Hecate]
+
+[Enter Macbeth]
+
+Macbeth:
+ Remember a furry black cat.
+
+Macbeth:
+ Remember a kingdom.
+
+Lady Macbeth:
+ Remember a hero.
+
+Lady Macbeth:
+ You are as mighty as a hero.
+
+Macbeth:
+ Remember a foul curse.
+
+Macbeth:
+ Remember a kingdom.
+
+[Exit Macbeth]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_ITEM_GLYPH.
 
 
                     Scene @PASS_CODE_REPLAY: @LIT.scenes.PASS_CODE_REPLAY.title

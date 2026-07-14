@@ -208,11 +208,21 @@ ACT: Act = act(
         scene(
             "PASS_HR_FALLBACK",
             branch(eq(val(PUCK), const(0)), then="PASS_LISTS_BLOCK_BLANK"),
-            branch(eq(val(PUCK), const(42)), then="PASS_CODE_REPLAY"),
-            branch(eq(val(PUCK), const(45)), then="PASS_CODE_REPLAY"),
+            branch(eq(val(PUCK), const(42)), then="PASS_HR_FALLBACK_LIST_HANDOFF"),
+            branch(eq(val(PUCK), const(45)), then="PASS_HR_FALLBACK_LIST_HANDOFF"),
             branch(eq(val(PUCK), const(95)), then="PASS_CODE_REPLAY"),
             goto("PASS_LISTS_RAW_GLYPH"),
             companion=HECATE,
+        ),
+        scene(
+            "PASS_HR_FALLBACK_LIST_HANDOFF",
+            *emit_token(LADY_MACBETH, tokens.LIST_OPEN, 1),
+            push(MACBETH, const(1)),
+            let(MACBETH, const(1)),
+            push(LADY_MACBETH, const(tokens.ITEM_START)),
+            push(LADY_MACBETH, const(1)),
+            goto("PASS_LISTS_ITEM_GLYPH"),
+            companion=MACBETH,
         ),
         scene(
             "PASS_CODE_REPLAY",
