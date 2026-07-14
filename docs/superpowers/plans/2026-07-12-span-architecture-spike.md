@@ -1500,6 +1500,36 @@ ledgered anchor retargets and A17 adapters.
    command.  It must include the plan's exact literary gate after every Act
    III/TOML edit and the A17 binary-pair test as part of the focused evidence.
 
+## Amendment A18 (2026-07-14): normalize all protected-graph branch entries
+
+The current Task 4 graph now passes A17's per-scene `participants` proof but
+cannot lower because `entry_pairs()` rejects its first shared branch entry:
+ordinary field completion leaves `(ROMEO, PUCK)` for
+`LYRIC_FIELD_CLOSE_DISPATCH`, whereas `LYRIC_DEST_BALANCE` leaves
+`(MACBETH, ROMEO)`.  The accepted [A18 branch-entry normalization
+amendment](../specs/2026-07-14-act3-two-person-reconstruction-design.md#amendment-a18-2026-07-14-branch-entry-pair-normalization)
+is binding for Task 4 Step 3 and supersedes A17's statement that its adapter
+ledger is sufficient for lowering.
+
+1. Before production edits, extend the existing A17 binary-pair contract with
+   A18's ten exact adapter pairs, four unreachable spares, and an
+   `entry_pairs(ACT3)` assertion.  Run
+   `uv run pytest tests/test_splc_validate.py tests/test_act3_contracts.py -q`
+   red: it must name `LYRIC_FIELD_CLOSE_DISPATCH` on the current graph.
+2. Apply only A18's ten ledgered branch redirects and terminal-goto adapter
+   scenes in `src_ir/act3.py`; add only its ten working TOML entries.  Each
+   adapter is a stage-pair normalization hop with no `Pop`, Recall, sentinel,
+   selector, carrier, token code, output byte, or fallback.  Do not use any
+   A18 spare.
+3. Run the exact A18 proof sequence in the accepted design, including the
+   plan's Global Constraints literary gate.  Expected: `entry_pairs` and all
+   binary-scene checks pass, `uv run python -m scripts.splc` renders every
+   fragment, and the Amps-and-angle regression remains green.  A further
+   entry-pair collision or any needed non-goto adapter is `BLOCK[plan]`; it
+   does not authorize new prose, a validator change, or a generated-SPL edit.
+4. Only after Step 3 is green resume Task 4 Step 3's unchanged full spike
+   evidence command.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**

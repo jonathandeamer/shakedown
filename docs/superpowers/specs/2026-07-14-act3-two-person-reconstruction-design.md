@@ -174,3 +174,111 @@ Then run Task 4 Step 3's full spike command unchanged.  Any binary-pair,
 entry-pair, carrier-event, or literary-registration failure remains a
 `BLOCK[plan]`; it does not authorize an A17 spare, a third participant, or a
 hand-edited generated fragment.
+
+## Amendment A18 (2026-07-14): branch-entry pair normalization
+
+The completed A17 binary-scene reconstruction exposes a separate lowering
+constraint: every branch arrival at a shared scene must leave the same
+two-character set.  `entry_pairs()` correctly rejects the first conflict at
+`LYRIC_FIELD_CLOSE_DISPATCH`: ordinary field scanning arrives from
+`(ROMEO, PUCK)`, while the balanced-destination close arrives from
+`(MACBETH, ROMEO)`.  Redirecting that branch alone exposes nine more existing
+join conflicts.  This is stage-direction normalization only; it does not
+change the A8--A17 ownership, stack, sentinel, selector, byte-order, or
+continuation-record model.
+
+The following ledger is exhaustive against the current post-A17 graph.  Each
+adapter has no operation except `goto` to the named existing target.  Its
+declared pair is the target's already-established branch-entry pair, so the
+lowerer emits the change of stage at the adapter and every branch entering the
+shared target agrees.  Redirect only the named branch; retain all other
+branches and gotos unchanged.
+
+| Redirect this branch | Through adapter | Adapter pair | Then goto |
+|---|---|---|---|
+| `LYRIC_DEST_BALANCE` → `LYRIC_FIELD_CLOSE_DISPATCH` | `LYRIC_DEST_CLOSE_PAIR` | `(ROMEO, PUCK)` | `LYRIC_FIELD_CLOSE_DISPATCH` |
+| `LYRIC_FIELD_DRAIN_CLOSE` → `LYRIC_FIELD_TITLE_CAPTURE` | `LYRIC_FIELD_TITLE_ENTRY_PAIR` | `(HECATE, ROMEO)` | `LYRIC_FIELD_TITLE_CAPTURE` |
+| `LYRIC_AUTOLINK_TEXT_OPEN` → `LYRIC_FIELD_HEAD` | `LYRIC_AUTOLINK_FIELD_HEAD_PAIR` | `(ROMEO, HECATE)` | `LYRIC_FIELD_HEAD` |
+| `LYRIC_FIELD_LITERAL_EMIT` → `LYRIC_POP_GLYPH` | `LYRIC_FIELD_LITERAL_POP_PAIR` | `(JULIET, ROMEO)` | `LYRIC_POP_GLYPH` |
+| `LYRIC_FIELD_TITLE_CLOSE` → `LYRIC_FIELD_UNTERMINATED` | `LYRIC_FIELD_UNTERMINATED_PAIR` | `(JULIET, PUCK)` | `LYRIC_FIELD_UNTERMINATED` |
+| `LYRIC_FIELD_TITLE_CAPTURE` → `LYRIC_REQUEUE_OPEN` | `LYRIC_FIELD_TITLE_REQUEUE_PAIR` | `(PUCK, PROSPERO)` | `LYRIC_REQUEUE_OPEN` |
+| `LYRIC_REQUEUE_DRAIN` → `LYRIC_POP_GLYPH` | `LYRIC_REQUEUE_POP_PAIR` | `(JULIET, ROMEO)` | `LYRIC_POP_GLYPH` |
+| `LYRIC_EMPHASIS_COUNT_HOLD` → `LYRIC_EMPHASIS_SOURCE_END` | `LYRIC_EMPHASIS_SOURCE_END_PAIR` | `(PUCK, HECATE)` | `LYRIC_EMPHASIS_SOURCE_END` |
+| `LYRIC_EMPHASIS_LITERAL_EMIT` → `LYRIC_POP_GLYPH` | `LYRIC_EMPHASIS_LITERAL_POP_PAIR` | `(JULIET, ROMEO)` | `LYRIC_POP_GLYPH` |
+| `LYRIC_RESUME_CLOSE_DISPATCH` → `LYRIC_REGION_RESUME` | `LYRIC_REGION_RESUME_PAIR` | `(JULIET, PUCK)` | `LYRIC_REGION_RESUME` |
+
+### A18 controlled reservation (ready to paste)
+
+These ten working labels and four spares are the complete A18 pool.  The
+spares are unavailable without a further planning amendment.  No adapter has
+a `Pop`, so no Recall entry is required.
+
+```toml
+[scenes.LYRIC_DEST_CLOSE_PAIR]
+title = "Romeo leads the balanced road to its true gate."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_TITLE_ENTRY_PAIR]
+title = "Hecate brings the field-name to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_FIELD_HEAD_PAIR]
+title = "Romeo yields the shining road's first leaf to Hecate."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_LITERAL_POP_PAIR]
+title = "Juliet returns the loose field-mark to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_UNTERMINATED_PAIR]
+title = "Juliet carries the unfinished field to Puck."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_TITLE_REQUEUE_PAIR]
+title = "Puck bears the quiet field-name to Prospero."
+pattern = "scene_of_character"
+[scenes.LYRIC_REQUEUE_POP_PAIR]
+title = "Juliet sends the requeued petal back to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_SOURCE_END_PAIR]
+title = "Puck brings the star's last mark to Hecate."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_LITERAL_POP_PAIR]
+title = "Juliet returns the loose star-mark to Romeo."
+pattern = "scene_of_character"
+[scenes.LYRIC_REGION_RESUME_PAIR]
+title = "Juliet carries the finished rose-path to Puck."
+pattern = "scene_of_character"
+
+# A18 spare pool — do not use without another planning amendment.
+[scenes.LYRIC_FIELD_ENTRY_GUARD]
+title = "The field's road keeps its faithful pair."
+pattern = "bare_statement"
+[scenes.LYRIC_REQUEUE_ENTRY_GUARD]
+title = "The private path keeps its faithful pair."
+pattern = "bare_statement"
+[scenes.LYRIC_EMPHASIS_ENTRY_GUARD]
+title = "The starry path keeps its faithful pair."
+pattern = "bare_statement"
+[scenes.LYRIC_REGION_ENTRY_GUARD]
+title = "The rose-path keeps its faithful pair."
+pattern = "bare_statement"
+```
+
+### Required proof before regeneration
+
+Extend the existing A17 contract fixture rather than creating a second shape
+test.  Its adapter-pair map must include all ten A18 working labels and their
+exact pairs above; its spare set must include all four A18 guards.  Add a
+focused entry-pair assertion that calls `entry_pairs(ACT3)` and verifies no
+`IrError` is raised.  First run the test red on the current graph, then make
+only the ledgered redirects and adapter scenes in `src_ir/act3.py` plus the
+working TOML entries.
+
+Run exactly:
+
+```bash
+uv run pytest tests/test_splc_validate.py tests/test_act3_contracts.py -q
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_splc_generated_fragments.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+```
+
+Expected: PASS.  If another `entry_pairs` conflict appears, or any adapter
+requires an operation beyond a terminal `goto`, record `BLOCK[plan]`; do not
+consume an A18 spare, alter the validator, or hand-edit generated SPL.
