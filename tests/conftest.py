@@ -9,6 +9,7 @@ import os
 import subprocess
 import sys
 from collections.abc import Callable, Generator
+from contextvars import ContextVar
 from pathlib import Path
 from typing import cast
 
@@ -18,6 +19,9 @@ from shakespearelang._parser import shakespeareParser
 from tatsu.ast import AST
 
 _AST_CACHE: dict[tuple[Path, str], AST] = {}
+_BYPASS_INTERCEPTION: ContextVar[bool] = ContextVar(
+    "bypass_subprocess_interception", default=False
+)
 _WRAPPER_NAMES = {"shakedown", "shakedown-dev", "shakedown-debug"}
 _BLACKLIST = {
     "test_wrapper_error_channel.py",
@@ -198,7 +202,7 @@ class _InProcessPopen:
         cmd: str,
         wrapper_name: str,
         kwargs: dict[str, object],
-        spl_path: Path,
+        spl_path: Path | None,
     ) -> None:
         self.args = args
         self._cmd = cmd
@@ -210,8 +214,6 @@ class _InProcessPopen:
     def communicate(
         self, input: str | bytes | None = None, timeout: float | None = None
     ) -> tuple[str | bytes | None, str | bytes | None]:
-        if timeout is not None:
-            raise subprocess.TimeoutExpired(self.args, timeout)
         if self.returncode is not None:
             raise ValueError("Cannot communicate with a completed process")
         result = _run_in_process(
@@ -248,6 +250,15 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
     original_run = cast(Callable[..., object], subprocess.run)
     original_popen = cast(Callable[..., object], subprocess.Popen)
 
+    def run_without_interception(
+        args: _Command, p_args: tuple[object, ...], kwargs: dict[str, object]
+    ) -> object:
+        token = _BYPASS_INTERCEPTION.set(True)
+        try:
+            return original_run(args, *p_args, **kwargs)
+        finally:
+            _BYPASS_INTERCEPTION.reset(token)
+
     def mocked_run(args: _Command, *p_args: object, **kwargs: object) -> object:
         command = _command_path(args)
         run_kwargs = dict(kwargs)
@@ -256,18 +267,23 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
             and not _is_blacklisted()
             and _supports_in_process_run(run_kwargs)
         ):
-            spl_path = _target_play(*command, run_kwargs)
+            try:
+                spl_path = _target_play(*command, run_kwargs)
+            except Exception:
+                return _run_in_process(args, *command, run_kwargs)
             if not spl_path.exists():
-                return original_run(args, *p_args, **kwargs)
+                return run_without_interception(args, p_args, kwargs)
             result = _run_in_process(args, *command, run_kwargs, spl_path)
             if result.returncode and run_kwargs.get("check"):
                 raise subprocess.CalledProcessError(
                     result.returncode, args, output=result.stdout, stderr=result.stderr
                 )
             return result
-        return original_run(args, *p_args, **kwargs)
+        return run_without_interception(args, p_args, kwargs)
 
     def mocked_popen(args: _Command, *p_args: object, **kwargs: object) -> object:
+        if _BYPASS_INTERCEPTION.get():
+            return original_popen(args, *p_args, **kwargs)
         command = _command_path(args)
         popen_kwargs = dict(kwargs)
         if (
@@ -276,7 +292,10 @@ def intercept_subprocess(pytestconfig: pytest.Config) -> Generator[None]:
             and not _is_blacklisted()
             and _supports_in_process_popen(popen_kwargs)
         ):
-            spl_path = _target_play(*command, popen_kwargs)
+            try:
+                spl_path = _target_play(*command, popen_kwargs)
+            except Exception:
+                return _InProcessPopen(args, *command, popen_kwargs, None)
             if spl_path.exists():
                 return _InProcessPopen(args, *command, popen_kwargs, spl_path)
         return original_popen(args, *p_args, **kwargs)

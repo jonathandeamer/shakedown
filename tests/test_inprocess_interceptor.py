@@ -230,6 +230,28 @@ def test_popen_wrapper_reuses_cached_ast_and_preserves_pipe_output(
     assert parse_calls == 1
 
 
+def test_popen_wrapper_communicate_timeout_returns_completed_result(
+    tmp_path: Path,
+) -> None:
+    play_path = tmp_path / "valid.spl"
+    play_path.write_text(MINIMAL_VALID_PLAY)
+
+    process = subprocess.Popen(
+        [str(Path.cwd() / "shakedown")],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        env={**os.environ, "SHAKEDOWN_SPL": str(play_path)},
+    )
+
+    stdout, stderr = process.communicate("", timeout=1)
+
+    assert process.returncode == 0
+    assert stdout == ""
+    assert stderr == ""
+
+
 def _delegating_wrapper(tmp_path: Path) -> Path:
     marker = tmp_path / "delegated"
     wrapper = tmp_path / "shakedown"
@@ -243,7 +265,6 @@ def _delegating_wrapper(tmp_path: Path) -> Path:
     ("mode", "kwargs"),
     [
         ("cwd", {"cwd": "."}),
-        ("timeout", {"timeout": 1}),
         ("stdin", {"stdin": subprocess.DEVNULL}),
         ("shell", {"shell": True}),
         ("env_none", {"env": None}),
@@ -252,7 +273,7 @@ def _delegating_wrapper(tmp_path: Path) -> Path:
 )
 def test_unsupported_run_semantics_delegate_to_real_wrapper(
     tmp_path: Path,
-    mode: Literal["cwd", "timeout", "stdin", "shell", "env_none", "devnull"],
+    mode: Literal["cwd", "stdin", "shell", "env_none", "devnull"],
     kwargs: dict[str, object],
 ) -> None:
     wrapper = _delegating_wrapper(tmp_path)
@@ -274,6 +295,25 @@ def test_unsupported_run_semantics_delegate_to_real_wrapper(
     if mode != "devnull":
         assert result.stdout == "delegated\n"
         assert result.stderr == ""
+
+
+def test_run_timeout_fallback_bypasses_in_process_popen(tmp_path: Path) -> None:
+    wrapper = _delegating_wrapper(tmp_path)
+    marker = tmp_path / "delegated"
+
+    result = subprocess.run(
+        [str(wrapper)],
+        input="",
+        capture_output=True,
+        text=True,
+        timeout=1,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    assert marker.exists()
+    assert result.stdout == "delegated\n"
+    assert result.stderr == ""
 
 
 def test_missing_wrapper_path_delegates_to_subprocess() -> None:
@@ -318,3 +358,35 @@ def test_dev_and_debug_ignore_external_shakedown_spl(
 
     assert result.returncode == 0
     assert result.stderr == ""
+
+
+@pytest.mark.parametrize("wrapper_name", ["shakedown-dev", "shakedown-debug"])
+def test_dev_and_debug_assemble_failure_returns_captured_error(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    wrapper_name: str,
+) -> None:
+    from scripts import assemble as assemble_module
+
+    wrapper = tmp_path / wrapper_name
+    wrapper.write_text("#!/usr/bin/env bash\nexit 99\n")
+    wrapper.chmod(0o755)
+
+    def fail_assemble(**kwargs: object) -> None:
+        raise RuntimeError("assemble failed")
+
+    monkeypatch.setattr(assemble_module, "assemble", fail_assemble)
+
+    result = subprocess.run(
+        [str(wrapper)],
+        input="",
+        capture_output=True,
+        text=True,
+        check=False,
+        env=os.environ.copy(),
+    )
+
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert result.stderr is not None
+    assert "SPL preparation error: assemble failed" in result.stderr
