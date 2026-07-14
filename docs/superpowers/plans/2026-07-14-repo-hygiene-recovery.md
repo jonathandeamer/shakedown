@@ -53,7 +53,7 @@ accepted recovery design.
 a shipped reconciliation row. If the gate cannot be restored under the bounded
 repair, one planner-only blocker instead.
 
-- [ ] **Step 1: Re-run the exact hygiene diagnostics before editing source.**
+- [x] **Step 1: Re-run the exact hygiene diagnostics before editing source.**
 
   Run:
 
@@ -68,7 +68,16 @@ repair, one planner-only blocker instead.
   three pass, do not edit `scripts/codegen_html.py`; continue directly to Step
   3.
 
-- [ ] **Step 2: Apply only the pre-authorized mechanical fallback if Step 1 fails.**
+  **Evidence (2026-07-14):**
+  - `uv run ruff check .` → `All checks passed!` (exit 0)
+  - `uv run ruff format --check .` → `85 files already formatted` (exit 0)
+  - `uv run pytest tests/test_repo_hygiene.py -q` → `2 passed` (exit 0)
+
+  All three passed as expected. `scripts/codegen_html.py` was not touched.
+  Step 2's fallback is not applicable; continuing to Step 3 in the next
+  iteration.
+
+- [x] **Step 2: Apply only the pre-authorized mechanical fallback if Step 1 fails.** *(not applicable — Step 1 passed all three diagnostics, so this conditional fallback was not triggered.)*
 
   In `scripts/codegen_html.py`, delete this line only when it is present and
   unused:
