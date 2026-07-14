@@ -414,6 +414,29 @@ def reconciliation_action(
     )
 
 
+def active_plan_path(rows: Sequence[RoadmapRow]) -> Path | None:
+    """Return the current in-flight plan path, if any."""
+    return next((row.plan_path for row in rows if "in flight" in row.status), None)
+
+
+def unregistered_planning_action(
+    rows: Sequence[RoadmapRow], repo: Path = REPO
+) -> NextAction | None:
+    """Route untracked active planning artifacts to the planning pool."""
+    artifacts = unregistered_planning_artifacts(repo)
+    if not artifacts:
+        return None
+    detail = "; ".join(str(path) for path in artifacts)
+    return NextAction(
+        ActionKind.PLAN,
+        "Register or clean up untracked planning artifacts before roadmap "
+        f"execution: {detail}",
+        active_plan_path(rows),
+        None,
+        (),
+    )
+
+
 def _executors(raw: object, label: str) -> tuple[Executor, ...]:
     if not isinstance(raw, list) or not raw:
         raise ValueError(f"{label} must contain at least one executor")
@@ -1705,10 +1728,27 @@ def main(argv: Sequence[str] | None = None) -> int:
         while True:
             rows = parse_roadmap(ROADMAP.read_text())
             blockers = read_blockers()
-            action = determine_next_action(rows, blockers)
-            reconciled = reconciliation_action(rows)
-            if reconciled is not None:
-                action = reconciled
+            active_plan = active_plan_path(rows)
+            invalid = invalid_branch_blockers(blockers, repo=REPO)
+            if invalid:
+                action = NextAction(
+                    ActionKind.FIX,
+                    "Validate the active structured blocker before roadmap work "
+                    f"continues: {'; '.join(invalid)}",
+                    active_plan,
+                    None,
+                    tuple(blockers),
+                )
+            else:
+                artifact_action = unregistered_planning_action(rows, repo=REPO)
+                if artifact_action is not None:
+                    action = artifact_action
+                else:
+                    reconciled = reconciliation_action(rows, repo=REPO)
+                    if reconciled is not None:
+                        action = reconciled
+                    else:
+                        action = determine_next_action(rows, blockers)
             if args.govern:
                 return run_governor(config, action, environment)
             no_remaining_rows = not any(

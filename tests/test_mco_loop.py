@@ -493,6 +493,287 @@ def test_main_keeps_ordinary_action_after_terminal_branch_reconciliation(
     assert selected_actions == [canonical]
 
 
+def test_main_prefers_invalid_structured_blocker_over_other_fences(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = _main_test_config_with_planning(tmp_path)
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
+    selected_actions: list[NextAction] = []
+    selected_pools: list[tuple[Executor, ...]] = []
+    blockers = (
+        "- BLOCK[plan]: branch=topic; "
+        "head=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; "
+        "base=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; "
+        "request=review; detail=Need disposition.",
+    )
+    artifact = tmp_path / "docs" / "superpowers" / "plans" / "example.md"
+
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("5R", "in flight", plan),),
+    )
+    monkeypatch.setattr(
+        mco_loop, "read_blockers", lambda path=mco_loop.BLOCKERS: blockers
+    )
+    monkeypatch.setattr(
+        mco_loop, "determine_next_action", lambda rows, active_blockers: canonical
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "invalid_branch_blockers",
+        lambda active_blockers, repo=mco_loop.REPO: ("branch/head mismatch",),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "unregistered_planning_artifacts",
+        lambda repo=mco_loop.REPO: (artifact,),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "reconciliation_action",
+        lambda rows, repo=mco_loop.REPO: NextAction(
+            ActionKind.PLAN,
+            "Resolve branch reconciliation before normal roadmap execution: "
+            "topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+            "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending",
+            plan,
+            None,
+            (),
+        ),
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_governor_directive", lambda action: (action, False, False)
+    )
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        selected_pools.append(tuple(executors))
+        selected_actions.append(action)
+        return mco_loop.ExecutorSelection(None, None, True)
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+
+    result = mco_loop.main(["--once"])
+
+    assert result == 5
+    assert selected_pools == [config.implementation]
+    assert selected_actions == [
+        NextAction(
+            ActionKind.FIX,
+            "Validate the active structured blocker before roadmap work "
+            "continues: branch/head mismatch",
+            plan,
+            None,
+            blockers,
+        )
+    ]
+
+
+def test_main_prefers_unregistered_planning_artifacts_over_reconciliation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = _main_test_config_with_planning(tmp_path)
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
+    selected_actions: list[NextAction] = []
+    selected_pools: list[tuple[Executor, ...]] = []
+    artifact_a = tmp_path / "docs" / "superpowers" / "plans" / "example.md"
+    artifact_b = tmp_path / "docs" / "superpowers" / "specs" / "example.md"
+
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("5R", "in flight", plan),),
+    )
+    monkeypatch.setattr(mco_loop, "read_blockers", lambda path=mco_loop.BLOCKERS: ())
+    monkeypatch.setattr(
+        mco_loop, "determine_next_action", lambda rows, blockers: canonical
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "invalid_branch_blockers",
+        lambda blockers, repo=mco_loop.REPO: (),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "unregistered_planning_artifacts",
+        lambda repo=mco_loop.REPO: (artifact_a, artifact_b),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "reconciliation_action",
+        lambda rows, repo=mco_loop.REPO: NextAction(
+            ActionKind.PLAN,
+            "Resolve branch reconciliation before normal roadmap execution: "
+            "topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+            "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending",
+            plan,
+            None,
+            (),
+        ),
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_governor_directive", lambda action: (action, False, False)
+    )
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        selected_pools.append(tuple(executors))
+        selected_actions.append(action)
+        return mco_loop.ExecutorSelection(None, None, True)
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+
+    result = mco_loop.main(["--once"])
+
+    assert result == 5
+    assert selected_pools == [config.planning]
+    assert selected_actions == [
+        NextAction(
+            ActionKind.PLAN,
+            "Register or clean up untracked planning artifacts before roadmap "
+            "execution: "
+            f"{artifact_a}; {artifact_b}",
+            plan,
+            None,
+            (),
+        )
+    ]
+
+
+@pytest.mark.parametrize(
+    ("fence_action", "expected_summary"),
+    [
+        (
+            lambda plan, repo: NextAction(
+                ActionKind.PLAN,
+                "Register or clean up untracked planning artifacts before roadmap "
+                f"execution: {repo / 'docs/superpowers/plans/example.md'}",
+                plan,
+                None,
+                (),
+            ),
+            lambda plan, repo: (
+                "Register or clean up untracked planning artifacts "
+                "before roadmap execution: "
+                f"{repo / 'docs/superpowers/plans/example.md'}"
+            ),
+        ),
+        (
+            lambda plan, repo: NextAction(
+                ActionKind.PLAN,
+                "Resolve branch reconciliation before normal roadmap execution: "
+                "topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+                "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending",
+                plan,
+                None,
+                (),
+            ),
+            lambda plan, repo: (
+                "Resolve branch reconciliation before normal roadmap "
+                "execution: topic@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+                "(base bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb): review pending"
+            ),
+        ),
+    ],
+)
+def test_main_keeps_planning_fences_as_plan_after_planner_failure(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    fence_action,
+    expected_summary,
+) -> None:
+    config = _main_test_config_with_planning(tmp_path)
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    plan = tmp_path / "plan.md"
+    plan.write_text("- [ ] step\n")
+    canonical = NextAction(ActionKind.IMPLEMENT, "execute", plan, "step", ())
+    selected_actions: list[NextAction] = []
+    selected_pools: list[tuple[Executor, ...]] = []
+
+    monkeypatch.setattr(mco_loop, "REPO", tmp_path)
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(
+        mco_loop, "load_config", lambda path=mco_loop.DEFAULT_CONFIG: config
+    )
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("5R", "in flight", plan),),
+    )
+    monkeypatch.setattr(mco_loop, "read_blockers", lambda path=mco_loop.BLOCKERS: ())
+    monkeypatch.setattr(
+        mco_loop, "determine_next_action", lambda rows, blockers: canonical
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "invalid_branch_blockers",
+        lambda blockers, repo=mco_loop.REPO: (),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "unregistered_planning_artifacts",
+        lambda repo=mco_loop.REPO: (),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "reconciliation_action",
+        lambda rows, repo=mco_loop.REPO: fence_action(plan, repo),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "load_state",
+        lambda path: {"last_failure": {"kind": "backend_failure"}},
+    )
+    monkeypatch.setattr(
+        mco_loop, "apply_governor_directive", lambda action: (action, False, False)
+    )
+
+    def fake_select(executors, state, action, now, preserve_planning=False):
+        selected_pools.append(tuple(executors))
+        selected_actions.append(action)
+        return mco_loop.ExecutorSelection(None, None, True)
+
+    monkeypatch.setattr(mco_loop, "select_executor", fake_select)
+
+    result = mco_loop.main(["--once"])
+
+    assert result == 5
+    assert selected_pools == [config.planning]
+    assert selected_actions == [
+        NextAction(
+            ActionKind.PLAN,
+            expected_summary(plan, tmp_path),
+            plan,
+            None,
+            (),
+        )
+    ]
+
+
 def _invocation_inputs(
     tmp_path: Path,
 ) -> tuple[mco_loop.LoopConfig, Executor, NextAction]:
