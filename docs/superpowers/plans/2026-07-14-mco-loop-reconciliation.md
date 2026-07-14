@@ -17,7 +17,7 @@
 - A disposition head mismatch is a fresh review requirement, not an error that may be silently accepted.
 - Preserve compatibility with existing free-text `- BLOCK:` and `- BLOCK[plan]:` lines.
 - Every implementation checkpoint runs `uv run pytest tests/test_mco_loop.py -q`, `uv run ruff check .`, and `uv run pyright`; the final gate also runs `uv run pytest -q`.
-- The Act-II repair follows `docs/superpowers/notes/spl-literary-protocol.md`: read `docs/spl/literary-spec.md`, `docs/spl/style-lexicon.md`, `docs/spl/codegen-style-guide.md`, and `src/literary.toml` before editing.  Amendment A1 reserves zero new controlled surfaces; do not add one without a new planning amendment.
+- The Act-II repair follows `docs/superpowers/notes/spl-literary-protocol.md`: read `docs/spl/literary-spec.md`, `docs/spl/style-lexicon.md`, `docs/spl/codegen-style-guide.md`, and `src/literary.toml` before editing. Amendment A2 reserves only `PASS_HR_FALLBACK_LIST_HANDOFF` and retains its six named Act-II spares; do not add another controlled surface without a new planning amendment.
 - Each autonomous commit must use the repository’s required `Agent:`, `Model:`, `Harness: MCO 0.10.8`, and executor-specific `Co-authored-by:` trailers, followed by a non-force push.  A push failure records one blocker and stops.
 
 ---
@@ -31,6 +31,7 @@
 | `.agent/blockers.md` | Replace the opaque merge-conflict line with a structured branch-reconciliation blocker, then remove it only after a terminal disposition. |
 | `scripts/mco_loop.py` | Branch inventory, ledger parsing, structured-blocker validation, untracked-artifact detection, canonical action recovery, and `main()` integration. |
 | `tests/test_mco_loop.py` | Unit tests for every pure helper and action-routing boundary. |
+| `src/20-act2-literary.toml` | Act-II controlled scene-title ledger; receives the one A2 handoff title and preserves the six named spares. |
 | `docs/superpowers/plans/2026-07-14-development-efficiency.md` | Reconcile previously landed cache/cooldown commits with the plan’s checkbox/evidence state. |
 | `docs/superpowers/specs/2026-07-14-development-efficiency-design.md` | Commit the previously untracked accepted design as historical infrastructure context. |
 | `docs/superpowers/plans/plan-roadmap.md` | Record recovery completion and leave Slice 2 halted pending a fresh explicit resume decision. |
@@ -328,6 +329,7 @@ can be rerun as a closure gate.
 
 **Files:**
 - Modify: `src_ir/act2.py`
+- Modify: `src/20-act2-literary.toml`
 - Modify: `tests/test_act2_slice2.py`
 - Regenerate: `src/20-act2-block.spl`, `shakedown.spl`
 - Test: `tests/test_token_dump.py`, `tests/test_splc_interpret_parity.py`, `tests/test_architecture_spikes.py`, `tests/test_splc_generated_fragments.py`, `tests/test_literary_compliance.py`, `tests/test_literary_toml_schema.py`
@@ -360,10 +362,12 @@ Evidence re-run on 2026-07-14:
 In `tests/test_act2_slice2.py`, add a focused assertion that loads the Act-II
 scene labels and requires the HR non-match path for `*`/`-` to target the
 list-fallback scene, while `_` still targets the raw replay path.  Name it
-`test_hr_candidate_fallback_preserves_unordered_list_handoff`.  Assert the
-new handoff scene emits, in order, `LIST_OPEN`, list kind `1`, `ITEM_START`,
-tightness `1`, and then goes to `PASS_LISTS_ITEM_GLYPH`; assert that scene has
-no `_read()` operation.  Run:
+`test_hr_candidate_fallback_preserves_unordered_list_handoff`. Add
+`PASS_HR_FALLBACK_LIST_HANDOFF: Char.MACBETH` to the exact pair ledger and
+retain the assertion that all six A2-retained spares are unreachable. Assert
+the new handoff scene emits, in order, `LIST_OPEN`, list kind `1`,
+`ITEM_START`, tightness `1`, and then goes to `PASS_LISTS_ITEM_GLYPH`; assert
+that scene has no `_read()` operation. Run:
 
 ```bash
 uv run pytest tests/test_act2_slice2.py -k unordered_list_handoff -q
@@ -381,8 +385,11 @@ on 2026-07-14:
 
 - [ ] **Step 3: Repair the handoff in authored IR and regenerate only from source.**
 
-In `src_ir/act2.py`, split `PASS_HR_FALLBACK` by saved marker.  For `PUCK ==
-42` or `PUCK == 45`, route to one Act-II handoff scene that performs exactly:
+In `src/20-act2-literary.toml`, add exactly the A2
+`PASS_HR_FALLBACK_LIST_HANDOFF` block from the accepted reconciliation design;
+do not alter its six explicit spare entries. In `src_ir/act2.py`, split
+`PASS_HR_FALLBACK` by saved marker. For `PUCK == 42` or `PUCK == 45`, route
+to the A2 handoff scene with `companion=MACBETH`, which performs exactly:
 
 ```python
 *emit_token(LADY_MACBETH, tokens.LIST_OPEN, 1),
@@ -430,14 +437,15 @@ uv run pytest tests/test_codegen_html.py -q
 uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 ```
 
-Expected: every command exits zero.  If a new scene title, Recall line, or
-TOML key is required, stop rather than inventing prose and add
-`BLOCK[plan]` requesting a literary reservation.
+Expected: every command exits zero. The A2 handoff title is the only new
+controlled surface authorized here. If another scene title, Recall line, or
+TOML key is required, stop rather than inventing prose and add `BLOCK[plan]`
+requesting a literary reservation.
 
 - [ ] **Step 5: Commit and push the bounded regression repair.**
 
 ```bash
-git add src_ir/act2.py tests/test_act2_slice2.py \
+git add src_ir/act2.py src/20-act2-literary.toml tests/test_act2_slice2.py \
   src/20-act2-block.spl shakedown.spl
 git commit -m "fix: restore unordered list fallback"
 git push origin HEAD
@@ -497,11 +505,25 @@ does not inspect, stage, regenerate, or alter them.  A Task-6 implementer must
 preserve unrelated dirty changes and stop if the authorized IR regeneration
 cannot be isolated safely.
 
+## Amendment A3 — Reserve the required generated handoff scene
+
+**Accepted 2026-07-14.** The Task-6 source-level regression contract exposed
+that the A1 zero-title premise was false: a new IR scene cannot lower without
+a TOML-backed controlled heading. The accepted design's Amendment A2 reserves
+the exact Incidental title `PASS_HR_FALLBACK_LIST_HANDOFF`, fixes its
+`(LADY_MACBETH, MACBETH)` operating pair, and retains the six named Act-II
+spares (27 working labels, six spares). Task 6 Step 3 now adds only that
+ready-to-paste TOML entry alongside the IR scene and generated artifacts.
+
+This clears the prior planner-only blocker. No other Recall, value atom, scene
+title, or Slice-2 behavior is authorized; an additional surface still requires
+a new `BLOCK[plan]` and amendment.
+
 ## Plan self-review
 
 - Coverage: Task 1 resolves the actual branch/artifact debt; Task 2 fixes the observed planner-routing failure; Task 3 adds durable branch state; Task 4 validates structured blockers and planning artifacts; Task 5 records the red gate; Task 6 restores the previously shipped list invariant without expanding Slice 2; Task 7 verifies and documents the resulting operating model.
 - Safety: all Git inspection is read-only and all branch outcomes require a documented human/evidence-backed decision.  No task performs a destructive branch operation.
-- Scope: Amendments A1–A2 are limited to restoring the already-shipped
+- Scope: Amendments A1–A3 are limited to restoring the already-shipped
   spike-list invariant that blocks the governance gate and dispatching that
   repair.  Slice 2 remains halted, so no new Slice-2 Markdown feature can
   continue without a later explicit planning decision.

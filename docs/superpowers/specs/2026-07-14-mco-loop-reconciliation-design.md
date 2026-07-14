@@ -202,3 +202,85 @@ real debug play and fast interpreter; all list and nested-block spike fixtures
 match Markdown.pl; generated-fragment, literary-compliance, and TOML-schema
 tests pass; and the full Python gate is green.  The exact commands are named
 in the amended implementation plan.
+
+## Amendment A2 — Act-II list-handoff literary reservation (accepted 2026-07-14)
+
+### Cause and scope
+
+The authorized repair cannot be lowered as an anonymous control-flow edge:
+every production IR scene emits a `Scene @LABEL` heading and the compiler
+requires a corresponding `[scenes.LABEL]` entry.  The Step-2 regression
+contract already names `PASS_HR_FALLBACK_LIST_HANDOFF`, so retaining A1's
+zero-title assumption would make the approved repair unrenderable.  This
+amendment authorizes exactly one new Incidental controlled scene title in Act
+II.  It does not authorize a new Recall line, recurring value phrase, token,
+fixture expectation, or any Slice-2 feature work.
+
+### Binding state and stage table
+
+| Label | State/transition | Operating pair | Controlled pattern |
+|---|---|---|---|
+| `PASS_HR_FALLBACK_LIST_HANDOFF` | Rejected `*` or `-` HR candidate after the separator has already been consumed; emit `LIST_OPEN(1)`, create the matching frame, emit `ITEM_START(1)`, then enter `PASS_LISTS_ITEM_GLYPH` with the existing `HECATE` glyph | `(LADY_MACBETH, MACBETH)` | `bare_statement` |
+
+The handoff has no `_read()` operation. `PASS_HR_FALLBACK` remains the
+`(LADY_MACBETH, HECATE)` dispatcher and transitions to the handoff; the
+handoff then transitions to the existing `(LADY_MACBETH, HECATE)` item-glyph
+scene. `PUCK == 95` and every non-marker path retain their existing replay
+destinations.
+
+### Ready-to-paste Act-II literary block
+
+Add this working entry to `src/20-act2-literary.toml` in the same commit as
+the IR scene and regenerated artifacts:
+
+```toml
+# MCO reconciliation A2 working scene
+[scenes.PASS_HR_FALLBACK_LIST_HANDOFF]
+title = "The broken iron yields the list's first measure."
+pattern = "bare_statement"
+```
+
+This raises the binary-gate working pool from 26 to 27 labels. The following
+six already-reserved, currently unreachable labels remain the explicit Act-II
+spare pool; six is `ceil(27 * 0.20)` and exceeds the four-title minimum. They
+are not authority for new behavior in this task.
+
+```toml
+# Act-II spare pool retained by MCO reconciliation A2
+[scenes.PASS_HR_PAIR_GUARD]
+title = "The level iron keeps its faithful pair."
+pattern = "bare_statement"
+[scenes.PASS_CODE_PAIR_GUARD]
+title = "The chamber keeps its faithful pair."
+pattern = "bare_statement"
+[scenes.PASS_CODE_PAIR_RETURN]
+title = "The chamber measure returns by its faithful pair."
+pattern = "bare_statement"
+[scenes.PASS_BLOCK_PAIR_GUARD]
+title = "The shaped block keeps its faithful pair."
+pattern = "bare_statement"
+[scenes.PASS_HR_PAIR_WATCH]
+title = "The level iron watches its faithful pair."
+pattern = "bare_statement"
+[scenes.PASS_BLOCK_PAIR_WATCH]
+title = "The shaped block watches its faithful pair."
+pattern = "bare_statement"
+```
+
+### Required evidence
+
+The implementation must extend the Act-II pair ledger with
+`PASS_HR_FALLBACK_LIST_HANDOFF = MACBETH`, assert the six listed spares remain
+unreachable, then run exactly:
+
+```bash
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_act2_slice2.py -k unordered_list_handoff -q
+uv run pytest tests/test_token_dump.py -k 'list or nested' -q
+uv run pytest tests/test_splc_interpret_parity.py -k list -q
+uv run pytest tests/test_architecture_spikes.py -k 'list or nested' -q
+uv run pytest tests/test_splc_generated_fragments.py -q
+uv run pytest tests/test_literary_compliance.py -q
+uv run pytest tests/test_literary_toml_schema.py -q
+```
