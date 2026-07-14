@@ -109,7 +109,7 @@ uv run pytest tests/test_architecture_spikes.py -k flat_unordered_tight -q
 
 Expected: all pass; both dump paths equal the committed baseline and the architecture spike renders the Markdown.pl `<ul>` bytes.
 
-- [ ] **Step 3: Run the complete regression, generated-artifact, and literary gates.**
+- [x] **Step 3: Run the complete regression, generated-artifact, and literary gates.**
 
 Run:
 
