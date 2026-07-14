@@ -1444,6 +1444,62 @@ literary test pass.  A missing label, a three-person scene, or any failure in
 this gate is a new `BLOCK[plan]`; do not consume an A16 spare or hand-edit a
 generated fragment to bypass it.
 
+## Amendment A17 (2026-07-14): reconstruct the protected graph into binary scenes
+
+A16's mechanical `ACT_III_START` correction and registry closure were
+necessary but not sufficient.  The actual IR then exposes 27 additional
+protected-region scenes whose operation targets require three or more
+participants.  The validator is correct: changing `companion=` cannot make a
+multi-target scene legal.  The accepted [two-person reconstruction
+design](../specs/2026-07-14-act3-two-person-reconstruction-design.md) is now
+binding for Task 4 Step 3.  It preserves every A8--A15 owner, floor,
+selector, byte order, and continuation-record rule; it authorizes only the
+ledgered anchor retargets and A17 adapters.
+
+1. Before production reconstruction, add the accepted design's focused
+   `participants(scene, ACT.anchor)` shape test in
+   `tests/test_act3_contracts.py`.  It must enumerate every Act III scene,
+   name any invalid label, assert each A17 adapter's exact pair, and prove
+   that no A17 spare is reachable.  Run it red against the current graph:
+
+   ```bash
+   uv run pytest tests/test_act3_contracts.py tests/test_splc_validate.py -q
+   ```
+
+   Expected before reconstruction: the new binary-scene assertion names the
+   27 ledger entries (and may include `ACT_III_START` until its mechanical
+   correction), while all existing Task 1--3 carrier cases remain green.
+
+2. Reconstruct from the committed Task 3 baseline plus the accepted A8--A15
+   design; do not repair the partially generated graph in place.  Remove only
+   `ACT_III_START`'s spurious `companion=PUCK`, retarget only the existing
+   labels listed as “Retarget” in A17's ledger, and split only the listed
+   cross-holder handoffs.  Add the seventeen ready-to-paste A17 working TOML
+   entries with their matching IR scenes.  A17's five spares are unavailable.
+   No adapter may add a `Pop`, a Recall key, a sentinel, a selector, a carrier,
+   a token code, a fallback, or a third participant; it only separates existing
+   legal operations across the binding two-person pairs.
+
+3. Before regeneration, prove both closure conditions from actual IR:
+   every scene passes `participants`, and every reached `LYRIC_*`/
+   `TRAVERSE_*` label has a current TOML entry or an authorized A2/A8/A9/A10/
+   A11/A16/A17 working reservation.  Then run exactly:
+
+   ```bash
+   uv run pytest tests/test_splc_validate.py tests/test_act3_contracts.py -q
+   uv run python -m scripts.splc
+   uv run python scripts/assemble.py
+   uv run pytest tests/test_splc_generated_fragments.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+   ```
+
+   Expected: PASS.  A pair/entry-pair failure, a lost carrier event, missing
+   registration, or any altered A8--A15 invariant is `BLOCK[plan]`; do not
+   consume an A16/A17 spare, weaken the validator, or hand-edit generated SPL.
+
+4. Only after Step 3 is green resume Task 4 Step 3's full spike evidence
+   command.  It must include the plan's exact literary gate after every Act
+   III/TOML edit and the A17 binary-pair test as part of the focused evidence.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
