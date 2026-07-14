@@ -30,7 +30,7 @@ the committed Shakedown release artifact.
 - Do not hand-edit generated SPL, modify `src_ir/`, change the compiler or
   validator, reserve scenes, or change Markdown behavior.
 - The exact literary/codegen compliance command is:
-  `uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
+  `uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`.
 - Preserve unrelated worktree changes. At the logical checkpoint, make one
   conventional commit with the required MCO provenance trailers and push the
   current branch. Never force-push.
@@ -108,7 +108,7 @@ repair, one planner-only blocker instead.
   ```bash
   uv run pytest -q
   uv run pytest tests/test_architecture_spikes.py -q
-  uv run pytest tests/test_splc_generated_fragments.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+  uv run pytest tests/test_splc_generated_fragments.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
   uv run python scripts/strict_parity_harness.py 'Amps and angle encoding'
   ```
 

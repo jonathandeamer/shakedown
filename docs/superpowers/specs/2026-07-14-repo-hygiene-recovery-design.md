@@ -17,7 +17,11 @@ because `scripts/codegen_html.py` has again acquired the reported debt, the only
 authorized source repair is to remove the unused `re` import if it exists and run
 Ruff's formatter on that file. It must not change `emit_value`, literal emission,
 or any generated phrase. The normal codegen and literary compliance tests then
-prove that this mechanical repair did not alter SPL output.
+prove that this mechanical repair did not alter SPL output. The exact recovery
+compliance command is `uv run pytest tests/test_literary_compliance.py
+tests/test_literary_toml_schema.py tests/test_assemble.py
+tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`; it
+couples the mechanical checks to the established byte-sensitive Amps fixture.
 
 ## Boundaries
 
