@@ -142,6 +142,23 @@ def _run_to_act3_observed(
     return boundary, result.state, observer
 
 
+def _run_text_to_act3_observed(
+    text: str,
+) -> tuple[_CarrierBoundary, InterpreterState, _SceneObserver]:
+    state = InterpreterState(input_text=text)
+    state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
+    state = run_act(ACT2, state, step_limit=STEP_LIMIT).state
+    state.stacks[Char.PUCK] = list(_BORROWED_PREFIX) + state.stacks[Char.PUCK]
+    borrowed = StackSnapshot(char=Char.PUCK, values=_BORROWED_PREFIX)
+    boundary = _CarrierBoundary(
+        borrowed=borrowed,
+        floor_prefix=tuple(state.stacks[Char.PUCK][: borrowed.floor + 1]),
+    )
+    observer = _observer()
+    result = run_act(ACT3, state, step_limit=STEP_LIMIT, observer=observer)
+    return boundary, result.state, observer
+
+
 def _carrier_stream(state: InterpreterState) -> list[int]:
     stream: list[int] = []
     while state.stacks[Char.PUCK]:
@@ -434,7 +451,7 @@ def test_act3_protected_modes_do_not_underflow(stem: str) -> None:
 
 
 def test_act3_emphasis_candidate_keeps_nonmatching_lookahead() -> None:
-    _, state, observer = _run_to_act3_observed("escapes_and_overlap")
+    _, state, observer = _run_to_act3_observed("overlapping_emphasis")
 
     labels = observer.labels
     start = next(
@@ -451,11 +468,11 @@ def test_act3_emphasis_candidate_keeps_nonmatching_lookahead() -> None:
 
     # The unmatched candidate path must preserve source order when requeued.
     text = _paragraph_text(_decode_carrier(state))
-    assert " and " in text
+    assert "<strong>outer <em>inner</em> outer</strong>" in text
 
 
 def test_act3_emphasis_candidate_restores_real_text_end_once() -> None:
-    _, _, observer = _run_to_act3_observed("escapes_and_overlap")
+    _, state, observer = _run_text_to_act3_observed("*a**\n")
 
     labels = observer.labels
     start = labels.index("LYRIC_EMPHASIS_CAND_SOURCE_END")
@@ -467,6 +484,7 @@ def test_act3_emphasis_candidate_restores_real_text_end_once() -> None:
     assert "LYRIC_POP_GLYPH" in tail[:terminator_index]
     assert tail[terminator_index - 1] == "LYRIC_TEXT_END_DISPATCH"
     assert "LYRIC_EMPHASIS_SEEK" not in tail[:terminator_index]
+    assert _paragraph_text(_decode_carrier(state)) == "*a"
 
     routes = [
         route

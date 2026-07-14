@@ -1662,7 +1662,7 @@ from the handoff WIP.
 
   Evidence (2026-07-13): the four Task 4 contract tests (`test_act3_renders_inline_html_and_autolink`, `test_act3_renders_links_images_protected`, `test_act3_renders_overlapping_emphasis`, and the parameterized `test_act3_source_buffer_never_receives_generated_output`/`_code_spans` negative assertion) were already committed in `8c69d89`/`6709f1f`/`510fda4` ("test: extend failing contracts for protected span modes") but the checkbox was never flipped. Re-ran `uv run pytest tests/test_act3_contracts.py -q` against committed `HEAD` (stashing an unrelated, unfinished Task 4 Step 2 WIP diff in `src_ir/act3.py` first): `11 failed, 15 passed` — the 11 failures are exactly the new Task 4 protected-mode assertions (`_does_not_yet_render_expected_span_html` for all five span fixtures, the three `_renders_*` contracts, and the four `_source_buffer_never_receives_generated_output*` cases); all Task 1-3 contracts, including code-span/escape rendering, remain green. This is the expected red gate before Task 4 Step 2 implementation.
 
-- [ ] **Step 2: Implement the remaining scanner modes using the Amendment A2 shared design.**
+- [x] **Step 2: Implement the remaining scanner modes using the Amendment A2 shared design.**
 
   **A9 resumption constraint (2026-07-13; binding before any production edit):**
   Amendments A2/A7/A8 remain the shared-field and source-end basis, but A9
@@ -1776,6 +1776,24 @@ from the handoff WIP.
   two-character restore graph. A Step 2 attempt that does not
   make the A4 focused no-underflow and scene-observer tests pass is a
   `BLOCK[plan]` condition, not a reason to add ad-hoc recovery scenes.
+
+  Evidence (2026-07-14): the committed protected-region scanner was already
+  structurally present in `src_ir/act3.py`, but the Step 2 gate stayed red on
+  `escapes_and_overlap` because a lone `*` followed by whitespace still opened
+  the emphasis machine. That unmatched opener then literal-unwound the rest of
+  the paragraph, preserving `\\[` and `\\`` literally and suppressing the
+  later `***both***` strong/em match. Fixed the root cause in
+  `LYRIC_EMPHASIS_COUNT_MORE` by treating the single-star-plus-whitespace case
+  as literal text instead of an opener, which lets the remainder of the line
+  return to ordinary scan dispatch. Updated `tests/test_act3_contracts.py` to
+  keep the A11/A12 observer coverage on direct probes: the unmatched-lookahead
+  replay assertion now uses `overlapping_emphasis`, and the candidate-source-
+  end assertion uses a minimal raw `*a**\\n` input via a new
+  `_run_text_to_act3_observed()` helper. Gate:
+  `uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q`
+  => `66 passed`; Global Constraints literary gate:
+  `uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q`
+  => `1 passed, 208 deselected`.
 
 - [ ] **Step 3: Regenerate and run all spike evidence.**
 

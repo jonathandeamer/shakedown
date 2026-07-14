@@ -1154,6 +1154,14 @@ ACT: Act = act(
             ),
             branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_CAND_MORE"),
             push(HORATIO, val(PUCK)),
+            branch(
+                eq(add(mul(const(100), val(HECATE)), val(PUCK)), const(132)),
+                then="LYRIC_EMPHASIS_SOURCE_END",
+            ),
+            branch(
+                eq(add(mul(const(100), val(HECATE)), val(PUCK)), const(109)),
+                then="LYRIC_EMPHASIS_SOURCE_END",
+            ),
             goto("LYRIC_EMPHASIS_SEEK"),
             companion=HORATIO,
         ),
