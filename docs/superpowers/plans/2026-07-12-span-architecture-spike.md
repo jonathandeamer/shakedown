@@ -2086,15 +2086,19 @@ graph.
   `uv run pytest tests/test_act3_contracts.py tests/test_token_dump.py tests/test_token_decode.py tests/test_token_structure.py -q`
   => `123 passed in 369.69s (0:06:09)`.
 
-- [ ] **Step 5: Re-run interpreter/generated-SPL parity if the new scenes introduce a new IR control-flow shape.**
+- [x] **Step 5: Re-run interpreter/generated-SPL parity if the new scenes introduce a new IR control-flow shape.**
 
   Run: `uv run pytest tests/test_splc_interpret.py tests/test_splc_interpret_parity.py tests/test_splc_validate.py -q`  
   Expected: PASS; no lowered branch/goto or stack-floor behavior differs from the IR interpreter.
 
-- [ ] **Step 6: Commit and push protected regions.**
+  Evidence (2026-07-14): re-ran the exact Step 5 gate after the Task 4 protected-region scanner and A19 goto-staging landed. Result: `50 passed`. The fast IR interpreter (`scripts/splc/interpret.run_act`) and the lowered generated SPL agree on the Amps/short dumps, the six list-spike inputs, and every `validate.py`/`entry_pairs` binary-scene check — no branch/goto or stack-floor behavior diverges from the IR. No production file changed; this is a pure parity confirmation of the already-committed Task 4 graph.
+
+- [x] **Step 6: Commit and push protected regions.**
 
   Run: `git add src_ir/act3.py src/30-act3-literary.toml src/30-act3-span.spl shakedown.spl tests/test_act3_contracts.py tests/fixtures/token_stream/spans && git commit -m "feat: protect buffered span regions"`  
   Expected: conventional commit with required provenance trailers succeeds, followed by `git push` succeeding.
+
+  Evidence (2026-07-14): the Step 6 artifacts were committed and pushed across the preceding Task 4 steps rather than in one batched commit — `src_ir/act3.py`, `src/30-act3-literary.toml`, `src/30-act3-span.spl`, and `shakedown.spl` in `138cdd1` (`fix: close span scanner step 2 gate`) and `2b353af` (`fix: restore source-aware goto staging`); `tests/test_act3_contracts.py` and `tests/fixtures/token_stream/spans` in `fdd39a5` (`test: enforce reviewed span dumps`). `git status --short` is clean and `origin/main` is up to date, so the Step 6 commit command would be a no-op; the protected regions are recorded and pushed. The Step 5 parity gate (50 passed) confirms the committed generated SPL matches the IR.
 
 ### Task 5: Close the spike with regression, performance, and halt evidence
 
