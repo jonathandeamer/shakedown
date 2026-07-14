@@ -336,7 +336,7 @@ can be rerun as a closure gate.
 - Consumes: the Act-II HR candidate state (`PUCK` = marker, `HECATE` = first non-HR glyph) and the existing `PASS_LISTS_ITEM_GLYPH` continuation.
 - Produces: for `* alpha\n* beta\n* gamma\n`, the unchanged blessed stream in `tests/fixtures/token_stream/lists/flat_unordered_tight.dump`; `PASS_LISTS_ITEM_GLYPH` receives `HECATE = ord('a')` without an additional read.
 
-- [ ] **Step 1: Establish the regression at all three boundaries.**
+- [x] **Step 1: Establish the regression at all three boundaries.**
 
 Run:
 
@@ -349,6 +349,11 @@ uv run pytest tests/test_architecture_spikes.py -k flat_unordered_tight -q
 Expected before the repair: all three fail; the two dump tests show actual
 `1\n60\n101...` versus blessed `4\n1\n5\n1...`, and the architecture spike
 shows paragraph HTML rather than `<ul>`.
+
+Evidence re-run on 2026-07-14:
+- `uv run pytest tests/test_token_dump.py -k flat_unordered_tight -q` failed with actual dump bytes beginning `1\n60\n101...` versus blessed `4\n1\n5\n1...`.
+- `uv run pytest tests/test_splc_interpret_parity.py -k flat_unordered_tight -q` failed with the same fast-interpreter dump mismatch.
+- `uv run pytest tests/test_architecture_spikes.py -k flat_unordered_tight -q` failed because the rendered output was `<p><em>alpha\n</em> beta\n* gamma</p>\n` instead of the expected `<ul>` list HTML.
 
 - [ ] **Step 2: Add a source-level regression assertion for the consumed-marker handoff.**
 
