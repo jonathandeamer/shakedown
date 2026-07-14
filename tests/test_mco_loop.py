@@ -333,8 +333,25 @@ def test_mco_argv_contains_model_policy_but_no_secret_values(tmp_path: Path) -> 
     assert command[command.index("--max-provider-parallelism") + 1] == "1"
 
 
-def test_rate_limit_cools_quota_group_and_selects_next_executor(
+@pytest.mark.parametrize(
+    ("result", "expected_outcome"),
+    (
+        (
+            InvocationResult(2, '{"error_kind":"retryable_rate_limit"}', "", False),
+            "rate_limit",
+        ),
+        (
+            InvocationResult(
+                2, '{"error_kind":"retryable_transient_network"}', "", False
+            ),
+            "transient",
+        ),
+    ),
+)
+def test_availability_failure_uses_short_quota_group_cooldown_and_selects_next(
     tmp_path: Path,
+    result: InvocationResult,
+    expected_outcome: str,
 ) -> None:
     config = mco_loop.load_config()
     config = mco_loop.LoopConfig(
@@ -345,6 +362,7 @@ def test_rate_limit_cools_quota_group_and_selects_next_executor(
         iteration_pause_seconds=0,
         planning=config.planning,
         implementation=config.implementation,
+        rate_limit_cooldown_seconds=300,
     )
     state: dict[str, object] = {
         "cooldowns": {},
@@ -352,16 +370,67 @@ def test_rate_limit_cools_quota_group_and_selects_next_executor(
         "last_failure": None,
     }
     first = config.implementation[0]
-    result = InvocationResult(2, '{"error_kind":"retryable_rate_limit"}', "", False)
-
     action = NextAction(ActionKind.IMPLEMENT, "test", None, "step", ())
     failure = mco_loop.apply_result(config, state, first, action, result, now=1000)
     selected, _ = mco_loop.available_executor(config.implementation, state, now=1001)
 
-    assert failure == "rate_limit"
+    assert failure == expected_outcome
     assert selected == config.implementation[1]
     saved = json.loads(config.state_file.read_text())
-    assert saved["cooldowns"]["claude"] == 1600
+    assert saved["cooldowns"][first.quota_group] == 1300
+
+
+def test_cooldown_cli_override_preserves_rate_limit_cooldown(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    config = mco_loop.LoopConfig(
+        env_file=tmp_path / ".env",
+        state_file=tmp_path / "state.json",
+        artifact_dir=tmp_path / "artifacts",
+        cooldown_seconds=600,
+        iteration_pause_seconds=0,
+        planning=(),
+        implementation=(),
+        rate_limit_cooldown_seconds=123,
+    )
+    roadmap = tmp_path / "roadmap.md"
+    roadmap.write_text("ignored")
+    captured: dict[str, mco_loop.LoopConfig] = {}
+
+    monkeypatch.setattr(mco_loop, "ROADMAP", roadmap)
+    monkeypatch.setattr(mco_loop, "load_config", lambda path: config)
+    monkeypatch.setattr(mco_loop.shutil, "which", lambda name: "/bin/mco")
+    monkeypatch.setattr(mco_loop, "load_named_secrets", lambda path: {})
+    monkeypatch.setattr(mco_loop, "ensure_git_hooks", lambda: None)
+    monkeypatch.setattr(mco_loop, "pi_auth_shadow_warning", lambda: None)
+    monkeypatch.setattr(mco_loop, "pi_models_config_warning", lambda: None)
+    monkeypatch.setattr(
+        mco_loop,
+        "parse_roadmap",
+        lambda text: (_row("4S", "in flight"),),
+    )
+    monkeypatch.setattr(
+        mco_loop,
+        "determine_next_action",
+        lambda rows, blockers: NextAction(
+            ActionKind.IMPLEMENT, "test", None, "step", ()
+        ),
+    )
+
+    def fake_run_governor(
+        actual: mco_loop.LoopConfig,
+        action: NextAction,
+        environment: dict[str, str],
+    ) -> int:
+        captured["config"] = actual
+        return 0
+
+    monkeypatch.setattr(mco_loop, "run_governor", fake_run_governor)
+
+    assert mco_loop.main(["--govern", "--cooldown-seconds", "10"]) == 0
+    assert captured["config"].cooldown_seconds == 10
+    assert captured["config"].rate_limit_cooldown_seconds == 123
 
 
 def test_no_progress_success_also_advances_to_next_executor(tmp_path: Path) -> None:

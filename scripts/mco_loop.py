@@ -181,6 +181,7 @@ class LoopConfig:
     iteration_pause_seconds: int
     planning: tuple[Executor, ...]
     implementation: tuple[Executor, ...]
+    rate_limit_cooldown_seconds: int = 300
     escalation: tuple[Executor, ...] = ()
 
 
@@ -288,6 +289,9 @@ def load_config(path: Path = DEFAULT_CONFIG) -> LoopConfig:
         raw = tomllib.load(handle)
     table = _mapping(raw, "config")
     loop = _mapping(table.get("loop"), "loop")
+    rate_limit_cooldown_seconds = 300
+    if "rate_limit_cooldown_seconds" in loop:
+        rate_limit_cooldown_seconds = _integer(loop, "rate_limit_cooldown_seconds")
     return LoopConfig(
         env_file=_resolve_repo_path(cast(str, _string(loop, "env_file"))),
         state_file=_resolve_repo_path(cast(str, _string(loop, "state_file"))),
@@ -296,6 +300,7 @@ def load_config(path: Path = DEFAULT_CONFIG) -> LoopConfig:
         iteration_pause_seconds=_integer(loop, "iteration_pause_seconds"),
         planning=_executors(table.get("planning"), "planning"),
         implementation=_executors(table.get("implementation"), "implementation"),
+        rate_limit_cooldown_seconds=rate_limit_cooldown_seconds,
         escalation=(
             _executors(table.get("escalation"), "escalation")
             if table.get("escalation") is not None
@@ -883,7 +888,7 @@ def mco_command(
         "--max-provider-parallelism",
         "1",
         "--stall-timeout",
-        "900",
+        "300",
         "--review-hard-timeout",
         "3600",
         "--artifact-base",
@@ -1145,7 +1150,12 @@ def apply_result(
             if availability_failure
             else f"executor:{executor.name}"
         )
-        cooldowns[cooldown_key] = now + config.cooldown_seconds
+        duration = (
+            config.rate_limit_cooldown_seconds
+            if availability_failure
+            else config.cooldown_seconds
+        )
+        cooldowns[cooldown_key] = now + duration
         state["last_failure"] = {
             "executor": executor.name,
             "kind": outcome,
@@ -1432,6 +1442,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             iteration_pause_seconds=config.iteration_pause_seconds,
             planning=config.planning,
             implementation=config.implementation,
+            rate_limit_cooldown_seconds=config.rate_limit_cooldown_seconds,
             escalation=config.escalation,
         )
     if shutil.which("mco") is None and not args.dry_run and not args.status:
