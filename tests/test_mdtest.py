@@ -64,6 +64,7 @@ _FIXTURES_BY_NAME = {
 _IMPLEMENTED_FIXTURES = {
     "Amps and angle encoding",
     "Code Blocks",
+    "Hard-wrapped paragraphs with list-like lines",
     "Horizontal rules",
     "Tabs",
 }

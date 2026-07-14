@@ -36,7 +36,6 @@ def test_slice3_fixture_is_not_enabled_yet(fixture_name: str) -> None:
     assert fixture_name not in _IMPLEMENTED_FIXTURES
 
 
-@pytest.mark.xfail(strict=True, reason="Slice 3 Task 2 has not shipped yet")
 def test_hard_wrap_ambiguity_contract() -> None:
     _fixture_bytes_match("Hard-wrapped paragraphs with list-like lines")
 
