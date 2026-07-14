@@ -144,7 +144,7 @@ pattern = "bare_statement"
 
   Expected: XFAIL only.
 
-- [ ] **Step 2: Prove the existing baseline.**
+- [x] **Step 2: Prove the existing baseline.**
 
   ```bash
   uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py -q
