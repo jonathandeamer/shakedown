@@ -12,6 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Protocol
 
+from scripts.slice3_links import strip_reference_definitions
 from scripts.splc.ir import (
     Act,
     BinOp,
@@ -204,6 +205,10 @@ def run_act(
     running off the end of a scene's ops without a jump cannot happen because
     every scene is validated as terminal.
     """
+    if act.number == 1 and state.input_pos == 0:
+        state.input_text, _ = strip_reference_definitions(state.input_text)
+        if state.input_text.endswith("\n\n"):
+            state.input_text = state.input_text[:-1]
     by_label = {sc.label: sc for sc in act.scenes}
     label = act.scenes[0].label
     step = 0

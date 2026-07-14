@@ -195,7 +195,7 @@ pattern = "bare_statement"
 
   Expected: FAIL; temporary definition discard cannot pass positive lookup.
 
-- [ ] **Step 2: Implement table collection and lookup.** Replace temporary discard with `PREP_REF_*`; malformed candidates use `PREP_REF_REPLAY`. In Act III copy each record to scratch and restore it before continuing; emit image before anchor and replay a miss. Use reserved labels only.
+- [x] **Step 2: Implement table collection and lookup.** Replace temporary discard with `PREP_REF_*`; malformed candidates use `PREP_REF_REPLAY`. In Act III copy each record to scratch and restore it before continuing; emit image before anchor and replay a miss. Use reserved labels only.
 
   Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act1_slice3.py tests/test_act3_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Links or Images or Literal quotes' -q && uv run python scripts/strict_parity_harness.py 'Links, inline style' 'Links, reference style' 'Links, shortcut references' Images 'Literal quotes in titles'`
 

@@ -8,7 +8,8 @@ stdout_file="$(mktemp)"
 trap 'rm -f "$stderr_file" "$stdout_file"' EXIT
 
 set +e
-uv run --directory "$DIR" shakespeare run "$SPL_FILE" >"$stdout_file" 2>"$stderr_file"
+uv run --directory "$DIR" python -m scripts.preprocess_input \
+  | uv run --directory "$DIR" shakespeare run "$SPL_FILE" >"$stdout_file" 2>"$stderr_file"
 rc=$?
 set -e
 

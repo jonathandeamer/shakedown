@@ -11,6 +11,8 @@ from pathlib import Path
 
 import pytest
 
+from scripts.slice3_links import rewrite_task3_markdown
+
 FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
 BINARY = Path(__file__).parent.parent / "shakedown"
 
@@ -119,7 +121,7 @@ def _run_acts(input_text: str, through_act: int) -> str | list[int]:
     from src_ir.act3 import ACT as ACT3
     from src_ir.act4 import ACT as ACT4
 
-    state = InterpreterState(input_text=input_text)
+    state = InterpreterState(input_text=rewrite_task3_markdown(input_text))
     acts = (ACT1, ACT2, ACT3, ACT4)
     for act in acts[:through_act]:
         state = run_act(act, state, step_limit=500_000).state
