@@ -216,7 +216,7 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'reconciliation_action or branch_i
 
 Expected: review work cannot be dispatched to an implementation provider.
 
-- [ ] **Step 4: Commit the branch fence.**
+- [x] **Step 4: Commit the branch fence.**
 
 ```bash
 git add scripts/mco_loop.py tests/test_mco_loop.py .agent/branch-dispositions.toml
