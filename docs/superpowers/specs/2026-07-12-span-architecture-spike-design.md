@@ -986,3 +986,102 @@ Expected: PASS. Then run the plan's exact literary gate. No new scene, Recall
 key, token code, stack, or controlled prose is authorized; use only existing
 A2/A10/A11 working labels. Any underflow, duplicate real terminator, early
 Romeo pop, or literal synthetic delimiter is `BLOCK[plan]`.
+
+## A14 triple-emphasis synthetic-delimiter order (2026-07-14)
+
+The A12/A13 reconstruction trace identifies the remaining underflow as a
+specific A8 implementation-order error, not an unresolved general ownership
+question. For a successful three-star match, the current graph reaches
+`LYRIC_REQUEUE_TRIPLE_CLOSE` only *after* `LYRIC_REQUEUE_DRAIN` has returned
+the held body to Puck. It therefore puts a single synthetic `*` at the top of
+Puck and begins the child scan with `* body TEXT_END`, omitting the matching
+synthetic tail. The child emphasis is consequently unmatched; its literal
+unwind consumes the private end, resumes the outer close, and leaves later
+literal stars to open a new scanner against an empty Puck stack.
+
+This amendment makes the A8 sentence "push synthetic closing, drain body,
+then push synthetic opening" an exact operation order. It changes no field,
+title, real-terminator, or continuation-record ownership.
+
+### Binding triple requeue choreography
+
+For `RESUME_TRIPLE_EMPH` only, Puck must contain these values from bottom to
+top before the first child `LYRIC_POP_GLYPH`:
+
+```text
+restored parent lookahead (ordinary glyph or real TEXT_END)
+private child TEXT_END
+synthetic closing '*'
+requeued raw body, arranged so its first source glyph is topmost
+synthetic opening '*'
+```
+
+Thus the child's pop order is exactly `*`, body, `*`, private `TEXT_END`,
+then the restored parent lookahead. The two synthetic stars are child source
+only: the nested one-star scanner consumes them and emits `<em>` / `</em>`;
+neither is copied to Juliet as literal text.
+
+Use the two A8-reserved working labels, and only those labels, with these
+operations:
+
+```text
+LYRIC_REQUEUE_OPEN:
+    push Lady Macbeth's A9 record; set Lady Macbeth to RESUME_*;
+    push Puck private TEXT_END;
+    if Lady Macbeth == RESUME_TRIPLE_EMPH: goto LYRIC_REQUEUE_TRIPLE_CLOSE;
+    else: goto LYRIC_REQUEUE_DRAIN
+
+LYRIC_REQUEUE_TRIPLE_CLOSE:
+    push(PUCK, '*')                 # synthetic tail, below raw held body
+    goto(LYRIC_REQUEUE_DRAIN)
+
+LYRIC_REQUEUE_DRAIN:
+    pop Horatio; non-floor -> push(PUCK, val(HORATIO)) and loop;
+    Horatio floor -> consume it and goto(LYRIC_REQUEUE_TRIPLE_OPEN)
+
+LYRIC_REQUEUE_TRIPLE_OPEN:
+    if Lady Macbeth == RESUME_TRIPLE_EMPH:
+        push(PUCK, '*')             # synthetic head, above raw held body
+    goto(LYRIC_POP_GLYPH)
+```
+
+The generic (non-triple) route still reaches `LYRIC_REQUEUE_TRIPLE_OPEN`, but
+that scene performs no push for it and goes directly to `LYRIC_POP_GLYPH`.
+Neither triple helper creates a Lady-Macbeth record, alters its selector,
+pops Puck/Horatio/Romeo, restores a real terminator, or emits HTML. The A8
+titles `LYRIC_REQUEUE_TRIPLE_CLOSE` and `LYRIC_REQUEUE_TRIPLE_OPEN` are now
+working labels, not spares; their already-reserved TOML prose is the complete
+literary authorization. No new title, Recall key, or spare is authorized.
+
+### Mandatory trace-first checkpoint
+
+Before changing `src_ir/act3.py`, add an observer test over
+`overlapping_emphasis` that records Puck pushes and asserts, for each
+three-star child, the scene/push subsequence:
+
+```text
+LYRIC_REQUEUE_OPEN
+LYRIC_REQUEUE_TRIPLE_CLOSE -> push '*'
+LYRIC_REQUEUE_DRAIN (all held glyphs)
+LYRIC_REQUEUE_TRIPLE_OPEN -> push '*'
+LYRIC_POP_GLYPH
+```
+
+It must assert the two pushes surround the held body in LIFO-correct order,
+the first nested child is a successful one-star match, no
+`LYRIC_EMPHASIS_SOURCE_END` occurs between that child's open and its resume
+close, and the decoded output includes exactly
+`<strong><em>both</em></strong>`. Add the same no-underflow witness for
+`links_images_protected`, whose label/alt requeue can contain a one-star
+child but must never take a triple helper. Run:
+
+```bash
+uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+  "triple_emphasis_requeue_order or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+```
+
+Expected: PASS with one real terminator route per probe, no Puck/Lady Macbeth
+underflow, no literal synthetic star, and no extra continuation record. Then
+run the plan's exact Global Constraints literary gate. A failure is a
+`BLOCK[plan]`; it does not authorize a third synthetic delimiter, a recovery
+pop, or use of any spare scene.

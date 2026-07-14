@@ -1257,6 +1257,50 @@ title capture after alt resumption.
 No new controlled prose is needed: only existing A2/A10/A11 working labels
 are authorized and their spares remain unavailable.
 
+## Amendment A14 (2026-07-14): triple-emphasis synthetic-delimiter order
+
+The A12/A13 reconstruction trace clears the remaining planner-only ambiguity:
+the triple route currently drains the held body before it pushes its only
+synthetic `*`. That produces child source `* body TEXT_END` rather than the
+required `* body * TEXT_END`; the unmatched child then literal-unwinds its
+private end and a later literal star opens `LYRIC_EMPHASIS_SEEK` on an empty
+Puck. The accepted design's [A14 triple-emphasis
+choreography](../specs/2026-07-12-span-architecture-spike-design.md#a14-triple-emphasis-synthetic-delimiter-order-2026-07-14)
+is binding for Task 4 Step 2.
+
+1. Reconstruct from committed Task 3 plus A10--A13; do not repair or copy
+   production scenes from the failed handoff WIP. For a successful triple
+   match, restore the parent lookahead first, then create the A9 record and
+   private Puck `TEXT_END`, push the synthetic closing `*`, drain Horatio,
+   and finally push the synthetic opening `*`. The next child pop order must
+   be `*`, body, `*`, private end, parent lookahead. Generic requeues add no
+   synthetic delimiter.
+2. Convert the already-reserved A8
+   `LYRIC_REQUEUE_TRIPLE_CLOSE`/`LYRIC_REQUEUE_TRIPLE_OPEN` entries from
+   spare capacity to the two working helpers. `LYRIC_REQUEUE_OPEN` branches
+   to the former immediately after writing the private end only for
+   `RESUME_TRIPLE_EMPH`; it pushes the tail and enters the ordinary drainer.
+   When the drainer consumes Horatio's floor it enters the latter, which
+   pushes the head only for `RESUME_TRIPLE_EMPH` and otherwise falls straight
+   through to `LYRIC_POP_GLYPH`. Do not add scenes, TOML prose, Recall keys,
+   token codes, records, or recovery pops.
+3. Before production edits add a Puck-push observer test proving that trace
+   on `overlapping_emphasis`, including the emitted
+   `<strong><em>both</em></strong>`, no source-end literal unwind for its
+   nested one-star child, and exactly one real terminator route. Add a
+   `links_images_protected` witness proving its label/alt child never enters
+   either triple helper and has no underflow. Run:
+
+   ```bash
+   uv run pytest tests/test_splc_interpret.py tests/test_act3_contracts.py -q -k \
+     "triple_emphasis_requeue_order or overlapping_emphasis or links_images_protected or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+   ```
+
+   Expected: PASS, with no Puck/Lady-Macbeth underflow, no literal synthetic
+   delimiter, and one real terminator route per probe. Then run the exact
+   Global Constraints literary gate. Any failure remains `BLOCK[plan]` and
+   does not authorize a third synthetic delimiter or use of a spare label.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
