@@ -313,11 +313,11 @@ code_leaf_mark = "Recall the indented chamber mark."
 - Act II emits `[CODE_BLOCK, glyphs..., TEXT_END]` for each contiguous 4-column-indented block; remove exactly four leading spaces per nonblank line, retain blank lines and remaining indentation, and return the first non-code line to normal block processing.
 - Act IV renders `CODE_BLOCK` as `<pre><code>` + payload with `&`, `<`, `>` HTML-escaped + `</code></pre>`; no Act-III span transform runs on its payload.
 
-- [ ] **Step 1: Add failing code-block and tab contracts.**
+- [x] **Step 1: Add failing code-block and tab contracts.**
 
   Add stream assertions for the `Code Blocks` fixture and the three code blocks in `Tabs.text`: one tab removes to column zero, two tabs leave four literal spaces, and tab-expanded example-list text is code rather than a list. Add renderer assertions for amp/angle escaping and preservation of two trailing spaces. Enable `Code Blocks` and `Tabs` only once their respective fixture assertions have been added.
 
-  Run: `uv run pytest tests/test_act2_slice2.py tests/test_act4_slice2.py tests/test_mdtest.py -k 'Code Blocks or Tabs' -q`
+  Run: `uv run pytest tests/test_act2_slice2.py tests/test_act4_slice2.py tests/test_mdtest.py -k 'Code and Blocks or Tabs' -q`
 
   Expected: FAIL.
 

@@ -58,7 +58,12 @@ def _collect_fixtures() -> list[tuple[str, Path, Path]]:
 
 
 _FIXTURES = _collect_fixtures()
-_IMPLEMENTED_FIXTURES = {"Amps and angle encoding", "Horizontal rules"}
+_IMPLEMENTED_FIXTURES = {
+    "Amps and angle encoding",
+    "Code Blocks",
+    "Horizontal rules",
+    "Tabs",
+}
 
 
 def _fixture_params() -> list[object]:

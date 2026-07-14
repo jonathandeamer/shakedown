@@ -7,6 +7,8 @@ token stream Act II hands to Act III, without a `shakespeare` subprocess."""
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scripts.splc.interpret import InterpreterState, run_act
@@ -76,6 +78,7 @@ def test_act2_remaining_spare_labels_are_unreachable() -> None:
 
 
 STEP_LIMIT = 200_000
+FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
 
 
 def _act2_stream(input_text: str) -> list[int]:
@@ -137,3 +140,46 @@ def test_tab_expanded_hr_candidate_becomes_code_block_not_hr() -> None:
     decoded = decode_stream(_act2_stream("\t---\n\n"))
     assert decoded[0].code != tokens.HR
     assert decoded[0].code == tokens.CODE_BLOCK
+
+
+@pytest.mark.parametrize(
+    ("fixture_name", "expected_payloads"),
+    [
+        (
+            "Code Blocks",
+            [
+                "code block on the first line\n",
+                "code block indented by spaces\n",
+                "the lines in this block  \nall contain trailing spaces  \n",
+                "code block on the last line\n",
+            ],
+        ),
+        (
+            "Tabs",
+            [
+                "this code block is indented by one tab\n",
+                "    this code block is indented by two tabs\n",
+                (
+                    "+   this is an example list item\n"
+                    "    indented with tabs\n"
+                    "\n"
+                    "+   this is an example list item\n"
+                    "    indented with spaces\n"
+                ),
+            ],
+        ),
+    ],
+    ids=["Code Blocks", "Tabs"],
+)
+def test_fixture_code_block_streams(
+    fixture_name: str, expected_payloads: list[str]
+) -> None:
+    input_text = (FIXTURES_DIR / f"{fixture_name}.text").read_text()
+    decoded = decode_stream(_act2_stream(input_text))
+    code_blocks = [token for token in decoded if token.code == tokens.CODE_BLOCK]
+
+    assert [token.text for token in code_blocks] == expected_payloads
+    if fixture_name == "Tabs":
+        # The final tab-expanded example-list region is one code leaf. Its
+        # leading plus signs must never re-enter the list-token grammar.
+        assert decoded[-1] == code_blocks[-1]
