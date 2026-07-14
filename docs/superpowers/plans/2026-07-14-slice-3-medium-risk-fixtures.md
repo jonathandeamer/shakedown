@@ -153,25 +153,35 @@ pattern = "bare_statement"
 
   Expected: four byte-identical strict cases. On failure, record it and stop; do not change Markdown behavior.
 
-### Task 2: Preserve hard-wrapped list-like paragraph lines
+### Task 2: Promote the proved hard-wrapped list-like paragraph baseline
 
-**Files:** Modify `src_ir/act2.py`, `src/20-act2-literary.toml`, `tests/test_act2_slice3.py`, `tests/test_mdtest.py`, `tests/test_slice3_medium_risk.py`; regenerate Act II and release SPL.
+**Files:** Modify `tests/test_act2_slice3.py`, `tests/test_mdtest.py`, and `tests/test_slice3_medium_risk.py`. No production, TOML, generated-fragment, or release-SPL file changes are authorized for this proved-baseline task.
 
-**Interfaces:** A top-level digit-dot candidate without the required blank boundary replays exactly into one `PARA`; a true list keeps the existing stream.
+**Interfaces:** A top-level digit-dot candidate without the required blank boundary already replays exactly into one `PARA`; a true list already keeps the existing stream. This task records and enables that behavior without a production parser change.
 
-- [ ] **Step 1: Write red tests** for `Paragraph\n8. Oops\n` (one paragraph) and `\n\n8. List\n` (list), then exact IR/binary fixture bytes.
+- [ ] **Step 1: Promote the existing exact behavior to green contracts.** In `tests/test_act2_slice3.py`, add fast-Act-IV assertions for `Paragraph\n8. Oops\n` producing `<p>Paragraph\n8. Oops</p>\n` and `\n\n8. List\n` producing `<ol>\n<li>List</li>\n</ol>\n`. In `tests/test_slice3_medium_risk.py`, remove only the strict-xfail marker from `test_hard_wrap_ambiguity_contract`; retain its full-fixture byte comparison. Add `Hard-wrapped paragraphs with list-like lines` to `_IMPLEMENTED_FIXTURES` in `tests/test_mdtest.py`. Do not edit `src_ir/act2.py`, TOML, generated fragments, or `shakedown.spl`: the evidence already proves their behavior.
 
-  Run: `uv run pytest tests/test_act2_slice3.py tests/test_mdtest.py -k 'Hard-wrapped paragraphs' -q`
+  Run:
 
-  Expected: FAIL.
+  ```bash
+  uv run pytest tests/test_act2_slice3.py tests/test_slice3_medium_risk.py -k hard_wrap -q
+  uv run pytest 'tests/test_mdtest.py::test_mdtest[Hard-wrapped paragraphs with list-like lines]' -q
+  uv run python scripts/strict_parity_harness.py 'Hard-wrapped paragraphs with list-like lines'
+  ```
 
-- [ ] **Step 2: Implement bounded replay** using `PASS_WRAP_DOT` to retain digit/dot/lookahead until the physical-line boundary is known and `PASS_WRAP_REPLAY` only for a lowering adapter. Preserve all bytes and leave four spares unreachable.
+  Expected: all selected tests PASS and `summary: 1/1 byte-identical`. The direct mdtest node is deliberately quoted; do not use `-k 'Hard-wrapped paragraphs'`, which pytest cannot parse.
 
-  Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act2_slice3.py tests/test_mdtest.py -k 'Hard-wrapped paragraphs' -q && uv run python scripts/strict_parity_harness.py 'Hard-wrapped paragraphs with list-like lines'`
+- [ ] **Step 2: Checkpoint the promotion without a production regeneration.** Run the global SPL gate and the enabled-fixture/spike regression; the green contract from Step 1 is the focused proof. Commit only `tests/test_act2_slice3.py`, `tests/test_slice3_medium_risk.py`, and `tests/test_mdtest.py` with `test: enable hard-wrapped paragraph fixture`, then push. If any command exposes a real Act-II divergence, append `- BLOCK[plan]:` and stop rather than applying the retired bounded-replay design.
 
-  Expected: PASS and `summary: 1/1 byte-identical`.
+  Run:
 
-- [ ] **Step 3: Checkpoint** with the global SPL gate, all enabled mdtest/spikes, enable only this fixture, commit `feat: preserve hard-wrapped paragraphs`, and push.
+  ```bash
+  uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+  uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
+  uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -q
+  ```
+
+  Expected: PASS. No generated artifact changes are expected or staged.
 
 ### Task 3: Collect references and resolve links/images
 
@@ -264,4 +274,16 @@ pattern = "bare_statement"
 
 ## Plan self-review
 
-All ten row-6 fixtures map to Tasks 2–6. Each task supplies red tests, implementation boundary, exact commands, strict oracle proof, generated/literary gate, regression, fixture enablement, and checkpoint. The plan neither declares Slice 2 shipped nor authorizes Slice-4 behavior.
+All ten row-6 fixtures map to Tasks 2–6. Task 2 supplies green characterization because its behavior is already proved; later tasks supply red tests before their implementation boundary. Every task has exact commands, strict oracle proof, generated/literary gate where applicable, regression, fixture enablement, and checkpoint. The plan neither declares Slice 2 shipped nor authorizes Slice-4 behavior.
+
+## Amendment A1 (2026-07-14): Task 2 proved-baseline promotion
+
+The cited accepted design's Amendment A1 is binding for Task 2. The former
+Step 1 contradicted the current repository: its two proposed red cases and
+the complete fixture already pass through both execution paths, so its
+strict-xfail fixture contract XPASSes. This amendment replaces that impossible
+red phase with green characterization and controlled fixture enablement. It
+also replaces the invalid `-k 'Hard-wrapped paragraphs'` expression with a
+valid identifier selector and a fully quoted mdtest node id. Task 2 makes no
+SPL-facing change, consumes none of its reserved literary labels, and leaves
+all later tasks unchanged.

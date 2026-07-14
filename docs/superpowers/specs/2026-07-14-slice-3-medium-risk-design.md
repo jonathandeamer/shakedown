@@ -38,3 +38,24 @@ Act IV renders the existing quote/code frame composition.
 4. Strong/em nesting.
 5. Simple HTML/comments.
 6. Blockquotes with code leaves and complete Slice-3 verification.
+
+## Amendment A1 (2026-07-14): Existing hard-wrap behavior is a promotion, not a repair
+
+The exact two probes (`Paragraph\n8. Oops\n` and `\n\n8. List\n`) and the
+complete `Hard-wrapped paragraphs with list-like lines` fixture already have
+the required behavior in both the fast interpreter and committed release
+binary. Therefore Slice-3 Task 2 must promote and preserve this proved
+baseline; it must not manufacture a red test or alter Act II merely to make
+one fail.
+
+Task 2 Step 1 makes the two probes and full-fixture contract green, enables
+only that fixture, and proves the direct mdtest node plus strict parity. Its
+pytest selectors must use either Python test identifiers or a fully quoted
+node id; `-k 'Hard-wrapped paragraphs'` is invalid pytest syntax because the
+hyphen is parsed as an operator. Task 2 then runs its normal generated/literary
+and regression checkpoint without changing production SPL, TOML, or generated
+artifacts unless the green characterization exposes an actual divergence.
+
+This amendment changes only the Task-2 execution shape. It does not relax
+strict parity, grant an Auto-links-style normalization exception, or authorize
+any later Slice-3 fixture.
