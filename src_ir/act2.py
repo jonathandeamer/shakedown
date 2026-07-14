@@ -184,7 +184,7 @@ ACT: Act = act(
         ),
         scene(
             "PASS_HR_EMIT",
-            let(HORATIO, const(0)),
+            let(HORATIO, const(-1)),
             branch(gt(val(MACBETH), const(2)), then="PASS_BLOCK_RETURN"),
             goto("PASS_HR_PAIR_RETURN"),
             companion=HORATIO,
@@ -257,7 +257,7 @@ ACT: Act = act(
         scene(
             "PASS_BLOCK_RETURN",
             *emit_token(LADY_MACBETH, tokens.HR),
-            let(MACBETH, const(-1)),
+            let(MACBETH, const(0)),
             goto("PASS_CODE_CLOSE"),
             companion=MACBETH,
         ),
@@ -295,7 +295,7 @@ ACT: Act = act(
         ),
         scene(
             "PASS_CODE_CLOSE",
-            branch(eq(val(MACBETH), const(-1)), then="PASS_LISTS_BLOCK_BLANK"),
+            branch(eq(val(HORATIO), const(-1)), then="PASS_LISTS_BLOCK_BLANK"),
             push(LADY_MACBETH, const(tokens.TEXT_END)),
             branch(eq(val(LADY_MACBETH), const(0)), then="PASS_LISTS_DONE"),
             goto("PASS_HR_GATE"),

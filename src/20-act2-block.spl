@@ -356,7 +356,7 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as bold as nothing.
+ You are as bold as a wolf.
 
 Lady Macbeth:
  Is Macbeth bigger than a noble hero?
@@ -564,7 +564,7 @@ Macbeth:
  Remember the sum of a black cat and a cat.
 
 Lady Macbeth:
- You are as mighty as a wolf.
+ You are as mighty as nothing.
 
 [Exit Macbeth]
 
@@ -673,7 +673,7 @@ Lady Macbeth:
                     Scene @PASS_CODE_CLOSE: @LIT.scenes.PASS_CODE_CLOSE.title
 
 Lady Macbeth:
- Is Macbeth as villainous as a wolf?
+ Is Horatio as villainous as a wolf?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLOCK_BLANK.

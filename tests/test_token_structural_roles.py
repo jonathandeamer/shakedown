@@ -27,11 +27,13 @@ PRE_EXISTING_CODES = {
 
 PRE_EXISTING_ARITY = {
     tokens.PARA: (0, True),
+    tokens.HR: (0, False),
     tokens.LIST_OPEN: (1, False),
     tokens.LIST_ITEM: (1, False),
     tokens.LIST_CLOSE: (0, False),
     tokens.BLOCKQUOTE_OPEN: (0, False),
     tokens.BLOCKQUOTE_CLOSE: (0, False),
+    tokens.CODE_BLOCK: (0, True),
     tokens.ITEM_CLOSE: (0, False),
 }
 

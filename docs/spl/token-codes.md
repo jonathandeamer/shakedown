@@ -51,11 +51,13 @@ step. Spike-scope vocabulary only; later slices append rows in both places.
 | Token | Code | Fixed payloads | Text |
 |---|---:|---:|---|
 | PARA | 1 | 0 | yes |
+| HR | 3 | 0 | no |
 | LIST_OPEN | 4 | 1 | no |
 | LIST_ITEM | 5 | 1 | no |
 | LIST_CLOSE | 6 | 0 | no |
 | BLOCKQUOTE_OPEN | 7 | 0 | no |
 | BLOCKQUOTE_CLOSE | 8 | 0 | no |
+| CODE_BLOCK | 9 | 0 | yes |
 | ITEM_CLOSE | 15 | 0 | no |
 
 `LIST_OPEN` payload — kind: 1 = unordered, 2 = ordered. `LIST_ITEM` payload —
