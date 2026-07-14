@@ -252,6 +252,26 @@ def test_popen_wrapper_communicate_timeout_returns_completed_result(
     assert stderr == ""
 
 
+def test_popen_wait_after_communicate_returns_existing_returncode(
+    tmp_path: Path,
+) -> None:
+    play_path = tmp_path / "valid.spl"
+    play_path.write_text(MINIMAL_VALID_PLAY)
+
+    process = subprocess.Popen(
+        [str(Path.cwd() / "shakedown")],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        env={**os.environ, "SHAKEDOWN_SPL": str(play_path)},
+    )
+
+    process.communicate("")
+
+    assert process.wait() == 0
+
+
 def _delegating_wrapper(tmp_path: Path) -> Path:
     marker = tmp_path / "delegated"
     wrapper = tmp_path / "shakedown"

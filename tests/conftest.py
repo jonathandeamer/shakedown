@@ -230,7 +230,8 @@ class _InProcessPopen:
         return self.returncode
 
     def wait(self, timeout: float | None = None) -> int:
-        self.communicate(timeout=timeout)
+        if self.returncode is None:
+            self.communicate(timeout=timeout)
         return cast(int, self.returncode)
 
     def __enter__(self) -> _InProcessPopen:
