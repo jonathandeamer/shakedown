@@ -563,3 +563,48 @@ The Act-III recovery pool is six working scenes plus four unused spares.  It
 meets the literary protocol's 20% / four-title floor.  Slice 3 replaces this
 temporary discard behavior when it implements the reference-definition table;
 this amendment does not claim that table has shipped.
+
+## Amendment A3 (2026-07-14): Task 2 Step 3 carrier-safe recovery
+
+The A2 definition predicate was sound, but its six-scene choreography was not:
+it could neither remove the `PARA` already pushed to Juliet on a proven
+discard nor reconstruct rejected bytes above a real `TEXT_END` floor without
+multi-holder scenes. Root-cause tracing also found that `CODE_BLOCK` text is
+still sent into the span scanner. The accepted A1 amendment to the
+[`Slice 2 Reference-Definition Filter` design](../specs/2026-07-14-slice-2-reference-definition-filter-design.md#amendment-a1-2026-07-14-carrier-safe-replay-and-protected-code-leaves)
+supersedes A2's six-label ledger and is binding for the still-unchecked Task 2
+Step 3; it does not create another plan or broaden Slice 2 scope.
+
+1. Replace A2's proposed red assertions with the design's 21 working binary
+   pairs and five unreachable spares. Add the full fast-IR contracts named by
+   the design: valid one/two-line definition-only removal; malformed,
+   whitespace-separated, blank, prose, and mixed candidates replaying their
+   exact bytes; non-definition fixture links avoiding the discard close; and
+   a code-block payload never visiting an Act-III span scene. Run
+   `uv run pytest tests/test_act3_contracts.py tests/test_splc_validate.py -q`;
+   the new contracts are expected to fail before the repair.
+2. In `src_ir/act3.py`, apply only the design's protected `CODE_BLOCK` copy
+   route and private-floor definition verifier/replay ledger. Append exactly
+   its 21 working and five spare TOML entries to
+   `src/30-act3-literary.toml`. Do not touch Act I/II/IV, token allocation,
+   `scripts/splc`, or generated SPL by hand. Regenerate and assemble.
+3. Task 2 Step 3's checkpoint now includes `src_ir/act3.py`,
+   `src/30-act3-literary.toml`, and `src/30-act3-span.spl` in its `git add`.
+   Run the design's exact proof sequence, retaining this real-wrapper gate
+   verbatim:
+
+   ```bash
+   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -k "(Amps and angle and encoding) or (Horizontal and rules)" -q
+   ```
+
+   Then require strict parity `summary: 2/2 byte-identical` for `Amps and
+   angle encoding` and `Horizontal rules`, run the existing literary/generated
+   gate, commit `feat: render horizontal rules`, and non-force push. A
+   code-block span visit, changed rejected byte, missing terminator, binary or
+   entry-pair failure, missing controlled title, or need beyond the 21-label
+   pool is a new `BLOCK[plan]` and stops the task.
+
+The replacement pool is 21 working labels plus five unused spares (24%). It
+is the complete authority for this recovery; A2's retired labels are not
+implementation authority. Slice 3 still replaces temporary discard with the
+real reference-definition table.
