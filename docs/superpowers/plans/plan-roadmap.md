@@ -1,6 +1,6 @@
 # Implementation Plan Roadmap
 
-**Last updated:** 2026-07-12
+**Last updated:** 2026-07-14
 **Purpose:** live index of the staged implementation plans for Shakedown,
 so any session — interactive or autonomous — can see what has shipped,
 what is in flight, and what is still pending.
@@ -56,6 +56,7 @@ gates. The win: every plan is written against ground truth.
 | 3N | Agent Loop Provider Pool Refresh (`docs/superpowers/plans/2026-07-12-agent-loop-provider-pool-refresh.md`) | Loop infrastructure follow-up (`docs/superpowers/specs/2026-07-12-agent-loop-provider-pool-refresh-design.md`); requires the landed result-hardening plan | OpenRouter throttle markers; Pi credential-shadowing startup warning; verified free-model fallback pool (Nemotron 3 Ultra, gpt-oss-120b, Hy3, Laguna M.1) with explicit stateless write-capable shims; Grok/xAI removed everywhere; stale loop state reset | MCO loop tests green including throttle, preflight, and config assertions; ruff/pyright clean; full default suite green; `./agent-loop --dry-run` selects a real executor with no grok/agy/xai remnants | shipped: 2026-07-12 at commit 7c0d5c3 |
 | 4 | Spike B — Nested blockquote-in-list (`docs/superpowers/plans/2026-07-12-spike-b-nested-blocks.md`) | §7.4 | Two-structure composition (blockquote-in-list, list-in-blockquote at minimum scope). Snippet fixtures under `tests/fixtures/architecture_spikes/nested_blocks/` | Spike snippets pass byte-identical to oracle; composition confirmed or halt-and-redesign triggered | shipped: 2026-07-12 at commit cd838116feee4e552dea032652648e3c88a6b61f |
 | 4S | Span Architecture Spike (`docs/superpowers/plans/2026-07-12-span-architecture-spike.md`) | Completability hardening §4 | Establish protected-region and buffered-scan shape before broad Act III growth: variable code spans, escapes, protected HTML/link/image regions, representative overlapping strong/emphasis | Reviewed span streams and oracle-backed probes pass; Act III model confirmed or halt-and-redesign triggered; Spike A/B snippets remain green. Amended 2026-07-13: A1 authorizes the two-character code-span machine; A2 replaces the retired Task 4 pool with the 41+10 shared-idiom pool; A3 corrects the pre-handoff assertion boundary; A4 supplies carrier-safe scene-family choreography; A5 quarantines the retired WIP; A6 requires reconstruction from committed Task 3 with an event-order terminator observer; A7 moves field tags to Prospero and authorizes the exact two-character restore adapters; A8 requires real-terminator restoration plus ordered raw requeue draining; and A9 separates the live continuation selector from field registers and Romeo field capture. A17 supplies the binary-scene ledger and 17+5 controlled adapter pool; A18 supplies the exhaustive ten no-op branch-entry adapters and 10+4 controlled pool required for lowering after A17; A19 makes goto staging source-aware and reserves seven disconnected-entry bridge chains (14+5 controlled pool). | shipped: 2026-07-14 at commit aab20ed |
+| 4R | Repo Hygiene Recovery (`docs/superpowers/plans/2026-07-14-repo-hygiene-recovery.md`) | Task 5 Step 2 evidence reconciliation (`docs/superpowers/specs/2026-07-14-repo-hygiene-recovery-design.md`) | Re-run and record the stale codegen Ruff/completion gate; make only the pre-authorized import/format repair if it reproduces | Repo-wide Ruff, hygiene tests, original 4S completion gate, full default suite, and Amps strict parity all pass; no active blocker remains | in flight |
 | 5 | Slice 2 — Low-risk fixtures | §7.5 | Seven fixtures pass: Auto links (URL only), Backslash escapes, Code Spans, Tidyness, Tabs, Horizontal rules, Code Blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 6 | Slice 3 — Medium-risk fixtures | §7.6 | ~10 fixtures pass: Hard-wrapped paragraphs with list-like lines; Links (inline, reference, shortcut); Images; Literal quotes in titles; Strong and em together; Inline HTML (Simple); Inline HTML comments; Blockquotes with code blocks | §8.1 four-gate per fixture; spike snippets still pass | pending |
 | 7 | Slice 4 — High-risk fixtures | §7.7 | Three fixtures pass: Inline HTML (Advanced); Nested blockquotes (full); Ordered and unordered lists (full) | §8.1 four-gate per fixture; spike snippets still pass | pending |
@@ -92,15 +93,16 @@ code and tests: P1 (row 3K, tokenized stream + dispatcher skeleton) shipped
 shipped 2026-07-12 and confirmed that explicit item/container streams compose
 cleanly across Act II and Act IV.
 
-## After Spike B: span architecture spike is next
+## Current reconciliation before Slice 2
 
 `docs/superpowers/notes/2026-07-07-completability-review.md` records a
 2026-07-07 review of roadmap completability. Its input-size scaling action is
 resolved by B20. The broader 2026-07-11 audit adds structural token, executable
 stack-contract, early span-risk, and all-fixture smoke findings; plan 3M
 shipped all of it (2026-07-12). The container representation work in Spike B
-is now shipped; row 4S, the span architecture spike, is the sole in-flight
-plan. On 2026-07-13 an interactive planning session added Amendment A1 to the
+is now shipped; row 4S, the span architecture spike, shipped on 2026-07-14.
+Row 4R, the repo-hygiene reconciliation, is the sole in-flight plan before
+Slice 2 planning resumes. On 2026-07-13 an interactive planning session added Amendment A1 to the
 4S plan document, resolving the repeated Task 3 Step 5 halts: it authorizes a
 two-character code-span scanner (idle-character registers plus off-stage
 value references — no `validate.py`/`lower.py` changes) and reserves the
