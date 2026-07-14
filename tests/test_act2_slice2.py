@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from scripts.splc.interpret import InterpreterState, run_act
-from scripts.splc.ir import Char
+from scripts.splc.ir import Branch, Char, Const, Goto, Let, Pop, Push, Val, add
 from scripts.splc.token_decode import decode_stream
 from scripts.splc.validate import entry_pairs, participants
 from src_ir import tokens
@@ -75,6 +75,37 @@ def test_act2_entry_pair_for_hr_pair_return_matches_amendment_b() -> None:
 def test_act2_remaining_spare_labels_are_unreachable() -> None:
     reachable_labels = {sc.label for sc in ACT2.scenes}
     assert not (reachable_labels & _REMAINING_SPARE_LABELS)
+
+
+def test_hr_candidate_fallback_preserves_unordered_list_handoff() -> None:
+    by_label = {sc.label: sc for sc in ACT2.scenes}
+    fallback = by_label["PASS_HR_FALLBACK"]
+    handoff_label = "PASS_HR_FALLBACK_LIST_HANDOFF"
+
+    marker_targets = {
+        op.cond.right.value: op.then
+        for op in fallback.ops
+        if isinstance(op, Branch)
+        and op.cond.op == "eq"
+        and isinstance(op.cond.left, Val)
+        and op.cond.left.char is Char.PUCK
+        and isinstance(op.cond.right, Const)
+    }
+    assert marker_targets[42] == handoff_label
+    assert marker_targets[45] == handoff_label
+    assert marker_targets[95] == "PASS_CODE_REPLAY"
+
+    handoff = by_label[handoff_label]
+    assert handoff.ops == (
+        Push(Char.LADY_MACBETH, Const(tokens.LIST_OPEN)),
+        Push(Char.LADY_MACBETH, Const(1)),
+        Push(Char.MACBETH, Const(1)),
+        Let(Char.MACBETH, add(Val(Char.MACBETH), Const(1))),
+        Push(Char.LADY_MACBETH, Const(tokens.ITEM_START)),
+        Push(Char.LADY_MACBETH, Const(1)),
+        Goto("PASS_LISTS_ITEM_GLYPH"),
+    )
+    assert not any(isinstance(op, Pop) for op in handoff.ops)
 
 
 STEP_LIMIT = 200_000
