@@ -245,3 +245,86 @@ This restoration is performed with the Task-2 rejection-replay repair and its
 existing proof sequence.  A missing entry after restoration is a direct
 literary-schema/generation failure; record `BLOCK[plan]` rather than adding a
 new title or changing the compiler.
+
+## Amendment E (2026-07-14): code-leaf boundary and list-safe replay
+
+**Status:** accepted for the still-unchecked Slice-2 Task-3 Step-3
+checkpoint.  The committed code-block attempt `c6cc8a0` exposed two separate
+Act-II ownership errors in the same boundary.  Its HR rejection path replays
+only the saved marker and indentation count, losing inter-marker spaces; a
+list item such as `* alpha` consequently reaches the span pass as `*alpha`
+and becomes emphasis text.  Its paragraph pass also sends the already complete
+`CODE_BLOCK` leaf through `PASS_BLOCK_BOUNDARY`/`PASS_BLOCK_REPLAY`, which
+pops Macbeth even though that stack contains only list-frame sentinels; the
+Horizontal-rules fixture therefore underflows at `PASS_BLOCK_REPLAY`.
+
+Amendment C's six-scene Romeo buffer is now implementation authority, not a
+future option.  At the first leading space or `*`/`-`/`_` candidate byte, it
+must save every byte consumed by the HR probe above exactly one private
+`STREAM_END`: leading spaces, every marker, every inter-marker space, the
+newline when read, and the first disproving byte.  Rejection drains that
+floor back to Lady Macbeth in original source order and resumes
+`PASS_LISTS_RAW_GLYPH` without another input read.  Thus list recognition sees
+the original marker followed by its required space; the candidate does not
+enter the code gate and does not synthesize `TEXT_END`.  Confirmed HR drains
+the same private floor and emits only `[HR]`.
+
+`CODE_BLOCK` is already a complete leaf shape on Lady Macbeth:
+`[CODE_BLOCK, payload..., TEXT_END]`.  In `PASS_PARA_NEXT`, route it through
+the same direct copy boundary as `HR` (the existing `PASS_PARA_COPY_CLOSE`)
+and never enter `PASS_BLOCK_BOUNDARY` or `PASS_BLOCK_REPLAY`.  Those scenes
+are retired from the reachable graph; no Macbeth pop, list close, raw-input
+read, or extra terminator is legal on this route.  This is a carrier repair,
+not a token, renderer, list grammar, or code-block payload change.
+
+### Binding scene and literary ledger
+
+The only new reachable labels are Amendment C's pre-reserved working pool;
+their companions are derived from the single-assignment rule.  The exact
+state table is binding.
+
+| Scene | Companion | Required operation / successor |
+|---|---|---|
+| `PASS_HR_BUFFER_OPEN` | Romeo | push one `STREAM_END` floor, then save the current candidate byte |
+| `PASS_HR_BUFFER_KEEP` | Romeo | push each subsequently consumed candidate byte before its next branch |
+| `PASS_HR_REPLAY_OPEN` | Romeo | begin pop-first drain from Romeo's private floor |
+| `PASS_HR_REPLAY_POP` | Romeo | pop one saved byte; floor goes to `PASS_HR_REPLAY_CLOSE` |
+| `PASS_HR_REPLAY_KEEP` | Romeo | push that byte onto Lady Macbeth in source order |
+| `PASS_HR_REPLAY_CLOSE` | Romeo | terminally resume `PASS_LISTS_RAW_GLYPH` with the disproving byte replayed once |
+
+Append exactly the six working titles and four unreachable spares printed in
+Amendment C to `src/20-act2-literary.toml`.  The six working titles plus four
+spares satisfy the per-act four-title minimum and 20% reserve; no additional
+Act-II title, Recall line, or Act-IV surface is authorized.  `PASS_BLOCK_*`
+needs no replacement surface because its code-leaf path is removed rather
+than split.
+
+### Required red-to-green contracts and checkpoint
+
+Before changing IR, extend `tests/test_act2_slice2.py` to assert the six
+working `(LADY_MACBETH, ROMEO)` pairs, the four Amendment-C spare labels are
+unreachable, and no reachable `PASS_BLOCK_BOUNDARY` or `PASS_BLOCK_REPLAY`
+scene remains.  Add decoded-stream contracts for `* alpha\n* beta\n`,
+`+ alpha\n+ beta\n`, `***both***`, `**not an hr**`, `---x`, and `- - x`;
+the two list cases must begin `LIST_OPEN` and the four rejected-HR cases must
+retain their source bytes before Act III.  Add an observer contract proving a
+`CODE_BLOCK` stream is copied through `PASS_PARA_NEXT` without a Macbeth pop
+or visit to either retired block-replay scene.
+
+Run the red contracts first, then after the narrow repair run:
+
+```bash
+uv run pytest tests/test_act2_slice2.py tests/test_act4_slice2.py -q
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -k "(Amps and angle and encoding) or (Horizontal and rules) or (Code and Blocks) or Tabs" -q
+uv run python scripts/strict_parity_harness.py 'Amps and angle encoding' 'Horizontal rules' 'Code Blocks' Tabs
+```
+
+Require `summary: 4/4 byte-identical` and all 19 architecture spikes passing.
+Any missing/reordered replay byte, list stream change outside the stated
+candidate cases, Macbeth underflow, reachable retired block-replay scene,
+unreserved title, generated drift, parity failure, or failed push is a new
+`BLOCK[plan]`; do not consume a spare, change `scripts/splc`, or hand-edit a
+generated fragment.

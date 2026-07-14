@@ -786,3 +786,55 @@ existing A14/A15 Span-Spike labels and A1's 21-label definition pool.
    terminator, binary or entry-pair error, unreserved title, generated drift,
    parity failure, residual out-of-scope dirty file, or failed push is one
    new `- BLOCK[plan]:` line and stops the iteration.
+
+## Amendment A7 (2026-07-14): unblock Task 3 Step 3 with block/list replay repair
+
+Task 3's committed implementation (`c6cc8a0`) passes its focused code-block
+contracts but fails the checkpoint's actual regression boundary: 10 of 19
+architecture spikes render list markers as emphasis paragraphs, and
+`Horizontal rules` underflows Act II at `PASS_BLOCK_REPLAY`.  This is not an
+Act-III span defect or authority to alter list grammar.  The root cause is
+Act-II carrier ownership: the already accepted Amendment-C HR rejection
+buffer was not implemented, so it loses spaces/markers required by the list
+gate; and the new `CODE_BLOCK` leaf is incorrectly re-parsed through a
+Macbeth-backed paragraph replay.  The accepted
+[`binary-gate Amendment E`](../specs/2026-07-14-slice-2-binary-block-gates-design.md#amendment-e-2026-07-14-code-leaf-boundary-and-list-safe-replay)
+is binding for the still-unchecked Task 3 Step 3.  It amends only this
+checkpoint; it creates no second plan and does not broaden Slice 2.
+
+1. Preserve the existing dirty diff with `git diff --binary`; do not reset,
+   stash, checkout, discard, or hand-edit generated SPL.  First add the
+   Amendment-E red contracts to `tests/test_act2_slice2.py`: six exact
+   `(LADY_MACBETH, ROMEO)` pairs, four unreachable Amendment-C spares, no
+   reachable `PASS_BLOCK_BOUNDARY`/`PASS_BLOCK_REPLAY`, source-preserving
+   rejected-HR cases, unordered-list streams for both `*` and `+`, and an
+   observer proving `CODE_BLOCK` never pops Macbeth.  Run:
+
+   ```bash
+   uv run pytest tests/test_act2_slice2.py tests/test_act4_slice2.py -q
+   uv run pytest tests/test_architecture_spikes.py -q
+   uv run pytest tests/test_mdtest.py -k "Horizontal and rules" -q
+   ```
+
+   Expected before the repair: the new fast contracts fail, list spikes show
+   marker loss, and Horizontal rules reproduces `PASS_BLOCK_REPLAY` underflow.
+
+2. In `src_ir/act2.py`, implement exactly Amendment E: use Amendment C's
+   reserved six-scene Romeo buffer to preserve and replay every rejected HR
+   candidate byte into `PASS_LISTS_RAW_GLYPH`, and route a complete
+   `CODE_BLOCK` leaf through `PASS_PARA_COPY_CLOSE` rather than the retired
+   block-replay pair.  Append only Amendment C's six working titles and four
+   spares from the cited design to `src/20-act2-literary.toml`; no Act III or
+   IV change, token change, compiler change, Recall line, or generated-file
+   edit is allowed.  Regenerate and assemble through the prescribed commands.
+
+3. Replace Task 3 Step 3's evidence gate with the exact Amendment-E proof
+   sequence.  Require 19/19 architecture spikes and strict-parity
+   `summary: 4/4 byte-identical` for Amps, Horizontal rules, Code Blocks, and
+   Tabs before checkpointing.  Stage only Task-3 Act-II IR/TOML/generated
+   outputs, `shakedown.spl`, focused tests, this plan, and the amended
+   binary-gate design; retain Task 3's `feat: render indented code blocks`
+   commit subject and the required provenance trailers, then non-force push.
+   Any replay mismatch, underflow, reachable retired scene, unreserved
+   surface, generated drift, failed gate, or failed push is one new
+   `- BLOCK[plan]:` line and stops the iteration.
