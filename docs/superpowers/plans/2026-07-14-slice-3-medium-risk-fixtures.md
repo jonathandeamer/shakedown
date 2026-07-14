@@ -159,7 +159,7 @@ pattern = "bare_statement"
 
 **Interfaces:** A top-level digit-dot candidate without the required blank boundary already replays exactly into one `PARA`; a true list already keeps the existing stream. This task records and enables that behavior without a production parser change.
 
-- [ ] **Step 1: Promote the existing exact behavior to green contracts.** In `tests/test_act2_slice3.py`, add fast-Act-IV assertions for `Paragraph\n8. Oops\n` producing `<p>Paragraph\n8. Oops</p>\n` and `\n\n8. List\n` producing `<ol>\n<li>List</li>\n</ol>\n`. In `tests/test_slice3_medium_risk.py`, remove only the strict-xfail marker from `test_hard_wrap_ambiguity_contract`; retain its full-fixture byte comparison. Add `Hard-wrapped paragraphs with list-like lines` to `_IMPLEMENTED_FIXTURES` in `tests/test_mdtest.py`. Do not edit `src_ir/act2.py`, TOML, generated fragments, or `shakedown.spl`: the evidence already proves their behavior.
+- [x] **Step 1: Promote the existing exact behavior to green contracts.** In `tests/test_act2_slice3.py`, add fast-Act-IV assertions for `Paragraph\n8. Oops\n` producing `<p>Paragraph\n8. Oops</p>\n` and `\n\n8. List\n` producing `<ol>\n<li>List</li>\n</ol>\n`. In `tests/test_slice3_medium_risk.py`, remove only the strict-xfail marker from `test_hard_wrap_ambiguity_contract`; retain its full-fixture byte comparison. Add `Hard-wrapped paragraphs with list-like lines` to `_IMPLEMENTED_FIXTURES` in `tests/test_mdtest.py`. Do not edit `src_ir/act2.py`, TOML, generated fragments, or `shakedown.spl`: the evidence already proves their behavior.
 
   Run:
 
