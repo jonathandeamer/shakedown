@@ -418,6 +418,50 @@ def test_act3_protected_modes_do_not_underflow(stem: str) -> None:
         pytest.fail(str(exc))
 
 
+def test_act3_emphasis_candidate_keeps_nonmatching_lookahead() -> None:
+    _, state, observer = _run_to_act3_observed("escapes_and_overlap")
+
+    labels = observer.labels
+    start = next(
+        index
+        for index, label in enumerate(labels[:-1])
+        if label == "LYRIC_EMPHASIS_COMPARE"
+        and labels[index + 1] == "LYRIC_EMPHASIS_FALLBACK"
+    )
+    tail = labels[start:]
+    assert tail[1] == "LYRIC_EMPHASIS_FALLBACK"
+    keep = tail.index("LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD")
+    assert "LYRIC_EMPHASIS_REPLAY" in tail[2:keep]
+    assert tail[keep + 1] == "LYRIC_EMPHASIS_SEEK"
+
+    # The unmatched candidate path must preserve source order when requeued.
+    text = _paragraph_text(_decode_carrier(state))
+    assert " and " in text
+
+
+def test_act3_emphasis_candidate_restores_real_text_end_once() -> None:
+    _, _, observer = _run_to_act3_observed("escapes_and_overlap")
+
+    labels = observer.labels
+    start = labels.index("LYRIC_EMPHASIS_CAND_SOURCE_END")
+    tail = labels[start:]
+    terminator_index = tail.index("TRAVERSE_COPY_TERMINATOR")
+
+    assert tail[1] == "LYRIC_EMPHASIS_SOURCE_END"
+    assert tail[2] == "LYRIC_EMPHASIS_LITERAL_REVERSE"
+    assert "LYRIC_POP_GLYPH" in tail[:terminator_index]
+    assert tail[terminator_index - 1] == "LYRIC_TEXT_END_DISPATCH"
+    assert "LYRIC_EMPHASIS_SEEK" not in tail[:terminator_index]
+
+    routes = [
+        route
+        for route in observer.text_end_routes
+        if route[0] == "LYRIC_POP_GLYPH" and route[1] == "LYRIC_TEXT_END_DISPATCH"
+    ]
+    real = [route for route in routes if route[3] == 0]
+    assert len(real) == 1
+
+
 def test_act3_ir_requeue_and_field_floors_follow_a4_shape() -> None:
     before_handoff = True
     juliet_to_puck: list[str] = []
