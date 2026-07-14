@@ -1196,3 +1196,26 @@ lookahead; each probe has exactly one real terminator route.  Then run the
 plan's exact Global Constraints literary gate.  Any deviation is a new
 `BLOCK[plan]`; it does not authorize a recovery pop, another selector, a
 third synthetic delimiter, or an unused literary title.
+
+## A16 generated-scene registry reconciliation (2026-07-14)
+
+The Task 4 graph at committed `138cdd1` must first remove
+`ACT_III_START`'s spurious `companion=PUCK`: Juliet is its anchor and the
+Lady-Macbeth initialization is off-stage, so the companion would create an
+illegal three-participant scene.  The graph then has 84 `LYRIC_*` or
+`TRAVERSE_*` labels not yet registered in `src/30-act3-literary.toml`.
+Sixty-nine have pre-existing A2/A8/A9/A10/A11 authorization.  The remaining
+fifteen are authorized by the ready-to-paste A16 reservation in the active
+[implementation plan](../plans/2026-07-12-span-architecture-spike.md#amendment-a16-2026-07-14-generated-scene-registry-reconciliation),
+alongside its four unused spares.  That table is part of this accepted design,
+not implementation-time prose.
+
+`LYRIC_EMPHASIS_EMIT_OPEN` is authorized only as A15's two-character
+matched-entry adapter: select `RESUME_EMPH`, emit `<em>`, and enter A14's
+shared requeue family.  It is not permission to revive a per-body emitter.
+No other A16 label changes A8--A15 ownership, sentinel, token, Recall, or
+field rules.  Before regeneration, implementation must prove that the union
+of current TOML headings and all reached A2/A8/A9/A10/A11/A16 working
+reservations covers every current Act III `LYRIC_*`/`TRAVERSE_*` label.  A
+missing registration or another invalid participant count remains a planning
+blocker, not authority to edit generated SPL or consume an A16 spare.

@@ -1340,6 +1340,110 @@ from the handoff WIP.
    gate. No new scene title, Recall key, token code, stack, or spare is
    authorized; any miss is a new `BLOCK[plan]`.
 
+## Amendment A16 (2026-07-14): generated-scene registry reconciliation
+
+The committed Task 4 graph at `138cdd1` has two independent regeneration
+preconditions.  `ACT_III_START` must return to its existing legal two-person
+shape by removing its spurious `companion=PUCK`; its anchor is already
+`JULIET`, and its Lady-Macbeth initialization is off-stage.  After that
+mechanical correction, splc correctly exposes that the graph contains 84
+scene labels absent from `src/30-act3-literary.toml`.  Sixty-nine are already
+reserved by A2/A8/A9/A10/A11.  This amendment authorizes the remaining
+fifteen working labels below and four unused spares (26.7%, exceeding the
+literary protocol's 20% floor).  It is a registry reconciliation only: it
+does not authorize another scanner state, a changed carrier, a token code, a
+Recall phrase, or any departure from A8--A15.
+
+The first Task 4 Step 3 edit must add the ready-to-paste entries for every
+**reached** working label from A2/A8/A9/A10/A11 and this amendment to
+`src/30-act3-literary.toml`, then regenerate from IR.  It must not hand-edit
+`src/30-act3-span.spl` or `shakedown.spl`.  `LYRIC_EMPHASIS_EMIT_OPEN` is
+permitted solely as A15's two-character matched-entry adapter; it may only
+select `RESUME_EMPH`, emit `<em>`, and enter the A14 shared requeue family.
+The old retired body-emitter interpretation remains forbidden.
+
+### A16 literary reservation (ready to paste)
+
+```toml
+# src/30-act3-literary.toml — Amendment A16 registry reconciliation
+[scenes.TRAVERSE_COPY_PAYLOAD_TEXT]
+title = "Juliet bears the token's tender burden."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_TEXT_KEEP]
+title = "Lady Macbeth keeps the shining road's echo."
+pattern = "scene_of_character"
+[scenes.LYRIC_AUTOLINK_TEXT_DONE]
+title = "Juliet closes the shining road in peace."
+pattern = "scene_of_character"
+[scenes.LYRIC_IMAGE_TEST_LABEL]
+title = "Horatio seeks the portrait's closing leaf."
+pattern = "scene_of_character"
+[scenes.LYRIC_IMAGE_DEST_START]
+title = "Romeo tests the portrait's garden gate."
+pattern = "scene_of_character"
+[scenes.LYRIC_IMAGE_DEST_OPEN]
+title = "Juliet opens the portrait's winding road."
+pattern = "scene_of_character"
+[scenes.LYRIC_FIELD_TITLE_CAPTURE]
+title = "Romeo catches the path's delayed name."
+pattern = "scene_of_character"
+[scenes.LYRIC_LABEL_REQUEUE]
+title = "Juliet returns the rose's held name."
+pattern = "scene_of_character"
+[scenes.LYRIC_ALT_REQUEUE]
+title = "Juliet returns the portrait's held name."
+pattern = "scene_of_character"
+[scenes.LYRIC_ALT_REQUEUE_WITH_TITLE]
+title = "Juliet keeps the portrait name for evening."
+pattern = "scene_of_character"
+[scenes.LYRIC_REGION_LINK_CLOSE]
+title = "Juliet closes the rose's bright path."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_MATCH_MORE]
+title = "Macbeth counts one more answering star."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_EMIT_OPEN]
+title = "Juliet opens the single star's sunlit seal."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_TRIPLE_CLOSE]
+title = "Juliet prepares the triple star's strong seal."
+pattern = "scene_of_character"
+[scenes.LYRIC_EMPHASIS_CLOSE_EM]
+title = "Juliet closes the single star's sunlit seal."
+pattern = "scene_of_character"
+
+# A16 spare pool — do not use without another planning amendment.
+[scenes.LYRIC_AUTOLINK_TEXT_DRAIN_GUARD]
+title = "The shining road refuses a broken echo."
+pattern = "bare_statement"
+[scenes.LYRIC_REGION_REQUEUE_GUARD]
+title = "The held garden gate refuses a broken return."
+pattern = "bare_statement"
+[scenes.LYRIC_EMPHASIS_MATCH_GUARD]
+title = "The answering star refuses a broken measure."
+pattern = "bare_statement"
+[scenes.TRAVERSE_PAYLOAD_TEXT_GUARD]
+title = "The tender burden finds its faithful road."
+pattern = "bare_statement"
+```
+
+Before committing the regeneration, prove the registration closure from the
+actual IR rather than guessing from the prose pools: collect every
+`LYRIC_*`/`TRAVERSE_*` string in `src_ir/act3.py`, compare it with the union
+of current `src/30-act3-literary.toml` headings and the A2/A8/A9/A10/A11/A16
+working reservations, and require an empty difference.  Then run exactly:
+
+```bash
+uv run python -m scripts.splc
+uv run python scripts/assemble.py
+uv run pytest tests/test_splc_generated_fragments.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py tests/test_mdtest.py -k 'Amps and angle' -q
+```
+
+Expected: both generators succeed; generated-fragment drift and every named
+literary test pass.  A missing label, a three-person scene, or any failure in
+this gate is a new `BLOCK[plan]`; do not consume an A16 spare or hand-edit a
+generated fragment to bypass it.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
