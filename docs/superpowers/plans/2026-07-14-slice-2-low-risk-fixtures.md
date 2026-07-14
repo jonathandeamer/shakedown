@@ -524,3 +524,42 @@ The revised Act-II state-family ledger is 25 working labels (the original 16,
 three already-consumed former spares, the repurposed `PASS_CODE_BLANK`, and
 five new split labels) plus five unused spares, meeting the required 20%
 reserve exactly.  No additional Recall label is needed.
+
+## Amendment A2 (2026-07-14): Task 2 Step 3 reference-definition recovery
+
+Task 1 intentionally retired Slice 1's trailing-input deletion, exposing the
+still-temporary Slice-1 reference-link implementation: the trailing
+definition-only paragraph in `Amps and angle encoding` is now rendered as
+ordinary text.  The completed HR behavior is correct.  The accepted
+[`Slice 2 Reference-Definition Filter` design](../specs/2026-07-14-slice-2-reference-definition-filter-design.md)
+is binding for the otherwise unchecked Task 2 Step 3 recovery.
+
+1. Before editing `src_ir/act3.py`, add the design's red fast-IR contracts to
+   `tests/test_act3_contracts.py`, including the trailing fixture paragraph,
+   valid generic one- and two-line blocks, invalid/mixed candidates, and the
+   observer proof that existing link paragraphs do not enter the discard exit.
+   Extend the existing Act-III binary/reservation test with the design's six
+   working `(ROMEO, PUCK)` labels and four unreachable spares.  Run
+   `uv run pytest tests/test_act3_contracts.py tests/test_splc_validate.py -q`;
+   the new definition-only assertions are expected to fail before the repair.
+2. Apply only the design ledger in `src_ir/act3.py` and append exactly its
+   ready-to-paste ten Act-III TOML entries.  It is a generic, proven
+   definition-only paragraph filter, not reference storage and not a
+   fixture-name or fixed-label branch.  It must replay rejected candidates
+   byte-for-byte to the existing scanner and discard only a fully proven
+   paragraph.  Do not change Act I/II, tokens, Act IV, `scripts/splc`, or a
+   generated `.spl` file.  Regenerate with `uv run python -m scripts.splc`
+   and assemble with `uv run python scripts/assemble.py`.
+3. Replace Task 2 Step 3's first command with the design's complete proof
+   sequence, then run its existing checkpoint commands and commit command
+   unchanged.  In addition to the listed literary/generated gates, the real
+   `./shakedown` route and `strict_parity_harness.py` must report
+   `summary: 2/2 byte-identical` for `Amps and angle encoding` and `Horizontal
+   rules`.  A fast-only pass, real-wrapper truncation, changed rejected
+   candidate bytes, binary/entry-pair error, missing title, or need for an
+   unreserved scene is a new `BLOCK[plan]` and stops the task.
+
+The Act-III recovery pool is six working scenes plus four unused spares.  It
+meets the literary protocol's 20% / four-title floor.  Slice 3 replaces this
+temporary discard behavior when it implements the reference-definition table;
+this amendment does not claim that table has shipped.
