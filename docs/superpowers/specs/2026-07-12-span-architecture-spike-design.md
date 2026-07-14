@@ -870,3 +870,59 @@ pattern = "scene_of_character"
 title = "The wandering star returns to the hedge."
 pattern = "bare_statement"
 ```
+
+## A12 emphasis replay order and protected-mode sequencing (2026-07-14)
+
+The preserved A11 reconstruction exposes an ordering defect in A11's
+non-terminator prose, not a new carrier architecture problem. Horatio is a
+LIFO capture: when later popped to Puck, its last value is scanned first.
+A11's original wording put the lookahead on Horatio before replaying candidate
+stars, which requeues `lookahead, stars, body` instead of original `body,
+stars, lookahead` source order. That can consume the real terminator before
+`LYRIC_EMPHASIS_SEEK` reads it. This supersedes only that ordering; A8's drain,
+A9's continuation record, A10's image-title floor, and A11's real-end rule
+remain binding.
+
+### Binding nonmatching-candidate choreography
+
+`LYRIC_EMPHASIS_COMPARE` retains its popped non-star lookahead in Puck and
+enters the existing `LYRIC_EMPHASIS_FALLBACK`; it must not write the value to
+Horatio yet. The fallback/replay loop appends exactly `MACBETH` candidate stars
+to Horatio while Puck retains the lookahead. Its `MACBETH == 1` exit enters the
+already-reserved `LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD`, which performs exactly:
+
+```python
+push(HORATIO, val(PUCK))
+goto("LYRIC_EMPHASIS_SEEK")
+```
+
+Horatio therefore holds body, candidate stars, then lookahead; the A8 requeue
+returns original left-to-right source order. `CAND_KEEP_LOOKAHEAD` is the
+replay-loop exit, not an entry into fallback. No scene, TOML entry, holder,
+floor, or continuation record is added.
+
+For `TEXT_END`, retain A11's separate branch: restore one terminator to Puck,
+enter `LYRIC_EMPHASIS_CAND_SOURCE_END`, then initialize literal unwind through
+`LYRIC_EMPHASIS_SOURCE_END`. That initializer neither restores a second
+terminator nor returns to seek. Neither route may pop Puck after the restored
+real terminator is dispatched.
+
+### Mandatory staged evidence
+
+Before any HTML, autolink, link, or image opener, extend the A11 observers to
+prove (1) compare → fallback/replay → `CAND_KEEP_LOOKAHEAD` → seek, with
+literal `***both***` in decoded source order on the unmatched path; and (2)
+the A11 source-end sequence, exactly one `TRAVERSE_COPY_TERMINATOR`, and no
+seek/Puck pop between `CAND_SOURCE_END` and that route. Run:
+
+```bash
+uv run pytest tests/test_act3_contracts.py -q -k \
+  "emphasis_candidate_keeps_nonmatching_lookahead or emphasis_candidate_restores_real_text_end_once or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+```
+
+Expected: selected cases pass with no underflow, and no protected opener is
+reachable. Then run the plan's exact literary gate. Only then may A10's
+unchanged image-title path proceed: its nested-floor regression must pass,
+followed by observer proof of selector `12`, `LYRIC_IMAGE_TITLE_CLOSE`, no
+early Romeo pop, and one delayed title drain. Any miss is `BLOCK[plan]`; no
+spare scene or recovery pop is authorized.

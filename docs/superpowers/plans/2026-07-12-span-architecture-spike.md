@@ -1183,6 +1183,40 @@ Expected: all selected cases pass, especially `escapes_and_overlap`, with no
 route. Then run the Global Constraints exact literary gate. A failure remains
 a `BLOCK[plan]`; it does not authorize a recovery pop or any other new scene.
 
+## Amendment A12 (2026-07-14): correct candidate replay order before A10
+
+The accepted design's [A12 replay-order correction](../specs/2026-07-12-span-architecture-spike-design.md#a12-emphasis-replay-order-and-protected-mode-sequencing-2026-07-14)
+clears the Task 4 Step 2 planner blocker. A11's original non-terminator
+description placed the held lookahead on Horatio before candidate-star replay.
+Because Horatio drains LIFO into Puck, that reverses source order and can
+consume the real terminator before `LYRIC_EMPHASIS_SEEK` reads it. This does
+not authorize a new carrier, scene title, or alteration of A8/A9.
+
+1. Reconstruct from committed Task 3 and add only A11's two reserved working
+   scenes. At a non-star comparison result, retain the lookahead in Puck,
+   run fallback/replay to append candidate stars to Horatio, then use
+   `LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD` only as the `MACBETH == 1` loop exit
+   to append the retained Puck glyph and return to seek.
+2. Keep A11's real-end route separate: it restores one `TEXT_END`, invokes
+   `LYRIC_EMPHASIS_CAND_SOURCE_END`, and enters one literal-unwind initializer.
+   That initializer may not restore another terminator, pop Puck, or revisit
+   seek before normal text-end dispatch.
+3. Before production IR edits, add the A12 trace assertions and run:
+
+   ```bash
+   uv run pytest tests/test_act3_contracts.py -q -k \
+     "emphasis_candidate_keeps_nonmatching_lookahead or emphasis_candidate_restores_real_text_end_once or protected_modes_do_not_underflow or text_end_event_order_is_carrier_safe"
+   ```
+
+   Expected: PASS, including literal `***both***` in source order on the
+   unmatched path, exactly one real terminator route, and no underflow. Run
+   the exact Global Constraints literary gate after each Act III/TOML edit.
+4. Do not connect a protected opener until Step 3 passes. Then apply A10
+   unchanged and in isolation: first pass
+   `tests/test_splc_interpret.py::test_image_title_floor_survives_alt_requeue`,
+   then prove selector `12`, `LYRIC_IMAGE_TITLE_CLOSE`, no early Romeo pop,
+   and one delayed title drain before image production scenes.
+
 ### Task 1: Commit the span-spike corpus and reviewed expected output
 
 **Files:**
@@ -1554,6 +1588,14 @@ a `BLOCK[plan]`; it does not authorize a recovery pop or any other new scene.
   passes; existing named Task 4 rendering contracts remain red only because
   their implementation is absent.  Any floor or ordering failure is a fresh
   `BLOCK[plan]`.
+
+  **A12 emphasis replay prerequisite (2026-07-14; binding before every
+  protected opener):** Apply Amendment A12's LIFO-correct candidate replay
+  first. The A11 `LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD` scene is the replay-loop
+  exit after candidate stars have been appended to Horatio, not a pre-fallback
+  lookahead capture. Pass A12's exact focused and literary gates before
+  connecting HTML, autolink, link, or image scenes. A10 remains the sole
+  image-title ordering rule.
 
   The original per-feature Task 4 pool (`LYRIC_HTML_TAG` through
   `LYRIC_AUTOLINK_CLOSE`, `LYRIC_LINK_REGION` through `LYRIC_REGION_EMIT`,
