@@ -284,3 +284,35 @@ uv run pytest tests/test_splc_generated_fragments.py -q
 uv run pytest tests/test_literary_compliance.py -q
 uv run pytest tests/test_literary_toml_schema.py -q
 ```
+
+## Amendment A3 — Transfer the list repair out of governance (accepted 2026-07-14)
+
+### Scope correction
+
+Amendments A1 and A2 correctly diagnosed and bounded a real list regression,
+but they placed implementation authority inside this governance-recovery
+design. That conflicts with the design's non-goal of changing Slice-2 Markdown
+behaviour and with roadmap row 5R's recovery-only scope. The authoritative
+implementation handoff is now
+`docs/superpowers/plans/2026-07-14-slice-2-list-regression-continuation.md`.
+
+### Binding transfer
+
+The continuation inherits only A1's rejected-HR candidate behavior, A2's
+single `PASS_HR_FALLBACK_LIST_HANDOFF` reservation and six retained spares,
+and A2's required evidence. It may modify only `src_ir/act2.py`,
+`src/20-act2-literary.toml`, `tests/test_act2_slice2.py`, and the two generated
+artifacts produced from that source. It may not resume the broader Slice-2
+fixture plan, change token codes or baselines, alter Acts I/III/IV, or invent a
+second literary surface.
+
+### Roadmap state
+
+When the continuation is registered, row 5R is `halted` and the continuation
+is the sole `in flight` row. This design therefore supplies one implementation
+authority at a time, not a second concurrent plan. After the continuation's
+repair and closure gates pass, it ships and only then may row 5R return to
+`in flight` for its governance-only closure task. The list-regression blocker
+is resolved by this transfer: its required separate plan is registered and
+governs the repair. The later closure gate protects shipping status, not
+implementation routing.

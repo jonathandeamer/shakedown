@@ -10,8 +10,8 @@
 
 ## Global Constraints
 
-- Authority is the accepted [MCO reconciliation design](../specs/2026-07-14-mco-loop-reconciliation-design.md), including its accepted Amendment A1.  The amendment permits only the bounded Act-II list-regression repair and its generated artifacts; all other Slice-2 and Markdown behavior remains out of scope.
-- The stopped Slice-2 plan remains preserved as halted; this plan is the only in-flight row.  Do not create a second in-flight row.
+- Authority is the accepted [MCO reconciliation design](../specs/2026-07-14-mco-loop-reconciliation-design.md), including Amendment A3's transfer of the bounded list-regression authority to the separate continuation plan.  This governance plan does not authorize Markdown or SPL changes.
+- The stopped Slice-2 plan remains preserved as halted.  Once Task 6 Step 3 is complete, this governance plan is halted and the separate continuation is the sole in-flight roadmap row.
 - Never merge, rebase, delete, force-push, or mutate a branch/worktree automatically.  Candidate code enters `main` only as a fresh, tested, non-conflicting commit after the required review evidence.
 - `.agent/branch-dispositions.toml` is intentionally tracked by adding a narrow `.gitignore` exception; other `.agent/` runtime state remains ignored.
 - A disposition head mismatch is a fresh review requirement, not an error that may be silently accepted.
@@ -31,7 +31,6 @@
 | `.agent/blockers.md` | Replace the opaque merge-conflict line with a structured branch-reconciliation blocker, then remove it only after a terminal disposition. |
 | `scripts/mco_loop.py` | Branch inventory, ledger parsing, structured-blocker validation, untracked-artifact detection, canonical action recovery, and `main()` integration. |
 | `tests/test_mco_loop.py` | Unit tests for every pure helper and action-routing boundary. |
-| `src/20-act2-literary.toml` | Act-II controlled scene-title ledger; receives the one A2 handoff title and preserves the six named spares. |
 | `docs/superpowers/plans/2026-07-14-development-efficiency.md` | Reconcile previously landed cache/cooldown commits with the plan’s checkbox/evidence state. |
 | `docs/superpowers/specs/2026-07-14-development-efficiency-design.md` | Commit the previously untracked accepted design as historical infrastructure context. |
 | `docs/superpowers/plans/plan-roadmap.md` | Record recovery completion and leave Slice 2 halted pending a fresh explicit resume decision. |
@@ -325,18 +324,17 @@ beginning `4, 1, 5, 1...`.  This is a Markdown/SPL failure outside the
 original authority, so Amendment A1 and Task 6 are required before this gate
 can be rerun as a closure gate.
 
-### Task 6: Restore the shipped Act-II unordered-list fallback
+### Task 6: Transfer the list-regression repair to Slice-2 continuation planning
 
 **Files:**
-- Modify: `src_ir/act2.py`
-- Modify: `src/20-act2-literary.toml`
-- Modify: `tests/test_act2_slice2.py`
-- Regenerate: `src/20-act2-block.spl`, `shakedown.spl`
-- Test: `tests/test_token_dump.py`, `tests/test_splc_interpret_parity.py`, `tests/test_architecture_spikes.py`, `tests/test_splc_generated_fragments.py`, `tests/test_literary_compliance.py`, `tests/test_literary_toml_schema.py`
+- Create: `docs/superpowers/plans/2026-07-14-slice-2-list-regression-continuation.md`
+- Modify: `docs/superpowers/plans/plan-roadmap.md`
+- Modify: `docs/superpowers/specs/2026-07-14-mco-loop-reconciliation-design.md`
+- Modify: this plan
 
 **Interfaces:**
-- Consumes: the Act-II HR candidate state (`PUCK` = marker, `HECATE` = first non-HR glyph) and the existing `PASS_LISTS_ITEM_GLYPH` continuation.
-- Produces: for `* alpha\n* beta\n* gamma\n`, the unchanged blessed stream in `tests/fixtures/token_stream/lists/flat_unordered_tight.dump`; `PASS_LISTS_ITEM_GLYPH` receives `HECATE = ord('a')` without an additional read.
+- Consumes: the recorded Act-II HR candidate diagnosis and the accepted A2 literary reservation.
+- Produces: a separate, sole in-flight continuation plan that owns the repair and its tests; row 5R is halted and cannot dispatch SPL or Markdown work.
 
 - [x] **Step 1: Establish the regression at all three boundaries.**
 
@@ -383,82 +381,16 @@ on 2026-07-14:
   failed as expected, asserting `marker_targets[42] == "PASS_HR_FALLBACK_LIST_HANDOFF"`
   but observing `PASS_CODE_REPLAY`.
 
-- [ ] **Step 3: Write and register a separate Slice-2 continuation plan, then halt 5R.**
+- [x] **Step 3: Write and register a separate Slice-2 continuation plan, then halt 5R.**
 
-**Superseding scope fence (2026-07-14):** Do not execute the remaining
-Task-6 IR, literary, generated-artifact, test, or commit instructions in this
-plan.  They are retained solely as diagnostic evidence for the fresh Slice-2
-continuation plan.  The planning action must preserve all dirty files, mark
-row 5R `halted` with the recorded list/HR regression, and make the new
-continuation the sole in-flight roadmap row.  It must not alter
-`src_ir/act2.py`, `src/20-act2-literary.toml`, generated SPL, or Markdown
-fixture behavior.
-
-In `src/20-act2-literary.toml`, add exactly the A2
-`PASS_HR_FALLBACK_LIST_HANDOFF` block from the accepted reconciliation design;
-do not alter its six explicit spare entries. In `src_ir/act2.py`, split
-`PASS_HR_FALLBACK` by saved marker. For `PUCK == 42` or `PUCK == 45`, route
-to the A2 handoff scene with `companion=MACBETH`, which performs exactly:
-
-```python
-*emit_token(LADY_MACBETH, tokens.LIST_OPEN, 1),
-push(MACBETH, const(1)),
-let(MACBETH, add(val(MACBETH), const(1))),
-push(LADY_MACBETH, const(tokens.ITEM_START)),
-push(LADY_MACBETH, const(1)),
-goto("PASS_LISTS_ITEM_GLYPH"),
-```
-
-Do not call `_read()` in that handoff: `HECATE` already contains the first
-item glyph.  Retain the existing replay path for `PUCK == 95` (`_`) and every
-non-marker input.  Do not modify token numbers, baselines, Act III, Act IV,
-or Markdown fixture expectations.  Regenerate; never edit the generated
-files directly:
-
-```bash
-uv run python -m scripts.splc
-uv run python scripts/assemble.py
-```
-
-Run:
-
-```bash
-uv run pytest tests/test_act2_slice2.py -k unordered_list_handoff -q
-uv run pytest tests/test_token_dump.py -k flat_unordered_tight -q
-uv run pytest tests/test_splc_interpret_parity.py -k flat_unordered_tight -q
-uv run pytest tests/test_architecture_spikes.py -k flat_unordered_tight -q
-```
-
-Expected: all pass, with the real and fast dump matching the committed
-baseline exactly and the rendered spike producing Markdown.pl bytes.
-
-- [ ] **Step 4: Run the complete list, generated-artifact, and literary gates.**
-
-```bash
-uv run pytest tests/test_token_dump.py -k 'list or nested' -q
-uv run pytest tests/test_splc_interpret_parity.py -k list -q
-uv run pytest tests/test_architecture_spikes.py -k 'list or nested' -q
-uv run pytest tests/test_splc_generated_fragments.py -q
-uv run pytest tests/test_literary_compliance.py -q
-uv run pytest tests/test_literary_toml_schema.py -q
-uv run pytest tests/test_assemble.py -q
-uv run pytest tests/test_codegen_html.py -q
-uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
-```
-
-Expected: every command exits zero. The A2 handoff title is the only new
-controlled surface authorized here. If another scene title, Recall line, or
-TOML key is required, stop rather than inventing prose and add `BLOCK[plan]`
-requesting a literary reservation.
-
-- [ ] **Step 5: Commit and push the bounded regression repair.**
-
-```bash
-git add src_ir/act2.py src/20-act2-literary.toml tests/test_act2_slice2.py \
-  src/20-act2-block.spl shakedown.spl
-git commit -m "fix: restore unordered list fallback"
-git push origin HEAD
-```
+The continuation is
+`docs/superpowers/plans/2026-07-14-slice-2-list-regression-continuation.md`.
+It contains the complete IR, controlled-prose, generated-artifact, and test
+instructions formerly embedded here, including the exact A2 reservation and
+literary/build gates.  The roadmap marks row 5R halted for this planning
+handoff and makes the continuation the sole in-flight row.  This checkpoint
+does not inspect, stage, regenerate, or alter the existing dirty production
+files.
 
 ### Task 7: Close the reconciliation plan without resuming Slice 2
 
@@ -467,7 +399,7 @@ git push origin HEAD
 - Modify: this plan
 - Modify: `.agent/blockers.md`
 
-- [ ] **Step 1: Run the final recovery gate.**
+- [ ] **Step 1: Run the final recovery gate after the continuation ships.**
 
 ```bash
 uv run pytest tests/test_mco_loop.py -q
@@ -484,9 +416,11 @@ inventory/artifact diagnostic and reports a normal non-running action.
 
 - [ ] **Step 2: Mark the recovery shipped and clear its resolved blocker.**
 
-Change row 5R to `shipped: <date> at commit <Task-6-sha>`; retain Slice 2 as
-halted and its explicit requirement for a later interactive resume/replacement
-plan.  Remove only the list-regression `BLOCK[plan]` line after Step 1 passes.
+After the continuation's own repair and closure gates pass, change row 5R from
+`halted` to `shipped: <date> at commit <continuation-closure-sha>`. Retain the
+original Slice-2 plan as halted pending its later explicit resume/replacement
+plan. The scope-transfer blocker was removed when Task 6 Step 3 registered the
+continuation; do not recreate it unless a new planning defect is found.
 
 - [ ] **Step 3: Commit and push closure.**
 
@@ -530,19 +464,17 @@ a new `BLOCK[plan]` and amendment.
 
 ## Amendment A4 — Restore governance-only scope
 
-**Accepted 2026-07-14.** Task 6 and Amendments A1–A3 are superseded as
-implementation authority.  They diagnosed a real Slice-2 regression but
-improperly coupled its repair to the MCO governance recovery.  The first
-remaining unchecked step is therefore a planning-only handoff: create a
-separate Slice-2 continuation plan, halt row 5R, and leave the new plan as the
-sole in-flight row.  No governance-plan amendment may authorize changes to
-`src_ir/`, `src/`, `shakedown.spl`, `scripts/splc/`, or Markdown behavior.
+**Accepted 2026-07-14.** Task 6's prior implementation instructions are
+superseded here and moved verbatim, with their authority and gates, to
+`2026-07-14-slice-2-list-regression-continuation.md`. This governance plan is
+halted as soon as the continuation is registered; it cannot authorize changes
+to `src_ir/`, `src/`, `shakedown.spl`, `scripts/splc/`, or Markdown behavior.
 
 ## Plan self-review
 
-- Coverage: Task 1 resolves the actual branch/artifact debt; Task 2 fixes the observed planner-routing failure; Task 3 adds durable branch state; Task 4 validates structured blockers and planning artifacts; Task 5 records the red gate; Task 6 restores the previously shipped list invariant without expanding Slice 2; Task 7 verifies and documents the resulting operating model.
+- Coverage: Task 1 resolves the actual branch/artifact debt; Task 2 fixes the observed planner-routing failure; Task 3 adds durable branch state; Task 4 validates structured blockers and planning artifacts; Task 5 records the red gate; Task 6 transfers the list repair to the bounded continuation; Task 7 verifies and documents the resulting operating model after that continuation ships.
 - Safety: all Git inspection is read-only and all branch outcomes require a documented human/evidence-backed decision.  No task performs a destructive branch operation.
-- Scope: Amendments A1–A3 are limited to restoring the already-shipped
-  spike-list invariant that blocks the governance gate and dispatching that
-  repair.  Slice 2 remains halted, so no new Slice-2 Markdown feature can
-  continue without a later explicit planning decision.
+- Scope: this plan remains governance-only. The separate continuation is
+  limited to restoring the already-shipped spike-list invariant; the broader
+  Slice-2 fixture plan remains halted and cannot continue without a later
+  explicit planning decision.
