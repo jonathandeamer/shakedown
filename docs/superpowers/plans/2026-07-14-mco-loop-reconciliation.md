@@ -158,7 +158,7 @@ Run: `uv run pytest tests/test_mco_loop.py -k 'failed_planner or failed_implemen
 
 Expected: planner-only blockers continue to select the planning pool after an availability-independent failure.
 
-- [ ] **Step 3: Commit the routing repair.**
+- [x] **Step 3: Commit the routing repair.**
 
 ```bash
 git add scripts/mco_loop.py tests/test_mco_loop.py
