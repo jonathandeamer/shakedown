@@ -15,6 +15,7 @@ from src_ir import tokens
 
 REPO = Path(__file__).parent.parent
 BASELINES = REPO / "tests" / "fixtures" / "token_stream"
+SPAN_BASELINES = BASELINES / "spans"
 
 
 def _dump_values(path: Path) -> list[int]:
@@ -34,13 +35,30 @@ def _all_dump_fixtures() -> list[Path]:
 )
 def test_every_committed_dump_decodes_and_validates(path: Path) -> None:
     values = _dump_values(path)
-    if "nested_blocks" in path.parts:
+    if "nested_blocks" in path.parts or "spans" in path.parts:
         # Spike B's reviewed Act-II carrier fixtures include the runtime stack
-        # floor.  The inter-act/debug stream contract begins above that floor.
+        # floor. Span-spike reviewed final dumps likewise carry the terminal
+        # STREAM_END that shakedown-debug omits from stdout.
         assert values[-1] == tokens.STREAM_END
         assert tokens.STREAM_END not in values[:-1]
         values = values[:-1]
     validate_stream(decode_stream(values))
+
+
+@pytest.mark.parametrize(
+    "path",
+    sorted(SPAN_BASELINES.glob("*.dump")),
+    ids=lambda p: p.stem,
+)
+def test_reviewed_span_dumps_are_single_final_paragraphs(path: Path) -> None:
+    values = _dump_values(path)
+    assert values[-1] == tokens.STREAM_END
+    decoded = decode_stream(values[:-1])
+    validate_stream(decoded)
+    assert len(decoded) == 1
+    assert decoded[0].code == tokens.PARA
+    assert decoded[0].payloads == ()
+    assert decoded[0].text is not None
 
 
 def test_flat_list_validates() -> None:

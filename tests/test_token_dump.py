@@ -46,6 +46,8 @@ NESTED_BLOCK_FIXTURES = (
     REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"
 )
 NESTED_BLOCK_BASELINES = BASELINES / "nested_blocks"
+SPAN_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "spans"
+SPAN_BASELINES = BASELINES / "spans"
 STEP_LIMIT = 200_000
 
 
@@ -58,6 +60,18 @@ def _reviewed_dump(stem: str) -> list[int]:
 
 def _reviewed_debug_dump(stem: str) -> bytes:
     values = _reviewed_dump(stem)
+    assert values[-1] == tokens.STREAM_END
+    return "".join(f"{value}\n" for value in values[:-1]).encode()
+
+
+def _reviewed_span_dump(stem: str) -> list[int]:
+    return [
+        int(line) for line in (SPAN_BASELINES / f"{stem}.dump").read_text().splitlines()
+    ]
+
+
+def _reviewed_span_debug_dump(stem: str) -> bytes:
+    values = _reviewed_span_dump(stem)
     assert values[-1] == tokens.STREAM_END
     return "".join(f"{value}\n" for value in values[:-1]).encode()
 
@@ -117,6 +131,15 @@ def test_dump_matches_blessed_list_baseline(stem: str) -> None:
 def test_dump_matches_blessed_nested_block_baseline(stem: str) -> None:
     fixture = NESTED_BLOCK_FIXTURES / f"{stem}.text"
     assert _dump(fixture.read_bytes()) == _reviewed_debug_dump(stem)
+
+
+@pytest.mark.parametrize(
+    "stem",
+    sorted(path.stem for path in SPAN_FIXTURES.glob("*.text")),
+)
+def test_dump_matches_reviewed_span_baseline(stem: str) -> None:
+    fixture = SPAN_FIXTURES / f"{stem}.text"
+    assert _dump(fixture.read_bytes()) == _reviewed_span_debug_dump(stem)
 
 
 @pytest.mark.parametrize(

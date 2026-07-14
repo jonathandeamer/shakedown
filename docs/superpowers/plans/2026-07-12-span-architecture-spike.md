@@ -2069,9 +2069,22 @@ graph.
   => `1 passed, 208 deselected`. The prior `Puck is not on stage!` binary
   runtime error is cleared for Amps, list, nested-block, and span-spike checks.
 
-- [ ] **Step 4: Record and enforce reviewed final dumps.**
+- [x] **Step 4: Record and enforce reviewed final dumps.**
 
   Capture the exact `shakedown-debug` output for every probe, append `-1` as the carrier sentinel in `tests/fixtures/token_stream/spans/<stem>.dump`, and hand-check that every dump ends `PARA ... TEXT_END, STREAM_END` with final HTML glyphs and no persistent positive inline token code. Add the matching parameterized `tests/test_token_dump.py` comparison, omitting only terminal `-1` because the debug target does not print it. Run `uv run pytest tests/test_act3_contracts.py tests/test_token_dump.py tests/test_token_decode.py tests/test_token_structure.py -q`; expected PASS.
+
+  Evidence (2026-07-14): Added reviewed span dumps for
+  `variable_code_spans`, `escapes_and_overlap`,
+  `inline_html_and_autolink`, `links_images_protected`, and
+  `overlapping_emphasis` under `tests/fixtures/token_stream/spans/`, each
+  recorded from the debug carrier with a committed terminal `-1`. Added the
+  matching parameterized `tests/test_token_dump.py` baseline gate and taught
+  `tests/test_token_structure.py` to validate reviewed span dumps by
+  stripping only that terminal sentinel. Manual review confirmed each dump is
+  a single final `PARA` stream ending `TEXT_END, STREAM_END` with final HTML
+  glyphs and no persistent positive inline token code. Fresh gate:
+  `uv run pytest tests/test_act3_contracts.py tests/test_token_dump.py tests/test_token_decode.py tests/test_token_structure.py -q`
+  => `123 passed in 369.69s (0:06:09)`.
 
 - [ ] **Step 5: Re-run interpreter/generated-SPL parity if the new scenes introduce a new IR control-flow shape.**
 
