@@ -138,7 +138,7 @@ pattern = "bare_statement"
 
 **Interfaces:** Add `_run_acts(input_text: str, through_act: int) -> str | list[int]` helpers around the fast interpreter. `_IMPLEMENTED_FIXTURES` remains the sole enablement set.
 
-- [ ] **Step 1: Add disabled capability contracts.** Parametrize the ten row-6 fixture files; assert they are not enabled. Add strict-xfail contracts for hard-wrap ambiguity; inline/reference/collapsed/missing links; inline/reference images and title quotes; strong/em; inline tag/comment; raw block HTML; and quote code.
+- [x] **Step 1: Add disabled capability contracts.** Parametrize the ten row-6 fixture files; assert they are not enabled. Add strict-xfail contracts for hard-wrap ambiguity; inline/reference/collapsed/missing links; inline/reference images and title quotes; strong/em; inline tag/comment; raw block HTML; and quote code.
 
   Run: `uv run pytest tests/test_slice3_medium_risk.py -q`
 
