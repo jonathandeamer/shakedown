@@ -59,3 +59,34 @@ artifacts unless the green characterization exposes an actual divergence.
 This amendment changes only the Task-2 execution shape. It does not relax
 strict parity, grant an Auto-links-style normalization exception, or authorize
 any later Slice-3 fixture.
+
+## Amendment A2 (2026-07-15): Strong/em requires a bounded Act-II HR-replay prerequisite
+
+Task 4's mixed strong/em fixture establishes that the present Act-II
+horizontal-rule fallback leaks Macbeth's temporary repeated-marker count into
+the next block classification. `***text` and `___text` correctly fail the HR
+recognizer and replay as paragraph glyphs, but the failed scan leaves Macbeth
+positive. At the following ordinary line, `PASS_LISTS_GATE_ORDERED` mistakes
+that stale value for an open-list depth; a later blank line then enters
+`PASS_CONTAINERS_OPEN` without an `ITEM_START` floor and underflows Lady
+Macbeth. This occurs before Act III, so an Act-III-only resume requeue change
+cannot satisfy the Task-4 gate.
+
+Task 4 therefore owns one narrowly bounded predecessor repair in
+`src_ir/act2.py`, before its Act-III delimiter change: on the failed-HR replay
+path, restore Macbeth to the zero/no-open-list state before raw glyph copying
+resumes. Retain `PASS_HR_SPACE`'s existing single-marker (`*` or `-`) plus
+space/tab handoff to `PASS_HR_FALLBACK_LIST_HANDOFF`; do not route a failed
+no-space marker run to that handoff. This preserves the shipped rejected-HR
+list regression while ensuring `***text`, `___text`, and ordinary text after
+either run are raw paragraph input, not list-item input.
+
+No token, table ownership, new scene, or literary surface is authorized by
+this prerequisite: it edits only branches/assignments in existing Act-II
+scenes and uses their already-reserved TOML labels. The implementation must
+first add focused fast-Act-II stream/state contracts that prove (1) a failed
+`***` and `___` run leaves no open list frame or positive list-depth state,
+(2) the following plain paragraph remains a `PARA`, and (3) `* item` and
+`- item` still enter the existing list handoff. It then runs the existing
+strong/em Act-III contracts and fresh-oracle strict fixture proof. This is a
+prerequisite within Task 4, not Slice-4 expansion or a second parser.

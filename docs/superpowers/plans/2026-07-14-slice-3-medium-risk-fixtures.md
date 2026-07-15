@@ -205,7 +205,7 @@ pattern = "bare_statement"
 
 ### Task 4: Complete strong/em nesting
 
-**Files:** Modify `src_ir/act3.py`, `tests/test_act3_slice3.py`, `tests/test_mdtest.py`, `tests/test_slice3_medium_risk.py`; regenerate Act III/release SPL.
+**Files:** Modify `src_ir/act2.py`, `src_ir/act3.py`, `tests/test_act2_slice3.py`, `tests/test_act3_slice3.py`, `tests/test_mdtest.py`, `tests/test_slice3_medium_risk.py`; regenerate Acts II/III and release SPL.
 
 - [x] **Step 1: Write red tests** for `***both***`, `**outer *inner* outer**`, escaped/unmatched delimiters, and delimiters inside code/link fields.
 
@@ -213,9 +213,9 @@ pattern = "bare_statement"
 
   Expected: FAIL.
 
-- [ ] **Step 2: Correct only existing `RESUME_EMPH`, `RESUME_STRONG`, and `RESUME_TRIPLE_EMPH` requeue order.** Protected field contents remain opaque and every held glyph is restored before `LYRIC_POP_GLYPH`; an unrepresentable transition is `BLOCK[plan]`.
+- [ ] **Step 2: Repair the bounded Act-II HR-replay prerequisite, then correct the existing Act-III emphasis requeue order.** Before touching `RESUME_*`, add fast-Act-II stream/state contracts proving that failed `***` and `___` HR candidates restore Macbeth to no-open-list state, preserve the following plain paragraph as a `PARA`, and do not consume an `ITEM_START`; retain the shipped `* item` and `- item` rejected-HR list-handoff contracts. In `PASS_HR_FALLBACK`, only `PASS_HR_SPACE`'s single-marker plus space/tab route may enter `PASS_HR_FALLBACK_LIST_HANDOFF`; every failed no-space marker run replays raw glyphs after Macbeth's scratch count is reset. Do not add a token, scene, TOML surface, or parser. Then correct only existing `RESUME_EMPH`, `RESUME_STRONG`, and `RESUME_TRIPLE_EMPH` requeue order. Protected field contents remain opaque and every held glyph is restored before `LYRIC_POP_GLYPH`; an unrepresentable transition is `BLOCK[plan]`.
 
-  Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act3_slice3.py tests/test_mdtest.py -k 'Strong and em' -q && uv run python scripts/strict_parity_harness.py 'Strong and em together'`
+  Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act2_slice3.py tests/test_act3_slice3.py tests/test_mdtest.py -k 'Strong and em' -q && uv run python scripts/strict_parity_harness.py 'Strong and em together' && uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py -q`
 
   Expected: PASS and strict byte identity.
 
@@ -299,3 +299,25 @@ matched `origin/main` for `tests/test_act2_slice3.py`,
 checkpoint commit would have been empty. Rerun the Step 2 evidence gate, then
 treat the task as complete without fabricating a redundant commit and advance
 the loop to Task 3 Step 1.
+
+## Amendment A3 (2026-07-15): Task 4 Act-II HR-replay prerequisite
+
+The accepted design's Amendment A2 is binding. The former Task-4 Step 2 was
+unrepresentable on current main because the mixed `Strong and em together`
+input fails in Act II at `PASS_CONTAINERS_DEPTH` before Act III begins. The
+failure is not an emphasis requeue-order observation: a failed `***` or `___`
+HR candidate replays its glyphs while retaining Macbeth's temporary positive
+marker count. The next ordinary line is classified as list-item content, and
+its following blank line has no `ITEM_START` frame to close.
+
+This amendment expands Task 4's existing implementation boundary to include
+only the design-authorized Act-II scratch-register reset and list-handoff
+guard described in Step 2. It adds `tests/test_act2_slice3.py` and Act II's
+generated fragment to the task's explicit surface. No new scene label or TOML
+entry is needed: the repair uses the existing `PASS_HR_*` scenes and their
+reserved labels. The exact required literary compliance commands are
+`uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py -q`
+within the Step-2 gate, alongside generated-fragment, parse-smoke, and splc
+validation checks. The former planner-only blocker is cleared by this
+amendment; any need for a new token, scene/title, or broader list/HR grammar
+remains `BLOCK[plan]`.
