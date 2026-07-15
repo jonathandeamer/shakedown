@@ -332,3 +332,82 @@ less_than = ["smaller than", "punier than"]
 equality = ["as honest as", "as noble as"]
 goto_forward = ["We shall proceed to"]
 goto_backward = ["We shall return to"]
+
+[scenes.PASS_QUOTE_PREFIX]
+title = "Lady Macbeth keeps the echo's first small space."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_CONTINUE_PREFIX]
+title = "Lady Macbeth measures the echo's returning threshold."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_PREFIX_REPLAY]
+title = "The echo restores each unspent pale step."
+pattern = "bare_statement"
+[scenes.PASS_QUOTE_PREFIX_FINISH]
+title = "Macbeth releases the echo's guarded margin."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE]
+title = "Prospero opens the echoing chamber."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_CLOSE]
+title = "The echoing chamber closes in peace."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_PROBE]
+title = "Puck counts the chamber's pale threshold."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_REPLAY]
+title = "Puck returns the threshold in faithful order."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_PROBE_GUARD]
+title = "The pale threshold keeps one certain count."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_REPLAY_FINISH]
+title = "Prospero closes the restored threshold."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_CLOSE_REPLAY]
+title = "Prospero restores the chamber's fifth pale sign."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_GUARD]
+title = "Prospero keeps the chamber's measured line."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_LINE_ONE]
+title = "The first chamber line keeps its chosen road."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_LINE_ONE_END]
+title = "The first chamber line yields its measured close."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_SKIP_TWO]
+title = "The second chamber line sheds its excess pale steps."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_SKIP_TWO_NEXT]
+title = "The second chamber line counts another faded step."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_SKIP_TWO_DONE]
+title = "The second chamber line keeps its settled measure."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_LINE_TWO]
+title = "The second chamber line keeps its chosen road."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_LINE_TWO_END]
+title = "The second chamber line yields its measured close."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_SKIP_THREE]
+title = "The last chamber line sheds its excess pale steps."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_SKIP_THREE_NEXT]
+title = "The last chamber line counts another faded step."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_SKIP_THREE_DONE]
+title = "The last chamber line keeps its settled measure."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_LINE_THREE]
+title = "The last chamber line keeps its chosen road."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_FINISH]
+title = "The chamber grants one last faithful line."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_EMIT]
+title = "Prospero returns the chamber's kept script."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_EMIT_READY]
+title = "Prospero restores the chamber to the common quill."
+pattern = "scene_of_character"

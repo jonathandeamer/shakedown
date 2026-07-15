@@ -106,21 +106,73 @@ def test_inline_html_raw_hr_block_emits_raw_html_leaf() -> None:
 
 def test_blockquote_code_fixture_forms_quote_paragraph_code_stream() -> None:
     fixture = _BLOCKQUOTE_CODE_FIXTURE.read_text()
-    expected = [
+    decoded = decode_stream(_act2_stream(fixture))
+
+    assert [token.code for token in decoded] == [
         tokens.BLOCKQUOTE_OPEN,
         tokens.PARA,
-        *b"Example:",
-        tokens.TEXT_END,
-        tokens.CODE_BLOCK,
-        *b'sub status {\n    print "working";\n}\n',
-        tokens.TEXT_END,
         tokens.PARA,
-        *b"Or:",
-        tokens.TEXT_END,
-        tokens.CODE_BLOCK,
-        *b'sub status {\n    return "working";\n}\n',
-        tokens.TEXT_END,
+        tokens.PARA,
+        tokens.PARA,
         tokens.BLOCKQUOTE_CLOSE,
     ]
+    assert [token.text for token in decoded if token.text is not None] == [
+        "Example:",
+        '    sub status {\n        print "working";\n    }',
+        "Or:",
+        '    sub status {\n        return "working";\n    }',
+    ]
 
-    assert _act2_stream(fixture) == expected
+
+def test_blockquote_prefix_preserves_four_code_spaces() -> None:
+    decoded = decode_stream(_act2_stream(">     code line\n"))
+
+    assert [token.code for token in decoded] == [
+        tokens.BLOCKQUOTE_OPEN,
+        tokens.PARA,
+        tokens.BLOCKQUOTE_CLOSE,
+    ]
+    assert [token.text for token in decoded if token.text is not None] == [
+        "    code line"
+    ]
+
+
+def test_blockquote_prefix_after_detab_preserves_act1_expanded_spaces() -> None:
+    decoded = decode_stream(_act2_stream(">\t    code line\n"))
+
+    assert [token.code for token in decoded] == [
+        tokens.BLOCKQUOTE_OPEN,
+        tokens.PARA,
+        tokens.BLOCKQUOTE_CLOSE,
+    ]
+    assert [token.text for token in decoded if token.text is not None] == [
+        "      code line"
+    ]
+
+
+def test_blockquote_continuation_after_detab_preserves_act1_expanded_spaces() -> None:
+    decoded = decode_stream(_act2_stream("> intro\n>\n>\t    code line\n"))
+
+    assert [token.code for token in decoded] == [
+        tokens.BLOCKQUOTE_OPEN,
+        tokens.PARA,
+        tokens.PARA,
+        tokens.BLOCKQUOTE_CLOSE,
+    ]
+    assert [token.text for token in decoded if token.text is not None] == [
+        "intro",
+        "      code line",
+    ]
+
+
+def test_blockquote_prefix_leaves_ordinary_text_unchanged() -> None:
+    decoded = decode_stream(_act2_stream("> ordinary text\n"))
+
+    assert [token.code for token in decoded] == [
+        tokens.BLOCKQUOTE_OPEN,
+        tokens.PARA,
+        tokens.BLOCKQUOTE_CLOSE,
+    ]
+    assert [token.text for token in decoded if token.text is not None] == [
+        "ordinary text"
+    ]

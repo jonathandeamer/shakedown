@@ -473,7 +473,7 @@ ACT: Act = act(
             branch(eq(val(HECATE), _NEWLINE), then="PASS_LISTS_RAW_BLANK"),
             branch(
                 eq(val(HORATIO), const(1)),
-                then="PASS_LISTS_ITEM_SKIP_SPACES",
+                then="PASS_QUOTE_CONTINUE_PREFIX",
             ),
             goto("PASS_LISTS_RAW_GLYPH"),
         ),
@@ -602,6 +602,10 @@ ACT: Act = act(
         ),
         scene(
             "PASS_CONTAINERS_BOUNDARY",
+            branch(
+                eq(val(HECATE), _BLOCKQUOTE_MARK),
+                then="PASS_QUOTE_CONTINUE_PREFIX",
+            ),
             *_read(),
             branch(eq(val(HECATE), _SPACE), then="PASS_CONTAINERS_BOUNDARY"),
             branch(eq(val(HECATE), _TAB), then="PASS_CONTAINERS_BOUNDARY"),
@@ -911,8 +915,40 @@ ACT: Act = act(
             push(LADY_MACBETH, const(tokens.TEXT_END)),
             push(LADY_MACBETH, const(tokens.BLOCKQUOTE_OPEN)),
             let(HORATIO, add(val(MACBETH), const(1))),
-            goto("PASS_LISTS_ITEM_SKIP_SPACES"),
+            goto("PASS_QUOTE_PREFIX"),
             companion=HORATIO,
+        ),
+        scene(
+            "PASS_QUOTE_PREFIX",
+            *_read(),
+            branch(eq(val(HECATE), _SPACE), then="PASS_LISTS_RAW_NEXT"),
+            branch(eq(val(HECATE), _TAB), then="PASS_LISTS_RAW_NEXT"),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_QUOTE_CONTINUE_PREFIX",
+            branch(
+                eq(val(HECATE), _BLOCKQUOTE_MARK),
+                then="PASS_QUOTE_PREFIX_FINISH",
+            ),
+            goto("PASS_QUOTE_PREFIX_REPLAY"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_QUOTE_PREFIX_REPLAY",
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
+            push(LADY_MACBETH, const(tokens.BLOCKQUOTE_CLOSE)),
+            goto("PASS_HR_GATE"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_QUOTE_PREFIX_FINISH",
+            *_read(),
+            branch(eq(val(HECATE), _SPACE), then="PASS_LISTS_RAW_NEXT"),
+            branch(eq(val(HECATE), _TAB), then="PASS_LISTS_RAW_NEXT"),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
         ),
         scene(
             "PASS_CONTAINERS_REPLAY",

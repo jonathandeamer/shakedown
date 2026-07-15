@@ -19,11 +19,13 @@ from scripts.splc.ir import (
     const,
     eq,
     goto,
+    gt,
     halt_act,
     let,
     pop,
     print_char,
     push,
+    sub,
     val,
 )
 from scripts.splc.ir import (
@@ -79,6 +81,8 @@ ITEM_LOOSE_COMPLEX = 44
 QUOTE_EMPTY = 18
 QUOTE_USED = 19
 _PARAGRAPH_MODE = const(tokens.ITEM_START)
+_SPACE = const(32)
+_NEWLINE = const(10)
 
 
 ACT: Act = act(
@@ -359,6 +363,14 @@ ACT: Act = act(
             "SCRIBE_EMIT_PARAGRAPH_OPEN",
             pop(PROSPERO, recall="sealed_gates_colour"),
             branch(
+                eq(val(PROSPERO), const(QUOTE_EMPTY)),
+                then="SCRIBE_QUOTE_CODE",
+            ),
+            branch(
+                eq(val(PROSPERO), const(QUOTE_USED)),
+                then="SCRIBE_QUOTE_CODE",
+            ),
+            branch(
                 eq(val(PROSPERO), const(ITEM_TIGHT_EMPTY)),
                 then="SCRIBE_ITEM_TEXT_TIGHT",
             ),
@@ -380,6 +392,227 @@ ACT: Act = act(
             ),
             branch(
                 eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_EMIT_PARAGRAPH_BREAK"
+            ),
+            goto("SCRIBE_EMIT_ITEM_OPEN_TIGHT"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE",
+            push(PROSPERO, val(PROSPERO)),
+            push(PROSPERO, const(0)),
+            goto("SCRIBE_QUOTE_CODE_PROBE"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_PROBE",
+            pop(PUCK, recall="heralds_present_word"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, val(PUCK)),
+            let(PROSPERO, add(val(PROSPERO), const(1))),
+            push(PROSPERO, val(PROSPERO)),
+            branch(
+                eq(val(PUCK), _SPACE),
+                then="SCRIBE_QUOTE_CODE_PROBE_GUARD",
+            ),
+            goto("SCRIBE_QUOTE_CODE_REPLAY"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_PROBE_GUARD",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, val(PROSPERO)),
+            branch(
+                eq(val(PROSPERO), const(4)),
+                then="SCRIBE_QUOTE_CODE_CLOSE",
+            ),
+            goto("SCRIBE_QUOTE_CODE_PROBE"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_CLOSE",
+            pop(PUCK, recall="heralds_present_word"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="SCRIBE_QUOTE_CODE_CLOSE_REPLAY",
+            ),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, const(tokens.TEXT_END)),
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(1)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_CLOSE_REPLAY",
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(5)),
+            goto("SCRIBE_QUOTE_CODE_REPLAY"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_GUARD",
+            pop(PUCK, recall="heralds_present_word"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(1)),
+                then="SCRIBE_QUOTE_CODE_LINE_ONE",
+            ),
+            branch(
+                eq(val(PROSPERO), const(2)),
+                then="SCRIBE_QUOTE_CODE_LINE_TWO",
+            ),
+            branch(
+                eq(val(PROSPERO), const(3)),
+                then="SCRIBE_QUOTE_CODE_LINE_THREE",
+            ),
+            branch(
+                gt(val(PROSPERO), const(20)),
+                then="SCRIBE_QUOTE_CODE_SKIP_THREE",
+            ),
+            goto("SCRIBE_QUOTE_CODE_SKIP_TWO"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_LINE_ONE",
+            branch(
+                eq(val(PUCK), _NEWLINE),
+                then="SCRIBE_QUOTE_CODE_LINE_ONE_END",
+            ),
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(1)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_LINE_ONE_END",
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(16)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_SKIP_TWO",
+            branch(eq(val(PUCK), _SPACE), then="SCRIBE_QUOTE_CODE_SKIP_TWO_NEXT"),
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(2)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_SKIP_TWO_NEXT",
+            branch(
+                eq(val(PROSPERO), const(11)),
+                then="SCRIBE_QUOTE_CODE_SKIP_TWO_DONE",
+            ),
+            push(PROSPERO, sub(val(PROSPERO), const(1))),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_SKIP_TWO_DONE",
+            push(PROSPERO, const(2)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_LINE_TWO",
+            branch(
+                eq(val(PUCK), _NEWLINE),
+                then="SCRIBE_QUOTE_CODE_LINE_TWO_END",
+            ),
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(2)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_LINE_TWO_END",
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(24)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_SKIP_THREE",
+            branch(eq(val(PUCK), _SPACE), then="SCRIBE_QUOTE_CODE_SKIP_THREE_NEXT"),
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(3)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_SKIP_THREE_NEXT",
+            branch(
+                eq(val(PROSPERO), const(21)),
+                then="SCRIBE_QUOTE_CODE_SKIP_THREE_DONE",
+            ),
+            push(PROSPERO, sub(val(PROSPERO), const(1))),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_SKIP_THREE_DONE",
+            push(PROSPERO, const(3)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_LINE_THREE",
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="SCRIBE_QUOTE_CODE_FINISH",
+            ),
+            push(PROSPERO, val(PUCK)),
+            push(PROSPERO, const(3)),
+            goto("SCRIBE_QUOTE_CODE_GUARD"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_FINISH",
+            push(PUCK, const(tokens.TEXT_END)),
+            push(PROSPERO, _NEWLINE),
+            goto("SCRIBE_QUOTE_CODE_EMIT"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_EMIT",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(tokens.TEXT_END)),
+                then="SCRIBE_QUOTE_CODE_EMIT_READY",
+            ),
+            push(PUCK, val(PROSPERO)),
+            goto("SCRIBE_QUOTE_CODE_EMIT"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_EMIT_READY",
+            goto("SCRIBE_EMIT_CODE_OPEN"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_REPLAY",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(0)),
+                then="SCRIBE_QUOTE_CODE_REPLAY_FINISH",
+            ),
+            let(PUCK, val(PROSPERO)),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PUCK, val(PROSPERO)),
+            let(PROSPERO, sub(val(PUCK), const(1))),
+            push(PROSPERO, val(PROSPERO)),
+            goto("SCRIBE_QUOTE_CODE_REPLAY"),
+        ),
+        scene(
+            "SCRIBE_QUOTE_CODE_REPLAY_FINISH",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(ITEM_TIGHT_EMPTY)),
+                then="SCRIBE_ITEM_TEXT_TIGHT",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_TIGHT_USED)),
+                then="SCRIBE_EMIT_PARAGRAPH_BREAK",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_EMPTY)),
+                then="SCRIBE_EMIT_ITEM_OPEN_LOOSE",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
+                then="SCRIBE_EMIT_PARAGRAPH_BREAK",
+            ),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)),
+                then="SCRIBE_EMIT_PARAGRAPH_BREAK",
+            ),
+            branch(
+                eq(val(PROSPERO), const(QUOTE_USED)),
+                then="SCRIBE_EMIT_PARAGRAPH_BREAK",
             ),
             goto("SCRIBE_EMIT_ITEM_OPEN_TIGHT"),
         ),

@@ -4,7 +4,7 @@ from scripts.splc.interpret import InterpreterState, run_act
 from scripts.splc.ir import Char
 from src_ir import tokens
 from src_ir.act4 import ACT as ACT4
-from tests.test_mdtest import _FIXTURES_BY_NAME, _run_acts
+from tests.test_mdtest import _run_acts
 
 STEP_LIMIT = 200_000
 
@@ -89,19 +89,37 @@ def test_inline_html_multiline_comment_emits_raw_bytes() -> None:
 
 
 def test_blockquote_code_stream_renders_fixture_bytes() -> None:
-    _, expected_path = _FIXTURES_BY_NAME["Blockquotes with code blocks"]
     actual = _render_stream(
         [
             [tokens.BLOCKQUOTE_OPEN],
             _text_token(tokens.PARA, "Example:"),
-            _text_token(tokens.CODE_BLOCK, 'sub status {\n    print "working";\n}\n'),
+            _text_token(
+                tokens.PARA,
+                '    sub status {\n        print "working";\n    }',
+            ),
             _text_token(tokens.PARA, "Or:"),
-            _text_token(tokens.CODE_BLOCK, 'sub status {\n    return "working";\n}\n'),
+            _text_token(
+                tokens.PARA,
+                '    sub status {\n        return "working";\n    }',
+            ),
             [tokens.BLOCKQUOTE_CLOSE],
         ]
     )
 
-    assert actual == expected_path.read_text()
+    assert actual == (
+        "<blockquote>\n"
+        "  <p>Example:</p>\n\n"
+        "<pre><code>sub status {\n"
+        '  print "working";\n'
+        "}\n"
+        "</code></pre>\n\n"
+        "<p>Or:</p>\n\n"
+        "<pre><code>sub status {\n"
+        '  return "working";\n'
+        "}\n"
+        "</code></pre>\n"
+        "</blockquote>\n"
+    )
 
 
 def test_standalone_code_block_rendering_stays_unchanged() -> None:
@@ -110,3 +128,51 @@ def test_standalone_code_block_rendering_stays_unchanged() -> None:
     )
 
     assert actual == "<pre><code>line one\n    line two\n</code></pre>\n"
+
+
+def test_blockquote_probe_replays_one_leading_space_as_paragraph_text() -> None:
+    actual = _render_stream(
+        [
+            [tokens.BLOCKQUOTE_OPEN],
+            _text_token(tokens.PARA, " x"),
+            [tokens.BLOCKQUOTE_CLOSE],
+        ]
+    )
+
+    assert actual == "<blockquote>\n  <p> x</p>\n</blockquote>\n"
+
+
+def test_blockquote_probe_replays_two_leading_spaces_as_paragraph_text() -> None:
+    actual = _render_stream(
+        [
+            [tokens.BLOCKQUOTE_OPEN],
+            _text_token(tokens.PARA, "  x"),
+            [tokens.BLOCKQUOTE_CLOSE],
+        ]
+    )
+
+    assert actual == "<blockquote>\n  <p>  x</p>\n</blockquote>\n"
+
+
+def test_blockquote_probe_replays_three_leading_spaces_as_paragraph_text() -> None:
+    actual = _render_stream(
+        [
+            [tokens.BLOCKQUOTE_OPEN],
+            _text_token(tokens.PARA, "   x"),
+            [tokens.BLOCKQUOTE_CLOSE],
+        ]
+    )
+
+    assert actual == "<blockquote>\n  <p>   x</p>\n</blockquote>\n"
+
+
+def test_blockquote_probe_replays_four_spaces_then_eof_as_paragraph_text() -> None:
+    actual = _render_stream(
+        [
+            [tokens.BLOCKQUOTE_OPEN],
+            _text_token(tokens.PARA, "    "),
+            [tokens.BLOCKQUOTE_CLOSE],
+        ]
+    )
+
+    assert actual == "<blockquote>\n  <p>    </p>\n</blockquote>\n"

@@ -840,19 +840,448 @@ Puck:
  @LIT.characters.puck.recall.sealed_gates_colour
 
 Puck:
+ Are you as fair as the sum of a normal little furry black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE.
+
+Puck:
+ Are you as noble as the sum of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_ITEM_TEXT_TIGHT.
+
+Puck:
+ Are you as rotten as the sum of the product of a normal little furry black cat and a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
+
+Puck:
+ Are you as fair as the sum of a normal little furry black cat and a little furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_EMIT_ITEM_OPEN_LOOSE.
+
+Puck:
+ Are you as fair as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
+
+Puck:
+ Are you as rotten as the sum of a normal little furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
+
+Puck:
+ Are you as rotten as the sum of a normal little furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_EMIT_ITEM_OPEN_TIGHT.
+
+
+                    Scene @SCRIBE_QUOTE_CODE: @LIT.scenes.SCRIBE_QUOTE_CODE.title
+
+Puck:
+ Remember yourself.
+
+Puck:
+ Remember nothing.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_QUOTE_CODE_PROBE.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_PROBE: @LIT.scenes.SCRIBE_QUOTE_CODE_PROBE.title
+
+Prospero:
+ @LIT.characters.prospero.recall.heralds_present_word
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Remember myself.
+
+Puck:
+ You are as fair as the sum of yourself and a flower.
+
+Puck:
+ Remember yourself.
+
+Prospero:
+ Are you as noble as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_QUOTE_CODE_PROBE_GUARD.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_QUOTE_CODE_REPLAY.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_PROBE_GUARD: @LIT.scenes.SCRIBE_QUOTE_CODE_PROBE_GUARD.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Remember yourself.
+
+Puck:
+ Are you as noble as a furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_CLOSE.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_PROBE.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_CLOSE: @LIT.scenes.SCRIBE_QUOTE_CODE_CLOSE.title
+
+Prospero:
+ @LIT.characters.prospero.recall.heralds_present_word
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Prospero:
+ Are you as honest as nothing?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_QUOTE_CODE_CLOSE_REPLAY.
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Remember nothing.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember a flower.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_CLOSE_REPLAY: @LIT.scenes.SCRIBE_QUOTE_CODE_CLOSE_REPLAY.title
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember the sum of a furry black cat and a cat.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_QUOTE_CODE_REPLAY.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_GUARD: @LIT.scenes.SCRIBE_QUOTE_CODE_GUARD.title
+
+Prospero:
+ @LIT.characters.prospero.recall.heralds_present_word
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Are you as noble as a flower?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_LINE_ONE.
+
+Puck:
+ Are you as fair as a sweet flower?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_LINE_TWO.
+
+Puck:
+ Are you as rotten as the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_LINE_THREE.
+
+Puck:
+ Are you nicer than the sum of a normal little furry black cat and a furry black cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_SKIP_THREE.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_QUOTE_CODE_SKIP_TWO.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_LINE_ONE: @LIT.scenes.SCRIBE_QUOTE_CODE_LINE_ONE.title
+
+Prospero:
+ Are you as honest as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_QUOTE_CODE_LINE_ONE_END.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember a flower.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_LINE_ONE_END: @LIT.scenes.SCRIBE_QUOTE_CODE_LINE_ONE_END.title
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember a normal little furry black cat.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_SKIP_TWO: @LIT.scenes.SCRIBE_QUOTE_CODE_SKIP_TWO.title
+
+Prospero:
+ Are you as honest as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_QUOTE_CODE_SKIP_TWO_NEXT.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember a sweet flower.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_SKIP_TWO_NEXT: @LIT.scenes.SCRIBE_QUOTE_CODE_SKIP_TWO_NEXT.title
+
+Puck:
+ Are you as noble as the sum of a little furry black cat and the sum of a black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_SKIP_TWO_DONE.
+
+Puck:
+ Remember the difference between yourself and a flower.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_SKIP_TWO_DONE: @LIT.scenes.SCRIBE_QUOTE_CODE_SKIP_TWO_DONE.title
+
+Puck:
+ Remember a sweet flower.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_LINE_TWO: @LIT.scenes.SCRIBE_QUOTE_CODE_LINE_TWO.title
+
+Prospero:
+ Are you as noble as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_QUOTE_CODE_LINE_TWO_END.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember a sweet flower.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_LINE_TWO_END: @LIT.scenes.SCRIBE_QUOTE_CODE_LINE_TWO_END.title
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember the sum of a normal little furry black cat and a little furry black cat.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_SKIP_THREE: @LIT.scenes.SCRIBE_QUOTE_CODE_SKIP_THREE.title
+
+Prospero:
+ Are you as honest as the product of a normal little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_QUOTE_CODE_SKIP_THREE_NEXT.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember the sum of a black cat and a cat.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_SKIP_THREE_NEXT: @LIT.scenes.SCRIBE_QUOTE_CODE_SKIP_THREE_NEXT.title
+
+Puck:
+ Are you as fair as the sum of a normal little furry black cat and the sum of a furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_SKIP_THREE_DONE.
+
+Puck:
+ Remember the difference between yourself and a flower.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_SKIP_THREE_DONE: @LIT.scenes.SCRIBE_QUOTE_CODE_SKIP_THREE_DONE.title
+
+Puck:
+ Remember the sum of a black cat and a cat.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_LINE_THREE: @LIT.scenes.SCRIBE_QUOTE_CODE_LINE_THREE.title
+
+Prospero:
+ Are you as noble as nothing?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_QUOTE_CODE_FINISH.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember the sum of a black cat and a cat.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_GUARD.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_FINISH: @LIT.scenes.SCRIBE_QUOTE_CODE_FINISH.title
+
+Prospero:
+ Remember nothing.
+
+Puck:
+ Remember the sum of a little furry black cat and a black cat.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_QUOTE_CODE_EMIT.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_EMIT: @LIT.scenes.SCRIBE_QUOTE_CODE_EMIT.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Are you as fair as nothing?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_EMIT_READY.
+
+Prospero:
+ Remember myself.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_EMIT.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_EMIT_READY: @LIT.scenes.SCRIBE_QUOTE_CODE_EMIT_READY.title
+
+Prospero:
+ We shall return to scene @SCRIBE_EMIT_CODE_OPEN.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_REPLAY: @LIT.scenes.SCRIBE_QUOTE_CODE_REPLAY.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Are you as noble as nothing?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_QUOTE_CODE_REPLAY_FINISH.
+
+Prospero:
+ You are as noble as myself.
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Prospero:
+ Remember myself.
+
+Puck:
+ You are as rotten as the difference between myself and a flower.
+
+Puck:
+ Remember yourself.
+
+Prospero:
+ We shall return to scene @SCRIBE_QUOTE_CODE_REPLAY.
+
+
+                    Scene @SCRIBE_QUOTE_CODE_REPLAY_FINISH: @LIT.scenes.SCRIBE_QUOTE_CODE_REPLAY_FINISH.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
  Are you as fair as the sum of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
 
 Prospero:
  If so, we shall proceed to scene @SCRIBE_ITEM_TEXT_TIGHT.
 
 Puck:
- Are you as noble as the sum of the product of a normal little furry black cat and a black cat and a cat?
+ Are you as rotten as the sum of the product of a normal little furry black cat and a black cat and a cat?
 
 Prospero:
  If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
 
 Puck:
- Are you as noble as the sum of a normal little furry black cat and a little furry black cat?
+ Are you as rotten as the sum of a normal little furry black cat and a little furry black cat?
 
 Prospero:
  If so, we shall proceed to scene @SCRIBE_EMIT_ITEM_OPEN_LOOSE.
@@ -864,13 +1293,13 @@ Prospero:
  If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
 
 Puck:
- Are you as fair as the sum of a normal little furry black cat and a cat?
+ Are you as noble as the sum of a normal little furry black cat and a cat?
 
 Prospero:
  If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
 
 Puck:
- Are you as fair as the sum of a normal little furry black cat and the sum of a black cat and a cat?
+ Are you as rotten as the sum of a normal little furry black cat and the sum of a black cat and a cat?
 
 Prospero:
  If so, we shall proceed to scene @SCRIBE_EMIT_PARAGRAPH_BREAK.
