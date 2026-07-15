@@ -227,7 +227,7 @@ pattern = "bare_statement"
 
 **Interfaces:** Inline tags/comments are protected paragraph glyphs; left-margin simple blocks and standalone comments are `RAW_HTML_HASH` text leaves, emitted unwrapped.
 
-- [ ] **Step 1: Write red tests** for `<span>`, `<br />`, inline and standalone comments, and fixture simple `div`/raw-`hr` cases; assert Advanced stays skipped.
+- [x] **Step 1: Write red tests** for `<span>`, `<br />`, inline and standalone comments, and fixture simple `div`/raw-`hr` cases; assert Advanced stays skipped.
 
   Run: `uv run pytest tests/test_act2_slice3.py tests/test_act3_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Inline HTML' -q`
 
