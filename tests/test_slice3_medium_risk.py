@@ -43,6 +43,7 @@ def test_slice3_fixture_enablement_matches_shipped_scope(fixture_name: str) -> N
     enabled_slice3 = {
         "Hard-wrapped paragraphs with list-like lines",
         *_SLICE3_TASK3_FIXTURES,
+        "Strong and em together",
     }
     if fixture_name in enabled_slice3:
         assert fixture_name in _IMPLEMENTED_FIXTURES
@@ -81,7 +82,6 @@ def test_task3_binary_contracts(fixture_name: str) -> None:
     ) == _normalize_fixture_output(fixture_name, expected_path.read_text())
 
 
-@pytest.mark.xfail(strict=True, reason="Slice 3 Task 4 has not shipped yet")
 def test_strong_em_contract() -> None:
     _fixture_bytes_match("Strong and em together")
 

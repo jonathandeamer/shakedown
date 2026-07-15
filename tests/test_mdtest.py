@@ -87,6 +87,7 @@ _IMPLEMENTED_FIXTURES = {
     "Links, reference style",
     "Links, shortcut references",
     "Literal quotes in titles",
+    "Strong and em together",
     "Tabs",
 }
 _SLICE3_FIXTURES = {

@@ -219,7 +219,7 @@ pattern = "bare_statement"
 
   Expected: PASS and strict byte identity.
 
-- [ ] **Step 3: Checkpoint** with global gate plus enabled mdtest/spikes; enable fixture; commit `feat: render nested strong emphasis`; push.
+- [x] **Step 3: Checkpoint** with global gate plus enabled mdtest/spikes; enable fixture; commit `feat: render nested strong emphasis`; push.
 
 ### Task 5: Protect Simple HTML/comments and emit raw leaves
 
