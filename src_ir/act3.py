@@ -493,6 +493,7 @@ ACT: Act = act(
             branch(eq(val(PUCK), _k(60)), then="LYRIC_ANGLE_TEST"),  # '<'
             branch(eq(val(PUCK), _k(33)), then="LYRIC_IMAGE_TEST"),  # '!'
             branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_OPEN"),  # '*'
+            branch(eq(val(PUCK), _k(95)), then="LYRIC_EMPHASIS_OPEN"),  # '_'
             branch(eq(val(PUCK), _k(92)), then="LYRIC_ESCAPE_TEST"),  # '\'
             branch(eq(val(PUCK), _k(96)), then="LYRIC_CODE_RUN"),  # '`'
             branch(
@@ -1546,7 +1547,7 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_EMPHASIS_OPEN",
-            let(PROSPERO, val(HECATE)),
+            let(PROSPERO, val(PUCK)),
             let(HECATE, const(1)),
             goto("LYRIC_EMPHASIS_OPEN_BUFFER"),
             anchor=HECATE,
@@ -1566,7 +1567,7 @@ ACT: Act = act(
                 eq(val(PUCK), const(tokens.TEXT_END)),
                 then="LYRIC_EMPHASIS_SOURCE_END_PAIR",
             ),
-            branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_CAND_MORE"),
+            branch(eq(val(PUCK), val(PROSPERO)), then="LYRIC_EMPHASIS_CAND_MORE"),
             goto("LYRIC_EMPHASIS_COUNT_HOLD"),
             anchor=PUCK,
             companion=HECATE,
@@ -1607,7 +1608,7 @@ ACT: Act = act(
                 eq(val(PUCK), const(tokens.TEXT_END)),
                 then="LYRIC_EMPHASIS_SOURCE_END_PAIR",
             ),
-            branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_CAND_COUNT"),
+            branch(eq(val(PUCK), val(PROSPERO)), then="LYRIC_EMPHASIS_CAND_COUNT"),
             goto("LYRIC_EMPHASIS_SEEK_HOLD"),
             anchor=PUCK,
             companion=HECATE,
@@ -1629,7 +1630,7 @@ ACT: Act = act(
         scene(
             "LYRIC_EMPHASIS_COMPARE",
             pop(PUCK, recall="answering_starlight"),
-            branch(eq(val(PUCK), _k(42)), then="LYRIC_EMPHASIS_MATCH_MORE"),
+            branch(eq(val(PUCK), val(PROSPERO)), then="LYRIC_EMPHASIS_MATCH_MORE"),
             branch(eq(val(MACBETH), val(HECATE)), then="LYRIC_EMPHASIS_MATCH"),
             branch(
                 eq(val(PUCK), const(tokens.TEXT_END)),
@@ -1647,7 +1648,7 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_EMPHASIS_FALLBACK",
-            push(HORATIO, _k(42)),
+            push(HORATIO, val(PROSPERO)),
             goto("LYRIC_EMPHASIS_REPLAY"),
             companion=HORATIO,
         ),
@@ -1658,7 +1659,7 @@ ACT: Act = act(
                 then="LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD",
             ),
             let(MACBETH, sub(val(MACBETH), const(1))),
-            push(HORATIO, _k(42)),
+            push(HORATIO, val(PROSPERO)),
             goto("LYRIC_EMPHASIS_REPLAY"),
             anchor=MACBETH,
             companion=HORATIO,
@@ -1697,8 +1698,8 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_EMPHASIS_MATCH_STRONG",
-            let(PROSPERO, const(RESUME_STRONG)),
             branch(eq(val(HECATE), const(3)), then="LYRIC_EMPHASIS_TRIPLE_CLOSE"),
+            let(PROSPERO, const(RESUME_STRONG)),
             goto("LYRIC_EMPHASIS_MATCH_OUTPUT"),
             anchor=PUCK,
             companion=PROSPERO,
@@ -1741,7 +1742,8 @@ ACT: Act = act(
         scene(
             "LYRIC_EMPHASIS_SOURCE_END",
             push(HECATE, const(tokens.STREAM_END)),
-            *_entity(*b"*"),
+            let(JULIET, val(PROSPERO)),
+            push(JULIET, val(JULIET)),
             goto("LYRIC_EMPHASIS_LITERAL_REVERSE"),
             anchor=JULIET,
             companion=HECATE,

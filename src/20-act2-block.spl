@@ -454,18 +454,6 @@ Hecate:
  If so, let us proceed to scene @PASS_CODE_REPLAY.
 
 Lady Macbeth:
- Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
-
-Hecate:
- If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
-
-Lady Macbeth:
- Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
-
-Hecate:
- If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
-
-Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
 
 
@@ -537,20 +525,31 @@ Lady Macbeth:
 
                     Scene @PASS_HR_REPLAY_KEEP: @LIT.scenes.PASS_HR_REPLAY_KEEP.title
 
-Lady Macbeth:
+[Exit Lady Macbeth]
+
+[Enter Macbeth]
+
+Macbeth:
  You are as villainous as nothing.
 
 [Exit Horatio]
 
 [Enter Hecate]
 
-Lady Macbeth:
+Macbeth:
  Let us proceed to scene @PASS_HR_REPLAY_CLOSE.
 
 
                     Scene @PASS_HR_REPLAY_CLOSE: @LIT.scenes.PASS_HR_REPLAY_CLOSE.title
 
-Lady Macbeth:
+Hecate:
+ You are as rotten as nothing.
+
+[Exit Macbeth]
+
+[Enter Lady Macbeth]
+
+Hecate:
  Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
 
 

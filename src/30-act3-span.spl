@@ -731,7 +731,13 @@ Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_OPEN.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
+ Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and a summer's day?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_EMPHASIS_OPEN.
+
+Romeo:
+ Are you as sunny as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_TEST.
@@ -743,7 +749,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_CODE_RUN.
 
 Romeo:
- Are you as sunny as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
+ Are you as golden as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_POP_AFTER_OPEN.
@@ -3423,7 +3429,7 @@ Puck:
 [Enter Hecate and Prospero]
 
 Hecate:
- You are as horrid as myself.
+ You are as horrid as Puck.
 
 Prospero:
  You are as noble as an angel.
@@ -3461,7 +3467,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
 
 Hecate:
- Are you as cursed as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as cursed as Prospero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_MORE.
@@ -3553,7 +3559,7 @@ Puck:
  If so, let us return to scene @LYRIC_EMPHASIS_SOURCE_END_PAIR.
 
 Hecate:
- Are you as horrid as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as horrid as Prospero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_COUNT.
@@ -3602,7 +3608,7 @@ Romeo:
  @LIT.characters.romeo.recall.answering_starlight
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as sunny as Prospero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_MATCH_MORE.
@@ -3647,7 +3653,7 @@ Puck:
                     Scene @LYRIC_EMPHASIS_FALLBACK: @LIT.scenes.LYRIC_EMPHASIS_FALLBACK.title
 
 Romeo:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+ Remember Prospero.
 
 [Exit Romeo]
 
@@ -3669,7 +3675,7 @@ Horatio:
  You are as healthy as the difference between yourself and a brother.
 
 Macbeth:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+ Remember Prospero.
 
 Macbeth:
  Let us return to scene @LYRIC_EMPHASIS_REPLAY.
@@ -3743,13 +3749,13 @@ Puck:
                     Scene @LYRIC_EMPHASIS_MATCH_STRONG: @LIT.scenes.LYRIC_EMPHASIS_MATCH_STRONG.title
 
 Puck:
- You are as rotten as the sum of a little furry black cat and the sum of a furry black cat and a cat.
-
-Puck:
- Is Hecate as noble as the sum of a black cat and a cat?
+ Is Hecate as rotten as the sum of a black cat and a cat?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_EMPHASIS_TRIPLE_CLOSE.
+
+Puck:
+ You are as noble as the sum of a little furry black cat and the sum of a furry black cat and a cat.
 
 [Exit Prospero]
 
@@ -3891,7 +3897,7 @@ Juliet:
  Remember a wolf.
 
 Hecate:
- You are as rotten as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+ You are as rotten as Prospero.
 
 Hecate:
  Remember yourself.

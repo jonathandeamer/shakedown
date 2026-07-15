@@ -1,6 +1,27 @@
 """Slice-3 Act II contracts land task by task."""
 
+from scripts.splc.interpret import InterpreterState, run_act
+from scripts.splc.ir import Char
+from scripts.splc.token_decode import decode_stream
+from src_ir import tokens
+from src_ir.act1 import ACT as ACT1
+from src_ir.act2 import ACT as ACT2
 from tests.test_mdtest import _run_acts
+
+STEP_LIMIT = 200_000
+
+
+def _act2_stream(input_text: str) -> list[int]:
+    state = InterpreterState(input_text=input_text)
+    state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
+    state = run_act(ACT2, state, step_limit=STEP_LIMIT).state
+    stream: list[int] = []
+    while state.stacks[Char.PUCK]:
+        value = state.stacks[Char.PUCK].pop()
+        if value == tokens.STREAM_END:
+            break
+        stream.append(value)
+    return stream
 
 
 def test_hard_wrap_digit_dot_line_stays_in_paragraph_without_blank_boundary() -> None:
@@ -13,3 +34,38 @@ def test_hard_wrap_digit_dot_line_forms_list_with_blank_boundary() -> None:
     actual = _run_acts("\n\n8. List\n", through_act=4)
     assert isinstance(actual, str)
     assert actual == "<ol>\n<li>List</li>\n</ol>\n"
+
+
+def test_rejected_triple_marker_hr_candidates_preserve_plain_paragraph_stream() -> None:
+    decoded = decode_stream(
+        _act2_stream(
+            "***This is strong and em.***\n\n"
+            "So is ***this*** word.\n\n"
+            "___This is strong and em.___\n\n"
+            "So is ___this___ word.\n"
+        )
+    )
+
+    assert [token.code for token in decoded] == [
+        tokens.PARA,
+        tokens.PARA,
+        tokens.PARA,
+        tokens.PARA,
+    ]
+    assert [token.text for token in decoded] == [
+        "***This is strong and em.***",
+        "So is ***this*** word.",
+        "___This is strong and em.___",
+        "So is ___this___ word.",
+    ]
+
+
+def test_rejected_triple_marker_hr_candidates_do_not_leak_item_start() -> None:
+    stream = _act2_stream(
+        "***This is strong and em.***\n\n"
+        "So is ***this*** word.\n\n"
+        "___This is strong and em.___\n\n"
+        "So is ___this___ word.\n"
+    )
+
+    assert stream.count(tokens.ITEM_START) == 0
