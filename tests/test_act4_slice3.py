@@ -9,6 +9,12 @@ def test_inline_image_emits_stripped_angle_destination_and_title() -> None:
     assert actual == '<p><img src="/url/" alt="Alt text" title="with a title" />.</p>\n'
 
 
+def test_inline_image_without_title_keeps_empty_title_attribute() -> None:
+    actual = _run_acts("![Alt text](/path/to/img.jpg)\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == '<p><img src="/path/to/img.jpg" alt="Alt text" title="" /></p>\n'
+
+
 def test_reference_image_emits_resolved_source_and_title() -> None:
     actual = _run_acts(
         '![alt text][foo]\n\n  [foo]: /url/ "Title here"\n',
