@@ -269,7 +269,7 @@ pattern = "scene_of_character"
 
 **Files:** Modify Act II/IV IR and TOML, Act-II/IV Slice-3 tests, `tests/test_mdtest.py`, `tests/test_slice3_medium_risk.py`, and roadmap at final closure; regenerate affected fragments.
 
-**Interfaces:** Per accepted-design Amendment A4, Act II preserves a quote-code candidate as a `PARA` whose text begins with four ASCII spaces; Act IV alone turns that candidate into the existing code-leaf emission while a blockquote frame is live. Act II never needs a simultaneous source glyph, output carrier, and quote-mode register.
+**Interfaces:** Per accepted-design Amendment A5, Act II preserves the raw post-marker quote payload in a `PARA`: the fixture's code leaves therefore carry `4/8/4` leading ASCII spaces on their three physical lines. Act IV alone recognizes the initial four-space candidate while a blockquote frame is live, removes one four-space code indent from every physical code line, and emits the resulting `0/4/0` payload. Act II never needs a simultaneous source glyph, output carrier, and quote-mode register.
 
 - [x] **Step 1: Write red stream/bytes tests** for the fixture, final code newline and indentation repair, plus unchanged standalone code behavior.
 
@@ -277,7 +277,7 @@ pattern = "scene_of_character"
 
   Expected: FAIL.
 
-- [ ] **Step 2: Replace the obsolete red Act-II `CODE_BLOCK` assertion, then implement the representable late quote-code normalization.** First change `tests/test_act2_slice3.py` so the fixture asserts `BLOCKQUOTE_OPEN`, `PARA("Example:")`, a `PARA` whose payload is exactly `    sub status {\n    print "working";\n}\n`, `PARA("Or:")`, a `PARA` whose payload is exactly `    sub status {\n    return "working";\n}\n`, and `BLOCKQUOTE_CLOSE`; add focused contracts that the quote prefix consumes one optional marker space but preserves the next four and leaves ordinary quote text unchanged. In `tests/test_act4_slice3.py`, retain the standalone `CODE_BLOCK` test; replace its synthetic quote-code-token input with the five `PARA` leaves above, and add probe-replay cases for one, two, three, and four-then-EOF leading spaces, each rendered as an ordinary quoted paragraph in source order. In `src_ir/act2.py`, route quote entry and quote continuation through `PASS_QUOTE_PREFIX` / `PASS_QUOTE_CONTINUE_PREFIX`: consume at most one marker space or tab, then copy the remaining glyphs to Lady Macbeth's mixed carrier; do not use Horatio as a mutable indentation counter. In `src_ir/act4.py`, before normal paragraph opening only when Prospero's top frame is `QUOTE_EMPTY` or `QUOTE_USED`, use `SCRIBE_QUOTE_CODE`, `SCRIBE_QUOTE_CODE_CLOSE`, `SCRIBE_QUOTE_CODE_PROBE`, and `SCRIBE_QUOTE_CODE_REPLAY` to pop/restore that frame, count the first four Puck glyphs on Prospero's stack, and either (a) discard four ASCII spaces and enter the existing code emitter for a non-terminator fifth glyph, or (b) reverse-push every probe glyph onto Puck and resume the existing paragraph emitter. Pop the temporary count before code/paragraph frame handling, preserve the terminal code newline, and use the existing code-leaf return route to set `QUOTE_USED`. Add the ready-to-paste reserved TOML entries above before using their labels; regenerate only through splc and assemble. Do not add a token, third on-stage character, nested-blockquote behavior, tab expansion, or general code-block parser.
+- [ ] **Step 2: Replace the obsolete red Act-II `CODE_BLOCK` assertion, then implement the representable late quote-code normalization.** First change `tests/test_act2_slice3.py` so the fixture asserts `BLOCKQUOTE_OPEN`, `PARA("Example:")`, a `PARA` whose payload is exactly `    sub status {\n        print "working";\n    }\n`, `PARA("Or:")`, a `PARA` whose payload is exactly `    sub status {\n        return "working";\n    }\n`, and `BLOCKQUOTE_CLOSE`. These are raw post-marker source payloads (`4/8/4`), not the normalized code-emitter payload. Add focused contracts that the entry and continuation quote prefixes consume one optional marker space or tab only, preserve every following source space, and leave ordinary quote text unchanged. In `tests/test_act4_slice3.py`, retain the standalone `CODE_BLOCK` test; replace its synthetic quote-code-token input with the five `PARA` leaves above and assert the fixture's emitted code is `sub status {\n    print "working";\n}\n` / `sub status {\n    return "working";\n}\n`. Add probe-replay cases for one, two, three, and four-then-EOF leading spaces, each rendered as an ordinary quoted paragraph in source order. In `src_ir/act2.py`, route quote entry and quote continuation through `PASS_QUOTE_PREFIX` / `PASS_QUOTE_CONTINUE_PREFIX`: consume at most one marker space or tab, then copy every remaining glyph unchanged to Lady Macbeth's mixed carrier; do not use Horatio as a mutable indentation counter. In `src_ir/act4.py`, before normal paragraph opening only when Prospero's top frame is `QUOTE_EMPTY` or `QUOTE_USED`, use `SCRIBE_QUOTE_CODE`, `SCRIBE_QUOTE_CODE_CLOSE`, `SCRIBE_QUOTE_CODE_PROBE`, and `SCRIBE_QUOTE_CODE_REPLAY` to pop/restore that frame, probe the first four Puck glyphs, and either (a) for four ASCII spaces followed by a non-terminator fifth glyph, enter the existing code emitter through a bounded line-prefix adapter that discards exactly four ASCII spaces at the start of every physical code line while preserving all later spaces and the terminal code newline, or (b) reverse-push every probe glyph onto Puck and resume the existing paragraph emitter. Pop the temporary count before code/paragraph frame handling, and use the existing code-leaf return route to set `QUOTE_USED`. Add the ready-to-paste reserved TOML entries above before using their labels; regenerate only through splc and assemble. Do not add a token, third on-stage character, nested-blockquote behavior, tab expansion, or general code-block parser.
 
   Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act2_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Blockquotes with code blocks' -q && uv run python scripts/strict_parity_harness.py 'Blockquotes with code blocks'`
 
@@ -365,3 +365,36 @@ remains at Step 2, and its existing SPL literary protocol, ready-to-paste
 reservation, generated-artifact prohibition, and exact compliance commands
 remain binding. The untracked `scripts/release_entry.py` is user work outside
 this plan and is deliberately unstaged.
+
+## Amendment A5 (2026-07-15): Task-6 quote payload and per-line deindentation
+
+The raw-quote implementation correctly established the five-leaf stream, but
+exposed an ambiguity in Amendment A4's abbreviated payload example. Markdown
+blockquote stripping removes the `>` and at most its immediately following
+space or tab; it does **not** remove a code indent. For the fixture, Act II
+must therefore preserve the two code leaves as `4/8/4` source indentation:
+`    sub status {\\n        print "working";\\n    }\\n` and
+`    sub status {\\n        return "working";\\n    }\\n`. The former
+`4/4/0` Act-II contract is withdrawn; it accidentally described Act IV's
+normalized code payload rather than the inter-act stream.
+
+Act IV owns the second, independent normalization: after its existing
+four-space initial probe qualifies a quoted `PARA` leaf, its bounded
+quote-code adapter removes exactly four ASCII spaces at the beginning of
+**each physical code line** before the existing code emitter writes it. It
+must preserve the remaining four spaces on the fixture's inner `print`/
+`return` lines, remove the closing line's four spaces, preserve the final
+newline, and replay every non-qualifying probe unchanged. This is not a
+general indented-code parser: it applies only to a qualifying `PARA` inside
+the existing top-level blockquote frames, uses the already reserved
+`SCRIBE_QUOTE_CODE*` surfaces, and authorizes no new token, participant,
+tab expansion, or nested-blockquote behavior.
+
+The implementation tests must distinguish the two boundaries explicitly:
+Act-II fast-stream assertions require `4/8/4`; Act-IV synthetic-stream and
+fresh-oracle assertions require `0/4/0` inside `<pre><code>`. The existing
+exact Task-6 generated-fragment, parse-smoke, splc-validation,
+literary-compliance, TOML-schema, Amps, focused mdtest, strict-parity, spike,
+and final-suite commands remain the mandatory evidence gates. This amendment
+supersedes the conflicting Task-6 Step-2 wording and clears the planner-only
+blocker.

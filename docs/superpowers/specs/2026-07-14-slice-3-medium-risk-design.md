@@ -147,3 +147,32 @@ replace its obsolete Act-II `CODE_BLOCK` expectation, add one-to-three-space
 and EOF replay contracts, retain the standalone `CODE_BLOCK` regression, and
 run its existing exact generated/literary, strict-oracle, spike, and final
 verification gates.
+
+## Amendment A5 (2026-07-15): Preserve quote source indent; deindent code per line in Act IV
+
+Amendment A4's phrase “whose text begins with exactly four spaces” describes
+the candidate's first physical line only. The quote-prefix rule remains
+literal: remove `>` and at most one immediately following marker space or
+tab, then preserve every remaining source glyph. Consequently the fixture's
+two Act-II `PARA` payloads are exactly
+`    sub status {\\n        print "working";\\n    }\\n` and
+`    sub status {\\n        return "working";\\n    }\\n` (`4/8/4` leading
+spaces). The earlier illustrative `4/4/0` stream text is superseded because
+it conflated Act II's raw carrier with Act IV's code payload.
+
+Once the existing Act-IV quote-frame probe accepts an initial four ASCII
+spaces followed by a non-terminator, Act IV removes exactly four ASCII spaces
+at the start of every physical line of that one qualifying `PARA` before the
+existing code emitter receives it. Thus the emitter receives `sub status
+{\\n    print "working";\\n}\\n` (and its `return` analogue): the outer
+indent is removed from each line, inner indentation is retained, and the
+terminal newline is retained. Probe failures, including four spaces at EOF,
+must still reverse-replay byte-for-byte into the normal quoted paragraph
+route.
+
+This clarification does not broaden scope. It remains a bounded adapter for
+a qualifying paragraph at `QUOTE_EMPTY`/`QUOTE_USED`, using only Prospero,
+Puck, and the already reserved `SCRIBE_QUOTE_CODE*` surfaces; no new token,
+participant, tab expansion, nested blockquote, or general code-block grammar
+is authorized. The Task-6 contracts must assert raw `4/8/4` Act-II stream
+payloads separately from normalized `0/4/0` Act-IV output payloads.
