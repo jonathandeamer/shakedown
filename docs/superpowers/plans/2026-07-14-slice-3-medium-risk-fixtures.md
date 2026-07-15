@@ -321,3 +321,19 @@ within the Step-2 gate, alongside generated-fragment, parse-smoke, and splc
 validation checks. The former planner-only blocker is cleared by this
 amendment; any need for a new token, scene/title, or broader list/HR grammar
 remains `BLOCK[plan]`.
+
+## Amendment A4 (2026-07-15): Task-5 Step-1 branch disposition
+
+The MCO reconciliation action naming
+`implement-1fc3c17d5ed7433dbbae26ed447a8bb0-codex-implement` is stale at
+this checkout. Its head `e60e0fe7676f7e5e1e1f89e36c9a84c953f96dfd` equals
+both `main` and `origin/main`; it contains only the Task-5 Step-1 checkbox
+update already present in this plan. The branch is therefore recorded as
+`integrated` in `.agent/branch-dispositions.toml`, with successful
+merge-base ancestry and empty `main..branch` log/three-dot diff as evidence.
+
+No implementation step is checked or advanced by this amendment. Task 5
+remains at Step 2, and its existing SPL literary protocol, ready-to-paste
+reservation, generated-artifact prohibition, and exact compliance commands
+remain binding. The untracked `scripts/release_entry.py` is user work outside
+this plan and is deliberately unstaged.

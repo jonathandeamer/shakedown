@@ -90,3 +90,20 @@ first add focused fast-Act-II stream/state contracts that prove (1) a failed
 `- item` still enter the existing list handoff. It then runs the existing
 strong/em Act-III contracts and fresh-oracle strict fixture proof. This is a
 prerequisite within Task 4, not Slice-4 expansion or a second parser.
+
+## Amendment A3 (2026-07-15): Integrated Task-5 Step-1 branch reconciliation
+
+The branch
+`implement-1fc3c17d5ed7433dbbae26ed447a8bb0-codex-implement` is not pending
+work: its head `e60e0fe7676f7e5e1e1f89e36c9a84c953f96dfd` is exactly `main`
+and `origin/main`. Its sole commit marks Task 5 Step 1's already-landed red
+HTML contracts complete. The branch ledger records `integrated` with this
+head; `git merge-base --is-ancestor <branch> main` succeeds, and both the
+reachable-commit log and three-dot diff are empty.
+
+This reconciliation changes no Slice-3 behavior, implementation authority,
+literary reservation, or evidence requirement. Task 5 remains at its first
+unchecked step, bounded matching. The existing literary protocol and the
+exact generated-fragment, parse-smoke, splc-validation, TOML-schema, and
+literary-compliance commands in the plan remain binding before an SPL-facing
+checkpoint.
