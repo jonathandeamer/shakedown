@@ -1,6 +1,25 @@
 """Slice-3 Act IV contracts land task by task."""
 
-from tests.test_mdtest import _run_acts
+from scripts.splc.interpret import InterpreterState, run_act
+from scripts.splc.ir import Char
+from src_ir import tokens
+from src_ir.act4 import ACT as ACT4
+from tests.test_mdtest import _FIXTURES_BY_NAME, _run_acts
+
+STEP_LIMIT = 200_000
+
+
+def _text_token(code: int, text: str) -> list[int]:
+    return [tokens.TEXT_END, *(ord(char) for char in reversed(text)), code]
+
+
+def _render_stream(parts: list[list[int]]) -> str:
+    state = InterpreterState()
+    state.stacks[Char.PUCK] = [tokens.STREAM_END]
+    for part in reversed(parts):
+        state.stacks[Char.PUCK].extend(part)
+    run_act(ACT4, state, step_limit=STEP_LIMIT)
+    return state.output_text()
 
 
 def test_multiline_paragraph_newline_is_not_dispatched_as_raw_html() -> None:
@@ -67,3 +86,27 @@ def test_inline_html_multiline_comment_emits_raw_bytes() -> None:
     actual = _run_acts("<!--\nBlah\nBlah\n-->\n", through_act=4)
     assert isinstance(actual, str)
     assert actual == "<!--\nBlah\nBlah\n-->\n"
+
+
+def test_blockquote_code_stream_renders_fixture_bytes() -> None:
+    _, expected_path = _FIXTURES_BY_NAME["Blockquotes with code blocks"]
+    actual = _render_stream(
+        [
+            [tokens.BLOCKQUOTE_OPEN],
+            _text_token(tokens.PARA, "Example:"),
+            _text_token(tokens.CODE_BLOCK, 'sub status {\n    print "working";\n}\n'),
+            _text_token(tokens.PARA, "Or:"),
+            _text_token(tokens.CODE_BLOCK, 'sub status {\n    return "working";\n}\n'),
+            [tokens.BLOCKQUOTE_CLOSE],
+        ]
+    )
+
+    assert actual == expected_path.read_text()
+
+
+def test_standalone_code_block_rendering_stays_unchanged() -> None:
+    actual = _render_stream(
+        [_text_token(tokens.CODE_BLOCK, "line one\n    line two\n")]
+    )
+
+    assert actual == "<pre><code>line one\n    line two\n</code></pre>\n"

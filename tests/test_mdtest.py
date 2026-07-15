@@ -213,6 +213,16 @@ def test_slice3_task4_strong_and_em_fixture_contract() -> None:
     )
 
 
+def test_slice3_task6_blockquotes_with_code_blocks_fixture_contract() -> None:
+    name = "Blockquotes with code blocks"
+    input_path, expected_path = _FIXTURES_BY_NAME[name]
+    actual = _run_acts(input_path.read_text(), through_act=4)
+    assert isinstance(actual, str)
+    assert _normalize_fixture_output(name, actual) == _normalize_fixture_output(
+        name, expected_path.read_text()
+    )
+
+
 def test_inline_html_advanced_fixture_remains_skipped() -> None:
     assert "Inline HTML (Advanced)" not in _IMPLEMENTED_FIXTURES
 

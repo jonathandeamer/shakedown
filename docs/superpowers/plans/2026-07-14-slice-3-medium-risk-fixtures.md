@@ -247,7 +247,7 @@ pattern = "bare_statement"
 
 **Interfaces:** Stream exactly `BLOCKQUOTE_OPEN, CODE_BLOCK(text), BLOCKQUOTE_CLOSE`; Act IV emits quote/code separators matching the oracle.
 
-- [ ] **Step 1: Write red stream/bytes tests** for the fixture, final code newline and indentation repair, plus unchanged standalone code behavior.
+- [x] **Step 1: Write red stream/bytes tests** for the fixture, final code newline and indentation repair, plus unchanged standalone code behavior.
 
   Run: `uv run pytest tests/test_act2_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Blockquotes with code blocks' -q`
 
