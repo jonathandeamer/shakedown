@@ -107,3 +107,43 @@ unchecked step, bounded matching. The existing literary protocol and the
 exact generated-fragment, parse-smoke, splc-validation, TOML-schema, and
 literary-compliance commands in the plan remain binding before an SPL-facing
 checkpoint.
+
+## Amendment A4 (2026-07-15): Quote-code normalization is an Act-IV, stack-carried decision
+
+Task 6's former Act-II quote-code handoff is not legal in the current IR
+shape. A scene may name only its anchor and one companion. The attempted
+handoff needs Hecate for the staged glyph, Lady Macbeth for mixed-stream
+output, and Horatio for quote mode; assigning all three is rejected by
+`scripts.splc.validate.participants`. Do not relax that two-participant
+invariant or add a third character.
+
+Normalize later instead. Act II preserves the quote payload: after `>` it
+consumes at most one optional Markdown marker space (or one tab), then keeps
+every remaining source space in the ordinary paragraph payload. The same
+one-space rule applies at a quoted continuation line. Thus a code candidate
+reaches Act IV as a `PARA` leaf whose text begins with exactly four spaces; it
+is deliberately not an Act-II `CODE_BLOCK` token. The ordinary `Example:` and
+`Or:` leaves remain `PARA` leaves. This is a narrow correction to existing
+quote-prefix routes, not support for nested quotes, lists, tab expansion, or
+general code-block parsing.
+
+At an existing blockquote frame, Act IV probes the first four glyphs of a
+`PARA` leaf before emitting its paragraph open. It uses only Prospero and
+Puck: Prospero pops and restores the quote frame, then holds a bounded probe
+count above that frame while Puck supplies the glyphs. Four ASCII spaces
+followed by a non-terminator select the existing code-leaf emitter, discard
+those four spaces, and preserve every remaining glyph including the terminal
+code newline. On EOF, a non-space, or fewer than four spaces, reverse-push
+every probed glyph onto Puck and resume the normal paragraph path in source
+order. The probe marker is popped before output-frame handling; the existing
+code-leaf return route then records `QUOTE_USED`. No token code, Act-II state
+register, table ownership change, or new parser is authorized.
+
+This replaces the former Task-6 stream contract with `BLOCKQUOTE_OPEN`, then
+`PARA("Example:")`, `PARA("    sub status {\\n    print \"working\";\\n}\\n")`,
+`PARA("Or:")`, `PARA("    sub status {\\n    return \"working\";\\n}\\n")`,
+then `BLOCKQUOTE_CLOSE`. The Act-IV byte contract is unchanged. Task 6 must
+replace its obsolete Act-II `CODE_BLOCK` expectation, add one-to-three-space
+and EOF replay contracts, retain the standalone `CODE_BLOCK` regression, and
+run its existing exact generated/literary, strict-oracle, spike, and final
+verification gates.

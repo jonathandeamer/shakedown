@@ -44,8 +44,8 @@ scanner roles. New Incidental TOML-owned surfaces are:
 | Act | Working labels | Spare labels |
 |---|---|---|
 | I | `PREP_REF_OPEN`, `PREP_REF_LABEL`, `PREP_REF_PATH`, `PREP_REF_TITLE`, `PREP_REF_STORE`, `PREP_REF_REPLAY` | `PREP_REF_BLANK`, `PREP_REF_ANGLE`, `PREP_REF_FALLBACK`, `PREP_REF_FINISH` |
-| II | `PASS_WRAP_DOT`, `PASS_WRAP_REPLAY`, `PASS_QUOTE_CODE`, `PASS_QUOTE_CLOSE` | `PASS_WRAP_GUARD`, `PASS_QUOTE_REPLAY`, `PASS_QUOTE_GUARD`, `PASS_QUOTE_FINISH` |
-| IV | `SCRIBE_RAW_HTML`, `SCRIBE_RAW_HTML_CLOSE`, `SCRIBE_QUOTE_CODE`, `SCRIBE_QUOTE_CODE_CLOSE` | `SCRIBE_RAW_HTML_GUARD`, `SCRIBE_QUOTE_CODE_GUARD`, `SCRIBE_RAW_HTML_FINISH`, `SCRIBE_QUOTE_CODE_FINISH` |
+| II | `PASS_WRAP_DOT`, `PASS_WRAP_REPLAY`, `PASS_QUOTE_CODE`, `PASS_QUOTE_CLOSE`, `PASS_QUOTE_PREFIX`, `PASS_QUOTE_CONTINUE_PREFIX` | `PASS_WRAP_GUARD`, `PASS_QUOTE_REPLAY`, `PASS_QUOTE_GUARD`, `PASS_QUOTE_FINISH`, `PASS_QUOTE_PREFIX_REPLAY`, `PASS_QUOTE_PREFIX_FINISH` |
+| IV | `SCRIBE_RAW_HTML`, `SCRIBE_RAW_HTML_CLOSE`, `SCRIBE_QUOTE_CODE`, `SCRIBE_QUOTE_CODE_CLOSE`, `SCRIBE_QUOTE_CODE_PROBE`, `SCRIBE_QUOTE_CODE_REPLAY` | `SCRIBE_RAW_HTML_GUARD`, `SCRIBE_QUOTE_CODE_GUARD`, `SCRIBE_RAW_HTML_FINISH`, `SCRIBE_QUOTE_CODE_FINISH`, `SCRIBE_QUOTE_CODE_PROBE_GUARD`, `SCRIBE_QUOTE_CODE_REPLAY_FINISH` |
 
 Append these ready-to-paste entries before using labels:
 
@@ -104,6 +104,18 @@ pattern = "bare_statement"
 [scenes.PASS_QUOTE_FINISH]
 title = "Macbeth frees the finished echo."
 pattern = "scene_of_character"
+[scenes.PASS_QUOTE_PREFIX]
+title = "Lady Macbeth keeps the echo's first small space."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_CONTINUE_PREFIX]
+title = "Lady Macbeth measures the echo's returning threshold."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_PREFIX_REPLAY]
+title = "The echo restores each unspent pale step."
+pattern = "bare_statement"
+[scenes.PASS_QUOTE_PREFIX_FINISH]
+title = "Macbeth releases the echo's guarded margin."
+pattern = "scene_of_character"
 [scenes.SCRIBE_RAW_HTML]
 title = "Prospero releases the unbroken courtly mark."
 pattern = "scene_of_character"
@@ -128,6 +140,18 @@ pattern = "scene_of_character"
 [scenes.SCRIBE_QUOTE_CODE_FINISH]
 title = "The echo returns to the outer hall."
 pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_PROBE]
+title = "Puck counts the chamber's pale threshold."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_REPLAY]
+title = "Puck returns the threshold in faithful order."
+pattern = "scene_of_character"
+[scenes.SCRIBE_QUOTE_CODE_PROBE_GUARD]
+title = "The pale threshold keeps one certain count."
+pattern = "bare_statement"
+[scenes.SCRIBE_QUOTE_CODE_REPLAY_FINISH]
+title = "Prospero closes the restored threshold."
+pattern = "scene_of_character"
 ```
 
 ---
@@ -245,7 +269,7 @@ pattern = "bare_statement"
 
 **Files:** Modify Act II/IV IR and TOML, Act-II/IV Slice-3 tests, `tests/test_mdtest.py`, `tests/test_slice3_medium_risk.py`, and roadmap at final closure; regenerate affected fragments.
 
-**Interfaces:** Stream exactly `BLOCKQUOTE_OPEN, CODE_BLOCK(text), BLOCKQUOTE_CLOSE`; Act IV emits quote/code separators matching the oracle.
+**Interfaces:** Per accepted-design Amendment A4, Act II preserves a quote-code candidate as a `PARA` whose text begins with four ASCII spaces; Act IV alone turns that candidate into the existing code-leaf emission while a blockquote frame is live. Act II never needs a simultaneous source glyph, output carrier, and quote-mode register.
 
 - [x] **Step 1: Write red stream/bytes tests** for the fixture, final code newline and indentation repair, plus unchanged standalone code behavior.
 
@@ -253,11 +277,15 @@ pattern = "bare_statement"
 
   Expected: FAIL.
 
-- [ ] **Step 2: Implement only quote-code handoff/frame return** using `PASS_QUOTE_CODE`, `PASS_QUOTE_CLOSE`, `SCRIBE_QUOTE_CODE`, and `SCRIBE_QUOTE_CODE_CLOSE`; do not expand nested blockquotes or full lists.
+- [ ] **Step 2: Replace the obsolete red Act-II `CODE_BLOCK` assertion, then implement the representable late quote-code normalization.** First change `tests/test_act2_slice3.py` so the fixture asserts `BLOCKQUOTE_OPEN`, `PARA("Example:")`, a `PARA` whose payload is exactly `    sub status {\n    print "working";\n}\n`, `PARA("Or:")`, a `PARA` whose payload is exactly `    sub status {\n    return "working";\n}\n`, and `BLOCKQUOTE_CLOSE`; add focused contracts that the quote prefix consumes one optional marker space but preserves the next four and leaves ordinary quote text unchanged. In `tests/test_act4_slice3.py`, retain the standalone `CODE_BLOCK` test; replace its synthetic quote-code-token input with the five `PARA` leaves above, and add probe-replay cases for one, two, three, and four-then-EOF leading spaces, each rendered as an ordinary quoted paragraph in source order. In `src_ir/act2.py`, route quote entry and quote continuation through `PASS_QUOTE_PREFIX` / `PASS_QUOTE_CONTINUE_PREFIX`: consume at most one marker space or tab, then copy the remaining glyphs to Lady Macbeth's mixed carrier; do not use Horatio as a mutable indentation counter. In `src_ir/act4.py`, before normal paragraph opening only when Prospero's top frame is `QUOTE_EMPTY` or `QUOTE_USED`, use `SCRIBE_QUOTE_CODE`, `SCRIBE_QUOTE_CODE_CLOSE`, `SCRIBE_QUOTE_CODE_PROBE`, and `SCRIBE_QUOTE_CODE_REPLAY` to pop/restore that frame, count the first four Puck glyphs on Prospero's stack, and either (a) discard four ASCII spaces and enter the existing code emitter for a non-terminator fifth glyph, or (b) reverse-push every probe glyph onto Puck and resume the existing paragraph emitter. Pop the temporary count before code/paragraph frame handling, preserve the terminal code newline, and use the existing code-leaf return route to set `QUOTE_USED`. Add the ready-to-paste reserved TOML entries above before using their labels; regenerate only through splc and assemble. Do not add a token, third on-stage character, nested-blockquote behavior, tab expansion, or general code-block parser.
 
   Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act2_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Blockquotes with code blocks' -q && uv run python scripts/strict_parity_harness.py 'Blockquotes with code blocks'`
 
-  Expected: documented normalized fixture test and fresh-oracle strict parity pass.
+  Expected: focused contracts pass, the documented mdtest comparison and fresh-oracle strict parity pass, and the generated/literary gate below reports no IR, parse, or controlled-surface error.
+
+  Then run the required SPL/literary checkpoint:
+
+  `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q && uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`
 
 - [ ] **Step 3: Run final gate and close.**
 
