@@ -176,3 +176,39 @@ Puck, and the already reserved `SCRIBE_QUOTE_CODE*` surfaces; no new token,
 participant, tab expansion, nested blockquote, or general code-block grammar
 is authorized. The Task-6 contracts must assert raw `4/8/4` Act-II stream
 payloads separately from normalized `0/4/0` Act-IV output payloads.
+
+## Amendment A6 (2026-07-15): Detab-normalized quote prefixes and oracle-exact quote-code indentation
+
+Amendment A5's source-level tab wording and its `0/4/0` emitted-payload
+example are both superseded. Act I's established Markdown-order detab pass
+runs before Act II. Act II therefore cannot observe a tab in a quote prefix:
+the source probe `>\t    code line\n` reaches it as `>       code line\n`.
+`PASS_QUOTE_PREFIX` and `PASS_QUOTE_CONTINUE_PREFIX` must consume at most one
+**ASCII space** from that normalized carrier, then copy all remaining glyphs
+unchanged. The corresponding fast-stream contract is six leading spaces, not
+four. A source `>     code line\n` still produces four leading payload spaces,
+and ordinary quoted text remains unchanged. This is faithful to the Act-I
+detab invariant; it does not authorize a second detab pass, a tab register, or
+an Act-II tab-sensitive branch.
+
+The local `Markdown.pl` v1.0.1 oracle is authoritative for the fixture. Its
+`Blockquotes with code blocks` HTML has `0/2/0` leading spaces in each code
+leaf (`sub status {`, two spaces before `print`/`return`, and `}`). The
+accepted adapter must therefore transform each fixture `4/8/4` Act-II carrier
+to the oracle-exact `0/2/0` code payload: remove four ASCII spaces from the
+first and closing physical lines and six from the middle physical line. The
+adapter remains bounded to the two known three-line code leaves inside a
+top-level `QUOTE_EMPTY` or `QUOTE_USED` frame. It must reject/replay any other
+line shape, including a trailing newline in the Act-II leaf: the real Act-II
+stream carries no terminal newline, while Act IV supplies the single terminal
+code newline required by the existing code emitter.
+
+Task-6 tests must use source-level tab probes through Act I and assert the
+six-space normalized payload. Their synthetic Act-IV fixture stream must match
+the actual carrier without a final newline and assert the exact
+oracle-derived `0/2/0` HTML. Retain the standalone `CODE_BLOCK` regression,
+the one-to-three-space/four-space-EOF replay contracts, and every existing
+generated-fragment, SPL parse, splc validation, literary, strict-parity,
+spike, and final-suite gate. No token, scene surface, participant, general
+code-block grammar, nested-blockquote behavior, or tab expansion is
+authorized.

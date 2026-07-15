@@ -398,3 +398,37 @@ literary-compliance, TOML-schema, Amps, focused mdtest, strict-parity, spike,
 and final-suite commands remain the mandatory evidence gates. This amendment
 supersedes the conflicting Task-6 Step-2 wording and clears the planner-only
 blocker.
+
+## Amendment A6 (2026-07-15): Task-6 detab boundary and oracle-exact code contract
+
+The local `Markdown.pl` v1.0.1 oracle disproves two clauses in the former
+Task-6 Step-2 contract. First, Act I detabs before Act II: source
+`>\t    code line\n` reaches Act II as `>       code line\n`, so the existing
+two-scene Act-II prefix route cannot and must not consume an optional tab.
+Replace the former tab assertions with source-through-Act-I assertions: after
+the existing one ASCII marker-space consumption, `>     code line\n` yields
+`PARA("    code line")`, while `>\t    code line\n` (both entry and
+continuation) yields `PARA("      code line")`. Keep the ordinary-text
+contract. The real fixture's two code leaves are `4/8/4` but have **no**
+terminal newline in the decoded Act-II stream.
+
+Second, fresh oracle output for `Blockquotes with code blocks` is `0/2/0`,
+not the former synthetic `0/4/0`: its inner `print` and `return` lines begin
+with exactly two ASCII spaces. Replace the Act-IV synthetic stream with the
+five `PARA` leaves from the Act-II contract, with no terminal newline on the
+two code leaves, and assert the oracle-exact HTML. The bounded adapter is
+authorized only for those three-line `4/8/4` leaves under `QUOTE_EMPTY` or
+`QUOTE_USED`: it supplies the emitter's final newline and removes `4/6/4`
+spaces to produce `0/2/0`. Any other physical-line shape, a terminal newline
+in the carrier, or a nonqualifying first-four-space probe reverse-replays to
+the ordinary quoted paragraph path; it must not become a general indented-code
+parser.
+
+This amendment supersedes Task-6 Step-2's claims that Act II consumes a tab
+or that Act IV emits `0/4/0`. It clears the planner-only blocker without
+adding a token, title, scene, character, tab expansion, nested-blockquote
+case, or Slice-4 behavior. The exact compliance commands already written in
+Task 6 remain mandatory, including `tests/test_splc_generated_fragments.py`,
+`tests/test_spl_parse_smoke.py`, `tests/test_splc_validate.py`,
+`tests/test_literary_compliance.py`, `tests/test_literary_toml_schema.py`,
+`tests/test_assemble.py`, and `tests/test_codegen_html.py`.
