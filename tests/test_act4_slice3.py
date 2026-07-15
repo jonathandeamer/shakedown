@@ -3,6 +3,12 @@
 from tests.test_mdtest import _run_acts
 
 
+def test_multiline_paragraph_newline_is_not_dispatched_as_raw_html() -> None:
+    actual = _run_acts("alpha\nbeta\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<p>alpha\nbeta</p>\n"
+
+
 def test_inline_image_emits_stripped_angle_destination_and_title() -> None:
     actual = _run_acts('![Alt text](</url/> "with a title").\n', through_act=4)
     assert isinstance(actual, str)

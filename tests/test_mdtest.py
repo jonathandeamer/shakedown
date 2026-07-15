@@ -83,6 +83,8 @@ _IMPLEMENTED_FIXTURES = {
     "Hard-wrapped paragraphs with list-like lines",
     "Horizontal rules",
     "Images",
+    "Inline HTML (Simple)",
+    "Inline HTML comments",
     "Links, inline style",
     "Links, reference style",
     "Links, shortcut references",
@@ -209,21 +211,6 @@ def test_slice3_task4_strong_and_em_fixture_contract() -> None:
     assert _normalize_fixture_output(name, actual) == _normalize_fixture_output(
         name, expected_path.read_text()
     )
-
-
-@pytest.mark.parametrize("name", ["Inline HTML (Simple)", "Inline HTML comments"])
-def test_inline_html_simple_and_comment_fixtures_remain_disabled(name: str) -> None:
-    assert name not in _IMPLEMENTED_FIXTURES
-
-    params = {
-        case.values[0]: case
-        for case in _fixture_params()
-        if hasattr(case, "values") and case.values
-    }
-    pending = params[name]
-    skip_marks = [mark for mark in pending.marks if mark.name == "skip"]
-
-    assert skip_marks, f"{name} must remain skipped until Task 5 Step 3"
 
 
 def test_inline_html_advanced_fixture_remains_skipped() -> None:

@@ -239,7 +239,7 @@ pattern = "bare_statement"
 
   Expected: two strict byte-identical cases.
 
-- [ ] **Step 3: Checkpoint** with global gate, token-code test if changed, enabled mdtest/spikes; enable two fixtures; commit `feat: preserve simple html regions`; push.
+- [x] **Step 3: Checkpoint** with global gate, token-code test if changed, enabled mdtest/spikes; enable two fixtures; commit `feat: preserve simple html regions`; push.
 
 ### Task 6: Compose blockquotes with code leaves and close Slice 3
 

@@ -78,6 +78,7 @@ ITEM_LOOSE_USED = 34
 ITEM_LOOSE_COMPLEX = 44
 QUOTE_EMPTY = 18
 QUOTE_USED = 19
+_PARAGRAPH_MODE = const(tokens.ITEM_START)
 
 
 ACT: Act = act(
@@ -128,6 +129,10 @@ ACT: Act = act(
         ),
         scene(
             "SCRIBE_RAW_HTML",
+            branch(
+                eq(val(PROSPERO), _PARAGRAPH_MODE),
+                then="SCRIBE_EMIT_PAYLOAD",
+            ),
             pop(PROSPERO, recall="sealed_gates_colour"),
             branch(
                 eq(val(PROSPERO), const(DOCUMENT_USED)),
@@ -381,6 +386,7 @@ ACT: Act = act(
         scene(
             "SCRIBE_ITEM_TEXT_TIGHT",
             push(PROSPERO, const(ITEM_TIGHT_EMPTY)),
+            let(PROSPERO, _PARAGRAPH_MODE),
             goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
@@ -393,18 +399,21 @@ ACT: Act = act(
         scene(
             "SCRIBE_EMIT_ITEM_OPEN_LOOSE",
             push(PROSPERO, const(ITEM_LOOSE_EMPTY)),
+            let(PROSPERO, _PARAGRAPH_MODE),
             *_emit(*_bytes("<p>")),
             goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_PARAGRAPH_BREAK",
             push(PROSPERO, val(PROSPERO)),
+            let(PROSPERO, _PARAGRAPH_MODE),
             *_emit(10, 10, *_bytes("<p>")),
             goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_EMIT_ITEM_OPEN_TIGHT",
             push(PROSPERO, val(PROSPERO)),
+            let(PROSPERO, _PARAGRAPH_MODE),
             *_emit(*_bytes("<p>")),
             goto("SCRIBE_POP_TOKEN"),
         ),
