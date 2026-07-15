@@ -118,9 +118,45 @@ ACT: Act = act(
             branch(
                 eq(val(PUCK), const(tokens.CODE_BLOCK)),
                 then="SCRIBE_EMIT_CODE_OPEN",
-                else_="SCRIBE_TEST_PARAGRAPH_CLOSE",
             ),
+            branch(
+                eq(val(PUCK), const(tokens.RAW_HTML_HASH)),
+                then="SCRIBE_RAW_HTML",
+            ),
+            goto("SCRIBE_TEST_PARAGRAPH_CLOSE"),
             companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_RAW_HTML",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)),
+                then="SCRIBE_RAW_HTML_GUARD",
+            ),
+            push(PROSPERO, val(PROSPERO)),
+            goto("SCRIBE_RAW_HTML_CLOSE"),
+        ),
+        scene(
+            "SCRIBE_RAW_HTML_GUARD",
+            push(PROSPERO, val(PROSPERO)),
+            *_emit(10, 10),
+            goto("SCRIBE_RAW_HTML_CLOSE"),
+        ),
+        scene(
+            "SCRIBE_RAW_HTML_CLOSE",
+            pop(PUCK, recall="heralds_present_word"),
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="SCRIBE_RAW_HTML_FINISH",
+            ),
+            print_char(PUCK),
+            goto("SCRIBE_RAW_HTML_CLOSE"),
+        ),
+        scene(
+            "SCRIBE_RAW_HTML_FINISH",
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            push(PROSPERO, const(DOCUMENT_USED)),
+            goto("SCRIBE_POP_TOKEN"),
         ),
         scene(
             "SCRIBE_TEST_PARAGRAPH_CLOSE",

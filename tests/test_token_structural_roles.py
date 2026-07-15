@@ -34,6 +34,7 @@ PRE_EXISTING_ARITY = {
     tokens.BLOCKQUOTE_OPEN: (0, False),
     tokens.BLOCKQUOTE_CLOSE: (0, False),
     tokens.CODE_BLOCK: (0, True),
+    tokens.RAW_HTML_HASH: (0, True),
     tokens.ITEM_CLOSE: (0, False),
 }
 

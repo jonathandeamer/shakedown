@@ -60,7 +60,13 @@ Hecate:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as villainous as nothing.
+ Is Hecate as villainous as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_WRAP_DOT.
+
+Lady Macbeth:
+ You are as bold as nothing.
 
 [Exit Horatio]
 
@@ -68,6 +74,214 @@ Lady Macbeth:
 
 Lady Macbeth:
  Let us proceed to scene @PASS_HR_GATE_MARKER.
+
+
+                    Scene @PASS_WRAP_DOT: @LIT.scenes.PASS_WRAP_DOT.title
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as cursed as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_QUOTE_GUARD.
+
+Lady Macbeth:
+ Are you as bold as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_QUOTE_GUARD.
+
+Lady Macbeth:
+ Are you as mighty as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_WRAP_REPLAY.
+
+Hecate:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
+
+
+                    Scene @PASS_WRAP_REPLAY: @LIT.scenes.PASS_WRAP_REPLAY.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as cursed as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as bold as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_WRAP_GUARD.
+
+Hecate:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
+
+
+                    Scene @PASS_WRAP_GUARD: @LIT.scenes.PASS_WRAP_GUARD.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as horrid as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as bold as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_QUOTE_REPLAY.
+
+Hecate:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
+
+
+                    Scene @PASS_QUOTE_REPLAY: @LIT.scenes.PASS_QUOTE_REPLAY.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as rotten as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as mighty as the difference between the product of a normal little furry black cat and a furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_QUOTE_FINISH.
+
+Hecate:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Hecate:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+
+Hecate:
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a black cat.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
+
+
+                    Scene @PASS_QUOTE_GUARD: @LIT.scenes.PASS_QUOTE_GUARD.title
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Horatio:
+ Remember the difference between a miserable beggar and a brother.
+
+Horatio:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Horatio:
+ Remember Hecate.
+
+Lady Macbeth:
+ You are as mighty as a cursed wolf.
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_NEXT.
+
+
+                    Scene @PASS_QUOTE_FINISH: @LIT.scenes.PASS_QUOTE_FINISH.title
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Horatio:
+ Remember the difference between a miserable beggar and a brother.
+
+Horatio:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Horatio:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Horatio:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+
+Horatio:
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a black cat.
+
+Horatio:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a black cat.
+
+Lady Macbeth:
+ You are as mighty as a cursed wolf.
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_NEXT.
+
+
+                    Scene @PASS_QUOTE_CLOSE: @LIT.scenes.PASS_QUOTE_CLOSE.title
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Lady Macbeth:
+ You are as villainous as myself.
+
+Horatio:
+ @LIT.characters.horatio.recall.held_label_glyph
+
+Horatio:
+ You are as healthy as myself.
+
+Horatio:
+ Remember nothing.
+
+Lady Macbeth:
+ You are as villainous as a wolf.
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_CODE_CLOSE.
 
 
                     Scene @PASS_HR_GATE_MARKER: @LIT.scenes.PASS_HR_GATE_MARKER.title
@@ -958,6 +1172,12 @@ Lady Macbeth:
 
 
                     Scene @PASS_LISTS_RAW_BLANK: @LIT.scenes.PASS_LISTS_RAW_BLANK.title
+
+Lady Macbeth:
+ Is Horatio as mighty as a cursed wolf?
+
+Hecate:
+ If so, we must return to scene @PASS_QUOTE_CLOSE.
 
 Hecate:
  Remember myself.
@@ -2396,6 +2616,12 @@ Lady Macbeth:
                     Scene @PASS_LISTS_DONE: @LIT.scenes.PASS_LISTS_DONE.title
 
 Lady Macbeth:
+ Is Horatio as villainous as a cursed wolf?
+
+Hecate:
+ If so, we must return to scene @PASS_QUOTE_CLOSE.
+
+Lady Macbeth:
  Is Horatio as villainous as a hero?
 
 Hecate:
@@ -2517,6 +2743,12 @@ Macbeth:
  If so, let us proceed to scene @PASS_BLOCK_BOUNDARY.
 
 Lady Macbeth:
+ Are you as villainous as the difference between a cursed wolf and a hero?
+
+Macbeth:
+ If so, let us proceed to scene @PASS_QUOTE_CODE.
+
+Lady Macbeth:
  Are you as villainous as a noble hero?
 
 Macbeth:
@@ -2529,7 +2761,16 @@ Lady Macbeth:
                     Scene @PASS_BLOCK_BOUNDARY: @LIT.scenes.PASS_BLOCK_BOUNDARY.title
 
 Macbeth:
- Remember the sum of a little furry black cat and a cat.
+ Remember myself.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_BLOCK_REPLAY.
+
+
+                    Scene @PASS_QUOTE_CODE: @LIT.scenes.PASS_QUOTE_CODE.title
+
+Macbeth:
+ Remember the sum of a little furry black cat and a black cat.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_BLOCK_REPLAY.

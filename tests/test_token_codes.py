@@ -88,10 +88,12 @@ def test_framing_markers_are_disjoint_from_token_codes() -> None:
     assert tokens.TEXT_END == 0
     assert tokens.STREAM_END == -1
     assert tokens.ITEM_START == -2
+    assert tokens.RAW_HTML_START == -3
     codes = {row[1] for row in parse_table()}
     assert tokens.TEXT_END not in codes
     assert tokens.STREAM_END not in codes
     assert tokens.ITEM_START not in codes
+    assert tokens.RAW_HTML_START not in codes
 
 
 def test_arity_table_matches_doc() -> None:

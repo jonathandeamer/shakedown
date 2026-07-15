@@ -546,3 +546,34 @@ pattern = "bare_statement"
 
 [characters.lady_macbeth.recall]
 code_chamber_mark = "Recall the indented chamber mark."
+[scenes.PASS_WRAP_DOT]
+title = "Macbeth weighs the wandering numbered stroke."
+pattern = "scene_of_character"
+
+[scenes.PASS_WRAP_REPLAY]
+title = "Lady Macbeth returns the unclaimed number."
+pattern = "scene_of_character"
+
+[scenes.PASS_WRAP_GUARD]
+title = "The numbered stroke keeps its plain path."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_REPLAY]
+title = "Lady Macbeth restores the echoing mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_GUARD]
+title = "The hall keeps one measured threshold."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_CLOSE]
+title = "The echoing hall releases its chamber line."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_CODE]
+title = "Macbeth bears the indented echo within the hall."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_FINISH]
+title = "Macbeth frees the finished echo."
+pattern = "scene_of_character"

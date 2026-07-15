@@ -38,6 +38,10 @@ STREAM_END = -1
 # side channel; it never crosses an act boundary, so it never appears in a
 # G2 dump. Spoken via stable_utility vneg2 per speaker.
 ITEM_START = -2
+# RAW_HTML_START brackets a raw HTML text leaf inside Act II's mixed stream.
+# PASS_PARA replaces it with RAW_HTML_HASH before the stream crosses an act
+# boundary, just as ITEM_START is replaced with LIST_ITEM.
+RAW_HTML_START = -3
 
 
 @dataclass(frozen=True)
@@ -57,6 +61,7 @@ ARITY: dict[int, TokenArity] = {
     BLOCKQUOTE_OPEN: TokenArity(0, False),
     BLOCKQUOTE_CLOSE: TokenArity(0, False),
     CODE_BLOCK: TokenArity(0, True),
+    RAW_HTML_HASH: TokenArity(0, True),
     ITEM_CLOSE: TokenArity(0, False),
 }
 

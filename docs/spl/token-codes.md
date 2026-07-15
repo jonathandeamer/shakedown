@@ -58,6 +58,7 @@ step. Spike-scope vocabulary only; later slices append rows in both places.
 | BLOCKQUOTE_OPEN | 7 | 0 | no |
 | BLOCKQUOTE_CLOSE | 8 | 0 | no |
 | CODE_BLOCK | 9 | 0 | yes |
+| RAW_HTML_HASH | 10 | 0 | yes |
 | ITEM_CLOSE | 15 | 0 | no |
 
 `LIST_OPEN` payload — kind: 1 = unordered, 2 = ordered. `LIST_ITEM` payload —
@@ -74,6 +75,7 @@ phrase.
 | TEXT_END | 0 | terminates a text-bearing token's glyph run (glyphs ≥ 1) |
 | STREAM_END | −1 | bottom-of-stream sentinel seeded under every carrier stack |
 | ITEM_START | −2 | brackets a list item's text on Act II's intra-act mixed stream (pass-internal; never crosses an act boundary) |
+| RAW_HTML_START | −3 | brackets a raw HTML text leaf on Act II's intra-act mixed stream (pass-internal; replaced by code 10 before the act boundary) |
 
 ## How To Extend
 

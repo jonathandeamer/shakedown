@@ -47,6 +47,9 @@ _TAB = const(9)
 _END = const(tokens.STREAM_END)
 _PARA_START = const(tokens.HEADER)
 _BLOCKQUOTE_MARK = RECIPES[62]
+_HTML_OPEN = const(60)
+_RAW_HTML_MODE = const(-2)
+_RAW_HTML_START = sub(const(tokens.ITEM_START), const(1))
 
 
 def _read(recall: str = "hewn_glyph"):
@@ -87,8 +90,85 @@ ACT: Act = act(
         ),
         scene(
             "PASS_HR_GATE",
+            branch(eq(val(HECATE), _HTML_OPEN), then="PASS_WRAP_DOT"),
             let(HORATIO, const(0)),
             goto("PASS_HR_GATE_MARKER"),
+            companion=HORATIO,
+        ),
+        # --- Bounded raw-HTML recognition at a top-level block boundary.
+        # Comments and hr tags are special-cased by their first name glyph;
+        # div blocks require the exact un-attributed opening tag. Once open,
+        # the leaf runs to the next blank boundary and sheds its final line
+        # ending before TEXT_END.
+        scene(
+            "PASS_WRAP_DOT",
+            *_read(),
+            branch(eq(val(HECATE), const(33)), then="PASS_QUOTE_GUARD"),
+            branch(eq(val(HECATE), const(104)), then="PASS_QUOTE_GUARD"),
+            branch(eq(val(HECATE), const(100)), then="PASS_WRAP_REPLAY"),
+            push(LADY_MACBETH, _HTML_OPEN),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_WRAP_REPLAY",
+            *_read(),
+            branch(eq(val(HECATE), const(105)), then="PASS_WRAP_GUARD"),
+            push(LADY_MACBETH, _HTML_OPEN),
+            push(LADY_MACBETH, const(100)),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_WRAP_GUARD",
+            *_read(),
+            branch(eq(val(HECATE), const(118)), then="PASS_QUOTE_REPLAY"),
+            push(LADY_MACBETH, _HTML_OPEN),
+            push(LADY_MACBETH, const(100)),
+            push(LADY_MACBETH, const(105)),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_QUOTE_REPLAY",
+            *_read(),
+            branch(eq(val(HECATE), const(62)), then="PASS_QUOTE_FINISH"),
+            push(LADY_MACBETH, _HTML_OPEN),
+            push(LADY_MACBETH, const(100)),
+            push(LADY_MACBETH, const(105)),
+            push(LADY_MACBETH, const(118)),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_QUOTE_GUARD",
+            push(LADY_MACBETH, _RAW_HTML_START),
+            push(LADY_MACBETH, _HTML_OPEN),
+            push(LADY_MACBETH, val(HECATE)),
+            let(HORATIO, _RAW_HTML_MODE),
+            goto("PASS_LISTS_RAW_NEXT"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_QUOTE_FINISH",
+            push(LADY_MACBETH, _RAW_HTML_START),
+            push(LADY_MACBETH, _HTML_OPEN),
+            push(LADY_MACBETH, const(100)),
+            push(LADY_MACBETH, const(105)),
+            push(LADY_MACBETH, const(118)),
+            push(LADY_MACBETH, const(62)),
+            let(HORATIO, _RAW_HTML_MODE),
+            goto("PASS_LISTS_RAW_NEXT"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_QUOTE_CLOSE",
+            let(HORATIO, val(LADY_MACBETH)),
+            pop(LADY_MACBETH, recall="held_label_glyph"),
+            let(LADY_MACBETH, val(HORATIO)),
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
+            let(HORATIO, const(-1)),
+            goto("PASS_CODE_CLOSE"),
             companion=HORATIO,
         ),
         scene(
@@ -399,6 +479,7 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_RAW_BLANK",
+            branch(eq(val(HORATIO), _RAW_HTML_MODE), then="PASS_QUOTE_CLOSE"),
             push(LADY_MACBETH, val(HECATE)),
             branch(
                 eq(val(LADY_MACBETH), const(0)),
@@ -944,6 +1025,7 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_DONE",
+            branch(eq(val(HORATIO), _RAW_HTML_MODE), then="PASS_QUOTE_CLOSE"),
             branch(
                 eq(val(HORATIO), const(1)),
                 then="PASS_CONTAINERS_REPLAY",
@@ -1010,12 +1092,22 @@ ACT: Act = act(
                 eq(val(MACBETH), const(tokens.CODE_BLOCK)),
                 then="PASS_BLOCK_BOUNDARY",
             ),
+            branch(
+                eq(val(MACBETH), _RAW_HTML_START),
+                then="PASS_QUOTE_CODE",
+            ),
             branch(eq(val(MACBETH), _PARA_START), then="PASS_PARA_ITEM_TEXT"),
             goto("PASS_PARA_OPEN_PARA"),
         ),
         scene(
             "PASS_BLOCK_BOUNDARY",
-            push(LADY_MACBETH, const(tokens.CODE_BLOCK)),
+            push(LADY_MACBETH, val(MACBETH)),
+            goto("PASS_BLOCK_REPLAY"),
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_QUOTE_CODE",
+            push(LADY_MACBETH, const(tokens.RAW_HTML_HASH)),
             goto("PASS_BLOCK_REPLAY"),
             companion=MACBETH,
         ),

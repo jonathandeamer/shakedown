@@ -65,8 +65,83 @@ Prospero:
 Puck:
  If so, let us proceed to scene @SCRIBE_EMIT_CODE_OPEN.
 
+Prospero:
+ Are you as noble as the sum of a little furry black cat and a black cat?
+
 Puck:
- If not, let us proceed to scene @SCRIBE_TEST_PARAGRAPH_CLOSE.
+ If so, let us proceed to scene @SCRIBE_RAW_HTML.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_TEST_PARAGRAPH_CLOSE.
+
+
+                    Scene @SCRIBE_RAW_HTML: @LIT.scenes.SCRIBE_RAW_HTML.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Are you as fair as the sum of a normal little furry black cat and a cat?
+
+Prospero:
+ If so, we shall proceed to scene @SCRIBE_RAW_HTML_GUARD.
+
+Puck:
+ Remember yourself.
+
+Prospero:
+ We shall proceed to scene @SCRIBE_RAW_HTML_CLOSE.
+
+
+                    Scene @SCRIBE_RAW_HTML_GUARD: @LIT.scenes.SCRIBE_RAW_HTML_GUARD.title
+
+Puck:
+ Remember yourself.
+
+Prospero:
+ You are as honest as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ You are as honest as the sum of a little furry black cat and a black cat.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall proceed to scene @SCRIBE_RAW_HTML_CLOSE.
+
+
+                    Scene @SCRIBE_RAW_HTML_CLOSE: @LIT.scenes.SCRIBE_RAW_HTML_CLOSE.title
+
+Prospero:
+ @LIT.characters.prospero.recall.heralds_present_word
+
+Prospero:
+ Are you as noble as nothing?
+
+Puck:
+ If so, let us proceed to scene @SCRIBE_RAW_HTML_FINISH.
+
+Prospero:
+ Speak your mind!
+
+Prospero:
+ We shall return to scene @SCRIBE_RAW_HTML_CLOSE.
+
+
+                    Scene @SCRIBE_RAW_HTML_FINISH: @LIT.scenes.SCRIBE_RAW_HTML_FINISH.title
+
+Puck:
+ @LIT.characters.puck.recall.sealed_gates_colour
+
+Puck:
+ Remember the sum of a normal little furry black cat and a cat.
+
+Prospero:
+ We shall return to scene @SCRIBE_POP_TOKEN.
 
 
                     Scene @SCRIBE_TEST_PARAGRAPH_CLOSE: @LIT.scenes.SCRIBE_TEST_PARAGRAPH_CLOSE.title

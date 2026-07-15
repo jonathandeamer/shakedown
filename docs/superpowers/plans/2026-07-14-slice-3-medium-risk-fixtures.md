@@ -233,7 +233,7 @@ pattern = "bare_statement"
 
   Expected: Simple/comment failures; Advanced skip.
 
-- [ ] **Step 2: Implement bounded matching.** Respect documented left-margin/blank-line boundaries; protect inline regions to `>` or `-->`; emit code-10 leaves for raw blocks; Act IV writes their bytes with block separators. Do not match nested or attributed blocks.
+- [x] **Step 2: Implement bounded matching.** Respect documented left-margin/blank-line boundaries; protect inline regions to `>` or `-->`; emit code-10 leaves for raw blocks; Act IV writes their bytes with block separators. Do not match nested or attributed blocks.
 
   Run: `uv run python -m scripts.splc && uv run python scripts/assemble.py && uv run pytest tests/test_act2_slice3.py tests/test_act3_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Inline HTML (Simple) or Inline HTML comments' -q && uv run python scripts/strict_parity_harness.py 'Inline HTML (Simple)' 'Inline HTML comments'`
 

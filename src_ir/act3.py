@@ -78,7 +78,7 @@ def _traverse_dispatch() -> list[Op]:
         push(JULIET, val(PUCK)),
     ]
     for code, arity in sorted(tokens.ARITY.items()):
-        if code == tokens.CODE_BLOCK:
+        if code in (tokens.CODE_BLOCK, tokens.RAW_HTML_HASH):
             ops.append(
                 branch(eq(val(PUCK), const(code)), then="TRAVERSE_COPY_CODE_TEXT")
             )
@@ -813,6 +813,7 @@ ACT: Act = act(
             "LYRIC_ANGLE_TEST",
             pop(PUCK, recall="field_first_glyph"),
             branch(eq(val(PUCK), _k(104)), then="LYRIC_AUTOLINK_OPEN"),
+            branch(eq(val(PUCK), _k(33)), then="LYRIC_HTML_OPEN"),
             branch(eq(val(PUCK), _k(47)), then="LYRIC_HTML_OPEN"),
             branch(eq(val(PUCK), _k(65)), then="LYRIC_HTML_OPEN"),
             branch(eq(val(PUCK), _k(66)), then="LYRIC_HTML_OPEN"),

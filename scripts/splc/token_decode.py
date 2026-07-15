@@ -56,6 +56,12 @@ def decode_stream(values: Sequence[int]) -> list[DecodedToken]:
                 "(it is pass-internal and never crosses an act boundary, "
                 "so it never appears in a dump)"
             )
+        if code == tokens.RAW_HTML_START:
+            raise DecodeError(
+                f"position {pos}: RAW_HTML_START escaped its permitted phase "
+                "(it is pass-internal and never crosses an act boundary, "
+                "so it never appears in a dump)"
+            )
         if code == tokens.TEXT_END:
             raise DecodeError(
                 f"position {pos}: unexpected TEXT_END with no open text run"
@@ -80,7 +86,11 @@ def decode_stream(values: Sequence[int]) -> list[DecodedToken]:
                 if value == tokens.TEXT_END:
                     terminated = True
                     break
-                if value in (tokens.STREAM_END, tokens.ITEM_START):
+                if value in (
+                    tokens.STREAM_END,
+                    tokens.ITEM_START,
+                    tokens.RAW_HTML_START,
+                ):
                     raise DecodeError(
                         f"position {i - 1}: framing marker {value} escaped "
                         f"its permitted phase inside the text run for code "

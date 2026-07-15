@@ -79,6 +79,11 @@ def test_rejects_item_start_at_top_level() -> None:
         decode_stream([tokens.ITEM_START])
 
 
+def test_rejects_raw_html_start_at_top_level() -> None:
+    with pytest.raises(DecodeError, match="RAW_HTML_START escaped"):
+        decode_stream([tokens.RAW_HTML_START])
+
+
 def test_rejects_stream_end_inside_a_text_run() -> None:
     with pytest.raises(DecodeError, match="framing marker -1 escaped"):
         decode_stream([tokens.PARA, ord("h"), tokens.STREAM_END, tokens.TEXT_END])

@@ -296,3 +296,18 @@ pattern = "scene_of_character"
 
 [characters.prospero.recall]
 code_leaf_mark = "Recall the indented chamber mark."
+[scenes.SCRIBE_RAW_HTML]
+title = "Prospero releases the unbroken courtly mark."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_RAW_HTML_CLOSE]
+title = "The courtly mark returns without a veil."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_RAW_HTML_GUARD]
+title = "The courtly mark keeps its clear edge."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_RAW_HTML_FINISH]
+title = "Prospero frees the finished courtly line."
+pattern = "scene_of_character"
