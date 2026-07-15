@@ -85,6 +85,13 @@ def test_inline_html_standalone_comment_emits_raw_html_leaf() -> None:
     assert [token.text for token in decoded] == ["<!-- note -->"]
 
 
+def test_inline_html_multiline_comment_emits_raw_html_leaf() -> None:
+    decoded = decode_stream(_act2_stream("<!--\nBlah\nBlah\n-->\n"))
+
+    assert [token.code for token in decoded] == [tokens.RAW_HTML_HASH]
+    assert [token.text for token in decoded] == ["<!--\nBlah\nBlah\n-->"]
+
+
 def test_inline_html_raw_hr_block_emits_raw_html_leaf() -> None:
     decoded = decode_stream(_act2_stream("<hr />\n"))
 

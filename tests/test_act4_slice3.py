@@ -55,3 +55,9 @@ def test_inline_html_standalone_comment_emits_raw_bytes() -> None:
     actual = _run_acts("<!-- note -->\n", through_act=4)
     assert isinstance(actual, str)
     assert actual == "<!-- note -->\n"
+
+
+def test_inline_html_multiline_comment_emits_raw_bytes() -> None:
+    actual = _run_acts("<!--\nBlah\nBlah\n-->\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<!--\nBlah\nBlah\n-->\n"

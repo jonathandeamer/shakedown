@@ -211,6 +211,21 @@ def test_slice3_task4_strong_and_em_fixture_contract() -> None:
     )
 
 
+@pytest.mark.parametrize("name", ["Inline HTML (Simple)", "Inline HTML comments"])
+def test_inline_html_simple_and_comment_fixtures_remain_disabled(name: str) -> None:
+    assert name not in _IMPLEMENTED_FIXTURES
+
+    params = {
+        case.values[0]: case
+        for case in _fixture_params()
+        if hasattr(case, "values") and case.values
+    }
+    pending = params[name]
+    skip_marks = [mark for mark in pending.marks if mark.name == "skip"]
+
+    assert skip_marks, f"{name} must remain skipped until Task 5 Step 3"
+
+
 def test_inline_html_advanced_fixture_remains_skipped() -> None:
     assert "Inline HTML (Advanced)" not in _IMPLEMENTED_FIXTURES
 
