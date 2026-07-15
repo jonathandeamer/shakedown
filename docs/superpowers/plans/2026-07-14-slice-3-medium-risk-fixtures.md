@@ -207,7 +207,7 @@ pattern = "bare_statement"
 
 **Files:** Modify `src_ir/act3.py`, `tests/test_act3_slice3.py`, `tests/test_mdtest.py`, `tests/test_slice3_medium_risk.py`; regenerate Act III/release SPL.
 
-- [ ] **Step 1: Write red tests** for `***both***`, `**outer *inner* outer**`, escaped/unmatched delimiters, and delimiters inside code/link fields.
+- [x] **Step 1: Write red tests** for `***both***`, `**outer *inner* outer**`, escaped/unmatched delimiters, and delimiters inside code/link fields.
 
   Run: `uv run pytest tests/test_act3_slice3.py tests/test_mdtest.py -k 'Strong and em' -q`
 
