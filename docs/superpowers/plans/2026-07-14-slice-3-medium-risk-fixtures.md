@@ -201,7 +201,7 @@ pattern = "bare_statement"
 
   Expected: five strict byte-identical cases.
 
-- [ ] **Step 3: Checkpoint** with global SPL gate and enabled mdtest/spikes; enable these five fixtures; commit `feat: resolve reference links and images`; push.
+- [x] **Step 3: Checkpoint** with global SPL gate and enabled mdtest/spikes; enable these five fixtures; commit `feat: resolve reference links and images`; push.
 
 ### Task 4: Complete strong/em nesting
 
