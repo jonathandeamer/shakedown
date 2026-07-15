@@ -198,3 +198,13 @@ def test_slice3_task3_fixture_contract(name: str) -> None:
     assert _normalize_fixture_output(name, actual) == _normalize_fixture_output(
         name, expected_path.read_text()
     )
+
+
+def test_slice3_task4_strong_and_em_fixture_contract() -> None:
+    name = "Strong and em together"
+    input_path, expected_path = _FIXTURES_BY_NAME[name]
+    actual = _run_acts(input_path.read_text(), through_act=4)
+    assert isinstance(actual, str)
+    assert _normalize_fixture_output(name, actual) == _normalize_fixture_output(
+        name, expected_path.read_text()
+    )
