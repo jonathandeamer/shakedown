@@ -73,3 +73,21 @@ def test_reference_record_can_be_reused_for_two_links() -> None:
     assert actual == (
         '<p>Use <a href="/dest/">first</a> and <a href="/dest/">second</a>.</p>\n'
     )
+
+
+def test_inline_html_span_region_stays_literal() -> None:
+    actual = _run_acts("<span>inline</span>\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<p><span>inline</span></p>\n"
+
+
+def test_inline_html_br_region_stays_literal() -> None:
+    actual = _run_acts("alpha<br />omega\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<p>alpha<br />omega</p>\n"
+
+
+def test_inline_html_comment_region_stays_literal() -> None:
+    actual = _run_acts("alpha <!-- note --> omega\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<p>alpha <!-- note --> omega</p>\n"

@@ -69,3 +69,24 @@ def test_rejected_triple_marker_hr_candidates_do_not_leak_item_start() -> None:
     )
 
     assert stream.count(tokens.ITEM_START) == 0
+
+
+def test_inline_html_simple_div_block_emits_raw_html_leaf() -> None:
+    decoded = decode_stream(_act2_stream("<div>\nfoo\n</div>\n"))
+
+    assert [token.code for token in decoded] == [tokens.RAW_HTML_HASH]
+    assert [token.text for token in decoded] == ["<div>\nfoo\n</div>"]
+
+
+def test_inline_html_standalone_comment_emits_raw_html_leaf() -> None:
+    decoded = decode_stream(_act2_stream("<!-- note -->\n"))
+
+    assert [token.code for token in decoded] == [tokens.RAW_HTML_HASH]
+    assert [token.text for token in decoded] == ["<!-- note -->"]
+
+
+def test_inline_html_raw_hr_block_emits_raw_html_leaf() -> None:
+    decoded = decode_stream(_act2_stream("<hr />\n"))
+
+    assert [token.code for token in decoded] == [tokens.RAW_HTML_HASH]
+    assert [token.text for token in decoded] == ["<hr />"]

@@ -43,3 +43,15 @@ def test_link_titles_escape_literal_quotes_as_quot_entities() -> None:
         '<p>Foo <a href="/url/" title="Title with &quot;quotes&quot; inside">'
         "bar</a>.</p>\n"
     )
+
+
+def test_inline_html_simple_fixture_block_examples_emit_raw_bytes() -> None:
+    actual = _run_acts("<div>\nfoo\n</div>\n\n<hr />\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<div>\nfoo\n</div>\n\n<hr />\n"
+
+
+def test_inline_html_standalone_comment_emits_raw_bytes() -> None:
+    actual = _run_acts("<!-- note -->\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<!-- note -->\n"

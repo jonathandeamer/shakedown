@@ -209,3 +209,17 @@ def test_slice3_task4_strong_and_em_fixture_contract() -> None:
     assert _normalize_fixture_output(name, actual) == _normalize_fixture_output(
         name, expected_path.read_text()
     )
+
+
+def test_inline_html_advanced_fixture_remains_skipped() -> None:
+    assert "Inline HTML (Advanced)" not in _IMPLEMENTED_FIXTURES
+
+    params = {
+        case.values[0]: case
+        for case in _fixture_params()
+        if hasattr(case, "values") and case.values
+    }
+    advanced = params["Inline HTML (Advanced)"]
+    skip_marks = [mark for mark in advanced.marks if mark.name == "skip"]
+
+    assert skip_marks, "Inline HTML (Advanced) must stay skipped in Task 5 Step 1"
