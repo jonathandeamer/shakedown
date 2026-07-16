@@ -346,10 +346,10 @@ pattern = "bare_statement"
 title = "Macbeth releases the echo's guarded margin."
 pattern = "scene_of_character"
 [scenes.SCRIBE_QUOTE_CODE]
-title = "Prospero opens the echoing chamber."
+title = "Prospero enters the echoing chamber."
 pattern = "scene_of_character"
 [scenes.SCRIBE_QUOTE_CODE_CLOSE]
-title = "The echoing chamber closes in peace."
+title = "The echoing chamber settles into peace."
 pattern = "bare_statement"
 [scenes.SCRIBE_QUOTE_CODE_PROBE]
 title = "Puck counts the chamber's pale threshold."
