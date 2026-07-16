@@ -432,3 +432,73 @@ Task 6 remain mandatory, including `tests/test_splc_generated_fragments.py`,
 `tests/test_spl_parse_smoke.py`, `tests/test_splc_validate.py`,
 `tests/test_literary_compliance.py`, `tests/test_literary_toml_schema.py`,
 `tests/test_assemble.py`, and `tests/test_codegen_html.py`.
+
+## Amendment A7 (2026-07-17): Task-6 quote-prefix bridge and Spike-B gate
+
+The accepted design's Amendment A7 is binding. The final gate's eight
+nested-block spike failures exposed that the two quote-prefix scenes share
+`PASS_LISTS_RAW_NEXT`, a list-pass reader whose continuation lifecycle is part
+of shipped Spike-B composition. This amendment authorizes only a quote-owned
+one-glyph bridge in `src_ir/act2.py`; it is a prerequisite inside the existing
+unchecked Task-6 Step 3, not a new task, fixture, or plan.
+
+Before the repair, append these ready-to-paste Incidental Act-II surfaces to
+`src/literary.toml`; do not invent prose during implementation:
+
+```toml
+[scenes.PASS_QUOTE_PREFIX_AFTER_MARKER]
+title = "Lady Macbeth takes the echo's single pale mark."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_PREFIX_COPY_GLYPH]
+title = "Lady Macbeth returns the echo's unshorn sign."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_CONTINUE_AFTER_MARKER]
+title = "Macbeth receives the echo's returning pale mark."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_CONTINUE_COPY_GLYPH]
+title = "Macbeth restores the echo's returning sign."
+pattern = "scene_of_character"
+[scenes.PASS_QUOTE_PREFIX_AFTER_MARKER_GUARD]
+title = "The echo keeps one measured pale threshold."
+pattern = "bare_statement"
+[scenes.PASS_QUOTE_PREFIX_COPY_GLYPH_GUARD]
+title = "The echo preserves its unspent first sign."
+pattern = "bare_statement"
+[scenes.PASS_QUOTE_CONTINUE_AFTER_MARKER_GUARD]
+title = "The echo keeps one returning pale threshold."
+pattern = "bare_statement"
+```
+
+Use only the four working labels in the design-defined entry/continuation
+bridge. The three `_GUARD` labels are the entire spare pool; exhausting it is
+`BLOCK[plan]`. `PASS_QUOTE_PREFIX` and `PASS_QUOTE_PREFIX_FINISH` dispatch to
+the bridges; `PASS_QUOTE_CONTINUE_PREFIX` alone decides whether a subsequent
+line continues the quote. The bridge strips at most one post-`>` ASCII space,
+copies every other already-detabbed glyph to Lady Macbeth in source order, and
+does not assign Macbeth, Horatio, a frame sentinel, or a token. It must not
+edit `PASS_LISTS_RAW_NEXT`, `PASS_LISTS_RAW_AFTER_NEWLINE`,
+`PASS_CONTAINERS_REPLAY`, or any list/container scene.
+
+First add red contracts in `tests/test_act2_slice3.py` for entry and
+continuation marker stripping, retained four/six-space code candidates, and
+ordinary quote text; extend `tests/test_act2_contracts.py` and
+`tests/test_act2_frame_floors.py` with the four committed files in
+`tests/fixtures/architecture_spikes/nested_blocks/` as exact fast-stream and
+Act-IV/oracle composition regressions. Then make only the authorized IR/TOML
+change, regenerate with `uv run python -m scripts.splc` and
+`uv run python scripts/assemble.py`, and run:
+
+```bash
+uv run pytest tests/test_act2_slice3.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py tests/test_architecture_spikes.py -q
+uv run pytest tests/test_act2_slice3.py tests/test_act4_slice3.py tests/test_mdtest.py -k 'Blockquotes with code blocks' -q
+uv run python scripts/strict_parity_harness.py 'Blockquotes with code blocks'
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
+```
+
+Expected: every command passes; the quote fixture remains strict
+byte-identical; all Spike-B cases are byte-identical; and no generated or
+literary check reports an error. Only then rerun the existing final Task-6
+Step-3 gate unchanged. A need for any other scene, token, participant,
+protected Spike-B route mutation, changed raw `4/8/4` carrier, or broader
+quote/code grammar is `BLOCK[plan]`.

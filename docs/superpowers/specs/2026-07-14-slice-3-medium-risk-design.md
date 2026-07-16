@@ -212,3 +212,46 @@ generated-fragment, SPL parse, splc validation, literary, strict-parity,
 spike, and final-suite gate. No token, scene surface, participant, general
 code-block grammar, nested-blockquote behavior, or tab expansion is
 authorized.
+
+## Amendment A7 (2026-07-17): Quote-owned prefix bridge preserves Spike-B composition
+
+The 2026-07-16 final-gate reproduction identified a control-flow seam rather
+than a new nested-block grammar requirement. `PASS_QUOTE_PREFIX` and
+`PASS_QUOTE_PREFIX_FINISH` currently consume the glyph after `>` and then
+enter the shared `PASS_LISTS_RAW_NEXT` reader. That reader owns the list pass's
+newline/continuation transition which later selects
+`PASS_QUOTE_CONTINUE_PREFIX`. Using it as the quote-marker adapter couples
+quote-prefix consumption to the mutable list/container choreography which
+Spike B already proved.
+
+Task 6 is authorized to add a quote-owned, one-glyph bridge in
+`src_ir/act2.py` only. `PASS_QUOTE_PREFIX_AFTER_MARKER` and
+`PASS_QUOTE_CONTINUE_AFTER_MARKER` read exactly one normalized glyph after an
+opening or continuation `>` and consume one ASCII marker space only.
+`PASS_QUOTE_PREFIX_COPY_GLYPH` and `PASS_QUOTE_CONTINUE_COPY_GLYPH` transfer
+the staged non-marker glyph to Lady Macbeth's existing mixed carrier and
+resume the raw-glyph route without entering a list-recognition gate.
+`PASS_QUOTE_PREFIX` and `PASS_QUOTE_PREFIX_FINISH` are the bridge dispatches;
+`PASS_QUOTE_CONTINUE_PREFIX` remains the sole test for a continuation `>` and
+its non-marker path still closes/replays through `PASS_QUOTE_PREFIX_REPLAY`.
+
+The bridge may read/stage Hecate and push Lady Macbeth, but must not assign
+Macbeth, Horatio, a frame sentinel, or a token code. It must not modify
+`PASS_LISTS_RAW_NEXT`, `PASS_LISTS_RAW_AFTER_NEWLINE`,
+`PASS_CONTAINERS_REPLAY`, or any Spike-B list/container decision. Act I has
+already detabbed the source: the only stripped byte is one ASCII space
+immediately after `>`, and every later glyph is copied in source order. The
+fixture therefore retains its no-terminal-newline `4/8/4` Act-II carrier, and
+Act IV retains sole ownership of the bounded `0/2/0` quote-code adapter.
+
+Before the IR change, Task 6 must add focused fast-stream entry and
+continuation contracts for marker stripping, retained four/six-space code
+candidates, and ordinary quote text. It must extend the existing
+`tests/test_act2_contracts.py` and `tests/test_act2_frame_floors.py` coverage
+to prove all four committed Spike-B nested-block files keep legal decoded
+structure and byte-identical Act-IV/oracle output. Then it must run
+`uv run pytest tests/test_act2_slice3.py tests/test_act2_contracts.py tests/test_act2_frame_floors.py tests/test_architecture_spikes.py -q`, followed by the
+existing Task-6 focused mdtest, strict-parity, generated/literary, and final
+gates. A need for any unlisted scene, token, participant, protected Spike-B
+route mutation, altered Act-IV carrier, or broader quote/code grammar is
+`BLOCK[plan]`.
