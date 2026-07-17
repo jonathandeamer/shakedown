@@ -228,6 +228,84 @@ named in the active plan.  Any need for a third helper scene, a sixth spare,
 a different register ownership, an Act-III/IV change, or a token/grammar
 change is `BLOCK[plan]`.
 
+## Amendment A6 — close only the exceeded nested depth on a blank-then-ancestor-indent continuation (2026-07-17)
+
+Task 4 Step 2's remaining defect is the fixture-tail case
+`*\tthis\n\n\t*\tsub\n\n\tthat\n`: after the nested item `sub` and a blank
+line, `that` is indented to exactly the *outer* item's content depth, not the
+nested item's.  Neither existing post-blank route fits.  The plain-text
+continuation guards (`PASS_LISTS_CONTINUE_GUARD` for space indentation and
+`PASS_LISTS_INDENT_FOUR_GUARD` for tab indentation) commit the provisional
+loose item and rejoin `PASS_LISTS_BLANK_JOIN` without ever comparing the
+scanned indentation tally (`PUCK`) against the open-frame depth (`MACBETH`);
+they always attach the continuation to whichever item is currently innermost.
+That mislabels the still-open nested list/item as loose and keeps it open.
+The marker-driven blank-sibling guards (`PASS_LISTS_INDENT_GUARD` /
+`PASS_LISTS_NEST_GUARD` / `PASS_LISTS_FULL_GUARD`) are the only existing
+routes that close a frame after a blank, but they exist for a rejected
+marker candidate and close every open frame down to zero via
+`PASS_LISTS_FULL_GUARD`'s HR-collapse path — the wrong shape for landing on
+one specific open ancestor.
+
+This amendment authorizes exactly one new Act-II working scene,
+`PASS_LISTS_LOOSE_OUTDENT`, plus a comparison this amendment adds to the two
+existing continuation guards named above.  It adds no token, no participant,
+no Act-III/IV change, and no change to `LIST_OPEN`, `LIST_ITEM`,
+`ITEM_CLOSE`, or `LIST_CLOSE` semantics — it only sequences the existing
+close primitive across more than one frame before handing off to the
+existing join.
+
+- `PASS_LISTS_CONTINUE_GUARD` and `PASS_LISTS_INDENT_FOUR_GUARD` gain one
+  additional comparison, evaluated before their current `HORATIO < 0`
+  provisional check: if the scanned indentation tally (`PUCK`) is less than
+  the open-frame depth (`MACBETH`), route to `PASS_LISTS_LOOSE_OUTDENT`
+  instead of `PASS_LISTS_BLANK_JOIN`. The existing `HORATIO < 0` branch and
+  its non-provisional fallthrough are otherwise unchanged, and the equal-depth
+  case (`PUCK == MACBETH`) keeps its current behavior exactly.
+- `PASS_LISTS_LOOSE_OUTDENT` closes exactly one open frame using the same
+  `TEXT_END` / `ITEM_CLOSE` / `LIST_CLOSE` emission idiom already used by
+  `PASS_LISTS_SIB_OUTDENT` and `PASS_LISTS_BSIB_OUTDENT`, decrements
+  `MACBETH` by one frame, and loops back to itself while `PUCK` remains less
+  than `MACBETH`. When `PUCK` reaches parity with `MACBETH`, it falls
+  through to the existing `PASS_LISTS_BLANK_JOIN` route, which then commits
+  the loose continuation paragraph onto the now-current ancestor item exactly
+  as it already does for a same-depth continuation. No new close-sequence
+  shape, HR emission, or full-list collapse is authorized; `PASS_LISTS_FULL_GUARD`
+  and its HR path are untouched and remain reserved for the rejected-marker
+  case they already own.
+
+Required focused evidence extends Task 4 Step 2 with:
+
+1. `*\tthis\n\n\t*\tsub\n\n\tthat\n` (the fixture-tail witness): `sub`'s
+   nested list closes exactly once, `this` remains open and becomes loose,
+   `that` joins `this`'s text as a second paragraph, and the release output
+   is strict Markdown.pl bytes.
+2. A two-level variant such as `1. a\n\t* b\n\t\t* c\n\n1. a\n` reduced to its
+   blank-then-return shape, confirming the loop closes more than one frame
+   when the fixture requires it and stops exactly at the matching ancestor
+   depth.
+3. The three Amendment A4 contracts and the two Amendment A5 contracts remain
+   green unchanged, proving the new comparison does not alter the equal-depth
+   or deeper-depth paths.
+
+Act II's list ledger gains this one new working scene: 22 working labels
+(A5's 21 plus `PASS_LISTS_LOOSE_OUTDENT`). The five `PASS_LISTS_INDENT_*_GUARD`
+spares reserved by A5 remain unused and are not consumed by this amendment;
+they already satisfy `ceil(22 * 20%) = 5` for the new working count, so no
+further spare is reserved here. Add the ready-to-paste title below to
+`src/20-act2-literary.toml` in the same checkpoint that introduces the scene.
+
+```toml
+# Amendment A6 blank-then-ancestor-indent outdent
+[scenes.PASS_LISTS_LOOSE_OUTDENT]
+title = "The nested troop yields its ground to the waiting captain."
+pattern = "bare_statement"
+```
+
+Any need for a second new working scene, a change to `PASS_LISTS_FULL_GUARD`'s
+HR-collapse path, an Act-III/IV change, a token/grammar change, or consumption
+of an A5 spare beyond this amendment's scope is `BLOCK[plan]`.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
