@@ -89,3 +89,10 @@ Historical planning blocker (resolved): Slice-4 Task 3 Step 2
   actually verifies blockquote layout. Note the Act-II half (emit a balanced
   `BLOCKQUOTE_CLOSE` on outdent) is required identically under both options and
   is the substance of the step; only the Act-IV layout is contested.
+Resolved 2026-07-17 by Slice-4 design Amendment A3 and the matching
+Task-4-Step-2 amendment: the original three Act-II list spares are recorded
+as consumed working scenes, and the plan now reserves a five-scene
+provisional-looseness rollback plus four Act-II spares.  The amendment keeps
+the list grammar, token roles, participants, Act III, and Act IV frozen while
+requiring the final nested tab item to restore tightness when the trailing
+blank ends the entire list.

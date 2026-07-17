@@ -4,7 +4,7 @@
 
 **Goal:** Ship `Inline HTML (Advanced)`, `Nested blockquotes`, and `Ordered and unordered lists` with strict Markdown.pl bytes while preserving all shipped fixtures and Spike A/B contracts.
 
-**Architecture:** Follow the [accepted Slice-4 design](../specs/2026-07-17-slice-4-high-risk-design.md), including Amendment A2, architecture §7.7/§7.8a/§8.1, and the four-act IR pipeline. Act II produces the balanced container grammar plus A2's existing allocated `HEADER(level, text)` leaf, Act III preserves structural/raw leaves, and Act IV renders those frames and headers; no parser, token number, structural role, or participant is added.
+**Architecture:** Follow the [accepted Slice-4 design](../specs/2026-07-17-slice-4-high-risk-design.md), including Amendments A2 and A3, architecture §7.7/§7.8a/§8.1, and the four-act IR pipeline. Act II produces the balanced container grammar plus A2's existing allocated `HEADER(level, text)` leaf and A3's final-blank tight-list rollback, Act III preserves structural/raw leaves, and Act IV renders those frames and headers; no parser, token number, structural role, or participant is added.
 
 **Tech Stack:** Python 3.13, typed splc IR, generated Shakespeare SPL, TOML-controlled literary surfaces, pytest, local Markdown.pl 1.0.2b8 strict oracle.
 
@@ -19,6 +19,7 @@
   Amendment A1.  The checked-in fixture remains the normalized-mdtest corpus;
   its Markdown-1.0.1 indentation is not a second raw-byte acceptance target.
 - Amendment A2 authorizes only `HEADER = 2`'s new `TokenArity(1, True)` row and bounded top-level ATX path as a prerequisite of Task 4 Step 2. A needed token, third participant, structural-role change, broader header syntax/container handling, unreserved surface, or any other fixture requirement outside the accepted design is `- BLOCK[plan]: ...` in `.agent/blockers.md` followed by a clean stop.
+- Amendment A3 authorizes only the five-scene Act-II provisional-looseness rollback and its four listed spares.  It preserves the existing list token grammar and Act-IV renderer: stage a final blank provisionally, commit looseness only after an accepted continuation or sibling, and restore tightness plus staged glyph order at EOF/list termination.  A need beyond those five labels/four spares is `- BLOCK[plan]: ...` followed by a clean stop.
 - Every SPL/TOML checkpoint runs the exact generated/literary gate and the Amps proof named in the design.  Every checkpoint commit contains the configured provenance trailers and is pushed; a failed push records one blocker and stops.
 
 ```bash
@@ -186,6 +187,8 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Add the Amendment-A2-reserved `PASS_HEADER_*` and `SCRIBE_HEADER_*` TOML entries before labels are used.  Add only `HEADER: TokenArity(1, True)` to `src_ir/tokens.py` and the matching documentation row; do not renumber a code or change a structural role.  In Act II, run the bounded top-level ATX candidate before the existing HR/list routes: count one through six leading hashes, require a following space/tab, stage non-empty line text, trim only a whitespace-preceded closing hash run, emit `HEADER`, its level, and text, or reverse-replay every rejected glyph to the paragraph route.  In Act III, add only the generic arity traversal required by that row.  In Act IV, validate level 1–6 and render `<h{level}>` plus the existing span-processed text and matching close with the normal separator.  Then add the reserved `PASS_LISTS_*` and `SCRIBE_LIST_*` entries.  Extend marker scanning to multi-digit ordered labels and up-to-three-space top-level indentation; classify tight/loose by blank lines; retain multiple paragraph leaves; recursively open/close nested list frames; and replay failed candidates byte-for-byte.  In Act IV, use only explicit frames and `ITEM_CLOSE` to render loose paragraphs, nested kind transitions, and list/item closings.  Do not add a token, alter a token number or structural role, broaden headers beyond A2, or replace the parser with a fixture-specific output path.
 
+  For the remaining fixture-tail case, use only Amendment A3's ready-to-paste Act-II labels: `PASS_LISTS_LOOSE_PROVISION` stages the current tight item payload and frame state when a blank is seen; `PASS_LISTS_LOOSE_COMMIT` preserves loose state only after a validated continuation or sibling; `PASS_LISTS_LOOSE_EOF` recognizes EOF/list termination before a continuation; `PASS_LISTS_LOOSE_ROLLBACK` restores the tight payload; and `PASS_LISTS_LOOSE_REPLAY` requeues saved boundary glyphs, in source order, into the existing explicit close route.  The final nested tab item followed by a list-ending blank must remain tight (no `<p>` wrapper); a real blank-separated continuation remains loose.  Do not emit `HR`, synthesize a paragraph, change an `ITEM_CLOSE`/`LIST_CLOSE` order, or add any Act-IV branch.  The four A3 `*_GUARD` labels are the only remaining Act-II list spares.
+
   Run:
 
   ```bash
@@ -241,4 +244,4 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 ## Plan self-review
 
-The three §7.7 fixtures map one-to-one to Tasks 2–4; Task 1 proves the shipped floor and Task 5 supplies the full four-gate close. The accepted design supplies the bounded HTML surface, balanced quote/list grammar, explicit no-new-token authority, and ready-to-paste literary pool with derived working/spare counts. Every SPL-facing task names generated-fragment, parse, validation, literary, Amps, fixture, strict-oracle, and spike gates; all fixture claims remain strict-byte claims.
+The three §7.7 fixtures map one-to-one to Tasks 2–4; Task 1 proves the shipped floor and Task 5 supplies the full four-gate close. The accepted design supplies the bounded HTML surface, balanced quote/list grammar, A2 header prerequisite, A3 final-blank rollback, explicit no-new-token authority, and ready-to-paste literary pool with derived working/spare counts. Every SPL-facing task names generated-fragment, parse, validation, literary, Amps, fixture, strict-oracle, and spike gates; all fixture claims remain strict-byte claims.

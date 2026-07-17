@@ -65,6 +65,43 @@ syntax, or fixture-specific output path.  The `LIST_OPEN(kind)`,
 all Spike-A/B stream expectations remain immutable.  Any need beyond this
 bounded header leaf remains `BLOCK[plan]`.
 
+## Amendment A3 — reserve the final-blank tight-list rollback (2026-07-17)
+
+Task 4 Step 2 has consumed the original three Act-II list spares
+(`PASS_LISTS_INDENT_GUARD`, `PASS_LISTS_NEST_GUARD`, and
+`PASS_LISTS_FULL_GUARD`) while completing the multi-level blank-line route.
+The remaining fixture-tail defect is narrower: after a blank line, Act II
+must not leave the final nested tab-delimited item marked loose when that
+blank ends the entire list.  The token grammar, all token numbers and roles,
+participants, Act III traversal, and Act-IV rendering remain frozen.
+
+This amendment authorizes an Act-II-only provisional-looseness transaction:
+stage the item's prior tight payload and list-frame state when the blank is
+seen; commit the loose classification only when a real continuation or sibling
+is accepted; and, at EOF/list termination, restore the staged tight payload
+before emitting the existing explicit `TEXT_END`, `ITEM_CLOSE`, and
+`LIST_CLOSE` sequence.  The rollback must requeue every staged glyph in source
+order and must not synthesize a paragraph, `HR`, token, or Act-IV special case.
+The existing `PASS_LISTS_*` close routes own final frame closure.
+
+The following five labels are the derived working ledger for that transaction:
+
+| Label | State transition |
+|---|---|
+| `PASS_LISTS_LOOSE_PROVISION` | Stage the prior item payload and frame state when a blank first makes looseness possible. |
+| `PASS_LISTS_LOOSE_COMMIT` | Commit the staged loose state only after an accepted indented continuation or sibling marker. |
+| `PASS_LISTS_LOOSE_EOF` | Detect that the provisional blank reaches EOF or the terminating list boundary. |
+| `PASS_LISTS_LOOSE_ROLLBACK` | Restore the staged tight payload before the existing explicit close sequence. |
+| `PASS_LISTS_LOOSE_REPLAY` | Requeue the saved boundary glyphs in source order and re-enter the existing list-close route. |
+
+Act II's list ledger is consequently 18 working scenes (the original ten,
+the three previously spare guards now in use, and these five) and four fresh
+spares.  Four is both the required minimum and more than 20% of the 18-scene
+working pool.  No Act-IV surface is added because the rollback preserves the
+existing explicit grammar before Act IV receives it.  Any need for an
+additional state beyond the five working labels or four spares is again
+`BLOCK[plan]`.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
@@ -132,14 +169,14 @@ The work is sequenced by interaction risk:
 The implementation must reuse existing `PASS_LISTS_*`, `PASS_QUOTE_*`,
 `SCRIBE_LIST_*`, and `SCRIBE_BLOCKQUOTE_*` surfaces wherever their current
 meaning remains exact.  The following is the complete new controlled pool.
-Its working count is derived from the scene ledger below: Act II has 22
-working scenes and 5 spares; Act IV has 16 working scenes and 4 spares.  This
+Its working count is derived from the scene ledger below: Act II has 30
+working scenes and 6 spares; Act IV has 16 working scenes and 4 spares.  This
 meets the required at-least-20%-and-four spare rule.  Add these entries to
 `src/literary.toml` in the same checkpoint that first introduces the label.
 
 | Act | Family | Working labels | Spare labels |
 |---|---|---|---|
-| II | HTML 6; quote 6; list 10 | `PASS_HTML_BLOCK_OPEN`, `PASS_HTML_BLOCK_NAME`, `PASS_HTML_BLOCK_ATTR`, `PASS_HTML_BLOCK_DEPTH_OPEN`, `PASS_HTML_BLOCK_DEPTH_CLOSE`, `PASS_HTML_BLOCK_FINISH`; `PASS_QUOTE_NEST_OPEN`, `PASS_QUOTE_NEST_CLOSE`, `PASS_QUOTE_NEST_DEPTH`, `PASS_QUOTE_NEST_BLANK`, `PASS_QUOTE_NEST_REPLAY`, `PASS_QUOTE_NEST_FINISH`; `PASS_LISTS_INDENT_ONE`, `PASS_LISTS_INDENT_TWO`, `PASS_LISTS_INDENT_THREE`, `PASS_LISTS_MARKER_DIGIT`, `PASS_LISTS_MARKER_DOT`, `PASS_LISTS_CONTINUE`, `PASS_LISTS_NEST_OPEN`, `PASS_LISTS_NEST_CLOSE`, `PASS_LISTS_LOOSE`, `PASS_LISTS_FULL_FINISH` | `PASS_HTML_BLOCK_GUARD`, `PASS_QUOTE_NEST_GUARD`, `PASS_LISTS_INDENT_GUARD`, `PASS_LISTS_NEST_GUARD`, `PASS_LISTS_FULL_GUARD` |
+| II | HTML 6; quote 6; list 18 | `PASS_HTML_BLOCK_OPEN`, `PASS_HTML_BLOCK_NAME`, `PASS_HTML_BLOCK_ATTR`, `PASS_HTML_BLOCK_DEPTH_OPEN`, `PASS_HTML_BLOCK_DEPTH_CLOSE`, `PASS_HTML_BLOCK_FINISH`; `PASS_QUOTE_NEST_OPEN`, `PASS_QUOTE_NEST_CLOSE`, `PASS_QUOTE_NEST_DEPTH`, `PASS_QUOTE_NEST_BLANK`, `PASS_QUOTE_NEST_REPLAY`, `PASS_QUOTE_NEST_FINISH`; `PASS_LISTS_INDENT_ONE`, `PASS_LISTS_INDENT_TWO`, `PASS_LISTS_INDENT_THREE`, `PASS_LISTS_MARKER_DIGIT`, `PASS_LISTS_MARKER_DOT`, `PASS_LISTS_CONTINUE`, `PASS_LISTS_NEST_OPEN`, `PASS_LISTS_NEST_CLOSE`, `PASS_LISTS_LOOSE`, `PASS_LISTS_FULL_FINISH`, `PASS_LISTS_INDENT_GUARD`, `PASS_LISTS_NEST_GUARD`, `PASS_LISTS_FULL_GUARD`, `PASS_LISTS_LOOSE_PROVISION`, `PASS_LISTS_LOOSE_COMMIT`, `PASS_LISTS_LOOSE_EOF`, `PASS_LISTS_LOOSE_ROLLBACK`, `PASS_LISTS_LOOSE_REPLAY` | `PASS_HTML_BLOCK_GUARD`, `PASS_QUOTE_NEST_GUARD`, `PASS_LISTS_LOOSE_GUARD`, `PASS_LISTS_LOOSE_EOF_GUARD`, `PASS_LISTS_LOOSE_ROLLBACK_GUARD`, `PASS_LISTS_LOOSE_REPLAY_GUARD` |
 | IV | HTML 3; quote 5; list 8 | `SCRIBE_RAW_HTML_ADVANCED`, `SCRIBE_RAW_HTML_ADVANCED_SEP`, `SCRIBE_RAW_HTML_ADVANCED_CLOSE`; `SCRIBE_QUOTE_NEST_OPEN`, `SCRIBE_QUOTE_NEST_CLOSE`, `SCRIBE_QUOTE_NEST_INDENT`, `SCRIBE_QUOTE_NEST_RETURN`, `SCRIBE_QUOTE_NEST_FINISH`; `SCRIBE_LIST_DEPTH_OPEN`, `SCRIBE_LIST_DEPTH_CLOSE`, `SCRIBE_LIST_LOOSE_BEGIN`, `SCRIBE_LIST_LOOSE_CLOSE`, `SCRIBE_LIST_NEST_RETURN`, `SCRIBE_LIST_ITEM_PARAGRAPH`, `SCRIBE_LIST_ITEM_CLOSE_FINAL`, `SCRIBE_LIST_FULL_FINISH` | `SCRIBE_RAW_HTML_ADVANCED_GUARD`, `SCRIBE_QUOTE_NEST_GUARD`, `SCRIBE_LIST_DEPTH_GUARD`, `SCRIBE_LIST_FULL_GUARD` |
 
 ```toml
@@ -225,6 +262,37 @@ title = "The inner rank keeps its faithful border."
 pattern = "bare_statement"
 [scenes.PASS_LISTS_FULL_GUARD]
 title = "The ordered host keeps one final watch."
+pattern = "bare_statement"
+
+# Amendment A3 final-blank tight-list rollback working pool
+[scenes.PASS_LISTS_LOOSE_PROVISION]
+title = "Lady Macbeth holds the rank before its silence."
+pattern = "scene_of_character"
+[scenes.PASS_LISTS_LOOSE_COMMIT]
+title = "Macbeth lets the waiting rank take breath."
+pattern = "scene_of_character"
+[scenes.PASS_LISTS_LOOSE_EOF]
+title = "The silent rank meets the page's last watch."
+pattern = "bare_statement"
+[scenes.PASS_LISTS_LOOSE_ROLLBACK]
+title = "Lady Macbeth restores the rank's close order."
+pattern = "scene_of_character"
+[scenes.PASS_LISTS_LOOSE_REPLAY]
+title = "Macbeth returns the held border to the host."
+pattern = "scene_of_character"
+
+# Amendment A3 Act-II spare pool; do not use without a further plan amendment.
+[scenes.PASS_LISTS_LOOSE_GUARD]
+title = "The waiting rank keeps one sure watch."
+pattern = "bare_statement"
+[scenes.PASS_LISTS_LOOSE_EOF_GUARD]
+title = "The last rank keeps its faithful border."
+pattern = "bare_statement"
+[scenes.PASS_LISTS_LOOSE_ROLLBACK_GUARD]
+title = "The restored rank keeps its settled line."
+pattern = "bare_statement"
+[scenes.PASS_LISTS_LOOSE_REPLAY_GUARD]
+title = "The held border keeps its homeward course."
 pattern = "bare_statement"
 
 [scenes.SCRIBE_RAW_HTML_ADVANCED]
