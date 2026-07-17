@@ -92,6 +92,7 @@ _IMPLEMENTED_FIXTURES = {
     "Links, reference style",
     "Links, shortcut references",
     "Literal quotes in titles",
+    "Nested blockquotes",
     "Strong and em together",
     "Tabs",
 }
