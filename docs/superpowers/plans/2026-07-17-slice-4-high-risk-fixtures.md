@@ -135,7 +135,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: FAIL on current one-depth scheduling or rendering.
 
-- [ ] **Step 2: Implement balanced quote depth without changing Spike-B grammar.** Add the reserved `PASS_QUOTE_NEST_*` and `SCRIBE_QUOTE_NEST_*` TOML entries. Extend only quote-owned Act-II routes so each new marker depth pushes a matched frame and each outdent/EOF closes in reverse order; do not route through or mutate `PASS_LISTS_RAW_NEXT`, list marker recognition, token codes, or the Spike-B explicit item grammar. Extend Act IV's quote frame dispatch so nested open/close output is byte-identical to `INSTALLED_ORACLE_NESTED_BLOCKQUOTES`: preserve the installed 1.0.2b8 oracle's two-space outer first line and nested opening, with no additional indent on the nested paragraph/close. Return to the correct parent frame; do not implement the checked fixture's four-space inner layout.
+- [x] **Step 2: Implement balanced quote depth without changing Spike-B grammar.** Add the reserved `PASS_QUOTE_NEST_*` and `SCRIBE_QUOTE_NEST_*` TOML entries. Extend only quote-owned Act-II routes so each new marker depth pushes a matched frame and each outdent/EOF closes in reverse order; do not route through or mutate `PASS_LISTS_RAW_NEXT`, list marker recognition, token codes, or the Spike-B explicit item grammar. Extend Act IV's quote frame dispatch so nested open/close output is byte-identical to `INSTALLED_ORACLE_NESTED_BLOCKQUOTES`: preserve the installed 1.0.2b8 oracle's two-space outer first line and nested opening, with no additional indent on the nested paragraph/close. Return to the correct parent frame; do not implement the checked fixture's four-space inner layout.
 
   Run:
 

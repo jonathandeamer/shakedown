@@ -661,3 +661,31 @@ pattern = "bare_statement"
 [scenes.PASS_HTML_BLOCK_ATTR]
 title = "Lady Macbeth keeps the wall's private sign."
 pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_NEST_OPEN]
+title = "Lady Macbeth opens the echo within the echo."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_NEST_CLOSE]
+title = "Macbeth closes the echo's inner chamber."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_NEST_DEPTH]
+title = "Lady Macbeth counts the echo's shadowed rooms."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_NEST_BLANK]
+title = "The echo keeps its measured silent room."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_NEST_REPLAY]
+title = "Macbeth restores the echo's outer word."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_NEST_FINISH]
+title = "Lady Macbeth frees the finished echo."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_NEST_GUARD]
+title = "The echo keeps one guarded return."
+pattern = "bare_statement"

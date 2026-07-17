@@ -114,14 +114,6 @@ pattern = "scene_of_character"
 title = "Prospero parts the chamber in two."
 pattern = "scene_of_character"
 
-[scenes.SCRIBE_EMIT_PARAGRAPH_CLOSE]
-title = "Prospero closes one quiet chamber."
-pattern = "scene_of_character"
-
-[scenes.SCRIBE_EMIT_PARAGRAPH_OPEN]
-title = "Prospero opens one quiet chamber."
-pattern = "scene_of_character"
-
 [scenes.SCRIBE_EMIT_PAYLOAD]
 title = "One glyph is released."
 pattern = "bare_statement"
@@ -296,6 +288,31 @@ pattern = "scene_of_character"
 
 [characters.prospero.recall]
 code_leaf_mark = "Recall the indented chamber mark."
+
+[scenes.SCRIBE_QUOTE_NEST_OPEN]
+title = "Prospero opens the echo's inward hall."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_QUOTE_NEST_CLOSE]
+title = "Prospero closes the echo's inward hall."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_QUOTE_NEST_INDENT]
+title = "Puck lays two pale steps beneath the echo."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_QUOTE_NEST_RETURN]
+title = "Puck returns the echo to its outer shore."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_QUOTE_NEST_FINISH]
+title = "Prospero releases the layered echo."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_QUOTE_NEST_GUARD]
+title = "The layered echo keeps one noble measure."
+pattern = "bare_statement"
+
 [scenes.SCRIBE_RAW_HTML]
 title = "Prospero releases the unbroken courtly mark."
 pattern = "scene_of_character"

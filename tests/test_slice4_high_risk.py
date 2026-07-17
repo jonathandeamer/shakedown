@@ -14,6 +14,11 @@ import subprocess
 
 import pytest
 
+from tests.test_act4_slice4 import (
+    INSTALLED_ORACLE_NESTED_BLOCKQUOTES,
+    NESTED_QUOTE_BLANK_AT_OUTER_MARKER,
+    NESTED_QUOTE_BLANK_AT_OUTER_MARKER_HTML,
+)
 from tests.test_mdtest import (
     _FIXTURES_BY_NAME,
     _IMPLEMENTED_FIXTURES,
@@ -58,4 +63,25 @@ def test_advanced_html_release_binary_contract() -> None:
 
 
 def test_nested_quote_release_binary_contract() -> None:
-    _release_binary_fixture_contract("Nested blockquotes")
+    input_path, _ = _FIXTURES_BY_NAME["Nested blockquotes"]
+    result = subprocess.run(
+        [str(BINARY)],
+        input=input_path.read_text(),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == INSTALLED_ORACLE_NESTED_BLOCKQUOTES
+
+
+def test_nested_quote_marker_only_blank_release_binary_contract() -> None:
+    result = subprocess.run(
+        [str(BINARY)],
+        input=NESTED_QUOTE_BLANK_AT_OUTER_MARKER,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == NESTED_QUOTE_BLANK_AT_OUTER_MARKER_HTML

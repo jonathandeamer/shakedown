@@ -24,6 +24,7 @@ STEP_LIMIT = 500_000
 
 ADVANCED_HTML = '<div>\n<div style=">"/>\n</div>\n'
 NESTED_QUOTE = "> foo\n>\n> > bar\n>\n> foo\n"
+NESTED_QUOTE_BLANK_AT_OUTER_MARKER = "> > a\n>\n> > b\n"
 FULL_LIST = "1. First\n2. Second:\n\t* Fee\n\t* Fie\n3. Third\n"
 
 _ADVANCED_HTML_FIXTURE = (
@@ -146,6 +147,17 @@ def test_nested_quote_blank_quoted_line_stays_inside_the_same_depth() -> None:
         (tokens.BLOCKQUOTE_OPEN, None),
         (tokens.PARA, "a"),
         (tokens.PARA, "b"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
+    ]
+
+
+def test_nested_quote_marker_only_blank_preserves_the_inner_depth() -> None:
+    assert _decoded_pairs(NESTED_QUOTE_BLANK_AT_OUTER_MARKER) == [
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.PARA, "a"),
+        (tokens.PARA, "b"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
         (tokens.BLOCKQUOTE_CLOSE, None),
     ]
 
