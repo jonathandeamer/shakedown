@@ -657,3 +657,7 @@ pattern = "scene_of_character"
 [scenes.PASS_QUOTE_TOP_CONTINUE_BLANK]
 title = "The upper echo yields one measured silence."
 pattern = "bare_statement"
+
+[scenes.PASS_HTML_BLOCK_ATTR]
+title = "Lady Macbeth keeps the wall's private sign."
+pattern = "scene_of_character"

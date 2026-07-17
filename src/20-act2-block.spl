@@ -178,6 +178,12 @@ Lady Macbeth:
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_FINISH.
 
+Lady Macbeth:
+ Are you as mighty as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HTML_BLOCK_ATTR.
+
 Hecate:
  Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
 
@@ -246,6 +252,41 @@ Horatio:
 
 Lady Macbeth:
  You are as mighty as a cursed wolf.
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_NEXT.
+
+
+                    Scene @PASS_HTML_BLOCK_ATTR: @LIT.scenes.PASS_HTML_BLOCK_ATTR.title
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Horatio:
+ Remember the difference between a miserable beggar and a brother.
+
+Horatio:
+ Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+
+Horatio:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+
+Horatio:
+ Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+
+Horatio:
+ Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a black cat.
+
+Horatio:
+ Remember Hecate.
+
+Lady Macbeth:
+ You are as villainous as a cursed wolf.
 
 [Exit Horatio]
 

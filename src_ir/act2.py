@@ -133,6 +133,7 @@ ACT: Act = act(
             "PASS_QUOTE_REPLAY",
             *_read(),
             branch(eq(val(HECATE), const(62)), then="PASS_QUOTE_FINISH"),
+            branch(eq(val(HECATE), _SPACE), then="PASS_HTML_BLOCK_ATTR"),
             push(LADY_MACBETH, _HTML_OPEN),
             push(LADY_MACBETH, const(100)),
             push(LADY_MACBETH, const(105)),
@@ -157,6 +158,20 @@ ACT: Act = act(
             push(LADY_MACBETH, const(105)),
             push(LADY_MACBETH, const(118)),
             push(LADY_MACBETH, const(62)),
+            let(HORATIO, _RAW_HTML_MODE),
+            goto("PASS_LISTS_RAW_NEXT"),
+            companion=HORATIO,
+        ),
+        # An attributed opening tag keeps its whole raw run: the separating
+        # space and every attribute glyph flow into the leaf untouched.
+        scene(
+            "PASS_HTML_BLOCK_ATTR",
+            push(LADY_MACBETH, _RAW_HTML_START),
+            push(LADY_MACBETH, _HTML_OPEN),
+            push(LADY_MACBETH, const(100)),
+            push(LADY_MACBETH, const(105)),
+            push(LADY_MACBETH, const(118)),
+            push(LADY_MACBETH, val(HECATE)),
             let(HORATIO, _RAW_HTML_MODE),
             goto("PASS_LISTS_RAW_NEXT"),
             companion=HORATIO,

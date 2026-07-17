@@ -86,7 +86,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: FAIL because current simple recognition does not balance attributed/nested blocks.
 
-- [ ] **Step 2: Implement only the accepted raw-block expansion.** Add the design-reserved `PASS_HTML_BLOCK_*` and `SCRIBE_RAW_HTML_ADVANCED*` TOML entries before their labels are used. In Act II, recognize a left-margin `div` opening with attributes, retain raw glyphs, and track only fixture-required nested matching `div` depth through a matching close followed by the Markdown.pl blank/EOF boundary. On a non-match, reverse-replay every staged glyph to the existing paragraph route. Act IV consumes the unchanged raw leaf and uses the reserved separator path; Act III and `src_ir/tokens.py` stay unchanged unless its focused contract proves otherwise.
+- [x] **Step 2: Implement only the accepted raw-block expansion.** Add the design-reserved `PASS_HTML_BLOCK_*` and `SCRIBE_RAW_HTML_ADVANCED*` TOML entries before their labels are used. In Act II, recognize a left-margin `div` opening with attributes, retain raw glyphs, and track only fixture-required nested matching `div` depth through a matching close followed by the Markdown.pl blank/EOF boundary. On a non-match, reverse-replay every staged glyph to the existing paragraph route. Act IV consumes the unchanged raw leaf and uses the reserved separator path; Act III and `src_ir/tokens.py` stay unchanged unless its focused contract proves otherwise.
 
   Run:
 
