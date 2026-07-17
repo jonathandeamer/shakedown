@@ -37,3 +37,8 @@ reason = "Branch head is already reachable from main as commit 6e7626735df3623d5
 head = "e60e0fe7676f7e5e1e1f89e36c9a84c953f96dfd"
 disposition = "integrated"
 reason = "Branch head is exactly main and origin/main at e60e0fe7676f7e5e1e1f89e36c9a84c953f96dfd (`docs: mark slice 3 html red step complete`); `git merge-base --is-ancestor` succeeds and both `git log main..branch` and `git diff --stat main...branch` are empty."
+
+[branches."implement-add42130d5e6432cb459bcd08a95ce01-codex-implement"]
+head = "3d6fb4bb6fa24900da45b4351906b75ef0b55735"
+disposition = "superseded"
+reason = "Its two Task-1 checkbox changes were independently replayed and evidenced on main in 6508c33243025121ca0dd4c4d974fed8f7d99012 (`docs: reconcile slice four baseline proof`); the original one-commit branch remains unmerged and is not a production merge candidate."

@@ -38,7 +38,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 ## Reconciliation record
 
-`implement-add42130d5e6432cb459bcd08a95ce01-codex-implement@3d6fb4bb6fa24900da45b4351906b75ef0b55735` was a one-commit child of `main@91a26ce5f2ebd33fd4bf334352c9f08cce79af12` whose only content was to mark Task 1 Steps 1–2 complete.  It was not merged into `main`.  On 2026-07-17 this plan replayed that disposition after independently re-running Step 2's exact evidence gate on `main`: 43 passed / 9 skipped for mdtest plus architecture spikes, strict parity `5/5 byte-identical`, the two required smoke cases passed, and the Task-1 plan-policy gate passed 9 tests.  This reconciliation changes no production behavior and does not amend the accepted Slice-4 design.
+`implement-add42130d5e6432cb459bcd08a95ce01-codex-implement@3d6fb4bb6fa24900da45b4351906b75ef0b55735` was a one-commit child of `main@91a26ce5f2ebd33fd4bf334352c9f08cce79af12` whose only content was to mark Task 1 Steps 1–2 complete.  It was not merged into `main`.  On 2026-07-17 this plan replayed that disposition after independently re-running Step 2's exact evidence gate on `main`: 43 passed / 9 skipped for mdtest plus architecture spikes, strict parity `5/5 byte-identical`, the two required smoke cases passed, and the Task-1 plan-policy gate passed 9 tests.  The terminal `superseded` ledger entry binds that exact branch head to the replayed `main` checkpoint `6508c33243025121ca0dd4c4d974fed8f7d99012`; it neither merges nor deletes the branch.  This reconciliation changes no production behavior and does not amend the accepted Slice-4 design.
 
 ---
 
