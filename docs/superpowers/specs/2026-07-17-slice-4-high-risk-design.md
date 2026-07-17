@@ -4,6 +4,29 @@
 **Status:** accepted for roadmap row 7 planning
 **Authority:** architecture §7.7, §7.8a, §8.1–§8.3; Spike A and Spike B accepted designs.
 
+## Amendment A1 — installed-oracle authority for nested blockquotes (2026-07-17)
+
+The executable used by the repository's strict-parity harness is
+`~/markdown/Markdown.pl`, whose version header is currently `1.0.2b8`.
+For Slice 4's deterministic strict-parity gates, that executable is the
+authority.  A fixture file remains the normalized-mdtest regression corpus;
+it is not a competing raw-byte authority when it disagrees with this
+executable.  Auto links remains the sole entity-normalized exception.
+
+This resolves the documented one-flag `_DoBlockQuotes` drift: the installed
+oracle uses `$bq =~ s/^/  /g;`, without `/m`.  Task 3 must therefore emit its
+exact layout: the outer body's first line and the nested opening begin with
+two spaces, while the nested paragraph and its close are not additionally
+indented.  It must not emit the Markdown 1.0.1 / checked-fixture four-space
+inner layout.  The required balanced `BLOCKQUOTE_CLOSE` stream and the
+Spike-B list grammar are unchanged.
+
+`tests/test_mdtest.py` keeps its established normalized fixture comparison;
+Task 3's focused exact-output contract and the strict parity harness are the
+indentation-sensitive acceptance gates.  This is a Slice-4 planning decision,
+not authorization to change checked-in fixtures, to invoke Markdown.pl at
+runtime, or to weaken strict parity.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
@@ -22,7 +45,8 @@ The work is sequenced by interaction risk:
 2. Nested blockquotes make Act II emit one balanced `BLOCKQUOTE_OPEN` /
    `BLOCKQUOTE_CLOSE` pair per marker depth.  Blank quoted lines remain within
    their current depth and an outdented line closes exactly the required quote
-   frames.  Act IV nests the existing two-space indent per open quote frame.
+   frames.  Act IV reproduces the installed-oracle layout fixed by Amendment
+   A1 while preserving one frame per token nesting.
 3. Full lists lift the Spike-A narrowings: multi-digit ordered markers,
    top-level indentation up to three spaces, tab/space marker separation,
    arbitrary fixture-required nesting, loose multi-paragraph items, and the
@@ -54,7 +78,7 @@ The work is sequenced by interaction risk:
 |---|---|
 | Act II → III | Only `PARA`, `HEADER`, `HR`, `LIST_OPEN`, `LIST_ITEM`, `ITEM_CLOSE`, `LIST_CLOSE`, `BLOCKQUOTE_OPEN`, `BLOCKQUOTE_CLOSE`, `CODE_BLOCK`, and `RAW_HTML_HASH` cross the boundary, with `src_ir/tokens.py` arities unchanged. |
 | Act III → IV | Structural codes and `RAW_HTML_HASH` payload bytes pass through unchanged; span processing is restricted to text-bearing Markdown leaves. |
-| Act IV | Prospero's frame stack is balanced for every container token; nested quote output adds two spaces per quote depth, and list item ownership remains explicit through `ITEM_CLOSE`. |
+| Act IV | Prospero's frame stack is balanced for every container token; nested quote output follows Amendment A1's installed-oracle indentation layout, and list item ownership remains explicit through `ITEM_CLOSE`. |
 | Tests | Fast IR tests expose streams and HTML; mdtest runs fast IR and release `./shakedown`; `scripts/strict_parity_harness.py` is the implementation parity authority. |
 
 ## Fixture-derived acceptance inventory
@@ -62,7 +86,7 @@ The work is sequenced by interaction risk:
 | Fixture | Required cases |
 |---|---|
 | Inline HTML (Advanced) | one-line `div`; three-level nested `div`; `style=\">\"`; indented attributed inner `div`; blank-boundary preservation; final attributed nested pair. |
-| Nested blockquotes | outer paragraph, quoted blank lines, a second-depth quote, return to outer depth, matched closures and four-space inner HTML indentation. |
+| Nested blockquotes | outer paragraph, quoted blank lines, a second-depth quote, return to outer depth, matched closures, and Amendment A1's installed-oracle indentation layout. |
 | Ordered and unordered lists | `*`/`+`/`-`; ordered tab and space separators; loose/tight distinction; multiple paragraphs; three-level nesting; ordered-to-unordered nesting; loose nested list; and the fixture's final Markdown-1.0.1 oddity. |
 
 ## Literary reservation

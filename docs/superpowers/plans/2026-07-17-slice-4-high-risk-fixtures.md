@@ -6,7 +6,7 @@
 
 **Architecture:** Follow the [accepted Slice-4 design](../specs/2026-07-17-slice-4-high-risk-design.md), architecture §7.7/§7.8a/§8.1, and the four-act IR pipeline. Act II produces the existing balanced token grammar, Act III preserves structural/raw leaves, and Act IV renders the balanced frames; no parser, token code, or participant is added.
 
-**Tech Stack:** Python 3.13, typed splc IR, generated Shakespeare SPL, TOML-controlled literary surfaces, pytest, local Markdown.pl v1.0.1.
+**Tech Stack:** Python 3.13, typed splc IR, generated Shakespeare SPL, TOML-controlled literary surfaces, pytest, local Markdown.pl 1.0.2b8 strict oracle.
 
 ## Global Constraints
 
@@ -14,6 +14,10 @@
 - Before any SPL-facing change read `docs/superpowers/notes/spl-literary-protocol.md`, `docs/superpowers/notes/correctness-first-spl-workflow.md`, `docs/spl/literary-spec.md`, `docs/spl/style-lexicon.md`, `docs/spl/codegen-style-guide.md`, `src/literary.toml`, `docs/markdown/html-block-boundaries.md`, and `docs/markdown/list-mechanics.md`.
 - Edit generated acts only through `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`.  Never hand-edit `src/*.spl` generated fragments or `shakedown.spl`.
 - Enable a fixture in `tests/test_mdtest.py` only in its green checkpoint.  Never change expected fixture files or invoke Markdown.pl at runtime.
+- For `Nested blockquotes`, the strict-byte authority is the installed
+  `~/markdown/Markdown.pl` 1.0.2b8 executable, as fixed by Slice-4 design
+  Amendment A1.  The checked-in fixture remains the normalized-mdtest corpus;
+  its Markdown-1.0.1 indentation is not a second raw-byte acceptance target.
 - A needed token, third participant, structural-grammar change, unreserved surface, or a fixture requirement outside the accepted design is `- BLOCK[plan]: ...` in `.agent/blockers.md` followed by a clean stop.
 - Every SPL/TOML checkpoint runs the exact generated/literary gate and the Amps proof named in the design.  Every checkpoint commit contains the configured provenance trailers and is pushed; a failed push records one blocker and stops.
 
@@ -111,15 +115,27 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 **Files:** Modify `src_ir/act2.py`, `src_ir/act4.py`, `src/literary.toml`, `tests/test_act2_slice4.py`, `tests/test_act4_slice4.py`, `tests/test_slice4_high_risk.py`, `tests/test_act2_contracts.py`, `tests/test_act2_frame_floors.py`, and `tests/test_mdtest.py`; regenerate Acts II/IV and release SPL.
 
-**Interfaces:** For every `>` depth, Act II emits a balanced `BLOCKQUOTE_OPEN`; blank quoted lines remain inside the current depth; an outdent emits the matching close(s) before replaying the next block. Act IV keeps one quote frame per token nesting and indents emitted inner lines by two spaces per frame.
+**Interfaces:** For every `>` depth, Act II emits a balanced `BLOCKQUOTE_OPEN`; blank quoted lines remain inside the current depth; an outdent emits the matching close(s) before replaying the next block. Act IV keeps one quote frame per token nesting and renders the installed-oracle indentation layout fixed by design Amendment A1.
 
-- [x] **Step 1: Turn only nested-quote contracts red.** Replace its xfail with an exact decoded token-stream assertion for `Nested blockquotes`: `BLOCKQUOTE_OPEN; PARA(foo); BLOCKQUOTE_OPEN; PARA(bar); BLOCKQUOTE_CLOSE; PARA(foo); BLOCKQUOTE_CLOSE`. Add focused probes for quoted blank lines, a one-level return, and an unquoted final paragraph. Assert the full fixture bytes in both fast IR and release binary while mdtest remains disabled.
+- [x] **Step 1: Turn only nested-quote contracts red.** Replace its xfail with an exact decoded token-stream assertion for `Nested blockquotes`: `BLOCKQUOTE_OPEN; PARA(foo); BLOCKQUOTE_OPEN; PARA(bar); BLOCKQUOTE_CLOSE; PARA(foo); BLOCKQUOTE_CLOSE`. Add focused probes for quoted blank lines, a one-level return, and an unquoted final paragraph. Assert the full output in both fast IR and release binary against the installed-oracle literal below while mdtest remains disabled; do not use `_normalize_fixture_output` for this contract:
+
+  ```python
+  INSTALLED_ORACLE_NESTED_BLOCKQUOTES = (
+      "<blockquote>\\n"
+      "  <p>foo</p>\\n\\n"
+      "<blockquote>\\n"
+      "  <p>bar</p>\\n"
+      "</blockquote>\\n\\n"
+      "<p>foo</p>\\n"
+      "</blockquote>\\n"
+  )
+  ```
 
   Run: `uv run pytest tests/test_act2_slice4.py tests/test_act4_slice4.py tests/test_slice4_high_risk.py -k nested_quote -q`
 
   Expected: FAIL on current one-depth scheduling or rendering.
 
-- [ ] **Step 2: Implement balanced quote depth without changing Spike-B grammar.** Add the reserved `PASS_QUOTE_NEST_*` and `SCRIBE_QUOTE_NEST_*` TOML entries. Extend only quote-owned Act-II routes so each new marker depth pushes a matched frame and each outdent/EOF closes in reverse order; do not route through or mutate `PASS_LISTS_RAW_NEXT`, list marker recognition, token codes, or the Spike-B explicit item grammar. Extend Act IV's quote frame dispatch so nested open/close output has the fixture's exact two-space-per-depth layout and returns to the correct parent frame.
+- [ ] **Step 2: Implement balanced quote depth without changing Spike-B grammar.** Add the reserved `PASS_QUOTE_NEST_*` and `SCRIBE_QUOTE_NEST_*` TOML entries. Extend only quote-owned Act-II routes so each new marker depth pushes a matched frame and each outdent/EOF closes in reverse order; do not route through or mutate `PASS_LISTS_RAW_NEXT`, list marker recognition, token codes, or the Spike-B explicit item grammar. Extend Act IV's quote frame dispatch so nested open/close output is byte-identical to `INSTALLED_ORACLE_NESTED_BLOCKQUOTES`: preserve the installed 1.0.2b8 oracle's two-space outer first line and nested opening, with no additional indent on the nested paragraph/close. Return to the correct parent frame; do not implement the checked fixture's four-space inner layout.
 
   Run:
 

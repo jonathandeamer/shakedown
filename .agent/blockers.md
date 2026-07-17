@@ -12,7 +12,16 @@ Resolved 2026-07-17 by the Slice-3 closeout fix: the quote/list bridge now
 preserves Spike-B nested-block behavior, Act II lowering validates again, and
 the regenerated release path plus shipped-fixture gate are green.
 
-- BLOCK[plan]: Slice-4 Task 3 Step 2 (`docs/superpowers/plans/2026-07-17-slice-4-high-risk-fixtures.md`)
+Resolved 2026-07-17 by Slice-4 design Amendment A1 and Task 3 clarification:
+the installed Markdown.pl 1.0.2b8 executable is the strict-byte authority;
+Task 3 retains its balanced quote stream but emits the oracle's layout, not
+the checked fixture's Markdown-1.0.1 four-space inner indentation.  The
+focused literal-output contract and strict-parity harness now make that
+choice executable while mdtest retains its existing normalized regression
+comparison.
+
+Historical planning blocker (resolved): Slice-4 Task 3 Step 2
+(`docs/superpowers/plans/2026-07-17-slice-4-high-risk-fixtures.md`)
   cannot be executed as written: the accepted design carries two mutually
   exclusive acceptance criteria for `Nested blockquotes`, because the local
   oracle is **not** the version the project targets. Only a planning amendment
