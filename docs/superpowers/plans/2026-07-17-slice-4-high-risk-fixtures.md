@@ -4,7 +4,7 @@
 
 **Goal:** Ship `Inline HTML (Advanced)`, `Nested blockquotes`, and `Ordered and unordered lists` with strict Markdown.pl bytes while preserving all shipped fixtures and Spike A/B contracts.
 
-**Architecture:** Follow the [accepted Slice-4 design](../specs/2026-07-17-slice-4-high-risk-design.md), architecture §7.7/§7.8a/§8.1, and the four-act IR pipeline. Act II produces the existing balanced token grammar, Act III preserves structural/raw leaves, and Act IV renders the balanced frames; no parser, token code, or participant is added.
+**Architecture:** Follow the [accepted Slice-4 design](../specs/2026-07-17-slice-4-high-risk-design.md), including Amendment A2, architecture §7.7/§7.8a/§8.1, and the four-act IR pipeline. Act II produces the balanced container grammar plus A2's existing allocated `HEADER(level, text)` leaf, Act III preserves structural/raw leaves, and Act IV renders those frames and headers; no parser, token number, structural role, or participant is added.
 
 **Tech Stack:** Python 3.13, typed splc IR, generated Shakespeare SPL, TOML-controlled literary surfaces, pytest, local Markdown.pl 1.0.2b8 strict oracle.
 
@@ -18,7 +18,7 @@
   `~/markdown/Markdown.pl` 1.0.2b8 executable, as fixed by Slice-4 design
   Amendment A1.  The checked-in fixture remains the normalized-mdtest corpus;
   its Markdown-1.0.1 indentation is not a second raw-byte acceptance target.
-- A needed token, third participant, structural-grammar change, unreserved surface, or a fixture requirement outside the accepted design is `- BLOCK[plan]: ...` in `.agent/blockers.md` followed by a clean stop.
+- Amendment A2 authorizes only `HEADER = 2`'s new `TokenArity(1, True)` row and bounded top-level ATX path as a prerequisite of Task 4 Step 2. A needed token, third participant, structural-role change, broader header syntax/container handling, unreserved surface, or any other fixture requirement outside the accepted design is `- BLOCK[plan]: ...` in `.agent/blockers.md` followed by a clean stop.
 - Every SPL/TOML checkpoint runs the exact generated/literary gate and the Amps proof named in the design.  Every checkpoint commit contains the configured provenance trailers and is pushed; a failed push records one blocker and stops.
 
 ```bash
@@ -30,11 +30,12 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 | Path | Responsibility |
 |---|---|
-| `src_ir/act2.py`, `src/20-act2-literary.toml` | HTML block recognition, quote-depth scheduling, full list recognition; generated Act II only. |
-| `src_ir/act3.py` | Preserve existing structural and raw HTML leaves; alter only if tests prove the traversal violates the unchanged arity contract. |
-| `src_ir/act4.py`, `src/40-act4-literary.toml` | Raw-block separators, nested quote rendering, and full list frame rendering; generated Act IV only. |
+| `src_ir/act2.py`, `src/20-act2-literary.toml` | HTML block recognition, quote-depth scheduling, full-list recognition, and A2's bounded top-level ATX-header emission; generated Act II only. |
+| `src_ir/act3.py` | Preserve structural and raw HTML leaves; traverse A2's declared `HEADER(level, text)` arity without rewriting it. |
+| `src_ir/act4.py`, `src/40-act4-literary.toml` | Raw-block separators, nested quote rendering, full-list frame rendering, and A2's header rendering; generated Act IV only. |
+| `src_ir/tokens.py`, `docs/spl/token-codes.md` | A2's matching existing-code `HEADER = 2` arity declaration: one level payload plus text. |
 | `src/literary.toml` | Only the ready-to-paste Slice-4 reservation in the accepted design. |
-| `tests/test_act2_slice4.py`, `tests/test_act4_slice4.py`, `tests/test_slice4_high_risk.py` | Focused fast-IR stream, stack, HTML, and binary contracts. |
+| `tests/test_act2_slice4.py`, `tests/test_act4_slice4.py`, `tests/test_slice4_high_risk.py`, `tests/test_token_codes.py`, `tests/test_token_decode.py`, `tests/test_token_structure.py` | Focused fast-IR stream, stack, HTML, binary, and A2 header-contract coverage. |
 | `tests/test_mdtest.py` | Fixture enablement after strict proof only. |
 | `tests/test_act2_contracts.py`, `tests/test_act2_frame_floors.py`, `tests/test_architecture_spikes.py` | Preserve prior list/nested-block stream and byte contracts. |
 
@@ -159,9 +160,9 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 ### Task 4: Lift the list spike narrowings to the full fixture
 
-**Files:** Modify `src_ir/act2.py`, `src_ir/act4.py`, `src/literary.toml`, `tests/test_act2_slice4.py`, `tests/test_act4_slice4.py`, `tests/test_slice4_high_risk.py`, `tests/test_act2_contracts.py`, `tests/test_act2_frame_floors.py`, `tests/test_architecture_spikes.py`, and `tests/test_mdtest.py`; regenerate Acts II/IV and release SPL.
+**Files:** Modify `src_ir/act2.py`, `src_ir/act3.py`, `src_ir/act4.py`, `src_ir/tokens.py`, `docs/spl/token-codes.md`, `src/literary.toml`, `tests/test_act2_slice4.py`, `tests/test_act4_slice4.py`, `tests/test_slice4_high_risk.py`, `tests/test_token_codes.py`, `tests/test_token_decode.py`, `tests/test_token_structure.py`, `tests/test_act2_contracts.py`, `tests/test_act2_frame_floors.py`, `tests/test_architecture_spikes.py`, and `tests/test_mdtest.py`; regenerate Acts II–IV and release SPL.
 
-**Interfaces:** Preserve `LIST_OPEN(kind)`, `LIST_ITEM(looseness)`, `ITEM_CLOSE`, and `LIST_CLOSE` exactly. The Act-II frame stack holds list depth/indent and outputs nested containers in source order; Act IV consumes explicit item closures and never infers a close from lookahead.
+**Interfaces:** Preserve `LIST_OPEN(kind)`, `LIST_ITEM(looseness)`, `ITEM_CLOSE`, and `LIST_CLOSE` exactly. The Act-II frame stack holds list depth/indent and outputs nested containers in source order; Act IV consumes explicit item closures and never infers a close from lookahead. Per design Amendment A2, the pre-allocated `HEADER = 2` gains exactly `HEADER(level, text)`: one level payload (1–6) and a `TEXT_END`-terminated text run, which Act III preserves and Act IV renders.
 
 - [x] **Step 1: Turn only full-list contracts red.** Replace its xfail with parameterized fast-stream and HTML probes for each fixture family:
 
@@ -181,18 +182,23 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: FAIL on at least the declared spike narrowings; do not bless a changed dump.
 
-- [ ] **Step 2: Implement full fixture scope through the existing grammar.** Add the reserved `PASS_LISTS_*` and `SCRIBE_LIST_*` TOML entries. In Act II, extend marker scanning to multi-digit ordered labels and up-to-three-space top-level indentation; classify tight/loose by blank lines; retain multiple paragraph leaves; recursively open/close nested list frames; and replay failed candidates byte-for-byte. In Act IV, use only explicit frames and `ITEM_CLOSE` to render loose paragraphs, nested kind transitions, and list/item closings. Do not alter token numbers, arities, structural roles, or replace the parser with a fixture-specific output path.
+- [ ] **Step 2: Implement the A2 header prerequisite and full fixture scope through the accepted grammar.** First make the header contract red: in `tests/test_token_codes.py`, assert the documented `HEADER` row has one payload and text; in `tests/test_token_decode.py`, decode `[HEADER, 2, ord("U"), TEXT_END]` as level-2 text; in `tests/test_token_structure.py`, accept a decoded header leaf but reject levels `0` and `7`; and in the Slice-4 Act-II/Act-IV/binary tests assert `## Unordered\n` produces exactly `HEADER(2, "Unordered")` and `<h2>Unordered</h2>\n`.  Include a negative probe proving an indented or `##Unordered` candidate remains a paragraph.
+
+  Add the Amendment-A2-reserved `PASS_HEADER_*` and `SCRIBE_HEADER_*` TOML entries before labels are used.  Add only `HEADER: TokenArity(1, True)` to `src_ir/tokens.py` and the matching documentation row; do not renumber a code or change a structural role.  In Act II, run the bounded top-level ATX candidate before the existing HR/list routes: count one through six leading hashes, require a following space/tab, stage non-empty line text, trim only a whitespace-preceded closing hash run, emit `HEADER`, its level, and text, or reverse-replay every rejected glyph to the paragraph route.  In Act III, add only the generic arity traversal required by that row.  In Act IV, validate level 1–6 and render `<h{level}>` plus the existing span-processed text and matching close with the normal separator.  Then add the reserved `PASS_LISTS_*` and `SCRIBE_LIST_*` entries.  Extend marker scanning to multi-digit ordered labels and up-to-three-space top-level indentation; classify tight/loose by blank lines; retain multiple paragraph leaves; recursively open/close nested list frames; and replay failed candidates byte-for-byte.  In Act IV, use only explicit frames and `ITEM_CLOSE` to render loose paragraphs, nested kind transitions, and list/item closings.  Do not add a token, alter a token number or structural role, broaden headers beyond A2, or replace the parser with a fixture-specific output path.
 
   Run:
 
   ```bash
   uv run python -m scripts.splc && uv run python scripts/assemble.py
   uv run pytest tests/test_act2_slice4.py tests/test_act4_slice4.py tests/test_slice4_high_risk.py -k full_list -q
+  uv run pytest tests/test_token_codes.py tests/test_token_decode.py tests/test_token_structure.py -q
   uv run pytest tests/test_act2_contracts.py tests/test_act2_frame_floors.py tests/test_architecture_spikes.py -q
+  uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+  uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
   uv run python scripts/strict_parity_harness.py 'Ordered and unordered lists'
   ```
 
-  Expected: all pass, strict harness reports `summary: 1/1 byte-identical`, and every existing list/nested spike stream and byte test remains unchanged. If a required stream cannot validate under the existing grammar, record the architecture halt blocker rather than changing the grammar locally.
+  Expected: all pass, strict harness reports `summary: 1/1 byte-identical`, and every existing list/nested spike stream and byte test remains unchanged.  The complete fixture's three leading sections begin with `<h2>Unordered</h2>`, `<h2>Ordered</h2>`, and `<h2>Nested</h2>`; no header syntax beyond Amendment A2 is accepted. If a required stream cannot validate under the existing grammar, or a header requirement exceeds A2's bounded path, record the architecture halt blocker rather than changing the grammar locally.
 
 - [ ] **Step 3: Enable and checkpoint full lists.** Add `Ordered and unordered lists` to `_IMPLEMENTED_FIXTURES`; run the global SPL/literary gate plus:
 

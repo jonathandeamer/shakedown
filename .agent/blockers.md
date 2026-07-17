@@ -20,6 +20,13 @@ focused literal-output contract and strict-parity harness now make that
 choice executable while mdtest retains its existing normalized regression
 comparison.
 
+Resolved 2026-07-17 by Slice-4 design Amendment A2 and the matching Task-4-Step-2
+amendment: the already allocated `HEADER = 2` is now explicitly authorized as
+the bounded `HEADER(level, text)` leaf needed by the full-list fixture.  The
+amendment reserves its Act-II/IV controlled surfaces and spares, requires
+matching arity/decoder/validator coverage, retains every list token number and
+structural role, and keeps any broader header surface as `BLOCK[plan]`.
+
 Historical planning blocker (resolved): Slice-4 Task 3 Step 2
 (`docs/superpowers/plans/2026-07-17-slice-4-high-risk-fixtures.md`)
   cannot be executed as written: the accepted design carries two mutually

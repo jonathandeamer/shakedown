@@ -27,6 +27,44 @@ indentation-sensitive acceptance gates.  This is a Slice-4 planning decision,
 not authorization to change checked-in fixtures, to invoke Markdown.pl at
 runtime, or to weaken strict parity.
 
+## Amendment A2 — activate the allocated header leaf for the full-list gate (2026-07-17)
+
+The `Ordered and unordered lists` input starts with `## Unordered`,
+`## Ordered`, and `## Nested`; the strict oracle emits three `<h2>` leaves.
+The release binary instead emits `<p>## Unordered</p>` at byte 1.  `HEADER =
+2` is already allocated and has an existing `LEAF_BLOCK` role, but it has no
+`ARITY` row, Act II does not emit it, and Act IV does not render it.  The
+previous list-only Task-4-Step-2 authority therefore cannot satisfy its own
+complete-fixture strict-parity gate.
+
+This amendment authorizes the smallest semantic header path needed by that
+fixture, as a prerequisite within Task 4 Step 2—not a new plan or a separate
+fixture feature.  It activates the existing `HEADER` leaf with one fixed
+integer payload (`level`, 1 through 6) followed by a `TEXT_END`-terminated
+glyph run.  Its numeric code stays `2`, its role stays `LEAF_BLOCK`, and no
+participant or container grammar changes.  `src_ir/tokens.py` and
+`docs/spl/token-codes.md` gain the matching `HEADER: TokenArity(1, True)` row;
+decoder and structural-validator tests move from their current “not yet
+shipped” assertions to positive header coverage.  Act III may only traverse
+the new declared arity; it must not rewrite its level or glyphs.
+
+Act II recognizes only top-level ATX headers in the bounded Markdown.pl shape:
+one to six leading `#` glyphs, required following space or tab, and non-empty
+text through line end; a closing `#` run preceded by whitespace is stripped.
+Malformed, indented, or unterminated candidates replay byte-for-byte to the
+existing paragraph route.  Setext headers, headers inside containers, and any
+broader block-pass generalization are out of scope.  Act IV validates levels
+1–6, emits `<h{level}>`, span-processed text, and `</h{level}>` with the
+normal block separator, then returns to its existing frame path.
+
+The explicit authority replaces Task 4 Step 2's former blanket
+arity-unchanged rule only for this existing allocated leaf.  It does not
+authorize a new token, renumbering, structural-role change, arbitrary header
+syntax, or fixture-specific output path.  The `LIST_OPEN(kind)`,
+`LIST_ITEM(looseness)`, `ITEM_CLOSE`, and `LIST_CLOSE` grammar remains frozen;
+all Spike-A/B stream expectations remain immutable.  Any need beyond this
+bounded header leaf remains `BLOCK[plan]`.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
@@ -76,7 +114,7 @@ The work is sequenced by interaction risk:
 
 | Boundary | Contract |
 |---|---|
-| Act II → III | Only `PARA`, `HEADER`, `HR`, `LIST_OPEN`, `LIST_ITEM`, `ITEM_CLOSE`, `LIST_CLOSE`, `BLOCKQUOTE_OPEN`, `BLOCKQUOTE_CLOSE`, `CODE_BLOCK`, and `RAW_HTML_HASH` cross the boundary, with `src_ir/tokens.py` arities unchanged. |
+| Act II → III | `PARA`, activated `HEADER(level, text)`, `HR`, `LIST_OPEN`, `LIST_ITEM`, `ITEM_CLOSE`, `LIST_CLOSE`, `BLOCKQUOTE_OPEN`, `BLOCKQUOTE_CLOSE`, `CODE_BLOCK`, and `RAW_HTML_HASH` cross the boundary. Amendment A2 adds only the pre-allocated `HEADER` arity row; every other token arity remains unchanged. |
 | Act III → IV | Structural codes and `RAW_HTML_HASH` payload bytes pass through unchanged; span processing is restricted to text-bearing Markdown leaves. |
 | Act IV | Prospero's frame stack is balanced for every container token; nested quote output follows Amendment A1's installed-oracle indentation layout, and list item ownership remains explicit through `ITEM_CLOSE`. |
 | Tests | Fast IR tests expose streams and HTML; mdtest runs fast IR and release `./shakedown`; `scripts/strict_parity_harness.py` is the implementation parity authority. |
@@ -250,6 +288,80 @@ title = "The inward host keeps one radiant border."
 pattern = "bare_statement"
 [scenes.SCRIBE_LIST_FULL_GUARD]
 title = "The ordered host keeps one noble watch."
+pattern = "bare_statement"
+```
+
+### Amendment A2 header reservation
+
+The header prerequisite has seven working Act-II scenes and four working
+Act-IV scenes.  Each touched act has four pre-approved spares, satisfying the
+at-least-20%-and-four-spare rule.  These are controlled scene titles; the
+existing Critical `HEADER = 2`, level values, and `TEXT_END` surfaces need no
+new prose.
+
+| Act | Working-label ledger | Spares |
+|---|---|---|
+| II | `PASS_HEADER_START` (candidate entry); `PASS_HEADER_MARK` (count one through six hashes); `PASS_HEADER_SEPARATOR` (require space/tab); `PASS_HEADER_TEXT` (stage text); `PASS_HEADER_CLOSER` (strip legal closer); `PASS_HEADER_EMIT` (emit code, level, text); `PASS_HEADER_REPLAY` (restore rejected candidate) | `PASS_HEADER_GUARD`, `PASS_HEADER_DEPTH_GUARD`, `PASS_HEADER_TEXT_GUARD`, `PASS_HEADER_REPLAY_GUARD` |
+| IV | `SCRIBE_HEADER_OPEN` (validate and emit opening tag); `SCRIBE_HEADER_TEXT` (emit span-processed text); `SCRIBE_HEADER_CLOSE` (emit matching close); `SCRIBE_HEADER_RETURN` (restore block dispatch) | `SCRIBE_HEADER_GUARD`, `SCRIBE_HEADER_LEVEL_GUARD`, `SCRIBE_HEADER_TEXT_GUARD`, `SCRIBE_HEADER_RETURN_GUARD` |
+
+```toml
+[scenes.PASS_HEADER_START]
+title = "Lady Macbeth marks the page's raised standard."
+pattern = "scene_of_character"
+[scenes.PASS_HEADER_MARK]
+title = "Macbeth counts the standard's dark strokes."
+pattern = "scene_of_character"
+[scenes.PASS_HEADER_SEPARATOR]
+title = "Lady Macbeth keeps the standard's measured space."
+pattern = "scene_of_character"
+[scenes.PASS_HEADER_TEXT]
+title = "Macbeth bears the standard's spoken burden."
+pattern = "scene_of_character"
+[scenes.PASS_HEADER_CLOSER]
+title = "Lady Macbeth trims the standard's closing edge."
+pattern = "scene_of_character"
+[scenes.PASS_HEADER_EMIT]
+title = "Macbeth sends the raised standard onward."
+pattern = "scene_of_character"
+[scenes.PASS_HEADER_REPLAY]
+title = "Lady Macbeth restores the fallen standard."
+pattern = "scene_of_character"
+[scenes.PASS_HEADER_GUARD]
+title = "The raised standard keeps one sure watch."
+pattern = "bare_statement"
+[scenes.PASS_HEADER_DEPTH_GUARD]
+title = "The standard keeps its counted height."
+pattern = "bare_statement"
+[scenes.PASS_HEADER_TEXT_GUARD]
+title = "The standard keeps its faithful word."
+pattern = "bare_statement"
+[scenes.PASS_HEADER_REPLAY_GUARD]
+title = "The fallen standard keeps its former place."
+pattern = "bare_statement"
+
+[scenes.SCRIBE_HEADER_OPEN]
+title = "Prospero opens the standard's radiant face."
+pattern = "scene_of_character"
+[scenes.SCRIBE_HEADER_TEXT]
+title = "Puck bears the standard's bright word."
+pattern = "scene_of_character"
+[scenes.SCRIBE_HEADER_CLOSE]
+title = "Prospero seals the standard's radiant face."
+pattern = "scene_of_character"
+[scenes.SCRIBE_HEADER_RETURN]
+title = "Puck returns the standard to the page."
+pattern = "scene_of_character"
+[scenes.SCRIBE_HEADER_GUARD]
+title = "The radiant standard keeps one noble edge."
+pattern = "bare_statement"
+[scenes.SCRIBE_HEADER_LEVEL_GUARD]
+title = "The radiant standard keeps its counted height."
+pattern = "bare_statement"
+[scenes.SCRIBE_HEADER_TEXT_GUARD]
+title = "The radiant standard keeps its faithful word."
+pattern = "bare_statement"
+[scenes.SCRIBE_HEADER_RETURN_GUARD]
+title = "The radiant standard keeps its homeward course."
 pattern = "bare_statement"
 ```
 
