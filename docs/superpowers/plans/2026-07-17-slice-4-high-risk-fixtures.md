@@ -98,7 +98,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: all pass and strict harness reports `summary: 1/1 byte-identical`.
 
-- [ ] **Step 3: Enable and checkpoint advanced HTML.** Add `Inline HTML (Advanced)` to `_IMPLEMENTED_FIXTURES`; run the global SPL/literary gate, then:
+- [x] **Step 3: Enable and checkpoint advanced HTML.** Add `Inline HTML (Advanced)` to `_IMPLEMENTED_FIXTURES`; run the global SPL/literary gate, then:
 
   ```bash
   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -q

@@ -2,8 +2,9 @@
 
 Task 1 kept the entire roadmap row disabled while documenting the current
 non-implemented scope. Task 2 adds the advanced-HTML binary contract, which
-proves the release SPL — not Markdown.pl — performs the transform. The
-fixture stays out of `_IMPLEMENTED_FIXTURES` until its own green checkpoint.
+proves the release SPL — not Markdown.pl — performs the transform, and ships
+that fixture into `_IMPLEMENTED_FIXTURES`. The remaining Slice-4 fixtures stay
+out until each reaches its own green checkpoint.
 """
 
 from __future__ import annotations
@@ -28,8 +29,12 @@ def test_pending_fixture_is_absent_from_implemented_fixtures(fixture_name: str) 
     assert fixture_name not in _IMPLEMENTED_FIXTURES
 
 
-def test_slice4_fixtures_are_a_subset_of_pending_fixtures() -> None:
-    assert _SLICE4_FIXTURES <= set(_PENDING_FIXTURES)
+def test_slice4_fixtures_are_named_fixtures() -> None:
+    assert _SLICE4_FIXTURES <= set(_FIXTURES_BY_NAME)
+
+
+def test_unshipped_slice4_fixtures_are_still_pending() -> None:
+    assert _SLICE4_FIXTURES - _IMPLEMENTED_FIXTURES <= set(_PENDING_FIXTURES)
 
 
 def test_advanced_html_release_binary_contract() -> None:

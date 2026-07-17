@@ -85,6 +85,7 @@ _IMPLEMENTED_FIXTURES = {
     "Hard-wrapped paragraphs with list-like lines",
     "Horizontal rules",
     "Images",
+    "Inline HTML (Advanced)",
     "Inline HTML (Simple)",
     "Inline HTML comments",
     "Links, inline style",
@@ -232,11 +233,14 @@ def test_slice3_task6_blockquotes_with_code_blocks_fixture_contract() -> None:
 
 
 @pytest.mark.parametrize("name", sorted(_SLICE4_FIXTURES))
-def test_slice4_fixture_remains_skipped(name: str) -> None:
-    assert name not in _IMPLEMENTED_FIXTURES
-
+def test_slice4_fixture_skip_matches_enablement(name: str) -> None:
     params = {case.values[0]: case for case in _fixture_params() if case.values}
     fixture = params[name]
     skip_marks = [mark for mark in fixture.marks if mark.name == "skip"]
 
-    assert skip_marks, f"{name} must stay skipped until its Slice-4 checkpoint ships"
+    if name in _IMPLEMENTED_FIXTURES:
+        assert not skip_marks, f"{name} shipped its checkpoint and must run"
+    else:
+        assert skip_marks, (
+            f"{name} must stay skipped until its Slice-4 checkpoint ships"
+        )
