@@ -72,7 +72,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: all tests pass, strict harness reports `summary: 5/5 byte-identical`, and the smoke command has no required-case failure. On failure, record the actual shipped regression and stop; do not repair Slice 4 behavior.
 
-- [ ] **Step 3: Checkpoint the characterization.** Run `uv run pytest tests/test_prompt_literary_protocol.py tests/test_roadmap_contract.py -q`; commit only the three new test files and `tests/test_mdtest.py` as `test: characterize slice four fixtures`; push.
+- [x] **Step 3: Checkpoint the characterization.** Run `uv run pytest tests/test_prompt_literary_protocol.py tests/test_roadmap_contract.py -q`; commit only the three new test files and `tests/test_mdtest.py` as `test: characterize slice four fixtures`; push.
 
 ### Task 2: Expand raw HTML blocks to the advanced fixture boundary
 
