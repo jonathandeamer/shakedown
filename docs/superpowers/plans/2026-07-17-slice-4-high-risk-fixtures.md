@@ -113,7 +113,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 **Interfaces:** For every `>` depth, Act II emits a balanced `BLOCKQUOTE_OPEN`; blank quoted lines remain inside the current depth; an outdent emits the matching close(s) before replaying the next block. Act IV keeps one quote frame per token nesting and indents emitted inner lines by two spaces per frame.
 
-- [ ] **Step 1: Turn only nested-quote contracts red.** Replace its xfail with an exact decoded token-stream assertion for `Nested blockquotes`: `BLOCKQUOTE_OPEN; PARA(foo); BLOCKQUOTE_OPEN; PARA(bar); BLOCKQUOTE_CLOSE; PARA(foo); BLOCKQUOTE_CLOSE`. Add focused probes for quoted blank lines, a one-level return, and an unquoted final paragraph. Assert the full fixture bytes in both fast IR and release binary while mdtest remains disabled.
+- [x] **Step 1: Turn only nested-quote contracts red.** Replace its xfail with an exact decoded token-stream assertion for `Nested blockquotes`: `BLOCKQUOTE_OPEN; PARA(foo); BLOCKQUOTE_OPEN; PARA(bar); BLOCKQUOTE_CLOSE; PARA(foo); BLOCKQUOTE_CLOSE`. Add focused probes for quoted blank lines, a one-level return, and an unquoted final paragraph. Assert the full fixture bytes in both fast IR and release binary while mdtest remains disabled.
 
   Run: `uv run pytest tests/test_act2_slice4.py tests/test_act4_slice4.py tests/test_slice4_high_risk.py -k nested_quote -q`
 

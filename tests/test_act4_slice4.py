@@ -2,7 +2,8 @@
 
 Task 1 kept the three high-risk fixtures' complete-fixture bytes xfailed
 through the full four-act pipeline. Task 2 made the advanced-HTML contract
-live; the remaining xfails hold until their own tasks ship.
+live and Task 3 made the nested-quote contract live; the full-list xfail holds
+until Task 4 ships.
 """
 
 from __future__ import annotations
@@ -25,10 +26,7 @@ def test_advanced_html_complete_fixture_contract() -> None:
     _fixture_bytes_mismatch("Inline HTML (Advanced)")
 
 
-@pytest.mark.xfail(
-    strict=True, reason="Task 3 has not implemented balanced quote depth yet"
-)
-def test_nested_blockquotes_complete_fixture_contract() -> None:
+def test_nested_quote_complete_fixture_contract() -> None:
     _fixture_bytes_mismatch("Nested blockquotes")
 
 

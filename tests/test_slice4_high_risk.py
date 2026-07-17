@@ -3,8 +3,9 @@
 Task 1 kept the entire roadmap row disabled while documenting the current
 non-implemented scope. Task 2 adds the advanced-HTML binary contract, which
 proves the release SPL — not Markdown.pl — performs the transform, and ships
-that fixture into `_IMPLEMENTED_FIXTURES`. The remaining Slice-4 fixtures stay
-out until each reaches its own green checkpoint.
+that fixture into `_IMPLEMENTED_FIXTURES`. Task 3 adds the same binary contract
+for nested blockquotes; that fixture stays out of `_IMPLEMENTED_FIXTURES` until
+its own green checkpoint. The remaining Slice-4 fixture stays out until Task 4.
 """
 
 from __future__ import annotations
@@ -37,8 +38,7 @@ def test_unshipped_slice4_fixtures_are_still_pending() -> None:
     assert _SLICE4_FIXTURES - _IMPLEMENTED_FIXTURES <= set(_PENDING_FIXTURES)
 
 
-def test_advanced_html_release_binary_contract() -> None:
-    name = "Inline HTML (Advanced)"
+def _release_binary_fixture_contract(name: str) -> None:
     input_path, expected_path = _FIXTURES_BY_NAME[name]
     result = subprocess.run(
         [str(BINARY)],
@@ -51,3 +51,11 @@ def test_advanced_html_release_binary_contract() -> None:
     assert _normalize_fixture_output(name, result.stdout) == _normalize_fixture_output(
         name, expected_path.read_text()
     )
+
+
+def test_advanced_html_release_binary_contract() -> None:
+    _release_binary_fixture_contract("Inline HTML (Advanced)")
+
+
+def test_nested_quote_release_binary_contract() -> None:
+    _release_binary_fixture_contract("Nested blockquotes")

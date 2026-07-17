@@ -2,8 +2,9 @@
 
 Task 1 characterized the pre-Slice-4 Act II grammar for the three high-risk
 fixtures as strict xfails. Task 2 replaced the advanced-HTML xfail with the
-live contracts below; the nested-quote and full-list xfails stay until their
-own tasks ship.
+live contracts below, and Task 3 replaced the nested-quote xfail with the exact
+balanced-depth stream this act must produce. The full-list xfail stays until
+Task 4 ships.
 """
 
 from __future__ import annotations
@@ -123,15 +124,51 @@ def test_advanced_html_fixture_blocks_all_become_raw_html_leaves() -> None:
     ]
 
 
-@pytest.mark.xfail(
-    strict=True, reason="Task 3 has not implemented balanced quote depth yet"
-)
-def test_nested_quote_probe_produces_two_matched_open_close_pairs() -> None:
-    decoded = decode_stream(_act2_stream(NESTED_QUOTE))
-    codes = [token.code for token in decoded]
+def _decoded_pairs(input_text: str) -> list[tuple[int, str | None]]:
+    decoded = decode_stream(_act2_stream(input_text))
+    return [(token.code, token.text) for token in decoded]
 
-    assert codes.count(tokens.BLOCKQUOTE_OPEN) == 2
-    assert codes.count(tokens.BLOCKQUOTE_CLOSE) == 2
+
+def test_nested_quote_fixture_stream_is_balanced_open_to_close() -> None:
+    assert _decoded_pairs(NESTED_QUOTE) == [
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.PARA, "foo"),
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.PARA, "bar"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
+        (tokens.PARA, "foo"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
+    ]
+
+
+def test_nested_quote_blank_quoted_line_stays_inside_the_same_depth() -> None:
+    assert _decoded_pairs("> a\n>\n> b\n") == [
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.PARA, "a"),
+        (tokens.PARA, "b"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
+    ]
+
+
+def test_nested_quote_outdent_returns_to_the_parent_depth() -> None:
+    assert _decoded_pairs("> a\n>\n> > b\n>\n> c\n") == [
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.PARA, "a"),
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.PARA, "b"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
+        (tokens.PARA, "c"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
+    ]
+
+
+def test_nested_quote_closes_before_an_unquoted_final_paragraph() -> None:
+    assert _decoded_pairs("> a\n\nplain\n") == [
+        (tokens.BLOCKQUOTE_OPEN, None),
+        (tokens.PARA, "a"),
+        (tokens.BLOCKQUOTE_CLOSE, None),
+        (tokens.PARA, "plain"),
+    ]
 
 
 @pytest.mark.xfail(
