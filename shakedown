@@ -2,25 +2,4 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
-SPL_FILE="${SHAKEDOWN_SPL:-$DIR/shakedown.spl}"
-stderr_file="$(mktemp)"
-stdout_file="$(mktemp)"
-trap 'rm -f "$stderr_file" "$stdout_file"' EXIT
-
-set +e
-uv run --directory "$DIR" python -m scripts.preprocess_input \
-  | uv run --directory "$DIR" shakespeare run "$SPL_FILE" >"$stdout_file" 2>"$stderr_file"
-rc=$?
-set -e
-
-cat "$stderr_file" >&2
-
-if [ "$rc" -ne 0 ]; then
-  exit "$rc"
-fi
-
-if grep -qE '^SPL (runtime|parse) error:' "$stderr_file"; then
-  exit 1
-fi
-
-perl -0pe 's/\n\n<p>\z//; s/\n<p>\z//; s/<p>\z//' "$stdout_file"
+exec uv run --directory "$DIR" python -m scripts.release_runtime

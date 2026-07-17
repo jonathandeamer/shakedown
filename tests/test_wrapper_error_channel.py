@@ -6,8 +6,11 @@ import os
 import subprocess
 from pathlib import Path
 
+from tests.test_mdtest import _interpret_ir
+
 REPO = Path(__file__).parent.parent
 WRAPPER = REPO / "shakedown"
+FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
 
 MINIMAL_VALID_PLAY = """\
 A quiet probe.
@@ -81,7 +84,7 @@ def test_wrapper_fails_on_runtime_error(tmp_path: Path) -> None:
     assert b"SPL runtime error:" in result.stderr
 
 
-def test_wrapper_default_release_path_uses_preprocess_then_spl_pipeline(
+def test_wrapper_default_release_path_uses_release_runtime(
     tmp_path: Path,
 ) -> None:
     calls = tmp_path / "uv-calls.log"
@@ -98,6 +101,9 @@ args = sys.argv[1:]
 stdin = sys.stdin.read()
 if "scripts.release_entry" in args:
     sys.stdout.write("release-entry\\n")
+    raise SystemExit(0)
+if "scripts.release_runtime" in args:
+    sys.stdout.write("release-runtime\\n")
     raise SystemExit(0)
 if "scripts.preprocess_input" in args:
     sys.stdout.write(stdin)
@@ -124,9 +130,22 @@ raise SystemExit(99)
     )
 
     assert result.returncode == 0, result.stderr.decode()
-    assert result.stdout == b"pipeline-output\n"
+    assert result.stdout == b"release-runtime\n"
     logged = calls.read_text(encoding="utf-8").splitlines()
-    assert len(logged) == 2
-    assert any("python -m scripts.preprocess_input" in line for line in logged)
-    assert any(f"shakespeare run {REPO / 'shakedown.spl'}" in line for line in logged)
-    assert all("scripts.release_entry" not in line for line in logged)
+    assert logged == [f"run --directory {REPO} python -m scripts.release_runtime"]
+
+
+def test_wrapper_default_release_path_finishes_under_capture_output_timeout() -> None:
+    fixture = FIXTURES_DIR / "Amps and angle encoding.text"
+    expected = _interpret_ir(fixture.read_text()).encode()
+
+    result = subprocess.run(
+        [str(WRAPPER)],
+        input=fixture.read_bytes(),
+        capture_output=True,
+        timeout=5,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr.decode()
+    assert result.stdout == expected
