@@ -105,6 +105,7 @@ blurb = "Horatio, plain witness of the household, holder of secrets."
 [characters.horatio.recall]
 held_label_glyph = "Recall the held label's glyph."
 held_alt_glyph = "Recall the held portrait's glyph."
+code_chamber_mark = "Recall the chamber's closing mark."
 [characters.horatio.stable_utility]
 v1 = "a brother"
 v2 = "a happy brother"

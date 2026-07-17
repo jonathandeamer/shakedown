@@ -73,6 +73,11 @@ def test_act2_entry_pair_for_hr_pair_return_matches_amendment_b() -> None:
     assert pairs["PASS_HR_PAIR_RETURN"] == (Char.LADY_MACBETH, Char.PUCK)
 
 
+def test_act2_quote_rewire_keeps_raw_blank_scene_reachable() -> None:
+    pairs = entry_pairs(ACT2)
+    assert pairs["PASS_LISTS_RAW_BLANK"] == (Char.LADY_MACBETH, Char.HECATE)
+
+
 def test_act2_remaining_spare_labels_are_unreachable() -> None:
     reachable_labels = {sc.label for sc in ACT2.scenes}
     assert not (reachable_labels & _REMAINING_SPARE_LABELS)

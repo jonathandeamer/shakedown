@@ -176,3 +176,53 @@ def test_blockquote_prefix_leaves_ordinary_text_unchanged() -> None:
     assert [token.text for token in decoded if token.text is not None] == [
         "ordinary text"
     ]
+
+
+def test_quote_in_list_closes_before_sibling_item_stream() -> None:
+    assert _act2_stream("* alpha\n\n  > bravo\n* charlie\n") == [
+        tokens.LIST_OPEN,
+        1,
+        tokens.LIST_ITEM,
+        2,
+        tokens.PARA,
+        *b"alpha",
+        tokens.TEXT_END,
+        tokens.BLOCKQUOTE_OPEN,
+        tokens.PARA,
+        *b"bravo",
+        tokens.TEXT_END,
+        tokens.BLOCKQUOTE_CLOSE,
+        tokens.ITEM_CLOSE,
+        tokens.LIST_ITEM,
+        1,
+        tokens.PARA,
+        *b"charlie",
+        tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
+        tokens.LIST_CLOSE,
+    ]
+
+
+def test_quote_prefix_still_allows_nested_list_stream() -> None:
+    assert _act2_stream("> * alpha\n> * bravo\n>\n> charlie\n") == [
+        tokens.BLOCKQUOTE_OPEN,
+        tokens.LIST_OPEN,
+        1,
+        tokens.LIST_ITEM,
+        1,
+        tokens.PARA,
+        *b"alpha",
+        tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
+        tokens.LIST_ITEM,
+        1,
+        tokens.PARA,
+        *b"bravo",
+        tokens.TEXT_END,
+        tokens.ITEM_CLOSE,
+        tokens.LIST_CLOSE,
+        tokens.PARA,
+        *b"charlie",
+        tokens.TEXT_END,
+        tokens.BLOCKQUOTE_CLOSE,
+    ]

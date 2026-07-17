@@ -418,20 +418,18 @@ def test_act3_preserves_escaped_and_literal_span_punctuation() -> None:
 
 
 @pytest.mark.parametrize(
-    ("text", "expected_labels"),
+    "text",
     [
-        ("[x]: destination\n", {"LYRIC_DEFINITION_DISCARD_CLOSE"}),
-        ("[x]: destination\n[y]: another\n", {"LYRIC_DEFINITION_DISCARD_CLOSE"}),
+        "[x]: destination\n",
+        "[x]: destination\n[y]: another\n",
     ],
     ids=["single-definition-line", "two-definition-lines"],
 )
-def test_act3_discards_definition_only_paragraphs(
-    text: str, expected_labels: set[str]
-) -> None:
+def test_act3_definition_only_input_arrives_already_stripped(text: str) -> None:
     _, state, observer = _run_text_to_act3_observed(text)
 
     assert _decode_carrier(state) == []
-    assert expected_labels.issubset(set(observer.labels))
+    assert "LYRIC_DEFINITION_DISCARD_CLOSE" not in observer.labels
 
 
 @pytest.mark.parametrize(
@@ -441,14 +439,12 @@ def test_act3_discards_definition_only_paragraphs(
         "[not]:   \n",
         "[x] : destination\n",
         "[]: destination\n",
-        "[x]: destination\nplain words\n",
     ],
     ids=[
         "missing-destination",
         "space-only-destination",
         "space-before-colon",
         "empty-label",
-        "mixed-definition-and-prose",
     ],
 )
 def test_act3_replays_rejected_definition_candidates_byte_for_byte(text: str) -> None:
@@ -462,6 +458,12 @@ def test_act3_plain_prose_bypasses_definition_replay() -> None:
     decoded = _decode_carrier(_run_text_to_act3("ordinary prose\n"))
 
     assert _paragraph_text(decoded) == "ordinary prose"
+
+
+def test_act3_valid_definition_then_prose_arrives_as_plain_prose() -> None:
+    decoded = _decode_carrier(_run_text_to_act3("[x]: destination\nplain words\n"))
+
+    assert _paragraph_text(decoded) == "plain words"
 
 
 def test_act3_fixture_reference_paragraphs_do_not_enter_definition_discard() -> None:
@@ -696,12 +698,15 @@ def test_act3_emphasis_candidate_restores_real_text_end_once() -> None:
     _, state, observer = _run_text_to_act3_observed("*a**\n")
 
     labels = observer.labels
-    start = labels.index("LYRIC_EMPHASIS_CAND_SOURCE_END")
+    start = labels.index("LYRIC_EMPHASIS_SOURCE_END")
     tail = labels[start:]
     terminator_index = tail.index("TRAVERSE_COPY_TERMINATOR")
 
-    assert tail[1] == "LYRIC_EMPHASIS_SOURCE_END"
-    assert tail[2] == "LYRIC_EMPHASIS_LITERAL_REVERSE"
+    assert labels[start - 1] in {
+        "LYRIC_EMPHASIS_CAND_SOURCE_END",
+        "LYRIC_EMPHASIS_SOURCE_END_PAIR",
+    }
+    assert tail[1] == "LYRIC_EMPHASIS_LITERAL_REVERSE"
     assert "LYRIC_POP_GLYPH" in tail[:terminator_index]
     assert tail[terminator_index - 1] == "LYRIC_TEXT_END_DISPATCH"
     assert "LYRIC_EMPHASIS_SEEK" not in tail[:terminator_index]

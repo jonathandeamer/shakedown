@@ -41,6 +41,7 @@ def _fixture_bytes_match(name: str) -> None:
 @pytest.mark.parametrize("fixture_name", sorted(_SLICE3_FIXTURES))
 def test_slice3_fixture_enablement_matches_shipped_scope(fixture_name: str) -> None:
     enabled_slice3 = {
+        "Blockquotes with code blocks",
         "Hard-wrapped paragraphs with list-like lines",
         *_SLICE3_TASK3_FIXTURES,
         "Strong and em together",
@@ -96,6 +97,5 @@ def test_inline_html_contracts(fixture_name: str) -> None:
     _fixture_bytes_match(fixture_name)
 
 
-@pytest.mark.xfail(strict=True, reason="Slice 3 Task 6 has not shipped yet")
 def test_quote_code_contract() -> None:
     _fixture_bytes_match("Blockquotes with code blocks")

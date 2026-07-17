@@ -176,3 +176,15 @@ def test_blockquote_probe_replays_four_spaces_then_eof_as_paragraph_text() -> No
     )
 
     assert actual == "<blockquote>\n  <p>    </p>\n</blockquote>\n"
+
+
+def test_simple_blockquote_paragraph_closes_without_extra_newline() -> None:
+    actual = _run_acts("> charlie\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<blockquote>\n  <p>charlie</p>\n</blockquote>\n"
+
+
+def test_blockquote_blank_line_starts_new_paragraph_without_leaking_close() -> None:
+    actual = _run_acts("> intro\n>\n> charlie\n", through_act=4)
+    assert isinstance(actual, str)
+    assert actual == "<blockquote>\n  <p>intro</p>\n\n<p>charlie</p>\n</blockquote>\n"

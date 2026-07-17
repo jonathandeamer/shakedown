@@ -566,6 +566,18 @@ pattern = "scene_of_character"
 title = "The hall keeps one measured threshold."
 pattern = "bare_statement"
 
+[scenes.PASS_QUOTE_AFTER_NEWLINE]
+title = "Lady Macbeth weighs the echo after the fallen line."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_BLANK]
+title = "The echo yields one silent chamber."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_BLANK_DONE]
+title = "The silence returns the echo to the common field."
+pattern = "bare_statement"
+
 [scenes.PASS_QUOTE_CLOSE]
 title = "The echoing hall releases its chamber line."
 pattern = "bare_statement"
@@ -574,6 +586,74 @@ pattern = "bare_statement"
 title = "Macbeth bears the indented echo within the hall."
 pattern = "scene_of_character"
 
+[scenes.PASS_QUOTE_CONTINUE_CLASSIFY]
+title = "Macbeth judges the echo's returning face."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_CONTINUE_PREFIX]
+title = "Lady Macbeth tests the echo's returning mark."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_EOF_CLOSE]
+title = "The echoing chamber closes at the page's last breath."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_EOF_GATE]
+title = "Macbeth measures the page's last echo."
+pattern = "scene_of_character"
+
 [scenes.PASS_QUOTE_FINISH]
 title = "Macbeth frees the finished echo."
 pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_FINISH_OPTIONAL]
+title = "Lady Macbeth lifts one spare echoing veil."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_LIST_BLANK]
+title = "The echo leaves one silent rank behind."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_LIST_CLEAR]
+title = "Horatio releases the echo from the waiting rank."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_LIST_REPLAY]
+title = "Lady Macbeth restores the echo to the waiting rank."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_PREFIX]
+title = "Macbeth opens the echo's guarded threshold."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_PREFIX_BLANK]
+title = "The echo stands between a rank and silence."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_PREFIX_LIST_END]
+title = "The silent echo dismisses the waiting rank."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_PREFIX_CLASSIFY]
+title = "Lady Macbeth names the echo's first true shape."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_PREFIX_FINISH]
+title = "Macbeth receives the echo's returning threshold."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_PREFIX_OPTIONAL]
+title = "Lady Macbeth keeps one slight echoing margin."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_PREFIX_REPLAY]
+title = "The echo releases its unclaimed returning mark."
+pattern = "bare_statement"
+
+[scenes.PASS_QUOTE_TOP_CONTINUE_CLASSIFY]
+title = "Macbeth weighs the echo above the open field."
+pattern = "scene_of_character"
+
+[scenes.PASS_QUOTE_TOP_CONTINUE_BLANK]
+title = "The upper echo yields one measured silence."
+pattern = "bare_statement"

@@ -10,6 +10,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+from _pytest.mark.structures import ParameterSet
 
 from scripts.slice3_links import rewrite_task3_markdown
 
@@ -79,6 +80,7 @@ _FIXTURES_BY_NAME = {
 }
 _IMPLEMENTED_FIXTURES = {
     "Amps and angle encoding",
+    "Blockquotes with code blocks",
     "Code Blocks",
     "Hard-wrapped paragraphs with list-like lines",
     "Horizontal rules",
@@ -114,9 +116,9 @@ _SLICE3_TASK3_FIXTURES = (
 )
 
 
-def _fixture_params() -> list[object]:
+def _fixture_params() -> list[ParameterSet]:
     """Return pytest params, skipping fixtures not yet shipped by the roadmap."""
-    params = []
+    params: list[ParameterSet] = []
     for fixture in _FIXTURES:
         name = fixture[0]
         if name in _IMPLEMENTED_FIXTURES:
@@ -226,11 +228,7 @@ def test_slice3_task6_blockquotes_with_code_blocks_fixture_contract() -> None:
 def test_inline_html_advanced_fixture_remains_skipped() -> None:
     assert "Inline HTML (Advanced)" not in _IMPLEMENTED_FIXTURES
 
-    params = {
-        case.values[0]: case
-        for case in _fixture_params()
-        if hasattr(case, "values") and case.values
-    }
+    params = {case.values[0]: case for case in _fixture_params() if case.values}
     advanced = params["Inline HTML (Advanced)"]
     skip_marks = [mark for mark in advanced.marks if mark.name == "skip"]
 
