@@ -115,6 +115,12 @@ _SLICE3_TASK3_FIXTURES = (
     "Literal quotes in titles",
 )
 
+_SLICE4_FIXTURES = {
+    "Inline HTML (Advanced)",
+    "Nested blockquotes",
+    "Ordered and unordered lists",
+}
+
 
 def _fixture_params() -> list[ParameterSet]:
     """Return pytest params, skipping fixtures not yet shipped by the roadmap."""
@@ -225,11 +231,12 @@ def test_slice3_task6_blockquotes_with_code_blocks_fixture_contract() -> None:
     )
 
 
-def test_inline_html_advanced_fixture_remains_skipped() -> None:
-    assert "Inline HTML (Advanced)" not in _IMPLEMENTED_FIXTURES
+@pytest.mark.parametrize("name", sorted(_SLICE4_FIXTURES))
+def test_slice4_fixture_remains_skipped(name: str) -> None:
+    assert name not in _IMPLEMENTED_FIXTURES
 
     params = {case.values[0]: case for case in _fixture_params() if case.values}
-    advanced = params["Inline HTML (Advanced)"]
-    skip_marks = [mark for mark in advanced.marks if mark.name == "skip"]
+    fixture = params[name]
+    skip_marks = [mark for mark in fixture.marks if mark.name == "skip"]
 
-    assert skip_marks, "Inline HTML (Advanced) must stay skipped in Task 5 Step 1"
+    assert skip_marks, f"{name} must stay skipped until its Slice-4 checkpoint ships"
