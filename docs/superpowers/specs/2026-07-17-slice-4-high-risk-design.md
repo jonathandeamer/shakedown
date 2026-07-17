@@ -159,6 +159,75 @@ remain immutable stream and byte boundaries.  Any need for a seventh
 transaction state, a fifth spare, a change to the listed existing
 destinations, or an Act-III/IV/list-token modification is `BLOCK[plan]`.
 
+## Amendment A5 — split tab-depth tally from glyph reads (2026-07-17)
+
+The remaining full-list defect is a depth-boundary distinction in Act II, not
+a new Markdown construct: `1. a\n\t* b\n\t* c\n` keeps `b` and `c` as
+sibling items of one nested unordered list, while
+`* a\n\t* b\n\t\t* c\n` opens a further nested list for `c`.  The existing
+tab route needs to retain an indentation-unit tally while it reads the next
+glyph.  `_read()` already owns Hecate's pop and Lady Macbeth's input-countdown
+write, so splc's two-participant rule forbids updating the tally register in
+that same scene.
+
+This amendment authorizes exactly a two-scene Act-II helper split.  The
+existing tab entry performs only the tally update and then enters
+`PASS_LISTS_INDENT_TAB_READ`; that new scene performs only `_read()`, loops
+back through the tally entry for each following tab, and dispatches the first
+non-tab glyph to the existing four-unit classifier.  The tally is reset at
+each line boundary before its first tab and is compared with the current
+open-list depth before any marker-save route overwrites `PUCK`.  Equal
+effective indentation selects the existing sibling-item route; a strictly
+deeper indentation selects the existing nested-open route.  Rejected markers
+retain the current byte-for-byte replay behavior.  The split changes neither
+the input carrier nor the existing `LIST_OPEN`, `LIST_ITEM`, `ITEM_CLOSE`, or
+`LIST_CLOSE` grammar; it adds no participant, Act III work, Act IV branch, or
+token change.
+
+The A4 four guards are now consumed by the already-started list work.  The
+list ledger is therefore 21 working labels (A4's 19 plus the two helper
+states) and five fresh spares: `ceil(21 * 20%) = 5`, which also exceeds the
+four-title floor.  The following is the complete ready-to-paste A5 pool; add
+the working entry only with its IR scene, and leave every `*_GUARD` entry
+unused unless a later plan amendment assigns it.
+
+```toml
+# Amendment A5 tab-depth helper and Act-II spare pool
+[scenes.PASS_LISTS_INDENT_TAB_READ]
+title = "Lady Macbeth reads beyond the measured marching step."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_INDENT_TAB_GUARD]
+title = "The measured step keeps one guarded return."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_DEPTH_GUARD]
+title = "The inward tally keeps one guarded border."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_SIBLING_GUARD]
+title = "The equal rank keeps one guarded march."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_DEEP_GUARD]
+title = "The deeper rank keeps one guarded descent."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_REPLAY_GUARD]
+title = "The false step keeps its guarded return."
+pattern = "bare_statement"
+```
+
+Task 4 Step 2 must add red-then-green focused fast-IR and release contracts
+for both witness inputs above.  The first must contain one nested unordered
+list with two sibling items and must not emit a second nested `LIST_OPEN`; the
+second must contain a second nested `LIST_OPEN` for `c`.  Both release outputs
+must be strict Markdown.pl bytes.  Run the existing full-list, Spike-A/B,
+generated-fragment, parser, validator, literary, Amps, and strict-parity gates
+named in the active plan.  Any need for a third helper scene, a sixth spare,
+a different register ownership, an Act-III/IV change, or a token/grammar
+change is `BLOCK[plan]`.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
