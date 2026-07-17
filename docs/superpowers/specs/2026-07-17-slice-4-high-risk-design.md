@@ -102,6 +102,63 @@ existing explicit grammar before Act IV receives it.  Any need for an
 additional state beyond the five working labels or four spares is again
 `BLOCK[plan]`.
 
+## Amendment A4 — separate accepted nested-after-blank from provisional rollback (2026-07-17)
+
+The A3 transaction correctly protects a list-ending blank, but its five-state
+ledger conflates two different accepted post-blank paths: an indented
+continuation that becomes paragraph text and an indented nested-list marker.
+The latter must retain its marker while the former enters the existing
+`PASS_LISTS_BLANK_JOIN` route.  Routing both through the continuation route
+turns the nested marker into paragraph glyphs (for example, `*   sub`).  This
+is an Act-II dispatch distinction; it does not require a token, a grammar
+change, a participant, an Act-III traversal change, or an Act-IV branch.
+
+This amendment replaces A3's five-label transaction ledger with the following
+six-label ledger.  It explicitly reuses the shipped routes named in the last
+column; those routes are not new controlled surfaces and are not counted as
+working labels.
+
+| Label | State transition | Existing destination retained |
+|---|---|---|
+| `PASS_LISTS_LOOSE_PROVISION` | On the first blank after an open item, stage its prior tight payload, frame state, and consumed boundary glyphs without yet changing `LIST_ITEM` looseness. | `PASS_LISTS_BLANK*` scanner |
+| `PASS_LISTS_LOOSE_COMMIT` | After a validated ordinary indented continuation or sibling, commit the staged loose item and dispatch to the already-owned continuation or sibling route. | `PASS_LISTS_BLANK_JOIN` or `PASS_LISTS_BSIB_EMIT` |
+| `PASS_LISTS_LOOSE_NESTED` | After an indented unordered/ordered marker and its required separator are validated, commit the staged loose item, preserve the marker in `PUCK`, and re-enter the existing nested-marker open path. | `PASS_LISTS_NEST_EMIT_UL` or `PASS_LISTS_NEST_EMIT_OL` |
+| `PASS_LISTS_LOOSE_EOF` | On EOF or a rejected/list-terminating candidate before either accepted path, select rollback. | `PASS_LISTS_LOOSE_ROLLBACK` |
+| `PASS_LISTS_LOOSE_ROLLBACK` | Restore the staged tight payload and frame state before the existing explicit close sequence. | `PASS_LISTS_LOOSE_REPLAY` |
+| `PASS_LISTS_LOOSE_REPLAY` | Requeue the saved boundary glyphs in source order, then re-enter the existing list-close route. | `PASS_LISTS_LIST_END_REPLAY` |
+
+`PASS_LISTS_LOOSE_NESTED` is the sole additional controlled Act-II scene
+authorized by this amendment.  The A3 four-label `*_GUARD` pool remains
+unused and remains the sole spare pool.  The list ledger is therefore 19
+working scenes and four spares; four is `ceil(19 * 20%)` and also meets the
+four-title minimum.  Add the ready-to-paste title below to
+`src/20-act2-literary.toml` in the same checkpoint that introduces the IR
+scene.  No other new controlled prose is authorized.
+
+```toml
+# Amendment A4 nested-after-blank working label
+[scenes.PASS_LISTS_LOOSE_NESTED]
+title = "Lady Macbeth turns the waiting rank within its ordered host."
+pattern = "scene_of_character"
+```
+
+Required focused evidence extends Task 4 Step 2 with these three disjoint
+Act-II/release contracts, in addition to its existing fixture and regression
+gates:
+
+1. `* parent\n\n\t* sub\n` yields an outer loose item containing a nested
+   tight unordered list, never a paragraph whose text begins `*   sub`.
+2. `* parent\n\n* sibling\n` yields two loose sibling items and does not enter
+   `PASS_LISTS_LOOSE_NESTED`.
+3. `* parent\n\n` yields a tight single item (no `<p>` wrapper), restores the
+   staged payload before `ITEM_CLOSE`/`LIST_CLOSE`, and never enters either
+   accepted commit path.
+
+The six existing List Spike-A fixtures and four nested-block Spike-B fixtures
+remain immutable stream and byte boundaries.  Any need for a seventh
+transaction state, a fifth spare, a change to the listed existing
+destinations, or an Act-III/IV/list-token modification is `BLOCK[plan]`.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
@@ -169,14 +226,16 @@ The work is sequenced by interaction risk:
 The implementation must reuse existing `PASS_LISTS_*`, `PASS_QUOTE_*`,
 `SCRIBE_LIST_*`, and `SCRIBE_BLOCKQUOTE_*` surfaces wherever their current
 meaning remains exact.  The following is the complete new controlled pool.
-Its working count is derived from the scene ledger below: Act II has 30
+Its working count is derived from the scene ledger below: Act II has 31
 working scenes and 6 spares; Act IV has 16 working scenes and 4 spares.  This
-meets the required at-least-20%-and-four spare rule.  Add these entries to
-`src/literary.toml` in the same checkpoint that first introduces the label.
+meets the required at-least-20%-and-four spare rule.  Add Act-II entries to
+`src/20-act2-literary.toml` and Act-IV entries to
+`src/40-act4-literary.toml` in the same checkpoint that first introduces the
+label.
 
 | Act | Family | Working labels | Spare labels |
 |---|---|---|---|
-| II | HTML 6; quote 6; list 18 | `PASS_HTML_BLOCK_OPEN`, `PASS_HTML_BLOCK_NAME`, `PASS_HTML_BLOCK_ATTR`, `PASS_HTML_BLOCK_DEPTH_OPEN`, `PASS_HTML_BLOCK_DEPTH_CLOSE`, `PASS_HTML_BLOCK_FINISH`; `PASS_QUOTE_NEST_OPEN`, `PASS_QUOTE_NEST_CLOSE`, `PASS_QUOTE_NEST_DEPTH`, `PASS_QUOTE_NEST_BLANK`, `PASS_QUOTE_NEST_REPLAY`, `PASS_QUOTE_NEST_FINISH`; `PASS_LISTS_INDENT_ONE`, `PASS_LISTS_INDENT_TWO`, `PASS_LISTS_INDENT_THREE`, `PASS_LISTS_MARKER_DIGIT`, `PASS_LISTS_MARKER_DOT`, `PASS_LISTS_CONTINUE`, `PASS_LISTS_NEST_OPEN`, `PASS_LISTS_NEST_CLOSE`, `PASS_LISTS_LOOSE`, `PASS_LISTS_FULL_FINISH`, `PASS_LISTS_INDENT_GUARD`, `PASS_LISTS_NEST_GUARD`, `PASS_LISTS_FULL_GUARD`, `PASS_LISTS_LOOSE_PROVISION`, `PASS_LISTS_LOOSE_COMMIT`, `PASS_LISTS_LOOSE_EOF`, `PASS_LISTS_LOOSE_ROLLBACK`, `PASS_LISTS_LOOSE_REPLAY` | `PASS_HTML_BLOCK_GUARD`, `PASS_QUOTE_NEST_GUARD`, `PASS_LISTS_LOOSE_GUARD`, `PASS_LISTS_LOOSE_EOF_GUARD`, `PASS_LISTS_LOOSE_ROLLBACK_GUARD`, `PASS_LISTS_LOOSE_REPLAY_GUARD` |
+| II | HTML 6; quote 6; list 19 | `PASS_HTML_BLOCK_OPEN`, `PASS_HTML_BLOCK_NAME`, `PASS_HTML_BLOCK_ATTR`, `PASS_HTML_BLOCK_DEPTH_OPEN`, `PASS_HTML_BLOCK_DEPTH_CLOSE`, `PASS_HTML_BLOCK_FINISH`; `PASS_QUOTE_NEST_OPEN`, `PASS_QUOTE_NEST_CLOSE`, `PASS_QUOTE_NEST_DEPTH`, `PASS_QUOTE_NEST_BLANK`, `PASS_QUOTE_NEST_REPLAY`, `PASS_QUOTE_NEST_FINISH`; `PASS_LISTS_INDENT_ONE`, `PASS_LISTS_INDENT_TWO`, `PASS_LISTS_INDENT_THREE`, `PASS_LISTS_MARKER_DIGIT`, `PASS_LISTS_MARKER_DOT`, `PASS_LISTS_CONTINUE`, `PASS_LISTS_NEST_OPEN`, `PASS_LISTS_NEST_CLOSE`, `PASS_LISTS_LOOSE`, `PASS_LISTS_FULL_FINISH`, `PASS_LISTS_INDENT_GUARD`, `PASS_LISTS_NEST_GUARD`, `PASS_LISTS_FULL_GUARD`, `PASS_LISTS_LOOSE_PROVISION`, `PASS_LISTS_LOOSE_COMMIT`, `PASS_LISTS_LOOSE_NESTED`, `PASS_LISTS_LOOSE_EOF`, `PASS_LISTS_LOOSE_ROLLBACK`, `PASS_LISTS_LOOSE_REPLAY` | `PASS_HTML_BLOCK_GUARD`, `PASS_QUOTE_NEST_GUARD`, `PASS_LISTS_LOOSE_GUARD`, `PASS_LISTS_LOOSE_EOF_GUARD`, `PASS_LISTS_LOOSE_ROLLBACK_GUARD`, `PASS_LISTS_LOOSE_REPLAY_GUARD` |
 | IV | HTML 3; quote 5; list 8 | `SCRIBE_RAW_HTML_ADVANCED`, `SCRIBE_RAW_HTML_ADVANCED_SEP`, `SCRIBE_RAW_HTML_ADVANCED_CLOSE`; `SCRIBE_QUOTE_NEST_OPEN`, `SCRIBE_QUOTE_NEST_CLOSE`, `SCRIBE_QUOTE_NEST_INDENT`, `SCRIBE_QUOTE_NEST_RETURN`, `SCRIBE_QUOTE_NEST_FINISH`; `SCRIBE_LIST_DEPTH_OPEN`, `SCRIBE_LIST_DEPTH_CLOSE`, `SCRIBE_LIST_LOOSE_BEGIN`, `SCRIBE_LIST_LOOSE_CLOSE`, `SCRIBE_LIST_NEST_RETURN`, `SCRIBE_LIST_ITEM_PARAGRAPH`, `SCRIBE_LIST_ITEM_CLOSE_FINAL`, `SCRIBE_LIST_FULL_FINISH` | `SCRIBE_RAW_HTML_ADVANCED_GUARD`, `SCRIBE_QUOTE_NEST_GUARD`, `SCRIBE_LIST_DEPTH_GUARD`, `SCRIBE_LIST_FULL_GUARD` |
 
 ```toml

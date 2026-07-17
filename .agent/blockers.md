@@ -96,3 +96,13 @@ provisional-looseness rollback plus four Act-II spares.  The amendment keeps
 the list grammar, token roles, participants, Act III, and Act IV frozen while
 requiring the final nested tab item to restore tightness when the trailing
 blank ends the entire list.
+
+Resolved 2026-07-17 by Slice-4 design Amendment A4 and the matching
+Task-4-Step-2 amendment: the former A3 five-label ceiling is replaced by a
+derived six-label transaction.  The new, ready-to-paste
+`PASS_LISTS_LOOSE_NESTED` selector commits only a validated nested marker
+after a provisional blank and re-enters the existing nested open routes; the
+ordinary blank-join/sibling routes and the EOF rollback/replay routes remain
+separate.  The list ledger is now 19 working labels with A3's four retained
+`*_GUARD` spares, and the plan requires disjoint nested, sibling, and
+list-ending-blank contracts plus all shipped Spike-A/B gates.
