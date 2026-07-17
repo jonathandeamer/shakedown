@@ -36,13 +36,19 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 ---
 
+## Reconciliation record
+
+`implement-add42130d5e6432cb459bcd08a95ce01-codex-implement@3d6fb4bb6fa24900da45b4351906b75ef0b55735` was a one-commit child of `main@91a26ce5f2ebd33fd4bf334352c9f08cce79af12` whose only content was to mark Task 1 Steps 1–2 complete.  It was not merged into `main`.  On 2026-07-17 this plan replayed that disposition after independently re-running Step 2's exact evidence gate on `main`: 43 passed / 9 skipped for mdtest plus architecture spikes, strict parity `5/5 byte-identical`, the two required smoke cases passed, and the Task-1 plan-policy gate passed 9 tests.  This reconciliation changes no production behavior and does not amend the accepted Slice-4 design.
+
+---
+
 ### Task 1: Establish the Slice-4 contracts and prove the shipped baseline
 
 **Files:** Create `tests/test_act2_slice4.py`, `tests/test_act4_slice4.py`, `tests/test_slice4_high_risk.py`; modify `tests/test_mdtest.py` only to add the Slice-4 enablement guard.
 
 **Interfaces:** Reuse `tests.test_mdtest._run_acts(input_text: str, through_act: int) -> str | list[int]` and `_FIXTURES_BY_NAME`.  `_IMPLEMENTED_FIXTURES` remains the sole mdtest enablement authority.
 
-- [ ] **Step 1: Write disabled capability contracts.** Add one parametrized contract for each pending fixture that asserts it is absent from `_IMPLEMENTED_FIXTURES`. Add strict-xfail fast-IR contracts with these exact probes:
+- [x] **Step 1: Write disabled capability contracts.** Add one parametrized contract for each pending fixture that asserts it is absent from `_IMPLEMENTED_FIXTURES`. Add strict-xfail fast-IR contracts with these exact probes:
 
   ```python
   ADVANCED_HTML = '<div>\n<div style=">"/>\n</div>\n'
@@ -56,7 +62,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: XFAIL only, with no XPASS.
 
-- [ ] **Step 2: Prove the predecessor baseline before production work.** Run:
+- [x] **Step 2: Prove the predecessor baseline before production work.** Run:
 
   ```bash
   uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py -q
