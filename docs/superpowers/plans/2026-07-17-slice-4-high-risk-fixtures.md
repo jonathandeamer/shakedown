@@ -80,7 +80,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 **Interfaces:** Act II emits `RAW_HTML_HASH, <original glyphs>, TEXT_END` for one left-margin `div` block. Act III copies that token. Act IV emits precisely that payload unwrapped and separates it from adjacent block output exactly as Markdown.pl does.
 
-- [ ] **Step 1: Turn only the advanced-HTML contracts red.** Replace its xfail with stream assertions for (a) `<div>foo</div>`, (b) nested three-depth `div`, (c) `style=">"`, (d) indented `id="foo"`, and (e) the final `class="inlinepage"` block. Assert the token payload preserves source tabs only after Act I detab normalization and ends before the delimiting blank line. Add a binary contract for the complete fixture, still disabled in mdtest.
+- [x] **Step 1: Turn only the advanced-HTML contracts red.** Replace its xfail with stream assertions for (a) `<div>foo</div>`, (b) nested three-depth `div`, (c) `style=">"`, (d) indented `id="foo"`, and (e) the final `class="inlinepage"` block. Assert the token payload preserves source tabs only after Act I detab normalization and ends before the delimiting blank line. Add a binary contract for the complete fixture, still disabled in mdtest.
 
   Run: `uv run pytest tests/test_act2_slice4.py tests/test_act4_slice4.py tests/test_slice4_high_risk.py -k advanced -q`
 

@@ -1,8 +1,9 @@
 """Slice-4 Act II contracts land task by task.
 
-Step 1 characterizes the current (pre-Slice-4) Act II grammar for the three
-high-risk fixtures as strict xfails. Later tasks replace these xfails with
-green contracts as each fixture ships.
+Task 1 characterized the pre-Slice-4 Act II grammar for the three high-risk
+fixtures as strict xfails. Task 2 replaced the advanced-HTML xfail with the
+live contracts below; the nested-quote and full-list xfails stay until their
+own tasks ship.
 """
 
 from __future__ import annotations
@@ -28,6 +29,46 @@ _ADVANCED_HTML_FIXTURE = (
     Path.home() / "mdtest" / "Markdown.mdtest" / "Inline HTML (Advanced).text"
 )
 
+# The five advanced-HTML shapes the fixture requires, keyed by the design's
+# acceptance inventory. Each must become exactly one RAW_HTML_HASH leaf whose
+# payload is the block's own bytes.
+ADVANCED_ONE_LINE = "<div>foo</div>\n"
+ADVANCED_NESTED_THREE_DEEP = (
+    "<div>\n"
+    "<div>\n"
+    "<div>\n"
+    "foo\n"
+    "</div>\n"
+    '<div style=">"/>\n'
+    "</div>\n"
+    "<div>bar</div>\n"
+    "</div>\n"
+)
+# Source tabs, not spaces: Act I detab must be the only thing that widens them.
+ADVANCED_INDENTED_ATTR = '<div>\n\t<div id="foo">\n\t</div>\n</div>\n'
+ADVANCED_ATTRIBUTED_PAIR = (
+    '<div class="inlinepage">\n<div class="toggleableend">\nfoo\n</div>\n</div>\n'
+)
+
+_ADVANCED_CASES = {
+    "one_line": (ADVANCED_ONE_LINE, "<div>foo</div>"),
+    "nested_three_deep": (
+        ADVANCED_NESTED_THREE_DEEP,
+        ADVANCED_NESTED_THREE_DEEP.rstrip("\n"),
+    ),
+    "style_angle_bracket": (ADVANCED_HTML, ADVANCED_HTML.rstrip("\n")),
+    "indented_attr": (
+        ADVANCED_INDENTED_ATTR,
+        # Act I detabs the leading tab to a four-space tab stop; nothing else
+        # in the payload changes.
+        '<div>\n    <div id="foo">\n    </div>\n</div>',
+    ),
+    "attributed_pair": (
+        ADVANCED_ATTRIBUTED_PAIR,
+        ADVANCED_ATTRIBUTED_PAIR.rstrip("\n"),
+    ),
+}
+
 
 def _act2_stream(input_text: str) -> list[int]:
     state = InterpreterState(input_text=input_text)
@@ -42,21 +83,44 @@ def _act2_stream(input_text: str) -> list[int]:
     return stream
 
 
-@pytest.mark.xfail(
-    strict=True, reason="Task 2 has not widened raw HTML recognition yet"
-)
-def test_advanced_html_fixture_blocks_all_become_raw_html_leaves() -> None:
-    decoded = decode_stream(_act2_stream(ADVANCED_HTML))
-    assert [token.code for token in decoded] == [tokens.RAW_HTML_HASH]
+@pytest.mark.parametrize("case", sorted(_ADVANCED_CASES))
+def test_advanced_html_block_becomes_one_raw_html_leaf(case: str) -> None:
+    source, expected_payload = _ADVANCED_CASES[case]
+    decoded = decode_stream(_act2_stream(source))
 
-    fixture_decoded = decode_stream(_act2_stream(_ADVANCED_HTML_FIXTURE.read_text()))
-    raw_html_leaves = [
-        token for token in fixture_decoded if token.code == tokens.RAW_HTML_HASH
-    ]
-    assert len(raw_html_leaves) == 5, (
-        "the fixture has five div blocks; the final attributed nested pair "
-        "currently falls through to a plain paragraph"
+    assert [token.code for token in decoded] == [tokens.RAW_HTML_HASH]
+    assert decoded[0].text == expected_payload
+
+
+def test_advanced_html_payload_ends_before_the_delimiting_blank_line() -> None:
+    decoded = decode_stream(
+        _act2_stream(ADVANCED_NESTED_THREE_DEEP + "\nAnd after the wall.\n")
     )
+
+    assert [token.code for token in decoded] == [tokens.RAW_HTML_HASH, tokens.PARA]
+    assert decoded[0].text == ADVANCED_NESTED_THREE_DEEP.rstrip("\n")
+    assert decoded[1].text == "And after the wall."
+
+
+def test_advanced_html_fixture_blocks_all_become_raw_html_leaves() -> None:
+    decoded = decode_stream(_act2_stream(_ADVANCED_HTML_FIXTURE.read_text()))
+
+    assert [token.code for token in decoded] == [
+        tokens.PARA,
+        tokens.RAW_HTML_HASH,
+        tokens.PARA,
+        tokens.RAW_HTML_HASH,
+        tokens.PARA,
+        tokens.RAW_HTML_HASH,
+        tokens.PARA,
+        tokens.RAW_HTML_HASH,
+    ]
+    assert [token.text for token in decoded if token.code == tokens.RAW_HTML_HASH] == [
+        _ADVANCED_CASES["one_line"][1],
+        _ADVANCED_CASES["nested_three_deep"][1],
+        _ADVANCED_CASES["indented_attr"][1],
+        _ADVANCED_CASES["attributed_pair"][1],
+    ]
 
 
 @pytest.mark.xfail(

@@ -1,8 +1,8 @@
 """Slice-4 Act IV contracts land task by task.
 
-Step 1 keeps the three high-risk fixtures' complete-fixture bytes xfailed
-through the full four-act pipeline. Later tasks replace these xfails with
-green contracts as each fixture ships.
+Task 1 kept the three high-risk fixtures' complete-fixture bytes xfailed
+through the full four-act pipeline. Task 2 made the advanced-HTML contract
+live; the remaining xfails hold until their own tasks ship.
 """
 
 from __future__ import annotations
@@ -21,9 +21,6 @@ def _fixture_bytes_mismatch(name: str) -> None:
     )
 
 
-@pytest.mark.xfail(
-    strict=True, reason="Task 2 has not widened raw HTML recognition yet"
-)
 def test_advanced_html_complete_fixture_contract() -> None:
     _fixture_bytes_mismatch("Inline HTML (Advanced)")
 
