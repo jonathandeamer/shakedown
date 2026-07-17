@@ -163,7 +163,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 **Interfaces:** Preserve `LIST_OPEN(kind)`, `LIST_ITEM(looseness)`, `ITEM_CLOSE`, and `LIST_CLOSE` exactly. The Act-II frame stack holds list depth/indent and outputs nested containers in source order; Act IV consumes explicit item closures and never infers a close from lookahead.
 
-- [ ] **Step 1: Turn only full-list contracts red.** Replace its xfail with parameterized fast-stream and HTML probes for each fixture family:
+- [x] **Step 1: Turn only full-list contracts red.** Replace its xfail with parameterized fast-stream and HTML probes for each fixture family:
 
   ```python
   cases = {

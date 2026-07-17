@@ -2,13 +2,11 @@
 
 Task 1 kept the three high-risk fixtures' complete-fixture bytes xfailed
 through the full four-act pipeline. Task 2 made the advanced-HTML contract
-live and Task 3 made the nested-quote contract live; the full-list xfail holds
-until Task 4 ships.
+live, Task 3 made the nested-quote contract live, and Task 4 made the
+full-list contract live.
 """
 
 from __future__ import annotations
-
-import pytest
 
 from tests.test_mdtest import _FIXTURES_BY_NAME, _normalize_fixture_output, _run_acts
 
@@ -56,8 +54,25 @@ def test_nested_quote_marker_only_blank_preserves_the_inner_frame() -> None:
     assert actual == NESTED_QUOTE_BLANK_AT_OUTER_MARKER_HTML
 
 
-@pytest.mark.xfail(
-    strict=True, reason="Task 4 has not lifted list nesting to full scope yet"
+FULL_LIST_MARKDOWN_1_0_1_TAIL = (
+    "<p>This was an error in Markdown 1.0.1:</p>\n"
+    "\n"
+    "<ul>\n"
+    "<li><p>this</p>\n"
+    "\n"
+    "<ul><li>sub</li></ul>\n"
+    "\n"
+    "<p>that</p></li>\n"
+    "</ul>\n"
 )
+
+
 def test_ordered_and_unordered_lists_complete_fixture_contract() -> None:
     _fixture_bytes_mismatch("Ordered and unordered lists")
+
+
+def test_ordered_and_unordered_lists_tail_matches_markdown_1_0_1_quirk() -> None:
+    input_path, _ = _FIXTURES_BY_NAME["Ordered and unordered lists"]
+    actual = _run_acts(input_path.read_text(), through_act=4)
+    assert isinstance(actual, str)
+    assert actual.endswith(FULL_LIST_MARKDOWN_1_0_1_TAIL)

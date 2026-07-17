@@ -5,7 +5,9 @@ non-implemented scope. Task 2 adds the advanced-HTML binary contract, which
 proves the release SPL — not Markdown.pl — performs the transform, and ships
 that fixture into `_IMPLEMENTED_FIXTURES`. Task 3 adds the same binary contract
 for nested blockquotes; that fixture stays out of `_IMPLEMENTED_FIXTURES` until
-its own green checkpoint. The remaining Slice-4 fixture stays out until Task 4.
+its own green checkpoint. Task 4 adds the same binary contract for the full
+list fixture; it, too, stays out of `_IMPLEMENTED_FIXTURES` until its own
+green checkpoint.
 """
 
 from __future__ import annotations
@@ -85,3 +87,7 @@ def test_nested_quote_marker_only_blank_release_binary_contract() -> None:
 
     assert result.returncode == 0, result.stderr
     assert result.stdout == NESTED_QUOTE_BLANK_AT_OUTER_MARKER_HTML
+
+
+def test_ordered_and_unordered_lists_release_binary_contract() -> None:
+    _release_binary_fixture_contract("Ordered and unordered lists")

@@ -2,9 +2,9 @@
 
 Task 1 characterized the pre-Slice-4 Act II grammar for the three high-risk
 fixtures as strict xfails. Task 2 replaced the advanced-HTML xfail with the
-live contracts below, and Task 3 replaced the nested-quote xfail with the exact
-balanced-depth stream this act must produce. The full-list xfail stays until
-Task 4 ships.
+live contracts below, Task 3 replaced the nested-quote xfail with the exact
+balanced-depth stream this act must produce, and Task 4 replaced the full-list
+xfail with the live contracts below.
 """
 
 from __future__ import annotations
@@ -16,6 +16,7 @@ import pytest
 from scripts.splc.interpret import InterpreterState, run_act
 from scripts.splc.ir import Char
 from scripts.splc.token_decode import decode_stream
+from scripts.splc.token_structure import validate_stream
 from src_ir import tokens
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
@@ -183,13 +184,35 @@ def test_nested_quote_closes_before_an_unquoted_final_paragraph() -> None:
     ]
 
 
-@pytest.mark.xfail(
-    strict=True, reason="Task 4 has not lifted list nesting to full scope yet"
+_FULL_LIST_FIXTURE = (
+    Path.home() / "mdtest" / "Markdown.mdtest" / "Ordered and unordered lists.text"
 )
-def test_full_list_probe_produces_nested_list_grammar() -> None:
-    decoded = decode_stream(_act2_stream(FULL_LIST))
-    codes = [token.code for token in decoded]
 
-    assert codes.count(tokens.LIST_OPEN) == 2
-    assert codes.count(tokens.LIST_CLOSE) == 2
-    assert codes.count(tokens.ITEM_CLOSE) >= 3
+# The five full-list families the fixture requires beyond the Spike A/B
+# narrowings: multi-tab tight markers across all three bullet glyphs,
+# multi-digit ordered labels, loose spacing, multiple item paragraphs, and
+# nested list-in-list.
+FULL_LIST_CASES = {
+    "markers": "*\tone\n+\ttwo\n-\tthree\n",
+    "multi_digit": "10. Ten\n11. Eleven\n",
+    "loose": "* one\n\n* two\n",
+    "paragraphs": "1. one\n\n   two\n",
+    "nested": FULL_LIST,
+}
+
+
+@pytest.mark.parametrize("case", sorted(FULL_LIST_CASES))
+def test_full_list_stream_validates_and_closes_every_item(case: str) -> None:
+    decoded = decode_stream(_act2_stream(FULL_LIST_CASES[case]))
+    validate_stream(decoded)
+
+    codes = [token.code for token in decoded]
+    assert codes.count(tokens.LIST_ITEM) == codes.count(tokens.ITEM_CLOSE)
+
+
+def test_full_list_fixture_stream_validates_and_closes_every_item() -> None:
+    decoded = decode_stream(_act2_stream(_FULL_LIST_FIXTURE.read_text()))
+    validate_stream(decoded)
+
+    codes = [token.code for token in decoded]
+    assert codes.count(tokens.LIST_ITEM) == codes.count(tokens.ITEM_CLOSE)
