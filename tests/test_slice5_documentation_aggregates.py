@@ -14,6 +14,12 @@ from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
 from src_ir.act3 import ACT as ACT3
 from src_ir.act4 import ACT as ACT4
+from tests.test_act2_slice4 import (
+    BASICS_ATX_CLOSING_HASH,
+    BASICS_PROJECT_SUBMENU,
+    BASICS_SETEXT_H1,
+    BASICS_SETEXT_H2,
+)
 from tests.test_mdtest import (
     _FIXTURES_BY_NAME,
     _IMPLEMENTED_FIXTURES,
@@ -55,6 +61,69 @@ def _run_acts_with_limit(
 
 def _fixture_paths(name: str) -> tuple[Path, Path]:
     return _FIXTURES_BY_NAME[name]
+
+
+def _oracle_bytes(input_bytes: bytes) -> bytes:
+    oracle = subprocess.run(
+        ["perl", str(MARKDOWN_PL)],
+        input=input_bytes,
+        capture_output=True,
+        cwd=REPO,
+        check=False,
+    )
+    assert oracle.returncode == 0, oracle.stderr.decode()
+    return oracle.stdout
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        BASICS_SETEXT_H1,
+        BASICS_SETEXT_H2,
+        BASICS_PROJECT_SUBMENU,
+        BASICS_ATX_CLOSING_HASH,
+    ],
+    ids=["setext_h1", "setext_h2", "raw_html", "closing_hash"],
+)
+def test_basics_minimal_witness_matches_fast_release_and_raw_oracle(
+    source: str,
+) -> None:
+    input_bytes = source.encode()
+    expected = _oracle_bytes(input_bytes)
+
+    fast_actual = _run_acts(source, through_act=4)
+    assert isinstance(fast_actual, str)
+    assert fast_actual.encode() == expected
+
+    release = subprocess.run(
+        [str(BINARY)],
+        input=input_bytes,
+        capture_output=True,
+        cwd=REPO,
+        check=False,
+    )
+    assert release.returncode == 0, release.stderr.decode()
+    assert release.stdout == expected
+
+
+def test_basics_full_fixture_matches_fast_release_and_raw_oracle() -> None:
+    input_path, _ = _fixture_paths("Markdown Documentation - Basics")
+    input_bytes = input_path.read_bytes()
+    expected = _oracle_bytes(input_bytes)
+
+    fast_actual = _run_acts(input_bytes.decode(), through_act=4)
+    assert isinstance(fast_actual, str)
+    assert fast_actual.encode() == expected
+
+    release = subprocess.run(
+        [str(BINARY)],
+        input=input_bytes,
+        capture_output=True,
+        cwd=REPO,
+        check=False,
+    )
+    assert release.returncode == 0, release.stderr.decode()
+    assert release.stdout == expected
 
 
 @pytest.mark.parametrize("through_act", [1, 2, 3, 4])

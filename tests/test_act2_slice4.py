@@ -29,6 +29,26 @@ NESTED_QUOTE = "> foo\n>\n> > bar\n>\n> foo\n"
 NESTED_QUOTE_BLANK_AT_OUTER_MARKER = "> > a\n>\n> > b\n"
 FULL_LIST = "1. First\n2. Second:\n\t* Fee\n\t* Fie\n3. Third\n"
 
+BASICS_SETEXT_H1 = "Markdown: Basics\n================\n"
+BASICS_SETEXT_H2 = (
+    "Getting the Gist of Markdown's Formatting Syntax\n"
+    "------------------------------------------------\n"
+)
+BASICS_PROJECT_SUBMENU = (
+    '<ul id="ProjectSubmenu">\n'
+    '    <li><a href="/projects/markdown/" '
+    'title="Markdown Project Page">Main</a></li>\n'
+    '    <li><a class="selected" title="Markdown Basics">Basics</a></li>\n'
+    '    <li><a href="/projects/markdown/syntax" '
+    'title="Markdown Syntax Documentation">Syntax</a></li>\n'
+    '    <li><a href="/projects/markdown/license" '
+    'title="Pricing and License Information">License</a></li>\n'
+    '    <li><a href="/projects/markdown/dingus" '
+    'title="Online Markdown Web Form">Dingus</a></li>\n'
+    "</ul>\n"
+)
+BASICS_ATX_CLOSING_HASH = "## Heading ##\n"
+
 _ADVANCED_HTML_FIXTURE = (
     Path.home() / "mdtest" / "Markdown.mdtest" / "Inline HTML (Advanced).text"
 )
@@ -156,6 +176,38 @@ def _decoded_triplets(
 ) -> list[tuple[int, tuple[int, ...], str | None]]:
     decoded = decode_stream(_act2_stream(input_text))
     return [(token.code, token.payloads, token.text) for token in decoded]
+
+
+@pytest.mark.parametrize(
+    ("source", "level", "text"),
+    [
+        (BASICS_SETEXT_H1, 1, "Markdown: Basics"),
+        (
+            BASICS_SETEXT_H2,
+            2,
+            "Getting the Gist of Markdown's Formatting Syntax",
+        ),
+    ],
+    ids=["setext_h1", "setext_h2"],
+)
+def test_basics_setext_witness_uses_existing_header_role(
+    source: str, level: int, text: str
+) -> None:
+    assert _decoded_triplets(source) == [
+        (tokens.HEADER, (level,), text),
+    ]
+
+
+def test_basics_raw_html_witness_uses_existing_raw_html_hash_role() -> None:
+    assert _decoded_triplets(BASICS_PROJECT_SUBMENU) == [
+        (tokens.RAW_HTML_HASH, (), BASICS_PROJECT_SUBMENU.rstrip("\n")),
+    ]
+
+
+def test_basics_closing_hash_witness_uses_existing_header_role() -> None:
+    assert _decoded_triplets(BASICS_ATX_CLOSING_HASH) == [
+        (tokens.HEADER, (2,), "Heading"),
+    ]
 
 
 def test_nested_quote_fixture_stream_is_balanced_open_to_close() -> None:

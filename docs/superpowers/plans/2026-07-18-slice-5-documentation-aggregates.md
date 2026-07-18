@@ -135,7 +135,15 @@
 
 **Interfaces:** Act II emits existing `HEADER(level, text)` for Setext levels 1/2 and existing `RAW_HTML_HASH(text)` for top-level generic raw HTML; Act III preserves their declared payload/text and Act IV emits the existing header/raw paths.
 
-- [ ] **Step 1: Add minimal red aggregate witnesses.** Extract exact source snippets for: `Markdown: Basics\n================\n`, `Getting ...\n----------------\n`, `<ul id="ProjectSubmenu">... </ul>`, and `## Heading ##`. Assert their decoded streams use only existing `HEADER`/`RAW_HTML_HASH` roles, their fast/binary output equals Markdown.pl, and the full Basics fixture is raw-byte-identical. Do not copy expected HTML into production code.
+- [x] **Step 1: Add minimal red aggregate witnesses.** Extract exact source snippets for: `Markdown: Basics\n================\n`, `Getting ...\n----------------\n`, `<ul id="ProjectSubmenu">... </ul>`, and `## Heading ##`. Assert their decoded streams use only existing `HEADER`/`RAW_HTML_HASH` roles, their fast/binary output equals Markdown.pl, and the full Basics fixture is raw-byte-identical. Do not copy expected HTML into production code.
+
+  Evidence (2026-07-18): the focused Step-2 selector reports `6 passed, 9
+  failed, 43 deselected`. The failures are exactly the two Setext witnesses
+  decoding as `PARA`, the submenu witness decoding as `PARA`, the ATX witness
+  retaining `Heading ##`, their four fast raw-oracle mismatches, and the full
+  Basics raw-byte mismatch. The release assertions are present behind each
+  fast assertion; no production or generated SPL changed. Ruff check and
+  format-check pass for both changed test files.
 
 - [ ] **Step 2: Verify red.** Run `uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or raw_html or closing_hash or Basics' -q`. Expected: failures demonstrate the current paragraph/escaped-HTML/trailing-hash behavior.
 
