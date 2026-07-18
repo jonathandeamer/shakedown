@@ -45,15 +45,15 @@ design amendment before implementation continues.
 
 ## Literary reservation
 
-Only Act II may need new controlled scenes.  The derived setext scanner needs
-seven labels (candidate, underline classification, equals emit, dash emit,
-replay, close, and EOF); existing raw-HTML/header scenes are amended in place.
-The four-title spare minimum is also greater than 20% of seven.  Add a working
-entry only with the identically named IR scene; do not draw a spare without a
-plan amendment.
+Only Act II may need new controlled scenes. The derived Setext scanner needs
+eight labels (candidate, underline classification, equals emit, dash emit,
+Hecate-to-Puck replay, Puck-to-Horatio bridge, Lady-Macbeth close, and EOF);
+existing raw-HTML/header scenes are amended in place. The four-title spare
+minimum remains greater than 20% of eight. Add a working entry only with the
+identically named IR scene; do not draw a spare without a plan amendment.
 
 ```toml
-# Slice 5 Act-II working pool (7)
+# Slice 5 Act-II working pool (8)
 [scenes.PASS_SETEXT_CANDIDATE]
 title = "Lady Macbeth keeps the unmarked line before its warrant."
 pattern = "scene_of_character"
@@ -68,6 +68,9 @@ title = "Lady Macbeth lowers the gathered line one rank."
 pattern = "scene_of_character"
 [scenes.PASS_SETEXT_REPLAY]
 title = "Lady Macbeth returns the unproved mark in order."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_BRIDGE]
+title = "Puck entrusts the gathered line to Horatio."
 pattern = "scene_of_character"
 [scenes.PASS_SETEXT_CLOSE]
 title = "Lady Macbeth seals the proven heading."
@@ -129,3 +132,46 @@ entity-normalized comparator.  The exact focused and release evidence remains
 `uv run pytest tests/test_mdtest.py -k Tidyness -q`, and
 `uv run python scripts/strict_parity_harness.py Tidyness`, all requiring
 136/136 raw-byte equality where the output is compared to the oracle.
+
+## Amendment A2 (2026-07-18): Setext carrier bridge and eight-label ledger
+
+The original seven-label reservation omitted a legal two-participant path for
+replaying the candidate when its next line is not a Setext underline. Act II
+is anchored on Lady Macbeth, and `splc` permits exactly one other participant
+per scene. A scene that directly reads Hecate's captured glyphs, stages Puck,
+and writes Horatio would therefore be rejected before lowering. This
+amendment reserves `PASS_SETEXT_BRIDGE` as the eighth working label; it does
+not consume any of the four named spares.
+
+The following state table is binding. A scene may touch only the pair shown;
+the arrows are stack transfers, not value aliases. The candidate stack holds
+the title bytes in capture order and, on a failed underline, every consumed
+underline byte including its terminating newline. The three transfer legs
+restore those bytes to Lady Macbeth in source order. Thus the failed route
+replays the exact raw sequence, while the proved route omits the underline and
+has already staged exactly one existing `HEADER(level)` record ahead of its
+title bytes.
+
+| Label | Stage pair / anchor | Stack action and exit |
+|---|---|---|
+| `PASS_SETEXT_CANDIDATE` | Lady Macbeth + Hecate / Lady Macbeth | Read one source glyph; capture title glyphs on Hecate. On the first newline, enter `PASS_SETEXT_UNDERLINE` with Hecate retaining the candidate stack. |
+| `PASS_SETEXT_UNDERLINE` | Lady Macbeth + Hecate / Lady Macbeth | Read and classify the next line; retain its bytes on Hecate only until `PASS_SETEXT_EQUALS` or `PASS_SETEXT_DASH` proves it, otherwise retain them for raw replay. |
+| `PASS_SETEXT_EQUALS` | Lady Macbeth + Hecate / Lady Macbeth | Require only `=` and permitted horizontal whitespace through newline; discard the proved underline, push existing `HEADER(1)` on Lady Macbeth, then enter `PASS_SETEXT_REPLAY`. |
+| `PASS_SETEXT_DASH` | Lady Macbeth + Hecate / Lady Macbeth | Require only `-` and permitted horizontal whitespace through newline; discard the proved underline, push existing `HEADER(2)` on Lady Macbeth, then enter `PASS_SETEXT_REPLAY`. |
+| `PASS_SETEXT_REPLAY` | Hecate + Puck / Hecate | Pop every retained candidate/replay glyph from Hecate and push it onto Puck; when Hecate's private floor is reached, enter `PASS_SETEXT_BRIDGE`. |
+| `PASS_SETEXT_BRIDGE` | Puck + Horatio / Puck | Pop every replay glyph from Puck and push it onto Horatio; when Puck's private floor is reached, enter `PASS_SETEXT_CLOSE`. |
+| `PASS_SETEXT_CLOSE` | Lady Macbeth + Horatio / Lady Macbeth | Pop every glyph from Horatio and push it onto Lady Macbeth. At Horatio's floor, return to the existing block dispatcher; the success route has `HEADER(level)` before the restored title, and the failed route has only its raw bytes. |
+| `PASS_SETEXT_EOF` | Lady Macbeth + Hecate / Lady Macbeth | Treat an EOF candidate as unproved and enter the same replay route without reading beyond EOF. |
+
+`PASS_SETEXT_REPLAY` and `PASS_SETEXT_BRIDGE` are the sole pair-transition
+chain: `Hecate/Lady Macbeth -> Hecate/Puck -> Puck/Horatio -> Lady
+Macbeth/Horatio`. No label may mention all of Hecate, Puck, and Horatio; no
+selector, token, Act-III/IV role, compiler behavior, or fixture branch is
+authorized. Before implementing this amendment, add the eight working TOML
+entries (including the new bridge entry) from this design to
+`src/20-act2-literary.toml`, then run the plan's exact SPL-facing compliance
+gate:
+
+```bash
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+```
