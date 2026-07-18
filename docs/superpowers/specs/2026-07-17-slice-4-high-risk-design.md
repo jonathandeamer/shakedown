@@ -1120,3 +1120,35 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 The completion checkpoint runs `uv run pytest -q`, `uv run ruff check .`,
 `uv run ruff format --check .`, `uv run pyright`, a 23-case differential smoke
 report, and the performance measurement procedure in `docs/performance/budget.md`.
+
+## Amendment A13 — installed-oracle authority for nested tight-list layout (2026-07-18)
+
+The checked-in `Ordered and unordered lists.xhtml` corpus disagrees with the
+installed `~/markdown/Markdown.pl` 1.0.2b8 executable in nested tight-list
+line placement.  In particular, the corpus writes nested `<ul>`/`<li>`
+boundaries on separate lines, while the installed oracle writes the same
+boundaries contiguously (for example, `<ul><li>Tab`).  The release binary and
+fast IR are already byte-identical to the installed oracle.  This is a
+corpus-layout drift, not a Shakedown rendering defect.
+
+As in A1, the installed executable is the sole strict-byte authority for this
+deterministic fixture.  Task 4 Step 3 is authorized to add a narrowly scoped
+`tests/test_mdtest.py` normalizer used only when `name == "Ordered and
+unordered lists"`, after the existing whitespace normalization.  It must
+apply these two layout-only rewrites to both the fixture expected output and
+both Shakedown outputs:
+
+```python
+text = text.replace("<ul>\n<li>", "<ul><li>")
+text = text.replace("</li>\n</ul></li>", "</li></ul></li>")
+```
+
+The helper must have a name and docstring identifying the checked-in
+Markdown-1.0.1 nested-tight-list layout drift; it must not apply to any other
+fixture, alter text content, attributes, tag order, blank paragraphs, or
+Markdown.pl runtime behavior.  Expected fixture files remain unchanged.
+`scripts/strict_parity_harness.py 'Ordered and unordered lists'` remains the
+raw-byte acceptance gate and must report `summary: 1/1 byte-identical` before
+and after enablement.  Auto links remains the sole entity-normalized
+equivalence exception; this amendment is a static-corpus comparator adapter,
+not a parity exception.

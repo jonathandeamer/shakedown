@@ -4,7 +4,7 @@
 
 **Goal:** Ship `Inline HTML (Advanced)`, `Nested blockquotes`, and `Ordered and unordered lists` with strict Markdown.pl bytes while preserving all shipped fixtures and Spike A/B contracts.
 
-**Architecture:** Follow the [accepted Slice-4 design](../specs/2026-07-17-slice-4-high-risk-design.md), including Amendments A2–A5, architecture §7.7/§7.8a/§8.1, and the four-act IR pipeline. Act II produces the balanced container grammar plus A2's existing allocated `HEADER(level, text)` leaf, A4's final-blank transaction with its separate accepted nested-after-blank selector, and A5's tally/read split for tab-depth classification; Act III preserves structural/raw leaves, and Act IV renders those frames and headers; no parser, token number, structural role, or participant is added.
+**Architecture:** Follow the [accepted Slice-4 design](../specs/2026-07-17-slice-4-high-risk-design.md), including Amendments A2–A13, architecture §7.7/§7.8a/§8.1, and the four-act IR pipeline. Act II produces the balanced container grammar plus A2's existing allocated `HEADER(level, text)` leaf, A4's final-blank transaction with its separate accepted nested-after-blank selector, and A5's tally/read split for tab-depth classification; Act III preserves structural/raw leaves, and Act IV renders those frames and headers; no parser, token number, structural role, or participant is added.
 
 **Tech Stack:** Python 3.13, typed splc IR, generated Shakespeare SPL, TOML-controlled literary surfaces, pytest, local Markdown.pl 1.0.2b8 strict oracle.
 
@@ -18,6 +18,12 @@
   `~/markdown/Markdown.pl` 1.0.2b8 executable, as fixed by Slice-4 design
   Amendment A1.  The checked-in fixture remains the normalized-mdtest corpus;
   its Markdown-1.0.1 indentation is not a second raw-byte acceptance target.
+- For `Ordered and unordered lists`, the strict-byte authority is likewise
+  the installed `~/markdown/Markdown.pl` 1.0.2b8 executable, per design
+  Amendment A13.  Its checked-in corpus has only a nested-tight-list
+  line-placement drift; Task 4 Step 3 alone may add A13's two replacement
+  rules to the fixture-scoped mdtest comparator.  This does not weaken the
+  raw strict-parity harness and does not authorize changing expected files.
 - Amendment A2 authorizes only `HEADER = 2`'s new `TokenArity(1, True)` row and bounded top-level ATX path as a prerequisite of Task 4 Step 2. A needed token, third participant, structural-role change, broader header syntax/container handling, unreserved surface, or any other fixture requirement outside the accepted design is `- BLOCK[plan]: ...` in `.agent/blockers.md` followed by a clean stop.
 - Amendment A4 supersedes A3's five-label limit with exactly six Act-II provisional-looseness labels.  It preserves the existing list token grammar and Act-IV renderer: stage a final blank provisionally; commit an ordinary continuation/sibling through `PASS_LISTS_LOOSE_COMMIT`; route an accepted nested marker through `PASS_LISTS_LOOSE_NESTED`; and restore tightness plus staged glyph order at EOF/list termination.
 - Amendment A5 consumes A4's four guards and authorizes exactly `PASS_LISTS_INDENT_TAB_READ` plus five unused Act-II `PASS_LISTS_INDENT_*_GUARD` spares.  The existing tab entry updates the indentation tally, the read helper owns `_read()`, and the first non-tab glyph is classified before marker staging can overwrite `PUCK`; equal indentation is a sibling route and deeper indentation is a nested-open route.  A need for another helper, a sixth spare, a different register ownership, or any Act-III/IV/token/grammar change is `- BLOCK[plan]: ...` followed by a clean stop.
@@ -226,14 +232,32 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: all pass, strict harness reports `summary: 1/1 byte-identical`, and every existing list/nested spike stream and byte test remains unchanged.  The complete fixture's three leading sections begin with `<h2>Unordered</h2>`, `<h2>Ordered</h2>`, and `<h2>Nested</h2>`; no header syntax beyond Amendment A2 is accepted. If a required stream cannot validate under the existing grammar, or a header requirement exceeds A2's bounded path, record the architecture halt blocker rather than changing the grammar locally.
 
-- [ ] **Step 3: Enable and checkpoint full lists.** Add `Ordered and unordered lists` to `_IMPLEMENTED_FIXTURES`; run the global SPL/literary gate plus:
+- [ ] **Step 3: Enable and checkpoint full lists.** In `tests/test_mdtest.py`, add
+  `_normalize_ordered_unordered_list_layout(text: str) -> str` with a docstring
+  naming the checked-in Markdown-1.0.1 nested-tight-list layout drift.  After
+  `_normalize(text)`, call it only for `name == "Ordered and unordered lists"`:
+
+  ```python
+  def _normalize_ordered_unordered_list_layout(text: str) -> str:
+      """Normalize the static corpus's nested tight-list line placement."""
+      text = text.replace("<ul>\n<li>", "<ul><li>")
+      return text.replace("</li>\n</ul></li>", "</li></ul></li>")
+  ```
+
+  Apply the same function to expected, fast-IR, and release output through
+  `_normalize_fixture_output`; do not use it for any other fixture and do not
+  alter expected files.  Then add `Ordered and unordered lists` to
+  `_IMPLEMENTED_FIXTURES`; run the global SPL/literary gate plus:
 
   ```bash
   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -q
   uv run python scripts/strict_parity_harness.py 'Hard-wrapped paragraphs with list-like lines' 'Ordered and unordered lists' 'Nested blockquotes'
   ```
 
-  Expected: pass and `summary: 3/3 byte-identical`; the enabled mdtest parametrization runs the full list fixture. Commit Task-4 files as `feat: complete markdown list fixture`; push.
+  Expected: pass and `summary: 3/3 byte-identical`; the enabled mdtest
+  parametrization runs the full list fixture under the A13 corpus-layout
+  comparator, while the strict harness proves raw installed-oracle bytes.
+  Commit Task-4 files as `feat: complete markdown list fixture`; push.
 
 ### Task 5: Run the Slice-4 completion gate and register shipment
 
@@ -267,4 +291,4 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 ## Plan self-review
 
-The three §7.7 fixtures map one-to-one to Tasks 2–4; Task 1 proves the shipped floor and Task 5 supplies the full four-gate close. The accepted design supplies the bounded HTML surface, balanced quote/list grammar, A2 header prerequisite, A4's final-blank transaction and nested-after-blank selector, A5/A8's shared detabbed-depth accounting, and A9–A12's stage-pair-safe nested-to-outer sibling adapter with structural scan and replay of its immediate segment, with explicit no-new-token authority and a ready-to-paste literary pool whose 28-working/6-spare ledger is derived. Every SPL-facing task names generated-fragment, parse, validation, literary, Amps, fixture, strict-oracle, and spike gates; all fixture claims remain strict-byte claims.
+The three §7.7 fixtures map one-to-one to Tasks 2–4; Task 1 proves the shipped floor and Task 5 supplies the full four-gate close. The accepted design supplies the bounded HTML surface, balanced quote/list grammar, A2 header prerequisite, A4's final-blank transaction and nested-after-blank selector, A5/A8's shared detabbed-depth accounting, and A9–A12's stage-pair-safe nested-to-outer sibling adapter with structural scan and replay of its immediate segment, with explicit no-new-token authority and a ready-to-paste literary pool whose 28-working/6-spare ledger is derived. A13 makes the installed oracle authoritative over only the static list corpus's nested-tight layout drift, while retaining raw strict parity. Every SPL-facing task names generated-fragment, parse, validation, literary, Amps, fixture, strict-oracle, and spike gates; all fixture claims remain strict-byte claims.
