@@ -152,6 +152,6 @@ def test_tidyness_exact_fixture_matches_fast_release_and_raw_oracle() -> None:
         check=False,
     )
 
-    assert fixture_name not in _IMPLEMENTED_FIXTURES
+    assert fixture_name in _IMPLEMENTED_FIXTURES
     assert release.returncode == 0, release.stderr.decode()
     assert release.stdout == oracle.stdout

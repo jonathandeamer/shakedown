@@ -119,7 +119,15 @@
   `summary: 1/1 byte-identical` at 136 bytes; and splc regeneration plus
   assembly completes without tracked drift.
 
-- [ ] **Step 5: Enable and checkpoint.** Add `Tidyness` to `_IMPLEMENTED_FIXTURES` only after Step 4. In `tests/test_mdtest.py`, introduce a narrow test-only expected-output helper that invokes the installed local Markdown.pl for Tidyness and otherwise returns the checked-in expected file; route the existing fast-IR and release comparisons through it. Do not change `Tidyness.xhtml`, add a normalizer, or invoke Markdown.pl from production code. Re-run the Step-4 gate after this test-only enablement change; then commit Task-2 files as `fix: restore tidyness quote list handoff`; push with the required trailers.
+- [x] **Step 5: Enable and checkpoint.** Add `Tidyness` to `_IMPLEMENTED_FIXTURES` only after Step 4. In `tests/test_mdtest.py`, introduce a narrow test-only expected-output helper that invokes the installed local Markdown.pl for Tidyness and otherwise returns the checked-in expected file; route the existing fast-IR and release comparisons through it. Do not change `Tidyness.xhtml`, add a normalizer, or invoke Markdown.pl from production code. Re-run the Step-4 gate after this test-only enablement change; then commit Task-2 files as `fix: restore tidyness quote list handoff`; push with the required trailers.
+
+  Evidence (2026-07-18): after enablement, the broad regression gate reports
+  `77 passed`; the Tidyness mdtest reports `1 passed, 35 deselected`; strict
+  parity reports `summary: 1/1 byte-identical` at 136 bytes; and splc
+  regeneration plus assembly completes without tracked generated drift. The
+  parameterized fast-IR and release comparisons obtain Tidyness's expected
+  output from the installed local Markdown.pl while every other fixture
+  continues to use its checked-in expected file.
 
 ### Task 3: Make Markdown Documentation — Basics a strict aggregate gate
 

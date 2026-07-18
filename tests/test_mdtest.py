@@ -16,6 +16,7 @@ from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.slice3_links import rewrite_task3_markdown
 
 FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
+MARKDOWN_PL = Path.home() / "markdown" / "Markdown.pl"
 BINARY = Path(__file__).parent.parent / "shakedown"
 
 
@@ -91,6 +92,19 @@ def _collect_fixtures() -> list[tuple[str, Path, Path]]:
     return cases
 
 
+def _expected_fixture_output(name: str, input_path: Path, expected_path: Path) -> str:
+    """Return the authoritative test expectation for one mdtest fixture."""
+    if name == "Tidyness":
+        return subprocess.run(
+            ["perl", str(MARKDOWN_PL)],
+            input=input_path.read_text(),
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+    return expected_path.read_text()
+
+
 _FIXTURES = _collect_fixtures()
 _FIXTURES_BY_NAME = {
     name: (input_path, expected_path) for name, input_path, expected_path in _FIXTURES
@@ -116,6 +130,7 @@ _IMPLEMENTED_FIXTURES = {
     "Ordered and unordered lists",
     "Strong and em together",
     "Tabs",
+    "Tidyness",
 }
 _SLICE3_FIXTURES = {
     "Blockquotes with code blocks",
@@ -200,7 +215,7 @@ def _interpret_ir(input_text: str) -> str:
 @pytest.mark.parametrize("name,input_path,expected_path", _fixture_params())
 def test_mdtest(name: str, input_path: Path, expected_path: Path) -> None:
     input_text = input_path.read_text()
-    expected = expected_path.read_text()
+    expected = _expected_fixture_output(name, input_path, expected_path)
     norm_expected = _normalize_fixture_output(name, expected)
 
     # 1. Run the fast IR interpreter first
