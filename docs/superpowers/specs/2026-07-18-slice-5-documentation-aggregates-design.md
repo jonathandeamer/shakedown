@@ -46,17 +46,21 @@ design amendment before implementation continues.
 ## Literary reservation
 
 Only Act II may need new controlled scenes. The derived Setext scanner needs
-nine labels (candidate, underline classification, equals emit, dash emit,
-failed-underline requeue, Lady-Macbeth-to-Hecate finalization,
-Hecate-to-Puck replay, Puck-to-Horatio bridge, and Lady-Macbeth close);
+ten labels (one-time candidate-floor seed, candidate scan, underline
+classification, equals emit, dash emit, failed-underline requeue,
+Lady-Macbeth-to-Hecate finalization, Hecate-to-Puck replay, Puck-to-Horatio
+bridge, and Lady-Macbeth close);
 existing raw-HTML/header scenes are amended in place. The four-title spare
 minimum remains greater than 20% of nine. Add a working entry only with the
 identically named IR scene; do not draw a spare without a plan amendment.
 
 ```toml
-# Slice 5 Act-II working pool (9)
+# Slice 5 Act-II working pool (10)
 [scenes.PASS_SETEXT_CANDIDATE]
 title = "Lady Macbeth keeps the unmarked line before its warrant."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_CANDIDATE_SCAN]
+title = "Lady Macbeth gathers each unmarked letter by measure."
 pattern = "scene_of_character"
 [scenes.PASS_SETEXT_UNDERLINE]
 title = "Lady Macbeth weighs the underlining rank."
@@ -223,6 +227,57 @@ compiler behavior, fixture branch, or raw-HTML/header scope.
 Before implementation, replace the old eight-entry TOML reservation with the
 nine ready-to-paste entries above, including `PASS_SETEXT_REQUEUE` and
 `PASS_SETEXT_FINALIZE`, then run:
+
+```bash
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+```
+
+## Amendment A4 (2026-07-18): one-time candidate floor and unbounded scan
+
+The A3 nine-label ledger is superseded.  Its `PASS_SETEXT_CANDIDATE` scene
+must perform two incompatible duties: place Lady Macbeth's private candidate
+floor exactly once, and scan an unbounded title line.  In splc IR a branch or
+goto targets a whole scene, so a self-loop to that scene would seed another
+floor for every glyph.  Moving the seed to a non-ledger scene would violate
+the binding floor-ownership rule.  The minimal witness is:
+
+```text
+Markdown: Basics
+================
+```
+
+This amendment reserves the additional working label,
+`PASS_SETEXT_CANDIDATE_SCAN`, in the consolidated pool above.
+`PASS_SETEXT_CANDIDATE` is now the one-time seed scene only, and it immediately
+enters the scan scene.  The working pool is therefore ten labels; the existing
+four named spares remain unused and satisfy both `ceil(10 * 20%) = 2` and the
+four-title minimum.  No spare is drawn, and no new token, selector,
+participant, Act-III/IV role, compiler behavior, fixture branch, raw-HTML
+scope, or header behavior is authorized.
+
+The A4 state table replaces A3's nine-row table.  Each private floor is
+pushed, observed, and discarded only by the named owning scene family and is
+never emitted into Act III.
+
+| Label | Stage pair / anchor | Stack action and exit |
+|---|---|---|
+| `PASS_SETEXT_CANDIDATE` | Lady Macbeth + Hecate / Lady Macbeth | Push exactly one private candidate floor above Lady Macbeth's pre-existing stream, perform no `_read()`, and enter `PASS_SETEXT_CANDIDATE_SCAN`. |
+| `PASS_SETEXT_CANDIDATE_SCAN` | Lady Macbeth + Hecate / Lady Macbeth | Call `_read()` for one source glyph.  Push each non-EOF glyph, including the terminating newline, above Lady Macbeth's candidate floor.  On another title glyph, self-loop only to this scan label; on the first newline enter `PASS_SETEXT_UNDERLINE`; on EOF set raw mode and enter `PASS_SETEXT_FINALIZE`. |
+| `PASS_SETEXT_UNDERLINE` | Hecate + Horatio / Hecate | Seed Horatio's underline floor, read and classify the next line while retaining only its provisional bytes above that floor.  A valid all-`=` or all-`-` line enters its matching proof scene; any other byte or boundary enters `PASS_SETEXT_REQUEUE`. |
+| `PASS_SETEXT_EQUALS` | Lady Macbeth + Horatio / Lady Macbeth | Discard the provisional underline through Horatio's floor, push existing `HEADER(1)` below the eventual restored title, set proved mode, and enter `PASS_SETEXT_FINALIZE`. |
+| `PASS_SETEXT_DASH` | Lady Macbeth + Horatio / Lady Macbeth | Discard the provisional underline through Horatio's floor, push existing `HEADER(2)` below the eventual restored title, set proved mode, and enter `PASS_SETEXT_FINALIZE`. |
+| `PASS_SETEXT_REQUEUE` | Hecate + Horatio / Hecate | Pop provisional underline bytes back onto Hecate through Horatio's floor, discard that floor, set raw mode, and enter `PASS_SETEXT_FINALIZE` without calling `_read()`. |
+| `PASS_SETEXT_FINALIZE` | Lady Macbeth + Hecate / Lady Macbeth | Pop candidate bytes from Lady Macbeth to Hecate through Lady Macbeth's candidate floor, discard that floor, and place Hecate's private finalized-title floor below those bytes without calling `_read()`; then enter `PASS_SETEXT_REPLAY`. |
+| `PASS_SETEXT_REPLAY` | Hecate + Puck / Hecate | Seed Puck's replay floor, transfer finalized title bytes from Hecate to Puck through Hecate's floor, discard that floor, and enter `PASS_SETEXT_BRIDGE`. |
+| `PASS_SETEXT_BRIDGE` | Puck + Horatio / Puck | Seed Horatio's restore floor, transfer title bytes from Puck to Horatio through Puck's replay floor, discard that floor, and enter `PASS_SETEXT_CLOSE`. |
+| `PASS_SETEXT_CLOSE` | Lady Macbeth + Horatio / Lady Macbeth | Transfer title bytes from Horatio to Lady Macbeth through Horatio's restore floor, discard that floor, and return to the existing block dispatcher.  Proved mode has `HEADER(level)` beneath restored title bytes; raw mode leaves the requeued look-ahead unread on Hecate. |
+
+The candidate path is consequently
+`PASS_SETEXT_CANDIDATE -> PASS_SETEXT_CANDIDATE_SCAN ->
+PASS_SETEXT_CANDIDATE_SCAN* -> PASS_SETEXT_UNDERLINE`, where only the second
+label may self-loop.  No scene names Hecate, Puck, and Horatio together.
+Before implementation, add all ten ready-to-paste working TOML entries,
+including the A4 scan entry, and run:
 
 ```bash
 uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
