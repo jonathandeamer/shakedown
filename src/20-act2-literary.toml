@@ -781,6 +781,11 @@ pattern = "scene_of_character"
 title = "Macbeth bears the inner seal beyond its elder rank."
 pattern = "scene_of_character"
 
+# Amendment A14 nested-tail sentinel save working scene
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE]
+title = "Macbeth bears the inner seal beyond the elder host."
+pattern = "scene_of_character"
+
 [scenes.PASS_CONTAINERS_DEPTH_SKIP_SUBTREE]
 title = "Macbeth bears each inner seal beyond its elder rank."
 pattern = "scene_of_character"

@@ -1910,21 +1910,27 @@ Lady Macbeth:
 
                     Scene @PASS_CONTAINERS_DEPTH_SKIP_TAIL: @LIT.scenes.PASS_CONTAINERS_DEPTH_SKIP_TAIL.title
 
-[Exit Lady Macbeth]
+[Exit Macbeth]
 
 [Enter Horatio]
 
-Horatio:
- Remember Lady Macbeth.
-
-Macbeth:
- You are as mighty as the difference between nothing and the sum of a normal little furry black cat and a furry black cat.
+Lady Macbeth:
+ You are as bold as the difference between nothing and the sum of a normal little furry black cat and a furry black cat.
 
 [Exit Horatio]
 
-[Enter Lady Macbeth]
+[Enter Macbeth]
 
-Macbeth:
+Lady Macbeth:
+ Let us proceed to scene @PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE.
+
+
+                    Scene @PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE: @LIT.scenes.PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE.title
+
+Lady Macbeth:
+ Remember myself.
+
+Lady Macbeth:
  Let us return to scene @PASS_CONTAINERS_DEPTH.
 
 
@@ -2494,11 +2500,29 @@ Macbeth:
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
 
-Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+Lady Macbeth:
+ You are as bold as the difference between yourself and a hero.
 
 Lady Macbeth:
- You are as mighty as the difference between yourself and a hero.
+ Is Puck as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Macbeth:
+ If so, let us return to scene @PASS_LISTS_ITEM_BEGIN_TIGHT.
+
+Lady Macbeth:
+ Is Puck as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+
+Macbeth:
+ If so, let us return to scene @PASS_LISTS_ITEM_BEGIN_TIGHT.
+
+Lady Macbeth:
+ Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+
+Macbeth:
+ If so, let us return to scene @PASS_LISTS_ITEM_BEGIN_TIGHT.
+
+Macbeth:
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us return to scene @PASS_LISTS_ITEM_BEGIN_TIGHT.
@@ -3144,7 +3168,13 @@ Lady Macbeth:
                     Scene @PASS_LISTS_NEST_EMIT_UL: @LIT.scenes.PASS_LISTS_NEST_EMIT_UL.title
 
 Lady Macbeth:
- Is Horatio worse than nothing?
+ Is Horatio as villainous as the sum of a miserable vile cursed wolf and the sum of a vile cursed wolf and a wolf?
+
+Hecate:
+ If so, let us proceed to scene @PASS_LISTS_NEST_OPEN_UL.
+
+Lady Macbeth:
+ Is Horatio more villainous than nothing?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_LOOSE_NEST_UL.
@@ -3172,13 +3202,19 @@ Lady Macbeth:
                     Scene @PASS_LISTS_NEST_EMIT_OL: @LIT.scenes.PASS_LISTS_NEST_EMIT_OL.title
 
 Lady Macbeth:
- Is Horatio more villainous than nothing?
+ Is Horatio as bold as the sum of a miserable vile cursed wolf and the sum of a vile cursed wolf and a cursed wolf?
+
+Hecate:
+ If so, let us proceed to scene @PASS_LISTS_NEST_OPEN_OL.
+
+Lady Macbeth:
+ Is Horatio worse than nothing?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_LOOSE_NEST_OL.
 
 Lady Macbeth:
- Is Macbeth as mighty as a hero?
+ Is Macbeth as bold as a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_NEST_EMIT_OL_OPEN.
@@ -3202,9 +3238,8 @@ Lady Macbeth:
 Hecate:
  Remember nothing.
 
-[Exit Hecate]
-
-[Enter Macbeth]
+Hecate:
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_NEST_OPEN_UL.
@@ -3215,9 +3250,8 @@ Lady Macbeth:
 Hecate:
  Remember nothing.
 
-[Exit Hecate]
-
-[Enter Macbeth]
+Hecate:
+ Remember the difference between a normal little furry black cat and a cat.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_NEST_OPEN_OL.
@@ -3268,10 +3302,6 @@ Hecate:
 Hecate:
  Remember nothing.
 
-[Exit Hecate]
-
-[Enter Macbeth]
-
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_NEST_OPEN_UL.
 
@@ -3287,15 +3317,15 @@ Hecate:
 Hecate:
  Remember nothing.
 
-[Exit Hecate]
-
-[Enter Macbeth]
-
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_NEST_OPEN_OL.
 
 
                     Scene @PASS_LISTS_NEST_OPEN_UL: @LIT.scenes.PASS_LISTS_NEST_OPEN_UL.title
+
+[Exit Hecate]
+
+[Enter Macbeth]
 
 Macbeth:
  Remember a furry black cat.
@@ -3314,6 +3344,10 @@ Lady Macbeth:
 
 
                     Scene @PASS_LISTS_NEST_OPEN_OL: @LIT.scenes.PASS_LISTS_NEST_OPEN_OL.title
+
+[Exit Hecate]
+
+[Enter Macbeth]
 
 Macbeth:
  Remember a furry black cat.
@@ -4712,8 +4746,8 @@ Lady Macbeth:
 Horatio:
  If so, let us proceed to scene @PASS_LISTS_LOOSE_NESTED_UL.
 
-Lady Macbeth:
- You are as villainous as nothing.
+Horatio:
+ Remember nothing.
 
 [Exit Horatio]
 
@@ -4725,8 +4759,8 @@ Lady Macbeth:
 
                     Scene @PASS_LISTS_LOOSE_NESTED_UL: @LIT.scenes.PASS_LISTS_LOOSE_NESTED_UL.title
 
-Lady Macbeth:
- You are as villainous as nothing.
+Horatio:
+ Remember nothing.
 
 [Exit Horatio]
 

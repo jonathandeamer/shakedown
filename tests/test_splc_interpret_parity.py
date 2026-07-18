@@ -12,6 +12,7 @@ from pathlib import Path
 import pytest
 
 from scripts.splc.interpret import InterpreterState, run_act
+from src_ir import tokens
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
 from src_ir.act3 import ACT as ACT3
@@ -43,6 +44,17 @@ def test_fast_interpreter_matches_blessed_amps_baseline() -> None:
 
 def test_fast_interpreter_matches_blessed_short_baseline() -> None:
     assert _fast_dump("hello\n\nworld\n") == (BASELINES / "short.dump").read_bytes()
+
+
+def test_fast_interpreter_nested_one_level_matches_blessed_p2_baseline() -> None:
+    fixture = LIST_FIXTURES / "nested_one_level.text"
+    baseline = (LIST_BASELINES / "nested_one_level.dump").read_bytes()
+    dump = _fast_dump(fixture.read_text())
+
+    assert dump == baseline
+    values = [int(line) for line in dump.decode().splitlines()]
+    child_open_index = values.index(tokens.LIST_OPEN, 1)
+    assert values[child_open_index - 1] == tokens.ITEM_CLOSE
 
 
 @pytest.mark.parametrize(

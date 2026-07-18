@@ -113,6 +113,17 @@ def test_dump_matches_blessed_short_baseline() -> None:
     assert _dump(b"hello\n\nworld\n") == (BASELINES / "short.dump").read_bytes()
 
 
+def test_dump_nested_one_level_matches_blessed_p2_baseline() -> None:
+    fixture = LIST_FIXTURES / "nested_one_level.text"
+    baseline = (LIST_BASELINES / "nested_one_level.dump").read_bytes()
+    dump = _dump(fixture.read_bytes())
+
+    assert dump == baseline
+    values = [int(line) for line in dump.decode().splitlines()]
+    child_open_index = values.index(tokens.LIST_OPEN, 1)
+    assert values[child_open_index - 1] == tokens.ITEM_CLOSE
+
+
 @pytest.mark.parametrize(
     "stem",
     sorted(path.stem for path in LIST_FIXTURES.glob("*.text")),

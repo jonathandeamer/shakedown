@@ -14,11 +14,12 @@ from pathlib import Path
 import pytest
 
 from scripts.splc.interpret import InterpreterState, run_act
-from scripts.splc.ir import Char
+from scripts.splc.ir import Char, Const, Goto, Push
 from scripts.splc.token_decode import decode_stream
 from scripts.splc.token_structure import validate_stream
 from src_ir import tokens
 from src_ir.act1 import ACT as ACT1
+from src_ir.act2 import _LOOSE_NEST_OL, _LOOSE_NEST_UL
 from src_ir.act2 import ACT as ACT2
 
 STEP_LIMIT = 500_000
@@ -485,3 +486,100 @@ def test_full_list_plain_loose_continuation_never_enters_a10_to_a12_helpers() ->
     assert "PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE" not in labels
     assert "PASS_CONTAINERS_CLOSE_SKIP_SUBTREE" not in labels
     assert "PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE" not in labels
+
+
+# Amendment A14: the ordinary top-level nested-list branches must close the
+# parent item (TEXT_END, ITEM_CLOSE) before opening the child list, not after
+# it closes. This is the source-level IR contract behind the P2 blessed
+# nested_one_level dump.
+_ACT2_SCENES_BY_LABEL = {sc.label: sc for sc in ACT2.scenes}
+
+
+@pytest.mark.parametrize(
+    ("open_label", "target_label"),
+    [
+        ("PASS_LISTS_NEST_EMIT_UL_OPEN", "PASS_LISTS_NEST_OPEN_UL"),
+        ("PASS_LISTS_NEST_EMIT_OL_OPEN", "PASS_LISTS_NEST_OPEN_OL"),
+    ],
+)
+def test_full_list_ordinary_nest_open_closes_parent_before_child_list(
+    open_label: str, target_label: str
+) -> None:
+    scene = _ACT2_SCENES_BY_LABEL[open_label]
+    ops = scene.ops
+
+    assert isinstance(ops[0], Push)
+    assert isinstance(ops[0].expr, Const)
+    assert ops[0].expr.value == tokens.TEXT_END
+
+    assert isinstance(ops[1], Push)
+    assert isinstance(ops[1].expr, Const)
+    assert ops[1].expr.value == tokens.ITEM_CLOSE
+
+    assert isinstance(ops[2], Goto)
+    assert ops[2].target == target_label
+
+
+def test_full_list_nested_one_level_stream_closes_parent_before_child_list_open() -> (
+    None
+):
+    fixture = (
+        Path(__file__).parent
+        / "fixtures"
+        / "architecture_spikes"
+        / "lists"
+        / "nested_one_level.text"
+    )
+    decoded = decode_stream(_act2_stream(fixture.read_text()))
+    codes = [token.code for token in decoded]
+
+    child_open_index = codes.index(tokens.LIST_OPEN, 1)
+    assert codes[child_open_index - 1] == tokens.ITEM_CLOSE
+
+
+@pytest.mark.parametrize(
+    ("source", "nest_open_label", "shared_open_label", "selector"),
+    [
+        (
+            "* parent\n\n\t* sub\n",
+            "PASS_LISTS_NEST_OPEN_UL",
+            "PASS_LISTS_NEST_EMIT_UL_OPEN",
+            _LOOSE_NEST_UL.value,
+        ),
+        (
+            "1. parent\n\n\t1. sub\n",
+            "PASS_LISTS_NEST_OPEN_OL",
+            "PASS_LISTS_NEST_EMIT_OL_OPEN",
+            _LOOSE_NEST_OL.value,
+        ),
+    ],
+)
+def test_full_list_loose_nested_route_bypasses_shared_open_scene(
+    source: str, nest_open_label: str, shared_open_label: str, selector: int
+) -> None:
+    trace = _act2_scene_trace(source)
+    labels = [label for label, _ in trace]
+
+    nest_index = labels.index(nest_open_label)
+    assert trace[nest_index - 1] == (
+        "PASS_LISTS_NEST_EMIT_OL"
+        if nest_open_label.endswith("_OL")
+        else "PASS_LISTS_NEST_EMIT_UL",
+        selector,
+    )
+    assert shared_open_label not in labels
+
+
+def test_full_list_ordinary_nested_one_level_route_still_enters_shared_open_scene() -> (
+    None
+):
+    fixture = (
+        Path(__file__).parent
+        / "fixtures"
+        / "architecture_spikes"
+        / "lists"
+        / "nested_one_level.text"
+    )
+    labels = [label for label, _ in _act2_scene_trace(fixture.read_text())]
+
+    assert "PASS_LISTS_NEST_EMIT_OL_OPEN" in labels

@@ -774,10 +774,15 @@ ACT: Act = act(
         ),
         scene(
             "PASS_CONTAINERS_DEPTH_SKIP_TAIL",
-            push(MACBETH, val(LADY_MACBETH)),
             let(HORATIO, _LOOSE_COMMIT_SIB_HECATE_TAIL),
+            goto("PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE",
+            push(MACBETH, val(LADY_MACBETH)),
             goto("PASS_CONTAINERS_DEPTH"),
-            anchor=MACBETH,
+            companion=MACBETH,
         ),
         scene(
             "PASS_CONTAINERS_DEPTH_SKIP_SUBTREE",
@@ -1018,8 +1023,11 @@ ACT: Act = act(
             "PASS_LISTS_SIB_OUTDENT",
             push(LADY_MACBETH, const(tokens.LIST_CLOSE)),
             pop(MACBETH, recall="fallen_rampart"),
-            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             let(MACBETH, sub(val(MACBETH), const(1))),
+            branch(eq(val(PUCK), const(42)), then="PASS_LISTS_ITEM_BEGIN_TIGHT"),
+            branch(eq(val(PUCK), const(43)), then="PASS_LISTS_ITEM_BEGIN_TIGHT"),
+            branch(eq(val(PUCK), const(45)), then="PASS_LISTS_ITEM_BEGIN_TIGHT"),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_ITEM_BEGIN_TIGHT"),
         ),
         # --- Indented line inside a list (no blank): nested marker or
@@ -1245,6 +1253,10 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_NEST_EMIT_UL",
+            branch(
+                eq(val(HORATIO), _LOOSE_NEST_UL),
+                then="PASS_LISTS_NEST_OPEN_UL",
+            ),
             branch(lt(val(HORATIO), const(0)), then="PASS_LISTS_LOOSE_NEST_UL"),
             branch(
                 eq(val(MACBETH), const(1)),
@@ -1257,6 +1269,10 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_NEST_EMIT_OL",
+            branch(
+                eq(val(HORATIO), _LOOSE_NEST_OL),
+                then="PASS_LISTS_NEST_OPEN_OL",
+            ),
             branch(lt(val(HORATIO), const(0)), then="PASS_LISTS_LOOSE_NEST_OL"),
             branch(
                 eq(val(MACBETH), const(1)),
@@ -1270,12 +1286,14 @@ ACT: Act = act(
         scene(
             "PASS_LISTS_NEST_EMIT_UL_OPEN",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_NEST_OPEN_UL"),
             companion=HECATE,
         ),
         scene(
             "PASS_LISTS_NEST_EMIT_OL_OPEN",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
+            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_NEST_OPEN_OL"),
             companion=HECATE,
         ),
@@ -1827,13 +1845,13 @@ ACT: Act = act(
         scene(
             "PASS_LISTS_LOOSE_NESTED",
             branch(eq(val(HORATIO), _LOOSE_NEST_UL), then="PASS_LISTS_LOOSE_NESTED_UL"),
-            let(HORATIO, const(0)),
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
             goto("PASS_LISTS_NEST_EMIT_OL"),
             companion=HORATIO,
         ),
         scene(
             "PASS_LISTS_LOOSE_NESTED_UL",
-            let(HORATIO, const(0)),
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
             goto("PASS_LISTS_NEST_EMIT_UL"),
             companion=HORATIO,
         ),
