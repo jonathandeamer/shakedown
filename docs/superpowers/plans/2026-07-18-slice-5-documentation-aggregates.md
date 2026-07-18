@@ -61,7 +61,13 @@
   `summary: 3/3 byte-identical`, and the module probe completes both Basics
   and Syntax without a step-limit failure.
 
-- [ ] **Step 5: Checkpoint.** Commit only Task-1 files as `test: enable proven low-risk fixtures`; push with the required MCO trailers.
+- [x] **Step 5: Checkpoint.** Commit only Task-1 files as `test: enable proven low-risk fixtures`; push with the required MCO trailers.
+
+  Evidence (2026-07-18): the Task-1 payload is pushed at `647e93f` with
+  the required subject and provenance trailers; the post-checkpoint floor
+  gate is recorded at `7242b92`. A fresh replay at `7242b92` reports nine
+  focused contracts passing, strict `summary: 3/3 byte-identical`, and both
+  documentation probes completing within the shared named limit.
 
 ### Task 2: Repair the Tidyness quote/list handoff
 
