@@ -14,6 +14,7 @@
 - Before SPL-facing work read `docs/superpowers/notes/spl-literary-protocol.md`, `docs/superpowers/notes/correctness-first-spl-workflow.md`, `docs/spl/literary-spec.md`, `docs/spl/style-lexicon.md`, `docs/spl/codegen-style-guide.md`, and `src/literary.toml` plus the Slice-5 design's ready-to-paste pool.
 - Edit generated acts only via `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`. Never hand-edit generated `src/*.spl` or `shakedown.spl`.
 - Do not change expected mdtest files, add aggregate-specific normalizers, invoke Markdown.pl at runtime, or add a wrapper-side Markdown branch. `Auto links` is the sole entity-normalized mdtest comparator; strict parity is always raw bytes.
+- Per the accepted design's Amendment A1, the unchanged 133-byte `Tidyness.xhtml` is a legacy corpus artifact, not the expected output for deterministic parity.  Tidyness test evidence obtains its expected bytes from the installed local Markdown.pl only; this is test-time evidence, never production runtime behavior, and adds no normalizer.
 - New Act-II labels are limited to the design's seven working set. The four named spares may be used only by a design amendment; another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
 - Every SPL change runs: `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
 
@@ -75,7 +76,7 @@
 
 **Interfaces:** `PASS_LISTS_BLOCK_START` must consume a valid Hecate payload only after the quote/list route has staged it; the existing list token grammar and all committed Spike A/B dumps remain unchanged.
 
-- [x] **Step 1: Write the failing minimal contract.** Add a test for the exact Tidyness input asserting no Act-II underflow, the expected decoded quote/list stream, fast-IR normalized mdtest output, release output, and raw strict oracle bytes. Add an observer assertion that Hecate's stack is nonempty at every `PASS_LISTS_BLOCK_START` pop.
+- [x] **Step 1: Write the failing minimal contract.** Add a test for the exact Tidyness input asserting no Act-II underflow, the expected decoded quote/list stream, and raw byte equality from both fast IR and release output to one installed-local Markdown.pl invocation. Assert separately that the unchanged checked-in 133-byte `Tidyness.xhtml` differs from the oracle's 136 bytes; do not compare implementation output to that file or call `_normalize_fixture_output`. Add an observer assertion that Hecate's stack is nonempty at every `PASS_LISTS_BLOCK_START` pop.
 
   Evidence (2026-07-18): the exact Step-2 command reports `2 failed, 28
   deselected`. Both failures are the intended Act-II regression at
@@ -104,7 +105,7 @@
 
   Expected: all pass and strict parity reports `summary: 1/1 byte-identical`.
 
-- [ ] **Step 5: Enable and checkpoint.** Add `Tidyness` to `_IMPLEMENTED_FIXTURES` only after Step 4; commit Task-2 files as `fix: restore tidyness quote list handoff`; push with the required trailers.
+- [ ] **Step 5: Enable and checkpoint.** Add `Tidyness` to `_IMPLEMENTED_FIXTURES` only after Step 4. In `tests/test_mdtest.py`, introduce a narrow test-only expected-output helper that invokes the installed local Markdown.pl for Tidyness and otherwise returns the checked-in expected file; route the existing fast-IR and release comparisons through it. Do not change `Tidyness.xhtml`, add a normalizer, or invoke Markdown.pl from production code. Re-run the Step-4 gate after this test-only enablement change; then commit Task-2 files as `fix: restore tidyness quote list handoff`; push with the required trailers.
 
 ### Task 3: Make Markdown Documentation — Basics a strict aggregate gate
 
@@ -191,3 +192,15 @@
 ## Plan self-review
 
 Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and only reserves a derived seven-scene Act-II Setext pool plus four spares; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
+
+## Amendment A1 (2026-07-18): Tidyness raw-oracle evidence reconciliation
+
+The accepted Slice-5 design's Amendment A1 is binding for Task 2.  The
+focused Tidyness test now uses the installed deterministic oracle as the only
+expected output and explicitly proves the checked-in fixture remains the
+non-authoritative 133-byte legacy artifact.  Task 2 Step 5 must make the
+parameterized mdtest path use the same test-time oracle expected output for
+Tidyness before enabling it.  This resolves the former impossible requirement
+that one release output equal both distinct byte streams; it does not
+authorize a fixture edit, normalizer, production Markdown.pl call, SPL
+surface, token, or grammar change.

@@ -125,23 +125,27 @@ def test_tidyness_exact_fixture_matches_fast_release_and_raw_oracle() -> None:
     fixture_name = "Tidyness"
     input_path, expected_path = _fixture_paths(fixture_name)
     assert input_path.read_text() == TIDYNESS_INPUT
-
-    fast_actual = _run_acts(TIDYNESS_INPUT, through_act=4)
-    assert isinstance(fast_actual, str)
-    assert _normalize_fixture_output(
-        fixture_name, fast_actual
-    ) == _normalize_fixture_output(fixture_name, expected_path.read_text())
-
     input_bytes = TIDYNESS_INPUT.encode()
-    release = subprocess.run(
-        [str(BINARY)],
+    oracle = subprocess.run(
+        ["perl", str(MARKDOWN_PL)],
         input=input_bytes,
         capture_output=True,
         cwd=REPO,
         check=False,
     )
-    oracle = subprocess.run(
-        ["perl", str(MARKDOWN_PL)],
+    assert oracle.returncode == 0, oracle.stderr.decode()
+
+    # The checked-in mdtest expectation is a legacy 133-byte corpus artifact.
+    # Tidyness is deterministic, so the installed Markdown.pl bytes are the
+    # authoritative parity contract without mutating that fixture.
+    assert expected_path.read_bytes() != oracle.stdout
+
+    fast_actual = _run_acts(TIDYNESS_INPUT, through_act=4)
+    assert isinstance(fast_actual, str)
+    assert fast_actual.encode() == oracle.stdout
+
+    release = subprocess.run(
+        [str(BINARY)],
         input=input_bytes,
         capture_output=True,
         cwd=REPO,
@@ -150,8 +154,4 @@ def test_tidyness_exact_fixture_matches_fast_release_and_raw_oracle() -> None:
 
     assert fixture_name not in _IMPLEMENTED_FIXTURES
     assert release.returncode == 0, release.stderr.decode()
-    assert _normalize_fixture_output(
-        fixture_name, release.stdout.decode()
-    ) == _normalize_fixture_output(fixture_name, expected_path.read_text())
-    assert oracle.returncode == 0, oracle.stderr.decode()
     assert release.stdout == oracle.stdout

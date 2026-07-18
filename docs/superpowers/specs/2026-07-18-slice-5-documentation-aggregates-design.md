@@ -101,3 +101,31 @@ differential smoke report requiring both aggregates.  Measure `Basics` and
 `Syntax` five times through `./shakedown`; Syntax is the headline release
 number.  A single large-fixture result above 120 seconds or full contract
 above 15 minutes triggers the architecture §8.2 performance halt.
+
+## Amendment A1 (2026-07-18): Tidyness uses the installed deterministic oracle
+
+The checked-in `Tidyness.xhtml` is a 133-byte legacy corpus artifact that
+omits the blank line emitted by the installed local Markdown.pl for the same
+input.  It is not authoritative for this deterministic fixture and must not
+be changed as part of Slice 5.  The installed local Markdown.pl output is 136
+bytes and is the authoritative expected output for every Tidyness parity
+assertion.
+
+The focused Tidyness contract must run the local oracle once, assert that the
+unchanged checked-in fixture differs from those raw bytes, and then require
+both fast-IR output encoded as bytes and release stdout to equal the raw
+oracle bytes.  It must not use `_normalize_fixture_output` or compare either
+implementation output to `Tidyness.xhtml`.
+
+When Task 2 enables Tidyness in `tests/test_mdtest.py`, add a narrowly scoped
+test-only expected-output helper: for `Tidyness` it runs the same local oracle
+on the fixture input and returns the decoded raw output after a zero-return
+assertion; every other fixture continues to read its checked-in expected file.
+The common mdtest fast-IR and binary comparisons then consume that helper's
+result.  This is test evidence only: production code never invokes Markdown.pl
+and no mdtest normalizer is added.  `Auto links` remains the sole
+entity-normalized comparator.  The exact focused and release evidence remains
+`uv run pytest tests/test_act2_slice2.py tests/test_slice5_documentation_aggregates.py -k Tidyness -q`,
+`uv run pytest tests/test_mdtest.py -k Tidyness -q`, and
+`uv run python scripts/strict_parity_harness.py Tidyness`, all requiring
+136/136 raw-byte equality where the output is compared to the oracle.
