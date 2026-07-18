@@ -587,6 +587,118 @@ skip, another working scene, a spare-pool draw, a token/grammar change, or an
 Act-III/IV change is `BLOCK[plan]` with the exact need recorded; stop rather
 than widening this adapter again.
 
+## Amendment A11 — preserve the complete immediate nested-list segment before rewriting its outer item (2026-07-18)
+
+The A10 one-sentinel premise is falsified by the accepted A9 witness. After
+`PASS_LISTS_LOOSE_COMMIT_HECATE` closes the immediate nested list and removes
+one frame, the mixed Act-II carrier still presents the direct nested item
+sentinels in reverse source order: `Foe`, then `Fie`, then `Fee`, before the
+outer `Second:` sentinel. Clearing A10's selector after the first sentinel
+therefore rewrites `Fie`, corrupts the explicit close sequence, and eventually
+underflows Act IV at `SCRIBE_ITEM_CLOSE`. This is a carrier-boundary defect,
+not a new Markdown construct or a reason to change the token grammar.
+
+This amendment supersedes A10's **one-sentinel** mechanism while retaining
+A9's one-level close and frame decrement. It authorizes a bounded, Act-II-only
+scan of the complete *immediate nested-list segment*: the scan copies every
+direct nested item sentinel and its payload through the existing saved suffix
+until it copies that already-closed list's `LIST_OPEN` boundary. Only then may
+it select the existing `_LOOSE_COMMIT_SIB` mode and let the unchanged
+transaction rewrite the next `ITEM_START`, the outer item. This is structural
+rather than count-based: it must work for the three-item A9 witness and for a
+direct nested tail with four items without a new selector per item. It does
+not authorize a recursive nested-tail walker; if the same adapter must cross
+an additional nested `LIST_OPEN` before the immediate boundary, record
+`BLOCK[plan]` with that witness and stop.
+
+The binding Act-II state table is:
+
+| Label / selector | Entry condition | Required effect | Exit |
+|---|---|---|---|
+| `_LOOSE_COMMIT_SIB_HECATE` | A9 adapter emitted exactly `TEXT_END`, `ITEM_CLOSE`, `LIST_CLOSE` and decremented one frame | Preserve the first direct nested `ITEM_START`; set `_LOOSE_COMMIT_SIB_HECATE_TAIL` | `PASS_CONTAINERS_DEPTH` |
+| `PASS_CONTAINERS_DEPTH_SKIP_TAIL` | Depth scan finds the first `ITEM_START` under `_LOOSE_COMMIT_SIB_HECATE` | Copy that sentinel only; do not emit a token or close a frame | `PASS_CONTAINERS_DEPTH` |
+| `PASS_CONTAINERS_DEPTH_SKIP_SUBTREE` | Depth scan runs under `_LOOSE_COMMIT_SIB_HECATE_TAIL` | Copy each carrier value; continue unless the value is the immediate boundary | depth scan or close scene |
+| `PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE` | The subtree scene copied the immediate closed nested list's `LIST_OPEN` | Change only `HORATIO` to existing `_LOOSE_COMMIT_SIB` | `PASS_CONTAINERS_DEPTH` |
+| `_LOOSE_COMMIT_SIB` | The immediate segment is fully preserved | Retain existing outer rewrite and close ownership | existing transaction |
+
+`PASS_CONTAINERS_DEPTH` retains ordinary `ITEM_START` termination for all
+existing callers. It enters `PASS_CONTAINERS_DEPTH_SKIP_TAIL` only for the
+first `ITEM_START` under `_LOOSE_COMMIT_SIB_HECATE`; under
+`_LOOSE_COMMIT_SIB_HECATE_TAIL` it enters
+`PASS_CONTAINERS_DEPTH_SKIP_SUBTREE` before generic termination. That scene
+copies direct nested item sentinels instead of terminating. On the immediate
+nested list's `LIST_OPEN`, it enters the close scene, which alone clears the
+private selector to existing sibling mode. The next `ITEM_START` is thus the
+outer item. All three helpers are unreachable from ordinary Horatio-stage
+continuations, loose nested-marker commits, quote routes, and non-A9 rewrites.
+
+No helper emits a grammar token, closes a frame, changes a token number or
+role, adds a participant, changes Acts III/IV, or changes compiler/validator
+semantics. A11 authorizes exactly two additional working scenes and one private
+tail selector. With A9/A10/A11 the derived Act-II ledger is 26 working labels,
+so `ceil(26 * 20%) = 6` unused spares are required. The five A5
+`PASS_LISTS_INDENT_*_GUARD` spares remain unused; this amendment reserves one
+sixth unused spare and does not draw it.
+
+Add these controlled surfaces before their IR labels are used:
+
+```toml
+# Amendment A11 immediate nested-list segment scan and sixth unused spare
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_SUBTREE]
+title = "Macbeth bears each inner seal beyond its elder rank."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE]
+title = "Macbeth restores the elder rank beyond the inner host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_INDENT_TAIL_GUARD]
+title = "The inner host keeps one guarded return."
+pattern = "bare_statement"
+```
+
+Task 4 Step 2 must retain all A4–A10 witnesses and add red-then-green fast-IR,
+release-binary, and strict-local-oracle contracts for the existing three-item
+witness and this non-counting four-item witness:
+
+```text
+2. Second:
+\t* Fee
+\t* Fie
+\t* Foe
+\t* Fum
+
+3. Third
+```
+
+The latter must decode a loose outer `Second:` item containing exactly four
+tight direct nested list items in source order, then a loose outer `Third`
+sibling, and emit exactly:
+
+```html
+<ol>
+<li><p>Second:</p>
+
+<ul><li>Fee</li>
+<li>Fie</li>
+<li>Foe</li>
+<li>Fum</li></ul></li>
+<li><p>Third</p></li>
+</ol>
+```
+
+Add a narrow route/source assertion that the private subtree scenes are
+reachable only after `_LOOSE_COMMIT_SIB_HECATE`, that the close scene is the
+sole writer clearing `_LOOSE_COMMIT_SIB_HECATE_TAIL` to `_LOOSE_COMMIT_SIB`,
+and that ordinary `1.\tItem 1\n\n\tItem 2\n` enters neither A10 nor A11
+helper scene. The three-item decoded stream proves `Fee`/`Fie`/`Foe` remain
+tight; the four-item witness proves the repair is not count-based. Run the
+active plan's full-list, frame-floor, token, Spike-A/B, generated-fragment,
+parse, validator, literary, Amps, and strict-parity gates. Any need for
+another working scene, use of the sixth spare, a recursive boundary counter,
+token/grammar change, participant, or Act-III/IV work is `BLOCK[plan]` with
+the exact witness; stop rather than widening this adapter again.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
