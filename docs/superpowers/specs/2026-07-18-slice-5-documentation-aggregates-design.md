@@ -46,14 +46,15 @@ design amendment before implementation continues.
 ## Literary reservation
 
 Only Act II may need new controlled scenes. The derived Setext scanner needs
-eight labels (candidate, underline classification, equals emit, dash emit,
-Hecate-to-Puck replay, Puck-to-Horatio bridge, Lady-Macbeth close, and EOF);
+nine labels (candidate, underline classification, equals emit, dash emit,
+failed-underline requeue, Lady-Macbeth-to-Hecate finalization,
+Hecate-to-Puck replay, Puck-to-Horatio bridge, and Lady-Macbeth close);
 existing raw-HTML/header scenes are amended in place. The four-title spare
-minimum remains greater than 20% of eight. Add a working entry only with the
+minimum remains greater than 20% of nine. Add a working entry only with the
 identically named IR scene; do not draw a spare without a plan amendment.
 
 ```toml
-# Slice 5 Act-II working pool (8)
+# Slice 5 Act-II working pool (9)
 [scenes.PASS_SETEXT_CANDIDATE]
 title = "Lady Macbeth keeps the unmarked line before its warrant."
 pattern = "scene_of_character"
@@ -66,17 +67,20 @@ pattern = "scene_of_character"
 [scenes.PASS_SETEXT_DASH]
 title = "Lady Macbeth lowers the gathered line one rank."
 pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REQUEUE]
+title = "Horatio restores the unproved underline to its source."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_FINALIZE]
+title = "Lady Macbeth seals the gathered line for its return."
+pattern = "scene_of_character"
 [scenes.PASS_SETEXT_REPLAY]
-title = "Lady Macbeth returns the unproved mark in order."
+title = "Puck receives the sealed line in order."
 pattern = "scene_of_character"
 [scenes.PASS_SETEXT_BRIDGE]
 title = "Puck entrusts the gathered line to Horatio."
 pattern = "scene_of_character"
 [scenes.PASS_SETEXT_CLOSE]
 title = "Lady Macbeth seals the proven heading."
-pattern = "scene_of_character"
-[scenes.PASS_SETEXT_EOF]
-title = "Lady Macbeth releases the unmarked final line."
 pattern = "scene_of_character"
 
 # Slice 5 Act-II spare pool (4; unused unless an amendment assigns it)
@@ -171,6 +175,54 @@ authorized. Before implementing this amendment, add the eight working TOML
 entries (including the new bridge entry) from this design to
 `src/20-act2-literary.toml`, then run the plan's exact SPL-facing compliance
 gate:
+
+```bash
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+```
+
+## Amendment A3 (2026-07-18): source-safe Setext finalization
+
+The A2 ledger is superseded because its candidate stack was placed on Hecate,
+which is also Act II's unread-source stack.  `_read()` pops Hecate, so a
+retained candidate would be reread as input and cannot make forward progress.
+This amendment authorizes one additional working scene,
+`PASS_SETEXT_FINALIZE`, and replaces the unused `PASS_SETEXT_EOF` working
+entry with `PASS_SETEXT_REQUEUE`.  The working pool is therefore nine labels;
+the four named spares remain untouched.
+
+`PASS_SETEXT_CANDIDATE` first places a private sentinel on Lady Macbeth above
+the already-emitted stream, then pushes the candidate title bytes (including
+its terminating newline) above that sentinel while `_read()` continues to
+consume Hecate.  `PASS_SETEXT_UNDERLINE` places a separate private sentinel on
+Horatio and holds only the look-ahead underline bytes there.  It must never
+push a retained glyph onto Hecate.  An EOF candidate is an unproved candidate
+and enters `PASS_SETEXT_FINALIZE` directly; it does not require a dedicated
+scene.
+
+| Label | Stage pair / anchor | Stack action and exit |
+|---|---|---|
+| `PASS_SETEXT_CANDIDATE` | Lady Macbeth + Hecate / Lady Macbeth | Seed Lady Macbeth's candidate floor, read source through its first newline, and capture title bytes above that floor. At EOF enter `PASS_SETEXT_FINALIZE` in raw mode; otherwise enter `PASS_SETEXT_UNDERLINE`. |
+| `PASS_SETEXT_UNDERLINE` | Hecate + Horatio / Hecate | Seed Horatio's underline floor; read and classify the next line while retaining its bytes on Horatio. A valid all-`=` or all-`-` line enters the matching proof scene. Any other byte or boundary enters `PASS_SETEXT_REQUEUE`; no input glyph is pushed to Hecate here. |
+| `PASS_SETEXT_EQUALS` | Lady Macbeth + Horatio / Lady Macbeth | Discard Horatio's provisional underline through its floor, push existing `HEADER(1)` below the eventual restored title, set finalize mode to proved, and enter `PASS_SETEXT_FINALIZE`. |
+| `PASS_SETEXT_DASH` | Lady Macbeth + Horatio / Lady Macbeth | Discard Horatio's provisional underline through its floor, push existing `HEADER(2)` below the eventual restored title, set finalize mode to proved, and enter `PASS_SETEXT_FINALIZE`. |
+| `PASS_SETEXT_REQUEUE` | Hecate + Horatio / Hecate | Pop Horatio's provisional underline bytes back onto Hecate until its private floor, discard that floor, set finalize mode to raw, and enter `PASS_SETEXT_FINALIZE`. This restores the first look-ahead glyph to the top of unread input without decrementing the source countdown. |
+| `PASS_SETEXT_FINALIZE` | Lady Macbeth + Hecate / Lady Macbeth | Pop candidate bytes from Lady Macbeth to Hecate until Lady Macbeth's candidate floor, discard that floor, and place a private Hecate floor below those bytes. It performs no `_read()` and therefore does not consume or reorder the unread source below the floor; then enter `PASS_SETEXT_REPLAY`. |
+| `PASS_SETEXT_REPLAY` | Hecate + Puck / Hecate | Seed Puck's private replay floor, transfer finalized title bytes from Hecate to Puck until Hecate's private floor, discard that floor, then enter `PASS_SETEXT_BRIDGE`. |
+| `PASS_SETEXT_BRIDGE` | Puck + Horatio / Puck | Seed Horatio's private restore floor, transfer title bytes from Puck to Horatio until Puck's replay floor, discard that floor, then enter `PASS_SETEXT_CLOSE`. |
+| `PASS_SETEXT_CLOSE` | Lady Macbeth + Horatio / Lady Macbeth | Transfer title bytes from Horatio to Lady Macbeth until Horatio's restore floor, discard that floor, and return to the existing block dispatcher. Proved mode has its `HEADER(level)` beneath restored title bytes; raw mode has title bytes restored while the look-ahead underline remains unread on Hecate. |
+
+The only candidate-transfer chain is now
+`Lady Macbeth/Hecate -> Lady Macbeth/Hecate (finalize) -> Hecate/Puck ->
+Puck/Horatio -> Lady Macbeth/Horatio`; the failed underline requeue is the
+separate `Hecate/Horatio` leg before finalization.  Each private floor is
+pushed, observed, and discarded by its named owning scene family; it is never
+allowed into Act III's stream.  No scene names Hecate, Puck, and Horatio
+together.  This amendment changes no token, selector, Act-III/IV role,
+compiler behavior, fixture branch, or raw-HTML/header scope.
+
+Before implementation, replace the old eight-entry TOML reservation with the
+nine ready-to-paste entries above, including `PASS_SETEXT_REQUEUE` and
+`PASS_SETEXT_FINALIZE`, then run:
 
 ```bash
 uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
