@@ -46,4 +46,4 @@ reason = "Its two Task-1 checkbox changes were independently replayed and eviden
 [branches."implement-1e81aaa74e3e4962b0a90651bc27fc8c-codex-implement"]
 head = "c76ea5ce68aea088d58ebe287d8928bdab55114a"
 disposition = "integrated"
-reason = "Branch head is exactly main and origin/main at c76ea5ce68aea088d58ebe287d8928bdab55114a (`test: add slice 5 red contracts`); `git merge-base --is-ancestor` succeeds and both `git log main..branch` and `git diff --stat main...branch` are empty."
+reason = "Branch head c76ea5ce68aea088d58ebe287d8928bdab55114a (`test: add slice 5 red contracts`) is reachable from main and origin/main; `git merge-base --is-ancestor` succeeds and both `git log main..branch` and `git diff --stat main...branch` are empty."
