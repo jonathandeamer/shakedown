@@ -31,7 +31,12 @@
   release/probe 500,000-step ceiling and the three fixtures awaiting
   enablement.
 
-- [ ] **Step 2: Prove the tests are red.** Run `uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_documentation_probes.py -q`. Expected: the Syntax and three enablement contracts fail before the named limit/enabling change; the Tidyness regression assertion passes.
+- [x] **Step 2: Prove the tests are red.** Run `uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_documentation_probes.py -q`. Expected: the Syntax and three enablement contracts fail before the named limit/enabling change; the Tidyness regression assertion passes.
+
+  Evidence (2026-07-18): the focused gate reports `6 passed, 5 failed`.
+  The failures are exactly the Syntax release and probe 500,000-step ceilings
+  plus the three disabled strict-ready fixture contracts; the named-limit
+  Syntax act-prefix checks and Tidyness underflow regression pass.
 
 - [ ] **Step 3: Make the bounded non-semantic change.** Put `DOCUMENTATION_STEP_LIMIT = 1_000_000` in a shared Python constants module used by `scripts/release_runtime.py`, `scripts/probe_documentation_aggregates.py`, and `tests/test_mdtest.py`; retain 500,000 limits for small isolated contracts. Change the probe's module invocation documentation and remove only its Slice-5 pending skip after it completes both inputs within the named limit. Add the three strict-ready fixture names to `_IMPLEMENTED_FIXTURES` and focused scope assertions; do not change IR scenes or output.
 
