@@ -242,3 +242,15 @@ Tidyness before enabling it.  This resolves the former impossible requirement
 that one release output equal both distinct byte streams; it does not
 authorize a fixture edit, normalizer, production Markdown.pl call, SPL
 surface, token, or grammar change.
+
+## Amendment A2 (2026-07-18): Branch-reconciliation disposition
+
+The MCO branch fence reported
+`implement-eea93046e11d45dfa60ef5a09b76a921-codex-implement` at
+`05ee8f318c6e5af2cd6ab5b8a894cc6e6a7becf2` solely because the terminal
+ledger entry was absent.  The branch head is exactly `main` and `origin/main`;
+`git merge-base --is-ancestor` succeeds, and both `git log main..branch` and
+`git diff --stat main...branch` are empty.  Record it as `integrated` in
+`.agent/branch-dispositions.toml`.  This administrative reconciliation does
+not change the active Task-3 Step-3 implementation scope, fixture evidence,
+SPL literary reservation, or any production behavior.
