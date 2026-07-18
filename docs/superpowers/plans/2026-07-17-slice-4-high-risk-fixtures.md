@@ -232,7 +232,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: all pass, strict harness reports `summary: 1/1 byte-identical`, and every existing list/nested spike stream and byte test remains unchanged.  The complete fixture's three leading sections begin with `<h2>Unordered</h2>`, `<h2>Ordered</h2>`, and `<h2>Nested</h2>`; no header syntax beyond Amendment A2 is accepted. If a required stream cannot validate under the existing grammar, or a header requirement exceeds A2's bounded path, record the architecture halt blocker rather than changing the grammar locally.
 
-- [ ] **Step 3: Enable and checkpoint full lists.** In `tests/test_mdtest.py`, add
+- [x] **Step 3: Enable and checkpoint full lists.** In `tests/test_mdtest.py`, add
   `_normalize_ordered_unordered_list_layout(text: str) -> str` with a docstring
   naming the checked-in Markdown-1.0.1 nested-tight-list layout drift.  After
   `_normalize(text)`, call it only for `name == "Ordered and unordered lists"`:
