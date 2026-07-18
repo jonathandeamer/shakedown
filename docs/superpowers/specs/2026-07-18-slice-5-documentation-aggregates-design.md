@@ -565,6 +565,132 @@ uv run python -m scripts.splc && uv run python scripts/assemble.py
 
 This clarification authorizes no further behavior or literary surface.
 
+## Amendment A11 (2026-07-18): source-safe header closes and ATX trailing buffer
+
+The A9 implementation attempt demonstrated two omissions in the binding
+choreography.  A proved Setext title may consume the final source newline, so
+its close must decide from Lady Macbeth's input countdown before the block
+dispatcher can call `_read()` again.  Separately, an ATX title needs to defer
+a run of spaces and hashes until it can prove whether that run is a closing
+hash suffix.  The existing `PASS_HEADER_TEXT` read scene is Lady
+Macbeth/Hecate; it cannot also inspect or transfer a trailing buffer.  Both
+omissions are resolved below without changing a token, selector, Act-III/IV
+role, compiler or validator rule, raw-HTML route, fixture branch, or the
+meaning of `_read()`.
+
+The binding derived pool is now **33 working labels and 8 unused spares**.
+The five A9 spares remain unused; this amendment adds eight working labels and
+three unused spares, so `8 >= ceil(33 * 20%)`.  Add this complete block to
+`src/20-act2-literary.toml` before changing `src_ir/act2.py`.  No listed
+spare may have an IR `Scene`.
+
+```toml
+# Slice 5 Act-II A11 working pool (8 additional labels)
+[scenes.PASS_SETEXT_PROVED_CLOSE]
+title = "Lady Macbeth closes the proved line by its remaining measure."
+pattern = "cross_character"
+[scenes.PASS_HEADER_TRAIL_OPEN]
+title = "Hecate opens a measured border for the heading's marks."
+pattern = "cross_character"
+[scenes.PASS_HEADER_TRAIL_SCAN]
+title = "Lady Macbeth reads the heading's deferred border."
+pattern = "cross_character"
+[scenes.PASS_HEADER_TRAIL_CAPTURE]
+title = "Hecate gives each deferred mark to Puck."
+pattern = "cross_character"
+[scenes.PASS_HEADER_TRAIL_DECIDE]
+title = "Hecate judges the border's final warrant with Puck."
+pattern = "cross_character"
+[scenes.PASS_HEADER_TRAIL_DROP]
+title = "Hecate lets Puck dismiss the closing border."
+pattern = "cross_character"
+[scenes.PASS_HEADER_TRAIL_REPLAY]
+title = "Lady Macbeth receives Puck's unproved border."
+pattern = "cross_character"
+[scenes.PASS_HEADER_TRAIL_EXIT]
+title = "Lady Macbeth restores the heading's next true letter."
+pattern = "cross_character"
+
+# Slice 5 Act-II A11 spare pool (8; all unused)
+[scenes.PASS_SETEXT_RETURN_GUARD]
+title = "The crowned return keeps one guarded seal."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_LEVEL_GUARD]
+title = "The lowered warrant keeps one guarded rank."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_REPLAY_GUARD]
+title = "The sealed passage keeps one guarded floor."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_DISPATCH_GUARD]
+title = "The restored heading keeps one guarded turn."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_ATX_GUARD]
+title = "The marked border keeps one guarded hash."
+pattern = "bare_statement"
+[scenes.PASS_HEADER_TRAIL_RETURN_GUARD]
+title = "The deferred border keeps one guarded return."
+pattern = "bare_statement"
+[scenes.PASS_HEADER_TRAIL_FLOOR_GUARD]
+title = "The heading border keeps one guarded floor."
+pattern = "bare_statement"
+[scenes.PASS_HEADER_TRAIL_CLOSE_GUARD]
+title = "The marked heading keeps one guarded close."
+pattern = "bare_statement"
+```
+
+`PASS_SETEXT_PROVED_CLOSE` is Lady Macbeth/Hecate, anchored on Lady Macbeth.
+It is the only close target for `PASS_SETEXT_EQUALS_CLOSE` and
+`PASS_SETEXT_DASH_CLOSE` after those scenes have restored the title and
+dropped Horatio's restore floor.  It pushes the existing `TEXT_END` exactly
+once, branches on Lady Macbeth's unchanged input countdown, and goes directly
+to `PASS_LISTS_DONE` at zero or `PASS_LISTS_BLOCK_START` only when positive.
+It never calls `_read()` and never changes Hecate.  This replaces the former
+implicit reuse of `PASS_HEADER_CLOSE` for proved Setext only; ordinary ATX
+headers retain that existing close scene.
+
+The following ATX suffix machine is the sole authorized change to the
+existing header-text path.  Its private Puck floor is not an Act-III value.
+Puck's value is a private `saw_hash` bit while the stack above the floor holds
+the exact deferred bytes.  A later non-space/non-hash glyph stays in Hecate's
+value while Puck transfers the deferred stack, so no scene needs Lady
+Macbeth, Hecate, and Puck together.
+
+| Label | Stage pair / anchor | Exact action and exit |
+|---|---|---|
+| `PASS_HEADER_TEXT` (existing) | Lady Macbeth + Hecate / Lady Macbeth | On a space, enter `PASS_HEADER_TRAIL_OPEN`; all existing non-space behavior remains unchanged. |
+| `PASS_HEADER_TRAIL_OPEN` | Hecate + Puck / Hecate | Push one private Puck floor and the held first space; set Puck's `saw_hash` value to zero; enter scan. |
+| `PASS_HEADER_TRAIL_SCAN` | Lady Macbeth + Hecate / Lady Macbeth | Call `_read()` exactly once. Newline enters decide; space or hash enters capture; every other glyph enters replay with that glyph still held by Hecate. |
+| `PASS_HEADER_TRAIL_CAPTURE` | Hecate + Puck / Hecate | Push the held space/hash to Puck. Set Puck's bit to one only for a hash; return to scan. |
+| `PASS_HEADER_TRAIL_DECIDE` | Hecate + Puck / Hecate | At the held newline, choose drop when Puck's bit is one, otherwise replay. |
+| `PASS_HEADER_TRAIL_DROP` | Hecate + Puck / Hecate | Pop and discard through Puck's private floor, then enter the existing `PASS_HEADER_CLOSE`; it preserves the held newline and consumes no source glyph. |
+| `PASS_HEADER_TRAIL_REPLAY` | Lady Macbeth + Puck / Lady Macbeth | Pop each deferred byte to Lady Macbeth; after the private floor, enter exit. |
+| `PASS_HEADER_TRAIL_EXIT` | Lady Macbeth + Hecate / Lady Macbeth | If Hecate still holds newline, enter existing `PASS_HEADER_CLOSE`; otherwise push that held non-deferred glyph to Lady Macbeth and return to existing `PASS_HEADER_TEXT`. |
+
+Thus `## Heading ##\n` emits `HEADER(2, "Heading")`: the suffix machine
+defers ` ##`, sees newline with `saw_hash = 1`, drops it, and lets the
+unchanged ATX close emit `TEXT_END`.  `## Heading  \n` instead replays both
+spaces because no hash was seen.  `## A # b\n` replays ` # ` before returning
+the held `b`, because the non-space/non-hash route does not enter drop.  Each
+goto shares one participant, no scene calls `_read()` with a third active
+character, and the Setext direct close cannot read past an exhausted source.
+
+Before production behavior, add contracts that: (1) run
+`Markdown: Basics\n================\n` through fast Act II with no
+`StackUnderflow`, assert `HEADER(1, "Markdown: Basics")`, and assert the
+Setext close reaches `PASS_LISTS_DONE` without a subsequent
+`PASS_LISTS_BLOCK_START`; (2) check the positive-count Setext route reaches
+the dispatcher with its next source glyph intact; (3) validate every A11
+scene's two-character pair and assert all eight spares are absent; and (4)
+cover `## Heading ##\n`, `## Heading  \n`, and `## A # b\n` through fast IR,
+release, and installed-local-oracle bytes.  The existing three-character
+validator rejection remains mandatory.  Then run:
+
+```bash
+uv run pytest tests/test_splc_validate.py tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or closing_hash or header_trail or validator or Basics' -q
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,

@@ -15,7 +15,7 @@
 - Edit generated acts only via `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`. Never hand-edit generated `src/*.spl` or `shakedown.spl`.
 - Do not change expected mdtest files, add aggregate-specific normalizers, invoke Markdown.pl at runtime, or add a wrapper-side Markdown branch. `Auto links` is the sole entity-normalized mdtest comparator; strict parity is always raw bytes.
 - Per the accepted design's Amendment A1, the unchanged 133-byte `Tidyness.xhtml` is a legacy corpus artifact, not the expected output for deterministic parity.  Tidyness test evidence obtains its expected bytes from the installed local Markdown.pl only; this is test-time evidence, never production runtime behavior, and adds no normalizer.
-- New Act-II labels are limited to design Amendment A9's 25 working Setext labels and its five unused spares.  The A9 state rail owns mutable underline classification on Macbeth; Horatio is only the replay buffer, and Puck remains untouched.  The five guard titles are spares, never scenes.  Another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
+- New Act-II labels are limited to design Amendment A11's 33 working labels and eight unused spares.  A9's state rail owns mutable underline classification on Macbeth; Horatio is only the replay buffer.  A11 additionally authorizes Puck only as the private ATX trailing-buffer carrier and its private bit; no `_read()` scene gains a third participant.  The eight guard titles are spares, never scenes.  Another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
 - Every SPL change runs: `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
 - Every SPL change also preserves the release baseline with `uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`.
 
@@ -156,7 +156,7 @@
   aggregate remains raw-byte mismatched to the oracle. No production or
   generated SPL changed.
 
-- [ ] **Step 3: Implement the general block paths.** Amendment A9 is the sole binding Setext authorization; do not implement, preserve, or extend the A8-shaped underline family. Before editing `src_ir/act2.py`, install A9's five ready-to-paste working TOML entries and its complete five-title spare block, yielding 25 working labels and five unused spares. The existing candidate/finalization/replay/bridge/close choreography remains A7's seed-before-transfer design. For underline handling, enter `PASS_SETEXT_UNDERLINE_STATE_OPEN`, keep Macbeth's private state rail above unchanged list depth, and use the exact A9 chain `PASS_SETEXT_UNDERLINE -> PASS_SETEXT_UNDERLINE_SCAN -> PASS_SETEXT_UNDERLINE_CAPTURE -> PASS_SETEXT_UNDERLINE_CLASSIFY`. The scan alone calls `_read()` with Lady Macbeth/Hecate; capture copies only that glyph to Horatio's replay buffer; classify mutates only Macbeth's five-state rail. Valid terminal lines route through `PASS_SETEXT_UNDERLINE_PROOF_STAGE`; invalid lines through `PASS_SETEXT_UNDERLINE_REQUEUE_STAGE`; EOF through `PASS_SETEXT_UNDERLINE_EOF_STATE`. Every exit pops the state rail before existing proof/requeue behavior, every goto shares a participant, and no scene names more than two characters. No path may enter `PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY_TRANSFER`, or `PASS_SETEXT_BRIDGE_TRANSFER` except from its named seed scene. Delete A8-shaped WIP scenes that use a guard/spare label; none of `PASS_SETEXT_RETURN_GUARD`, `PASS_SETEXT_LEVEL_GUARD`, `PASS_SETEXT_REPLAY_GUARD`, `PASS_SETEXT_DISPATCH_GUARD`, or `PASS_SETEXT_ATX_GUARD` may have a Scene. Add A9 pair-chain, spare-label-absence, and minimal-witness no-underflow fast-IR contracts while retaining the three-character rejection test, then prove the minimal Setext witness red before implementation. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
+- [ ] **Step 3: Implement the general block paths.** Amendment A11 is the sole binding completion shape for A9 Setext plus ATX closing hashes; do not implement, preserve, or extend the A8-shaped underline family. Before editing `src_ir/act2.py`, install A9 and A11's ready-to-paste TOML entries, yielding 33 working labels and eight unused spares. The existing candidate/finalization/replay/bridge choreography retains A7's seed-before-transfer design. For underline handling, enter `PASS_SETEXT_UNDERLINE_STATE_OPEN`, keep Macbeth's private state rail above unchanged list depth, and use A9's exact read/capture/classify chain. The scan alone calls `_read()` with Lady Macbeth/Hecate; capture copies only that glyph to Horatio's replay buffer; classify mutates only Macbeth's five-state rail. Valid terminal lines route through proof-stage; invalid lines through requeue-stage; EOF through EOF-state. Every exit pops the state rail before proof/requeue behavior, every goto shares a participant, and no scene names more than two characters. After a proved title restore, route only through A11's `PASS_SETEXT_PROVED_CLOSE`, which pushes `TEXT_END` and branches on the unchanged Lady-Macbeth countdown to `PASS_LISTS_DONE` at zero or the dispatcher at positive count without `_read()`. For ATX, use only A11's `PASS_HEADER_TRAIL_OPEN -> SCAN -> CAPTURE/DECIDE -> DROP/REPLAY -> EXIT` two-participant machine: Puck holds deferred spaces/hashes and its private `saw_hash` bit; Lady Macbeth/Hecate remains the sole `_read()` pair. Drop a deferred run only at newline after at least one hash; otherwise replay it before emitting Hecate's held non-deferred glyph or the existing header close. No path may enter `PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY_TRANSFER`, or `PASS_SETEXT_BRIDGE_TRANSFER` except from its named seed scene. Delete A8-shaped WIP scenes that use any spare label; none of A11's eight spare labels may have a Scene. Add A11 pair-chain, all-eight-spares absence, minimal-witness no-underflow/no-extra-read, positive-count source-preservation, and three ATX suffix fast-IR contracts while retaining the three-character rejection test, then prove the minimal Setext witness red before implementation. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Regenerate and assemble.
 
 - [ ] **Step 4: Run the Basics four-gate checkpoint.** Run:
 
@@ -438,3 +438,23 @@ uv run python -m scripts.splc && uv run python scripts/assemble.py
 No production behavior is changed by this planning amendment.  Any need to
 depart from A9's state table or its reserved pool remains `- BLOCK[plan]:`
 with the smallest witness.
+
+## Amendment A11 (2026-07-18): validator-legal close and suffix choreography
+
+Design Amendment A11 clears the Task-3-Step-3 planner-only blocker.  It
+supersedes A10's 25-working/five-spare ceiling only by adding the exact eight
+controlled scenes and three spare titles in the accepted design, for a
+33-working/eight-unused-spare ledger.  The Setext proved route ends in the
+new two-participant `PASS_SETEXT_PROVED_CLOSE`, which branches on the existing
+input countdown before any dispatcher read.  The ATX route gets the exact
+two-participant Puck trailing-buffer machine; its only reader remains Lady
+Macbeth/Hecate.  This preserves A9's Macbeth state rail, Horatio replay-only
+role, no-third-character validation rule, token grammar, and Act-III/IV
+boundary.
+
+Before changing production behavior, add the design's no-underflow/no-extra-
+read, positive-count source-preservation, pair-chain, eight-spare-absence,
+and three ATX suffix contracts, retaining the three-character rejection test.
+Run both exact A11 commands in the design, then the Global Constraints SPL-
+facing gate before the existing Basics four-gate checkpoint.  Any need beyond
+the A11 table remains `- BLOCK[plan]:` with the smallest witness.
