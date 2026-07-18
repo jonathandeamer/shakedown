@@ -1171,3 +1171,53 @@ pattern = "scene_of_character"
 ```
 
 No token code, token arity, structural role, participant set, Act III/IV logic, compiler/validator behavior, fixture expected file, or token baseline is authorized to change. The accepted output is the existing `tests/fixtures/token_stream/lists/nested_one_level.dump`: the outer alpha item closes before the nested ordered `LIST_OPEN`, while the child list still closes before outer delta begins. The full-list strict oracle, all six list spikes, all four nested-block spikes, and all A4–A13 witnesses remain unchanged. Any need for another scene, a spare draw, a changed baseline, or a broader route is `BLOCK[plan]` followed by a clean stop.
+
+## Amendment A15 — distinguish ordinary and loose nested-list entry (2026-07-18)
+
+A14's `ITEM_CLOSE` restoration is required only for the ordinary tight-nesting
+entry.  The same `PASS_LISTS_NEST_EMIT_UL_OPEN` and
+`PASS_LISTS_NEST_EMIT_OL_OPEN` scenes are also reached after A4's accepted
+blank-then-nested transaction: `PASS_LISTS_LOOSE_NESTED[_UL]` returns to the
+matching `PASS_LISTS_NEST_EMIT_*` scene when `MACBETH == 1`.  On that path the
+outer loose item's close remains owned by the pre-existing loose transaction;
+running A14's extra close there produces an unbalanced stream.  The existing
+focused witnesses and the complete-fixture stream validator demonstrate that
+failure.  This is route selection within the existing grammar, not a change to
+item ownership or Markdown behavior.
+
+Task 5 Step 2 may make exactly this Act-II-only dispatch correction, using the
+already allocated `_LOOSE_NEST_UL` and `_LOOSE_NEST_OL` values as the return
+selectors; it adds no selector, scene, or controlled literary surface:
+
+1. `PASS_LISTS_LOOSE_NESTED_UL` must retain `_LOOSE_NEST_UL` in `HORATIO` and
+   re-enter `PASS_LISTS_NEST_EMIT_UL`; the ordered half must analogously retain
+   `_LOOSE_NEST_OL` and re-enter `PASS_LISTS_NEST_EMIT_OL`.  They must not
+   reset `HORATIO` to zero before that re-entry.
+2. At the head of each corresponding `PASS_LISTS_NEST_EMIT_*` scene, test that
+   exact selector before the existing negative-Horatio loose-provision branch.
+   The matching selector must enter the existing `PASS_LISTS_NEST_OPEN_*`
+   scene directly.  Thus the loose route emits its child `LIST_OPEN` without
+   entering `PASS_LISTS_NEST_EMIT_*_OPEN` and without a second `TEXT_END` or
+   `ITEM_CLOSE`.
+3. Every other branch in those dispatch scenes, including the ordinary
+   `MACBETH == 1` branch, remains unchanged.  That ordinary branch still enters
+   `PASS_LISTS_NEST_EMIT_*_OPEN`, whose A14 sequence is exactly `TEXT_END`,
+   `ITEM_CLOSE`, then the existing `PASS_LISTS_NEST_OPEN_*` destination.
+
+First make the route distinction red: source/IR assertions must prove the two
+new selector branches occur before the generic negative-Horatio branch; a
+scene trace for `* parent\n\n\t* sub\n` and for its ordered analogue must enter
+the matching `PASS_LISTS_NEST_OPEN_*` but not `PASS_LISTS_NEST_EMIT_*_OPEN`;
+an ordinary tight `nested_one_level` trace must still enter its `*_OPEN` scene.
+Keep the committed `nested_one_level` dump byte-equal, retain the three
+existing loose-nesting/full-fixture contracts unchanged, and add no fixture
+baseline.  Run the focused Act-II tests, the six list and four nested-block
+spikes, the generated-fragment/parser/validator/literary gate, Amps proof, and
+the three-fixture strict-parity command already named in Task 5.
+
+The A14 ledger remains 29 working scenes and six unused spares.  No token,
+arity, role, participant, Act III/IV logic, compiler/validator behavior,
+expected fixture, or literary TOML entry may change.  Any need for a new
+selector, scene, spare draw, changed baseline, or any route beyond the two
+specified loose returns and two specified dispatch guards is `BLOCK[plan]`
+followed by a clean stop.
