@@ -15,7 +15,7 @@
 - Edit generated acts only via `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`. Never hand-edit generated `src/*.spl` or `shakedown.spl`.
 - Do not change expected mdtest files, add aggregate-specific normalizers, invoke Markdown.pl at runtime, or add a wrapper-side Markdown branch. `Auto links` is the sole entity-normalized mdtest comparator; strict parity is always raw bytes.
 - Per the accepted design's Amendment A1, the unchanged 133-byte `Tidyness.xhtml` is a legacy corpus artifact, not the expected output for deterministic parity.  Tidyness test evidence obtains its expected bytes from the installed local Markdown.pl only; this is test-time evidence, never production runtime behavior, and adds no normalizer.
-- New Act-II labels are limited to the design's ten working Setext labels, including Amendment A4's `PASS_SETEXT_CANDIDATE_SCAN`, Amendment A3's `PASS_SETEXT_REQUEUE`, and `PASS_SETEXT_FINALIZE`. The four named spares may be used only by a design amendment; another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
+- New Act-II labels are limited to design Amendment A5's fourteen working Setext labels, including its four one-time-seed/loop pairs. Its four named spares may be used only by a design amendment; another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
 - Every SPL change runs: `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
 - Every SPL change also preserves the release baseline with `uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`.
 
@@ -156,7 +156,7 @@
   aggregate remains raw-byte mismatched to the oracle. No production or
   generated SPL changed.
 
-- [ ] **Step 3: Implement the general block paths.** Replace the prior nine-entry reservation with design Amendment A4's ten ready-to-paste Setext TOML entries before matching Act-II labels. `PASS_SETEXT_CANDIDATE` seeds Lady Macbeth's private candidate floor exactly once, performs no `_read()`, and immediately enters `PASS_SETEXT_CANDIDATE_SCAN`. Only `PASS_SETEXT_CANDIDATE_SCAN` calls `_read()` for candidate glyphs, retains every non-EOF title glyph above that floor, and self-loops for arbitrarily many title glyphs; its first newline enters `PASS_SETEXT_UNDERLINE` and its EOF enters raw `PASS_SETEXT_FINALIZE`. No retained candidate glyph may be pushed onto Hecate. `PASS_SETEXT_UNDERLINE` retains provisional look-ahead only above its private Horatio floor. On a failed underline, `PASS_SETEXT_REQUEUE` restores those bytes to Hecate without calling `_read()`, then `PASS_SETEXT_FINALIZE` transfers the sealed Lady-Macbeth candidate to Hecate above a private floor. On a proved underline, the existing `HEADER(level)` is pushed before that same finalization. `PASS_SETEXT_REPLAY` seeds Puck's replay floor and transfers Hecate-to-Puck; `PASS_SETEXT_BRIDGE` seeds Horatio's restore floor and transfers Puck-to-Horatio; `PASS_SETEXT_CLOSE` transfers Horatio-to-Lady-Macbeth and discards its floor. Each floor must be pushed, observed, and discarded within this named ledger and never emitted. No scene may touch Hecate, Puck, and Horatio together. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
+- [ ] **Step 3: Implement the general block paths.** Replace the prior Setext reservation with design Amendment A5's complete fourteen-working/four-spare ready-to-paste TOML block before matching Act-II labels. A scene that seeds a private floor performs no `_read()` or glyph transfer and immediately enters its separately named scan/transfer scene: `PASS_SETEXT_CANDIDATE -> PASS_SETEXT_CANDIDATE_SCAN`, `PASS_SETEXT_UNDERLINE -> PASS_SETEXT_UNDERLINE_SCAN`, `PASS_SETEXT_FINALIZE -> PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY -> PASS_SETEXT_REPLAY_TRANSFER`, and `PASS_SETEXT_BRIDGE -> PASS_SETEXT_BRIDGE_TRANSFER`. Only the latter scene in each pair self-loops for an arbitrary glyph run. `PASS_SETEXT_REQUEUE` and `PASS_SETEXT_CLOSE` may self-loop only because each consumes a floor seeded by an earlier scene. No retained candidate glyph may be pushed to Hecate before `PASS_SETEXT_FINALIZE`; the finalization floor is above unread Hecate source, and all floors are pushed, observed, and discarded within this ledger without entering Act III. No scene may touch Hecate, Puck, and Horatio together. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
 
 - [ ] **Step 4: Run the Basics four-gate checkpoint.** Run:
 
@@ -230,7 +230,7 @@
 
 ## Plan self-review
 
-Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and only reserves Amendment A4's derived ten-scene Act-II Setext pool plus four spares; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
+Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendment A5's derived fourteen-scene Act-II Setext pool plus four spares; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
 
 ## Amendment A1 (2026-07-18): Tidyness raw-oracle evidence reconciliation
 
@@ -313,3 +313,28 @@ state table, ready-to-paste TOML entry, and the required SPL-facing compliance
 command are in design Amendment A4.  No other label, spare draw, token,
 selector, participant, Act-III/IV role, compiler behavior, fixture branch,
 raw-HTML scope, or header behavior is authorized.
+
+## Amendment A6 (2026-07-18): seeded Setext transfer-loop ledger
+
+Design Amendment A5 supersedes the ten-label A4 ledger for Task 3 Step 3.
+Its binding observation is that splc self-loops re-enter an entire scene, not
+only a selected transfer statement. The candidate split therefore was
+necessary but insufficient: `PASS_SETEXT_UNDERLINE`, `PASS_SETEXT_FINALIZE`,
+`PASS_SETEXT_REPLAY`, and `PASS_SETEXT_BRIDGE` each also paired a one-time
+floor seed with an unbounded scan or transfer.
+
+Task 3 Step 3 must replace the prior reservation with Amendment A5's complete
+fourteen-working/four-spare TOML block. The four former named spares become
+`PASS_SETEXT_UNDERLINE_SCAN`, `PASS_SETEXT_FINALIZE_TRANSFER`,
+`PASS_SETEXT_REPLAY_TRANSFER`, and `PASS_SETEXT_BRIDGE_TRANSFER`; the design
+reserves four fresh named spares. Each seed scene immediately enters its loop
+scene, and only that loop self-loops. `PASS_SETEXT_REQUEUE` and
+`PASS_SETEXT_CLOSE` retain their existing floor-consuming loops and do not
+seed a floor themselves. This is the complete derived ledger: 14 working
+labels, 4 unused spares, satisfying `ceil(14 * 20%)` and the mandatory
+four-spare floor.
+
+No token, selector, participant pair, Act-III/IV role, compiler behavior,
+fixture branch, raw-HTML scope, or header behavior is authorized. The exact
+SPL-facing compliance command in Global Constraints remains mandatory before
+the fixture can be enabled.

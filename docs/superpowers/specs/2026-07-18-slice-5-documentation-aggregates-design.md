@@ -184,6 +184,105 @@ gate:
 uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
 ```
 
+## Amendment A5 (2026-07-18): split every seeded unbounded Setext loop
+
+The A4 ten-label ledger is superseded. A splc scene entry is not a continuation: a self-loop re-enters every operation in that scene. A scene which both seeds a private floor and moves or scans an unbounded glyph run therefore either reseeds the floor on every turn or can move only one glyph. A4 fixed that fact for the candidate scan only. It also applies to the underline scan and each finalization carrier whose first scene seeds its destination floor. The minimal witnessed title is still `Markdown: Basics\n================\n`; its title length reaches the finalize, replay, and bridge loops. An arbitrary-width underline reaches the same defect at the underline scanner.
+
+This amendment splits all four seeded/unbounded responsibilities into a one-time seed scene and a self-looping scan or transfer scene:
+
+| Seed scene | New loop scene | One-time action | Repeated action |
+|---|---|---|---|
+| `PASS_SETEXT_UNDERLINE` | `PASS_SETEXT_UNDERLINE_SCAN` | push Horatio's underline floor | `_read()` and retain/classify one underline glyph |
+| `PASS_SETEXT_FINALIZE` | `PASS_SETEXT_FINALIZE_TRANSFER` | push Hecate's finalized-title floor | move one Lady-Macbeth candidate glyph to Hecate |
+| `PASS_SETEXT_REPLAY` | `PASS_SETEXT_REPLAY_TRANSFER` | push Puck's replay floor | move one Hecate title glyph to Puck |
+| `PASS_SETEXT_BRIDGE` | `PASS_SETEXT_BRIDGE_TRANSFER` | push Horatio's restore floor | move one Puck title glyph to Horatio |
+
+The former four named spares become those four working loop labels. To retain the mandatory spare reserve, this amendment adds four new unused Act-II scene titles. The derived pool is **14 working labels and 4 unused spares**: `4 >= ceil(14 * 20%)` and meets the four-title minimum. These are the only new controlled surfaces authorized by this amendment.
+
+```toml
+# Slice 5 Act-II replacement working pool (14)
+[scenes.PASS_SETEXT_CANDIDATE]
+title = "Lady Macbeth keeps the unmarked line before its warrant."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_CANDIDATE_SCAN]
+title = "Lady Macbeth gathers each unmarked letter by measure."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_UNDERLINE]
+title = "Horatio sets the underline's household floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_UNDERLINE_SCAN]
+title = "Horatio weighs each underline mark by measure."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EQUALS]
+title = "Lady Macbeth crowns the gathered line."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_DASH]
+title = "Lady Macbeth lowers the gathered line one rank."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REQUEUE]
+title = "Horatio restores the unproved underline to its source."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_FINALIZE]
+title = "Lady Macbeth marks the sealed line's return floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_FINALIZE_TRANSFER]
+title = "Lady Macbeth sends each sealed letter to Hecate."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_REPLAY]
+title = "Puck sets the sealed line's passage floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REPLAY_TRANSFER]
+title = "Puck receives each sealed letter from Hecate."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_BRIDGE]
+title = "Horatio sets the restored line's household floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_BRIDGE_TRANSFER]
+title = "Puck entrusts each sealed letter to Horatio."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_CLOSE]
+title = "Lady Macbeth seals the proven heading."
+pattern = "scene_of_character"
+
+# Slice 5 Act-II spare pool (4; unused unless an amendment assigns it)
+[scenes.PASS_SETEXT_CLOSE_GUARD]
+title = "The restored line keeps one guarded return."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_FLOOR_GUARD]
+title = "The marked floor keeps one guarded measure."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_LINE_GUARD]
+title = "The unmarked line keeps one guarded warrant."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_TRANSFER_GUARD]
+title = "The sealed passage keeps one guarded letter."
+pattern = "bare_statement"
+```
+
+The A5 state table replaces A4's ten-row table. Seed scenes do no glyph transfer or `_read()` and immediately enter their matching loop. Loop scenes are the only self-loops in their family; at their owned floor they discard it only once and take the next named transition. `PASS_SETEXT_REQUEUE` and `PASS_SETEXT_CLOSE` may self-loop because their floors were seeded by prior scenes, never by themselves.
+
+| Label | Stage pair / anchor | Stack action and exit |
+|---|---|---|
+| `PASS_SETEXT_CANDIDATE` | Lady Macbeth + Hecate / Lady Macbeth | Seed Lady Macbeth's candidate floor once; enter `PASS_SETEXT_CANDIDATE_SCAN`. |
+| `PASS_SETEXT_CANDIDATE_SCAN` | Lady Macbeth + Hecate / Lady Macbeth | Read/retain one candidate glyph; self-loop for title glyphs, enter `PASS_SETEXT_UNDERLINE` after newline, or raw `PASS_SETEXT_FINALIZE` at EOF. |
+| `PASS_SETEXT_UNDERLINE` | Hecate + Horatio / Hecate | Seed Horatio's underline floor once; enter `PASS_SETEXT_UNDERLINE_SCAN`. |
+| `PASS_SETEXT_UNDERLINE_SCAN` | Hecate + Horatio / Hecate | Read/retain and classify one underline glyph; self-loop while provisional, enter the matching proof scene when proved, otherwise enter `PASS_SETEXT_REQUEUE`. |
+| `PASS_SETEXT_EQUALS` / `PASS_SETEXT_DASH` | Lady Macbeth + Horatio / Lady Macbeth | Discard the existing underline floor, push existing `HEADER(1)` / `HEADER(2)`, set proved mode, and enter `PASS_SETEXT_FINALIZE`. |
+| `PASS_SETEXT_REQUEUE` | Hecate + Horatio / Hecate | Restore provisional bytes to Hecate through the existing underline floor, discard it, set raw mode, and enter `PASS_SETEXT_FINALIZE` without `_read()`. |
+| `PASS_SETEXT_FINALIZE` | Lady Macbeth + Hecate / Lady Macbeth | Push Hecate's finalized-title floor once above unread source; enter `PASS_SETEXT_FINALIZE_TRANSFER`. |
+| `PASS_SETEXT_FINALIZE_TRANSFER` | Lady Macbeth + Hecate / Lady Macbeth | Move one candidate glyph to Hecate and self-loop; at Lady Macbeth's candidate floor discard it and enter `PASS_SETEXT_REPLAY`. |
+| `PASS_SETEXT_REPLAY` | Hecate + Puck / Hecate | Seed Puck's replay floor once; enter `PASS_SETEXT_REPLAY_TRANSFER`. |
+| `PASS_SETEXT_REPLAY_TRANSFER` | Hecate + Puck / Hecate | Move one finalized glyph to Puck and self-loop; at Hecate's finalized-title floor discard it and enter `PASS_SETEXT_BRIDGE`. |
+| `PASS_SETEXT_BRIDGE` | Puck + Horatio / Puck | Seed Horatio's restore floor once; enter `PASS_SETEXT_BRIDGE_TRANSFER`. |
+| `PASS_SETEXT_BRIDGE_TRANSFER` | Puck + Horatio / Puck | Move one replay glyph to Horatio and self-loop; at Puck's replay floor discard it and enter `PASS_SETEXT_CLOSE`. |
+| `PASS_SETEXT_CLOSE` | Lady Macbeth + Horatio / Lady Macbeth | Move one restored glyph to Lady Macbeth and self-loop; at Horatio's restore floor discard it and return to the existing dispatcher. |
+
+No scene names Hecate, Puck, and Horatio together. This changes no token, selector, participant pair, Act-III/IV role, compiler behavior, fixture branch, raw-HTML scope, or header behavior. Before implementation replace the old Setext reservation with the complete 14-working/4-spare block above, then run exactly:
+
+```bash
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+```
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,
