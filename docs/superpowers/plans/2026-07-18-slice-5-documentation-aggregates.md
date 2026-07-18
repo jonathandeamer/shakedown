@@ -23,7 +23,13 @@
 
 **Interfaces:** Introduce a shared, typed `DOCUMENTATION_STEP_LIMIT: int = 1_000_000` in a non-production Markdown-logic-free constants home; tests invoke the same limit through the fast path. `_IMPLEMENTED_FIXTURES` gains only a fixture whose focused fast, binary, and raw strict parity gates are green.
 
-- [ ] **Step 1: Write the red scale and enablement contracts.** Add tests that (a) run Syntax through each act with the named 1,000,000 limit without `StepLimitExceeded`, (b) assert the release binary returns zero for Syntax, (c) assert the probe is importable with `python -m`, and (d) parameterize `Auto links`, `Backslash escapes`, and `Code Spans` through `_run_acts`, the binary, and `strict_parity_harness.py`. Assert `Tidyness` remains disabled and its current binary failure is captured as `PASS_LISTS_BLOCK_START`/Hecate underflow.
+- [x] **Step 1: Write the red scale and enablement contracts.** Add tests that (a) run Syntax through each act with the named 1,000,000 limit without `StepLimitExceeded`, (b) assert the release binary returns zero for Syntax, (c) assert the probe is importable with `python -m`, and (d) parameterize `Auto links`, `Backslash escapes`, and `Code Spans` through `_run_acts`, the binary, and `strict_parity_harness.py`. Assert `Tidyness` remains disabled and its current binary failure is captured as `PASS_LISTS_BLOCK_START`/Hecate underflow.
+
+  Evidence (2026-07-18): the contracts landed at `c76ea5c`. The focused red
+  gate reports `6 passed, 5 failed`: all four named-limit Syntax act prefixes
+  and the Tidyness underflow regression pass; the failures are exactly the
+  release/probe 500,000-step ceiling and the three fixtures awaiting
+  enablement.
 
 - [ ] **Step 2: Prove the tests are red.** Run `uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_documentation_probes.py -q`. Expected: the Syntax and three enablement contracts fail before the named limit/enabling change; the Tidyness regression assertion passes.
 
