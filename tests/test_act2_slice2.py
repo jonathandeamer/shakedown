@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.splc.interpret import InterpreterState, run_act
+from scripts.splc.interpret import InterpreterState, StackUnderflow, run_act
 from scripts.splc.ir import Branch, Char, Const, Goto, Let, Pop, Push, Val
 from scripts.splc.token_decode import decode_stream
 from scripts.splc.validate import entry_pairs, participants
@@ -121,6 +121,13 @@ def test_rejected_repeated_asterisk_hr_candidate_stays_paragraph_text() -> None:
 
 STEP_LIMIT = 200_000
 FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
+TIDYNESS_INPUT = (
+    "> A list within a blockquote:\n"
+    "> \n"
+    "> *\tasterisk 1\n"
+    "> *\tasterisk 2\n"
+    "> *\tasterisk 3\n"
+)
 
 
 def _act2_stream(input_text: str) -> list[int]:
@@ -134,6 +141,64 @@ def _act2_stream(input_text: str) -> list[int]:
             break
         stream.append(value)
     return stream
+
+
+def test_tidyness_quote_list_stream_stages_every_block_start_read() -> None:
+    input_path = FIXTURES_DIR / "Tidyness.text"
+    assert input_path.read_text() == TIDYNESS_INPUT
+
+    state = InterpreterState(input_text=TIDYNESS_INPUT)
+    state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
+    block_start_hecate_depths: list[int] = []
+
+    class _Observer:
+        def on_scene(self, label: str, state: InterpreterState) -> None:
+            if label == "PASS_LISTS_BLOCK_START":
+                block_start_hecate_depths.append(len(state.stacks[Char.HECATE]))
+
+        def on_push(self, char: Char, value: int, stack_after: list[int]) -> None:
+            return None
+
+        def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None:
+            return None
+
+    try:
+        state = run_act(
+            ACT2,
+            state,
+            step_limit=STEP_LIMIT,
+            observer=_Observer(),
+        ).state
+    except StackUnderflow as exc:
+        pytest.fail(f"{exc}: PASS_LISTS_BLOCK_START requires a staged Hecate glyph")
+
+    assert block_start_hecate_depths
+    assert all(depth > 0 for depth in block_start_hecate_depths)
+
+    stream: list[int] = []
+    while state.stacks[Char.PUCK]:
+        value = state.stacks[Char.PUCK].pop()
+        if value == tokens.STREAM_END:
+            break
+        stream.append(value)
+    decoded = decode_stream(stream)
+
+    assert [(token.code, token.payloads, token.text) for token in decoded] == [
+        (tokens.BLOCKQUOTE_OPEN, (), None),
+        (tokens.PARA, (), "A list within a blockquote:"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "asterisk 1"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "asterisk 2"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "asterisk 3"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.BLOCKQUOTE_CLOSE, (), None),
+    ]
 
 
 @pytest.mark.parametrize(

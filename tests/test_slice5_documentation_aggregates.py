@@ -25,6 +25,14 @@ from tests.test_mdtest import (
 
 REPO = Path(__file__).parent.parent
 HARNESS = REPO / "scripts" / "strict_parity_harness.py"
+MARKDOWN_PL = Path.home() / "markdown" / "Markdown.pl"
+TIDYNESS_INPUT = (
+    "> A list within a blockquote:\n"
+    "> \n"
+    "> *\tasterisk 1\n"
+    "> *\tasterisk 2\n"
+    "> *\tasterisk 3\n"
+)
 
 
 def _run_acts_with_limit(
@@ -113,18 +121,37 @@ def test_slice5_strict_ready_fixture_enablement_contracts(fixture_name: str) -> 
     assert "summary: 1/1 byte-identical" in harness.stdout
 
 
-def test_tidyness_remains_disabled_and_current_binary_failure_is_captured() -> None:
-    input_path, _ = _fixture_paths("Tidyness")
-    result = subprocess.run(
+def test_tidyness_exact_fixture_matches_fast_release_and_raw_oracle() -> None:
+    fixture_name = "Tidyness"
+    input_path, expected_path = _fixture_paths(fixture_name)
+    assert input_path.read_text() == TIDYNESS_INPUT
+
+    fast_actual = _run_acts(TIDYNESS_INPUT, through_act=4)
+    assert isinstance(fast_actual, str)
+    assert _normalize_fixture_output(
+        fixture_name, fast_actual
+    ) == _normalize_fixture_output(fixture_name, expected_path.read_text())
+
+    input_bytes = TIDYNESS_INPUT.encode()
+    release = subprocess.run(
         [str(BINARY)],
-        input=input_path.read_text(),
+        input=input_bytes,
         capture_output=True,
-        text=True,
+        cwd=REPO,
+        check=False,
+    )
+    oracle = subprocess.run(
+        ["perl", str(MARKDOWN_PL)],
+        input=input_bytes,
+        capture_output=True,
         cwd=REPO,
         check=False,
     )
 
-    assert "Tidyness" not in _IMPLEMENTED_FIXTURES
-    assert result.returncode != 0
-    assert "PASS_LISTS_BLOCK_START" in result.stderr
-    assert "stack underflow popping Hecate" in result.stderr
+    assert fixture_name not in _IMPLEMENTED_FIXTURES
+    assert release.returncode == 0, release.stderr.decode()
+    assert _normalize_fixture_output(
+        fixture_name, release.stdout.decode()
+    ) == _normalize_fixture_output(fixture_name, expected_path.read_text())
+    assert oracle.returncode == 0, oracle.stderr.decode()
+    assert release.stdout == oracle.stdout

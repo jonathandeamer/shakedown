@@ -75,7 +75,14 @@
 
 **Interfaces:** `PASS_LISTS_BLOCK_START` must consume a valid Hecate payload only after the quote/list route has staged it; the existing list token grammar and all committed Spike A/B dumps remain unchanged.
 
-- [ ] **Step 1: Write the failing minimal contract.** Add a test for the exact Tidyness input asserting no Act-II underflow, the expected decoded quote/list stream, fast-IR normalized mdtest output, release output, and raw strict oracle bytes. Add an observer assertion that Hecate's stack is nonempty at every `PASS_LISTS_BLOCK_START` pop.
+- [x] **Step 1: Write the failing minimal contract.** Add a test for the exact Tidyness input asserting no Act-II underflow, the expected decoded quote/list stream, fast-IR normalized mdtest output, release output, and raw strict oracle bytes. Add an observer assertion that Hecate's stack is nonempty at every `PASS_LISTS_BLOCK_START` pop.
+
+  Evidence (2026-07-18): the exact Step-2 command reports `2 failed, 28
+  deselected`. Both failures are the intended Act-II regression at
+  `PASS_LISTS_BLOCK_START` step 594: Hecate's stack is empty before the
+  block-start read. The observer, decoded stream, fast normalized output,
+  release output, and raw release-versus-oracle contracts are now executable;
+  no production or generated SPL changed.
 
 - [ ] **Step 2: Verify red.** Run `uv run pytest tests/test_act2_slice2.py tests/test_slice5_documentation_aggregates.py -k Tidyness -q`. Expected: failure naming `PASS_LISTS_BLOCK_START` and Hecate underflow.
 
