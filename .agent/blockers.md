@@ -50,3 +50,4 @@ Acts III/IV, controlled prose, and the 22-working/5-spare list ledger; it
 requires red-then-green fast-IR, release, strict-oracle, spike, token-dump,
 generated/literary, Amps, and full-suite evidence before any implementation
 claim.
+Resolved 2026-07-18 by Slice-4 design Amendment A9 and the matching Task-4-Step-2 amendment: `PASS_LISTS_LOOSE_COMMIT_HECATE` is the sole stage-pair-safe adapter for a blank-separated outer sibling after a nested list.  It closes the completed nested tail once, exposes the outer item to the existing loose-commit transaction, then reuses the existing sibling emitter.  Ordinary blank continuations retain the existing Horatio-stage path.  A9 adds one working scene while retaining A5's five unused spares, preserving the 23-working/5-spare ledger; it changes no token, participant, grammar, Act-III/IV surface, or validator behavior.

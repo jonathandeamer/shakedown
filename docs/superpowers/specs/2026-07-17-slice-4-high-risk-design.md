@@ -436,6 +436,87 @@ If this one-handoff correction needs any further scene, a different register
 owner, changed marker routing, token/grammar change, Act-III/IV work, or a
 new controlled surface, record `- BLOCK[plan]:` with that exact need and stop.
 
+## Amendment A9 — stage-pair-safe loose commit after a nested list (2026-07-18)
+
+The remaining full-list failures divide across two distinct Act-II stage
+pairs.  A top-level blank continuation, such as `1.\tItem 1\n\n\tItem 2\n`,
+arrives through the established Horatio-stage provisional-looseness route and
+must rewrite its current item to loose before opening the second paragraph.
+By contrast, a blank-separated outer sibling after a nested list, such as
+`2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\n3. Third\n`, arrives while Hecate
+still owns the scanned marker and has a completed tight nested tail above the
+outer item.  Sending both arrivals to `PASS_LISTS_LOOSE_COMMIT` gives that
+scene inconsistent branch predecessor pairs; sending the latter through the
+ordinary outdent/sibling route either rewrites `Foe` loose or produces an
+unbalanced Act-IV close sequence.
+
+This amendment authorizes exactly one Act-II working scene,
+`PASS_LISTS_LOOSE_COMMIT_HECATE`.  It is an adapter, not a new grammar rule:
+
+1. Only from the recognized blank-separated nested-to-outer-sibling branch,
+   it emits the completed nested tail's existing `TEXT_END`, `ITEM_CLOSE`,
+   `LIST_CLOSE` sequence and decrements the frame depth once.  It does not
+   touch the outer item's payload and never loops.
+2. With the outer `LIST_ITEM` now exposed, it stores `_LOOSE_COMMIT_SIB` in
+   `HORATIO` and enters the existing `PASS_CONTAINERS_OPEN` transaction.  That
+   transaction is therefore permitted to rewrite **only the outer item** to
+   loose; it must not encounter or rewrite `Foe`.
+3. Its existing `PASS_CONTAINERS_CLOSE_BRANCH` exit reaches the existing
+   Horatio-stage `PASS_LISTS_LOOSE_COMMIT`, then `PASS_LISTS_BSIB_EMIT`.  That
+   owned path closes the exposed outer item and opens the outer loose sibling.
+
+The ordinary blank-continuation path remains
+`PASS_LISTS_BLANK_JOIN` → `PASS_LISTS_LOOSE_JOIN` →
+`PASS_CONTAINERS_OPEN`; it must never enter the new adapter.  Conversely, the
+Hecate-stage predecessor must never branch directly to
+`PASS_LISTS_LOOSE_COMMIT`, and the nested-to-outer sibling must not reuse
+`PASS_LISTS_LOOSE_OUTDENT`.  These restrictions make every branch target have
+one compatible predecessor-stage pair and preserve the existing explicit
+`ITEM_CLOSE`/`LIST_CLOSE` ownership.
+
+The amendment adds the working title below and retains A5's five unused
+`PASS_LISTS_INDENT_*_GUARD` spares.  The live list ledger becomes 23 working
+scenes and five unused spares, satisfying `ceil(23 * 20%) = 5` and the
+four-title minimum.  No token, token number, structural role, participant,
+container grammar, Act III or IV surface, compiler/validator behavior, or A5
+spare is authorized.
+
+```toml
+# Amendment A9 Hecate-stage loose-commit adapter
+[scenes.PASS_LISTS_LOOSE_COMMIT_HECATE]
+title = "Hecate yields the inner rank to its elder march."
+pattern = "scene_of_character"
+```
+
+Task 4 Step 2 must first make, then satisfy, these exact contracts in both the
+fast interpreter and release binary:
+
+1. `1.\tItem 1\n\n\tItem 2\n` has one loose ordered item and two paragraph
+   leaves, proving the existing Horatio-stage continuation remains intact.
+2. `2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\n3. Third\n` has a loose outer
+   `Second:` item, a tight nested list with tight `Fee`, `Fie`, and `Foe`
+   items, and a loose outer `Third` sibling.  It must be byte-identical to the
+   local oracle:
+
+   ```html
+   <ol>
+   <li><p>Second:</p>
+
+   <ul><li>Fee</li>
+   <li>Fie</li>
+   <li>Foe</li></ul></li>
+   <li><p>Third</p></li>
+   </ol>
+   ```
+
+All A4–A8 witnesses, the six Spike-A list fixtures, four Spike-B
+nested-block fixtures, list token-dump baselines, generated-fragment/parser/
+validator/literary gates, and the Amps proof remain required.  A need to
+close more than one nested frame, rewrite any nested tail, add another working
+scene, consume another spare, alter Acts III/IV, or change a token/grammar is
+`BLOCK[plan]` with the exact need recorded; stop rather than locally widening
+this adapter.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
