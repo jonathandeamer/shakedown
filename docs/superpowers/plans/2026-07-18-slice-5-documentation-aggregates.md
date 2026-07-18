@@ -102,7 +102,7 @@
   `206 passed`. No scene, token, selector, participant, fixture-name
   conditional, or literary surface was added.
 
-- [ ] **Step 4: Run the regression gate.** Run:
+- [x] **Step 4: Run the regression gate.** Run:
 
   ```bash
   uv run pytest tests/test_act2_slice2.py tests/test_slice5_documentation_aggregates.py tests/test_architecture_spikes.py tests/test_token_dump.py -q
@@ -112,6 +112,12 @@
   ```
 
   Expected: all pass and strict parity reports `summary: 1/1 byte-identical`.
+
+  Evidence (2026-07-18): the broad regression gate reports `77 passed`;
+  the focused mdtest command exits zero with Tidyness still intentionally
+  skipped pending Step 5 (`1 skipped, 35 deselected`); strict parity reports
+  `summary: 1/1 byte-identical` at 136 bytes; and splc regeneration plus
+  assembly completes without tracked drift.
 
 - [ ] **Step 5: Enable and checkpoint.** Add `Tidyness` to `_IMPLEMENTED_FIXTURES` only after Step 4. In `tests/test_mdtest.py`, introduce a narrow test-only expected-output helper that invokes the installed local Markdown.pl for Tidyness and otherwise returns the checked-in expected file; route the existing fast-IR and release comparisons through it. Do not change `Tidyness.xhtml`, add a normalizer, or invoke Markdown.pl from production code. Re-run the Step-4 gate after this test-only enablement change; then commit Task-2 files as `fix: restore tidyness quote list handoff`; push with the required trailers.
 
