@@ -283,6 +283,109 @@ No scene names Hecate, Puck, and Horatio together. This changes no token, select
 uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
 ```
 
+## Amendment A7 (2026-07-18): primed-glyph capture and proved close
+
+Amendment A5's fourteen-label ledger is superseded.  Its candidate seed was
+specified as a pure floor seed even though Act II reaches the Setext route
+with the first non-special block glyph already held by Hecate from
+`PASS_LISTS_BLOCK_START`.  Sending that seed straight to a `_read()` loop
+would discard the initial `M` in the minimal witness:
+
+```text
+Markdown: Basics
+================
+```
+
+The proved return also needs two ordered effects which A5 did not give a legal
+site: `HEADER(level)` must be below the restored title, and `TEXT_END` must be
+above it before block dispatch resumes.  No three-participant scene can both
+read the private mode and restore the title, and inserting `HEADER(level)` at
+the proof scene would put it in the candidate-transfer payload rather than
+below that payload.
+
+This amendment adds five working scenes, an EOF close-mode setter, two
+replay-floor seeds, and two level-specific closes, plus four replacement
+unused spares.  The derived pool is **19 working labels and 4 unused spares**;
+`4 >= ceil(19 * 20%)` and the four-title minimum remains satisfied.  No
+existing spare title is consumed.
+Add these ready-to-paste entries together with the A5 working entries before
+creating the IR scenes:
+
+```toml
+[scenes.PASS_SETEXT_REPLAY_EQUALS]
+title = "Puck sets the crowned line's first passage floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REPLAY_DASH]
+title = "Puck sets the lowered line's second passage floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EOF_MODE]
+title = "Horatio marks the unfinished line for its raw return."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EQUALS_CLOSE]
+title = "Lady Macbeth grants the crowned line its final seal."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_DASH_CLOSE]
+title = "Lady Macbeth grants the lowered line its final seal."
+pattern = "scene_of_character"
+
+# Slice 5 Act-II replacement spares (unused unless another amendment assigns them)
+[scenes.PASS_SETEXT_RETURN_GUARD]
+title = "The crowned return keeps one guarded seal."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_LEVEL_GUARD]
+title = "The lowered warrant keeps one guarded rank."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_REPLAY_GUARD]
+title = "The sealed passage keeps one guarded floor."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_DISPATCH_GUARD]
+title = "The restored heading keeps one guarded turn."
+pattern = "bare_statement"
+```
+
+The A7 state table replaces A5's table.  `_SETEXT_RAW_CLOSE`,
+`_SETEXT_EQUALS_CLOSE`, and `_SETEXT_DASH_CLOSE` are three new private
+negative Puck replay-floor values local to `src_ir/act2.py`; they are not
+stream tokens, selectors, or Act-III inputs.  Horatio holds the private close
+mode `0`, `1`, or `2` only after the underline floor has been discarded.
+`PASS_SETEXT_REPLAY` reads that off-stage mode before it stages Horatio again;
+it installs the matching Puck floor, which the bridge observes and discards
+only after every title glyph has crossed to Horatio.
+
+| Label | Stage pair / anchor | Stack action and exit |
+|---|---|---|
+| `PASS_SETEXT_CANDIDATE` | Lady Macbeth + Hecate / Lady Macbeth | Push Lady Macbeth's candidate floor once, then push the already-primed non-newline Hecate glyph above it without `_read()`. Enter `PASS_SETEXT_CANDIDATE_SCAN`; this is the only authorized seed transfer. |
+| `PASS_SETEXT_CANDIDATE_SCAN` | Lady Macbeth + Hecate / Lady Macbeth | `_read()` exactly one subsequent source glyph, retain it above the candidate floor, self-loop for title glyphs, enter `PASS_SETEXT_UNDERLINE` after the terminating newline, or enter `PASS_SETEXT_EOF_MODE` at EOF. |
+| `PASS_SETEXT_EOF_MODE` | Hecate + Horatio / Hecate | Set Horatio's close mode to `0` without touching Lady Macbeth's retained candidate, then enter finalization.  This separate scene is necessary because a Lady-Macbeth/Hecate scene cannot write Horatio under the two-participant validator. |
+| `PASS_SETEXT_UNDERLINE` / `PASS_SETEXT_UNDERLINE_SCAN` | Hecate + Horatio / Hecate | Preserve A5's one-time underline floor and its scan loop.  The scan retains every consumed underline glyph through its newline. |
+| `PASS_SETEXT_EQUALS` / `PASS_SETEXT_DASH` | Lady Macbeth + Horatio / Lady Macbeth | Discard the underline floor and its glyphs, then set Horatio's close mode to `1` / `2` and enter `PASS_SETEXT_FINALIZE`.  Do not emit `HEADER` here. |
+| `PASS_SETEXT_REQUEUE` | Hecate + Horatio / Hecate | Restore provisional underline bytes to Hecate through the underline floor, discard that floor, set Horatio's close mode to `0`, and enter finalization without `_read()`. |
+| `PASS_SETEXT_FINALIZE` / `PASS_SETEXT_FINALIZE_TRANSFER` | Lady Macbeth + Hecate / Lady Macbeth | Preserve A5's one-time Hecate floor and transfer loop.  Transfer every candidate glyph and discard Lady Macbeth's candidate floor; Horatio's off-stage close mode remains untouched. |
+| `PASS_SETEXT_REPLAY` / `PASS_SETEXT_REPLAY_EQUALS` / `PASS_SETEXT_REPLAY_DASH` | Hecate + Puck / Hecate | Preserve A5's Hecate/Puck pair.  `PASS_SETEXT_REPLAY` observes off-stage Horatio mode and either seeds `_SETEXT_RAW_CLOSE` itself or enters the matching new one-time level seed, which seeds `_SETEXT_EQUALS_CLOSE` / `_SETEXT_DASH_CLOSE`; each then enters the existing replay transfer loop. |
+| `PASS_SETEXT_REPLAY_TRANSFER` | Hecate + Puck / Hecate | Preserve A5's one-time Puck-floor transfer loop.  Move every finalized title glyph through Hecate's finalized-title floor. |
+| `PASS_SETEXT_BRIDGE` / `PASS_SETEXT_BRIDGE_TRANSFER` | Puck + Horatio / Puck | Preserve A5's one-time Horatio floor and transfer loop.  At the matching Puck replay floor, discard it and enter raw, level-1, or level-2 close only after every title glyph has crossed to Horatio. |
+| `PASS_SETEXT_CLOSE` | Lady Macbeth + Horatio / Lady Macbeth | Raw route only: restore title glyphs to Lady Macbeth through Horatio's floor, discard the floor, reset Horatio to the existing neutral block state `0`, and return directly to `PASS_LISTS_BLOCK_START`.  It never pushes `HEADER` or `TEXT_END`. |
+| `PASS_SETEXT_EQUALS_CLOSE` / `PASS_SETEXT_DASH_CLOSE` | Lady Macbeth + Horatio / Lady Macbeth | Level-1 / level-2 proved route only: push existing `HEADER` and literal level `1` / `2` once below the restored title, restore title glyphs through Horatio's floor, discard the floor, reset Horatio to the existing neutral block state `0`, then `goto("PASS_HEADER_CLOSE")`. |
+| `PASS_HEADER_CLOSE` (existing) | Lady Macbeth + Hecate / Lady Macbeth | This is the explicit authorized reuse path for either proved Setext close only.  It pushes existing `TEXT_END` once and uses its existing countdown branch to `PASS_LISTS_DONE` or `PASS_LISTS_BLOCK_START`.  The goto is validator-legal because each proved close and this existing scene share Lady Macbeth; it does not read or overwrite Hecate, so the next source glyph remains available to the dispatcher. |
+
+Each proved close is a one-time seed/restore scene and must not self-loop;
+after its restore floor is reached it makes the exact existing
+`PASS_HEADER_CLOSE` goto.  `PASS_SETEXT_CLOSE` retains A5's raw self-loop
+because its floor was seeded by the bridge.  The first Setext route is entered
+only for a non-newline, non-EOF glyph already read by the block-start gate;
+blank and EOF handling retain their existing routes.
+
+This amendment authorizes only the private close-mode register and three
+Puck replay-floor values, five working scenes, and the stated replacement
+spare surfaces.  It does not authorize a new token, selector, participant
+pair, compiler or validator behavior, fixture
+branch, raw-HTML change, or Act-III/IV surface.  Before implementation, run:
+
+```bash
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or Basics' -q
+```
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,

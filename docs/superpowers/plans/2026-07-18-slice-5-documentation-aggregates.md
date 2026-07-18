@@ -15,7 +15,7 @@
 - Edit generated acts only via `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`. Never hand-edit generated `src/*.spl` or `shakedown.spl`.
 - Do not change expected mdtest files, add aggregate-specific normalizers, invoke Markdown.pl at runtime, or add a wrapper-side Markdown branch. `Auto links` is the sole entity-normalized mdtest comparator; strict parity is always raw bytes.
 - Per the accepted design's Amendment A1, the unchanged 133-byte `Tidyness.xhtml` is a legacy corpus artifact, not the expected output for deterministic parity.  Tidyness test evidence obtains its expected bytes from the installed local Markdown.pl only; this is test-time evidence, never production runtime behavior, and adds no normalizer.
-- New Act-II labels are limited to design Amendment A5's fourteen working Setext labels, including its four one-time-seed/loop pairs. Its four named spares may be used only by a design amendment; another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
+- New Act-II labels are limited to design Amendment A7's nineteen working Setext labels, including its four one-time-seed/loop pairs, EOF close-mode setter, two level-specific replay seeds, and two level-specific proved closes. Its four named spares may be used only by a design amendment; another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
 - Every SPL change runs: `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
 - Every SPL change also preserves the release baseline with `uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`.
 
@@ -156,7 +156,7 @@
   aggregate remains raw-byte mismatched to the oracle. No production or
   generated SPL changed.
 
-- [ ] **Step 3: Implement the general block paths.** Replace the prior Setext reservation with design Amendment A5's complete fourteen-working/four-spare ready-to-paste TOML block before matching Act-II labels. A scene that seeds a private floor performs no `_read()` or glyph transfer and immediately enters its separately named scan/transfer scene: `PASS_SETEXT_CANDIDATE -> PASS_SETEXT_CANDIDATE_SCAN`, `PASS_SETEXT_UNDERLINE -> PASS_SETEXT_UNDERLINE_SCAN`, `PASS_SETEXT_FINALIZE -> PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY -> PASS_SETEXT_REPLAY_TRANSFER`, and `PASS_SETEXT_BRIDGE -> PASS_SETEXT_BRIDGE_TRANSFER`. Only the latter scene in each pair self-loops for an arbitrary glyph run. `PASS_SETEXT_REQUEUE` and `PASS_SETEXT_CLOSE` may self-loop only because each consumes a floor seeded by an earlier scene. No retained candidate glyph may be pushed to Hecate before `PASS_SETEXT_FINALIZE`; the finalization floor is above unread Hecate source, and all floors are pushed, observed, and discarded within this ledger without entering Act III. No scene may touch Hecate, Puck, and Horatio together. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
+- [ ] **Step 3: Implement the general block paths.** Replace the prior Setext reservation with design Amendment A7's complete nineteen-working/four-spare ready-to-paste TOML block before matching Act-II labels. The Setext entry receives the non-newline glyph already primed by `PASS_LISTS_BLOCK_START`: `PASS_SETEXT_CANDIDATE` seeds Lady Macbeth's private floor and captures that glyph exactly once without `_read()`, while `PASS_SETEXT_CANDIDATE_SCAN` alone reads subsequent candidate glyphs. On candidate EOF it enters A7's Hecate/Horatio `PASS_SETEXT_EOF_MODE` before finalization; this is the only legal site to set raw close mode without adding a third participant to the scan scene. A scene that otherwise seeds a private floor immediately enters its separately named scan/transfer scene: `PASS_SETEXT_UNDERLINE -> PASS_SETEXT_UNDERLINE_SCAN`, `PASS_SETEXT_FINALIZE -> PASS_SETEXT_FINALIZE_TRANSFER`, and `PASS_SETEXT_BRIDGE -> PASS_SETEXT_BRIDGE_TRANSFER`. Only the latter scene in each pair self-loops for an arbitrary glyph run. After an underline floor is discarded, use only A7's local Horatio close mode (`0` raw, `1` equals, `2` dash). `PASS_SETEXT_REPLAY` reads that off-stage mode before Horatio is staged again and selects the existing raw or one of the two A7 Puck replay floors; `PASS_SETEXT_BRIDGE_TRANSFER` observes that floor only after the title reaches Horatio. The raw route alone uses `PASS_SETEXT_CLOSE`; the equals/dash routes enter `PASS_SETEXT_EQUALS_CLOSE`/`PASS_SETEXT_DASH_CLOSE`, emit existing `HEADER(1)`/`HEADER(2)` below restored title glyphs, reset Horatio to its existing neutral block state after their restore floors are discarded, and then make A7's authorized `goto("PASS_HEADER_CLOSE")` so the existing scene appends `TEXT_END` and takes its existing dispatcher branch without reading or overwriting Hecate. `PASS_SETEXT_REQUEUE` and `PASS_SETEXT_CLOSE` may self-loop only because each consumes a floor seeded by an earlier scene. No retained candidate glyph may be pushed to Hecate before `PASS_SETEXT_FINALIZE`; the finalization floor is above unread Hecate source, and all floors and mode values are pushed, observed, cleared, and discarded within this ledger without entering Act III. No scene may touch Hecate, Puck, and Horatio together. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
 
 - [ ] **Step 4: Run the Basics four-gate checkpoint.** Run:
 
@@ -180,7 +180,7 @@
 
 - [ ] **Step 1: Turn the Syntax diff into a finite category inventory.** Add a helper test that compares real release bytes with the local oracle and records the first difference plus the minimal contiguous source witness. Seed it with the observed categories: raw top-level HTML (`h2`/`h3` with attributes), nested list close ordering, multi-definition reference resolution, and paragraph/block separators. Require each category to have a fast-IR, release, and strict oracle assertion before changing production behavior.
 
-- [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's ten working labels or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
+- [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's nineteen working Setext labels or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
 
 - [ ] **Step 3: Run the Syntax four-gate checkpoint.** Run:
 
@@ -230,7 +230,7 @@
 
 ## Plan self-review
 
-Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendment A5's derived fourteen-scene Act-II Setext pool plus four spares; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
+Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendment A7's derived nineteen-scene Act-II Setext pool plus four spares; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
 
 ## Amendment A1 (2026-07-18): Tidyness raw-oracle evidence reconciliation
 
@@ -338,3 +338,36 @@ No token, selector, participant pair, Act-III/IV role, compiler behavior,
 fixture branch, raw-HTML scope, or header behavior is authorized. The exact
 SPL-facing compliance command in Global Constraints remains mandatory before
 the fixture can be enabled.
+
+## Amendment A7 (2026-07-18): primed-glyph capture and proved close
+
+Design Amendment A7 supersedes the fourteen-label A5 ledger for Task 3 Step
+3.  It closes the planner-only Setext return blocker without implementing the
+path: the Setext entry receives the first non-special glyph already held by
+Hecate, so `PASS_SETEXT_CANDIDATE` must seed Lady Macbeth's candidate floor
+and retain that primed glyph before the scan scene calls `_read()`.  The old
+seed-only wording would lose the first `M` in `Markdown: Basics`. Candidate
+EOF uses the expressly reserved Hecate/Horatio mode setter, rather than an
+illegal third participant in the candidate scan.
+
+The amendment also derives legal raw and proved closes.  Once its underline
+floor has been discarded, Horatio carries private mode `0`, `1`, or `2` until
+the existing replay pair reads it before Horatio is staged again.  It chooses
+the corresponding Puck replay floor; the bridge observes that floor only
+after title transfer. Raw text enters the existing `PASS_SETEXT_CLOSE`; the
+two proved routes enter `PASS_SETEXT_EQUALS_CLOSE` or
+`PASS_SETEXT_DASH_CLOSE`, push `HEADER(1)` or `HEADER(2)` below restored title
+glyphs, and then make the explicitly authorized `goto("PASS_HEADER_CLOSE")`.
+The existing header close appends `TEXT_END` and takes its existing countdown
+branch to dispatch. Its Lady-Macbeth/Hecate stage pair is validator-compatible
+with each proved close's Lady-Macbeth/Horatio pair because Lady Macbeth is
+shared, and it does not consume Hecate.
+
+Task 3 Step 3 must install design A7's ready-to-paste level-specific replay,
+close, EOF-mode, and replacement-spare TOML entries with its nineteen
+working/four-spare block.  This adds only one local close-mode register, three
+private Puck floor values, and the five named working scenes; it does not
+authorize a token, selector, other participant pair, compiler/validator
+change, fixture branch, raw-HTML change, or Act-III/IV behavior.  The exact
+Global Constraints SPL-facing gate and A7's focused Setext gate are mandatory
+before the Basics four-gate checkpoint.
