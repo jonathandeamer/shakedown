@@ -265,7 +265,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 **Interfaces:** All three fixture names are enabled in `_IMPLEMENTED_FIXTURES`; roadmap row 7 becomes shipped only after every command below passes.
 
-- [ ] **Step 1: Replace capability xfails with green scope assertions.** Assert that exactly `Inline HTML (Advanced)`, `Nested blockquotes`, and `Ordered and unordered lists` are Slice-4 enabled and their fast-IR contracts match their fixture expected output. Remove no regression test and do not modify production code.
+- [x] **Step 1: Replace capability xfails with green scope assertions.** Assert that exactly `Inline HTML (Advanced)`, `Nested blockquotes`, and `Ordered and unordered lists` are Slice-4 enabled and their fast-IR contracts match their fixture expected output. Remove no regression test and do not modify production code.
 
   Run: `uv run pytest tests/test_slice4_high_risk.py tests/test_mdtest.py -q`
 

@@ -7,7 +7,9 @@ that fixture into `_IMPLEMENTED_FIXTURES`. Task 3 adds the same binary contract
 for nested blockquotes; that fixture stays out of `_IMPLEMENTED_FIXTURES` until
 its own green checkpoint. Task 4 adds the same binary contract for the full
 list fixture; it, too, stays out of `_IMPLEMENTED_FIXTURES` until its own
-green checkpoint.
+green checkpoint. Task 5 Step 1 replaces the earlier still-pending assertion
+with a green scope assertion: all three Slice-4 fixtures are enabled and their
+fast-IR contracts match their fixture expected output.
 """
 
 from __future__ import annotations
@@ -27,6 +29,8 @@ from tests.test_mdtest import (
     _IMPLEMENTED_FIXTURES,
     _SLICE4_FIXTURES,
     BINARY,
+    _normalize_fixture_output,
+    _run_acts,
 )
 
 _PENDING_FIXTURES = sorted(set(_FIXTURES_BY_NAME) - _IMPLEMENTED_FIXTURES)
@@ -41,8 +45,26 @@ def test_slice4_fixtures_are_named_fixtures() -> None:
     assert _SLICE4_FIXTURES <= set(_FIXTURES_BY_NAME)
 
 
-def test_unshipped_slice4_fixtures_are_still_pending() -> None:
-    assert _SLICE4_FIXTURES - _IMPLEMENTED_FIXTURES <= set(_PENDING_FIXTURES)
+def test_slice4_fixtures_are_exactly_the_three_high_risk_fixtures() -> None:
+    assert _SLICE4_FIXTURES == {
+        "Inline HTML (Advanced)",
+        "Nested blockquotes",
+        "Ordered and unordered lists",
+    }
+
+
+def test_slice4_fixtures_are_enabled() -> None:
+    assert _SLICE4_FIXTURES <= _IMPLEMENTED_FIXTURES
+
+
+@pytest.mark.parametrize("fixture_name", sorted(_SLICE4_FIXTURES))
+def test_slice4_fixture_fast_ir_matches_expected(fixture_name: str) -> None:
+    input_path, expected_path = _FIXTURES_BY_NAME[fixture_name]
+    actual = _run_acts(input_path.read_text(), through_act=4)
+    assert isinstance(actual, str)
+    assert _normalize_fixture_output(fixture_name, actual) == _normalize_fixture_output(
+        fixture_name, expected_path.read_text()
+    )
 
 
 def _release_binary_fixture_contract(name: str) -> None:
