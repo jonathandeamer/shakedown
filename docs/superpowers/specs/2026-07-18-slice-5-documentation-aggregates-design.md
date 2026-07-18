@@ -386,6 +386,72 @@ uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.
 uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or Basics' -q
 ```
 
+## Amendment A8 (2026-07-18): validator-safe underline read/capture split
+
+Amendment A7's `PASS_SETEXT_UNDERLINE_SCAN` combined two operations which the
+splc validator deliberately keeps incompatible.  `_read()` targets Hecate and
+Lady Macbeth: it pops the next source glyph into Hecate and decrements Lady
+Macbeth's countdown.  Retaining that glyph on Horatio in the same scene would
+therefore target Hecate, Lady Macbeth, and Horatio, exceeding the exact
+anchor-plus-one-companion footprint required by `scripts/splc/validate.py`.
+The minimal reproducible witness is the first `=` in:
+
+```text
+Markdown: Basics
+================
+```
+
+This amendment replaces the single underline loop with two one-glyph scenes:
+`PASS_SETEXT_UNDERLINE_SCAN` is the Lady-Macbeth/Hecate read half, and the new
+`PASS_SETEXT_UNDERLINE_CAPTURE` is the Hecate/Horatio retention and
+classification half.  Their shared Hecate participant makes each cross-pair
+`goto` legal.  The pair repeats only as
+`...UNDERLINE_SCAN -> ...UNDERLINE_CAPTURE -> ...UNDERLINE_SCAN`; no scene
+self-loops and no scene names three characters.  The capture half pushes the
+already-read Hecate glyph above Horatio's existing underline floor, then
+updates the existing private underline-class state and branches on that glyph.
+It sends a valid newline to `PASS_SETEXT_EQUALS` or `PASS_SETEXT_DASH`, and a
+non-qualifying glyph or boundary to `PASS_SETEXT_REQUEUE`.  The read half is
+the only `_read()` owner; it checks the existing countdown immediately after
+the read and sends EOF to the raw/requeue route without entering capture.
+
+Add the following controlled surface before its identically named Act-II IR
+scene.  The pool is now **20 working labels and 4 unused spares**;
+`4 = ceil(20 * 20%)`, so the mandatory reserve is retained and no spare is
+drawn.
+
+```toml
+[scenes.PASS_SETEXT_UNDERLINE_CAPTURE]
+title = "Horatio receives each measured underline mark."
+pattern = "cross_character"
+```
+
+The A7 row for `PASS_SETEXT_UNDERLINE / PASS_SETEXT_UNDERLINE_SCAN` is
+replaced by these rows; every other A7 row remains binding.
+
+| Label | Stage pair / anchor | Stack action and exit |
+|---|---|---|
+| `PASS_SETEXT_UNDERLINE` | Hecate + Horatio / Hecate | Seed Horatio's underline floor once, initialize the private underline-class state, then enter `PASS_SETEXT_UNDERLINE_SCAN`. |
+| `PASS_SETEXT_UNDERLINE_SCAN` | Lady Macbeth + Hecate / Lady Macbeth | Call `_read()` exactly once and touch no Horatio state or stack. On source exhaustion enter the existing raw/requeue route; otherwise immediately `goto("PASS_SETEXT_UNDERLINE_CAPTURE")`. |
+| `PASS_SETEXT_UNDERLINE_CAPTURE` | Hecate + Horatio / Hecate | Push the current Hecate glyph above Horatio's underline floor, classify it with Horatio's private state, then go to the matching proof/requeue route or back to `PASS_SETEXT_UNDERLINE_SCAN` for the next glyph. It never calls `_read()`. |
+
+The implementation must first add a focused fast-IR validator contract which
+constructs the read and capture pair and asserts `validate()` accepts it, while
+the existing three-character rejection test remains green.  It must then add
+the minimal Setext witness proving the current one-scene shape red, implement
+only this split, regenerate, and run the exact Global Constraints SPL-facing
+gate plus:
+
+```bash
+uv run pytest tests/test_splc_validate.py tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or underline or validator or Basics' -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+No token, selector, other participant pair, compiler/validator behavior,
+fixture branch, raw-HTML scope, or Act-III/IV behavior is authorized.  A need
+for another label or any behavior outside this table remains `- BLOCK[plan]:`
+with its minimal witness.
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,
