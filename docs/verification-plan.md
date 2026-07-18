@@ -358,6 +358,45 @@ Each replay was run once as part of the docs restructure. Results below capture 
   finding changes any production `shakedown.spl` behavior — both are
   regression-tooling decisions only.
 
+### B22 — Slice 4 final evidence performance gate (Task 5 Step 3, row 7)
+
+- **Commands (2026-07-18, commit `92ea546`, tree otherwise clean except
+  untracked `scripts/release_entry.py`):**
+  ```
+  for i in 1 2 3 4 5; do /usr/bin/time -p ./shakedown < ~/mdtest/Markdown.mdtest/"Code Spans.text" > /dev/null; done
+  for i in 1 2 3 4 5; do /usr/bin/time -p ./shakedown < ~/mdtest/Markdown.mdtest/"Ordered and unordered lists.text" > /dev/null; done
+  env UV_CACHE_DIR=/tmp/uv-cache uv run pytest -q
+  ```
+- **Purpose:** close Step 3 of
+  `docs/superpowers/plans/2026-07-17-slice-4-high-risk-fixtures.md` by
+  recording representative release-entry timings for shipped fixtures and
+  comparing them against `docs/performance/budget.md` before row 7 is marked
+  shipped.
+- **Observed (2026-07-18):**
+
+  ```
+  Code Spans, 5 runs:
+    first: 0.08s
+    median: 0.08s
+    all: ['0.08', '0.07', '0.08', '0.07', '0.08']
+
+  Ordered and unordered lists, 5 runs:
+    first: 0.11s
+    median: 0.11s
+    all: ['0.11', '0.11', '0.11', '0.11', '0.11']
+
+  Full pytest suite:
+    916 passed, 10 skipped, 2 deselected in 228.75s (0:03:48)
+  ```
+
+- **Disposition:** **Green.** Both representative shipped fixtures are far
+  below the single-small-fixture green threshold (`<= 10s`). The full
+  project suite runtime (3:48) is below the budget's green band for a full
+  contract (`<= 5m`) and far below the architecture §8.2 red threshold
+  (`> 15m`). Slice 5's aggregate fixtures remain pending scope, so
+  `Markdown Documentation - Syntax` is not yet a release-performance target
+  for row 7.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.

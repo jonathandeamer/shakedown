@@ -291,7 +291,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: all commands pass; the immutable `nested_one_level` baseline passes in both interpreter paths, strict parity reports `summary: 3/3 byte-identical`, and no generated or literary contract drifts. Commit the repair files as `fix: restore nested list stream`; push.
 
-- [ ] **Step 3: Execute final evidence and performance gates.**
+- [x] **Step 3: Execute final evidence and performance gates.**
 
   ```bash
   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -q

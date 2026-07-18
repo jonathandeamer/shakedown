@@ -115,6 +115,11 @@ whether the cost is debuggable in the run-loop.
   that suite only. An in-process parsed-play runner prototype was proven
   state-isolated but not adopted — its per-call construction cost (~11s-13s)
   matches a fresh `./shakedown` subprocess, so it buys no wall-time win (B21).
+- **Slice 4 release-entry gate (2026-07-18):** `./shakedown` on shipped
+  representative fixtures measured first/median 0.08s for `Code Spans` and
+  0.11s for `Ordered and unordered lists`; the full `uv run pytest -q` suite
+  completed in 228.75s (3:48), all green against the planning thresholds
+  (B22).
 
 ### Historical / retrospective context
 
