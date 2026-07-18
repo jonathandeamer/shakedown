@@ -15,7 +15,7 @@
 - Edit generated acts only via `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`. Never hand-edit generated `src/*.spl` or `shakedown.spl`.
 - Do not change expected mdtest files, add aggregate-specific normalizers, invoke Markdown.pl at runtime, or add a wrapper-side Markdown branch. `Auto links` is the sole entity-normalized mdtest comparator; strict parity is always raw bytes.
 - Per the accepted design's Amendment A1, the unchanged 133-byte `Tidyness.xhtml` is a legacy corpus artifact, not the expected output for deterministic parity.  Tidyness test evidence obtains its expected bytes from the installed local Markdown.pl only; this is test-time evidence, never production runtime behavior, and adds no normalizer.
-- New Act-II labels are limited to design Amendment A8's twenty working Setext labels, including its validator-safe underline read/capture pair, four one-time-seed/loop pairs, EOF close-mode setter, two level-specific replay seeds, and two level-specific proved closes. Its four named spares may be used only by a design amendment; another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
+- New Act-II labels are limited to design Amendment A9's 25 working Setext labels and its five unused spares.  The A9 state rail owns mutable underline classification on Macbeth; Horatio is only the replay buffer, and Puck remains untouched.  The five guard titles are spares, never scenes.  Another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
 - Every SPL change runs: `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
 - Every SPL change also preserves the release baseline with `uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`.
 
@@ -156,7 +156,7 @@
   aggregate remains raw-byte mismatched to the oracle. No production or
   generated SPL changed.
 
-- [ ] **Step 3: Implement the general block paths.** Replace the prior Setext reservation with design Amendment A8's complete twenty-working/four-spare ready-to-paste TOML block before matching Act-II labels. The Setext entry receives the non-newline glyph already primed by `PASS_LISTS_BLOCK_START`: `PASS_SETEXT_CANDIDATE` seeds Lady Macbeth's private floor and captures that glyph exactly once without `_read()`, while `PASS_SETEXT_CANDIDATE_SCAN` alone reads subsequent candidate glyphs. On candidate EOF it enters A7's Hecate/Horatio `PASS_SETEXT_EOF_MODE` before finalization; this is the only legal site to set raw close mode without adding a third participant to the scan scene. A scene that otherwise seeds a private floor immediately enters its separately named scan/transfer scene: `PASS_SETEXT_UNDERLINE -> PASS_SETEXT_UNDERLINE_SCAN -> PASS_SETEXT_UNDERLINE_CAPTURE`, `PASS_SETEXT_FINALIZE -> PASS_SETEXT_FINALIZE_TRANSFER`, and `PASS_SETEXT_BRIDGE -> PASS_SETEXT_BRIDGE_TRANSFER`. `PASS_SETEXT_UNDERLINE_SCAN` alone calls `_read()` with Lady Macbeth/Hecate; `PASS_SETEXT_UNDERLINE_CAPTURE` alone retains and classifies that already-read glyph with Hecate/Horatio. The two scenes ping-pong for each underline glyph and never self-loop, so neither scene has a three-character footprint. Only the latter transfer scene in each other pair self-loops for an arbitrary glyph run. After an underline floor is discarded, use only A7's local Horatio close mode (`0` raw, `1` equals, `2` dash). `PASS_SETEXT_REPLAY` reads that off-stage mode before Horatio is staged again and selects the existing raw or one of the two A7 Puck replay floors; `PASS_SETEXT_BRIDGE_TRANSFER` observes that floor only after the title reaches Horatio. The raw route alone uses `PASS_SETEXT_CLOSE`; the equals/dash routes enter `PASS_SETEXT_EQUALS_CLOSE`/`PASS_SETEXT_DASH_CLOSE`, emit existing `HEADER(1)`/`HEADER(2)` below restored title glyphs, reset Horatio to its existing neutral block state after their restore floors are discarded, and then make A7's authorized `goto("PASS_HEADER_CLOSE")` so the existing scene appends `TEXT_END` and takes its existing dispatcher branch without reading or overwriting Hecate. `PASS_SETEXT_REQUEUE` and `PASS_SETEXT_CLOSE` may self-loop only because each consumes a floor seeded by an earlier scene. No retained candidate glyph may be pushed to Hecate before `PASS_SETEXT_FINALIZE`; the finalization floor is above unread Hecate source, and all floors and mode values are pushed, observed, cleared, and discarded within this ledger without entering Act III. No scene may touch Hecate, Puck, and Horatio together. Add the focused validator-acceptance contract for this exact pair while preserving the existing three-character rejection test, then prove the minimal Setext witness red before implementation. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
+- [ ] **Step 3: Implement the general block paths.** Amendment A9 is the sole binding Setext authorization; do not implement, preserve, or extend the A8-shaped underline family. Before editing `src_ir/act2.py`, install A9's five ready-to-paste working TOML entries and its complete five-title spare block, yielding 25 working labels and five unused spares. The existing candidate/finalization/replay/bridge/close choreography remains A7's seed-before-transfer design. For underline handling, enter `PASS_SETEXT_UNDERLINE_STATE_OPEN`, keep Macbeth's private state rail above unchanged list depth, and use the exact A9 chain `PASS_SETEXT_UNDERLINE -> PASS_SETEXT_UNDERLINE_SCAN -> PASS_SETEXT_UNDERLINE_CAPTURE -> PASS_SETEXT_UNDERLINE_CLASSIFY`. The scan alone calls `_read()` with Lady Macbeth/Hecate; capture copies only that glyph to Horatio's replay buffer; classify mutates only Macbeth's five-state rail. Valid terminal lines route through `PASS_SETEXT_UNDERLINE_PROOF_STAGE`; invalid lines through `PASS_SETEXT_UNDERLINE_REQUEUE_STAGE`; EOF through `PASS_SETEXT_UNDERLINE_EOF_STATE`. Every exit pops the state rail before existing proof/requeue behavior, every goto shares a participant, and no scene names more than two characters. No path may enter `PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY_TRANSFER`, or `PASS_SETEXT_BRIDGE_TRANSFER` except from its named seed scene. Delete A8-shaped WIP scenes that use a guard/spare label; none of `PASS_SETEXT_RETURN_GUARD`, `PASS_SETEXT_LEVEL_GUARD`, `PASS_SETEXT_REPLAY_GUARD`, `PASS_SETEXT_DISPATCH_GUARD`, or `PASS_SETEXT_ATX_GUARD` may have a Scene. Add A9 pair-chain, spare-label-absence, and minimal-witness no-underflow fast-IR contracts while retaining the three-character rejection test, then prove the minimal Setext witness red before implementation. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
 
 - [ ] **Step 4: Run the Basics four-gate checkpoint.** Run:
 
@@ -180,7 +180,7 @@
 
 - [ ] **Step 1: Turn the Syntax diff into a finite category inventory.** Add a helper test that compares real release bytes with the local oracle and records the first difference plus the minimal contiguous source witness. Seed it with the observed categories: raw top-level HTML (`h2`/`h3` with attributes), nested list close ordering, multi-definition reference resolution, and paragraph/block separators. Require each category to have a fast-IR, release, and strict oracle assertion before changing production behavior.
 
-- [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's nineteen working Setext labels or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
+- [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's 25 working Setext labels or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
 
 - [ ] **Step 3: Run the Syntax four-gate checkpoint.** Run:
 
@@ -230,7 +230,7 @@
 
 ## Plan self-review
 
-Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendment A7's derived nineteen-scene Act-II Setext pool plus four spares; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
+Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendment A9's 25-working/five-spare Act-II Setext pool; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
 
 ## Amendment A1 (2026-07-18): Tidyness raw-oracle evidence reconciliation
 
@@ -415,3 +415,26 @@ and minimal-witness no-underflow fast-IR contracts. Then run its exact focused
 command, regeneration/assembly, and the Global Constraints SPL-facing gate
 before the existing Basics four-gate checkpoint. No behavior outside A9's
 state table is authorized.
+
+## Amendment A10 (2026-07-18): binding Setext ledger selection
+
+This amendment clears the Task-3-Step-3 planner-only handoff contradiction.
+Design Amendment A9, not Amendment A8, is the sole binding Setext ledger for
+all remaining Task 3 work.  A8 is retained only as historical rationale for
+the legal read/capture split; its twenty-working/four-spare pool, Horatio
+state mutation, guard-label control flow, and any transfer-loop entry before
+its named seed are expressly unauthorized.
+
+The implementation must replace the current A8-shaped WIP with A9's
+25-working/five-unused-spare ledger, reserve its ready-to-paste controlled
+surfaces before IR edits, and satisfy A9's pair-chain, spare-absence, and
+minimal-witness no-underflow contracts.  The exact pre-checkpoint command is:
+
+```bash
+uv run pytest tests/test_splc_validate.py tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or underline or validator or Basics' -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+No production behavior is changed by this planning amendment.  Any need to
+depart from A9's state table or its reserved pool remains `- BLOCK[plan]:`
+with the smallest witness.

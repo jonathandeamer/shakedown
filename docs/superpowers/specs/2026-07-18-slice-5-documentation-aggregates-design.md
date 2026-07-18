@@ -544,6 +544,27 @@ No token, selector, compiler/validator behavior, fixture-specific branch,
 raw-HTML behavior, Act-III/IV surface, or change to existing ATX behavior is
 authorized.
 
+## Amendment A10 (2026-07-18): binding ledger clarification
+
+Amendment A9 is the accepted and sole binding Setext design for Slice-5 Task
+3 Step 3.  Amendment A8 remains historical evidence for why `_read()` and
+byte capture must be separate two-participant scenes, but its 20-working/
+four-spare ledger is not an implementation option.  In particular, no
+implementation may use Horatio's replay buffer as mutable state, generate a
+guard-title scene, or enter a transfer loop before its named seed.
+
+The approved implementation target is A9's 25 working labels, five unused
+spares, Macbeth state rail, and exact state table above.  The pre-checkpoint
+evidence is A9's pair-chain validation, all-five-spares absence assertion,
+and a no-`StackUnderflow` minimal Setext witness, followed by:
+
+```bash
+uv run pytest tests/test_splc_validate.py tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or underline or validator or Basics' -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+This clarification authorizes no further behavior or literary surface.
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,
