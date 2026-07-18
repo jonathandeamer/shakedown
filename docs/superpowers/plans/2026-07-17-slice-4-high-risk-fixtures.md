@@ -32,6 +32,7 @@
 - Amendment A8 authorizes exactly one existing-scene handoff for blank-line indentation after Act I detabs a source tab to four spaces: `PASS_LISTS_BLANK_INDENT_4`, after its existing `_read()`, enters the existing `PASS_LISTS_INDENT_DEPTH_GUARD` rather than directly entering `PASS_LISTS_INDENT_CLASSIFY_FOUR`. The guard increments `PUCK` once per completed four-space group while preserving Hecate's glyph and routes to the unchanged classifier, so A6's `PUCK < MACBETH` test distinguishes same-depth continuation from true outdent. Literal-tab counting, current marker depth routing, the 22-working/5-spare ledger, tokens, participants, grammar, Acts III/IV, compiler/validator behavior, and controlled prose remain frozen. Any need beyond this handoff is `- BLOCK[plan]: ...` followed by a clean stop.
 - Amendment A9 authorizes one Act-II-only Hecate-stage adapter, `PASS_LISTS_LOOSE_COMMIT_HECATE`, for a blank-separated outer sibling after a nested list.  It first closes only the completed nested tail (`TEXT_END`, `ITEM_CLOSE`, `LIST_CLOSE`) and decrements the nested frame depth; it then transfers `_LOOSE_COMMIT_SIB` through the existing `PASS_CONTAINERS_OPEN` transaction so that transaction rewrites the exposed outer item, never the nested tail.  The existing Horatio-stage `PASS_LISTS_LOOSE_JOIN` / `PASS_LISTS_LOOSE_COMMIT` route remains the sole route for a blank-then-indented continuation.  A9 adds its ready-to-paste working title while retaining A5's five unused `PASS_LISTS_INDENT_*_GUARD` spares, preserving the 23-working/5-spare ledger.  It changes no token, participant, structural role, grammar, Act-III/IV surface, validator, or existing close order.  Any need to rewrite more than the exposed outer item, close more than one nested frame, add another scene, consume a spare, or change Acts III/IV is `- BLOCK[plan]: ...` followed by a clean stop.
 - Amendment A11 supersedes A10's false one-sentinel premise with a structural immediate-nested-list segment scan. A10's `PASS_CONTAINERS_DEPTH_SKIP_TAIL` preserves the first direct nested `ITEM_START`; the A11-only `_LOOSE_COMMIT_SIB_HECATE_TAIL` selector then directs `PASS_CONTAINERS_DEPTH_SKIP_SUBTREE` to preserve every remaining direct nested item sentinel and payload until its immediate `LIST_OPEN` boundary, where `PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE` alone restores existing `_LOOSE_COMMIT_SIB`. The unchanged transaction then rewrites only the outer item. A11 reserves both new working titles and `PASS_LISTS_INDENT_TAIL_GUARD` as a sixth unused spare: the derived ledger is 26 working labels and six unused spares. It authorizes no recursive boundary walk, token/grammar/participant/Act-III/IV/compiler/validator change, or spare use; any such need is `- BLOCK[plan]: ...` followed by a clean stop.
+- Amendment A14 authorizes only the full-suite regression repair in the accepted design: restore `ITEM_CLOSE` before the ordinary nested-list `LIST_OPEN`, and split the existing A10 tail-selector helper into the Lady-Macbeth/Horatio selector half plus one reserved Lady-Macbeth/Macbeth save half. The repaired `nested_one_level` dump remains the existing P2 blessed baseline; all tokens, Acts III/IV, fixture corpus files, and six current spares remain frozen. Add the A14 TOML surface before its one new IR scene, run the exact generated/literary gate below, and stop with `- BLOCK[plan]:` on any need beyond that bounded repair.
 - Every SPL/TOML checkpoint runs the exact generated/literary gate and the Amps proof named in the design.  Every checkpoint commit contains the configured provenance trailers and is pushed; a failed push records one blocker and stops.
 
 ```bash
@@ -261,7 +262,7 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
 ### Task 5: Run the Slice-4 completion gate and register shipment
 
-**Files:** Modify `docs/superpowers/plans/plan-roadmap.md`, `tests/test_slice4_high_risk.py`, and only evidence/measurement files required by the established performance procedure.
+**Files:** Modify `src_ir/act2.py`, `src/20-act2-literary.toml`, `tests/test_act2_slice2.py`, `tests/test_act2_slice4.py`, `tests/test_splc_interpret_parity.py`, `tests/test_token_dump.py`, `docs/superpowers/plans/plan-roadmap.md`, `tests/test_slice4_high_risk.py`, and only evidence/measurement files required by the established performance procedure; regenerate `src/20-act2-block.spl` and reassemble `shakedown.spl`.
 
 **Interfaces:** All three fixture names are enabled in `_IMPLEMENTED_FIXTURES`; roadmap row 7 becomes shipped only after every command below passes.
 
@@ -271,7 +272,25 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: PASS, no XFAIL/XPASS.
 
-- [ ] **Step 2: Execute final evidence and performance gates.**
+- [ ] **Step 2: Repair the pre-existing full-suite regressions under Amendment A14.** First add focused red contracts: assert every `ACT2` scene has Lady Macbeth as anchor and exactly one companion; assert both ordinary nested-open scenes emit `TEXT_END`, `ITEM_CLOSE`, then their existing `PASS_LISTS_NEST_OPEN_*` target; and assert the fast and release debug streams for `nested_one_level` equal the committed P2 baseline, including the parent `ITEM_CLOSE` immediately before the child ordered `LIST_OPEN`. Confirm those contracts fail against the current tree.
+
+  Add the A14 `PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE` TOML entry before its IR label. Change only `src_ir/act2.py`: restore `push(LADY_MACBETH, const(tokens.ITEM_CLOSE))` in each `PASS_LISTS_NEST_EMIT_*_OPEN`; make `PASS_CONTAINERS_DEPTH_SKIP_TAIL` set `_LOOSE_COMMIT_SIB_HECATE_TAIL` and jump to the new save scene; and make that scene push the current Lady-Macbeth glyph to Macbeth before re-entering `PASS_CONTAINERS_DEPTH`. Do not alter a baseline file, selector value, or any other route.
+
+  Run:
+
+  ```bash
+  uv run python -m scripts.splc && uv run python scripts/assemble.py
+  uv run pytest tests/test_act2_slice2.py::test_act2_scenes_have_exactly_one_companion tests/test_act2_slice4.py -q
+  uv run pytest tests/test_splc_interpret_parity.py tests/test_token_dump.py -q
+  uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -q
+  uv run python scripts/strict_parity_harness.py 'Ordered and unordered lists' 'Nested blockquotes' 'Inline HTML (Advanced)'
+  uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+  uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
+  ```
+
+  Expected: all commands pass; the immutable `nested_one_level` baseline passes in both interpreter paths, strict parity reports `summary: 3/3 byte-identical`, and no generated or literary contract drifts. Commit the repair files as `fix: restore nested list stream`; push.
+
+- [ ] **Step 3: Execute final evidence and performance gates.**
 
   ```bash
   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -q
@@ -287,8 +306,8 @@ uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q
 
   Expected: all commands pass, strict harness reports `summary: 7/7 byte-identical`, smoke reports all three required cases byte-identical, and no performance halt trigger is met.
 
-- [ ] **Step 3: Mark shipped and checkpoint.** Update roadmap row 7 to `shipped: 2026-07-17 at commit <final-sha>` only after Step 2 is green. Commit the Task-5 files as `feat: complete slice four fixtures`; push. Do not begin Slice 5 in this plan.
+- [ ] **Step 4: Mark shipped and checkpoint.** Update roadmap row 7 to `shipped: 2026-07-17 at commit <final-sha>` only after Step 3 is green. Commit the Task-5 files as `feat: complete slice four fixtures`; push. Do not begin Slice 5 in this plan.
 
 ## Plan self-review
 
-The three §7.7 fixtures map one-to-one to Tasks 2–4; Task 1 proves the shipped floor and Task 5 supplies the full four-gate close. The accepted design supplies the bounded HTML surface, balanced quote/list grammar, A2 header prerequisite, A4's final-blank transaction and nested-after-blank selector, A5/A8's shared detabbed-depth accounting, and A9–A12's stage-pair-safe nested-to-outer sibling adapter with structural scan and replay of its immediate segment, with explicit no-new-token authority and a ready-to-paste literary pool whose 28-working/6-spare ledger is derived. A13 makes the installed oracle authoritative over only the static list corpus's nested-tight layout drift, while retaining raw strict parity. Every SPL-facing task names generated-fragment, parse, validation, literary, Amps, fixture, strict-oracle, and spike gates; all fixture claims remain strict-byte claims.
+The three §7.7 fixtures map one-to-one to Tasks 2–4; Task 1 proves the shipped floor and Task 5 supplies the full four-gate close. The accepted design supplies the bounded HTML surface, balanced quote/list grammar, A2 header prerequisite, A4's final-blank transaction and nested-after-blank selector, A5/A8's shared detabbed-depth accounting, and A9–A14's stage-pair-safe nested-to-outer sibling adapter plus the A14 restoration of the immutable P2 nested-list stream, with explicit no-new-token authority and a ready-to-paste literary pool whose 29-working/6-spare ledger is derived. A13 makes the installed oracle authoritative over only the static list corpus's nested-tight layout drift, while retaining raw strict parity. Every SPL-facing task names generated-fragment, parse, validation, literary, Amps, fixture, strict-oracle, and spike gates; all fixture claims remain strict-byte claims.

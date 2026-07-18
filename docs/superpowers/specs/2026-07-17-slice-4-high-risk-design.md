@@ -1152,3 +1152,22 @@ raw-byte acceptance gate and must report `summary: 1/1 byte-identical` before
 and after enablement.  Auto links remains the sole entity-normalized
 equivalence exception; this amendment is a static-corpus comparator adapter,
 not a parity exception.
+
+## Amendment A14 — restore the immutable nested-list stream and Act-II stage pair (2026-07-18)
+
+The Task-5 full-suite gate exposed two regressions introduced by the Task-4-Step-2 list/header checkpoint, `fa286459`:
+
+1. The ordinary top-level nested-list branches `PASS_LISTS_NEST_EMIT_UL_OPEN` and `PASS_LISTS_NEST_EMIT_OL_OPEN` emit `TEXT_END` before opening the child list but omit the parent `ITEM_CLOSE`. Consequently the reviewed `nested_one_level` stream moves the parent's close from immediately before the child `LIST_OPEN` to after the child `LIST_CLOSE`. This is a grammar regression, not an authorized re-blessing: the P2 blessed list dump remains immutable.
+2. `PASS_CONTAINERS_DEPTH_SKIP_TAIL` writes both Macbeth and Horatio and declares `anchor=MACBETH`, breaking Act II's fixed Lady-Macbeth anchor invariant. Its A10/A11/A12 behavior is otherwise required for the blank-separated nested-to-outer sibling path.
+
+Task 5 may make exactly this Act-II-only repair. The two ordinary `*_OPEN` scenes must each emit `TEXT_END`, then `ITEM_CLOSE`, then enter their existing `PASS_LISTS_NEST_OPEN_*` destination; they must preserve their current Lady-Macbeth/Hecate stage pair and change no loose, deep, quote, or header route. `PASS_CONTAINERS_DEPTH_SKIP_TAIL` must become the Horatio-only half of the A10 selector handoff and enter exactly one new Macbeth-only scene, `PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE`; that scene copies the popped `LADY_MACBETH` value to Macbeth and returns to the existing `PASS_CONTAINERS_DEPTH` scan. This preserves the existing source order and private selector while making every Act-II scene use Lady Macbeth as anchor with exactly one companion.
+
+The existing 28-working/6-spare list ledger becomes 29 working/6 unused spares; six remains `ceil(29 * 20%)`. No existing spare is consumed. Add the following controlled surface before adding the IR scene:
+
+```toml
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_TAIL_SAVE]
+title = "Macbeth bears the inner seal beyond its elder rank."
+pattern = "scene_of_character"
+```
+
+No token code, token arity, structural role, participant set, Act III/IV logic, compiler/validator behavior, fixture expected file, or token baseline is authorized to change. The accepted output is the existing `tests/fixtures/token_stream/lists/nested_one_level.dump`: the outer alpha item closes before the nested ordered `LIST_OPEN`, while the child list still closes before outer delta begins. The full-list strict oracle, all six list spikes, all four nested-block spikes, and all A4–A13 witnesses remain unchanged. Any need for another scene, a spare draw, a changed baseline, or a broader route is `BLOCK[plan]` followed by a clean stop.
