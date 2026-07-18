@@ -517,6 +517,76 @@ scene, consume another spare, alter Acts III/IV, or change a token/grammar is
 `BLOCK[plan]` with the exact need recorded; stop rather than locally widening
 this adapter.
 
+## Amendment A10 — skip the nested tail sentinel before rewriting its outer item (2026-07-18)
+
+Implementation of A9 established that its close sequence does not remove the
+completed nested tail's `ITEM_START` from the mixed Act-II carrier.  The
+generic `PASS_CONTAINERS_DEPTH` rewrite scan consequently stops at that inner
+sentinel and rewrites `Foe` instead of the now-exposed outer `Second:` item.
+Closing another frame or routing through the ordinary outdent path is not a
+repair: the former changes the explicit close ownership and the latter either
+rewrites the nested tail or violates the stage-pair contract.
+
+This amendment authorizes one additional Act-II working scene,
+`PASS_CONTAINERS_DEPTH_SKIP_TAIL`, and one private selector value,
+`_LOOSE_COMMIT_SIB_HECATE`.  They are a bounded extension of A9's adapter,
+not a grammar change:
+
+1. `PASS_LISTS_LOOSE_COMMIT_HECATE` retains A9's exact one-level nested-tail
+   close sequence and one depth decrement.  Instead of selecting
+   `_LOOSE_COMMIT_SIB` immediately, it selects `_LOOSE_COMMIT_SIB_HECATE` and
+   enters the existing `PASS_CONTAINERS_OPEN` transaction.
+2. `PASS_CONTAINERS_DEPTH` retains its ordinary `ITEM_START` termination for
+   every existing caller.  Only while the private Hecate selector is live,
+   its first encountered `ITEM_START` enters
+   `PASS_CONTAINERS_DEPTH_SKIP_TAIL`.  That scene copies precisely that
+   sentinel into the transaction's saved suffix, changes the selector to the
+   existing `_LOOSE_COMMIT_SIB`, and resumes `PASS_CONTAINERS_DEPTH`.
+3. The next `ITEM_START` is necessarily the outer item.  The unchanged
+   container transaction therefore rewrites only that item from tight to
+   loose; its existing close branch sees `_LOOSE_COMMIT_SIB` and reaches the
+   owned `PASS_LISTS_LOOSE_COMMIT` then `PASS_LISTS_BSIB_EMIT` path.  The
+   skipped nested sentinel and its `Fee`/`Fie`/`Foe` suffix return unchanged
+   in their original order.
+
+The private selector is not a token, participant, frame value visible to Acts
+III/IV, structural-role change, compiler/validator exception, or reusable
+generic container mode.  It is written only by the A9 Hecate adapter and
+cleared to the existing sibling selector only by the new skip-once scene.
+`PASS_CONTAINERS_DEPTH_SKIP_TAIL` must be unreachable from ordinary blank
+continuations, loose nested-marker commits, quote routes, and every non-A9
+container rewrite.  It may skip exactly one `ITEM_START`, may not emit a
+token or close a frame, and may not loop or recurse.
+
+The list ledger becomes 24 working labels and retains A5's five unused
+`PASS_LISTS_INDENT_*_GUARD` spares; `ceil(24 * 20%) = 5`, so the proportional
+and four-title spare rules remain satisfied.  Add the ready-to-paste entry to
+`src/20-act2-literary.toml` in the same checkpoint as the new IR scene:
+
+```toml
+# Amendment A10 nested-tail sentinel skip working scene
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_TAIL]
+title = "Macbeth bears the inner seal beyond its elder rank."
+pattern = "scene_of_character"
+```
+
+Task 4 Step 2 must retain A9's two disjoint contracts and add an exact
+decoded-stream assertion that the A9 witness contains the nested `LIST_ITEM`
+sequence for `Fee`, `Fie`, and `Foe` unchanged before the outer loose
+`Second:` item closes and the loose `Third` sibling opens.  The existing fast
+IR, release, and strict-local-oracle checks for that witness remain the
+acceptance evidence.  Add a focused negative route assertion (by scene-label
+or a narrow IR trace, consistent with the existing tests) that ordinary
+`1.\tItem 1\n\n\tItem 2\n` does not enter
+`PASS_CONTAINERS_DEPTH_SKIP_TAIL`.
+
+All A4–A9 witnesses, six Spike-A list fixtures, four Spike-B nested-block
+fixtures, list token-dump baselines, generated-fragment/parser/validator/
+literary gates, and the Amps proof remain required.  Any need for a second
+skip, another working scene, a spare-pool draw, a token/grammar change, or an
+Act-III/IV change is `BLOCK[plan]` with the exact need recorded; stop rather
+than widening this adapter again.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
@@ -696,6 +766,11 @@ title = "Lady Macbeth restores the rank's close order."
 pattern = "scene_of_character"
 [scenes.PASS_LISTS_LOOSE_REPLAY]
 title = "Macbeth returns the held border to the host."
+pattern = "scene_of_character"
+
+# Amendment A10 nested-tail sentinel skip working scene
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_TAIL]
+title = "Macbeth bears the inner seal beyond its elder rank."
 pattern = "scene_of_character"
 
 # Amendment A3 Act-II spare pool; do not use without a further plan amendment.
