@@ -86,6 +86,25 @@ def _act2_stream(input_text: str) -> list[int]:
     return stream
 
 
+def _act2_scene_trace(input_text: str) -> list[tuple[str, int]]:
+    state = InterpreterState(input_text=input_text)
+    state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
+    trace: list[tuple[str, int]] = []
+
+    class _Observer:
+        def on_scene(self, label: str, state: InterpreterState) -> None:
+            trace.append((label, state.values[Char.HORATIO]))
+
+        def on_push(self, char: Char, value: int, stack_after: list[int]) -> None:
+            return None
+
+        def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None:
+            return None
+
+    run_act(ACT2, state, step_limit=STEP_LIMIT, observer=_Observer())
+    return trace
+
+
 @pytest.mark.parametrize("case", sorted(_ADVANCED_CASES))
 def test_advanced_html_block_becomes_one_raw_html_leaf(case: str) -> None:
     source, expected_payload = _ADVANCED_CASES[case]
@@ -129,6 +148,13 @@ def test_advanced_html_fixture_blocks_all_become_raw_html_leaves() -> None:
 def _decoded_pairs(input_text: str) -> list[tuple[int, str | None]]:
     decoded = decode_stream(_act2_stream(input_text))
     return [(token.code, token.text) for token in decoded]
+
+
+def _decoded_triplets(
+    input_text: str,
+) -> list[tuple[int, tuple[int, ...], str | None]]:
+    decoded = decode_stream(_act2_stream(input_text))
+    return [(token.code, token.payloads, token.text) for token in decoded]
 
 
 def test_nested_quote_fixture_stream_is_balanced_open_to_close() -> None:
@@ -216,3 +242,246 @@ def test_full_list_fixture_stream_validates_and_closes_every_item() -> None:
 
     codes = [token.code for token in decoded]
     assert codes.count(tokens.LIST_ITEM) == codes.count(tokens.ITEM_CLOSE)
+
+
+def test_full_list_fixture_preserves_later_headers_and_hr() -> None:
+    decoded = decode_stream(_act2_stream(_FULL_LIST_FIXTURE.read_text()))
+
+    headerish = [
+        (token.code, token.payloads, token.text)
+        for token in decoded
+        if token.code == tokens.HEADER
+        or (token.code == tokens.PARA and token.text and token.text.startswith("##"))
+        or token.code == tokens.HR
+    ]
+    assert headerish == [
+        (tokens.HEADER, (2,), "Unordered"),
+        (tokens.HR, (), None),
+        (tokens.HR, (), None),
+        (tokens.HEADER, (2,), "Ordered"),
+        (tokens.HEADER, (2,), "Nested"),
+    ]
+
+
+def test_full_list_fixture_preserves_nested_list_structure() -> None:
+    decoded = decode_stream(_act2_stream(_FULL_LIST_FIXTURE.read_text()))
+
+    nested_header = next(
+        i
+        for i, token in enumerate(decoded)
+        if token.code == tokens.HEADER and token.text == "Nested"
+    )
+    assert decoded[nested_header + 1 : nested_header + 11] == [
+        decode_stream([tokens.LIST_OPEN, 1])[0],
+        decode_stream([tokens.LIST_ITEM, 1])[0],
+        decode_stream([tokens.PARA, ord("T"), ord("a"), ord("b"), tokens.TEXT_END])[0],
+        decode_stream([tokens.LIST_OPEN, 1])[0],
+        decode_stream([tokens.LIST_ITEM, 1])[0],
+        decode_stream([tokens.PARA, ord("T"), ord("a"), ord("b"), tokens.TEXT_END])[0],
+        decode_stream([tokens.LIST_OPEN, 1])[0],
+        decode_stream([tokens.LIST_ITEM, 1])[0],
+        decode_stream([tokens.PARA, ord("T"), ord("a"), ord("b"), tokens.TEXT_END])[0],
+        decode_stream([tokens.ITEM_CLOSE])[0],
+    ]
+
+
+def test_top_level_atx_header_becomes_a_header_leaf() -> None:
+    assert _decoded_pairs("## Unordered\n") == [
+        (tokens.HEADER, "Unordered"),
+    ]
+    decoded = decode_stream(_act2_stream("## Unordered\n"))
+    assert decoded[0].payloads == (2,)
+
+
+@pytest.mark.parametrize(
+    ("source", "expected_text"),
+    [(" ## Unordered\n", "## Unordered"), ("##Unordered\n", "##Unordered")],
+)
+def test_rejected_atx_header_candidates_remain_paragraphs(
+    source: str, expected_text: str
+) -> None:
+    assert _decoded_pairs(source) == [
+        (tokens.PARA, expected_text),
+    ]
+
+
+def test_full_list_blank_then_nested_marker_commits_loose_outer_and_tight_inner() -> (
+    None
+):
+    assert _decoded_triplets("* parent\n\n\t* sub\n") == [
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "parent"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "sub"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_blank_then_sibling_marker_commits_two_loose_items() -> None:
+    assert _decoded_triplets("* parent\n\n* sibling\n") == [
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "parent"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "sibling"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_blank_then_indented_second_paragraph_marks_item_loose() -> None:
+    assert _decoded_triplets("* alpha\n\n  second paragraph\n* beta\n") == [
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "alpha"),
+        (tokens.PARA, (), "second paragraph"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "beta"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_tab_indented_siblings_stay_in_one_nested_sublist() -> None:
+    assert _decoded_triplets("1. a\n\t* b\n\t* c\n") == [
+        (tokens.LIST_OPEN, (2,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "a"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "b"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "c"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_list_ending_blank_rolls_back_to_tight_item() -> None:
+    assert _decoded_triplets("* parent\n\n") == [
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "parent"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_blank_then_ancestor_indent_outdents_before_joining() -> None:
+    assert _decoded_triplets("*\tthis\n\n\t*\tsub\n\n\tthat\n") == [
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "this"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "sub"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.PARA, (), "that"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_top_level_loose_outdent_leaves_sentinel_for_next_list() -> None:
+    # A depth-1 list whose loose blank-then-indented continuation outdents
+    # past the list itself (not into a nested parent) must not consume the
+    # Act II top-level list-frame sentinel: a later, unrelated top-level
+    # list must still be able to close without underflowing Macbeth.
+    decoded = decode_stream(_act2_stream("1.\tx\n\n\ty\n\n# z\n*\tw\n"))
+    validate_stream(decoded)
+
+    codes = [token.code for token in decoded]
+    assert codes.count(tokens.LIST_OPEN) == codes.count(tokens.LIST_CLOSE)
+    assert codes.count(tokens.LIST_ITEM) == codes.count(tokens.ITEM_CLOSE)
+
+
+def test_full_list_outer_sibling_preserves_tight_tail() -> None:
+    assert _decoded_triplets("2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\n3. Third\n") == [
+        (tokens.LIST_OPEN, (2,), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "Second:"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "Fee"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "Fie"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "Foe"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "Third"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_outer_sibling_preserves_four_item_subtree() -> None:
+    assert _decoded_triplets(
+        "2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\t* Fum\n\n3. Third\n"
+    ) == [
+        (tokens.LIST_OPEN, (2,), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "Second:"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "Fee"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "Fie"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "Foe"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "Fum"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (2,), None),
+        (tokens.PARA, (), "Third"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+
+
+def test_full_list_a12_route_uses_only_the_close_tail_helpers() -> None:
+    trace = _act2_scene_trace(
+        "2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\t* Fum\n\n3. Third\n"
+    )
+    labels = [label for label, _ in trace]
+
+    depth_close = labels.index("PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE")
+    assert trace[depth_close + 1] == (
+        "PASS_CONTAINERS_DEPTH",
+        -21,
+    )
+
+    close_close = labels.index("PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE")
+    assert trace[close_close + 1] == (
+        "PASS_CONTAINERS_CLOSE",
+        -12,
+    )
+
+
+def test_full_list_plain_loose_continuation_never_enters_a10_to_a12_helpers() -> None:
+    labels = [label for label, _ in _act2_scene_trace("1.\tItem 1\n\n\tItem 2\n")]
+    assert "PASS_CONTAINERS_DEPTH_SKIP_TAIL" not in labels
+    assert "PASS_CONTAINERS_DEPTH_SKIP_SUBTREE" not in labels
+    assert "PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE" not in labels
+    assert "PASS_CONTAINERS_CLOSE_SKIP_SUBTREE" not in labels
+    assert "PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE" not in labels

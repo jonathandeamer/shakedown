@@ -76,3 +76,97 @@ def test_ordered_and_unordered_lists_tail_matches_markdown_1_0_1_quirk() -> None
     actual = _run_acts(input_path.read_text(), through_act=4)
     assert isinstance(actual, str)
     assert actual.endswith(FULL_LIST_MARKDOWN_1_0_1_TAIL)
+
+
+def test_ordered_and_unordered_lists_starts_with_expected_headers_and_hr() -> None:
+    input_path, _ = _FIXTURES_BY_NAME["Ordered and unordered lists"]
+    actual = _run_acts(input_path.read_text(), through_act=4)
+    assert isinstance(actual, str)
+    assert "<h2>Unordered</h2>\n" in actual
+    assert "\n<hr />\n\n<p>Pluses tight:</p>\n" in actual
+    assert "\n<hr />\n\n<p>Minuses tight:</p>\n" in actual
+    assert "\n<h2>Ordered</h2>\n" in actual
+    assert "\n<h2>Nested</h2>\n" in actual
+
+
+def test_ordered_and_unordered_lists_renders_nested_list_sections() -> None:
+    input_path, _ = _FIXTURES_BY_NAME["Ordered and unordered lists"]
+    actual = _run_acts(input_path.read_text(), through_act=4)
+    assert isinstance(actual, str)
+    assert (
+        "<ul>\n<li>Tab\n<ul><li>Tab\n<ul><li>Tab</li></ul></li></ul></li>\n</ul>\n"
+        in actual
+    )
+    assert (
+        "<li>Second:\n<ul><li>Fee</li>\n<li>Fie</li>\n<li>Foe</li></ul></li>\n"
+        in actual
+    )
+
+
+def test_top_level_atx_header_renders_h2() -> None:
+    actual = _run_acts("## Unordered\n", through_act=4)
+    assert actual == "<h2>Unordered</h2>\n"
+
+
+def test_rejected_atx_header_candidates_render_as_paragraphs() -> None:
+    assert _run_acts(" ## Unordered\n", through_act=4) == "<p>## Unordered</p>\n"
+    assert _run_acts("##Unordered\n", through_act=4) == "<p>##Unordered</p>\n"
+
+
+def test_full_list_blank_then_nested_marker_renders_nested_tight_list() -> None:
+    actual = _run_acts("* parent\n\n\t* sub\n", through_act=4)
+    assert actual == "<ul>\n<li><p>parent</p>\n\n<ul><li>sub</li></ul></li>\n</ul>\n"
+
+
+def test_full_list_blank_then_sibling_marker_renders_two_loose_items() -> None:
+    actual = _run_acts("* parent\n\n* sibling\n", through_act=4)
+    assert actual == "<ul>\n<li><p>parent</p></li>\n<li><p>sibling</p></li>\n</ul>\n"
+
+
+def test_full_list_blank_then_indented_second_paragraph_renders_loose_item() -> None:
+    actual = _run_acts("* alpha\n\n  second paragraph\n* beta\n", through_act=4)
+    assert actual == (
+        "<ul>\n<li><p>alpha</p>\n\n<p>second paragraph</p></li>\n<li>beta</li>\n</ul>\n"
+    )
+
+
+def test_full_list_tab_indented_siblings_render_one_nested_sublist() -> None:
+    actual = _run_acts("1. a\n\t* b\n\t* c\n", through_act=4)
+    assert actual == "<ol>\n<li>a\n<ul><li>b</li>\n<li>c</li></ul></li>\n</ol>\n"
+
+
+def test_full_list_list_ending_blank_stays_tight() -> None:
+    actual = _run_acts("* parent\n\n", through_act=4)
+    assert actual == "<ul>\n<li>parent</li>\n</ul>\n"
+
+
+def test_full_list_blank_then_ancestor_indent_returns_to_outer_loose_item() -> None:
+    actual = _run_acts("*\tthis\n\n\t*\tsub\n\n\tthat\n", through_act=4)
+    assert (
+        actual
+        == "<ul>\n<li><p>this</p>\n\n<ul><li>sub</li></ul>\n\n<p>that</p></li>\n</ul>\n"
+    )
+
+
+def test_full_list_outer_sibling_renders_expected_html() -> None:
+    actual = _run_acts(
+        "2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\n3. Third\n",
+        through_act=4,
+    )
+    assert actual == (
+        "<ol>\n<li><p>Second:</p>\n\n<ul><li>Fee</li>\n<li>Fie</li>\n"
+        "<li>Foe</li></ul></li>\n<li><p>Third</p></li>\n</ol>\n"
+    )
+
+
+def test_full_list_blank_then_outer_sibling_after_four_nested_items_renders_expected_html(  # noqa: E501
+) -> None:
+    actual = _run_acts(
+        "2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\t* Fum\n\n3. Third\n",
+        through_act=4,
+    )
+    assert actual == (
+        "<ol>\n<li><p>Second:</p>\n\n<ul><li>Fee</li>\n<li>Fie</li>\n"
+        "<li>Foe</li>\n<li>Fum</li></ul></li>\n<li><p>Third</p></li>\n"
+        "</ol>\n"
+    )

@@ -38,14 +38,21 @@ def validate_stream(decoded: list[DecodedToken]) -> None:
             )
 
         if role is StructuralRole.LEAF_BLOCK:
-            if token.code != tokens.PARA:
+            if token.code not in (tokens.PARA, tokens.HEADER, tokens.HR):
                 raise StructuralError(
                     f"position {position}: leaf block {token.code} is not yet shipped"
                 )
             if not block_is_legal():
                 raise StructuralError(
-                    f"position {position}: PARA appears where a block is not legal"
+                    f"position {position}: leaf block {token.code} appears where "
+                    "a block is not legal"
                 )
+            if token.code == tokens.HEADER:
+                level = token.payloads[0]
+                if not (1 <= level <= 6):
+                    raise StructuralError(
+                        f"position {position}: header level {level} out of range 1-6"
+                    )
         elif role is StructuralRole.CONTAINER_OPEN:
             if not block_is_legal():
                 raise StructuralError(

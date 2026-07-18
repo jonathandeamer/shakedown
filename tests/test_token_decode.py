@@ -46,12 +46,11 @@ def test_rejects_unknown_code() -> None:
         decode_stream([999])
 
 
-def test_rejects_unallocated_but_documented_code() -> None:
-    """HEADER (2) is allocated in docs/spl/token-codes.md but has no ARITY
-    row yet — not yet shipped, so the decoder must reject it like any other
-    unknown code rather than guessing an arity."""
-    with pytest.raises(DecodeError, match="unknown token code 2"):
-        decode_stream([tokens.HEADER])
+def test_decodes_level_two_header() -> None:
+    values = [tokens.HEADER, 2, ord("U"), tokens.TEXT_END]
+    assert decode_stream(values) == [
+        DecodedToken(code=tokens.HEADER, payloads=(2,), text="U")
+    ]
 
 
 def test_rejects_truncated_fixed_payload() -> None:

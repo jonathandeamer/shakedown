@@ -220,17 +220,27 @@ def test_rejects_blockquote_close_without_matching_open() -> None:
         validate_stream(decode_stream([tokens.BLOCKQUOTE_CLOSE]))
 
 
-@pytest.mark.parametrize(
-    "code", [tokens.HEADER, tokens.HR, tokens.CODE_BLOCK, tokens.RAW_HTML_HASH]
-)
+@pytest.mark.parametrize("code", [tokens.CODE_BLOCK, tokens.RAW_HTML_HASH])
 def test_rejects_other_target_grammar_leaf_blocks_not_yet_shipped(code: int) -> None:
     """Expected future case: the target grammar's `block` production admits
-    header, horizontal_rule, code_block, and raw_html alongside paragraph.
-    Each code already has a LEAF_BLOCK role, but only PARA is shipped
-    today (`docs/superpowers/specs/2026-07-11-completability-hardening-
-    design.md` §1 says this validator "must not accept them early")."""
+    horizontal_rule, code_block, and raw_html alongside paragraph and header.
+    Each code already has a LEAF_BLOCK role, but only PARA, HEADER, and HR are
+    shipped today (`docs/superpowers/specs/2026-07-11-completability-
+    hardening-design.md` §1 says this validator "must not accept them
+    early")."""
     with pytest.raises(StructuralError, match="not yet shipped"):
         validate_stream([DecodedToken(code=code, payloads=(), text=None)])
+
+
+def test_accepts_decoded_header_leaf() -> None:
+    values = [tokens.HEADER, 2, ord("U"), tokens.TEXT_END]
+    validate_stream(decode_stream(values))
+
+
+@pytest.mark.parametrize("level", [0, 7])
+def test_rejects_header_level_out_of_range(level: int) -> None:
+    with pytest.raises(StructuralError, match="header level .* out of range"):
+        validate_stream([DecodedToken(code=tokens.HEADER, payloads=(level,), text="U")])
 
 
 def test_rejects_crossed_item_and_blockquote_closes() -> None:

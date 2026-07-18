@@ -118,8 +118,36 @@ pattern = "scene_of_character"
 title = "One glyph is released."
 pattern = "bare_statement"
 
+[scenes.SCRIBE_HEADER_BREAK]
+title = "Prospero parts the heading's chamber."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_HEADER_CLOSE]
+title = "Prospero seals the counted heading."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_HEADER_EMIT_OPEN]
+title = "Prospero unveils the counted heading."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_HEADER_LEVEL]
+title = "Prospero speaks the heading's measure."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_HEADER_LEVEL_ERROR]
+title = "The counted heading offends Prospero."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_HEADER_OPEN]
+title = "Prospero admits the counted heading."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_EMIT_UL_OPEN_NESTED]
 title = "Prospero unfurls the inner rough ranks."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_EMIT_UL_OPEN_LOOSE_NESTED]
+title = "Prospero grants the inner rough ranks their blank approach."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_UL_OPEN_TOP]
@@ -190,6 +218,10 @@ pattern = "scene_of_character"
 title = "Prospero bars the numbered ranks."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_STASH_USED_OL_CLOSE_TOP]
+title = "Prospero bars the numbered ranks and keeps their elder order."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_STASH_UL_CLOSE_NESTED]
 title = "Prospero bars the inner rough ranks."
 pattern = "scene_of_character"
@@ -206,12 +238,24 @@ pattern = "scene_of_character"
 title = "Prospero bars the rough ranks."
 pattern = "scene_of_character"
 
+[scenes.SCRIBE_STASH_USED_UL_CLOSE_TOP]
+title = "Prospero bars the rough ranks and keeps their elder order."
+pattern = "scene_of_character"
+
 [scenes.SCRIBE_TEST_ANCHOR_CLOSE]
 title = "Prospero seals the anchor close."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_TEST_HR]
 title = "Prospero weighs the level iron bar."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEST_HEADER]
+title = "Prospero weighs the counted heading."
+pattern = "scene_of_character"
+
+[scenes.SCRIBE_TEXT_CLOSE]
+title = "Prospero hears the text's last seal."
 pattern = "scene_of_character"
 
 [scenes.SCRIBE_EMIT_HR]

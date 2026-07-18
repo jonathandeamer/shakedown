@@ -116,3 +116,17 @@ def test_arity_table_matches_doc() -> None:
     assert doc_rows == {
         code: (arity.payloads, arity.has_text) for code, arity in tokens.ARITY.items()
     }
+
+
+def test_header_doc_row_has_one_payload_and_text() -> None:
+    row_re = re.compile(
+        r"^\|\s*HEADER\s*\|\s*2\s*\|\s*(?P<payloads>\d+)\s*\|\s*"
+        r"(?P<text>yes|no)\s*\|"
+    )
+    for line in TOKEN_CODES_DOC.read_text().splitlines():
+        match = row_re.match(line)
+        if match:
+            assert match["payloads"] == "1"
+            assert match["text"] == "yes"
+            return
+    raise AssertionError("HEADER arity row missing from docs/spl/token-codes.md")

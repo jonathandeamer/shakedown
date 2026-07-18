@@ -26,9 +26,113 @@ pattern = "cross_character"
 title = "The tally passes to the herald."
 pattern = "scene_of_character"
 
+[scenes.FRAME_STAGE_SIDE_PEEK]
+title = "The herald sounds the rampart's floor."
+pattern = "scene_of_character"
+
+[scenes.FRAME_STAGE_SIDE_NESTED]
+title = "The herald keeps the inward tally."
+pattern = "scene_of_character"
+
 [scenes.FRAME_STAGE_SIDE_POP]
 title = "Horatio hands the kept measures to Puck."
 pattern = "cross_character"
+
+[scenes.FRAME_STAGE_SIDE_TOP]
+title = "The herald restores the outer tally."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_CLOSE_ROUTE]
+title = "Lady Macbeth weighs the waiting rank's return."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_CLOSE_BRANCH]
+title = "Lady Macbeth weighs the waiting rank's return."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_QUOTE]
+title = "Lady Macbeth restores the waiting rank to its dark reply."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_QUOTE_PREP]
+title = "Lady Macbeth turns the waiting rank toward a dark reply."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_QUOTE_GUARD]
+title = "The waiting rank weighs the dark reply."
+pattern = "bare_statement"
+
+[scenes.PASS_CONTAINERS_POP_COUNT]
+title = "The waiting rank restores its counted field."
+pattern = "bare_statement"
+
+[scenes.PASS_CONTAINERS_POP_DEPTH]
+title = "The waiting rank restores its inward tally."
+pattern = "bare_statement"
+
+[scenes.PASS_CONTAINERS_RESTORE_COUNT]
+title = "Lady Macbeth restores the waiting rank's measure."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_RESTORE_DEPTH]
+title = "Macbeth restores the waiting rank's depth."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_RESTORE_GLYPH]
+title = "Hecate restores the waiting rank's first sign."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_CONTINUE_GUARD]
+title = "The marching line awaits its chosen course."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_FOUR_GUARD]
+title = "The deepened line awaits its chosen course."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_FOUR_ROUTE_UL]
+title = "Lady Macbeth routes the marching line by depth."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_COMMIT_JOIN]
+title = "Macbeth restores the waiting rank to its breathing line."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_JOIN]
+title = "Lady Macbeth grants the waiting rank its paragraph field."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_NEST_UL]
+title = "Macbeth turns the waiting rank toward a rough inward host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_NEST_OL]
+title = "Macbeth turns the waiting rank toward a numbered inward host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_NESTED_UL]
+title = "Lady Macbeth restores the waiting rank to its inward host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_SET_EOF]
+title = "The waiting rank accepts the page's last border."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_OUTDENT]
+title = "The waiting rank sheds each deeper inward gate."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_OUTDENT_CLOSE]
+title = "The waiting rank bars one deeper inward gate."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_OUTDENT_JOIN]
+title = "The waiting rank resumes its elder breathing line."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_SIBLING]
+title = "Lady Macbeth grants the waiting rank a sibling march."
+pattern = "scene_of_character"
 
 [scenes.PASS_LISTS_AFTER_LIST]
 title = "The field lies open beyond the gates."
@@ -38,6 +142,10 @@ pattern = "bare_statement"
 title = "A silence falls across the ranks."
 pattern = "bare_statement"
 
+[scenes.PASS_LISTS_BLANK_RESET_PUCK]
+title = "Lady Macbeth clears the waiting tally."
+pattern = "bare_statement"
+
 [scenes.PASS_LISTS_BLANK_HEAD]
 title = "The captain reads past the silence."
 pattern = "bare_statement"
@@ -45,6 +153,11 @@ pattern = "bare_statement"
 [scenes.PASS_LISTS_BLANK_HEAD_ORDERED]
 title = "The captain counts past the silence."
 pattern = "bare_statement"
+
+[scenes.PASS_LISTS_BLANK_ROLLBACK_GOTO]
+title = "The captain returns to the waiting rank."
+pattern = "bare_statement"
+
 
 [scenes.PASS_LISTS_BLANK_INDENT_1]
 title = "One step inward past the silence."
@@ -158,6 +271,50 @@ pattern = "bare_statement"
 title = "Four steps mark a carried line."
 pattern = "bare_statement"
 
+[scenes.PASS_LISTS_INDENT_TAB]
+title = "The marching step keeps one certain measure."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_TAB_READ]
+title = "The marching step reads the next measure."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_TAB_GUARD]
+title = "The captain resets the tab tally."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_SIBLING_GUARD]
+title = "The captain resets the sibling tally."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_REPLAY_GUARD]
+title = "The captain resets the replay tally."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_DEPTH_GUARD]
+title = "The captain resets the depth tally."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_DEEP_GUARD]
+title = "The captain resets the deep tally."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_ITEM_LINE_CLASSIFY]
+title = "The captain weighs the marching line."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_CLASSIFY_FOUR]
+title = "The marching step keeps one certain measure."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_INDENT_ORDERED_FOUR]
+title = "Lady Macbeth gathers the numbered standard."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_INDENT_FOUR_CONTINUE]
+title = "Lady Macbeth bears the marching line onward."
+pattern = "scene_of_character"
+
 [scenes.PASS_LISTS_INDENT_CLASSIFY]
 title = "The captain weighs the indented head."
 pattern = "bare_statement"
@@ -221,6 +378,54 @@ pattern = "bare_statement"
 [scenes.PASS_HR_GATE]
 title = "Macbeth tests the level iron stroke."
 pattern = "scene_of_character"
+
+[scenes.PASS_HEADER_CLOSE]
+title = "The captain seals the counted heading."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_COUNT]
+title = "Another hash joins the counted heading."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_GUARD]
+title = "The captain tests the leftmost heading mark."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_MORE]
+title = "The captain tests one more heading mark."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_OPEN]
+title = "The captain marks the opening heading."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_REPLAY_DONE]
+title = "The false heading falls back to the rank."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_REPLAY_HASHES]
+title = "Each false heading mark returns."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_REPLAY_SPACE]
+title = "The false heading sheds its counted marks."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_REPLAY_SPACE_DONE]
+title = "The false heading returns with a space."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_SCAN]
+title = "The captain counts the heading's marks."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_TEXT]
+title = "The heading gathers its spoken line."
+pattern = "bare_statement"
+
+[scenes.PASS_HEADER_TEXT_OPEN]
+title = "The captain opens the heading's text."
+pattern = "bare_statement"
 
 [scenes.PASS_HR_SAVE]
 title = "Lady Macbeth keeps the iron mark."
@@ -303,6 +508,70 @@ pattern = "bare_statement"
 title = "The ranks are dismissed by a false number."
 pattern = "bare_statement"
 
+[scenes.PASS_LISTS_INDENT_GUARD]
+title = "The marching step keeps one certain measure."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_GUARD]
+title = "The inner rank keeps its faithful border."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_FULL_GUARD]
+title = "The ordered host keeps one final watch."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_PROVISION]
+title = "Lady Macbeth holds the rank before its silence."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_COMMIT]
+title = "Macbeth lets the waiting rank take breath."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_COMMIT_HECATE]
+title = "Hecate yields the inner tail before the outer march."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_NESTED]
+title = "Lady Macbeth turns the waiting rank within its ordered host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_EOF]
+title = "The silent rank meets the page's last watch."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_ROLLBACK]
+title = "Lady Macbeth restores the rank's close order."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_REPLAY]
+title = "Macbeth returns the held border to the host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_REPLAY_UL]
+title = "Lady Macbeth returns the held rough border to the host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_REPLAY_OL]
+title = "Lady Macbeth returns the held numbered border to the host."
+pattern = "scene_of_character"
+
+[scenes.PASS_LISTS_LOOSE_GUARD]
+title = "The waiting rank keeps one sure watch."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_EOF_GUARD]
+title = "The last rank keeps its faithful border."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_ROLLBACK_GUARD]
+title = "The restored rank keeps its settled line."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_LOOSE_REPLAY_GUARD]
+title = "The held border keeps its homeward course."
+pattern = "bare_statement"
+
 [scenes.PASS_LISTS_MARK_SAVE_OL]
 title = "The numbered banner is held aloft."
 pattern = "bare_statement"
@@ -327,8 +596,44 @@ pattern = "bare_statement"
 title = "The soldier yields to an inner column."
 pattern = "bare_statement"
 
+[scenes.PASS_LISTS_DEEP_EMIT_OL]
+title = "The soldier opens a deeper inner column."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_DEEP_SAVE_OL]
+title = "The soldier keeps the deeper numbered sign."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_DEEP_TEST_DOT]
+title = "A deeper number seeks its dot."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_DEEP_TEST_OL]
+title = "A deeper space must follow the number."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_EMIT_OL_OPEN]
+title = "The soldier opens the inner column."
+pattern = "bare_statement"
+
 [scenes.PASS_LISTS_NEST_EMIT_UL]
 title = "The soldier yields to an inner troop."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_DEEP_EMIT_UL]
+title = "The soldier opens a deeper inner troop."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_DEEP_SAVE_UL]
+title = "The soldier keeps the deeper rough sign."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_DEEP_TEST_UL]
+title = "A deeper space must follow the banner."
+pattern = "bare_statement"
+
+[scenes.PASS_LISTS_NEST_EMIT_UL_OPEN]
+title = "The soldier opens the inner troop."
 pattern = "bare_statement"
 
 [scenes.PASS_LISTS_NEST_OPEN_OL]
@@ -427,6 +732,18 @@ pattern = "bare_statement"
 title = "Lady Macbeth opens the inner field."
 pattern = "scene_of_character"
 
+[scenes.PASS_CONTAINERS_SAVE_COUNT]
+title = "Lady Macbeth keeps the waiting rank's measure."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_SAVE_GLYPH]
+title = "The waiting rank keeps its first sign."
+pattern = "bare_statement"
+
+[scenes.PASS_CONTAINERS_SAVE_SENTINEL]
+title = "Macbeth sets the waiting rank's inward seal."
+pattern = "scene_of_character"
+
 [scenes.PASS_CONTAINERS_QUOTE]
 title = "Hecate bears the dark reply within."
 pattern = "scene_of_character"
@@ -443,12 +760,33 @@ pattern = "scene_of_character"
 title = "Macbeth seals the folded rampart."
 pattern = "scene_of_character"
 
+[scenes.PASS_CONTAINERS_CLOSE_SKIP_SUBTREE]
+title = "Macbeth bears each inner seal through the folded rampart."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE]
+title = "Macbeth restores the elder rank through the folded rampart."
+pattern = "scene_of_character"
+
 [scenes.PASS_CONTAINERS_BOUNDARY]
 title = "The outer field receives the broken line."
 pattern = "bare_statement"
 
 [scenes.PASS_CONTAINERS_DEPTH]
 title = "Macbeth counts the inward marches."
+pattern = "scene_of_character"
+
+# Amendment A10 nested-tail sentinel skip working scene
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_TAIL]
+title = "Macbeth bears the inner seal beyond its elder rank."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_SUBTREE]
+title = "Macbeth bears each inner seal beyond its elder rank."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE]
+title = "Macbeth restores the elder rank beyond the inner host."
 pattern = "scene_of_character"
 
 [scenes.PASS_CONTAINERS_EOF]
@@ -465,6 +803,10 @@ pattern = "bare_statement"
 
 [scenes.PASS_PARA_COPY_OPEN]
 title = "A gate stone passes through unchanged."
+pattern = "bare_statement"
+
+[scenes.PASS_PARA_COPY_HEADER]
+title = "A heading stone passes through unchanged."
 pattern = "bare_statement"
 
 [scenes.PASS_PARA_FINAL_CLOSE]

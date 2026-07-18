@@ -91,3 +91,114 @@ def test_nested_quote_marker_only_blank_release_binary_contract() -> None:
 
 def test_ordered_and_unordered_lists_release_binary_contract() -> None:
     _release_binary_fixture_contract("Ordered and unordered lists")
+
+
+def test_top_level_atx_header_release_binary_contract() -> None:
+    result = subprocess.run(
+        [str(BINARY)],
+        input="## Unordered\n",
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == "<h2>Unordered</h2>\n"
+
+
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        (" ## Unordered\n", "<p>## Unordered</p>\n"),
+        ("##Unordered\n", "<p>##Unordered</p>\n"),
+    ],
+)
+def test_rejected_atx_header_candidates_release_binary_contract(
+    source: str, expected: str
+) -> None:
+    result = subprocess.run(
+        [str(BINARY)],
+        input=source,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == expected
+
+
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        (
+            "* parent\n\n\t* sub\n",
+            "<ul>\n<li><p>parent</p>\n\n<ul><li>sub</li></ul></li>\n</ul>\n",
+        ),
+        (
+            "* parent\n\n* sibling\n",
+            "<ul>\n<li><p>parent</p></li>\n<li><p>sibling</p></li>\n</ul>\n",
+        ),
+        (
+            "* parent\n\n",
+            "<ul>\n<li>parent</li>\n</ul>\n",
+        ),
+    ],
+)
+def test_full_list_blank_transaction_release_binary_contract(
+    source: str, expected: str
+) -> None:
+    result = subprocess.run(
+        [str(BINARY)],
+        input=source,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == expected
+
+
+def test_full_list_blank_then_ancestor_indent_release_binary_contract() -> None:
+    result = subprocess.run(
+        [str(BINARY)],
+        input="*\tthis\n\n\t*\tsub\n\n\tthat\n",
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert (
+        result.stdout
+        == "<ul>\n<li><p>this</p>\n\n<ul><li>sub</li></ul>\n\n<p>that</p></li>\n</ul>\n"
+    )
+
+
+def test_full_list_outer_sibling_release_binary_contract() -> None:
+    result = subprocess.run(
+        [str(BINARY)],
+        input="2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\n3. Third\n",
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == (
+        "<ol>\n<li><p>Second:</p>\n\n<ul><li>Fee</li>\n<li>Fie</li>\n"
+        "<li>Foe</li></ul></li>\n<li><p>Third</p></li>\n</ol>\n"
+    )
+
+
+def test_full_list_blank_then_outer_sibling_after_four_nested_items_release_binary_contract(  # noqa: E501
+) -> None:
+    result = subprocess.run(
+        [str(BINARY)],
+        input="2. Second:\n\t* Fee\n\t* Fie\n\t* Foe\n\t* Fum\n\n3. Third\n",
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == (
+        "<ol>\n<li><p>Second:</p>\n\n<ul><li>Fee</li>\n<li>Fie</li>\n"
+        "<li>Foe</li>\n<li>Fum</li></ul></li>\n<li><p>Third</p></li>\n"
+        "</ol>\n"
+    )

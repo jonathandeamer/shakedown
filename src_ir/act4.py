@@ -22,6 +22,7 @@ from scripts.splc.ir import (
     gt,
     halt_act,
     let,
+    lt,
     pop,
     print_char,
     push,
@@ -81,6 +82,7 @@ ITEM_LOOSE_COMPLEX = 44
 QUOTE_EMPTY = 18
 QUOTE_USED = 19
 _PARAGRAPH_MODE = const(tokens.ITEM_START)
+_HEADER_MODE_BASE = const(100)
 _SPACE = const(32)
 _NEWLINE = const(10)
 
@@ -108,8 +110,14 @@ ACT: Act = act(
             branch(
                 eq(val(PUCK), const(tokens.PARA)),
                 then="SCRIBE_QUOTE_NEST_OPEN",
-                else_="SCRIBE_TEST_HR",
+                else_="SCRIBE_TEST_HEADER",
             ),
+            companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_TEST_HEADER",
+            branch(eq(val(PUCK), const(tokens.HEADER)), then="SCRIBE_HEADER_OPEN"),
+            goto("SCRIBE_TEST_HR"),
             companion=PUCK,
         ),
         scene(
@@ -171,10 +179,74 @@ ACT: Act = act(
             "SCRIBE_TEST_PARAGRAPH_CLOSE",
             branch(
                 eq(val(PUCK), const(tokens.TEXT_END)),
-                then="SCRIBE_QUOTE_NEST_CLOSE",
+                then="SCRIBE_TEXT_CLOSE",
                 else_="SCRIBE_TEST_LIST_OPEN",
             ),
             companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_TEXT_CLOSE",
+            branch(
+                lt(val(PROSPERO), _HEADER_MODE_BASE),
+                then="SCRIBE_QUOTE_NEST_CLOSE",
+            ),
+            goto("SCRIBE_HEADER_CLOSE"),
+            companion=PUCK,
+        ),
+        scene(
+            "SCRIBE_HEADER_OPEN",
+            pop(PUCK, recall="heralds_present_word"),
+            branch(lt(val(PUCK), const(1)), then="SCRIBE_HEADER_LEVEL_ERROR"),
+            branch(gt(val(PUCK), const(6)), then="SCRIBE_HEADER_LEVEL_ERROR"),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)),
+                then="SCRIBE_HEADER_BREAK",
+            ),
+            branch(eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_HEADER_BREAK"),
+            goto("SCRIBE_HEADER_EMIT_OPEN"),
+        ),
+        scene(
+            "SCRIBE_HEADER_BREAK",
+            push(PROSPERO, val(PROSPERO)),
+            let(PROSPERO, add(_HEADER_MODE_BASE, val(PUCK))),
+            *_emit(10, 10, 60, 104),
+            goto("SCRIBE_HEADER_LEVEL"),
+        ),
+        scene(
+            "SCRIBE_HEADER_EMIT_OPEN",
+            push(PROSPERO, val(PROSPERO)),
+            let(PROSPERO, add(_HEADER_MODE_BASE, val(PUCK))),
+            *_emit(60, 104),
+            goto("SCRIBE_HEADER_LEVEL"),
+        ),
+        scene(
+            "SCRIBE_HEADER_LEVEL",
+            let(PUCK, sub(val(PROSPERO), const(52))),
+            print_char(PUCK),
+            *_emit(62),
+            goto("SCRIBE_POP_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_HEADER_CLOSE",
+            *_emit(60, 47, 104),
+            let(PUCK, sub(val(PROSPERO), const(52))),
+            print_char(PUCK),
+            *_emit(62),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_EMPTY)),
+                then="SCRIBE_OUTER_RELEASE",
+            ),
+            branch(
+                eq(val(PROSPERO), const(DOCUMENT_USED)),
+                then="SCRIBE_OUTER_RELEASE",
+            ),
+            goto("SCRIBE_CONTAINER_RETURN"),
+        ),
+        scene(
+            "SCRIBE_HEADER_LEVEL_ERROR",
+            halt_act(),
         ),
         scene(
             "SCRIBE_TEST_LIST_OPEN",
@@ -568,6 +640,10 @@ ACT: Act = act(
                 then="SCRIBE_EMIT_PARAGRAPH_BREAK",
             ),
             branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_COMPLEX)),
+                then="SCRIBE_EMIT_PARAGRAPH_BREAK",
+            ),
+            branch(
                 eq(val(PROSPERO), const(DOCUMENT_USED)),
                 then="SCRIBE_EMIT_PARAGRAPH_BREAK",
             ),
@@ -635,7 +711,33 @@ ACT: Act = act(
         ),
         scene(
             "SCRIBE_STASH_UL_CLOSE_TOP",
+            branch(
+                eq(val(PROSPERO), const(LIST_UL_USED)),
+                then="SCRIBE_STASH_USED_UL_CLOSE_TOP",
+            ),
+            branch(
+                eq(val(PROSPERO), const(LIST_OL_USED)),
+                then="SCRIBE_STASH_USED_OL_CLOSE_TOP",
+            ),
             push(PROSPERO, add(val(PROSPERO), const(20))),
+            push(PROSPERO, val(PUCK)),
+            *_emit(*_bytes("</li>")),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            let(PUCK, val(PROSPERO)),
+            goto("SCRIBE_DISPATCH_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_STASH_USED_UL_CLOSE_TOP",
+            push(PROSPERO, const(LIST_UL_USED)),
+            push(PROSPERO, val(PUCK)),
+            *_emit(*_bytes("</li>")),
+            pop(PROSPERO, recall="sealed_gates_colour"),
+            let(PUCK, val(PROSPERO)),
+            goto("SCRIBE_DISPATCH_TOKEN"),
+        ),
+        scene(
+            "SCRIBE_STASH_USED_OL_CLOSE_TOP",
+            push(PROSPERO, const(LIST_OL_USED)),
             push(PROSPERO, val(PUCK)),
             *_emit(*_bytes("</li>")),
             pop(PROSPERO, recall="sealed_gates_colour"),
@@ -681,7 +783,7 @@ ACT: Act = act(
             ),
             branch(
                 eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
-                then="SCRIBE_EMIT_UL_OPEN_NESTED",
+                then="SCRIBE_EMIT_UL_OPEN_LOOSE_NESTED",
             ),
             branch(
                 eq(val(PROSPERO), const(DOCUMENT_USED)),
@@ -691,6 +793,11 @@ ACT: Act = act(
                 eq(val(PROSPERO), const(QUOTE_USED)), then="SCRIBE_EMIT_LIST_BLOCK_SEP"
             ),
             goto("SCRIBE_EMIT_UL_OPEN_TOP"),
+        ),
+        scene(
+            "SCRIBE_EMIT_UL_OPEN_LOOSE_NESTED",
+            *_emit(10),
+            goto("SCRIBE_EMIT_UL_OPEN_NESTED"),
         ),
         scene(
             "SCRIBE_EMIT_UL_OPEN_NESTED",
@@ -918,6 +1025,14 @@ ACT: Act = act(
                 eq(val(PROSPERO), const(ITEM_TIGHT_USED)),
                 then="SCRIBE_CONTAINER_LOOKAHEAD",
             ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_EMPTY)),
+                then="SCRIBE_QUOTED_PARAGRAPH",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
+                then="SCRIBE_QUOTED_PARAGRAPH",
+            ),
             goto("SCRIBE_EMIT_PARAGRAPH_BREAK"),
         ),
         scene(
@@ -976,6 +1091,10 @@ ACT: Act = act(
             ),
             branch(
                 eq(val(PROSPERO), const(ITEM_LOOSE_USED)),
+                then="SCRIBE_EMIT_PARAGRAPH_BREAK",
+            ),
+            branch(
+                eq(val(PROSPERO), const(ITEM_LOOSE_COMPLEX)),
                 then="SCRIBE_EMIT_PARAGRAPH_BREAK",
             ),
             branch(
