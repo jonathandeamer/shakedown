@@ -2,12 +2,17 @@
 
 Runs the two large fixtures through the IR interpreter and checks for crashes
 or execution times exceeding 5 seconds.
+
+Run from the repository root with::
+
+    uv run python -m scripts.probe_documentation_aggregates
 """
 
 import sys
 import time
 from pathlib import Path
 
+from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
@@ -21,10 +26,10 @@ TIMEOUT_LIMIT_SECONDS = 5.0
 
 def interpret_ir(input_text: str) -> str:
     state = InterpreterState(input_text=input_text)
-    state = run_act(ACT1, state, step_limit=500_000).state
-    state = run_act(ACT2, state, step_limit=500_000).state
-    state = run_act(ACT3, state, step_limit=500_000).state
-    state = run_act(ACT4, state, step_limit=500_000).state
+    state = run_act(ACT1, state, step_limit=DOCUMENTATION_STEP_LIMIT).state
+    state = run_act(ACT2, state, step_limit=DOCUMENTATION_STEP_LIMIT).state
+    state = run_act(ACT3, state, step_limit=DOCUMENTATION_STEP_LIMIT).state
+    state = run_act(ACT4, state, step_limit=DOCUMENTATION_STEP_LIMIT).state
     return state.output_text()
 
 

@@ -12,6 +12,7 @@ from pathlib import Path
 import pytest
 from _pytest.mark.structures import ParameterSet
 
+from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.slice3_links import rewrite_task3_markdown
 
 FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
@@ -96,8 +97,11 @@ _FIXTURES_BY_NAME = {
 }
 _IMPLEMENTED_FIXTURES = {
     "Amps and angle encoding",
+    "Auto links",
+    "Backslash escapes",
     "Blockquotes with code blocks",
     "Code Blocks",
+    "Code Spans",
     "Hard-wrapped paragraphs with list-like lines",
     "Horizontal rules",
     "Images",
@@ -178,7 +182,7 @@ def _run_acts(input_text: str, through_act: int) -> str | list[int]:
     state = InterpreterState(input_text=rewrite_task3_markdown(input_text))
     acts = (ACT1, ACT2, ACT3, ACT4)
     for act in acts[:through_act]:
-        state = run_act(act, state, step_limit=500_000).state
+        state = run_act(act, state, step_limit=DOCUMENTATION_STEP_LIMIT).state
     if through_act == 4:
         return state.output_text()
     stream = list(reversed(state.stacks[Char.PUCK]))
@@ -267,3 +271,12 @@ def test_slice4_fixture_skip_matches_enablement(name: str) -> None:
         assert skip_marks, (
             f"{name} must stay skipped until its Slice-4 checkpoint ships"
         )
+
+
+@pytest.mark.parametrize("name", sorted(_SLICE5_STRICT_READY_FIXTURES))
+def test_slice5_strict_ready_fixture_skip_matches_enablement(name: str) -> None:
+    params = {case.values[0]: case for case in _fixture_params() if case.values}
+    skip_marks = [mark for mark in params[name].marks if mark.name == "skip"]
+
+    assert name in _IMPLEMENTED_FIXTURES
+    assert not skip_marks, f"{name} is strict-ready and must run"

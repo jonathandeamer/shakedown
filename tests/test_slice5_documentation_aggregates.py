@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
@@ -24,7 +25,6 @@ from tests.test_mdtest import (
 
 REPO = Path(__file__).parent.parent
 HARNESS = REPO / "scripts" / "strict_parity_harness.py"
-DOCUMENTATION_STEP_LIMIT = 1_000_000
 
 
 def _run_acts_with_limit(

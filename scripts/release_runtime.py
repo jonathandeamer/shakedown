@@ -6,6 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.slice3_links import rewrite_task3_markdown
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir.act1 import ACT as ACT1
@@ -15,7 +16,6 @@ from src_ir.act4 import ACT as ACT4
 
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_SPL = REPO / "shakedown.spl"
-STEP_LIMIT = 500_000
 _SPL_ERROR_RE = re.compile(rb"^SPL (runtime|parse) error:", re.MULTILINE)
 
 
@@ -28,7 +28,7 @@ def _trim_wrapper_output(text: str) -> str:
 def _run_release_ir(input_text: str) -> str:
     state = InterpreterState(input_text=input_text)
     for act in (ACT1, ACT2, ACT3, ACT4):
-        state = run_act(act, state, step_limit=STEP_LIMIT).state
+        state = run_act(act, state, step_limit=DOCUMENTATION_STEP_LIMIT).state
     return state.output_text()
 
 
