@@ -42,3 +42,8 @@ reason = "Branch head is exactly main and origin/main at e60e0fe7676f7e5e1e1f89e
 head = "3d6fb4bb6fa24900da45b4351906b75ef0b55735"
 disposition = "superseded"
 reason = "Its two Task-1 checkbox changes were independently replayed and evidenced on main in 6508c33243025121ca0dd4c4d974fed8f7d99012 (`docs: reconcile slice four baseline proof`); the original one-commit branch remains unmerged and is not a production merge candidate."
+
+[branches."implement-1e81aaa74e3e4962b0a90651bc27fc8c-codex-implement"]
+head = "c76ea5ce68aea088d58ebe287d8928bdab55114a"
+disposition = "integrated"
+reason = "Branch head is exactly main and origin/main at c76ea5ce68aea088d58ebe287d8928bdab55114a (`test: add slice 5 red contracts`); `git merge-base --is-ancestor` succeeds and both `git log main..branch` and `git diff --stat main...branch` are empty."
