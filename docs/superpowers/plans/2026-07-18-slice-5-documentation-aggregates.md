@@ -44,7 +44,7 @@
   the three strict-ready fixture scope assertions are `3 passed`; no IR or
   generated SPL changed.
 
-- [ ] **Step 4: Run the floor gate.** Run:
+- [x] **Step 4: Run the floor gate.** Run:
 
   ```bash
   uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_documentation_probes.py tests/test_mdtest.py -k 'Auto links or Backslash escapes or Code Spans' -q
@@ -53,6 +53,13 @@
   ```
 
   Expected: all pass; strict parity reports `summary: 3/3 byte-identical`; Syntax no longer crashes solely due to the old 500,000 limit.
+
+  Evidence (2026-07-18): pytest rejects the plan's literal space-containing
+  `-k` terms before collection, so the equivalent valid selector
+  `Auto or Backslash or (Code and Spans)` selected exactly the intended nine
+  contracts and reported `9 passed, 38 deselected`. Strict parity reports
+  `summary: 3/3 byte-identical`, and the module probe completes both Basics
+  and Syntax without a step-limit failure.
 
 - [ ] **Step 5: Checkpoint.** Commit only Task-1 files as `test: enable proven low-risk fixtures`; push with the required MCO trailers.
 
