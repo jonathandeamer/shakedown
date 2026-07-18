@@ -84,7 +84,12 @@
   release output, and raw release-versus-oracle contracts are now executable;
   no production or generated SPL changed.
 
-- [ ] **Step 2: Verify red.** Run `uv run pytest tests/test_act2_slice2.py tests/test_slice5_documentation_aggregates.py -k Tidyness -q`. Expected: failure naming `PASS_LISTS_BLOCK_START` and Hecate underflow.
+- [x] **Step 2: Verify red.** Run `uv run pytest tests/test_act2_slice2.py tests/test_slice5_documentation_aggregates.py -k Tidyness -q`. Expected: failure naming `PASS_LISTS_BLOCK_START` and Hecate underflow.
+
+  Evidence (2026-07-18): the exact command reports `2 failed, 28
+  deselected`. Both failures name Act II scene `PASS_LISTS_BLOCK_START` at
+  step 594 and a stack underflow while popping Hecate, matching the expected
+  red contract; no production or generated SPL changed.
 
 - [ ] **Step 3: Repair only the existing handoff.** In `src_ir/act2.py`, restore the consumed glyph to Hecate or redirect the existing quote/list continuation so the block-start route reads exactly once. Do not add a scene, token, selector, participant, or fixture-name conditional. Regenerate and assemble.
 
