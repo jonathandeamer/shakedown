@@ -139,6 +139,11 @@ _SLICE4_FIXTURES = {
     "Nested blockquotes",
     "Ordered and unordered lists",
 }
+_SLICE5_STRICT_READY_FIXTURES = {
+    "Auto links",
+    "Backslash escapes",
+    "Code Spans",
+}
 
 
 def _fixture_params() -> list[ParameterSet]:

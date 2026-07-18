@@ -1,6 +1,11 @@
 """Integration test for the Slice-5 documentation aggregates probe."""
 
-import pytest
+from __future__ import annotations
+
+import subprocess
+from pathlib import Path
+
+REPO = Path(__file__).parent.parent
 
 
 def test_dummy_prevent_empty_suite() -> None:
@@ -8,10 +13,14 @@ def test_dummy_prevent_empty_suite() -> None:
     pass
 
 
-@pytest.mark.integration
-@pytest.mark.skip(reason="Slice-5 documentation aggregates are pending implementation")
-def test_documentation_probes_run_successfully() -> None:
-    """Verify that the Slice-5 documentation aggregates probe executes successfully."""
-    from scripts.probe_documentation_aggregates import main
+def test_documentation_probes_module_runs_via_python_m() -> None:
+    """Verify the probe is importable and executable via ``python -m``."""
+    result = subprocess.run(
+        ["uv", "run", "python", "-m", "scripts.probe_documentation_aggregates"],
+        capture_output=True,
+        text=True,
+        cwd=REPO,
+        check=False,
+    )
 
-    assert main() == 0
+    assert result.returncode == 0, result.stderr
