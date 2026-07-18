@@ -52,12 +52,28 @@ def _normalize_images_empty_titles(text: str) -> str:
     return text.replace(' title=""', "")
 
 
+def _normalize_ordered_unordered_list_layout(text: str) -> str:
+    """Normalize the static corpus's nested tight-list line placement.
+
+    A single pass only collapses one nesting level; the corpus's deepest
+    "Nested" example is three levels deep, so apply to a fixed point.
+    """
+    while True:
+        collapsed = text.replace("<ul>\n<li>", "<ul><li>")
+        collapsed = collapsed.replace("</li>\n</ul></li>", "</li></ul></li>")
+        if collapsed == text:
+            return text
+        text = collapsed
+
+
 def _normalize_fixture_output(name: str, text: str) -> str:
     normalized = _normalize(text)
     if name == "Auto links":
         normalized = _decode_entities(normalized)
     if name == "Images":
         normalized = _normalize_images_empty_titles(normalized)
+    if name == "Ordered and unordered lists":
+        normalized = _normalize_ordered_unordered_list_layout(normalized)
     return normalized
 
 
@@ -93,6 +109,7 @@ _IMPLEMENTED_FIXTURES = {
     "Links, shortcut references",
     "Literal quotes in titles",
     "Nested blockquotes",
+    "Ordered and unordered lists",
     "Strong and em together",
     "Tabs",
 }
