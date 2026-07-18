@@ -508,3 +508,46 @@ SPL-facing gate and the existing Basics four-gate checkpoint. The expected
 strict result remains `summary: 1/1 byte-identical`. A need beyond A13's
 seven scenes, one private `saw_nonblank` value, 40-working/12-spare ledger,
 or Act-II-only scope is `- BLOCK[plan]:` with the smallest witness.
+
+## Amendment A14 (2026-07-18): Step 3 is both Setext/ATX and code-line, and the WIP regression is a debugging substep
+
+This amendment clears the generic Task-3-Step-3 planner-only blocker ("Need
+to understand the active plan and roadmap before implementing Step 3"). That
+blocker names no architecture question, so it is not a genuine halt: Step 3's
+own checklist text only describes the A9/A11/A12 Setext-and-ATX machine and
+never restates A13's separately-amended indented-code-payload requirement.
+Both are binding for Step 3 completion; A13 does not replace or supersede the
+Setext/ATX work, it is the checklist's missing second half. A future executor
+must not re-derive this from the amendment stack alone: the checklist text
+above is authoritative only together with A9, A11, A12, and A13 combined, and
+no further consolidation amendment is needed to read it that way.
+
+The working tree at this amendment's handoff already carries uncommitted
+Task-3 Step-3 progress: `src_ir/act2.py`, `tests/test_act2_slice4.py`,
+`tests/test_splc_validate.py`, `src/literary.toml`, and
+`src/20-act2-literary.toml` implement and test the A9/A11/A12 Setext/ATX
+machine (the `PASS_SETEXT_*`, `PASS_HEADER_TRAIL_*` pair-chain and spare-
+absence tests pass), and separately declare A13's three private constants
+(`_CODE_LINE_FLOOR`, `_CODE_LINE_REPLAY_FLOOR`, `_CODE_LINE_NONBLANK`) without
+yet adding A13's seven working scenes or any code-line contract. This is
+preserved, uncommitted, in-progress work, not a finished checkpoint: it must
+not be discarded.
+
+`uv run pytest tests/test_act2_slice4.py tests/test_splc_validate.py -q` at
+this handoff reports `51 failed, 26 passed`, and the failures are not
+confined to Setext/ATX/code-line — they include pre-existing full-list,
+top-level ATX, and nested-quote contracts from earlier shipped slices. Before
+any A13 scene is added, the next Step-3 session must treat driving this
+count to zero as the first Step-3 substep, using `superpowers:systematic-
+debugging` against the uncommitted `src_ir/act2.py` diff (`git diff
+src_ir/act2.py`) to find what the A9/A11/A12 changes disturbed in shared
+scenes or dispatch, rather than layering A13's scenes on top of a red
+baseline. No new token, selector, participant, or scene beyond the already-
+authorized A9/A11/A12/A13 ledgers is authorized to fix the regression; if the
+regression's root cause requires one, record `- BLOCK[plan]:` with the
+minimal failing witness and stop.
+
+`.agent/blockers.md`'s generic entry is cleared by this amendment. It is not
+a substitute for a real blocker: if the regression search in fact surfaces an
+architecture question, record a fresh, specific `- BLOCK[plan]:` line rather
+than reinstating the generic one.
