@@ -691,6 +691,44 @@ uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.
 uv run python -m scripts.splc && uv run python scripts/assemble.py
 ```
 
+## Amendment A12 (2026-07-18): countdown-preserving Setext transfer slot
+
+Amendment A11 correctly makes `PASS_SETEXT_PROVED_CLOSE` decide before a new
+dispatcher read, but it omitted the value-preservation rule for candidate
+finalization. Popping a title byte from Lady Macbeth changes her value from
+the input countdown to that byte. The minimal terminal witness therefore
+needs its countdown to travel with the existing title transfer.
+
+This amendment supersedes A11 only for the proved/raw Setext transfer rows.
+It adds no scene, TOML entry, spare draw, token, selector, participant pair,
+mode, compiler/validator change, or Act-III/IV role. The ledger remains **33
+working labels and 8 unused spares**. The saved countdown is one private
+stack slot, not a token or a new floor value:
+
+| Existing family | Binding countdown action |
+|---|---|
+| `PASS_SETEXT_FINALIZE` (Lady Macbeth + Hecate) | Before it pops Lady Macbeth's candidate floor or a title byte, push `val(Lady Macbeth)` onto Hecate, then push the existing finalized-title floor above it. Transfer title bytes exactly as A9/A11 prescribe. |
+| `PASS_SETEXT_REPLAY` at its finalized-title floor (Hecate + Puck) | Discard that floor, pop the immediately exposed saved countdown from Hecate, and assign it to Puck's value. This removes the private slot before unread source becomes visible. Select the existing raw/equals/dash replay path without overwriting Puck's value. |
+| `PASS_SETEXT_BRIDGE` seed (Puck + Horatio) | Before moving a title byte from Puck, push `val(Puck)` onto Horatio, then push the existing Horatio restore floor above it. The ordinary bridge transfer places title bytes above that floor. |
+| `PASS_SETEXT_CLOSE`, `PASS_SETEXT_EQUALS_CLOSE`, and `PASS_SETEXT_DASH_CLOSE` (Lady Macbeth + Horatio) | Restore title bytes through the Horatio floor, discard it, pop the immediately exposed saved countdown from Horatio, and assign it back to Lady Macbeth before raw dispatch or `PASS_SETEXT_PROVED_CLOSE`. |
+
+`PASS_SETEXT_PROVED_CLOSE` then remains exactly A11's two-participant,
+no-`_read()` gate: push `TEXT_END` once, go to `PASS_LISTS_DONE` at zero, and
+go to `PASS_LISTS_BLOCK_START` only when positive. The raw close similarly
+restores the countdown before dispatch. Hecate has had the saved slot removed,
+so the positive path leaves its next source glyph untouched.
+
+Before production behavior, extend A11's focused contracts with an observable
+transfer trace (or equivalent stack/value observer) for both
+`Markdown: Basics\n================\n` and that witness followed by
+`After.\n`. The terminal trace must restore zero and reach
+`PASS_LISTS_DONE` with no later `PASS_LISTS_BLOCK_START`; the positive trace
+must restore the remaining count and let the dispatcher consume literal `A`
+once. Retain A11's pair-chain, eight-spare absence, three-character rejection,
+and ATX-suffix contracts, then run A11's two exact commands followed by the
+plan's Global Constraints SPL-facing gate. A need for a second saved slot, new
+mode, or new scene remains `- BLOCK[plan]:` with the smallest witness.
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,
