@@ -15,7 +15,7 @@
 - Edit generated acts only via `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`. Never hand-edit generated `src/*.spl` or `shakedown.spl`.
 - Do not change expected mdtest files, add aggregate-specific normalizers, invoke Markdown.pl at runtime, or add a wrapper-side Markdown branch. `Auto links` is the sole entity-normalized mdtest comparator; strict parity is always raw bytes.
 - Per the accepted design's Amendment A1, the unchanged 133-byte `Tidyness.xhtml` is a legacy corpus artifact, not the expected output for deterministic parity.  Tidyness test evidence obtains its expected bytes from the installed local Markdown.pl only; this is test-time evidence, never production runtime behavior, and adds no normalizer.
-- New Act-II labels are limited to design Amendment A11's 33 working labels and eight unused spares.  A9's state rail owns mutable underline classification on Macbeth; Horatio is only the replay buffer.  A11 additionally authorizes Puck only as the private ATX trailing-buffer carrier and its private bit; no `_read()` scene gains a third participant.  The eight guard titles are spares, never scenes.  Another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
+- New Act-II labels are limited to design Amendments A11–A13's 40 working labels and 12 unused spares. A9's state rail owns mutable underline classification on Macbeth; Horatio is the Setext replay buffer and A13's code-line replay buffer. A11 authorizes Puck only as the private ATX trailing-buffer carrier and its private bit; A13 additionally authorizes Puck's private code-line floor and `saw_nonblank` value. Lady Macbeth/Hecate remains the sole code-line `_read()` pair; no scene gains a third participant. The 12 guard titles are spares, never scenes. Another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
 - Every SPL change runs: `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
 - Every SPL change also preserves the release baseline with `uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`.
 
@@ -132,7 +132,7 @@
 
 ### Task 3: Make Markdown Documentation — Basics a strict aggregate gate
 
-**Files:** Modify `src_ir/act2.py`, `src/20-act2-literary.toml`, `tests/test_act2_slice4.py`, `tests/test_slice5_documentation_aggregates.py`, `tests/test_mdtest.py`; regenerate `src/20-act2-block.spl` and `shakedown.spl`.
+**Files:** Modify `src_ir/act2.py`, `src/20-act2-literary.toml`, `tests/test_act2_slice2.py`, `tests/test_act4_slice2.py`, `tests/test_act2_slice4.py`, `tests/test_slice5_documentation_aggregates.py`, `tests/test_splc_validate.py`, `tests/test_mdtest.py`; regenerate `src/20-act2-block.spl` and `shakedown.spl`.
 
 **Interfaces:** Act II emits existing `HEADER(level, text)` for Setext levels 1/2 and existing `RAW_HTML_HASH(text)` for top-level generic raw HTML; Act III preserves their declared payload/text and Act IV emits the existing header/raw paths.
 
@@ -180,7 +180,7 @@
 
 - [ ] **Step 1: Turn the Syntax diff into a finite category inventory.** Add a helper test that compares real release bytes with the local oracle and records the first difference plus the minimal contiguous source witness. Seed it with the observed categories: raw top-level HTML (`h2`/`h3` with attributes), nested list close ordering, multi-definition reference resolution, and paragraph/block separators. Require each category to have a fast-IR, release, and strict oracle assertion before changing production behavior.
 
-- [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's 25 working Setext labels or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
+- [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's amended 40-working/12-spare Act-II ledger or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
 
 - [ ] **Step 3: Run the Syntax four-gate checkpoint.** Run:
 
@@ -230,7 +230,7 @@
 
 ## Plan self-review
 
-Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendment A9's 25-working/five-spare Act-II Setext pool; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
+Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendments A11–A13's 40-working/12-spare Act-II ledger; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
 
 ## Amendment A1 (2026-07-18): Tidyness raw-oracle evidence reconciliation
 
@@ -481,3 +481,30 @@ three-character rejection, and suffix contracts; run A11's two focused
 commands and the Global Constraints SPL-facing gate before the existing Basics
 checkpoint. Any need for a second slot, new mode, or new scene is
 `- BLOCK[plan]:` with the smallest witness.
+
+## Amendment A13 (2026-07-18): normalize blank indented-code payload lines
+
+Design Amendment A13 clears the current Task-3-Step-3 planner-only blocker.
+The remaining Basics witness is the general indented-code payload
+`    <blockquote>\n        <p>One.</p>\n        \n        <p>Two.</p>\n    </blockquote>\n`:
+after mandatory-indent removal, Markdown.pl emits its spaces-only physical
+line as `"\n"`, while the current `CODE_BLOCK` leaf preserves `"    \n"`.
+The amendment is Act-II-only and preserves the existing `CODE_BLOCK` token
+grammar and Acts III/IV opaque-copy/render paths.
+
+Before editing `src_ir/act2.py`, install A13's exact seven working and four
+unused-spare TOML entries. Add the exact witness plus four-space-only,
+eight-space-only, and trailing-spaces-on-a-nonblank-line contracts: each must
+check decoded payload, fast output, release output, and raw installed-local
+Markdown.pl bytes. Preserve the existing Code Blocks and Tabs fixture payload
+contracts; add the A13 seven-scene pair-chain and all-12-spares absence
+assertions. Implement only A13's one-line Puck buffer / Horatio
+reverse-replay choreography, with Hecate/Lady Macbeth as the sole reader;
+then regenerate and assemble. Do not modify the existing Setext, ATX,
+raw-HTML, list, token, span, or renderer routes.
+
+Run the two exact A13 commands in the design, then the Global Constraints
+SPL-facing gate and the existing Basics four-gate checkpoint. The expected
+strict result remains `summary: 1/1 byte-identical`. A need beyond A13's
+seven scenes, one private `saw_nonblank` value, 40-working/12-spare ledger,
+or Act-II-only scope is `- BLOCK[plan]:` with the smallest witness.

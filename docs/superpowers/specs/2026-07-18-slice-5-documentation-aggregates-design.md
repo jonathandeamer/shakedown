@@ -729,6 +729,120 @@ and ATX-suffix contracts, then run A11's two exact commands followed by the
 plan's Global Constraints SPL-facing gate. A need for a second saved slot, new
 mode, or new scene remains `- BLOCK[plan]:` with the smallest witness.
 
+## Amendment A13 (2026-07-18): normalize blank indented-code payload lines
+
+The remaining Basics mismatch is not a header-state failure. The earliest
+raw-byte difference is in the indented `Output:` example: after Act II removes
+the mandatory four-space code prefix, it currently retains residual whitespace
+on spaces-only payload lines. Markdown.pl emits a bare
+newline for any code payload line whose remaining content is horizontal
+whitespace only. It retains every byte on a line containing any non-space,
+non-tab glyph, including trailing spaces. This is a general `CODE_BLOCK`
+payload rule, not a raw-HTML, blockquote, aggregate, or fixture-specific path.
+
+The implementation is confined to Act II's existing indented-code scanner.
+It keeps `CODE_BLOCK`'s existing leaf grammar (`[CODE_BLOCK, payload...,
+TEXT_END]`) and leaves Acts III/IV unchanged. No Markdown.pl call, output
+rewrite, normalizer, token, selector, wrapper branch, or fixture-name branch
+is authorized.
+
+The scanner must buffer one post-indent physical line before emitting it:
+
+1. `PASS_CODE_LINE_CAPTURE_OPEN` seeds Puck's private line floor and clears
+   Puck's private `saw_nonblank` value; `PASS_CODE_LINE_CAPTURE_SCAN` is the
+   sole `_read()` loop for the post-indent line. It retains every non-newline
+   glyph above Puck's floor and sets `saw_nonblank` exactly when a glyph is
+   neither space nor tab.
+2. At newline, an all-horizontal-whitespace line enters
+   `PASS_CODE_LINE_BLANK_DROP`, which discards the retained glyphs through its
+   Puck floor. A nonblank line enters the two-buffer route:
+   `PASS_CODE_LINE_KEEP_REVERSE_OPEN` seeds Horatio's private replay floor,
+   `PASS_CODE_LINE_KEEP_REVERSE_TRANSFER` moves the Puck payload to Horatio,
+   and `PASS_CODE_LINE_KEEP_REPLAY` restores it to Lady Macbeth in source
+   order. The transfer path is required so buffering never reverses payload
+   bytes.
+3. `PASS_CODE_LINE_CLOSE` emits exactly one newline after either route and
+   returns to the existing code-indent gate. It must not read source. The
+   existing code-close/EOF behavior remains the owner of terminating the leaf;
+   a partial final nonblank line and all current Code Blocks/Tabs contracts
+   remain byte-identical.
+
+The exact pair ledger is binding. It keeps Lady Macbeth/Hecate as the only
+source-reading pair and has no three-character scene:
+
+| Label | Stage pair / anchor | Responsibility |
+|---|---|---|
+| `PASS_CODE_LINE_CAPTURE_OPEN` | Hecate + Puck / Hecate | Seed Puck's line floor; clear `saw_nonblank`; no read. |
+| `PASS_CODE_LINE_CAPTURE_SCAN` | Hecate + Puck / Hecate | Sole post-indent `_read()` loop; capture one glyph and classify it. |
+| `PASS_CODE_LINE_BLANK_DROP` | Hecate + Puck / Hecate | Drop horizontal-whitespace payload through Puck's floor. |
+| `PASS_CODE_LINE_KEEP_REVERSE_OPEN` | Puck + Horatio / Puck | Seed Horatio's replay floor. |
+| `PASS_CODE_LINE_KEEP_REVERSE_TRANSFER` | Puck + Horatio / Puck | Move buffered glyphs Puck-to-Horatio. |
+| `PASS_CODE_LINE_KEEP_REPLAY` | Horatio + Lady Macbeth / Horatio | Restore nonblank payload bytes in source order. |
+| `PASS_CODE_LINE_CLOSE` | Puck + Lady Macbeth / Lady Macbeth | Append one newline and re-enter the existing code-indent gate. |
+
+The A11/A12 Setext and ATX choreography is otherwise unchanged. This
+amendment adds seven working titles and four unused spares, so the Slice-5
+Act-II ledger becomes **40 working labels and 12 unused spares**. The complete
+new controlled surfaces are:
+
+```toml
+# Slice 5 Act-II A13 code-line working pool (7 additional labels)
+[scenes.PASS_CODE_LINE_CAPTURE_OPEN]
+title = "Hecate opens Puck's chamber for one measured code line."
+pattern = "cross_character"
+[scenes.PASS_CODE_LINE_CAPTURE_SCAN]
+title = "Hecate gives Puck each mark of the measured code line."
+pattern = "cross_character"
+[scenes.PASS_CODE_LINE_BLANK_DROP]
+title = "Hecate lets Puck dismiss an empty measured line."
+pattern = "cross_character"
+[scenes.PASS_CODE_LINE_KEEP_REVERSE_OPEN]
+title = "Puck sets Horatio's floor for the kept code line."
+pattern = "cross_character"
+[scenes.PASS_CODE_LINE_KEEP_REVERSE_TRANSFER]
+title = "Puck entrusts Horatio each kept code mark."
+pattern = "cross_character"
+[scenes.PASS_CODE_LINE_KEEP_REPLAY]
+title = "Horatio restores each kept code mark to Lady Macbeth."
+pattern = "cross_character"
+[scenes.PASS_CODE_LINE_CLOSE]
+title = "Puck grants Lady Macbeth the code line's final measure."
+pattern = "cross_character"
+
+# Slice 5 Act-II A13 spare pool (4; all unused)
+[scenes.PASS_CODE_LINE_RETURN_GUARD]
+title = "The measured code line keeps one guarded return."
+pattern = "bare_statement"
+[scenes.PASS_CODE_LINE_FLOOR_GUARD]
+title = "The code chamber keeps one guarded floor."
+pattern = "bare_statement"
+[scenes.PASS_CODE_LINE_REPLAY_GUARD]
+title = "The kept code mark keeps one guarded passage."
+pattern = "bare_statement"
+[scenes.PASS_CODE_LINE_CLOSE_GUARD]
+title = "The final code measure keeps one guarded seal."
+pattern = "bare_statement"
+```
+
+Before changing production behavior, add focused contracts for the exact
+aggregate witness, a four-space-only code line, an eight-space-only code line,
+and a nonblank line with trailing spaces. Each contract asserts the decoded
+`CODE_BLOCK` payload, fast Act-IV output, release output, and installed-local
+Markdown.pl bytes. Retain the Code Blocks and Tabs payload contracts, assert
+the seven working scenes' pair chain, and assert all twelve aggregate spare
+labels are absent from `ACT2.scenes`. Then run:
+
+```bash
+uv run pytest tests/test_act2_slice2.py tests/test_act4_slice2.py tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py tests/test_splc_validate.py -k 'code_block or code_line or Basics or validator or Code or Tabs' -q
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+After those commands are green, run Task 3's existing Basics four-gate
+checkpoint unchanged. Any need for an eighth code-line scene, a second
+private line state, a token/role change, Act III/IV change, or an altered
+nonblank payload is `- BLOCK[plan]:` with this smallest witness.
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,
