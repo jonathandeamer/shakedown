@@ -20,13 +20,13 @@ from tests.test_act4_slice4 import (
     INSTALLED_ORACLE_NESTED_BLOCKQUOTES,
     NESTED_QUOTE_BLANK_AT_OUTER_MARKER,
     NESTED_QUOTE_BLANK_AT_OUTER_MARKER_HTML,
+    _normalize_slice4_fixture_contract,
 )
 from tests.test_mdtest import (
     _FIXTURES_BY_NAME,
     _IMPLEMENTED_FIXTURES,
     _SLICE4_FIXTURES,
     BINARY,
-    _normalize_fixture_output,
 )
 
 _PENDING_FIXTURES = sorted(set(_FIXTURES_BY_NAME) - _IMPLEMENTED_FIXTURES)
@@ -55,9 +55,9 @@ def _release_binary_fixture_contract(name: str) -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    assert _normalize_fixture_output(name, result.stdout) == _normalize_fixture_output(
-        name, expected_path.read_text()
-    )
+    assert _normalize_slice4_fixture_contract(
+        name, result.stdout
+    ) == _normalize_slice4_fixture_contract(name, expected_path.read_text())
 
 
 def test_advanced_html_release_binary_contract() -> None:
