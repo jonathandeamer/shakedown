@@ -92,7 +92,15 @@
   step 594 and a stack underflow while popping Hecate, matching the expected
   red contract; no production or generated SPL changed.
 
-- [ ] **Step 3: Repair only the existing handoff.** In `src_ir/act2.py`, restore the consumed glyph to Hecate or redirect the existing quote/list continuation so the block-start route reads exactly once. Do not add a scene, token, selector, participant, or fixture-name conditional. Regenerate and assemble.
+- [x] **Step 3: Repair only the existing handoff.** In `src_ir/act2.py`, restore the consumed glyph to Hecate or redirect the existing quote/list continuation so the block-start route reads exactly once. Do not add a scene, token, selector, participant, or fixture-name conditional. Regenerate and assemble.
+
+  Evidence (2026-07-18): removed the duplicate carrier Recall from
+  `PASS_QUOTE_EOF_CLOSE`, leaving the existing quote/list continuation to
+  consume the staged glyph exactly once. The focused Tidyness contract reports
+  `2 passed, 28 deselected`; regeneration and assembly preserve a one-line IR
+  repair plus its generated outputs; and the mandatory SPL-facing gate reports
+  `206 passed`. No scene, token, selector, participant, fixture-name
+  conditional, or literary surface was added.
 
 - [ ] **Step 4: Run the regression gate.** Run:
 

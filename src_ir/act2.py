@@ -597,7 +597,6 @@ ACT: Act = act(
         ),
         scene(
             "PASS_QUOTE_EOF_CLOSE",
-            pop(LADY_MACBETH, recall="kept_measure"),
             let(PUCK, const(0)),
             goto("PASS_QUOTE_NEST_REPLAY"),
             companion=PUCK,
