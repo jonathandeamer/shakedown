@@ -306,6 +306,136 @@ Any need for a second new working scene, a change to `PASS_LISTS_FULL_GUARD`'s
 HR-collapse path, an Act-III/IV change, a token/grammar change, or consumption
 of an A5 spare beyond this amendment's scope is `BLOCK[plan]`.
 
+## Amendment A7 — make the loose outdent loop to the ancestor and never pop the frame sentinel (2026-07-18)
+
+Task 4 Step 2's remaining blocker is a Macbeth frame-stack underflow inside
+`PASS_LISTS_CLOSE_ALL` that appears only when the ordered-list `Multiple
+paragraphs` subsection precedes the fixture-tail witness
+(`*\tthis\n\n\t*\tsub\n\n\tthat\n`). Each fragment passes alone; the combined
+suffix underflows. Static inspection of the shipped Act-II source
+(`src_ir/act2.py`) locates two divergences between the A6 authorization and the
+A6 implementation, both inside the loose-outdent cluster and both fixable
+without any new budget:
+
+1. **The close does not loop.** A6 authorized `PASS_LISTS_LOOSE_OUTDENT` to
+   close one frame, decrement `MACBETH`, and "loop back to itself while `PUCK`
+   remains less than `MACBETH`," stopping at parity. The shipped code instead
+   routes `PASS_LISTS_LOOSE_OUTDENT` → `PASS_LISTS_LOOSE_OUTDENT_CLOSE` →
+   `PASS_LISTS_LOOSE_OUTDENT_JOIN`, and `_CLOSE` jumps to `_JOIN` after closing
+   exactly one frame. It never re-tests `PUCK` against `MACBETH`, so a
+   continuation that must cross more than one open frame closes only the
+   innermost one and leaves the surplus frames open.
+2. **The close has no frame-sentinel floor.** `PASS_LISTS_SIB_OUTDENT` and
+   `PASS_LISTS_BSIB_OUTDENT` are both reached only under `MACBETH > 1`, so their
+   `pop(MACBETH)` + `let(MACBETH, MACBETH - 1)` idiom can never disturb the
+   `_END` sentinel that seats the bottom of Macbeth's open-frame stack.
+   `PASS_LISTS_LOOSE_OUTDENT` fires on the bare test `PUCK < MACBETH` with no
+   `MACBETH > 1` floor. When the ordered `Multiple paragraphs` subsection has
+   already unwound the frame depth to its floor and a following loose outdent
+   fires there, `_CLOSE` pops and overwrites the `_END` sentinel, so the later
+   `PASS_LISTS_CLOSE_ALL` walk never sees `_END` and pops past the bottom of the
+   stack — the reported underflow.
+
+This amendment authorizes correcting the **existing** loose-outdent cluster
+(`PASS_LISTS_LOOSE_OUTDENT`, `PASS_LISTS_LOOSE_OUTDENT_CLOSE`,
+`PASS_LISTS_LOOSE_OUTDENT_JOIN`) to honor A6's already-reserved
+loop-and-floor semantics:
+
+- After `_CLOSE` closes one frame and decrements `MACBETH`, it re-enters
+  `PASS_LISTS_LOOSE_OUTDENT` (the loop A6 authorized) rather than jumping
+  straight to the join. `PASS_LISTS_LOOSE_OUTDENT` continues to route to
+  `PASS_LISTS_LOOSE_OUTDENT_CLOSE` while `PUCK < MACBETH` and falls through to
+  `PASS_LISTS_LOOSE_OUTDENT_JOIN` → `PASS_LISTS_BLANK_JOIN` at parity, exactly
+  as A6 specified.
+- `PASS_LISTS_LOOSE_OUTDENT` gains the same frame-floor discipline that already
+  guards `PASS_LISTS_SIB_OUTDENT` and `PASS_LISTS_BSIB_OUTDENT`: it closes a
+  frame only while the open-frame depth is above the floor, so the loop can
+  never pop or overwrite Macbeth's `_END` sentinel. At the floor it hands off to
+  the existing join without a further close. The single-source of the open-frame
+  depth (`MACBETH`) is preserved; no `let(MACBETH, ...)` may write over the
+  sentinel.
+
+This is a control-flow and guard correction of scenes that already exist. It
+adds **no** new working scene, token, participant, structural role, Act-III/IV
+surface, or `src/literary.toml` entry, and it consumes **none** of A5's five
+reserved `PASS_LISTS_INDENT_*_GUARD` spares. Because no scene is added, the
+22-working / 5-spare ledger from A6 is unchanged and no controlled prose is
+reserved here. `PASS_LISTS_FULL_GUARD`'s HR-collapse path stays untouched.
+
+Required focused evidence extends Task 4 Step 2 with:
+
+1. A red-then-green fast-IR **and** release contract for the combined repro —
+   the ordered `Multiple paragraphs` subsection immediately followed by the
+   fixture-tail witness — that reproduces the `PASS_LISTS_CLOSE_ALL` underflow
+   before the fix and produces strict Markdown.pl bytes after it.
+2. A frame-floor assertion in `tests/test_act2_frame_floors.py` proving Macbeth's
+   `_END` sentinel survives a loose outdent that unwinds to the floor.
+3. The three Amendment A4 contracts, the two Amendment A5 contracts, and the two
+   Amendment A6 contracts remain green unchanged, proving the loop and floor
+   guard do not alter the single-level or equal-depth paths.
+
+Stopping condition unchanged: if, after this reserved-scope correction, the full
+`Ordered and unordered lists` fixture still cannot validate under the frozen
+grammar without a new token, participant, working scene, structural role,
+Act-III/IV change, or compiler/validator change, that is an architecture halt —
+record it as `BLOCK[plan]` with the exact operator decision required and stop,
+per the A6 escape clause. Do not add budget locally.
+
+## Amendment A8 — count detabbed blank-line indentation through the existing depth guard (2026-07-18)
+
+A7 removes the frame-stack crash but exposes the remaining output defect in
+the full-list fixture: Act I detabs every source tab before Act II receives it.
+Consequently, a blank-then-tab-indented continuation such as
+`1.\tx\n\n\ty\n` enters `PASS_LISTS_BLANK_INDENT_1` through
+`PASS_LISTS_BLANK_INDENT_4` as four literal spaces.  The ordinary indented-line
+path already represents each four-space group as one list-depth unit: after
+its fourth-space scan it enters `PASS_LISTS_INDENT_DEPTH_GUARD`, which alone
+increments `PUCK` and then reuses `PASS_LISTS_INDENT_CLASSIFY_FOUR`.  The
+blank-line path currently bypasses that existing guard, leaving `PUCK == 0`
+where the open depth is `MACBETH == 1`; A6's `PUCK < MACBETH` test then
+mistakes a same-depth continuation for an outdent.
+
+This amendment authorizes one existing-scene handoff only.  After
+`PASS_LISTS_BLANK_INDENT_4` has read the glyph following the fourth leading
+space, it must enter the existing `PASS_LISTS_INDENT_DEPTH_GUARD` rather than
+directly entering `PASS_LISTS_INDENT_CLASSIFY_FOUR`.  The existing guard adds
+exactly one to `PUCK`, preserves the already-read glyph in Hecate, and reaches
+the unchanged classifier.  Repeated four-space groups retain the existing
+classifier loop and therefore add one unit per group.  Literal-tab input keeps
+the A5 `PASS_LISTS_INDENT_TAB` / `PASS_LISTS_INDENT_TAB_READ` route unchanged.
+
+The handoff is deliberately shared with the existing marker classifier: after
+the depth increment, `PASS_LISTS_INDENT_FOUR_ROUTE_UL` and
+`PASS_LISTS_INDENT_ORDERED_FOUR` continue to distinguish an equal-depth
+sibling from a strictly deeper nested marker using their existing `PUCK` versus
+`MACBETH` comparison.  No new scene, token, participant, structural role,
+frame representation, Act III/IV branch, compiler/validator change, TOML
+surface, or A5 spare is authorized.  The list ledger remains 22 working labels
+and five reserved spares.
+
+Task 4 Step 2 must first add red contracts, then make them green, for all of
+the following:
+
+1. Fast IR and release output for `1.\tx\n\n\ty\n` must retain one ordered
+   list/item with two paragraph leaves and exactly match the local
+   Markdown.pl bytes:
+   `<ol>\n<li><p>x</p>\n\n<p>y</p></li>\n</ol>\n`.
+2. The corresponding unordered witness `*\ta\n\n\tb\n` must have one loose
+   item with two paragraphs and strict Markdown.pl bytes, proving the fix is
+   not ordered-marker-specific.
+3. `1.\ta\n\n\t* b\n` must retain its existing loose outer ordered item and
+   nested tight unordered list, proving that the shared post-four-space
+   classifier still selects the established marker route.
+4. The A4/A5/A6/A7 focused contracts, all six Spike-A list cases, all four
+   Spike-B nested-block cases, `loose_second_paragraph`, and
+   `nested_one_level` interpreter/token-dump baselines remain unchanged; the
+   full fixture's fast-IR, release-binary, strict-parity, generated-fragment,
+   parser, validator, literary, Amps, and full-suite gates must pass.
+
+If this one-handoff correction needs any further scene, a different register
+owner, changed marker routing, token/grammar change, Act-III/IV work, or a
+new controlled surface, record `- BLOCK[plan]:` with that exact need and stop.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
