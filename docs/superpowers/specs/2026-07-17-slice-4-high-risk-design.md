@@ -699,6 +699,74 @@ another working scene, use of the sixth spare, a recursive boundary counter,
 token/grammar change, participant, or Act-III/IV work is `BLOCK[plan]` with
 the exact witness; stop rather than widening this adapter again.
 
+## Amendment A12 — replay the preserved immediate segment before recognizing the outer stop marker (2026-07-18)
+
+A11 correctly retains the complete direct nested-list segment while the depth
+scan exposes the outer `Second:` item. Its claim that the unchanged
+`PASS_CONTAINERS_CLOSE` transaction can consume that saved segment is false:
+the saved suffix still contains the direct nested `ITEM_START` sentinels, and
+the transaction treats the first of those as the outer stop marker. That
+prematurely routes to the existing restore path, corrupting the explicit close
+sequence and underflowing Act IV at `SCRIBE_ITEM_CLOSE`.
+
+This amendment keeps A11's structural, non-counting preservation but gives
+the existing close transaction the matching bounded replay mode. It
+authorizes one additional private selector,
+`_LOOSE_COMMIT_SIB_HECATE_CLOSE_TAIL`, and exactly two Act-II working scenes:
+`PASS_CONTAINERS_CLOSE_SKIP_SUBTREE` and
+`PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE`. There is no token, token-role,
+participant, Act-III, Act-IV, compiler, validator, or grammar change.
+
+| Label / selector | Required effect | Exit |
+|---|---|---|
+| `PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE` | After copying the immediate nested `LIST_OPEN`, change `HORATIO` from `_LOOSE_COMMIT_SIB_HECATE_TAIL` to `_LOOSE_COMMIT_SIB_HECATE_CLOSE_TAIL`; do not select ordinary sibling mode here. | Existing `PASS_CONTAINERS_DEPTH` |
+| `_LOOSE_COMMIT_SIB_HECATE_CLOSE_TAIL` | Lets the generic depth scan stop at the outer `ITEM_START`, then selects the bounded close replay. | Existing `PASS_CONTAINERS_EOF` / `PASS_CONTAINERS_CLOSE` |
+| `PASS_CONTAINERS_CLOSE_SKIP_SUBTREE` | Before the generic `ITEM_START` stop test, copy each popped saved-suffix value back to Lady Macbeth. Direct nested `ITEM_START` values are ordinary data in this mode. On the one immediate `LIST_OPEN`, enter the close helper. | itself or close helper |
+| `PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE` | After replaying that `LIST_OPEN`, set `HORATIO` to existing `_LOOSE_COMMIT_SIB` and return to `PASS_CONTAINERS_CLOSE`. | Existing close transaction |
+| `_LOOSE_COMMIT_SIB` | The next popped `ITEM_START` is the outer stop marker and takes the unchanged `PASS_CONTAINERS_CLOSE_ROUTE` / restore / sibling-close path. | Existing transaction |
+
+`PASS_CONTAINERS_CLOSE` must test
+`_LOOSE_COMMIT_SIB_HECATE_CLOSE_TAIL` before its existing `ITEM_START` test.
+The replay scene pushes the popped value to Lady Macbeth unchanged, emits no
+grammar token, and has no close-frame effect. It may change mode only on the
+first immediate `LIST_OPEN`; another `LIST_OPEN` before that boundary is a
+recursive nested-tail witness and remains `BLOCK[plan]`. The depth-side close
+scene is the sole writer of the close-tail selector; the new close-side helper
+is the sole writer restoring `_LOOSE_COMMIT_SIB`. Thus the outer `ITEM_START`
+is not routed through the old stop condition until every direct nested sentinel
+has been replayed.
+
+The list ledger is 28 working labels. `ceil(28 * 20%) = 6`, so A11's five A5
+guards plus `PASS_LISTS_INDENT_TAIL_GUARD` remain the six unused spares; this
+amendment does not draw a spare. Add the following controlled surfaces before
+their IR labels are used:
+
+```toml
+# Amendment A12 immediate nested-list replay through the close transaction
+[scenes.PASS_CONTAINERS_CLOSE_SKIP_SUBTREE]
+title = "Macbeth returns each inner seal before the elder rank."
+pattern = "scene_of_character"
+
+[scenes.PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE]
+title = "Macbeth restores the elder rank after the inner host."
+pattern = "scene_of_character"
+```
+
+Task 4 Step 2 must first make the A11 three-item and four-item witness tests
+red against the current close-stop behavior, then make them green in fast IR,
+the release binary, and strict local Markdown.pl output. Their decoded streams
+must retain every direct nested item tight and in source order, then close
+`Second:` once and open loose `Third` once. Add narrow source/route assertions
+that (1) only `PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE` writes the close-tail
+selector, (2) only `PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE` restores
+`_LOOSE_COMMIT_SIB`, and (3) ordinary `1.\tItem 1\n\n\tItem 2\n` enters none
+of A10/A11/A12 helpers. Keep every A4–A11 witness, all immutable Spike-A/B
+streams, generated fragment/parser/validator/literary gates, Amps proof, and
+strict full-list gate unchanged. A third close replay scene, a seventh spare,
+a recursive boundary counter, another nested `LIST_OPEN` before the immediate
+boundary, or any broader surface is `BLOCK[plan]` with the exact witness
+followed by a clean stop.
+
 ## Decision
 
 Slice 4 extends the existing four-act IR parser and its explicit token grammar;
