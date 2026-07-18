@@ -27,6 +27,7 @@ PRE_EXISTING_CODES = {
 
 PRE_EXISTING_ARITY = {
     tokens.PARA: (0, True),
+    tokens.HEADER: (1, True),
     tokens.HR: (0, False),
     tokens.LIST_OPEN: (1, False),
     tokens.LIST_ITEM: (1, False),

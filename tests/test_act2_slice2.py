@@ -107,9 +107,7 @@ def test_hr_candidate_fallback_preserves_unordered_list_handoff() -> None:
         Push(Char.LADY_MACBETH, Const(1)),
         Push(Char.MACBETH, Const(1)),
         Let(Char.MACBETH, Const(1)),
-        Push(Char.LADY_MACBETH, Const(tokens.ITEM_START)),
-        Push(Char.LADY_MACBETH, Const(1)),
-        Goto("PASS_LISTS_ITEM_GLYPH"),
+        Goto("PASS_LISTS_ITEM_BEGIN_TIGHT"),
     )
     assert not any(isinstance(op, Pop) for op in handoff.ops)
 

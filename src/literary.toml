@@ -204,6 +204,15 @@ v2 = "a noble hero"
 vneg2 = "a cursed wolf"
 vneg1 = "a wolf"
 v0 = "nothing"
+vneg10 = "the sum of a miserable vile cursed wolf and a cursed wolf"
+vneg11 = "the sum of a miserable vile cursed wolf and the sum of a cursed wolf and a wolf"
+vneg12 = "the sum of a miserable vile cursed wolf and a vile cursed wolf"
+vneg13 = "the sum of a miserable vile cursed wolf and the sum of a vile cursed wolf and a wolf"
+vneg14 = "the sum of a miserable vile cursed wolf and the sum of a vile cursed wolf and a cursed wolf"
+vneg15 = "the sum of a rotten miserable vile cursed wolf and a cat"
+vneg16 = "a rotten miserable vile cursed wolf"
+vneg17 = "the sum of a rotten miserable vile cursed wolf and a wolf"
+vneg18 = "the sum of a rotten miserable vile cursed wolf and a cursed wolf"
 [characters.lady_macbeth.soft_variation]
 greater_than = ["more bold than", "bigger than"]
 less_than = ["worse than", "more villainous than"]

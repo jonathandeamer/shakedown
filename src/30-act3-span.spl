@@ -37,7 +37,13 @@ Puck:
  If so, let us proceed to scene @TRAVERSE_OPEN_TEXT.
 
 Juliet:
- Are you as gentle as a furry black cat?
+ Are you as gentle as a sweet rose?
+
+Puck:
+ If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_TEXT.
+
+Juliet:
+ Are you as fair as a furry black cat?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_NEXT.
@@ -49,7 +55,7 @@ Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_NEXT.
 
 Juliet:
- Are you as fair as the sum of a little furry black cat and a cat?
+ Are you as gentle as the sum of a little furry black cat and a cat?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_CODE_TEXT.
@@ -74,6 +80,18 @@ Puck:
 
 Juliet:
  Let us return to scene @TRAVERSE_NEXT_TOKEN.
+
+
+                    Scene @TRAVERSE_COPY_PAYLOAD_TEXT: @LIT.scenes.TRAVERSE_COPY_PAYLOAD_TEXT.title
+
+Juliet:
+ @LIT.characters.juliet.recall.kept_charge
+
+Puck:
+ Remember myself.
+
+Juliet:
+ Let us proceed to scene @TRAVERSE_OPEN_TEXT.
 
 
                     Scene @TRAVERSE_COPY_CODE_TEXT: @LIT.scenes.TRAVERSE_COPY_CODE_TEXT.title
