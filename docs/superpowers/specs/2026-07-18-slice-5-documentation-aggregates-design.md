@@ -51,7 +51,7 @@ classification, equals emit, dash emit, failed-underline requeue,
 Lady-Macbeth-to-Hecate finalization, Hecate-to-Puck replay, Puck-to-Horatio
 bridge, and Lady-Macbeth close);
 existing raw-HTML/header scenes are amended in place. The four-title spare
-minimum remains greater than 20% of nine. Add a working entry only with the
+minimum remains greater than 20% of ten. Add a working entry only with the
 identically named IR scene; do not draw a spare without a plan amendment.
 
 ```toml
