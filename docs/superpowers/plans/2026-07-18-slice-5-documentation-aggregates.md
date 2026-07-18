@@ -145,7 +145,15 @@
   fast assertion; no production or generated SPL changed. Ruff check and
   format-check pass for both changed test files.
 
-- [ ] **Step 2: Verify red.** Run `uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or raw_html or closing_hash or Basics' -q`. Expected: failures demonstrate the current paragraph/escaped-HTML/trailing-hash behavior.
+- [x] **Step 2: Verify red.** Run `uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or raw_html or closing_hash or Basics' -q`. Expected: failures demonstrate the current paragraph/escaped-HTML/trailing-hash behavior.
+
+  Evidence (2026-07-18): the exact command reports `6 passed, 9 failed, 43
+  deselected`. The failures are exactly the expected red witnesses: both
+  Setext cases still decode as `PARA` and emit paragraph HTML, the top-level
+  submenu block still decodes as `PARA` and escapes as inline HTML, the ATX
+  closing-hash witness still preserves trailing hashes, and the full Basics
+  aggregate remains raw-byte mismatched to the oracle. No production or
+  generated SPL changed.
 
 - [ ] **Step 3: Implement the general block paths.** Add the design's seven Setext TOML entries before matching Act-II labels and implement only the candidate/underline/replay state table. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Strip only whitespace-separated ATX closing hashes in the existing header close path. Regenerate and assemble.
 
