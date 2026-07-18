@@ -452,6 +452,98 @@ fixture branch, raw-HTML scope, or Act-III/IV behavior is authorized.  A need
 for another label or any behavior outside this table remains `- BLOCK[plan]:`
 with its minimal witness.
 
+## Amendment A9 (2026-07-18): separate underline state rail and proof handoff
+
+Amendment A8's twenty-label ledger is superseded for the Setext underline
+family. Its capture scene treated Horatio's retained underline stack as both
+the replay buffer and mutable family state. After a glyph is pushed, that glyph
+is the visible value; overwriting it either loses a replay byte or destroys the
+floor. The WIP then used reserved guard titles as control flow and entered
+transfer loops before their seed scenes, producing `StackUnderflow` at
+`PASS_SETEXT_REPLAY_TRANSFER` for `Markdown: Basics\n================\n`.
+
+Use Macbeth only as a temporary underline-state rail. His list-depth stack
+remains below `_SETEXT_UNDERLINE_STATE_FLOOR`; the rail is pushed once,
+mutated only during classification, and popped on every proved, raw, and EOF
+exit. Horatio remains only the byte-for-byte underline replay buffer. Puck is
+untouched, preserving the existing ATX closing-hash path. The private Act-II
+values are `_SETEXT_UNDERLINE_UNSEEN`, `_SETEXT_UNDERLINE_EQUALS`,
+`_SETEXT_UNDERLINE_DASH`, `_SETEXT_UNDERLINE_EQUALS_TAIL`, and
+`_SETEXT_UNDERLINE_DASH_TAIL`; none is a token, selector, or Act-III input.
+
+The binding pool is **25 working labels and 5 unused spares**;
+`5 = ceil(25 * 20%)`. The former guard titles return to the spare pool and
+must not be generated as scenes. Add these controlled entries before editing
+the IR:
+
+```toml
+[scenes.PASS_SETEXT_UNDERLINE_STATE_OPEN]
+title = "Macbeth sets the measured line's hidden warrant."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_UNDERLINE_CLASSIFY]
+title = "Macbeth judges each measured mark by its warrant."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_PROOF_STAGE]
+title = "Macbeth entrusts the proved warrant to Horatio."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_REQUEUE_STAGE]
+title = "Macbeth releases the unproved warrant to Horatio."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_EOF_STATE]
+title = "Macbeth clears the unfinished warrant at the border."
+pattern = "cross_character"
+
+# Slice 5 Act-II replacement spare pool (unused unless a later amendment assigns it)
+[scenes.PASS_SETEXT_RETURN_GUARD]
+title = "The crowned return keeps one guarded seal."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_LEVEL_GUARD]
+title = "The lowered warrant keeps one guarded rank."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_REPLAY_GUARD]
+title = "The sealed passage keeps one guarded floor."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_DISPATCH_GUARD]
+title = "The restored heading keeps one guarded turn."
+pattern = "bare_statement"
+[scenes.PASS_SETEXT_ATX_GUARD]
+title = "The marked border keeps one guarded hash."
+pattern = "bare_statement"
+```
+
+| Label | Stage pair / anchor | Stack action and exit |
+|---|---|---|
+| `PASS_SETEXT_UNDERLINE_STATE_OPEN` | Hecate + Macbeth / Hecate | Push and initialize one Macbeth state rail above unchanged list depth; enter underline seed. |
+| `PASS_SETEXT_UNDERLINE` | Hecate + Horatio / Hecate | Push Horatio's replay floor once; enter scan. |
+| `PASS_SETEXT_UNDERLINE_SCAN` | Lady Macbeth + Hecate / Lady Macbeth | `_read()` exactly once, touching neither state rail nor buffer; EOF enters EOF-state, otherwise capture. |
+| `PASS_SETEXT_UNDERLINE_CAPTURE` | Hecate + Horatio / Hecate | Copy the current glyph above Horatio's replay floor; enter classify. |
+| `PASS_SETEXT_UNDERLINE_CLASSIFY` | Hecate + Macbeth / Hecate | Inspect current glyph and mutate only Macbeth's five-state rail. Admissible nonfinal glyphs return to scan; valid newline enters proof-stage; all invalid forms enter requeue-stage. |
+| `PASS_SETEXT_UNDERLINE_PROOF_STAGE` | Macbeth + Horatio / Macbeth | Read state, push an equals/dash proof marker above Horatio bytes, pop the Macbeth rail, then enter matching existing proof. |
+| `PASS_SETEXT_UNDERLINE_REQUEUE_STAGE` | Macbeth + Horatio / Macbeth | Pop Macbeth rail without moving a replay byte; enter existing requeue. |
+| `PASS_SETEXT_UNDERLINE_EOF_STATE` | Hecate + Macbeth / Hecate | Pop Macbeth rail; enter existing requeue without changing unread source. |
+| `PASS_SETEXT_EQUALS` / `PASS_SETEXT_DASH` | Lady Macbeth + Horatio / Lady Macbeth | Drop the proof marker, discard bytes through replay floor, set authorized close mode 1/2, enter finalization. |
+| `PASS_SETEXT_REQUEUE` | Hecate + Horatio / Hecate | Restore every retained byte, including newline or first incompatible glyph, in source order; it is reached only after rail pop. |
+
+Every listed goto shares a participant; no scene names more than two
+characters. `PASS_SETEXT_FINALIZE`, `PASS_SETEXT_REPLAY`, and their transfer
+scenes retain A7's seed-before-transfer order. No path may enter
+`PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY_TRANSFER`, or
+`PASS_SETEXT_BRIDGE_TRANSFER` except from its named seed scene. Delete any WIP
+scene using a spare label.
+
+Before production code, add fast-IR contracts that validate the complete pair
+chain, assert all five spares absent from the Act-II scene map, and run the
+minimal witness without stack underflow. Then run:
+
+```bash
+uv run pytest tests/test_splc_validate.py tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'setext or underline or validator or Basics' -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+No token, selector, compiler/validator behavior, fixture-specific branch,
+raw-HTML behavior, Act-III/IV surface, or change to existing ATX behavior is
+authorized.
+
 ## Amendment A3 (2026-07-18): source-safe Setext finalization
 
 The A2 ledger is superseded because its candidate stack was placed on Hecate,

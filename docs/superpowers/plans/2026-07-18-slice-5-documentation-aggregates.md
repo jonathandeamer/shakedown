@@ -393,3 +393,25 @@ red, implements only this split, regenerates and assembles, and runs the
 exact Global Constraints SPL-facing gate plus the focused A8 command in the
 design before the existing Basics four-gate checkpoint.  No other scope is
 authorized.
+
+## Amendment A9 (2026-07-18): state rail, proof handoff, and restored spare pool
+
+Design Amendment A9 supersedes A8 for Task 3 Step 3's complete Setext
+underline family. Install A9's five working TOML entries and complete
+five-title spare block before editing `src_ir/act2.py`. The binding pool is 25
+working labels plus five unused spares; the former guard entries are spares
+again, not implementation labels. Do not generate a Scene for
+`PASS_SETEXT_RETURN_GUARD`, `PASS_SETEXT_LEVEL_GUARD`,
+`PASS_SETEXT_REPLAY_GUARD`, `PASS_SETEXT_DISPATCH_GUARD`, or
+`PASS_SETEXT_ATX_GUARD`.
+
+Use A9's Macbeth rail only during underline classification, retain Horatio as
+the byte replay buffer, and leave Puck untouched so the existing ATX route
+remains intact. Follow its read/capture/classify choreography and proof/raw
+handoffs. No path may enter a transfer loop before its named seed scene.
+
+Before production code, add A9's pair-chain validation, spare-label absence,
+and minimal-witness no-underflow fast-IR contracts. Then run its exact focused
+command, regeneration/assembly, and the Global Constraints SPL-facing gate
+before the existing Basics four-gate checkpoint. No behavior outside A9's
+state table is authorized.
