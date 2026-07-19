@@ -189,7 +189,7 @@
   `tests/test_mdtest.py tests/test_architecture_spikes.py tests/test_token_dump.py`:
   `81 passed, 2 skipped`. Global Constraints SPL-facing gate: `223 passed`.
 
-- [ ] **Step 4: Run the Basics four-gate checkpoint.** Run:
+- [x] **Step 4: Run the Basics four-gate checkpoint.** Run:
 
   ```bash
   uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py tests/test_architecture_spikes.py tests/test_token_dump.py -q
@@ -200,6 +200,18 @@
   ```
 
   Expected: all pass and the strict harness reports `summary: 1/1 byte-identical`.
+
+  Evidence (2026-07-19): the four-gate batch reports `120 passed` for
+  act2_slice4/slice5_documentation_aggregates/architecture_spikes/token_dump.
+  Pytest rejects the plan's literal space-containing `-k` term, so the
+  equivalent valid selector `-k Basics` selects exactly
+  `test_mdtest[Markdown Documentation - Basics]` and reports
+  `1 skipped, 35 deselected` (fixture still intentionally disabled until
+  Step 5 enablement, matching Task 2 Step 4's Tidyness pattern). Strict
+  parity reports `summary: 1/1 byte-identical` (9384/9384). Differential
+  smoke with `--require 'Markdown Documentation - Basics'` marks Basics
+  `byte_identical`. splc regeneration plus assembly completes with a clean
+  working tree (no generated drift).
 
 - [ ] **Step 5: Enable and checkpoint.** Add Basics to `_IMPLEMENTED_FIXTURES`; commit Task-3 files as `feat: complete documentation basics aggregate`; push with the required trailers.
 
