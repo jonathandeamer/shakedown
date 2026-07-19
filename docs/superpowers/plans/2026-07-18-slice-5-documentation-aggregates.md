@@ -417,7 +417,12 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   `docs/performance/budget.md`. All green vs large-fixture and full-
   contract planning thresholds; no performance halt.
 
-- [ ] **Step 3: Mark shipped and checkpoint.** Change roadmap row 8 to `shipped: 2026-07-18 at commit <final-sha>` only after Steps 1–2. Commit completion evidence and roadmap as `feat: complete documentation aggregates`; push with the exact provenance trailers. Do not stage `scripts/release_entry.py`.
+- [x] **Step 3: Mark shipped and checkpoint.** Change roadmap row 8 to `shipped: 2026-07-18 at commit <final-sha>` only after Steps 1–2. Commit completion evidence and roadmap as `feat: complete documentation aggregates`; push with the exact provenance trailers. Do not stage `scripts/release_entry.py`.
+
+  Evidence (2026-07-19): Steps 1–2 are green at HEAD `7958f66` (full
+  correctness/quality gate at `a6e3b97`; B23 performance evidence recorded).
+  Roadmap row 8 is `shipped: 2026-07-18 at commit 7958f66`. No
+  `scripts/release_entry.py` present to stage.
 
 ## Plan self-review
 
