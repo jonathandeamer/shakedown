@@ -81,6 +81,17 @@ dev machine — `~/mdtest/Markdown.mdtest` and `~/markdown/Markdown.pl`. That is
 This project is an independent port. “Markdown” names the language and oracle;
 it does not imply endorsement by the Markdown project or MDTest authors.
 
+## License and credits
+
+Shakedown is released under the [MIT License](LICENSE). See [NOTICE](NOTICE)
+for third-party acknowledgements.
+
+| Project | Role |
+|---|---|
+| [Markdown](https://daringfireball.net/projects/markdown/) / `Markdown.pl` (John Gruber) | Behavior oracle this port targets |
+| [michelf/mdtest](https://github.com/michelf/mdtest) (`Markdown.mdtest`) | External fixture corpus (not vendored) |
+| [shakespearelang](https://github.com/zmbc/shakespearelang) (MIT) | SPL interpreter used to run the play |
+
 ## Entry points
 
 | Command | What it does |

@@ -1,0 +1,27 @@
+Shakedown
+Copyright (c) 2026 Jonathan Deamer
+SPDX-License-Identifier: MIT
+
+This repository is an independent reimplementation. It does not redistribute
+Markdown.pl or the MDTest fixture corpus.
+
+Third-party acknowledgements
+---------------------------
+
+Markdown / Markdown.pl
+  Copyright (c) John Gruber
+  https://daringfireball.net/projects/markdown/
+  Behavior target for this port (Markdown.pl). "Markdown" names the language
+  and oracle; this project is not affiliated with or endorsed by the Markdown
+  project or its authors.
+
+MDTest / Markdown.mdtest
+  Copyright (c) Michel Fortin and contributors
+  https://github.com/michelf/mdtest
+  Classic fixture suite used as an external regression corpus when configured
+  via SHAKEDOWN_MDTEST. Not vendored in this repository.
+
+shakespearelang
+  MIT License
+  https://github.com/zmbc/shakespearelang
+  Shakespeare Programming Language interpreter used to run shakedown.spl.
