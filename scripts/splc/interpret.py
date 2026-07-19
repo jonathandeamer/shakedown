@@ -31,6 +31,10 @@ from scripts.splc.ir import (
     Val,
 )
 
+# Task 2L Step 1: False proves red under goto-stub HECATE_REF_* bodies.
+# Step 2 fills pure ops; Step 3 deletes the short-circuit entirely.
+USE_ACT1_REF_INTRINSIC = False
+
 
 @dataclass
 class InterpreterState:
@@ -204,10 +208,15 @@ def run_act(
     running off the end of a scene's ops without a jump cannot happen because
     every scene is validated as terminal.
 
-    Act I reference stripping is owned by ``HECATE_REF_OPEN`` (via
-    ``scripts.splc.act1_ref_strip``) after normalize reverse — not a pre-act
-    Python ``strip_reference_definitions`` hook. Blank collapse and the final
-    double-newline body boundary are part of that Act I path (Amendment A1.2).
+    Act I reference stripping is owned by ``HECATE_REF_OPEN`` after normalize
+    reverse — not a pre-act Python ``strip_reference_definitions`` hook. Blank
+    collapse and the final double-newline body boundary are part of that Act I
+    path (Amendment A1.2).
+
+    Task 2L: pure-op bodies replace the temporary ``apply_act1_reference_strip``
+    short-circuit. While ``USE_ACT1_REF_INTRINSIC`` is True the IR interpreter
+    still runs the Python helper; set False to exercise generated/goto stub
+    scenes (Task 2L Step 1 red proof). Task 2L Step 3 deletes the short-circuit.
 
     Act III link/image resolution is owned by ``ACT_III_START`` (via
     ``scripts.splc.act3_link_resolve``): PARA/HEADER text payloads on Puck are
@@ -221,9 +230,9 @@ def run_act(
         sc = by_label[label]
         if observer is not None:
             observer.on_scene(sc.label, state)
-        # Amendment A1: Act I reference strip after normalize reverse.
-        # Stack state machine lives in act1_ref_strip. Jumps to ACT_I_DONE.
-        if sc.label == "HECATE_REF_OPEN":
+        # Amendment A1 / Task 2L: Act I reference strip after normalize reverse.
+        # Gated while pure ops land; short-circuit removed in Task 2L Step 3.
+        if sc.label == "HECATE_REF_OPEN" and USE_ACT1_REF_INTRINSIC:
             from scripts.splc.act1_ref_strip import apply_act1_reference_strip
 
             apply_act1_reference_strip(state)

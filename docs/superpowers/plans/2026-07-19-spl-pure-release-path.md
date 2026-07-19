@@ -423,7 +423,7 @@ Re-verified this iteration: pure inventory/act1/act3 + `test_mdtest` + wrapper/s
 
 **Binding semantics:** `apply_act1_reference_strip` is the oracle algorithm. Op-level IR must match its stack outcomes on every `tests/test_act1_references.py` case. Prefer incremental label/dest/title capture during parse (SPL-friendly) over re-parsing a string buffer, if byte-identical table records result.
 
-- [ ] **Step 1: Prove red under no-intrinsic Act I**
+- [x] **Step 1: Prove red under no-intrinsic Act I**
 
 Temporarily disable only the `HECATE_REF_OPEN` intrinsic in `interpret.py` (or gate it behind `USE_ACT1_REF_INTRINSIC = False` for this step) and run:
 
@@ -432,6 +432,8 @@ uv run pytest tests/test_act1_references.py -q
 ```
 
 Expected: fail (goto stubs do not strip). Restore intrinsic if needed so other work stays green, or leave the flag false only on a branch until Step 2 completes in the same iteration. Record the red evidence in the commit message or plan checkbox.
+
+Evidence (2026-07-19, grok-implement): Gated `HECATE_REF_OPEN` behind module flag `USE_ACT1_REF_INTRINSIC = False` in `scripts/splc/interpret.py` (short-circuit skipped; fall through to goto-stub scene ops). Gate: `uv run pytest tests/test_act1_references.py -q` → **6 failed, 2 passed** (red: defs remain in body / empty Rosalind table for simple def, lead spaces, case-fold, angle dest, next-line title, defs+para; green: four-space and invalid-bracket keep-as-body). Flag left `False` for Task 2L Step 2 pure-op work; Act III intrinsic unchanged.
 
 - [ ] **Step 2: Implement pure ops for A1.3 labels**
 
