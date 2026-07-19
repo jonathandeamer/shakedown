@@ -23,6 +23,7 @@ from scripts.splc.ir import (
     val,
 )
 from scripts.splc.lower import lower_act
+from src_ir.act2 import ACT as ACT2
 
 LITERARY_TOML = Path(__file__).parent.parent / "src" / "literary.toml"
 
@@ -443,3 +444,41 @@ def test_disjoint_goto_entry_pair_is_rejected() -> None:
 
     with pytest.raises(IrError, match="HECATE_READ_INPUT.*ACT_I_DONE"):
         validate(bad, _prose())
+
+
+_ACT2_SCENES_BY_LABEL = {sc.label: sc for sc in ACT2.scenes}
+
+
+@pytest.mark.parametrize(
+    ("label", "expected"),
+    [
+        ("PASS_SETEXT_PROVED_CLOSE", (Char.LADY_MACBETH, Char.HECATE)),
+        ("PASS_HEADER_TRAIL_OPEN", (Char.HECATE, Char.PUCK)),
+        ("PASS_HEADER_TRAIL_SCAN", (Char.LADY_MACBETH, Char.HECATE)),
+        ("PASS_HEADER_TRAIL_CAPTURE", (Char.HECATE, Char.PUCK)),
+        ("PASS_HEADER_TRAIL_DECIDE", (Char.HECATE, Char.PUCK)),
+        ("PASS_HEADER_TRAIL_DROP", (Char.HECATE, Char.PUCK)),
+        ("PASS_HEADER_TRAIL_REPLAY", (Char.LADY_MACBETH, Char.PUCK)),
+        ("PASS_HEADER_TRAIL_EXIT", (Char.LADY_MACBETH, Char.HECATE)),
+    ],
+)
+def test_act2_a11_entry_pairs_use_only_the_authorized_scene_pairs(
+    label: str, expected: tuple[Char, Char]
+) -> None:
+    from scripts.splc.validate import participants
+
+    assert participants(_ACT2_SCENES_BY_LABEL[label], ACT2.anchor) == expected
+
+
+def test_act2_a11_spare_labels_are_not_implemented_as_scenes() -> None:
+    for label in (
+        "PASS_SETEXT_RETURN_GUARD",
+        "PASS_SETEXT_LEVEL_GUARD",
+        "PASS_SETEXT_REPLAY_GUARD",
+        "PASS_SETEXT_DISPATCH_GUARD",
+        "PASS_SETEXT_ATX_GUARD",
+        "PASS_HEADER_TRAIL_RETURN_GUARD",
+        "PASS_HEADER_TRAIL_FLOOR_GUARD",
+        "PASS_HEADER_TRAIL_CLOSE_GUARD",
+    ):
+        assert label not in _ACT2_SCENES_BY_LABEL

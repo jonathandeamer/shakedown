@@ -9,6 +9,7 @@ xfail with the live contracts below.
 
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -21,6 +22,7 @@ from src_ir import tokens
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import _LOOSE_NEST_OL, _LOOSE_NEST_UL
 from src_ir.act2 import ACT as ACT2
+from tests.test_mdtest import _interpret_ir, _normalize_fixture_output
 
 STEP_LIMIT = 500_000
 
@@ -48,6 +50,11 @@ BASICS_PROJECT_SUBMENU = (
     "</ul>\n"
 )
 BASICS_ATX_CLOSING_HASH = "## Heading ##\n"
+BASICS_ATX_TRAILING_SPACES = "## Heading  \n"
+BASICS_ATX_INTERIOR_HASH = "## A # b\n"
+_BASICS_FIXTURE = (
+    Path.home() / "mdtest" / "Markdown.mdtest" / "Markdown Documentation - Basics.text"
+)
 
 _ADVANCED_HTML_FIXTURE = (
     Path.home() / "mdtest" / "Markdown.mdtest" / "Inline HTML (Advanced).text"
@@ -126,6 +133,36 @@ def _act2_scene_trace(input_text: str) -> list[tuple[str, int]]:
     return trace
 
 
+def _act2_scene_trace_with_values(
+    input_text: str,
+) -> list[tuple[str, int, int, int, int, int]]:
+    state = InterpreterState(input_text=input_text)
+    state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
+    trace: list[tuple[str, int, int, int, int, int]] = []
+
+    class _Observer:
+        def on_scene(self, label: str, state: InterpreterState) -> None:
+            trace.append(
+                (
+                    label,
+                    state.values[Char.HECATE],
+                    state.values[Char.HORATIO],
+                    state.values[Char.LADY_MACBETH],
+                    state.values[Char.MACBETH],
+                    state.values[Char.PUCK],
+                )
+            )
+
+        def on_push(self, char: Char, value: int, stack_after: list[int]) -> None:
+            return None
+
+        def on_pop(self, char: Char, value: int, stack_after: list[int]) -> None:
+            return None
+
+    run_act(ACT2, state, step_limit=STEP_LIMIT, observer=_Observer())
+    return trace
+
+
 @pytest.mark.parametrize("case", sorted(_ADVANCED_CASES))
 def test_advanced_html_block_becomes_one_raw_html_leaf(case: str) -> None:
     source, expected_payload = _ADVANCED_CASES[case]
@@ -178,6 +215,17 @@ def _decoded_triplets(
     return [(token.code, token.payloads, token.text) for token in decoded]
 
 
+def _oracle_html(input_text: str) -> str:
+    result = subprocess.run(
+        ["perl", str(Path.home() / "markdown" / "Markdown.pl")],
+        input=input_text,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return result.stdout
+
+
 @pytest.mark.parametrize(
     ("source", "level", "text"),
     [
@@ -208,6 +256,64 @@ def test_basics_closing_hash_witness_uses_existing_header_role() -> None:
     assert _decoded_triplets(BASICS_ATX_CLOSING_HASH) == [
         (tokens.HEADER, (2,), "Heading"),
     ]
+
+
+def test_basics_phrase_emphasis_after_code_examples_stays_a_header() -> None:
+    decoded = decode_stream(_act2_stream(_BASICS_FIXTURE.read_text()))
+
+    assert (tokens.HEADER, (3,), "Phrase Emphasis") in [
+        (token.code, token.payloads, token.text) for token in decoded
+    ]
+
+
+def test_basics_minimal_setext_positive_count_preserves_the_next_source_glyph() -> None:
+    assert _decoded_triplets(BASICS_SETEXT_H1 + "After.\n") == [
+        (tokens.HEADER, (1,), "Markdown: Basics"),
+        (tokens.PARA, (), "After."),
+    ]
+
+
+def test_basics_minimal_setext_terminal_trace_restores_zero_without_an_extra_read() -> (
+    None
+):
+    trace = _act2_scene_trace_with_values(BASICS_SETEXT_H1)
+    labels = [label for label, *_ in trace]
+
+    proved_close_index = labels.index("PASS_SETEXT_PROVED_CLOSE")
+    _, _, _, lady_macbeth, _, _ = trace[proved_close_index]
+    assert lady_macbeth == 0
+    assert "PASS_LISTS_BLOCK_START" not in labels[proved_close_index + 1 :]
+
+
+def test_basics_minimal_setext_positive_trace_restores_count_before_dispatch() -> None:
+    trace = _act2_scene_trace_with_values(BASICS_SETEXT_H1 + "After.\n")
+    labels = [label for label, *_ in trace]
+
+    proved_close_index = labels.index("PASS_SETEXT_PROVED_CLOSE")
+    _, _, _, lady_macbeth, _, _ = trace[proved_close_index]
+    assert lady_macbeth > 0
+
+    block_start_index = labels.index("PASS_LISTS_BLOCK_START", proved_close_index + 1)
+    _, hecate, _, _, _, _ = trace[block_start_index + 1]
+    assert hecate == ord("A")
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        BASICS_ATX_CLOSING_HASH,
+        BASICS_ATX_TRAILING_SPACES,
+        BASICS_ATX_INTERIOR_HASH,
+    ],
+    ids=["closing_hash_suffix", "spaces_only_suffix", "interior_hash_suffix"],
+)
+def test_basics_atx_suffix_witness_matches_fast_ir_oracle_bytes(source: str) -> None:
+    expected = _oracle_html(source)
+    actual = _interpret_ir(source)
+
+    assert _normalize_fixture_output("Markdown Documentation - Basics", actual) == (
+        _normalize_fixture_output("Markdown Documentation - Basics", expected)
+    )
 
 
 def test_nested_quote_fixture_stream_is_balanced_open_to_close() -> None:

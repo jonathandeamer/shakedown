@@ -893,6 +893,36 @@ pattern = "bare_statement"
 
 [characters.lady_macbeth.recall]
 code_chamber_mark = "Recall the indented chamber mark."
+candidate_glyph = "Recall the unmarked candidate letter."
+trail_glyph = "Recall the deferred border mark."
+underline_warrant = "Recall the measured line warrant."
+underline_byte = "Recall the measured underline mark."
+restored_glyph = "Recall the restored title letter."
+saved_countdown = "Recall the saved line measure."
+
+[characters.hecate.recall]
+trail_glyph = "Recall the deferred border mark."
+title_glyph = "Recall the sealed title letter."
+saved_countdown = "Recall the saved line measure."
+underline_warrant = "Recall the measured line warrant."
+underline_byte = "Recall the measured underline mark."
+candidate_glyph = "Recall the unmarked candidate letter."
+
+[characters.puck.recall]
+trail_glyph = "Recall the deferred border mark."
+replay_glyph = "Recall the sealed passage letter."
+title_glyph = "Recall the sealed title letter."
+saved_countdown = "Recall the saved line measure."
+
+[characters.macbeth.recall]
+underline_warrant = "Recall the measured line warrant."
+
+[characters.horatio.recall]
+underline_byte = "Recall the measured underline mark."
+restored_glyph = "Recall the restored title letter."
+saved_countdown = "Recall the saved line measure."
+underline_warrant = "Recall the measured line warrant."
+replay_glyph = "Recall the sealed passage letter."
 [scenes.PASS_WRAP_DOT]
 title = "Macbeth weighs the wandering numbered stroke."
 pattern = "scene_of_character"
@@ -1036,3 +1066,270 @@ pattern = "scene_of_character"
 [scenes.PASS_QUOTE_NEST_GUARD]
 title = "The echo keeps one guarded return."
 pattern = "bare_statement"
+
+# Slice 5 Act-II A9 Setext underline-state working pool (5 labels)
+[scenes.PASS_SETEXT_UNDERLINE_STATE_OPEN]
+title = "Macbeth sets the measured line's hidden warrant."
+pattern = "scene_of_character"
+
+[scenes.PASS_SETEXT_UNDERLINE_CLASSIFY]
+title = "Macbeth judges each measured mark by its warrant."
+pattern = "cross_character"
+
+[scenes.PASS_SETEXT_UNDERLINE_PROOF_STAGE]
+title = "Macbeth entrusts the proved warrant to Horatio."
+pattern = "cross_character"
+
+[scenes.PASS_SETEXT_UNDERLINE_REQUEUE_STAGE]
+title = "Macbeth releases the unproved warrant to Horatio."
+pattern = "cross_character"
+
+[scenes.PASS_SETEXT_UNDERLINE_EOF_STATE]
+title = "Macbeth clears the unfinished warrant at the border."
+pattern = "cross_character"
+
+# Slice 5 Act-II A11 working pool (8 additional labels)
+[scenes.PASS_SETEXT_PROVED_CLOSE]
+title = "Lady Macbeth closes the proved line by its remaining measure."
+pattern = "cross_character"
+
+[scenes.PASS_HEADER_TRAIL_OPEN]
+title = "Hecate opens a measured border for the heading's marks."
+pattern = "cross_character"
+
+[scenes.PASS_HEADER_TRAIL_SCAN]
+title = "Lady Macbeth reads the heading's deferred border."
+pattern = "cross_character"
+
+[scenes.PASS_HEADER_TRAIL_CAPTURE]
+title = "Hecate gives each deferred mark to Puck."
+pattern = "cross_character"
+
+[scenes.PASS_HEADER_TRAIL_DECIDE]
+title = "Hecate judges the border's final warrant with Puck."
+pattern = "cross_character"
+
+[scenes.PASS_HEADER_TRAIL_DROP]
+title = "Hecate lets Puck dismiss the closing border."
+pattern = "cross_character"
+
+[scenes.PASS_HEADER_TRAIL_REPLAY]
+title = "Lady Macbeth receives Puck's unproved border."
+pattern = "cross_character"
+
+[scenes.PASS_HEADER_TRAIL_EXIT]
+title = "Lady Macbeth restores the heading's next true letter."
+pattern = "cross_character"
+
+# Slice 5 Act-II A11 spare pool (8; all unused; installed as [spares.*] per
+# Amendment A15 so the scene ledger equality contracts hold with zero spares
+# in data["scenes"]).
+[spares.PASS_SETEXT_RETURN_GUARD]
+title = "The crowned return keeps one guarded seal."
+pattern = "bare_statement"
+
+[spares.PASS_SETEXT_LEVEL_GUARD]
+title = "The lowered warrant keeps one guarded rank."
+pattern = "bare_statement"
+
+[spares.PASS_SETEXT_REPLAY_GUARD]
+title = "The sealed passage keeps one guarded floor."
+pattern = "bare_statement"
+
+[spares.PASS_SETEXT_DISPATCH_GUARD]
+title = "The restored heading keeps one guarded turn."
+pattern = "bare_statement"
+
+[spares.PASS_SETEXT_ATX_GUARD]
+title = "The marked border keeps one guarded hash."
+pattern = "bare_statement"
+
+[spares.PASS_HEADER_TRAIL_RETURN_GUARD]
+title = "The deferred border keeps one guarded return."
+pattern = "bare_statement"
+
+[spares.PASS_HEADER_TRAIL_FLOOR_GUARD]
+title = "The heading border keeps one guarded floor."
+pattern = "bare_statement"
+
+[spares.PASS_HEADER_TRAIL_CLOSE_GUARD]
+title = "The marked heading keeps one guarded close."
+pattern = "bare_statement"
+
+# Slice 5 Act-II A9/A7/A8 remaining working pool (20 labels to reach A9's
+# 25-working/5-spare ledger; these are from amendments A7/A8 incorporated
+# into A9's binding state table).
+[scenes.PASS_SETEXT_CANDIDATE]
+title = "Lady Macbeth keeps the unmarked line before its warrant."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_CANDIDATE_SCAN]
+title = "Lady Macbeth gathers each unmarked letter by measure."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_UNDERLINE]
+title = "Horatio sets the underline's household floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_UNDERLINE_SCAN]
+title = "Horatio weighs each underline mark by measure."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_UNDERLINE_CAPTURE]
+title = "Horatio receives each measured underline mark."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_EQUALS]
+title = "Lady Macbeth crowns the gathered line."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_DASH]
+title = "Lady Macbeth lowers the gathered line one rank."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REQUEUE]
+title = "Horatio restores the unproved underline to its source."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_FINALIZE]
+title = "Lady Macbeth marks the sealed line's return floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_FINALIZE_TRANSFER]
+title = "Lady Macbeth sends each sealed letter to Hecate."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_REPLAY]
+title = "Puck sets the sealed line's passage floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REPLAY_EQUALS]
+title = "Puck sets the crowned line's first passage floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REPLAY_DASH]
+title = "Puck sets the lowered line's second passage floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REPLAY_TRANSFER]
+title = "Puck receives each sealed letter from Hecate."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_BRIDGE]
+title = "Horatio sets the restored line's household floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_BRIDGE_TRANSFER]
+title = "Puck entrusts each sealed letter to Horatio."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_CLOSE]
+title = "Lady Macbeth seals the proven heading."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EQUALS_CLOSE]
+title = "Lady Macbeth grants the crowned line its final seal."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_DASH_CLOSE]
+title = "Lady Macbeth grants the lowered line its final seal."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EOF_MODE]
+title = "Horatio marks the unfinished line for its raw return."
+pattern = "scene_of_character"
+
+# Slice 5 Act-II A13 code-line working pool (7 additional labels, spares until implemented in IR)
+[spares.PASS_CODE_LINE_CAPTURE_OPEN]
+title = "Hecate opens Puck's chamber for one measured code line."
+pattern = "cross_character"
+[spares.PASS_CODE_LINE_CAPTURE_SCAN]
+title = "Hecate gives Puck each mark of the measured code line."
+pattern = "cross_character"
+[spares.PASS_CODE_LINE_BLANK_DROP]
+title = "Hecate lets Puck dismiss an empty measured line."
+pattern = "cross_character"
+[spares.PASS_CODE_LINE_KEEP_REVERSE_OPEN]
+title = "Puck sets Horatio's floor for the kept code line."
+pattern = "cross_character"
+[spares.PASS_CODE_LINE_KEEP_REVERSE_TRANSFER]
+title = "Puck entrusts Horatio each kept code mark."
+pattern = "cross_character"
+[spares.PASS_CODE_LINE_KEEP_REPLAY]
+title = "Horatio restores each kept code mark to Lady Macbeth."
+pattern = "cross_character"
+[spares.PASS_CODE_LINE_CLOSE]
+title = "Puck grants Lady Macbeth the code line's final measure."
+pattern = "cross_character"
+
+# Slice 5 Act-II A13 spare pool (4; all unused)
+[spares.PASS_CODE_LINE_RETURN_GUARD]
+title = "The measured code line keeps one guarded return."
+pattern = "bare_statement"
+[spares.PASS_CODE_LINE_FLOOR_GUARD]
+title = "The code chamber keeps one guarded floor."
+pattern = "bare_statement"
+[spares.PASS_CODE_LINE_REPLAY_GUARD]
+title = "The kept code mark keeps one guarded passage."
+pattern = "bare_statement"
+[spares.PASS_CODE_LINE_CLOSE_GUARD]
+title = "The final code measure keeps one guarded seal."
+pattern = "bare_statement"
+
+# Slice 5 Act-II active IR helper scenes
+[scenes.PASS_SETEXT_BRIDGE_TRANSFER_DONE_DASH]
+title = "Puck finishes entrusting the lowered line to Horatio."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_BRIDGE_TRANSFER_DONE_EQ]
+title = "Puck finishes entrusting the crowned line to Horatio."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_BRIDGE_TRANSFER_DONE_RAW]
+title = "Puck finishes entrusting the raw line to Horatio."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_CANDIDATE_ENTRY]
+title = "Lady Macbeth tests the unmarked line's entry."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_CANDIDATE_GUARD]
+title = "Lady Macbeth guards the unmarked line's entry."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_CLOSE_POST_RESTORE]
+title = "Lady Macbeth finishes restoring the raw line."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_DASH_CLOSE_POST_RESTORE]
+title = "Lady Macbeth finishes restoring the lowered line."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_DASH_CLOSE_RESTORE]
+title = "Lady Macbeth restores the lowered line's title."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_DASH_POST_DISCARD]
+title = "Lady Macbeth finishes discarding the lowered underline."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EQUALS_CLOSE_POST_RESTORE]
+title = "Lady Macbeth finishes restoring the crowned line."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EQUALS_CLOSE_RESTORE]
+title = "Lady Macbeth restores the crowned line's title."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_EQUALS_POST_DISCARD]
+title = "Lady Macbeth finishes discarding the crowned underline."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_FINALIZE_TRANSFER_DONE]
+title = "Lady Macbeth finishes sending candidate letters to Hecate."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_REPLAY_RAW]
+title = "Puck sets the raw line's passage floor."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_REPLAY_TRANSFER_DONE]
+title = "Puck finishes receiving finalized letters from Hecate."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_REQUEUE_POST_RESTORE]
+title = "Horatio finishes restoring the unproved underline."
+pattern = "scene_of_character"
+[scenes.PASS_SETEXT_UNDERLINE_CLASSIFY_DASH]
+title = "Macbeth judges a single dash mark."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_CLASSIFY_EQ]
+title = "Macbeth judges a single equals mark."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE]
+title = "Macbeth judges a single space mark."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_PROOF_DASH]
+title = "Macbeth entrusts the proved dash warrant."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_PROOF_EQ]
+title = "Macbeth entrusts the proved equals warrant."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_SET_DASH]
+title = "Macbeth sets the lowered line's warrant."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_SET_DASH_TAIL]
+title = "Macbeth sets the lowered line's tail warrant."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_SET_EQUALS]
+title = "Macbeth sets the crowned line's warrant."
+pattern = "cross_character"
+[scenes.PASS_SETEXT_UNDERLINE_SET_EQUALS_TAIL]
+title = "Macbeth sets the crowned line's tail warrant."
+pattern = "cross_character"

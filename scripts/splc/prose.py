@@ -16,6 +16,62 @@ from scripts.splc.ir import Char
 _COND_POOL = {"eq": "equality", "gt": "greater_than", "lt": "less_than"}
 
 
+_P100 = "the square of the sum of a little furry black cat and a black cat"
+_P105 = (
+    "the product of the difference between a normal little furry black cat and a"
+    " cat and the difference between a little furry black cat and a cat"
+)
+_P112 = (
+    "the product of a normal little furry black cat and the difference between"
+    " a little furry black cat and a cat"
+)
+_P120 = (
+    "the difference between the product of a normal little furry black cat and"
+    " a little furry black cat and a little furry black cat"
+)
+_P122 = (
+    "the difference between the product of a normal little furry black cat and"
+    " a little furry black cat and the sum of a furry black cat and a black cat"
+)
+_P128 = "the product of a normal little furry black cat and a little furry black cat"
+_P132 = (
+    "the sum of the product of a normal little furry black cat and a little"
+    " furry black cat and a furry black cat"
+)
+_P144 = (
+    "the square of the difference between a normal little furry black cat and a"
+    " furry black cat"
+)
+
+_NEG_SPECIAL_PHRASES: dict[int, str] = {
+    -100: f"the difference between nothing and {_P100}",
+    -101: f"the difference between nothing and the sum of {_P100} and a cat",
+    -102: (f"the difference between nothing and the sum of {_P100} and a black cat"),
+    -103: f"the difference between a black cat and {_P105}",
+    -104: (
+        f"the difference between nothing and the sum of {_P100} and a furry black cat"
+    ),
+    -105: f"the difference between nothing and {_P105}",
+    -110: f"the difference between a black cat and {_P112}",
+    -111: f"the difference between a cat and {_P112}",
+    -112: f"the difference between nothing and {_P112}",
+    -113: f"the difference between nothing and the sum of {_P112} and a cat",
+    -114: (f"the difference between nothing and the sum of {_P112} and a black cat"),
+    -115: (f"the difference between a rotten toad and the sum of a cat and {_P112}"),
+    -120: f"the difference between nothing and {_P120}",
+    -121: f"the difference between nothing and the sum of {_P120} and a cat",
+    -122: f"the difference between nothing and {_P122}",
+    -130: f"the difference between a black cat and {_P132}",
+    -131: (
+        f"the difference between nothing and the sum of {_P128} and the sum of"
+        " a cat and a black cat"
+    ),
+    -140: f"the difference between a furry black cat and {_P144}",
+    -141: (f"the difference between the sum of a cat and a black cat and {_P144}"),
+    -142: f"the difference between a black cat and {_P144}",
+}
+
+
 class ProseEngine:
     def __init__(self, surfaces: LiterarySurfaces) -> None:
         self._data = cast(dict[str, object], surfaces.data)
@@ -42,11 +98,11 @@ class ProseEngine:
         phrase = stable.get(key)
         if isinstance(phrase, str):
             return phrase
+        if n in _NEG_SPECIAL_PHRASES:
+            return _NEG_SPECIAL_PHRASES[n]
         if n < 0:
-            raise ValueError(
-                f"no stable_utility phrase for negative value {n} "
-                f"(speaker {speaker.value})"
-            )
+            pos_phrase = self.value_phrase(speaker, abs(n))
+            return f"the difference between nothing and {pos_phrase}"
         return emit_value(n)
 
     def _pick(self, pool: list[str], seed: str) -> str:
