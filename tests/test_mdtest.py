@@ -74,7 +74,14 @@ def _normalize_fixture_output(name: str, text: str) -> str:
         normalized = _decode_entities(normalized)
     if name == "Images":
         normalized = _normalize_images_empty_titles(normalized)
-    if name == "Ordered and unordered lists":
+    if name in (
+        "Ordered and unordered lists",
+        "Markdown Documentation - Syntax",
+    ):
+        # Checked-in Syntax.xhtml places newlines between nested <ul>/<li>
+        # where local Markdown.pl (and shakedown) emit tight list layout; the
+        # same fixed-point collapse used for Ordered and unordered lists makes
+        # the normalized mdtest contract match without mutating the corpus.
         normalized = _normalize_ordered_unordered_list_layout(normalized)
     return normalized
 
@@ -127,6 +134,7 @@ _IMPLEMENTED_FIXTURES = {
     "Links, shortcut references",
     "Literal quotes in titles",
     "Markdown Documentation - Basics",
+    "Markdown Documentation - Syntax",
     "Nested blockquotes",
     "Ordered and unordered lists",
     "Strong and em together",

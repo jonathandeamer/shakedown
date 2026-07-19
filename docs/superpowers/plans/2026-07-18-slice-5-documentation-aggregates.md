@@ -349,7 +349,18 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   `byte_identical` (suite-wide 23/23 `byte_identical`). splc regeneration
   plus assembly completes with a clean working tree (no generated drift).
 
-- [ ] **Step 4: Enable and checkpoint.** Add Syntax to `_IMPLEMENTED_FIXTURES`; commit Task-4 files as `feat: complete documentation syntax aggregate`; push with the required trailers.
+- [x] **Step 4: Enable and checkpoint.** Add Syntax to `_IMPLEMENTED_FIXTURES`; commit Task-4 files as `feat: complete documentation syntax aggregate`; push with the required trailers.
+
+  Evidence (2026-07-19): added `Markdown Documentation - Syntax` to
+  `_IMPLEMENTED_FIXTURES`. The checked-in Syntax.xhtml differs from local
+  Markdown.pl only in nested tight-list newlines; reusing the existing
+  `_normalize_ordered_unordered_list_layout` path for this fixture (no new
+  normalizer, no fixture edit) makes the parameterized mdtest contract match
+  while strict parity remains raw oracle bytes. Focused mdtest `-k Syntax`
+  reports `1 passed, 35 deselected`. Strict parity reports `summary: 1/1
+  byte-identical` (31777/31777). Differential smoke with
+  `--require 'Markdown Documentation - Syntax'` marks Syntax
+  `byte_identical` (suite-wide 23/23 `byte_identical`).
 
 ### Task 5: Prove release completion and register shipment
 
