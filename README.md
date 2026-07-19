@@ -111,12 +111,12 @@ SHAKEDOWN_SPL=/path/to/other.spl ./shakedown
 
 | Command | Role |
 |---|---|
-| **`./shakedown-parity`** | Fast harness entry: IR interpreter + Slice-3 link/reference rewrite (`python -m scripts.release_runtime`). Used by pytest, strict parity, and smoke. |
+| **`./shakedown-parity`** | Fast harness entry: pure IR interpreter (`python -m scripts.release_runtime`). No Python Markdown rewrite or strip — Act I/III own those transforms. Semantically equal to `./shakedown`. Used by pytest, strict parity, and smoke. |
 | **`./shakedown`** | Public art path: real `shakespeare run` on the committed play. |
 
 Cold `shakespeare` boots are too slow for the full 23-fixture suite on every
-commit. The **public artefact** remains the play; the parity entry is test
-infrastructure, not a second Markdown dialect.
+commit. The **public artefact** remains the play; the parity entry is IR-only
+acceleration for the same Markdown semantics, not a second dialect.
 
 ## Develop
 

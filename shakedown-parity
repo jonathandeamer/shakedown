@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Fast full-parity harness entry: IR interpreter + Slice-3 link rewrite.
-# Used by automated tests and strict/smoke scripts. Not the public art path —
-# for the committed play, use ./shakedown or: uv run shakespeare run shakedown.spl
+# Fast full-parity harness entry: pure IR interpreter (no Python Markdown rewrite).
+# Semantically equal to ./shakedown (shakespeare on the committed play); used by
+# automated tests and strict/smoke scripts for speed. Public art path: ./shakedown.
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"

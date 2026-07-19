@@ -376,7 +376,7 @@ Expected: all green without rewrite.
 
 Evidence (2026-07-19, grok-implement): pure inventory/act1/act3 **41 passed**; `test_mdtest` **36 passed**; slice3+slice5 **54 passed**; `ruff check` / `ruff format --check` / `pyright` all clean (0 errors). Suite green without rewrite.
 
-- [ ] **Step 3: Point `./shakedown-parity` at pure IR**
+- [x] **Step 3: Point `./shakedown-parity` at pure IR**
 
 ```bash
 # shakedown-parity becomes:
@@ -385,6 +385,8 @@ Evidence (2026-07-19, grok-implement): pure inventory/act1/act3 **41 passed**; `
 ```
 
 README: state that parity entry is IR-only acceleration, semantically equal to `./shakedown`.
+
+Evidence (2026-07-19, grok-implement): `./shakedown-parity` already exec'd pure `scripts.release_runtime` (no rewrite); updated entry header, README, and `strict_parity_harness` docstring to state pure-IR acceleration semantically equal to `./shakedown`. Smoke: emphasis + ref-link `cmp` green; `rg` shows no production rewrite/strip calls in `release_runtime`/`interpret`/`preprocess_input` (comments only); `tests/test_wrapper_error_channel.py` + `tests/test_strict_parity_harness.py` **10 passed**.
 
 - [ ] **Step 4: Commit**
 

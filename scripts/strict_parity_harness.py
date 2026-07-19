@@ -1,8 +1,9 @@
 """Run the fast parity entry vs. local Markdown.pl on each fixture.
 
-Defaults: ``./shakedown-parity`` (IR + link rewrite). Fixture/oracle paths
-come from ``scripts.paths`` (``SHAKEDOWN_MDTEST``, ``SHAKEDOWN_MARKDOWN_PL``).
-Pass ``--shakedown ./shakedown`` to exercise the public shakespeare entry.
+Defaults: ``./shakedown-parity`` (pure IR; no Python Markdown rewrite).
+Fixture/oracle paths come from ``scripts.paths`` (``SHAKEDOWN_MDTEST``,
+``SHAKEDOWN_MARKDOWN_PL``). Pass ``--shakedown ./shakedown`` to exercise the
+public shakespeare entry (semantically equal; slower cold boots).
 """
 
 from __future__ import annotations
