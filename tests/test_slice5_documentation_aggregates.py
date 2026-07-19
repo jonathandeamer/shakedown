@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
+from scripts.slice3_links import rewrite_task3_markdown
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
@@ -107,7 +108,7 @@ SYNTAX_DIFF_CATEGORIES: tuple[SyntaxDiffCategory, ...] = (
     SyntaxDiffCategory(
         name="multi_definition_reference_resolution",
         source_witness=SYNTAX_MULTI_DEFINITION_REFERENCE,
-        owning_act="act3",
+        owning_act="wrapper_rewrite",
     ),
     SyntaxDiffCategory(
         name="paragraph_block_separators",
@@ -433,7 +434,13 @@ def test_syntax_diff_category_inventory_records_first_difference() -> None:
     for category in SYNTAX_DIFF_CATEGORIES:
         assert category.source_witness
         assert category.source_witness in source, category.name
-        assert category.owning_act in {"act1", "act2", "act3", "act4"}
+        assert category.owning_act in {
+            "act1",
+            "act2",
+            "act3",
+            "act4",
+            "wrapper_rewrite",
+        }
 
     # The recorded first difference and minimal witness stay available to Step 2
     # category repairs via this assertion surface (offset must be stable shape).
@@ -465,3 +472,40 @@ def test_syntax_category_matches_fast_release_and_raw_oracle(
     one at a time in Task 4 Step 2.
     """
     _assert_fast_release_raw_oracle(category.source_witness)
+
+
+# Task 4 Step 2b: multi-definition / lazy-continuation reference rewrite.
+_LAZY_CONTINUATION_EMPTY_REFS = (
+    "I get 10 times more traffic from [Google] [1] than from\n"
+    "    [Yahoo] [2] or [MSN] [3].\n"
+)
+_CODE_BLOCK_FOUR_SPACE_CONTROL = "para\n\n    [code] [1]\n"
+
+
+def test_multi_definition_inventory_witness_matches_fast_release_and_raw_oracle() -> (
+    None
+):
+    """Inventory multi-definition witness is byte-identical to local Markdown.pl."""
+    _assert_fast_release_raw_oracle(SYNTAX_MULTI_DEFINITION_REFERENCE)
+
+
+def test_lazy_continuation_rewrite_escapes_unresolved_refs_on_both_lines() -> None:
+    """Four-space lazy paragraph continuations still escape unresolved refs.
+
+    When no reference definitions are registered, both the first line and the
+    indented continuation must escape brackets, matching ordinary-line handling.
+    """
+    rewritten = rewrite_task3_markdown(_LAZY_CONTINUATION_EMPTY_REFS)
+    assert r"\[Google\] \[1\]" in rewritten
+    assert r"\[Yahoo\] \[2\]" in rewritten
+    assert r"\[MSN\] \[3\]" in rewritten
+    # Continuation indent is preserved; only the labels are escaped.
+    assert "\n    \\[Yahoo\\]" in rewritten
+
+
+def test_code_block_four_space_lines_remain_opaque_to_reference_rewrite() -> None:
+    """True code-block context (blank line then four spaces) stays opaque."""
+    rewritten = rewrite_task3_markdown(_CODE_BLOCK_FOUR_SPACE_CONTROL)
+    assert rewritten == _CODE_BLOCK_FOUR_SPACE_CONTROL
+    assert r"\[code\]" not in rewritten
+    assert "[code] [1]" in rewritten

@@ -248,8 +248,8 @@ Binding root-cause record (2026-07-19, re-verified at `53d5970`):
 | Category | Status | Owner | First-byte symptom | Root cause |
 |---|---|---|---|---|
 | `raw_top_level_html` | green | act2 | n/a | already byte-identical |
-| `nested_list_close_ordering` | red | act2 | offset 192: actual `l` vs oracle `/` — emits `</ul><li>…</li></ol></li>` instead of `</ul></li>\n<li>…</li>\n</ul>` | `PASS_LISTS_SIB_OUTDENT` closes the nested list then jumps to `PASS_LISTS_ITEM_BEGIN_TIGHT` for UL markers (`*+ -`) without emitting the parent `ITEM_CLOSE`. The OL marker path already pushes `ITEM_CLOSE` before begin. Minimal same-kind witness `* parent\n    * child\n* sibling\n` reproduces the HTML defect; `1. parent\n    * child\n2. sibling\n` (OL sibling marker) already matches; list-end without a later sibling (`* parent\n    * child\n`) already matches. Decoded Act-II stream is missing parent `ITEM_CLOSE` between nested `LIST_CLOSE` and sibling `ITEM`. |
-| `multi_definition_reference_resolution` | red | wrapper rewrite (`scripts/slice3_links.py`), not a new Act-III machine | offset 63: actual `o` vs oracle `[` — second-line labels become `oohaY2or NSM3` | `rewrite_task3_markdown` leaves unresolved refs escaped on ordinary lines (`\[Google\] \[1\]`) but `_rewrite_text` short-circuits any line that merely starts with four spaces and copies it raw. Inside an open paragraph those four spaces are lazy continuation, not a code block (Markdown.pl keeps `[Yahoo] [2]` literal). Raw brackets then hit Act III's incomplete general-reference path and reverse label bodies. Definitions under six spaces are correctly not registered (they are a code block after a blank line). Reclassify the inventory `owning_act` for this category to `wrapper_rewrite` when the minimal contracts land. |
+| `nested_list_close_ordering` | green | act2 | n/a (fixed in Step 2a) | Was: `PASS_LISTS_SIB_OUTDENT` skipped parent `ITEM_CLOSE` for UL sibling markers. Fix: always push `ITEM_CLOSE` after nested `LIST_CLOSE` (UL/OL unified). |
+| `multi_definition_reference_resolution` | green | wrapper rewrite (`scripts/slice3_links.py`), not a new Act-III machine | n/a (fixed in Step 2b) | Was: `_rewrite_text` short-circuited any four-space line as opaque code, so lazy continuations kept raw brackets and Act III reversed label bodies. Fix: four-space opacity only for code-block context (start / after blank / consecutive code lines); lazy continuations use the existing unresolved-ref escape path. Inventory `owning_act` is `wrapper_rewrite`. |
 | `paragraph_block_separators` | green | act2 | n/a | already byte-identical |
 
 Authorized repairs only:
@@ -283,11 +283,21 @@ Expected after 2a: nested-list category green; multi-definition may still be red
   `nested_one_level.dump`). SPL-facing gate: `223 passed`. mdtest + spikes:
   `54 passed, 1 skipped`. Full `test_act2_slice4.py`: `61 passed`.
 
-- [ ] **Step 2b: Repair multi-definition / lazy-continuation reference rewrite.** Authority: Amendment A17 + design Amendment A15. Files: `tests/test_slice5_documentation_aggregates.py` and/or focused rewrite unit tests under `tests/`, `scripts/slice3_links.py`. No IR/SPL change unless a regression forces a one-line companion fix (then re-run the SPL-facing gate).
+- [x] **Step 2b: Repair multi-definition / lazy-continuation reference rewrite.** Authority: Amendment A17 + design Amendment A15. Files: `tests/test_slice5_documentation_aggregates.py` and/or focused rewrite unit tests under `tests/`, `scripts/slice3_links.py`. No IR/SPL change unless a regression forces a one-line companion fix (then re-run the SPL-facing gate).
 
   1. Add minimal contracts for (a) the inventory multi-definition witness, (b) paragraph continuation `I get … [Google] [1] than from\n    [Yahoo] [2] or [MSN] [3].\n` with empty refs, asserting rewritten form escapes both lines' brackets, and (c) a true code-block control: blank line then four-space content must remain opaque (no false reference rewrite inside code). Prove the multi-definition category red before the rewrite change.
   2. Implement only the `_rewrite_text` four-space context fix above. Update the inventory row's `owning_act` to `wrapper_rewrite`.
   3. Gate: `uv run pytest tests/test_slice5_documentation_aggregates.py -k 'syntax_diff or syntax_category or multi_definition or nested_list' -q` fully green; shared Task-4 regression fragment green; no Act-II ledger growth. Commit as `fix: rewrite lazy continuation reference literals`; push with the required trailers.
+
+  Evidence (2026-07-19): `_rewrite_text` treats four-space lines as opaque only in
+  code-block context (document start / after blank / consecutive code lines);
+  lazy paragraph continuations still run unresolved-reference escape. Inventory
+  `owning_act` for multi-definition is `wrapper_rewrite`. Minimal contracts:
+  inventory multi-definition witness, empty-ref lazy continuation escape on both
+  lines, and blank-then-four-space code opacity. Focused gate
+  `syntax_diff or syntax_category or multi_definition or nested_list` (plus lazy/
+  code_block): `8 passed`. Shared Task-4 fragment: slice5+spikes+token dumps
+  `69 passed`; mdtest+spikes `54 passed, 1 skipped`. No IR/SPL change.
 
   After 2a and 2b both land, Step 2 is complete. Do not enable the full Syntax fixture here — that remains Steps 3–4.
 

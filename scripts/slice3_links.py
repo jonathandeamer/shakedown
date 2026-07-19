@@ -234,16 +234,36 @@ def _rewrite_text(stripped: str, refs: dict[str, ReferenceRecord]) -> str:
     index = 0
     last_explicit_label: str | None = None
     last_explicit_text: str | None = None
+    # Four-space opacity applies in code-block context: document start, after a
+    # blank line, or on consecutive four-space lines after either. Lazy
+    # paragraph continuations that start with four spaces still run rewrite.
+    in_code_block = False
+    at_block_boundary = True
     while index < len(stripped):
         line_start = index == 0 or stripped[index - 1] == "\n"
-        if line_start and stripped.startswith("    ", index):
+        if line_start:
             line_end = stripped.find("\n", index)
-            if line_end == -1:
-                out.append(stripped[index:])
-                break
-            out.append(stripped[index : line_end + 1])
-            index = line_end + 1
-            continue
+            line_body_end = len(stripped) if line_end == -1 else line_end
+            line_content = stripped[index:line_body_end]
+            is_blank_line = line_content.strip() == ""
+            if is_blank_line:
+                in_code_block = False
+                at_block_boundary = True
+            elif stripped.startswith("    ", index):
+                if at_block_boundary or in_code_block:
+                    if line_end == -1:
+                        out.append(stripped[index:])
+                        break
+                    out.append(stripped[index : line_end + 1])
+                    index = line_end + 1
+                    in_code_block = True
+                    at_block_boundary = False
+                    continue
+                in_code_block = False
+                at_block_boundary = False
+            else:
+                in_code_block = False
+                at_block_boundary = False
         char = stripped[index]
         if char == "\\" and index + 1 < len(stripped):
             out.append(stripped[index : index + 2])
