@@ -66,20 +66,7 @@ Horatio:
  If so, let us proceed to scene @PASS_WRAP_DOT.
 
 Lady Macbeth:
- Are you as bold as nothing?
-
-Horatio:
- If so, let us proceed to scene @PASS_HEADER_GUARD.
-
-Lady Macbeth:
- You are as mighty as nothing.
-
-[Exit Horatio]
-
-[Enter Puck]
-
-Lady Macbeth:
- Let us proceed to scene @PASS_HR_GATE_MARKER.
+ Let us proceed to scene @PASS_HEADER_GUARD.
 
 
                     Scene @PASS_HEADER_GUARD: @LIT.scenes.PASS_HEADER_GUARD.title
@@ -104,7 +91,13 @@ Lady Macbeth:
                     Scene @PASS_HEADER_OPEN: @LIT.scenes.PASS_HEADER_OPEN.title
 
 Lady Macbeth:
- You are as villainous as a hero.
+ Are you bigger than nothing?
+
+Horatio:
+ If so, let us proceed to scene @PASS_HEADER_REPLAY_DONE.
+
+Lady Macbeth:
+ You are as mighty as a hero.
 
 [Exit Horatio]
 
@@ -387,6 +380,938 @@ Lady Macbeth:
 
 
                     Scene @PASS_HEADER_CLOSE: @LIT.scenes.PASS_HEADER_CLOSE.title
+
+Hecate:
+ Remember nothing.
+
+Hecate:
+ Are you as rotten as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_LISTS_DONE.
+
+Lady Macbeth:
+ Let us return to scene @PASS_LISTS_BLOCK_START.
+
+
+                    Scene @PASS_SETEXT_CANDIDATE: @LIT.scenes.PASS_SETEXT_CANDIDATE.title
+
+Hecate:
+ Remember the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a black cat.
+
+Hecate:
+ Remember myself.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_SETEXT_CANDIDATE_SCAN.
+
+
+                    Scene @PASS_SETEXT_CANDIDATE_SCAN: @LIT.scenes.PASS_SETEXT_CANDIDATE_SCAN.title
+
+Hecate:
+ Are you as cursed as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_EOF_MODE.
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as cursed as the difference between yourself and a cat.
+
+Hecate:
+ Remember myself.
+
+Lady Macbeth:
+ Are you as bold as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_STATE_OPEN.
+
+Lady Macbeth:
+ Let us return to scene @PASS_SETEXT_CANDIDATE_SCAN.
+
+
+                    Scene @PASS_SETEXT_EOF_MODE: @LIT.scenes.PASS_SETEXT_EOF_MODE.title
+
+[Exit Lady Macbeth]
+
+[Enter Horatio]
+
+Hecate:
+ You are as rotten as nothing.
+
+Horatio:
+ You are as happy as nothing.
+
+[Exit Horatio]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_FINALIZE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_STATE_OPEN: @LIT.scenes.PASS_SETEXT_UNDERLINE_STATE_OPEN.title
+
+[Exit Lady Macbeth]
+
+[Enter Macbeth]
+
+Hecate:
+ Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ You are as cursed as nothing.
+
+[Exit Macbeth]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE: @LIT.scenes.PASS_SETEXT_UNDERLINE.title
+
+Hecate:
+ Remember the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a cat.
+
+[Exit Horatio]
+
+[Enter Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_SCAN: @LIT.scenes.PASS_SETEXT_UNDERLINE_SCAN.title
+
+[Exit Macbeth]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Are you as cursed as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_EOF_STATE.
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as horrid as the difference between yourself and a cat.
+
+[Exit Lady Macbeth]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_CAPTURE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_CAPTURE: @LIT.scenes.PASS_SETEXT_UNDERLINE_CAPTURE.title
+
+Hecate:
+ Remember myself.
+
+[Exit Horatio]
+
+[Enter Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_CLASSIFY: @LIT.scenes.PASS_SETEXT_UNDERLINE_CLASSIFY.title
+
+Macbeth:
+ Are you as villainous as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_PROOF_STAGE.
+
+Macbeth:
+ Are you as mighty as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE.
+
+Macbeth:
+ Are you as mighty as the sum of a little furry black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE.
+
+Macbeth:
+ Are you as mighty as the difference between the product of a normal little furry black cat and a furry black cat and the sum of a black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_EQ.
+
+Macbeth:
+ Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_DASH.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Macbeth:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE: @LIT.scenes.PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE.title
+
+Hecate:
+ Are you as horrid as a cat?
+
+Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_SET_EQUALS_TAIL.
+
+Hecate:
+ Are you as cursed as the sum of a black cat and a cat?
+
+Macbeth:
+ If so, let us return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+Hecate:
+ Are you as horrid as a black cat?
+
+Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_SET_DASH_TAIL.
+
+Hecate:
+ Are you as horrid as a furry black cat?
+
+Macbeth:
+ If so, let us return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Macbeth:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_SET_EQUALS_TAIL: @LIT.scenes.PASS_SETEXT_UNDERLINE_SET_EQUALS_TAIL.title
+
+Hecate:
+ You are as rotten as the sum of a black cat and a cat.
+
+Hecate:
+ We must return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_SET_DASH_TAIL: @LIT.scenes.PASS_SETEXT_UNDERLINE_SET_DASH_TAIL.title
+
+Hecate:
+ You are as horrid as a furry black cat.
+
+Hecate:
+ We must return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_CLASSIFY_EQ: @LIT.scenes.PASS_SETEXT_UNDERLINE_CLASSIFY_EQ.title
+
+Hecate:
+ Are you as cursed as nothing?
+
+Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_SET_EQUALS.
+
+Hecate:
+ Are you as rotten as a cat?
+
+Macbeth:
+ If so, let us return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Macbeth:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_SET_EQUALS: @LIT.scenes.PASS_SETEXT_UNDERLINE_SET_EQUALS.title
+
+Hecate:
+ You are as horrid as a cat.
+
+Hecate:
+ We must return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_CLASSIFY_DASH: @LIT.scenes.PASS_SETEXT_UNDERLINE_CLASSIFY_DASH.title
+
+Hecate:
+ Are you as rotten as nothing?
+
+Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_SET_DASH.
+
+Hecate:
+ Are you as rotten as a black cat?
+
+Macbeth:
+ If so, let us return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Macbeth:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_SET_DASH: @LIT.scenes.PASS_SETEXT_UNDERLINE_SET_DASH.title
+
+Hecate:
+ You are as cursed as a black cat.
+
+Hecate:
+ We must return to scene @PASS_SETEXT_UNDERLINE_SCAN.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_PROOF_STAGE: @LIT.scenes.PASS_SETEXT_UNDERLINE_PROOF_STAGE.title
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Horatio:
+ Are you as healthy as nothing?
+
+Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.
+
+Macbeth:
+ Remember myself.
+
+Horatio:
+ @LIT.characters.horatio.recall.underline_warrant
+
+Macbeth:
+ Remember myself.
+
+Horatio:
+ @LIT.characters.horatio.recall.underline_warrant
+
+Macbeth:
+ @LIT.characters.macbeth.recall.underline_warrant
+
+Horatio:
+ You are as happy as myself.
+
+Macbeth:
+ @LIT.characters.macbeth.recall.underline_warrant
+
+Macbeth:
+ Are you as mighty as a kingdom?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_EQUALS.
+
+Macbeth:
+ Are you as mighty as the sum of a black cat and a cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_EQUALS.
+
+Macbeth:
+ Are you as villainous as a proud kingdom?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_DASH.
+
+Macbeth:
+ Are you as villainous as a furry black cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_DASH.
+
+Macbeth:
+ Let us proceed to scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE: @LIT.scenes.PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.title
+
+[Exit Horatio]
+
+[Enter Hecate]
+
+Hecate:
+ @LIT.characters.hecate.recall.underline_warrant
+
+Macbeth:
+ Remember myself.
+
+Hecate:
+ @LIT.characters.hecate.recall.underline_warrant
+
+Macbeth:
+ @LIT.characters.macbeth.recall.underline_warrant
+
+Hecate:
+ You are as horrid as myself.
+
+Macbeth:
+ You are as villainous as nothing.
+
+[Exit Macbeth]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_REQUEUE.
+
+
+                    Scene @PASS_SETEXT_UNDERLINE_EOF_STATE: @LIT.scenes.PASS_SETEXT_UNDERLINE_EOF_STATE.title
+
+[Exit Lady Macbeth]
+
+[Enter Macbeth]
+
+Hecate:
+ @LIT.characters.hecate.recall.underline_warrant
+
+Macbeth:
+ Remember myself.
+
+Hecate:
+ @LIT.characters.hecate.recall.underline_warrant
+
+Macbeth:
+ @LIT.characters.macbeth.recall.underline_warrant
+
+Hecate:
+ You are as cursed as myself.
+
+Macbeth:
+ You are as villainous as nothing.
+
+[Exit Macbeth]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_REQUEUE.
+
+
+                    Scene @PASS_SETEXT_EQUALS: @LIT.scenes.PASS_SETEXT_EQUALS.title
+
+[Exit Macbeth]
+
+[Enter Lady Macbeth]
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.underline_byte
+
+Lady Macbeth:
+ Are you as mighty as the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_EQUALS_POST_DISCARD.
+
+[Exit Lady Macbeth]
+
+[Enter Macbeth]
+
+Horatio:
+ Let us return to scene @PASS_SETEXT_EQUALS.
+
+
+                    Scene @PASS_SETEXT_EQUALS_POST_DISCARD: @LIT.scenes.PASS_SETEXT_EQUALS_POST_DISCARD.title
+
+[Exit Lady Macbeth]
+
+[Enter Hecate]
+
+Hecate:
+ You are as cursed as a cat.
+
+Horatio:
+ You are as healthy as nothing.
+
+[Exit Horatio]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_FINALIZE.
+
+
+                    Scene @PASS_SETEXT_DASH: @LIT.scenes.PASS_SETEXT_DASH.title
+
+[Exit Macbeth]
+
+[Enter Lady Macbeth]
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.underline_byte
+
+Lady Macbeth:
+ Are you as villainous as the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_DASH_POST_DISCARD.
+
+[Exit Lady Macbeth]
+
+[Enter Macbeth]
+
+Horatio:
+ Let us return to scene @PASS_SETEXT_DASH.
+
+
+                    Scene @PASS_SETEXT_DASH_POST_DISCARD: @LIT.scenes.PASS_SETEXT_DASH_POST_DISCARD.title
+
+[Exit Lady Macbeth]
+
+[Enter Hecate]
+
+Hecate:
+ You are as rotten as a black cat.
+
+Horatio:
+ You are as warm as nothing.
+
+[Exit Horatio]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_FINALIZE.
+
+
+                    Scene @PASS_SETEXT_REQUEUE: @LIT.scenes.PASS_SETEXT_REQUEUE.title
+
+Hecate:
+ @LIT.characters.hecate.recall.underline_byte
+
+Hecate:
+ Are you as cursed as the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_REQUEUE_POST_RESTORE.
+
+Horatio:
+ Remember myself.
+
+Horatio:
+ You are as happy as the sum of yourself and a brother.
+
+Hecate:
+ We must return to scene @PASS_SETEXT_REQUEUE.
+
+
+                    Scene @PASS_SETEXT_REQUEUE_POST_RESTORE: @LIT.scenes.PASS_SETEXT_REQUEUE_POST_RESTORE.title
+
+Hecate:
+ You are as rotten as nothing.
+
+[Exit Horatio]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_FINALIZE.
+
+
+                    Scene @PASS_SETEXT_FINALIZE: @LIT.scenes.PASS_SETEXT_FINALIZE.title
+
+Hecate:
+ You are as rotten as the sum of yourself and myself.
+
+Lady Macbeth:
+ Remember myself.
+
+Lady Macbeth:
+ Remember the difference between nothing and the product of a normal little furry black cat and a black cat.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_SETEXT_FINALIZE_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_FINALIZE_TRANSFER: @LIT.scenes.PASS_SETEXT_FINALIZE_TRANSFER.title
+
+Hecate:
+ @LIT.characters.hecate.recall.candidate_glyph
+
+Hecate:
+ Are you as horrid as the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a black cat?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_REPLAY.
+
+Lady Macbeth:
+ Is Horatio as villainous as nothing?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_FINALIZE_TRANSFER_DONE.
+
+Hecate:
+ Are you as cursed as the sum of a little furry black cat and a black cat?
+
+Lady Macbeth:
+ If so, let us return to scene @PASS_SETEXT_FINALIZE_TRANSFER.
+
+Lady Macbeth:
+ Remember myself.
+
+Lady Macbeth:
+ Let us return to scene @PASS_SETEXT_FINALIZE_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_FINALIZE_TRANSFER_DONE: @LIT.scenes.PASS_SETEXT_FINALIZE_TRANSFER_DONE.title
+
+Lady Macbeth:
+ Remember myself.
+
+Lady Macbeth:
+ Let us return to scene @PASS_SETEXT_FINALIZE_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_REPLAY: @LIT.scenes.PASS_SETEXT_REPLAY.title
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ Is Horatio as cursed as a cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_SETEXT_REPLAY_EQUALS.
+
+Hecate:
+ Is Horatio as rotten as a black cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_SETEXT_REPLAY_DASH.
+
+Hecate:
+ Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a cat.
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_REPLAY_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_REPLAY_EQUALS: @LIT.scenes.PASS_SETEXT_REPLAY_EQUALS.title
+
+Hecate:
+ Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a black cat.
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_REPLAY_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_REPLAY_DASH: @LIT.scenes.PASS_SETEXT_REPLAY_DASH.title
+
+Hecate:
+ Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat.
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_REPLAY_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_REPLAY_TRANSFER: @LIT.scenes.PASS_SETEXT_REPLAY_TRANSFER.title
+
+Puck:
+ @LIT.characters.puck.recall.title_glyph
+
+Puck:
+ Are you as fair as the difference between nothing and the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_SETEXT_REPLAY_TRANSFER_DONE.
+
+Hecate:
+ Remember myself.
+
+Hecate:
+ We must return to scene @PASS_SETEXT_REPLAY_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_REPLAY_TRANSFER_DONE: @LIT.scenes.PASS_SETEXT_REPLAY_TRANSFER_DONE.title
+
+Puck:
+ @LIT.characters.puck.recall.saved_countdown
+
+Hecate:
+ You are as horrid as myself.
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @PASS_SETEXT_BRIDGE.
+
+
+                    Scene @PASS_SETEXT_BRIDGE: @LIT.scenes.PASS_SETEXT_BRIDGE.title
+
+Puck:
+ Remember myself.
+
+Puck:
+ Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat.
+
+Puck:
+ Let us proceed to scene @PASS_SETEXT_BRIDGE_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_BRIDGE_TRANSFER: @LIT.scenes.PASS_SETEXT_BRIDGE_TRANSFER.title
+
+Horatio:
+ @LIT.characters.horatio.recall.replay_glyph
+
+Horatio:
+ Are you as healthy as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_SETEXT_CLOSE.
+
+Horatio:
+ Are you as happy as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_SETEXT_EQUALS_CLOSE.
+
+Horatio:
+ Are you as healthy as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_SETEXT_DASH_CLOSE.
+
+Puck:
+ Remember myself.
+
+Puck:
+ Let us return to scene @PASS_SETEXT_BRIDGE_TRANSFER.
+
+
+                    Scene @PASS_SETEXT_EQUALS_CLOSE: @LIT.scenes.PASS_SETEXT_EQUALS_CLOSE.title
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Horatio:
+ Remember a happy brother.
+
+Horatio:
+ Remember a brother.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_SETEXT_EQUALS_CLOSE_RESTORE.
+
+
+                    Scene @PASS_SETEXT_EQUALS_CLOSE_RESTORE: @LIT.scenes.PASS_SETEXT_EQUALS_CLOSE_RESTORE.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.restored_glyph
+
+Lady Macbeth:
+ Are you as bold as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_EQUALS_CLOSE_POST_RESTORE.
+
+Horatio:
+ Remember myself.
+
+Lady Macbeth:
+ Let us return to scene @PASS_SETEXT_EQUALS_CLOSE_RESTORE.
+
+
+                    Scene @PASS_SETEXT_EQUALS_CLOSE_POST_RESTORE: @LIT.scenes.PASS_SETEXT_EQUALS_CLOSE_POST_RESTORE.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.saved_countdown
+
+Horatio:
+ You are as happy as myself.
+
+Lady Macbeth:
+ You are as bold as nothing.
+
+Horatio:
+ Are you friendlier than a brother?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
+
+Horatio:
+ Are you as warm as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
+
+Horatio:
+ You are as warm as nothing.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
+
+
+                    Scene @PASS_SETEXT_DASH_CLOSE: @LIT.scenes.PASS_SETEXT_DASH_CLOSE.title
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Horatio:
+ Remember a happy brother.
+
+Horatio:
+ Remember a happy brother.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_SETEXT_DASH_CLOSE_RESTORE.
+
+
+                    Scene @PASS_SETEXT_DASH_CLOSE_RESTORE: @LIT.scenes.PASS_SETEXT_DASH_CLOSE_RESTORE.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.restored_glyph
+
+Lady Macbeth:
+ Are you as villainous as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_DASH_CLOSE_POST_RESTORE.
+
+Horatio:
+ Remember myself.
+
+Lady Macbeth:
+ Let us return to scene @PASS_SETEXT_DASH_CLOSE_RESTORE.
+
+
+                    Scene @PASS_SETEXT_DASH_CLOSE_POST_RESTORE: @LIT.scenes.PASS_SETEXT_DASH_CLOSE_POST_RESTORE.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.saved_countdown
+
+Horatio:
+ You are as warm as myself.
+
+Lady Macbeth:
+ You are as mighty as nothing.
+
+Horatio:
+ Are you nicer than a brother?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
+
+Horatio:
+ Are you as warm as nothing?
+
+Lady Macbeth:
+ If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
+
+Horatio:
+ You are as warm as nothing.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
+
+
+                    Scene @PASS_SETEXT_CLOSE: @LIT.scenes.PASS_SETEXT_CLOSE.title
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.restored_glyph
+
+Lady Macbeth:
+ Are you as mighty as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat?
+
+Horatio:
+ If so, let us proceed to scene @PASS_SETEXT_CLOSE_COUNTDOWN.
+
+Horatio:
+ Remember myself.
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Horatio:
+ Let us return to scene @PASS_SETEXT_CLOSE.
+
+
+                    Scene @PASS_SETEXT_CLOSE_COUNTDOWN: @LIT.scenes.PASS_SETEXT_CLOSE_COUNTDOWN.title
+
+[Exit Lady Macbeth]
+
+[Enter Hecate]
+
+Hecate:
+ @LIT.characters.hecate.recall.saved_countdown
+
+Horatio:
+ Remember myself.
+
+Hecate:
+ You are as rotten as nothing.
+
+[Exit Horatio]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_SETEXT_CLOSE_POST_RESTORE.
+
+
+                    Scene @PASS_SETEXT_CLOSE_POST_RESTORE: @LIT.scenes.PASS_SETEXT_CLOSE_POST_RESTORE.title
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.saved_countdown
+
+Hecate:
+ You are as rotten as myself.
+
+Hecate:
+ Are you as cursed as nothing?
+
+Lady Macbeth:
+ If so, let us return to scene @PASS_HEADER_CLOSE.
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as horrid as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as bold as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @PASS_HEADER_CLOSE.
+
+Lady Macbeth:
+ Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
+
+
+                    Scene @PASS_SETEXT_PROVED_CLOSE: @LIT.scenes.PASS_SETEXT_PROVED_CLOSE.title
+
+[Exit Horatio]
+
+[Enter Hecate]
 
 Hecate:
  Remember nothing.
@@ -1544,16 +2469,22 @@ Hecate:
  If so, let us proceed to scene @PASS_LISTS_ITEM_GLYPH.
 
 Lady Macbeth:
- Are you worse than the product of a normal little furry black cat and the sum of a black cat and a cat?
+ Is Horatio more bold than nothing?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_RAW_GLYPH.
 
 Lady Macbeth:
+ Are you more villainous than the product of a normal little furry black cat and the sum of a black cat and a cat?
+
+Hecate:
+ If so, we must return to scene @PASS_SETEXT_CANDIDATE.
+
+Lady Macbeth:
  Are you bigger than the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a cat?
 
 Hecate:
- If so, let us proceed to scene @PASS_LISTS_RAW_GLYPH.
+ If so, we must return to scene @PASS_SETEXT_CANDIDATE.
 
 [Exit Hecate]
 

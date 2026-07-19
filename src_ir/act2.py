@@ -74,6 +74,25 @@ _CODE_LINE_NONBLANK = const(1)
 _HEADER_TRAIL_FLOOR = sub(const(0), const(42))
 _HEADER_TRAIL_SAW_HASH = const(1)
 
+# Amendment A9/A11/A12: Setext private floors, close discriminators, and
+# underline-state rail values. None is a stream token or Act-III input.
+_SETEXT_CANDIDATE_FLOOR = sub(const(0), const(30))
+_SETEXT_UNDERLINE_FLOOR = sub(const(0), const(31))
+_SETEXT_FINAL_FLOOR = sub(const(0), const(32))
+_SETEXT_RAW_CLOSE = sub(const(0), const(33))
+_SETEXT_EQUALS_CLOSE = sub(const(0), const(34))
+_SETEXT_DASH_CLOSE = sub(const(0), const(35))
+_SETEXT_RESTORE_FLOOR = sub(const(0), const(37))
+_SETEXT_UNDERLINE_STATE_FLOOR = sub(const(0), const(38))
+# A9 five-state rail on Macbeth's value during underline classification.
+_SETEXT_UNDERLINE_UNSEEN = const(0)
+_SETEXT_UNDERLINE_EQUALS = const(1)
+_SETEXT_UNDERLINE_DASH = const(2)
+_SETEXT_UNDERLINE_EQUALS_TAIL = const(3)
+_SETEXT_UNDERLINE_DASH_TAIL = const(4)
+_SETEXT_EQUALS_MARK = const(61)
+_SETEXT_DASH_MARK = const(45)
+
 
 def _read(recall: str = "hewn_glyph"):
     """Pop the next input glyph into Hecate and decrement the countdown."""
@@ -114,9 +133,13 @@ ACT: Act = act(
         scene(
             "PASS_HR_GATE",
             branch(eq(val(HECATE), _HTML_OPEN), then="PASS_WRAP_DOT"),
-            branch(eq(val(HORATIO), const(0)), then="PASS_HEADER_GUARD"),
-            let(HORATIO, const(0)),
-            goto("PASS_HR_GATE_MARKER"),
+            # Always enter HEADER_GUARD. Positive Horatio is a failed CODE_GATE
+            # indent count (1–3 spaces); HEADER_OPEN rejects ATX in that case
+            # via REPLAY_DONE so Horatio is cleared before RAW (a leftover
+            # positive count is otherwise misread as quote depth). Non-positive
+            # Horatio (column 0, or private negative sentinel after code close)
+            # may open ATX so '#' still wins over the Setext candidate path.
+            goto("PASS_HEADER_GUARD"),
             companion=HORATIO,
         ),
         scene(
@@ -128,6 +151,10 @@ ACT: Act = act(
         ),
         scene(
             "PASS_HEADER_OPEN",
+            # Failed CODE_GATE indent: do not count this '#' as ATX. Clear the
+            # indent via the existing REPLAY_DONE arm and resume raw with the
+            # held glyph still in Hecate.
+            branch(gt(val(HORATIO), const(0)), then="PASS_HEADER_REPLAY_DONE"),
             let(HORATIO, const(1)),
             goto("PASS_HEADER_SCAN"),
             companion=HORATIO,
@@ -252,6 +279,519 @@ ACT: Act = act(
         ),
         scene(
             "PASS_HEADER_CLOSE",
+            push(LADY_MACBETH, const(tokens.TEXT_END)),
+            branch(eq(val(LADY_MACBETH), const(0)), then="PASS_LISTS_DONE"),
+            goto("PASS_LISTS_BLOCK_START"),
+            companion=HECATE,
+        ),
+        # --- Amendment A9+A11+A12 Setext underline rail and transfer chain.
+        scene(
+            "PASS_SETEXT_CANDIDATE",
+            push(LADY_MACBETH, _SETEXT_CANDIDATE_FLOOR),
+            push(LADY_MACBETH, val(HECATE)),
+            goto("PASS_SETEXT_CANDIDATE_SCAN"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_CANDIDATE_SCAN",
+            branch(
+                eq(val(LADY_MACBETH), const(0)),
+                then="PASS_SETEXT_EOF_MODE",
+            ),
+            *_read(),
+            push(LADY_MACBETH, val(HECATE)),
+            branch(
+                eq(val(HECATE), _NEWLINE),
+                then="PASS_SETEXT_UNDERLINE_STATE_OPEN",
+            ),
+            goto("PASS_SETEXT_CANDIDATE_SCAN"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_EOF_MODE",
+            let(HORATIO, const(0)),
+            let(HECATE, const(0)),
+            goto("PASS_SETEXT_FINALIZE"),
+            anchor=HECATE,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_STATE_OPEN",
+            push(MACBETH, _SETEXT_UNDERLINE_STATE_FLOOR),
+            push(MACBETH, val(MACBETH)),
+            let(MACBETH, _SETEXT_UNDERLINE_UNSEEN),
+            goto("PASS_SETEXT_UNDERLINE"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE",
+            push(HORATIO, _SETEXT_UNDERLINE_FLOOR),
+            goto("PASS_SETEXT_UNDERLINE_SCAN"),
+            anchor=HECATE,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_SCAN",
+            branch(
+                eq(val(LADY_MACBETH), const(0)),
+                then="PASS_SETEXT_UNDERLINE_EOF_STATE",
+            ),
+            *_read(),
+            goto("PASS_SETEXT_UNDERLINE_CAPTURE"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_CAPTURE",
+            push(HORATIO, val(HECATE)),
+            goto("PASS_SETEXT_UNDERLINE_CLASSIFY"),
+            anchor=HECATE,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_CLASSIFY",
+            branch(
+                eq(val(HECATE), _NEWLINE),
+                then="PASS_SETEXT_UNDERLINE_PROOF_STAGE",
+            ),
+            branch(
+                eq(val(HECATE), _SPACE),
+                then="PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE",
+            ),
+            branch(
+                eq(val(HECATE), _TAB),
+                then="PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE",
+            ),
+            branch(
+                eq(val(HECATE), _SETEXT_EQUALS_MARK),
+                then="PASS_SETEXT_UNDERLINE_CLASSIFY_EQ",
+            ),
+            branch(
+                eq(val(HECATE), _SETEXT_DASH_MARK),
+                then="PASS_SETEXT_UNDERLINE_CLASSIFY_DASH",
+            ),
+            goto("PASS_SETEXT_UNDERLINE_REQUEUE_STAGE"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE",
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_EQUALS),
+                then="PASS_SETEXT_UNDERLINE_SET_EQUALS_TAIL",
+            ),
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_EQUALS_TAIL),
+                then="PASS_SETEXT_UNDERLINE_SCAN",
+            ),
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_DASH),
+                then="PASS_SETEXT_UNDERLINE_SET_DASH_TAIL",
+            ),
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_DASH_TAIL),
+                then="PASS_SETEXT_UNDERLINE_SCAN",
+            ),
+            goto("PASS_SETEXT_UNDERLINE_REQUEUE_STAGE"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_SET_EQUALS_TAIL",
+            let(MACBETH, _SETEXT_UNDERLINE_EQUALS_TAIL),
+            goto("PASS_SETEXT_UNDERLINE_SCAN"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_SET_DASH_TAIL",
+            let(MACBETH, _SETEXT_UNDERLINE_DASH_TAIL),
+            goto("PASS_SETEXT_UNDERLINE_SCAN"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_CLASSIFY_EQ",
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_UNSEEN),
+                then="PASS_SETEXT_UNDERLINE_SET_EQUALS",
+            ),
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_EQUALS),
+                then="PASS_SETEXT_UNDERLINE_SCAN",
+            ),
+            goto("PASS_SETEXT_UNDERLINE_REQUEUE_STAGE"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_SET_EQUALS",
+            let(MACBETH, _SETEXT_UNDERLINE_EQUALS),
+            goto("PASS_SETEXT_UNDERLINE_SCAN"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_CLASSIFY_DASH",
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_UNSEEN),
+                then="PASS_SETEXT_UNDERLINE_SET_DASH",
+            ),
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_DASH),
+                then="PASS_SETEXT_UNDERLINE_SCAN",
+            ),
+            goto("PASS_SETEXT_UNDERLINE_REQUEUE_STAGE"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_SET_DASH",
+            let(MACBETH, _SETEXT_UNDERLINE_DASH),
+            goto("PASS_SETEXT_UNDERLINE_SCAN"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_PROOF_STAGE",
+            branch(
+                eq(val(MACBETH), _SETEXT_UNDERLINE_UNSEEN),
+                then="PASS_SETEXT_UNDERLINE_REQUEUE_STAGE",
+            ),
+            push(HORATIO, val(MACBETH)),
+            pop(MACBETH, recall="underline_warrant"),
+            push(HORATIO, val(MACBETH)),
+            pop(MACBETH, recall="underline_warrant"),
+            pop(HORATIO, recall="underline_warrant"),
+            let(MACBETH, val(HORATIO)),
+            pop(HORATIO, recall="underline_warrant"),
+            branch(
+                eq(val(HORATIO), _SETEXT_UNDERLINE_EQUALS),
+                then="PASS_SETEXT_EQUALS",
+            ),
+            branch(
+                eq(val(HORATIO), _SETEXT_UNDERLINE_EQUALS_TAIL),
+                then="PASS_SETEXT_EQUALS",
+            ),
+            branch(
+                eq(val(HORATIO), _SETEXT_UNDERLINE_DASH),
+                then="PASS_SETEXT_DASH",
+            ),
+            branch(
+                eq(val(HORATIO), _SETEXT_UNDERLINE_DASH_TAIL),
+                then="PASS_SETEXT_DASH",
+            ),
+            goto("PASS_SETEXT_UNDERLINE_REQUEUE_STAGE"),
+            anchor=MACBETH,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_REQUEUE_STAGE",
+            pop(MACBETH, recall="underline_warrant"),
+            push(HECATE, val(MACBETH)),
+            pop(MACBETH, recall="underline_warrant"),
+            pop(HECATE, recall="underline_warrant"),
+            let(MACBETH, val(HECATE)),
+            let(HECATE, const(0)),
+            goto("PASS_SETEXT_REQUEUE"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_UNDERLINE_EOF_STATE",
+            pop(MACBETH, recall="underline_warrant"),
+            push(HECATE, val(MACBETH)),
+            pop(MACBETH, recall="underline_warrant"),
+            pop(HECATE, recall="underline_warrant"),
+            let(MACBETH, val(HECATE)),
+            let(HECATE, const(0)),
+            goto("PASS_SETEXT_REQUEUE"),
+            anchor=HECATE,
+            companion=MACBETH,
+        ),
+        scene(
+            "PASS_SETEXT_EQUALS",
+            pop(HORATIO, recall="underline_byte"),
+            branch(
+                eq(val(HORATIO), _SETEXT_UNDERLINE_FLOOR),
+                then="PASS_SETEXT_EQUALS_POST_DISCARD",
+            ),
+            goto("PASS_SETEXT_EQUALS"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_EQUALS_POST_DISCARD",
+            # Proved path: mode 1 and clear Hecate's value so FINALIZE's
+            # requeue-count add is a no-op. Countdown pad-drop lives in the
+            # close restore (Lady Macbeth + Horatio) under A12.
+            let(HORATIO, const(1)),
+            let(HECATE, const(0)),
+            goto("PASS_SETEXT_FINALIZE"),
+            anchor=HECATE,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_DASH",
+            pop(HORATIO, recall="underline_byte"),
+            branch(
+                eq(val(HORATIO), _SETEXT_UNDERLINE_FLOOR),
+                then="PASS_SETEXT_DASH_POST_DISCARD",
+            ),
+            goto("PASS_SETEXT_DASH"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_DASH_POST_DISCARD",
+            let(HORATIO, const(2)),
+            let(HECATE, const(0)),
+            goto("PASS_SETEXT_FINALIZE"),
+            anchor=HECATE,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_REQUEUE",
+            pop(HORATIO, recall="underline_byte"),
+            branch(
+                eq(val(HORATIO), _SETEXT_UNDERLINE_FLOOR),
+                then="PASS_SETEXT_REQUEUE_POST_RESTORE",
+            ),
+            push(HECATE, val(HORATIO)),
+            let(HECATE, add(val(HECATE), const(1))),
+            goto("PASS_SETEXT_REQUEUE"),
+            anchor=HECATE,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_REQUEUE_POST_RESTORE",
+            let(HORATIO, const(0)),
+            goto("PASS_SETEXT_FINALIZE"),
+            anchor=HECATE,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_FINALIZE",
+            let(LADY_MACBETH, add(val(LADY_MACBETH), val(HECATE))),
+            push(HECATE, val(LADY_MACBETH)),
+            push(HECATE, _SETEXT_FINAL_FLOOR),
+            goto("PASS_SETEXT_FINALIZE_TRANSFER"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_FINALIZE_TRANSFER",
+            pop(LADY_MACBETH, recall="candidate_glyph"),
+            branch(
+                eq(val(LADY_MACBETH), _SETEXT_CANDIDATE_FLOOR),
+                then="PASS_SETEXT_REPLAY",
+            ),
+            branch(
+                eq(val(HORATIO), const(0)),
+                then="PASS_SETEXT_FINALIZE_TRANSFER_DONE",
+            ),
+            branch(
+                eq(val(LADY_MACBETH), _NEWLINE),
+                then="PASS_SETEXT_FINALIZE_TRANSFER",
+            ),
+            push(HECATE, val(LADY_MACBETH)),
+            goto("PASS_SETEXT_FINALIZE_TRANSFER"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_FINALIZE_TRANSFER_DONE",
+            push(HECATE, val(LADY_MACBETH)),
+            goto("PASS_SETEXT_FINALIZE_TRANSFER"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_REPLAY",
+            branch(eq(val(HORATIO), const(1)), then="PASS_SETEXT_REPLAY_EQUALS"),
+            branch(eq(val(HORATIO), const(2)), then="PASS_SETEXT_REPLAY_DASH"),
+            push(PUCK, _SETEXT_RAW_CLOSE),
+            goto("PASS_SETEXT_REPLAY_TRANSFER"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_SETEXT_REPLAY_EQUALS",
+            push(PUCK, _SETEXT_EQUALS_CLOSE),
+            goto("PASS_SETEXT_REPLAY_TRANSFER"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_SETEXT_REPLAY_DASH",
+            push(PUCK, _SETEXT_DASH_CLOSE),
+            goto("PASS_SETEXT_REPLAY_TRANSFER"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_SETEXT_REPLAY_TRANSFER",
+            pop(HECATE, recall="title_glyph"),
+            branch(
+                eq(val(HECATE), _SETEXT_FINAL_FLOOR),
+                then="PASS_SETEXT_REPLAY_TRANSFER_DONE",
+            ),
+            push(PUCK, val(HECATE)),
+            goto("PASS_SETEXT_REPLAY_TRANSFER"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_SETEXT_REPLAY_TRANSFER_DONE",
+            pop(HECATE, recall="saved_countdown"),
+            let(PUCK, val(HECATE)),
+            goto("PASS_SETEXT_BRIDGE"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_SETEXT_BRIDGE",
+            push(HORATIO, val(PUCK)),
+            push(HORATIO, _SETEXT_RESTORE_FLOOR),
+            goto("PASS_SETEXT_BRIDGE_TRANSFER"),
+            anchor=PUCK,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_BRIDGE_TRANSFER",
+            pop(PUCK, recall="replay_glyph"),
+            branch(
+                eq(val(PUCK), _SETEXT_RAW_CLOSE),
+                then="PASS_SETEXT_CLOSE",
+            ),
+            branch(
+                eq(val(PUCK), _SETEXT_EQUALS_CLOSE),
+                then="PASS_SETEXT_EQUALS_CLOSE",
+            ),
+            branch(
+                eq(val(PUCK), _SETEXT_DASH_CLOSE),
+                then="PASS_SETEXT_DASH_CLOSE",
+            ),
+            push(HORATIO, val(PUCK)),
+            goto("PASS_SETEXT_BRIDGE_TRANSFER"),
+            anchor=PUCK,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_EQUALS_CLOSE",
+            push(LADY_MACBETH, const(tokens.HEADER)),
+            push(LADY_MACBETH, const(1)),
+            goto("PASS_SETEXT_EQUALS_CLOSE_RESTORE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_EQUALS_CLOSE_RESTORE",
+            pop(HORATIO, recall="restored_glyph"),
+            branch(
+                eq(val(HORATIO), _SETEXT_RESTORE_FLOOR),
+                then="PASS_SETEXT_EQUALS_CLOSE_POST_RESTORE",
+            ),
+            push(LADY_MACBETH, val(HORATIO)),
+            goto("PASS_SETEXT_EQUALS_CLOSE_RESTORE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_EQUALS_CLOSE_POST_RESTORE",
+            pop(HORATIO, recall="saved_countdown"),
+            let(LADY_MACBETH, val(HORATIO)),
+            # A7/A9: reset Horatio to neutral block state 0 before proved close.
+            # Leaving mode 1 would send PASS_LISTS_DONE into PASS_CONTAINERS_REPLAY.
+            let(HORATIO, const(0)),
+            # Act I ends with exactly two newlines. The proved underline already
+            # consumed the first; when only the second remains, drop it so
+            # A12's terminal PROVED_CLOSE reaches DONE without a dispatcher read.
+            branch(
+                gt(val(LADY_MACBETH), const(1)),
+                then="PASS_SETEXT_PROVED_CLOSE",
+            ),
+            branch(
+                eq(val(LADY_MACBETH), const(0)),
+                then="PASS_SETEXT_PROVED_CLOSE",
+            ),
+            let(LADY_MACBETH, const(0)),
+            goto("PASS_SETEXT_PROVED_CLOSE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_DASH_CLOSE",
+            push(LADY_MACBETH, const(tokens.HEADER)),
+            push(LADY_MACBETH, const(2)),
+            goto("PASS_SETEXT_DASH_CLOSE_RESTORE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_DASH_CLOSE_RESTORE",
+            pop(HORATIO, recall="restored_glyph"),
+            branch(
+                eq(val(HORATIO), _SETEXT_RESTORE_FLOOR),
+                then="PASS_SETEXT_DASH_CLOSE_POST_RESTORE",
+            ),
+            push(LADY_MACBETH, val(HORATIO)),
+            goto("PASS_SETEXT_DASH_CLOSE_RESTORE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_DASH_CLOSE_POST_RESTORE",
+            pop(HORATIO, recall="saved_countdown"),
+            let(LADY_MACBETH, val(HORATIO)),
+            let(HORATIO, const(0)),
+            branch(
+                gt(val(LADY_MACBETH), const(1)),
+                then="PASS_SETEXT_PROVED_CLOSE",
+            ),
+            branch(
+                eq(val(LADY_MACBETH), const(0)),
+                then="PASS_SETEXT_PROVED_CLOSE",
+            ),
+            let(LADY_MACBETH, const(0)),
+            goto("PASS_SETEXT_PROVED_CLOSE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_CLOSE",
+            pop(HORATIO, recall="restored_glyph"),
+            branch(
+                eq(val(HORATIO), _SETEXT_RESTORE_FLOOR),
+                then="PASS_SETEXT_CLOSE_COUNTDOWN",
+            ),
+            push(LADY_MACBETH, val(HORATIO)),
+            goto("PASS_SETEXT_CLOSE"),
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_SETEXT_CLOSE_COUNTDOWN",
+            pop(HORATIO, recall="saved_countdown"),
+            push(HECATE, val(HORATIO)),
+            let(HORATIO, const(0)),
+            goto("PASS_SETEXT_CLOSE_POST_RESTORE"),
+            anchor=HORATIO,
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_CLOSE_POST_RESTORE",
+            pop(HECATE, recall="saved_countdown"),
+            let(LADY_MACBETH, val(HECATE)),
+            # Raw failed-setext close: first-line glyphs are already on Lady
+            # Macbeth without TEXT_END. Requeued look-ahead (invalid underline
+            # or blank NL) sits on Hecate's input. Resume paragraph collection
+            # so hard-wrapped list-like lines stay in the same PARA; a blank
+            # look-ahead ends the paragraph via HEADER_CLOSE's TEXT_END
+            # (same LM+Hecate pair — PROVED_CLOSE is reserved for proved
+            # equals/dash close from the Horatio pair).
+            branch(
+                eq(val(LADY_MACBETH), const(0)),
+                then="PASS_HEADER_CLOSE",
+            ),
+            *_read(),
+            branch(
+                eq(val(HECATE), _NEWLINE),
+                then="PASS_HEADER_CLOSE",
+            ),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_SETEXT_PROVED_CLOSE",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
             branch(eq(val(LADY_MACBETH), const(0)), then="PASS_LISTS_DONE"),
             goto("PASS_LISTS_BLOCK_START"),
@@ -696,8 +1236,9 @@ ACT: Act = act(
         scene(
             "PASS_LISTS_GATE_ORDERED",
             branch(gt(val(MACBETH), const(0)), then="PASS_LISTS_ITEM_GLYPH"),
-            branch(lt(val(HECATE), const(48)), then="PASS_LISTS_RAW_GLYPH"),
-            branch(gt(val(HECATE), const(57)), then="PASS_LISTS_RAW_GLYPH"),
+            branch(gt(val(HORATIO), const(0)), then="PASS_LISTS_RAW_GLYPH"),
+            branch(lt(val(HECATE), const(48)), then="PASS_SETEXT_CANDIDATE"),
+            branch(gt(val(HECATE), const(57)), then="PASS_SETEXT_CANDIDATE"),
             goto("PASS_LISTS_MARK_SAVE_OL"),
             companion=HECATE,
         ),
