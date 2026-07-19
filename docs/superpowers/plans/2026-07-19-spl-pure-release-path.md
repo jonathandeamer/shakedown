@@ -318,14 +318,16 @@ uv run python -m scripts.splc && uv run python scripts/assemble.py
 
 Evidence (2026-07-19, grok-implement): Act III resolution at `ACT_III_START` via `scripts/splc/act3_link_resolve.py` (PARA/HEADER payloads rewritten using Act I Rosalind table; oracle-aligned, no `rewrite_task3_markdown`). Act I title strip fixed for internal `"` (rfind, same-line + next-line). Gates: `tests/test_act3_links_pure.py` **24 passed**; spikes/token/act1/mdtest/slice3/validate/generated/literary **193 passed** combined; `splc` + assemble **clean** (`git diff --exit-code` on generated fragments).
 
-- [ ] **Step 3: Full Act III pure-link gate**
+- [x] **Step 3: Full Act III pure-link gate**
 
 ```bash
 uv run pytest tests/test_act3_links_pure.py -q
 uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
 ```
 
-- [ ] **Step 4: Commit**
+Evidence (2026-07-19, grok-implement): `tests/test_act3_links_pure.py` **24 passed**; `tests/test_splc_validate.py` + `tests/test_splc_generated_fragments.py` + `tests/test_literary_compliance.py` **67 passed**. Full Act III pure-link gate green; no IR/SPL edits in this step.
+
+- [x] **Step 4: Commit**
 
 ```bash
 git commit -m "feat: resolve links and images in Act III without rewrite"
@@ -333,6 +335,8 @@ git push
 ```
 
 (Multiple commits per 3a–3e are preferred if the work spans iterations.)
+
+Evidence (2026-07-19): Step 2 implementation already committed as `37288f9` with the Step 4 message; this iteration only recorded the Step 3 gate.
 
 ---
 
