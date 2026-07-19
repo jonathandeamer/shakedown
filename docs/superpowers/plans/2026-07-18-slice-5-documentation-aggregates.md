@@ -213,7 +213,15 @@
   `byte_identical`. splc regeneration plus assembly completes with a clean
   working tree (no generated drift).
 
-- [ ] **Step 5: Enable and checkpoint.** Add Basics to `_IMPLEMENTED_FIXTURES`; commit Task-3 files as `feat: complete documentation basics aggregate`; push with the required trailers.
+- [x] **Step 5: Enable and checkpoint.** Add Basics to `_IMPLEMENTED_FIXTURES`; commit Task-3 files as `feat: complete documentation basics aggregate`; push with the required trailers.
+
+  Evidence (2026-07-19): added `Markdown Documentation - Basics` to
+  `_IMPLEMENTED_FIXTURES`. Focused mdtest `-k Basics` reports `1 passed, 35
+  deselected` (no longer skipped). Strict parity reports `summary: 1/1
+  byte-identical` (9384/9384). Differential smoke with
+  `--require 'Markdown Documentation - Basics'` marks Basics
+  `byte_identical` (22/23 suite-wide; Syntax remains the sole pending
+  aggregate).
 
 ### Task 4: Make Markdown Documentation — Syntax a strict aggregate gate
 

@@ -126,6 +126,7 @@ _IMPLEMENTED_FIXTURES = {
     "Links, reference style",
     "Links, shortcut references",
     "Literal quotes in titles",
+    "Markdown Documentation - Basics",
     "Nested blockquotes",
     "Ordered and unordered lists",
     "Strong and em together",
