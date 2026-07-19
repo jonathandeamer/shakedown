@@ -56,7 +56,7 @@ Keep the four-act IR pipeline. Move Markdown.pl’s early link pass into the pla
 
 | Markdown.pl stage | Owner after this work |
 |---|---|
-| `_StripLinkDefinitions` | **Act I** — remove definition lines; store case-folded id → (url, title) on a document-scoped carrier (Rosalind table, stack/sentinel design to be fixed in the plan’s inventory task) |
+| `_StripLinkDefinitions` | **Act I** — remove definition lines; store case-folded id → (url, title) on Rosalind (stack layout fixed in plan Amendment A1 of `docs/superpowers/plans/2026-07-19-spl-pure-release-path.md`) |
 | Block gamut | Act II (unchanged ownership) |
 | `_DoImages` then `_DoAnchors` (and related span work) | **Act III** — resolve from the Act I table; missing ids leave original Markdown bytes; images before anchors |
 | Emit | Act IV (unchanged ownership) |

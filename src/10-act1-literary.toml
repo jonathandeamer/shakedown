@@ -97,3 +97,111 @@ pattern = "scene_of_character"
 [scenes.HECATE_HANDOFF_FALLBACK]
 title = "The witness keeps the final quiet tally."
 pattern = "scene_of_character"
+
+# Amendment A1 (2026-07-19) — Act I reference strip pool.
+# 20 working + 6 spare installed as [spares.*]; promote to [scenes.*]
+# only when src_ir/act1.py first uses the label (Task 2 Step 2).
+
+[spares.HECATE_REF_OPEN]
+title = "Hecate opens the cauldron's reference shelf."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_NEXT]
+title = "The cauldron yields the next glyph."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_LEAD]
+title = "Horatio counts the shelf's quiet spaces."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_FOUR_SPACE]
+title = "Four spaces spare the code-like line."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_BRACKET]
+title = "Hecate marks the shelf's opening bracket."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_LABEL]
+title = "Hecate gathers the ledger's folded name."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_COLON]
+title = "The shelf demands its binding colon."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_URL_WS]
+title = "Horatio clears the road's pale spaces."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_ANGLE]
+title = "Hecate uncovers the ledger's bright road."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_URL]
+title = "Horatio keeps the ledger's river road."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_TITLE]
+title = "Hecate seals the ledger's whispered title."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_TITLE_NL]
+title = "The next line yields a whispered title."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_FOLD]
+title = "Rosalind folds the bargain's quiet name."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_ENCODE]
+title = "Rosalind encodes the forest road's marks."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_STORE]
+title = "Rosalind stores the settled forest road."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_KEEP]
+title = "The cauldron keeps one honest glyph."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_REPLAY]
+title = "Horatio restores the unproved ledger line."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_NL]
+title = "The shelf ends one measured line."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_REVERSE]
+title = "Puck returns the kept brew forward."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_FINISH]
+title = "Hecate closes the cauldron's reference shelf."
+pattern = "scene_of_character"
+
+[spares.HECATE_REF_LEAD_GUARD]
+title = "The shelf keeps one guarded lead."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_LABEL_GUARD]
+title = "The folded name keeps one guarded mark."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_URL_GUARD]
+title = "The river road keeps one guarded turn."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_TITLE_GUARD]
+title = "The whispered title keeps one guarded seal."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_STORE_GUARD]
+title = "The forest road keeps one guarded store."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_REPLAY_GUARD]
+title = "The unproved line keeps one guarded return."
+pattern = "bare_statement"

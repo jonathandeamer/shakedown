@@ -206,31 +206,35 @@ git push
 
 **Literary reservation (install before scenes):**
 
-Estimate (amend if short): **16 working + 6 spare** Act I scene titles under a single family prefix `HECATE_REF_*` (or rename to match voice — Hecate sorter / Rosalind librarian). Implementation may not invent titles. Install into the act1 literary TOML `[spares.*]` first, promote to `[scenes.*]` as built.
+**Binding pool (Amendment A1):** **20 working + 6 spare** Act I labels under prefix `HECATE_REF_*` (Hecate sorter + Rosalind librarian store path). Derived from the strip state table in Amendment A1 — not an estimate. Implementation may not invent titles. Install into `src/10-act1-literary.toml` as `[spares.*]` first (Step 1); promote each label to `[scenes.*]` in the same commit that first uses it in IR (Step 2).
 
-Minimal behavior contracts (red before implement):
+Minimal behavior contracts (red before implement) — full code in `tests/test_act1_references.py`:
 
-1. Definition line `[foo]: /url "title"` alone → empty/no para content; table lookup foo → `/url` + title.
+1. Definition line `[foo]: /url "title"` alone → body has no `[foo]:`; table lookup `foo` → `/url` + title.
 2. Up to three leading spaces before `[id]:`.
-3. Case-fold: `[Foo]: /u` resolves as `foo`.
-4. Angle-bracket URL `[id]: <http://x>`.
-5. Optional title on next line per oracle.
-6. Definition lines do not appear as paragraph text in Act IV for a doc that is only defs + a blank + a short paragraph.
+3. Case-fold: `[Foo]: /u` stores/looks up as `foo`.
+4. Angle-bracket URL `[id]: <http://x>` stores destination without brackets.
+5. Optional title on next line per `scripts.slice3_links.strip_reference_definitions` / oracle.
+6. Defs + blank + short paragraph → body is the paragraph (plus Act I `\n\n` normalize); defs absent.
 7. Invalid/non-def lines starting with `[` remain body text.
+8. Four leading spaces before `[id]:` is **not** a definition (kept as body).
 
-- [ ] **Step 1: Reserve literary titles + write red Act I contracts**
+- [x] **Step 1: Reserve literary titles + write red Act I contracts**
 
-Install spare titles; add `tests/test_act1_references.py` with the contracts above using fast IR **without** Python `strip_reference_definitions` (monkeypatch or temporary local interpret helper that skips the Act I hook). Prove red.
+Install Amendment A1 spare titles into `src/10-act1-literary.toml`; add `tests/test_act1_references.py` with the contracts above using fast IR **without** Python `strip_reference_definitions` (patch `scripts.splc.interpret.strip_reference_definitions` to identity). Prove red. No `src_ir/act1.py` production strip yet.
 
 ```bash
 uv run pytest tests/test_act1_references.py -q
+uv run pytest tests/test_literary_compliance.py tests/test_splc_validate.py tests/test_splc_generated_fragments.py -q
 ```
 
-Expected: FAIL (defs still in body / empty table).
+Expected: `test_act1_references` FAIL (defs still in body / empty table); literary/generated gates still green (spares only).
+
+Evidence (2026-07-19, grok-plan): Amendment A1 reserved 20 working + 6 spare ready-to-paste titles; installed as `[spares.HECATE_REF_*]` in `src/10-act1-literary.toml`; `tests/test_act1_references.py` red contracts committed. Gate: `uv run pytest tests/test_act1_references.py -q` → **6 failed, 2 passed** (red: defs still in body / empty Rosalind table; four-space and invalid-bracket negatives already match keep-as-body). Literary/generated: `67 passed` (`test_literary_compliance` + `test_splc_validate` + `test_splc_generated_fragments`). No `src_ir/act1.py` production strip yet.
 
 - [ ] **Step 2: Implement Act I strip + table**
 
-Edit `src_ir/act1.py` only within reserved labels. Two-character scenes. Build table on Rosalind’s stack (or documented carrier). Do not implement Act III resolution yet.
+Edit `src_ir/act1.py` only within Amendment A1 reserved labels (promote spares → scenes as used). Two-character scenes. Build Rosalind table per A1 stack layout. Wire strip after the existing normalize reverse and before `ACT_I_DONE` halt. Do not implement Act III resolution yet.
 
 Regenerate and assemble.
 
@@ -454,12 +458,195 @@ git push
 ## Plan self-review
 
 1. **Spec coverage:** Design success criteria map to Tasks 4–6; Act I/III port to Tasks 2–3; inventory to Task 1; packaging prerequisite Task 0.
-2. **Placeholders:** Literary exact title strings are reserved at Task 2/3 start (not invented mid-implement). Stack layout for Rosalind table is fixed in Task 2 Step 1 before implementation; if uncertain, Amendment A1 in-repo before coding.
-3. **Risk:** Underestimating Act III scene count → `BLOCK[plan]` with spare ledger expansion, not silent title invention.
+2. **Placeholders:** Task 2 Step 1 + Amendment A1 reserve exact Act I `HECATE_REF_*` titles (20 working + 6 spare), Rosalind stack layout, and red contracts. Act III titles reserved before Task 3a (Amendment A2 if needed).
+3. **Risk:** Underestimating Act III scene count → `BLOCK[plan]` with spare ledger expansion, not silent title invention. Act I spare exhaustion → same.
 
 ## Amendment A0 (2026-07-19): Packaging dual-entry is in scope as Task 0
 
 Landing the public shakespeare `./shakedown` and harness `./shakedown-parity` is required before pure-SPL enablement gates. No production rewrite retirement in Task 0.
+
+---
+
+## Amendment A1 (2026-07-19): Act I reference strip — scene table, stack layout, literary pool
+
+**Binding for Task 2 Steps 1–2.** Literary authorship is plan-time only. Implementation agents take labels only from this amendment’s pool; if the spare pool is exhausted, stop with `- BLOCK[plan]:` (do not invent titles).
+
+### A1.1 Pipeline placement
+
+Markdown.pl order (oracle-mechanics): detab → (hash HTML, deferred) → `_StripLinkDefinitions` → block gamut.
+
+Act I already owns detab + final `\n\n` normalize and hands a forward glyph stream on **Hecate** (top = first character; `Horatio` value = length). **Strip runs after that reverse, before `ACT_I_DONE` halt**, on the normalized stream so tab-expanded source matches the oracle strip surface.
+
+Assumptions (recorded):
+
+- Act I does **not** gain HTML-block hashing in this plan; strip sees the same post-detab text the current Python strip sees on the IR path after Act I normalize would (fixtures’ defs are not inside hashed HTML blocks that Act I would need to skip).
+- No new token codes; no third on-stage participant.
+- Case-fold is ASCII `A–Z` → `a–z` plus whitespace collapse per `scripts.slice3_links._normalize_label` (`" ".join(value.lower().split())`).
+- Destination/title encoding matches `strip_reference_definitions` (`&`/`</>` in URLs; `"` → `&quot;` in titles).
+- Last definition for a label wins (later `STORE` overwrites or shadows earlier on lookup-from-top).
+
+### A1.2 Rosalind table stack layout (cross-act)
+
+**Floor (unchanged):** existing Act I bootstrap pushes
+`[1, 101, 0, 2, 102, 201]` onto Rosalind and leave them as an immutable floor. Do not pop them in the strip pass.
+
+**Above the floor**, for each accepted definition in document order, push one record
+**bottom → top** (so stack top is the end of the most recently stored record; lookup scans from top and restores non-matches):
+
+| Segment | Encoding |
+|---|---|
+| `label_len` | positive int, codepoint count of folded label |
+| `label_glyphs…` | `label_len` integers (ASCII codepoints, case-folded / space-collapsed) |
+| `dest_len` | positive int (0 only if oracle would reject — valid stores have dest) |
+| `dest_glyphs…` | amp/angle-encoded destination codepoints |
+| `title_len` | `0` if no title; else codepoint count |
+| `title_glyphs…` | only if `title_len > 0`; quote-escaped title codepoints |
+| `RECORD_END` | sentinel **`-6`** (distinct from stream/list floors) |
+
+**Empty table:** Rosalind stack is exactly the six bootstrap values; no `RECORD_END`.
+
+**Hecate body after strip:** same orientation as today (top = first body glyph); `Horatio` value = body length. Definition lines and their optional next-line titles are absent. Multi-blank collapse after strip matches `strip_reference_definitions` (`while stripped.endswith("\n\n\n"): stripped = stripped[:-1]`) **plus** Act I’s existing “end in exactly two newlines” normalize on the kept body.
+
+**Puck** is the rebuild scratch stack during strip (kept glyphs), then emptied by `HECATE_REF_REVERSE` back onto Hecate. **Horatio** holds lead-space counts / mode integers during the pass; restore length at `HECATE_REF_FINISH`.
+
+Act III (Task 3) must consult this layout with copy-out/restore so the table survives multiple lookups. Hardcoded Amps forest consult pops remain until Task 3 replaces them.
+
+### A1.3 Binding scene table (20 working)
+
+Derived from `_parse_definition` / line-oriented strip on a char stream after normalize reverse. Each row is one IR `scene` label. Stage pairs are two characters only (anchor Hecate unless noted).
+
+| # | Label | Role | Companion |
+|---|---|---|---|
+| 1 | `HECATE_REF_OPEN` | Enter strip after normalize reverse; init mode; keep Rosalind floor | Horatio |
+| 2 | `HECATE_REF_NEXT` | Pop next Hecate source glyph; branch EOF / NL / lead / bracket / keep | Puck |
+| 3 | `HECATE_REF_LEAD` | Count 0–3 leading spaces at line start | Horatio |
+| 4 | `HECATE_REF_FOUR_SPACE` | Fourth leading space ⇒ not a def; keep line as body | Puck |
+| 5 | `HECATE_REF_BRACKET` | `[` after legal lead; start label capture | Puck |
+| 6 | `HECATE_REF_LABEL` | Accumulate label until `]` | Puck |
+| 7 | `HECATE_REF_COLON` | Require `]:` after label | Puck |
+| 8 | `HECATE_REF_URL_WS` | Skip WS after colon; optional one NL before URL | Horatio |
+| 9 | `HECATE_REF_ANGLE` | Parse `<destination>` | Puck |
+| 10 | `HECATE_REF_URL` | Parse bare destination until WS/NL/EOF | Puck |
+| 11 | `HECATE_REF_TITLE` | Same-line `"title"` | Puck |
+| 12 | `HECATE_REF_TITLE_NL` | Optional next-line title (≤3 lead spaces) | Puck |
+| 13 | `HECATE_REF_FOLD` | Fold/collapse label into store buffer | Rosalind |
+| 14 | `HECATE_REF_ENCODE` | Encode dest/title for store | Rosalind |
+| 15 | `HECATE_REF_STORE` | Push one A1.2 record onto Rosalind; drop def buffers | Rosalind |
+| 16 | `HECATE_REF_KEEP` | Append non-def glyph to Puck rebuild | Puck |
+| 17 | `HECATE_REF_REPLAY` | Malformed candidate → flush capture to kept body | Puck |
+| 18 | `HECATE_REF_NL` | End-of-line; reset lead/line-start mode | Horatio |
+| 19 | `HECATE_REF_REVERSE` | Reverse Puck rebuild → Hecate (Act II orientation) | Puck |
+| 20 | `HECATE_REF_FINISH` | Set Horatio length; leave Rosalind table; → `ACT_I_DONE` | Horatio |
+
+**Spares (6, unused until structural surprise; ≥20% of 20):**
+`HECATE_REF_LEAD_GUARD`, `HECATE_REF_LABEL_GUARD`, `HECATE_REF_URL_GUARD`, `HECATE_REF_TITLE_GUARD`, `HECATE_REF_STORE_GUARD`, `HECATE_REF_REPLAY_GUARD`.
+
+### A1.4 Ready-to-paste literary surfaces
+
+Install **all 26** as `[spares.*]` in `src/10-act1-literary.toml` in Step 1. Promote to `[scenes.*]` only when IR first references the label.
+
+```toml
+# --- Amendment A1 working pool (20) — install as [spares.*], promote on use ---
+[spares.HECATE_REF_OPEN]
+title = "Hecate opens the cauldron's reference shelf."
+pattern = "scene_of_character"
+[spares.HECATE_REF_NEXT]
+title = "The cauldron yields the next glyph."
+pattern = "bare_statement"
+[spares.HECATE_REF_LEAD]
+title = "Horatio counts the shelf's quiet spaces."
+pattern = "scene_of_character"
+[spares.HECATE_REF_FOUR_SPACE]
+title = "Four spaces spare the code-like line."
+pattern = "bare_statement"
+[spares.HECATE_REF_BRACKET]
+title = "Hecate marks the shelf's opening bracket."
+pattern = "scene_of_character"
+[spares.HECATE_REF_LABEL]
+title = "Hecate gathers the ledger's folded name."
+pattern = "scene_of_character"
+[spares.HECATE_REF_COLON]
+title = "The shelf demands its binding colon."
+pattern = "bare_statement"
+[spares.HECATE_REF_URL_WS]
+title = "Horatio clears the road's pale spaces."
+pattern = "scene_of_character"
+[spares.HECATE_REF_ANGLE]
+title = "Hecate uncovers the ledger's bright road."
+pattern = "scene_of_character"
+[spares.HECATE_REF_URL]
+title = "Horatio keeps the ledger's river road."
+pattern = "scene_of_character"
+[spares.HECATE_REF_TITLE]
+title = "Hecate seals the ledger's whispered title."
+pattern = "scene_of_character"
+[spares.HECATE_REF_TITLE_NL]
+title = "The next line yields a whispered title."
+pattern = "bare_statement"
+[spares.HECATE_REF_FOLD]
+title = "Rosalind folds the bargain's quiet name."
+pattern = "scene_of_character"
+[spares.HECATE_REF_ENCODE]
+title = "Rosalind encodes the forest road's marks."
+pattern = "scene_of_character"
+[spares.HECATE_REF_STORE]
+title = "Rosalind stores the settled forest road."
+pattern = "scene_of_character"
+[spares.HECATE_REF_KEEP]
+title = "The cauldron keeps one honest glyph."
+pattern = "bare_statement"
+[spares.HECATE_REF_REPLAY]
+title = "Horatio restores the unproved ledger line."
+pattern = "scene_of_character"
+[spares.HECATE_REF_NL]
+title = "The shelf ends one measured line."
+pattern = "bare_statement"
+[spares.HECATE_REF_REVERSE]
+title = "Puck returns the kept brew forward."
+pattern = "scene_of_character"
+[spares.HECATE_REF_FINISH]
+title = "Hecate closes the cauldron's reference shelf."
+pattern = "scene_of_character"
+# --- Amendment A1 spare pool (6) — do not use unless a new scene is required ---
+[spares.HECATE_REF_LEAD_GUARD]
+title = "The shelf keeps one guarded lead."
+pattern = "bare_statement"
+[spares.HECATE_REF_LABEL_GUARD]
+title = "The folded name keeps one guarded mark."
+pattern = "bare_statement"
+[spares.HECATE_REF_URL_GUARD]
+title = "The river road keeps one guarded turn."
+pattern = "bare_statement"
+[spares.HECATE_REF_TITLE_GUARD]
+title = "The whispered title keeps one guarded seal."
+pattern = "bare_statement"
+[spares.HECATE_REF_STORE_GUARD]
+title = "The forest road keeps one guarded store."
+pattern = "bare_statement"
+[spares.HECATE_REF_REPLAY_GUARD]
+title = "The unproved line keeps one guarded return."
+pattern = "bare_statement"
+```
+
+### A1.5 Exact compliance tests (SPL-facing Task 2)
+
+After any IR/SPL/literary edit in Task 2:
+
+```bash
+uv run pytest tests/test_act1_references.py -q
+uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+git diff --exit-code -- src/*.spl shakedown.spl debug/
+```
+
+Step 1 only requires the first two lines (red refs + green literary/generated with spares-only install).
+
+### A1.6 Step 2 implementation bounds
+
+- Use only labels from A1.3/A1.4.
+- Do not remove `interpret.py` strip until Step 3 (after A1 contracts green under the no-Python-strip helper).
+- Do not change Act III consult paths (Task 3).
+- Preserve all non-link fixture parity and blessed token dumps when Python strip still wraps the default suite.
 
 ---
 
