@@ -8,10 +8,12 @@ from pathlib import Path
 
 import pytest
 
+from scripts.paths import markdown_pl
+
 REPO = Path(__file__).parent.parent
 HARNESS = REPO / "scripts" / "strict_parity_harness.py"
-SHAKEDOWN = REPO / "shakedown"
-ORACLE = Path.home() / "markdown" / "Markdown.pl"
+SHAKEDOWN = REPO / "shakedown-parity"
+ORACLE = markdown_pl()
 
 
 def test_harness_exists() -> None:

@@ -1,4 +1,9 @@
-"""Run ./shakedown vs. local Markdown.pl on each fixture."""
+"""Run the fast parity entry vs. local Markdown.pl on each fixture.
+
+Defaults: ``./shakedown-parity`` (IR + link rewrite). Fixture/oracle paths
+come from ``scripts.paths`` (``SHAKEDOWN_MDTEST``, ``SHAKEDOWN_MARKDOWN_PL``).
+Pass ``--shakedown ./shakedown`` to exercise the public shakespeare entry.
+"""
 
 from __future__ import annotations
 
@@ -8,9 +13,15 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-DEFAULT_FIXTURES = Path.home() / "mdtest" / "Markdown.mdtest"
-DEFAULT_ORACLE = Path.home() / "markdown" / "Markdown.pl"
-DEFAULT_SHAKEDOWN = Path(__file__).parent.parent / "shakedown"
+_REPO = Path(__file__).resolve().parent.parent
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
+
+from scripts.paths import markdown_pl, mdtest_fixtures_dir  # noqa: E402
+
+DEFAULT_FIXTURES = mdtest_fixtures_dir()
+DEFAULT_ORACLE = markdown_pl()
+DEFAULT_SHAKEDOWN = _REPO / "shakedown-parity"
 
 
 @dataclass(frozen=True)

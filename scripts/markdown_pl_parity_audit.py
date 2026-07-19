@@ -9,8 +9,15 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-DEFAULT_FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
-DEFAULT_MARKDOWN_PL = Path.home() / "markdown" / "Markdown.pl"
+_REPO = Path(__file__).resolve().parent.parent
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
+
+from scripts.paths import markdown_pl as default_markdown_pl  # noqa: E402
+from scripts.paths import mdtest_fixtures_dir  # noqa: E402
+
+DEFAULT_FIXTURES_DIR = mdtest_fixtures_dir()
+DEFAULT_MARKDOWN_PL = default_markdown_pl()
 
 
 @dataclass(frozen=True)

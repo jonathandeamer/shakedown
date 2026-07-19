@@ -5,13 +5,12 @@ glyph stream Act I hands to Act II, without a `shakespeare` subprocess."""
 
 from __future__ import annotations
 
-from pathlib import Path
-
+from scripts.paths import mdtest_fixtures_dir
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir.act1 import ACT as ACT1
 from src_ir.cast import HECATE, HORATIO
 
-CODE_BLOCKS_FIXTURE = Path.home() / "mdtest" / "Markdown.mdtest" / "Code Blocks.text"
+CODE_BLOCKS_FIXTURE = mdtest_fixtures_dir() / "Code Blocks.text"
 
 STEP_LIMIT = 200_000
 

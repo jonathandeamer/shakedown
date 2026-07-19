@@ -22,7 +22,7 @@ from tests.test_mdtest import (
 )
 
 REPO = Path(__file__).parent.parent
-BINARY = REPO / "shakedown"
+BINARY = REPO / "shakedown-parity"
 
 
 def _fixture_paths(name: str) -> tuple[Path, Path]:

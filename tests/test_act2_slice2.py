@@ -7,10 +7,9 @@ token stream Act II hands to Act III, without a `shakespeare` subprocess."""
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
 
+from scripts.paths import mdtest_fixtures_dir
 from scripts.splc.interpret import InterpreterState, StackUnderflow, run_act
 from scripts.splc.ir import Branch, Char, Const, Goto, Let, Pop, Push, Val
 from scripts.splc.token_decode import decode_stream
@@ -128,7 +127,7 @@ def test_rejected_repeated_asterisk_hr_candidate_stays_paragraph_text() -> None:
 
 
 STEP_LIMIT = 200_000
-FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
+FIXTURES_DIR = mdtest_fixtures_dir()
 TIDYNESS_INPUT = (
     "> A list within a blockquote:\n"
     "> \n"

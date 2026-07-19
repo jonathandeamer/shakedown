@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Debug entry: assemble with Act IV token-dump fragment, run that play.
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"

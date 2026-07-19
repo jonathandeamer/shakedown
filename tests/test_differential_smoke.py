@@ -21,8 +21,9 @@ from scripts.differential_smoke import (
     run_case,
     run_with_timeout,
 )
+from scripts.paths import markdown_pl, mdtest_fixtures_dir
 
-ORACLE = Path.home() / "markdown" / "Markdown.pl"
+ORACLE = markdown_pl()
 
 
 def test_first_diff_reports_index_on_mismatch() -> None:
@@ -412,7 +413,7 @@ def test_parse_args_supports_repeated_require() -> None:
 
 @pytest.mark.integration
 def test_differential_smoke_integration_against_real_fixtures() -> None:
-    fixtures_dir = Path.home() / "mdtest" / "Markdown.mdtest"
+    fixtures_dir = mdtest_fixtures_dir()
     shakedown = Path(__file__).parent.parent / "shakedown"
     if not ORACLE.exists() or not fixtures_dir.is_dir() or not shakedown.exists():
         pytest.skip("oracle, fixtures, or shakedown binary not available locally")

@@ -12,6 +12,7 @@ import sys
 import time
 from pathlib import Path
 
+from scripts.paths import mdtest_fixtures_dir
 from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir.act1 import ACT as ACT1
@@ -20,7 +21,7 @@ from src_ir.act3 import ACT as ACT3
 from src_ir.act4 import ACT as ACT4
 
 REPO = Path(__file__).parent.parent
-FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
+FIXTURES_DIR = mdtest_fixtures_dir()
 TIMEOUT_LIMIT_SECONDS = 5.0
 
 

@@ -1,8 +1,12 @@
 """
-Markdown.mdtest suite — 23 fixtures from ~/mdtest/Markdown.mdtest/.
+Markdown.mdtest suite — 23 fixtures from the Markdown.mdtest directory.
 
-Each test feeds a .text fixture into ./shakedown and compares the output
-against the corresponding .xhtml (preferred) or .html expected file.
+Default layout: ~/mdtest/Markdown.mdtest (override with SHAKEDOWN_MDTEST).
+Oracle: ~/markdown/Markdown.pl (override with SHAKEDOWN_MARKDOWN_PL).
+
+Each test runs the fast IR parity runner (scripts.release_runtime) and compares
+against the corresponding .xhtml (preferred) or .html expected file. The public
+entry ./shakedown runs the committed play via shakespeare(1); see README.
 """
 
 import re
@@ -12,12 +16,16 @@ from pathlib import Path
 import pytest
 from _pytest.mark.structures import ParameterSet
 
+from scripts.paths import markdown_pl as _markdown_pl_path
+from scripts.paths import mdtest_fixtures_dir
 from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.slice3_links import rewrite_task3_markdown
 
-FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
-MARKDOWN_PL = Path.home() / "markdown" / "Markdown.pl"
-BINARY = Path(__file__).parent.parent / "shakedown"
+REPO = Path(__file__).parent.parent
+FIXTURES_DIR = mdtest_fixtures_dir()
+MARKDOWN_PL = _markdown_pl_path()
+# Fast full-parity entry (IR + link rewrite). Public art path is ./shakedown.
+BINARY = REPO / "shakedown-parity"
 
 
 def _normalize(text: str) -> str:
@@ -236,20 +244,22 @@ def test_mdtest(name: str, input_path: Path, expected_path: Path) -> None:
         f"+++ actual (IR)\n{norm_interpret}"
     )
 
-    # 2. Run the real binary to prove parity
+    # 2. Fast parity entry (./shakedown-parity → release_runtime)
     result = subprocess.run(
         [str(BINARY)],
         input=input_text,
         capture_output=True,
         text=True,
+        check=False,
     )
+    assert result.returncode == 0, result.stderr
     actual = result.stdout
     norm_actual = _normalize_fixture_output(name, actual)
 
     assert norm_actual == norm_expected, (
-        f"Binary output mismatch for '{name}'\n"
+        f"Parity-entry output mismatch for '{name}'\n"
         f"--- expected\n{norm_expected}\n"
-        f"+++ actual (Binary)\n{norm_actual}"
+        f"+++ actual (./shakedown-parity)\n{norm_actual}"
     )
 
 

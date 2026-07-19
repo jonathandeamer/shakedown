@@ -13,6 +13,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.paths import mdtest_fixtures_dir
 from scripts.splc.contracts import StackSnapshot, assert_prefix_preserved
 from scripts.splc.interpret import InterpreterState, StackUnderflow, run_act
 from scripts.splc.ir import Char, Const, Push, Val
@@ -28,9 +29,7 @@ REPO = Path(__file__).parent.parent
 SPAN_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "spans"
 STEP_LIMIT = 200_000
 _BORROWED_PREFIX = (7, 13, 42)
-_AMPS_FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Amps and angle encoding.text"
-)
+_AMPS_FIXTURE = mdtest_fixtures_dir() / "Amps and angle encoding.text"
 _A17_ADAPTER_PAIRS = {
     "LYRIC_HTML_OPEN_REQUEUE": (Char.PUCK, Char.ROMEO),
     "LYRIC_AUTOLINK_OPEN_DUPLICATE": (Char.LADY_MACBETH, Char.ROMEO),

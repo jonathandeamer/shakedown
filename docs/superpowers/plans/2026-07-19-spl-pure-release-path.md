@@ -53,7 +53,7 @@ uv run shakespeare run shakedown.spl < "$SHAKEDOWN_MDTEST/<Fixture>.text" > /tmp
 - Consumes: none
 - Produces: Public `./shakedown` = `uv run shakespeare run shakedown.spl` (+ stderr error detection). Harness `./shakedown-parity` = current rewrite+IR until later tasks retire rewrite. Env: `SHAKEDOWN_MDTEST`, `SHAKEDOWN_MARKDOWN_PL`, `SHAKEDOWN_SPL`.
 
-- [ ] **Step 1: Confirm or finish packaging WIP**
+- [x] **Step 1: Confirm or finish packaging WIP**
 
 If `git status` still shows the dual-entry packaging diff, finish it to green:
 
@@ -65,7 +65,9 @@ echo 'Hello *world*' | ./shakedown-parity | cmp - <(printf '<p>Hello <em>world</
 
 Expected: tests pass; both entries emit the emphasis line (parity entry is fast).
 
-- [ ] **Step 2: Commit packaging baseline**
+Evidence (2026-07-19, grok-implement): 9 passed (`test_wrapper_error_channel` + `test_strict_parity_harness`); `./shakedown` and `./shakedown-parity` both `cmp` equal to `<p>Hello <em>world</em></p>\n`.
+
+- [x] **Step 2: Commit packaging baseline**
 
 ```bash
 git add README.md shakedown shakedown-dev shakedown-debug shakedown-parity scripts/paths.py \

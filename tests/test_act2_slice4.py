@@ -14,6 +14,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.paths import markdown_pl, mdtest_fixtures_dir
 from scripts.splc.interpret import InterpreterState, run_act
 from scripts.splc.ir import Char, Const, Goto, Push
 from scripts.splc.token_decode import decode_stream
@@ -52,13 +53,9 @@ BASICS_PROJECT_SUBMENU = (
 BASICS_ATX_CLOSING_HASH = "## Heading ##\n"
 BASICS_ATX_TRAILING_SPACES = "## Heading  \n"
 BASICS_ATX_INTERIOR_HASH = "## A # b\n"
-_BASICS_FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Markdown Documentation - Basics.text"
-)
+_BASICS_FIXTURE = mdtest_fixtures_dir() / "Markdown Documentation - Basics.text"
 
-_ADVANCED_HTML_FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Inline HTML (Advanced).text"
-)
+_ADVANCED_HTML_FIXTURE = mdtest_fixtures_dir() / "Inline HTML (Advanced).text"
 
 # The five advanced-HTML shapes the fixture requires, keyed by the design's
 # acceptance inventory. Each must become exactly one RAW_HTML_HASH leaf whose
@@ -217,7 +214,7 @@ def _decoded_triplets(
 
 def _oracle_html(input_text: str) -> str:
     result = subprocess.run(
-        ["perl", str(Path.home() / "markdown" / "Markdown.pl")],
+        ["perl", str(markdown_pl())],
         input=input_text,
         capture_output=True,
         text=True,
@@ -369,9 +366,7 @@ def test_nested_quote_closes_before_an_unquoted_final_paragraph() -> None:
     ]
 
 
-_FULL_LIST_FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Ordered and unordered lists.text"
-)
+_FULL_LIST_FIXTURE = mdtest_fixtures_dir() / "Ordered and unordered lists.text"
 
 # The five full-list families the fixture requires beyond the Spike A/B
 # narrowings: multi-tab tight markers across all three bullet glyphs,
@@ -550,7 +545,7 @@ def test_ul_nested_sibling_outdent_emits_parent_item_close() -> None:
     actual = _interpret_ir(source)
     assert actual == expected
     oracle = subprocess.run(
-        ["perl", str(Path.home() / "markdown" / "Markdown.pl")],
+        ["perl", str(markdown_pl())],
         input=source.encode(),
         capture_output=True,
         check=True,

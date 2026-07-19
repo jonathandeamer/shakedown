@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.paths import markdown_pl
 from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
 from scripts.slice3_links import rewrite_task3_markdown
 from scripts.splc.interpret import InterpreterState, run_act
@@ -33,7 +34,7 @@ from tests.test_mdtest import (
 
 REPO = Path(__file__).parent.parent
 HARNESS = REPO / "scripts" / "strict_parity_harness.py"
-MARKDOWN_PL = Path.home() / "markdown" / "Markdown.pl"
+MARKDOWN_PL = markdown_pl()
 TIDYNESS_INPUT = (
     "> A list within a blockquote:\n"
     "> \n"

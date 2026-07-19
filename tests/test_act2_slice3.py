@@ -1,7 +1,6 @@
 """Slice-3 Act II contracts land task by task."""
 
-from pathlib import Path
-
+from scripts.paths import mdtest_fixtures_dir
 from scripts.splc.interpret import InterpreterState, run_act
 from scripts.splc.ir import Char
 from scripts.splc.token_decode import decode_stream
@@ -11,9 +10,7 @@ from src_ir.act2 import ACT as ACT2
 from tests.test_mdtest import _run_acts
 
 STEP_LIMIT = 200_000
-_BLOCKQUOTE_CODE_FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Blockquotes with code blocks.text"
-)
+_BLOCKQUOTE_CODE_FIXTURE = mdtest_fixtures_dir() / "Blockquotes with code blocks.text"
 
 
 def _act2_stream(input_text: str) -> list[int]:

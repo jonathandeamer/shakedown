@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.paths import mdtest_fixtures_dir
 from scripts.splc.interpret import InterpreterState, run_act
 from scripts.splc.ir import Char
 from scripts.splc.token_decode import decode_stream
@@ -17,9 +18,7 @@ from src_ir.act2 import ACT as ACT2
 
 REPO = Path(__file__).parent.parent
 DEBUG_WRAPPER = REPO / "shakedown-debug"
-AMPS_FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Amps and angle encoding.text"
-)
+AMPS_FIXTURE = mdtest_fixtures_dir() / "Amps and angle encoding.text"
 
 
 def test_debug_target_dumps_integer_token_stream() -> None:

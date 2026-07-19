@@ -1,11 +1,13 @@
-"""All-fixture differential smoke report: ./shakedown vs. local Markdown.pl.
+"""All-fixture differential smoke report: parity entry vs. local Markdown.pl.
 
-Runs every local mdtest `.text` input through both `./shakedown` and the
-oracle with a per-case timeout, and reports byte-identical/mismatch/crash/
-timeout status, the first differing byte, return codes, bounded stderr
-excerpts, and elapsed time for each. Default mode is observational: it exits
-nonzero only on harness/configuration failure. Pass `--require NAME`
-(repeatable) to make specific already-shipped fixtures a gate.
+Runs every local mdtest `.text` input through both the fast parity entry
+(``./shakedown-parity`` by default) and the oracle with a per-case timeout,
+and reports byte-identical/mismatch/crash/timeout status, the first differing
+byte, return codes, bounded stderr excerpts, and elapsed time for each.
+Default mode is observational: it exits nonzero only on harness/configuration
+failure. Pass ``--require NAME`` (repeatable) to make specific already-shipped
+fixtures a gate. Override paths with ``SHAKEDOWN_MDTEST`` /
+``SHAKEDOWN_MARKDOWN_PL``, or ``--shakedown ./shakedown`` for the public entry.
 """
 
 from __future__ import annotations
@@ -19,9 +21,15 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 from pathlib import Path
 
-DEFAULT_FIXTURES = Path.home() / "mdtest" / "Markdown.mdtest"
-DEFAULT_ORACLE = Path.home() / "markdown" / "Markdown.pl"
-DEFAULT_SHAKEDOWN = Path(__file__).parent.parent / "shakedown"
+_REPO = Path(__file__).resolve().parent.parent
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
+
+from scripts.paths import markdown_pl, mdtest_fixtures_dir  # noqa: E402
+
+DEFAULT_FIXTURES = mdtest_fixtures_dir()
+DEFAULT_ORACLE = markdown_pl()
+DEFAULT_SHAKEDOWN = _REPO / "shakedown-parity"
 DEFAULT_TIMEOUT_SECONDS = 30.0
 STDERR_EXCERPT_LIMIT = 500
 

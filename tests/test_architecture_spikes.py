@@ -5,9 +5,12 @@ from pathlib import Path
 
 import pytest
 
+from scripts.paths import markdown_pl
+
 REPO = Path(__file__).parent.parent
-SHAKEDOWN = REPO / "shakedown"
-MARKDOWN_PL = Path.home() / "markdown" / "Markdown.pl"
+# Fast IR parity entry — not the public shakespeare-backed ./shakedown.
+SHAKEDOWN = REPO / "shakedown-parity"
+MARKDOWN_PL = markdown_pl()
 LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
 NESTED_BLOCK_FIXTURES = (
     REPO / "tests" / "fixtures" / "architecture_spikes" / "nested_blocks"

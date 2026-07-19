@@ -1,5 +1,29 @@
 #!/usr/bin/env bash
+# Release entry: run the committed play with the shakespearelang CLI.
+# Same shape as: uv run shakespeare run shakedown.spl
+#
+# Override the play with SHAKEDOWN_SPL (used by ./shakedown-debug).
+# The shakespeare CLI can exit 0 on SPL parse/runtime failures while still
+# printing "SPL … error:" on stderr; treat that as failure.
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
-exec uv run --directory "$DIR" python -m scripts.release_runtime
+SPL="${SHAKEDOWN_SPL:-$DIR/shakedown.spl}"
+
+err="$(mktemp)"
+trap 'rm -f "$err"' EXIT
+
+set +e
+uv run --directory "$DIR" shakespeare run "$SPL" 2>"$err"
+rc=$?
+set -e
+
+cat "$err" >&2
+
+if [[ "$rc" -ne 0 ]]; then
+  exit "$rc"
+fi
+if grep -qE '^SPL (runtime|parse) error:' "$err"; then
+  exit 1
+fi
+exit 0

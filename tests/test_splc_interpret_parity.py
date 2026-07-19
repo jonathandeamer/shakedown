@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.paths import mdtest_fixtures_dir
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir import tokens
 from src_ir.act1 import ACT as ACT1
@@ -22,9 +23,7 @@ REPO = Path(__file__).parent.parent
 BASELINES = REPO / "tests" / "fixtures" / "token_stream"
 LIST_FIXTURES = REPO / "tests" / "fixtures" / "architecture_spikes" / "lists"
 LIST_BASELINES = BASELINES / "lists"
-AMPS_FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Amps and angle encoding.text"
-)
+AMPS_FIXTURE = mdtest_fixtures_dir() / "Amps and angle encoding.text"
 
 STEP_LIMIT = 200_000
 

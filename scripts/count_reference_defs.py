@@ -8,11 +8,16 @@ followed by `[id]:`, followed by URL and optional title.
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 
-FIXTURE = (
-    Path.home() / "mdtest" / "Markdown.mdtest" / "Markdown Documentation - Syntax.text"
-)
+_REPO = Path(__file__).resolve().parent.parent
+if str(_REPO) not in sys.path:
+    sys.path.insert(0, str(_REPO))
+
+from scripts.paths import mdtest_fixtures_dir  # noqa: E402
+
+FIXTURE = mdtest_fixtures_dir() / "Markdown Documentation - Syntax.text"
 
 DEF_LINE = re.compile(r"^ {0,3}\[([^\]]+)\]:\s*\S", re.MULTILINE)
 

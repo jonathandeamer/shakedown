@@ -6,11 +6,12 @@ import os
 import subprocess
 from pathlib import Path
 
+from scripts.paths import mdtest_fixtures_dir
 from tests.test_mdtest import _interpret_ir
 
 REPO = Path(__file__).parent.parent
 WRAPPER = REPO / "shakedown"
-FIXTURES_DIR = Path.home() / "mdtest" / "Markdown.mdtest"
+FIXTURES_DIR = mdtest_fixtures_dir()
 
 MINIMAL_VALID_PLAY = """\
 A quiet probe.
@@ -84,7 +85,7 @@ def test_wrapper_fails_on_runtime_error(tmp_path: Path) -> None:
     assert b"SPL runtime error:" in result.stderr
 
 
-def test_wrapper_default_release_path_uses_release_runtime(
+def test_wrapper_default_release_path_uses_shakespeare_cli(
     tmp_path: Path,
 ) -> None:
     calls = tmp_path / "uv-calls.log"
@@ -98,16 +99,6 @@ from pathlib import Path
 calls = Path(os.environ["UV_CALLS"])
 calls.open("a", encoding="utf-8").write(" ".join(sys.argv[1:]) + "\\n")
 args = sys.argv[1:]
-stdin = sys.stdin.read()
-if "scripts.release_entry" in args:
-    sys.stdout.write("release-entry\\n")
-    raise SystemExit(0)
-if "scripts.release_runtime" in args:
-    sys.stdout.write("release-runtime\\n")
-    raise SystemExit(0)
-if "scripts.preprocess_input" in args:
-    sys.stdout.write(stdin)
-    raise SystemExit(0)
 if "shakespeare" in args and "run" in args:
     sys.stdout.write("pipeline-output\\n")
     raise SystemExit(0)
@@ -130,17 +121,20 @@ raise SystemExit(99)
     )
 
     assert result.returncode == 0, result.stderr.decode()
-    assert result.stdout == b"release-runtime\n"
+    assert result.stdout == b"pipeline-output\n"
     logged = calls.read_text(encoding="utf-8").splitlines()
-    assert logged == [f"run --directory {REPO} python -m scripts.release_runtime"]
+    expected_cmd = f"run --directory {REPO} shakespeare run {REPO / 'shakedown.spl'}"
+    assert logged == [expected_cmd]
 
 
-def test_wrapper_default_release_path_finishes_under_capture_output_timeout() -> None:
+def test_parity_entry_finishes_under_capture_output_timeout() -> None:
+    """Fast IR parity path (not the public shakespeare entry) stays quick."""
     fixture = FIXTURES_DIR / "Amps and angle encoding.text"
     expected = _interpret_ir(fixture.read_text()).encode()
+    parity = REPO / "shakedown-parity"
 
     result = subprocess.run(
-        [str(WRAPPER)],
+        [str(parity)],
         input=fixture.read_bytes(),
         capture_output=True,
         timeout=5,
