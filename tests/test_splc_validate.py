@@ -482,3 +482,33 @@ def test_act2_a11_spare_labels_are_not_implemented_as_scenes() -> None:
         "PASS_HEADER_TRAIL_CLOSE_GUARD",
     ):
         assert label not in _ACT2_SCENES_BY_LABEL
+
+
+@pytest.mark.parametrize(
+    ("label", "expected"),
+    [
+        ("PASS_CODE_LINE_CAPTURE_OPEN", (Char.HECATE, Char.PUCK)),
+        ("PASS_CODE_LINE_CAPTURE_SCAN", (Char.HECATE, Char.PUCK)),
+        ("PASS_CODE_LINE_BLANK_DROP", (Char.HECATE, Char.PUCK)),
+        ("PASS_CODE_LINE_KEEP_REVERSE_OPEN", (Char.PUCK, Char.HORATIO)),
+        ("PASS_CODE_LINE_KEEP_REVERSE_TRANSFER", (Char.PUCK, Char.HORATIO)),
+        ("PASS_CODE_LINE_KEEP_REPLAY", (Char.HORATIO, Char.LADY_MACBETH)),
+        ("PASS_CODE_LINE_CLOSE", (Char.LADY_MACBETH, Char.PUCK)),
+    ],
+)
+def test_act2_a13_entry_pairs_use_only_the_authorized_scene_pairs(
+    label: str, expected: tuple[Char, Char]
+) -> None:
+    from scripts.splc.validate import participants
+
+    assert participants(_ACT2_SCENES_BY_LABEL[label], ACT2.anchor) == expected
+
+
+def test_act2_a13_spare_labels_are_not_implemented_as_scenes() -> None:
+    for label in (
+        "PASS_CODE_LINE_RETURN_GUARD",
+        "PASS_CODE_LINE_FLOOR_GUARD",
+        "PASS_CODE_LINE_REPLAY_GUARD",
+        "PASS_CODE_LINE_CLOSE_GUARD",
+    ):
+        assert label not in _ACT2_SCENES_BY_LABEL

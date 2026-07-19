@@ -1220,26 +1220,26 @@ pattern = "scene_of_character"
 title = "Horatio marks the unfinished line for its raw return."
 pattern = "scene_of_character"
 
-# Slice 5 Act-II A13 code-line working pool (7 additional labels, spares until implemented in IR)
-[spares.PASS_CODE_LINE_CAPTURE_OPEN]
+# Slice 5 Act-II A13 code-line working pool (7 additional labels)
+[scenes.PASS_CODE_LINE_CAPTURE_OPEN]
 title = "Hecate opens Puck's chamber for one measured code line."
 pattern = "cross_character"
-[spares.PASS_CODE_LINE_CAPTURE_SCAN]
+[scenes.PASS_CODE_LINE_CAPTURE_SCAN]
 title = "Hecate gives Puck each mark of the measured code line."
 pattern = "cross_character"
-[spares.PASS_CODE_LINE_BLANK_DROP]
+[scenes.PASS_CODE_LINE_BLANK_DROP]
 title = "Hecate lets Puck dismiss an empty measured line."
 pattern = "cross_character"
-[spares.PASS_CODE_LINE_KEEP_REVERSE_OPEN]
+[scenes.PASS_CODE_LINE_KEEP_REVERSE_OPEN]
 title = "Puck sets Horatio's floor for the kept code line."
 pattern = "cross_character"
-[spares.PASS_CODE_LINE_KEEP_REVERSE_TRANSFER]
+[scenes.PASS_CODE_LINE_KEEP_REVERSE_TRANSFER]
 title = "Puck entrusts Horatio each kept code mark."
 pattern = "cross_character"
-[spares.PASS_CODE_LINE_KEEP_REPLAY]
+[scenes.PASS_CODE_LINE_KEEP_REPLAY]
 title = "Horatio restores each kept code mark to Lady Macbeth."
 pattern = "cross_character"
-[spares.PASS_CODE_LINE_CLOSE]
+[scenes.PASS_CODE_LINE_CLOSE]
 title = "Puck grants Lady Macbeth the code line's final measure."
 pattern = "cross_character"
 

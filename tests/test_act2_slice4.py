@@ -741,3 +741,102 @@ def test_full_list_ordinary_nested_one_level_route_still_enters_shared_open_scen
     labels = [label for label, _ in _act2_scene_trace(fixture.read_text())]
 
     assert "PASS_LISTS_NEST_EMIT_OL_OPEN" in labels
+
+
+# --- Amendment A13: code-line blank-payload normalization contracts. ---
+
+# Exact aggregate witness: after the mandatory four-space code prefix is
+# removed, the middle spaces-only physical line must become a bare newline.
+CODE_LINE_BLOCKQUOTE_WITNESS = (
+    "    <blockquote>\n"
+    "        <p>One.</p>\n"
+    "        \n"
+    "        <p>Two.</p>\n"
+    "    </blockquote>\n"
+)
+CODE_LINE_FOUR_SPACE_ONLY = "    line1\n    \n    line3\n"
+CODE_LINE_EIGHT_SPACE_ONLY = "    line1\n        \n    line3\n"
+CODE_LINE_TRAILING_SPACES = "    foo  \n"
+
+_CODE_LINE_EXPECTED_PAYLOADS: dict[str, str] = {
+    "blockquote_witness": (
+        "<blockquote>\n    <p>One.</p>\n\n    <p>Two.</p>\n</blockquote>\n"
+    ),
+    "four_space_only": "line1\n\nline3\n",
+    "eight_space_only": "line1\n\nline3\n",
+    "trailing_spaces": "foo  \n",
+}
+
+
+@pytest.mark.parametrize(
+    ("source", "expected_payload"),
+    [
+        (
+            CODE_LINE_BLOCKQUOTE_WITNESS,
+            _CODE_LINE_EXPECTED_PAYLOADS["blockquote_witness"],
+        ),
+        (
+            CODE_LINE_FOUR_SPACE_ONLY,
+            _CODE_LINE_EXPECTED_PAYLOADS["four_space_only"],
+        ),
+        (
+            CODE_LINE_EIGHT_SPACE_ONLY,
+            _CODE_LINE_EXPECTED_PAYLOADS["eight_space_only"],
+        ),
+        (
+            CODE_LINE_TRAILING_SPACES,
+            _CODE_LINE_EXPECTED_PAYLOADS["trailing_spaces"],
+        ),
+    ],
+    ids=[
+        "blockquote_witness",
+        "four_space_only",
+        "eight_space_only",
+        "trailing_spaces",
+    ],
+)
+def test_code_line_blank_payload_witness_decoded_payload(
+    source: str, expected_payload: str
+) -> None:
+    decoded = decode_stream(_act2_stream(source))
+    code_blocks = [token for token in decoded if token.code == tokens.CODE_BLOCK]
+
+    assert len(code_blocks) == 1
+    assert code_blocks[0].text == expected_payload
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        CODE_LINE_BLOCKQUOTE_WITNESS,
+        CODE_LINE_FOUR_SPACE_ONLY,
+        CODE_LINE_EIGHT_SPACE_ONLY,
+        CODE_LINE_TRAILING_SPACES,
+    ],
+    ids=[
+        "blockquote_witness",
+        "four_space_only",
+        "eight_space_only",
+        "trailing_spaces",
+    ],
+)
+def test_code_line_blank_payload_matches_fast_release_and_raw_oracle(
+    source: str,
+) -> None:
+    from tests.test_mdtest import BINARY
+
+    input_bytes = source.encode()
+    expected = _oracle_html(source).encode()
+
+    fast_actual = _interpret_ir(source)
+    assert isinstance(fast_actual, str)
+    assert fast_actual.encode() == expected
+
+    release = subprocess.run(
+        [str(BINARY)],
+        input=input_bytes,
+        capture_output=True,
+        check=False,
+    )
+    assert release.returncode == 0, release.stderr.decode()
+    assert release.stdout == expected

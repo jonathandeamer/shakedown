@@ -64,6 +64,12 @@ _LOOSE_COMMIT_SIB_HECATE = sub(const(0), const(19))
 _LOOSE_COMMIT_SIB_HECATE_TAIL = sub(const(0), const(20))
 _LOOSE_COMMIT_SIB_HECATE_CLOSE_TAIL = sub(const(0), const(21))
 
+# Amendment A13: private floors for one-physical-line code buffering.
+# Spoken as sub(0, N) so they need no negative stable_utility atoms.
+_CODE_LINE_FLOOR = sub(const(0), const(40))
+_CODE_LINE_REPLAY_FLOOR = sub(const(0), const(41))
+_CODE_LINE_NONBLANK = const(1)
+
 
 def _read(recall: str = "hewn_glyph"):
     """Pop the next input glyph into Hecate and decrement the countdown."""
@@ -469,17 +475,96 @@ ACT: Act = act(
         scene(
             "PASS_CODE_BLANK",
             *emit_token(LADY_MACBETH, tokens.CODE_BLOCK),
-            goto("PASS_CODE_GLYPH"),
+            goto("PASS_CODE_LINE_CAPTURE_OPEN"),
             companion=HECATE,
         ),
         scene(
             "PASS_CODE_GLYPH",
-            branch(eq(val(LADY_MACBETH), const(0)), then="PASS_CODE_CLOSE"),
-            *_read(),
-            branch(eq(val(HECATE), _NEWLINE), then="PASS_CODE_LINE_END"),
-            push(LADY_MACBETH, val(HECATE)),
-            goto("PASS_CODE_GLYPH"),
+            goto("PASS_CODE_LINE_CAPTURE_OPEN"),
             companion=HECATE,
+        ),
+        # --- Amendment A13: one-physical-line blank-payload normalization.
+        # Hecate/Lady Macbeth remains the sole reader; Puck buffers the line;
+        # Horatio reverse-replays nonblank payload in source order.
+        scene(
+            "PASS_CODE_LINE_CAPTURE_OPEN",
+            push(PUCK, _CODE_LINE_FLOOR),
+            let(PUCK, const(0)),
+            goto("PASS_CODE_LINE_CAPTURE_SCAN"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_CODE_LINE_CAPTURE_SCAN",
+            branch(
+                eq(val(LADY_MACBETH), const(0)),
+                then="PASS_CODE_LINE_KEEP_REVERSE_OPEN",
+            ),
+            *_read(),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_CODE_LINE_BLANK_DROP"),
+            push(PUCK, val(HECATE)),
+            branch(eq(val(HECATE), _SPACE), then="PASS_CODE_LINE_CAPTURE_SCAN"),
+            branch(eq(val(HECATE), _TAB), then="PASS_CODE_LINE_CAPTURE_SCAN"),
+            let(PUCK, _CODE_LINE_NONBLANK),
+            goto("PASS_CODE_LINE_CAPTURE_SCAN"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_CODE_LINE_BLANK_DROP",
+            branch(
+                eq(val(PUCK), _CODE_LINE_NONBLANK),
+                then="PASS_CODE_LINE_KEEP_REVERSE_OPEN",
+            ),
+            pop(PUCK, recall="kept_tally"),
+            branch(
+                eq(val(PUCK), _CODE_LINE_FLOOR),
+                then="PASS_CODE_LINE_CLOSE",
+            ),
+            goto("PASS_CODE_LINE_BLANK_DROP"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_CODE_LINE_KEEP_REVERSE_OPEN",
+            push(HORATIO, _CODE_LINE_REPLAY_FLOOR),
+            goto("PASS_CODE_LINE_KEEP_REVERSE_TRANSFER"),
+            anchor=PUCK,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_CODE_LINE_KEEP_REVERSE_TRANSFER",
+            pop(PUCK, recall="replay_glyph"),
+            branch(
+                eq(val(PUCK), _CODE_LINE_FLOOR),
+                then="PASS_CODE_LINE_KEEP_REPLAY",
+            ),
+            push(HORATIO, val(PUCK)),
+            goto("PASS_CODE_LINE_KEEP_REVERSE_TRANSFER"),
+            anchor=PUCK,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_CODE_LINE_KEEP_REPLAY",
+            pop(HORATIO, recall="kept_measure"),
+            branch(
+                eq(val(HORATIO), _CODE_LINE_REPLAY_FLOOR),
+                then="PASS_CODE_LINE_CLOSE",
+            ),
+            push(LADY_MACBETH, val(HORATIO)),
+            goto("PASS_CODE_LINE_KEEP_REPLAY"),
+            anchor=HORATIO,
+            companion=LADY_MACBETH,
+        ),
+        scene(
+            "PASS_CODE_LINE_CLOSE",
+            branch(
+                eq(val(HECATE), _NEWLINE),
+                then="PASS_CODE_LINE_END",
+                else_="PASS_CODE_CLOSE",
+            ),
+            anchor=LADY_MACBETH,
+            companion=PUCK,
         ),
         scene(
             "PASS_CODE_LINE_END",
