@@ -1,3 +1,13 @@
 # Active blockers
 
-- BLOCK[plan]: Task 4 Step 3 Syntax four-gate still fails after multi-parent nest-depth restore (`PASS_LISTS_SIB_OUTDENT`) and tab code-opacity in `_rewrite_text`. Remaining first-byte mismatch at offset 22422: Act II treats whitespace-only lines as paragraph continuations. Act I detabs `\t\n` to four spaces, so Syntax source `And then define the link:\n\t\n\t[Daring Fireball]: http://daringfireball.net/\n` becomes spaces-only blank then four-space code; oracle emits PARA + CODE_BLOCK, shakedown keeps one PARA with reversed label text. Minimal witness: `Para:\n\t\n\tcode line\n` (also `Para:\n    \n    code line\n`). Fix needs RAW_AFTER_NEWLINE scan/replay so a line of only spaces/tabs is a blank boundary without dropping leading spaces on non-blank continuations — new Act-II scenes/labels beyond A17's authorized 2a/2b repairs. Inventory never seeded this category. Step 3 checkbox remains open; do not enable Syntax until strict `summary: 1/1 byte-identical`.
+No active blockers. Amendment A18 (2026-07-19) to
+`docs/superpowers/plans/2026-07-18-slice-5-documentation-aggregates.md`
+(binding design Amendment A16) resolved the Task-4 Step-3 whitespace-only
+blank-line boundary block: it seeds `whitespace_only_blank_boundary` as the
+inventory's fifth category, authorizes Step 2c with design A16's exact
+8-working/4-spare `PASS_PARA_WS_*` Act-II machine (confined to Macbeth's own
+paragraph-scan stack, no `_read()`/Hecate), and extends the Global
+Constraints Act-II ledger to 48 working/16 spare exclusively for that draw.
+Step 2c is unchecked and ready for implementation; Step 3 (the Syntax
+four-gate checkpoint) remains gated on Step 2c landing with a fully green
+`syntax_category` run.

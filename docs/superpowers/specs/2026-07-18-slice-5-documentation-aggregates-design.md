@@ -1021,3 +1021,127 @@ Act-III general multi-id reference resolution is not authorized by this
 amendment. If the rewrite repair proves insufficient and a new Act-III scene
 or token appears necessary, stop with `- BLOCK[plan]:` and the smallest
 witness.
+
+## Amendment A16 (2026-07-19): whitespace-only blank-line boundary (Act II)
+
+This amendment authorizes the fifth Syntax inventory category, seeded here
+because Step 1's original four-row inventory never observed it: after 2a/2b
+land, the remaining first-byte mismatch is at offset 22422, in the Syntax
+witness `And then define the link:\n\t\n\t[Daring Fireball]: http://daringfireball.net/\n`.
+Act I detabs `\t` to four spaces, so the middle line becomes spaces-only and
+the following line becomes four-space code. Markdown.pl treats any line whose
+only content is horizontal whitespace as a blank-line paragraph boundary —
+never as paragraph text. Act II's paragraph scanner (`PASS_PARA_NEWLINE`)
+currently recognizes only a bare `NEWLINE` (or `STREAM_END`/`TEXT_END`/
+`BLOCKQUOTE_CLOSE`) as that boundary; a line starting with one or more spaces
+falls through to the generic continuation branch and is kept as paragraph
+text, so the oracle's `PARA` + `CODE_BLOCK` split never happens. Minimal
+witness (no tab involved): `Para:\n    \n    code line\n`.
+
+The fix is confined to the paragraph scanner already staged on Macbeth's own
+stack (`PASS_PARA_TEXT`/`PASS_PARA_NEWLINE` read via `pop(MACBETH, ...)`, not
+`_read()`/Hecate — this section scans an already-recognized PARA span, not
+raw source). It needs the same buffer-then-classify shape as Amendment A13's
+code-line normalizer, reusing Puck to hold provisionally-blank spaces and
+Horatio to restore them in source order only when the line turns out
+nonblank. No token, selector, Act-III/IV role, or non-Act-II file is
+authorized; `PASS_PARA_CLOSE_BLANK` and `PASS_PARA_FINAL_CLOSE` are reused as
+the existing terminal targets rather than duplicated.
+
+`PASS_PARA_NEWLINE` gains exactly one new branch, inserted before its
+existing catch-all continuation push, so the newly-authorized machine is
+entered only for a leading space:
+
+```
+branch(eq(val(MACBETH), _SPACE), then="PASS_PARA_WS_OPEN"),
+```
+
+The new machine:
+
+| Label | Stage pair / anchor | Responsibility |
+|---|---|---|
+| `PASS_PARA_WS_OPEN` | Macbeth + Puck / Macbeth | Seed Puck's private line floor; retain the already-popped leading space above it. |
+| `PASS_PARA_WS_SCAN` | Macbeth + Puck / Macbeth | Sole further `pop(MACBETH, ...)` loop for this line; retain each additional space above the floor; classify a `NEWLINE`/`STREAM_END`/`TEXT_END`/`BLOCKQUOTE_CLOSE` glyph as a terminator, anything else as trailing content that ends the scan. |
+| `PASS_PARA_WS_BLANK_DROP` | Macbeth + Puck / Macbeth | On a terminator, discard the buffered spaces through Puck's floor. |
+| `PASS_PARA_WS_TERMINATE` | Macbeth (single) | Re-dispatch the already-classified terminator still held in Macbeth to `PASS_PARA_CLOSE_BLANK` (`NEWLINE`/`TEXT_END`/`BLOCKQUOTE_CLOSE`) or `PASS_PARA_FINAL_CLOSE` (`STREAM_END`), exactly mirroring `PASS_PARA_NEWLINE`'s own branch set, without reading again. |
+| `PASS_PARA_WS_REVERSE_OPEN` | Puck + Horatio / Puck | On trailing content, seed Horatio's private replay floor. |
+| `PASS_PARA_WS_REVERSE_TRANSFER` | Puck + Horatio / Puck | Move the buffered spaces Puck-to-Horatio, restoring source order (the same double-reverse trick as A13's `KEEP_REVERSE_*`). |
+| `PASS_PARA_WS_REPLAY` | Horatio + Lady Macbeth / Horatio | Push one continuation `NEWLINE`, then restore the kept spaces to Lady Macbeth in source order. |
+| `PASS_PARA_WS_CONTINUE` | Lady Macbeth + Macbeth / Macbeth | Push the trailing non-space glyph that ended the scan onto Lady Macbeth, then resume the existing `PASS_PARA_TEXT` loop. |
+
+This adds two private floor constants (continuing the existing negative-offset
+sequence after A13's `_CODE_LINE_FLOOR`/`_CODE_LINE_REPLAY_FLOOR`):
+`_PARA_WS_FLOOR = sub(const(0), const(42))` and
+`_PARA_WS_REPLAY_FLOOR = sub(const(0), const(43))`.
+
+Eight new working titles and four unused spares extend the Task-3 ledger from
+40 working/12 unused spares to **48 working labels and 16 unused spares**.
+The ready-to-paste controlled surfaces (install under `[spares.*]` per
+Amendment A14/A15's binding TOML shape, promoting each to `[scenes.*]` only
+as its Scene is built):
+
+```toml
+# Slice 5 Act-II A16 whitespace-boundary working pool (8 additional labels)
+[scenes.PASS_PARA_WS_OPEN]
+title = "Macbeth grants Puck the first idle mark of a doubtful line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_SCAN]
+title = "Macbeth offers Puck each further mark of the doubtful line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_BLANK_DROP]
+title = "Puck lets the doubtful line's idle marks fall away."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_TERMINATE]
+title = "Macbeth judges the doubtful line's true ending alone."
+pattern = "bare_statement"
+[scenes.PASS_PARA_WS_REVERSE_OPEN]
+title = "Puck sets Horatio's floor for the kept doubtful line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_REVERSE_TRANSFER]
+title = "Puck entrusts Horatio each kept mark of the line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_REPLAY]
+title = "Horatio restores the kept line to Lady Macbeth in order."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_CONTINUE]
+title = "Lady Macbeth receives the mark that proved the line alive."
+pattern = "cross_character"
+
+# Slice 5 Act-II A16 spare pool (4; all unused)
+[scenes.PASS_PARA_WS_RETURN_GUARD]
+title = "The doubtful line keeps one guarded return."
+pattern = "bare_statement"
+[scenes.PASS_PARA_WS_FLOOR_GUARD]
+title = "The doubtful line's chamber keeps one guarded floor."
+pattern = "bare_statement"
+[scenes.PASS_PARA_WS_REPLAY_GUARD]
+title = "The kept mark keeps one guarded passage."
+pattern = "bare_statement"
+[scenes.PASS_PARA_WS_CONTINUE_GUARD]
+title = "The line's revival keeps one guarded measure."
+pattern = "bare_statement"
+```
+
+Before changing production behavior, seed the Task-4 Step-1 inventory with a
+fifth `whitespace_only_blank_boundary` category row (owner `act2`) and add
+focused contracts for: the exact Syntax witness, the minimal
+`Para:\n    \n    code line\n` witness, a positive control where the
+whitespace-prefixed line has trailing content (must stay joined to the
+paragraph, leading spaces preserved), and a positive control for an ordinary
+non-space-prefixed continuation (must be unaffected). Each contract checks
+decoded `PARA`/`CODE_BLOCK` stream shape, fast Act-IV output, release output,
+and installed-local Markdown.pl bytes. Add the eight-scene pair-chain and
+all-16-spares-absence-from-`data["scenes"]` contracts alongside the existing
+A9/A11/A13 ones. Then run:
+
+```bash
+uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py tests/test_splc_validate.py -k 'para_ws or whitespace_only or Basics or Syntax or validator' -q
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+After those commands are green, run the Task-4 Syntax four-gate checkpoint
+(plan Task 4 Step 3) unchanged. Any need for a ninth scene, a second private
+floor pair, a token/role change, tab-specific handling (Act I already detabs
+before Act II ever sees this span), or Act III/IV behavior is
+`- BLOCK[plan]:` with the smallest witness.
