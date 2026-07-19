@@ -51,10 +51,18 @@ _REMAINING_SPARE_LABELS = {
 
 
 def test_act2_scenes_have_exactly_one_companion() -> None:
+    """Every Act II scene is a legal two-character stage pair.
+
+    Slice 5 authorized per-scene ``anchor=`` overrides (Hecate/Puck/Horatio/
+    Macbeth) for Setext, ATX trail, code-line, and whitespace-blank machines.
+    The act default remains Lady Macbeth; ``participants`` still requires
+    exactly one non-anchor character per scene.
+    """
     for sc in ACT2.scenes:
         anchor, companion = participants(sc, ACT2.anchor)
-        assert anchor == ACT2.anchor
+        assert anchor is not None
         assert companion is not None
+        assert companion != anchor
 
 
 def test_act2_binary_gate_ledger_pairs() -> None:

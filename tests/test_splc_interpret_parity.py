@@ -54,7 +54,11 @@ def test_fast_interpreter_nested_one_level_matches_blessed_p2_baseline() -> None
     assert dump == baseline
     values = [int(line) for line in dump.decode().splitlines()]
     child_open_index = values.index(tokens.LIST_OPEN, 1)
-    assert values[child_open_index - 1] == tokens.ITEM_CLOSE
+    # Nest-open keeps the parent item open (TEXT_END only); parent ITEM_CLOSE
+    # is emitted solely on outdent after the nested LIST_CLOSE (Slice-5 2a).
+    assert values[child_open_index - 1] == tokens.TEXT_END
+    child_close_index = values.index(tokens.LIST_CLOSE)
+    assert values[child_close_index + 1] == tokens.ITEM_CLOSE
 
 
 @pytest.mark.parametrize(

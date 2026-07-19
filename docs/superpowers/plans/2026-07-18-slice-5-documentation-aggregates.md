@@ -368,7 +368,7 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
 
 **Interfaces:** All 23 fixture parameters are enabled. Roadmap row 8 becomes shipped only after the commands below are green and the final commit SHA is known.
 
-- [ ] **Step 1: Run the full correctness and quality gate.**
+- [x] **Step 1: Run the full correctness and quality gate.**
 
   ```bash
   uv run pytest tests/test_architecture_spikes.py tests/test_mdtest.py -q
@@ -381,6 +381,23 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   ```
 
   Expected: no skips in `tests/test_mdtest.py`, strict `summary: 23/23 byte-identical`, both required smoke cases byte-identical, and the full suite/tooling green.
+
+  Evidence (2026-07-19): architecture spikes + mdtest: `55 passed` (mdtest
+  alone `36 passed`, zero skips). Strict parity: `summary: 23/23
+  byte-identical`. Differential smoke with both aggregate `--require` flags:
+  `summary: 23/23 byte-identical`. Full suite initially failed two stale
+  contracts that predated Slice-5 shipping: (1)
+  `test_act2_scenes_have_exactly_one_companion` required every scene's
+  resolved anchor to be the act default Lady Macbeth, but A9/A11/A13/A17
+  authorize per-scene `anchor=` overrides; updated to require a legal
+  two-character pair only. (2)
+  `test_fast_interpreter_nested_one_level_matches_blessed_p2_baseline`
+  still expected `ITEM_CLOSE` before nested `LIST_OPEN`, but Task-4 Step 2a
+  re-blessed nest-open as parent-open (`TEXT_END` only, parent `ITEM_CLOSE`
+  on outdent); structural assert updated to match the committed dump.
+  After those test-only fixes: full suite `1006 passed, 5 skipped, 1
+  deselected`; ruff check/format-check clean; pyright `0 errors`. No
+  production IR/SPL change.
 
 - [ ] **Step 2: Record the Slice-5 performance evidence.** Run each command five times, recording first-run and median with date, exact command, fixture, and clean/dirty status in the established performance documents:
 
