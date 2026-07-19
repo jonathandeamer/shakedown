@@ -1089,35 +1089,36 @@ title = "Macbeth clears the unfinished warrant at the border."
 pattern = "cross_character"
 
 # Slice 5 Act-II A11 working pool (8 additional labels)
+# PASS_SETEXT_PROVED_CLOSE stays a spare until Step 3d.
 [spares.PASS_SETEXT_PROVED_CLOSE]
 title = "Lady Macbeth closes the proved line by its remaining measure."
 pattern = "cross_character"
 
-[spares.PASS_HEADER_TRAIL_OPEN]
+[scenes.PASS_HEADER_TRAIL_OPEN]
 title = "Hecate opens a measured border for the heading's marks."
 pattern = "cross_character"
 
-[spares.PASS_HEADER_TRAIL_SCAN]
+[scenes.PASS_HEADER_TRAIL_SCAN]
 title = "Lady Macbeth reads the heading's deferred border."
 pattern = "cross_character"
 
-[spares.PASS_HEADER_TRAIL_CAPTURE]
+[scenes.PASS_HEADER_TRAIL_CAPTURE]
 title = "Hecate gives each deferred mark to Puck."
 pattern = "cross_character"
 
-[spares.PASS_HEADER_TRAIL_DECIDE]
+[scenes.PASS_HEADER_TRAIL_DECIDE]
 title = "Hecate judges the border's final warrant with Puck."
 pattern = "cross_character"
 
-[spares.PASS_HEADER_TRAIL_DROP]
+[scenes.PASS_HEADER_TRAIL_DROP]
 title = "Hecate lets Puck dismiss the closing border."
 pattern = "cross_character"
 
-[spares.PASS_HEADER_TRAIL_REPLAY]
+[scenes.PASS_HEADER_TRAIL_REPLAY]
 title = "Lady Macbeth receives Puck's unproved border."
 pattern = "cross_character"
 
-[spares.PASS_HEADER_TRAIL_EXIT]
+[scenes.PASS_HEADER_TRAIL_EXIT]
 title = "Lady Macbeth restores the heading's next true letter."
 pattern = "cross_character"
 

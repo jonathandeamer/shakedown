@@ -218,6 +218,167 @@ Lady Macbeth:
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_CLOSE.
 
+Lady Macbeth:
+ Are you as bold as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HEADER_TRAIL_OPEN.
+
+Hecate:
+ Remember myself.
+
+Lady Macbeth:
+ Let us return to scene @PASS_HEADER_TEXT.
+
+
+                    Scene @PASS_HEADER_TRAIL_OPEN: @LIT.scenes.PASS_HEADER_TRAIL_OPEN.title
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+
+Hecate:
+ Remember myself.
+
+Hecate:
+ You are as cursed as nothing.
+
+Hecate:
+ Let us proceed to scene @PASS_HEADER_TRAIL_SCAN.
+
+
+                    Scene @PASS_HEADER_TRAIL_SCAN: @LIT.scenes.PASS_HEADER_TRAIL_SCAN.title
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as horrid as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as mighty as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HEADER_TRAIL_DECIDE.
+
+Lady Macbeth:
+ Are you as bold as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HEADER_TRAIL_CAPTURE.
+
+Lady Macbeth:
+ Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HEADER_TRAIL_CAPTURE.
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @PASS_HEADER_TRAIL_REPLAY.
+
+
+                    Scene @PASS_HEADER_TRAIL_CAPTURE: @LIT.scenes.PASS_HEADER_TRAIL_CAPTURE.title
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ Remember myself.
+
+Puck:
+ Are you as fair as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @PASS_HEADER_TRAIL_SCAN.
+
+Hecate:
+ You are as rotten as a cat.
+
+Hecate:
+ We must return to scene @PASS_HEADER_TRAIL_SCAN.
+
+
+                    Scene @PASS_HEADER_TRAIL_DECIDE: @LIT.scenes.PASS_HEADER_TRAIL_DECIDE.title
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @PASS_HEADER_TRAIL_DROP.
+
+
+                    Scene @PASS_HEADER_TRAIL_DROP: @LIT.scenes.PASS_HEADER_TRAIL_DROP.title
+
+Hecate:
+ @LIT.characters.hecate.recall.trail_glyph
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ Are you as cursed as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_HEADER_TRAIL_REPLAY.
+
+Hecate:
+ @LIT.characters.hecate.recall.trail_glyph
+
+Hecate:
+ We must return to scene @PASS_HEADER_TRAIL_DROP.
+
+
+                    Scene @PASS_HEADER_TRAIL_REPLAY: @LIT.scenes.PASS_HEADER_TRAIL_REPLAY.title
+
+[Exit Hecate]
+
+[Enter Lady Macbeth]
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.trail_glyph
+
+Lady Macbeth:
+ Are you as bold as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_HEADER_TRAIL_EXIT.
+
+Puck:
+ Remember myself.
+
+[Exit Lady Macbeth]
+
+[Enter Hecate]
+
+Puck:
+ Let us return to scene @PASS_HEADER_TRAIL_REPLAY.
+
+
+                    Scene @PASS_HEADER_TRAIL_EXIT: @LIT.scenes.PASS_HEADER_TRAIL_EXIT.title
+
+[Exit Puck]
+
+[Enter Hecate]
+
+Lady Macbeth:
+ Are you as bold as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_HEADER_CLOSE.
+
 Hecate:
  Remember myself.
 

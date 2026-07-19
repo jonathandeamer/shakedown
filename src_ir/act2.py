@@ -70,6 +70,10 @@ _CODE_LINE_FLOOR = sub(const(0), const(40))
 _CODE_LINE_REPLAY_FLOOR = sub(const(0), const(41))
 _CODE_LINE_NONBLANK = const(1)
 
+# Amendment A11: private Puck floor for ATX trailing space/hash buffer.
+_HEADER_TRAIL_FLOOR = sub(const(0), const(42))
+_HEADER_TRAIL_SAW_HASH = const(1)
+
 
 def _read(recall: str = "hewn_glyph"):
     """Pop the next input glyph into Hecate and decrement the countdown."""
@@ -162,6 +166,85 @@ ACT: Act = act(
         scene(
             "PASS_HEADER_TEXT",
             *_read(),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_HEADER_CLOSE"),
+            # A11: first space opens the trailing space/hash deferral machine.
+            branch(eq(val(HECATE), _SPACE), then="PASS_HEADER_TRAIL_OPEN"),
+            push(LADY_MACBETH, val(HECATE)),
+            goto("PASS_HEADER_TEXT"),
+            companion=HECATE,
+        ),
+        # --- Amendment A11 ATX trailing-hash machine.
+        # Puck holds the deferred spaces/hashes run above a private floor and
+        # the private saw_hash bit in its value. Lady Macbeth/Hecate remain
+        # the sole _read() pair. Drop only at newline after at least one hash;
+        # otherwise replay deferred bytes before the held glyph or close.
+        scene(
+            "PASS_HEADER_TRAIL_OPEN",
+            push(PUCK, _HEADER_TRAIL_FLOOR),
+            push(PUCK, val(HECATE)),
+            let(PUCK, const(0)),
+            goto("PASS_HEADER_TRAIL_SCAN"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_HEADER_TRAIL_SCAN",
+            *_read(),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_HEADER_TRAIL_DECIDE"),
+            branch(eq(val(HECATE), _SPACE), then="PASS_HEADER_TRAIL_CAPTURE"),
+            branch(eq(val(HECATE), _HASH), then="PASS_HEADER_TRAIL_CAPTURE"),
+            goto("PASS_HEADER_TRAIL_REPLAY"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_HEADER_TRAIL_CAPTURE",
+            push(PUCK, val(HECATE)),
+            branch(eq(val(HECATE), _SPACE), then="PASS_HEADER_TRAIL_SCAN"),
+            let(PUCK, _HEADER_TRAIL_SAW_HASH),
+            goto("PASS_HEADER_TRAIL_SCAN"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_HEADER_TRAIL_DECIDE",
+            # At newline the deferred run is exactly Markdown.pl's trailing
+            # `[ \t]*\#*` suffix: drop pure spaces and space+hash closers.
+            # (A11's saw_hash bit still records hash sightings in CAPTURE;
+            # REPLAY remains the mid-line non-space/non-hash escape.)
+            goto("PASS_HEADER_TRAIL_DROP"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_HEADER_TRAIL_DROP",
+            # Discard deferred glyphs. On the private floor, re-seed it and
+            # hand off to REPLAY (same Hecate/Puck pair) which clears the
+            # floor and enters EXIT→CLOSE — avoiding a cross-pair branch
+            # into PASS_HEADER_CLOSE (Lady Macbeth/Hecate).
+            pop(PUCK, recall="trail_glyph"),
+            push(PUCK, val(PUCK)),
+            branch(
+                eq(val(PUCK), _HEADER_TRAIL_FLOOR),
+                then="PASS_HEADER_TRAIL_REPLAY",
+            ),
+            pop(PUCK, recall="trail_glyph"),
+            goto("PASS_HEADER_TRAIL_DROP"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_HEADER_TRAIL_REPLAY",
+            pop(PUCK, recall="trail_glyph"),
+            branch(
+                eq(val(PUCK), _HEADER_TRAIL_FLOOR),
+                then="PASS_HEADER_TRAIL_EXIT",
+            ),
+            push(LADY_MACBETH, val(PUCK)),
+            goto("PASS_HEADER_TRAIL_REPLAY"),
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_HEADER_TRAIL_EXIT",
             branch(eq(val(HECATE), _NEWLINE), then="PASS_HEADER_CLOSE"),
             push(LADY_MACBETH, val(HECATE)),
             goto("PASS_HEADER_TEXT"),
