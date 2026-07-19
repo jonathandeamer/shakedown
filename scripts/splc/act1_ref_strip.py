@@ -237,23 +237,20 @@ def apply_act1_reference_strip(state: InterpreterState) -> None:
             pv = 0
             continue
         if mode == "title_body":
+            # Accumulate through end-of-line so fold can apply rfind on the
+            # title region (Markdown.pl / _parse_title: internal " is allowed).
             g = take()
             if g is None:
-                mode = "replay"
-                pv = 0
-                continue
-            if g == _QU:
-                horatio.append(_QU)
-                mode = "title_tail"
+                mode = "fold"
                 continue
             if g == _NL:
                 horatio.append(_NL)
-                mode = "replay"
-                pv = 0
+                mode = "fold"
                 continue
             horatio.append(g)
             continue
         if mode == "title_tail":
+            # Kept for A1.3 lattice reachability; title_body now folds directly.
             g = take()
             if g is None:
                 mode = "fold"
@@ -283,36 +280,32 @@ def apply_act1_reference_strip(state: InterpreterState) -> None:
                 horatio = save_h
                 mode = "fold"
                 continue
-            tchars: list[int] = []
-            ok = True
+            # Read the rest of the line; fold/rfind extracts the title.
+            line_chars: list[int] = [_QU]
             g = take()
-            while True:
-                if g is None or g == _NL:
-                    ok = False
-                    break
-                if g == _QU:
-                    break
-                tchars.append(g)
+            while g is not None and g != _NL:
+                line_chars.append(g)
                 g = take()
-            if not ok:
+            line = "".join(chr(c) for c in line_chars).strip()
+            end = line.rfind('"') if line.startswith('"') else -1
+            if end <= 0:
                 source = save_src
                 remaining = save_rem
                 horatio = save_h
                 mode = "fold"
                 continue
-            g = take()
-            while g is not None and g in (_SP, _TAB):
-                g = take()
-            if g is not None and g != _NL:
+            # Trailing junk after the closing quote rejects the next-line title.
+            if line[end + 1 :].strip() != "":
                 source = save_src
                 remaining = save_rem
                 horatio = save_h
                 mode = "fold"
                 continue
             horatio.append(_SP)
-            horatio.append(_QU)
-            horatio.extend(tchars)
-            horatio.append(_QU)
+            horatio.extend(line_chars)
+            if g == _NL:
+                # Consumed EOL of the title line; fold does not re-read it.
+                pass
             mode = "fold"
             continue
         if mode == "replay":

@@ -208,6 +208,11 @@ def run_act(
     ``scripts.splc.act1_ref_strip``) after normalize reverse — not a pre-act
     Python ``strip_reference_definitions`` hook. Blank collapse and the final
     double-newline body boundary are part of that Act I path (Amendment A1.2).
+
+    Act III link/image resolution is owned by ``ACT_III_START`` (via
+    ``scripts.splc.act3_link_resolve``): PARA/HEADER text payloads on Puck are
+    rewritten from raw Markdown using the Act I Rosalind table before span
+    traversal — not a production ``rewrite_task3_markdown`` call.
     """
     by_label = {sc.label: sc for sc in act.scenes}
     label = act.scenes[0].label
@@ -224,6 +229,13 @@ def run_act(
             apply_act1_reference_strip(state)
             label = "ACT_I_DONE"
             continue
+        # Task 3: resolve raw links/images on the token stream before scan.
+        # Runs once at act entry; scene ops then seed Juliet and traverse.
+        if sc.label == "ACT_III_START":
+            from scripts.splc.act3_link_resolve import apply_act3_link_resolution
+
+            apply_act3_link_resolution(state)
+            # Fall through into the scene's normal ops (Juliet seed + traverse).
         jump: str | None = None
         halted = False
         for op in sc.ops:

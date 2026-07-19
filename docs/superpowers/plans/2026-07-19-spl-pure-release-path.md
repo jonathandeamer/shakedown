@@ -304,7 +304,7 @@ uv run pytest tests/test_act3_links_pure.py -q
 
 Evidence (2026-07-19, grok-implement): Added `tests/test_act3_links_pure.py` with pure-IR (no `rewrite_task3_markdown`) vs local Markdown.pl contracts for witnesses 3a–3e. Gate: `uv run pytest tests/test_act3_links_pure.py -q` → **21 failed, 3 passed** (red: angle-bracket dest unwrap, multi-space titles, empty `title=""`, reference links/images, title quotes, nested brackets, broken-line link text; green already: simple amp inline, amp angle dest, titled inline image).
 
-- [ ] **Step 2: Implement resolution (3a→3e)**
+- [x] **Step 2: Implement resolution (3a→3e)**
 
 Implement in IR; regenerate after each green sub-gate. Do not call Python rewrite from tests for these contracts.
 
@@ -315,6 +315,8 @@ uv run pytest tests/test_act3_links_pure.py -k '<letter or name>' -q
 uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q
 uv run python -m scripts.splc && uv run python scripts/assemble.py
 ```
+
+Evidence (2026-07-19, grok-implement): Act III resolution at `ACT_III_START` via `scripts/splc/act3_link_resolve.py` (PARA/HEADER payloads rewritten using Act I Rosalind table; oracle-aligned, no `rewrite_task3_markdown`). Act I title strip fixed for internal `"` (rfind, same-line + next-line). Gates: `tests/test_act3_links_pure.py` **24 passed**; spikes/token/act1/mdtest/slice3/validate/generated/literary **193 passed** combined; `splc` + assemble **clean** (`git diff --exit-code` on generated fragments).
 
 - [ ] **Step 3: Full Act III pure-link gate**
 
