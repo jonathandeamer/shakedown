@@ -493,7 +493,9 @@ def test_act2_a11_spare_labels_are_not_implemented_as_scenes() -> None:
         ("PASS_CODE_LINE_KEEP_REVERSE_OPEN", (Char.PUCK, Char.HORATIO)),
         ("PASS_CODE_LINE_KEEP_REVERSE_TRANSFER", (Char.PUCK, Char.HORATIO)),
         ("PASS_CODE_LINE_KEEP_REPLAY", (Char.HORATIO, Char.LADY_MACBETH)),
-        ("PASS_CODE_LINE_CLOSE", (Char.LADY_MACBETH, Char.PUCK)),
+        # CLOSE shares Horatio+Lady Macbeth with KEEP_REPLAY so both blank and
+        # keep routes can discard the replay floor without a third participant.
+        ("PASS_CODE_LINE_CLOSE", (Char.HORATIO, Char.LADY_MACBETH)),
     ],
 )
 def test_act2_a13_entry_pairs_use_only_the_authorized_scene_pairs(
