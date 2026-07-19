@@ -98,7 +98,7 @@ If already committed, check the step and skip.
 - Consumes: `scripts.slice3_links.rewrite_task3_markdown`, `scripts.paths.mdtest_fixtures_dir`, IR `_interpret_ir` pattern from `tests/test_mdtest.py`
 - Produces: Documented list of fixtures/behaviors that require rewrite today; pure-SPL red witnesses committed as failing tests (skipped or xfail with reason until enablement)
 
-- [ ] **Step 1: Write inventory helpers and pure-path red contracts**
+- [x] **Step 1: Write inventory helpers and pure-path red contracts**
 
 Add `tests/test_spl_pure_inventory.py` that:
 
@@ -171,7 +171,9 @@ def test_raw_ir_matches_oracle_without_rewrite(name: str) -> None:
 
 Also record a short note file listing, for each touched fixture, the first semantic class of rewrite change (inline link → `<a>`, ref strip, image, title quotes, etc.) by sampling `difflib` of text vs rewrite — human-readable bullets, no novel design.
 
-- [ ] **Step 2: Run inventory tests**
+Evidence (2026-07-19, grok-implement): Added `tests/test_spl_pure_inventory.py` and `docs/superpowers/notes/2026-07-19-spl-pure-rewrite-inventory.md`.
+
+- [x] **Step 2: Run inventory tests**
 
 ```bash
 uv run pytest tests/test_spl_pure_inventory.py -q
@@ -179,7 +181,9 @@ uv run pytest tests/test_spl_pure_inventory.py -q
 
 Expected: `test_rewrite_touches_expected_fixture_set` passes; parametrized raw-IR tests xfail as intended.
 
-- [ ] **Step 3: Commit inventory**
+Evidence (2026-07-19, grok-implement): `1 passed, 8 xfailed` — rewrite-touch set green; pure raw-IR witnesses xfail while `PURE_SPL_REWRITE_RETIRED` is false.
+
+- [x] **Step 3: Commit inventory**
 
 ```bash
 git add tests/test_spl_pure_inventory.py docs/superpowers/notes/2026-07-19-spl-pure-rewrite-inventory.md
