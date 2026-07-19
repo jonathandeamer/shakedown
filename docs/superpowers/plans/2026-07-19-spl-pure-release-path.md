@@ -363,7 +363,7 @@ Delete or gut `scripts/preprocess_input.py` production use; if the file remains,
 
 Evidence (2026-07-19, grok-implement): `PURE_SPL_REWRITE_RETIRED = True`; `_run_acts` and `release_runtime.main` feed raw stdin/input (no `rewrite_task3_markdown`); `preprocess_input` is a deprecation warning + passthrough. Gates: inventory+act1+act3 pure **41 passed**; `test_mdtest` **36 passed**; `./shakedown-parity` smoke (emphasis + ref link) green.
 
-- [ ] **Step 2: Prove suite**
+- [x] **Step 2: Prove suite**
 
 ```bash
 uv run pytest tests/test_spl_pure_inventory.py tests/test_act1_references.py tests/test_act3_links_pure.py -q
@@ -373,6 +373,8 @@ uv run ruff check . && uv run ruff format --check . && uv run pyright
 ```
 
 Expected: all green without rewrite.
+
+Evidence (2026-07-19, grok-implement): pure inventory/act1/act3 **41 passed**; `test_mdtest` **36 passed**; slice3+slice5 **54 passed**; `ruff check` / `ruff format --check` / `pyright` all clean (0 errors). Suite green without rewrite.
 
 - [ ] **Step 3: Point `./shakedown-parity` at pure IR**
 
