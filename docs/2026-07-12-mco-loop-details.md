@@ -1,6 +1,6 @@
 # MCO Autonomous Loop Details
 
-**Last Updated:** 2026-07-14
+**Last Updated:** 2026-07-19
 
 This document provides a detailed reference for the MCO-backed autonomous roadmap execution loop in this repository. Use this guide to understand how it operates, how to monitor it, and how to troubleshoot or interact with it.
 
@@ -93,6 +93,28 @@ team has no credits and none will be purchased; `XAI_API_KEY` is no longer
 allowlisted, and the operator may delete the stale key from the git-ignored
 repo-root `.env`. Grok may return only with restored credits and a fresh
 verification run.
+
+### Kimi Subscription Pool
+
+Two Kimi Code CLI shims were added on 2026-07-19, backed by the operator's
+Kimi subscription (OAuth under `~/.kimi-code`, no `.env` key required):
+
+* `kimi-k3` (alias `kimi-code/k3`, the K3 flagship) sits at the end of the
+  `[[planning]]` pool, after codex-sol.
+* `kimi-for-coding` (alias `kimi-code/kimi-for-coding`, K2.7 Coding) sits in
+  `[[implementation]]` between the trusted claude/codex entries and the free
+  OpenRouter fallback pool.
+
+Both shims run `kimi --output-format text -m <alias> -p`; MCO appends the
+handoff prompt as the `-p` value. Headless prompt mode auto-approves tool
+calls, so no permission flag is needed (`--yolo`/`--auto` are rejected in
+combination with `-p`), and each run is a fresh session that is never
+resumed. Both executors share the `kimi` quota group — one subscription, one
+cooldown blast radius. The group is not in `TRUSTED_RETRY_GROUPS`, so the
+loop skips it while cooling and never waits on it, same as the OpenRouter
+pool. The machine also defines a `kimi-code/kimi-for-coding-highspeed` alias,
+but the subscription rejects it with a 401 upgrade error, so it is
+deliberately not wired into the loop.
 
 ### Machine-Local Pi Configuration
 

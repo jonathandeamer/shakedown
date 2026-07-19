@@ -26,3 +26,9 @@ agents:
   - name: pi-qwen-coder-stateless
     transport: shim
     command: 'pi --no-session --print --tools read,bash,edit,write --provider openrouter --model qwen/qwen3-coder:free'
+  - name: kimi-k3
+    transport: shim
+    command: 'kimi --output-format text -m kimi-code/k3 -p'
+  - name: kimi-for-coding
+    transport: shim
+    command: 'kimi --output-format text -m kimi-code/kimi-for-coding -p'

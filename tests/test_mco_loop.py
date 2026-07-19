@@ -1000,12 +1000,14 @@ def test_live_config_has_role_scoped_model_order() -> None:
         ("claude-sonnet", None),
         ("claude-opus", None),
         ("codex", "gpt-5.6-sol"),
+        ("kimi-k3", None),
     ]
     assert [item.provider for item in config.implementation] == [
         "claude-sonnet",
         "codex",
         "claude-opus",
         "codex",
+        "kimi-for-coding",
         "pi-nemotron-ultra-stateless",
         "pi-gpt-oss-stateless",
         "pi-nemotron-super-stateless",
@@ -1018,6 +1020,7 @@ def test_live_config_has_role_scoped_model_order() -> None:
         (None, "gpt-5.4"),
         (None, None),
         (None, "gpt-5.6-sol"),
+        (None, None),
         (None, None),
         (None, None),
         (None, None),
@@ -1040,6 +1043,7 @@ def test_automatic_shims_are_stateless_and_models_remain_visible() -> None:
 
     assert agents.count("claude -p --no-session-persistence") == 3
     assert agents.count("pi --no-session --print") == 6
+    assert agents.count("kimi --output-format text") == 2
     assert not {"agy-flash", "agy-pro", "pi"} & {
         item.provider for item in config.implementation
     }
@@ -1813,6 +1817,14 @@ def test_planning_pool_never_falls_through_to_implementation_only_models() -> No
         "failures": {},
         "last_failure": None,
     }
+
+    selected, next_ready = mco_loop.available_executor(config.planning, state, now=100)
+
+    assert selected is not None
+    assert selected.provider == "kimi-k3"
+    assert next_ready is None
+
+    state["cooldowns"] = {"codex": 200, "claude": 200, "kimi": 200}
 
     selected, next_ready = mco_loop.available_executor(config.planning, state, now=100)
 

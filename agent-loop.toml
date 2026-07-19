@@ -40,6 +40,14 @@ quota_group = "codex"
 coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
 
+[[planning]]
+name = "kimi-k3-plan"
+provider = "kimi-k3"
+display_model = "k3"
+quota_group = "kimi"
+coauthor_name = "Kimi"
+coauthor_email = "noreply@moonshot.ai"
+
 [[escalation]]
 name = "codex-terra-escalate"
 provider = "codex"
@@ -90,6 +98,14 @@ model = "gpt-5.6-sol"
 quota_group = "codex"
 coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
+
+[[implementation]]
+name = "kimi-coding-implement"
+provider = "kimi-for-coding"
+display_model = "kimi-for-coding"
+quota_group = "kimi"
+coauthor_name = "Kimi"
+coauthor_email = "noreply@moonshot.ai"
 
 [[implementation]]
 name = "nemotron-ultra-implement"
