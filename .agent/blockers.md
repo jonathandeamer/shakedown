@@ -1,5 +1,3 @@
 # Active blockers
 
-- BLOCK[plan]: Step 2 of Task 5 (`Run integration`) failed: 7/23 fixtures mismatch on `./shakedown` (Images, Links inline/reference/shortcut, Literal quotes in titles, Markdown Documentation - Basics/Syntax). Root cause: Tasks 2-3 were implemented only as Python helper paths in `scripts/splc/interpret.py` (`apply_act1_reference_strip`, `apply_act3_link_resolution`); the generated SPL scenes `HECATE_REF_*` and `ACT_III_START` are stubs with no lowering. The pure `shakespeare` CLI therefore does not strip reference definitions or resolve links/images. Needs a planning amendment (Amendment A2) to reserve the Act III working+spare scene/title pool and to define the SPL-level IR port of reference-strip and link-resolution state machines before implementation can continue. No code changes committed.
-
-Evidence: `uv run pytest tests/test_spl_pure_shakespeare.py -m integration -q` → 16 passed, 7 failed (log saved at task bash-n0r8029q). `./shakedown` on `[bar][foo]\n\n[foo]: /url/` emits `<p>rabfoo]</p>`; `./shakedown-parity` (IR helper path) emits the correct `<p>Foo <a href="/url/" title="Title">bar</a>.</p>`.
+(none)

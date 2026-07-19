@@ -240,6 +240,8 @@ Regenerate and assemble.
 
 Evidence (2026-07-19, grok-implement): Wired `HECATE_REF_*` after normalize reverse; promoted 20 A1 working titles to `[scenes.*]`. Strip+table semantics land in `scripts/splc/act1_ref_strip.py` and run when the IR interpreter enters `HECATE_REF_OPEN` (A1.2 body + Rosalind records; does not call `strip_reference_definitions`, so identity-patched Act I contracts exercise this path). A1.3 labels are a reachable lattice for lowering; pure op-level bodies that replace the OPEN intrinsic remain follow-on work before Task 5 pure `shakespeare`. Gates: `tests/test_act1_references.py` **8 passed**; literary/generated `75 passed`; non-link mdtest + spikes/token `67 passed, 16 deselected`; `splc` + assemble regenerated `src/10-act1-preprocess.spl` / `shakedown.spl`.
 
+**Provisional (Amendment A2):** Step 2 is **IR-helper complete only**. Generated `HECATE_REF_*` scene bodies remain goto stubs; pure `shakespeare` does not strip. Task **2L** owns pure-op lowering and intrinsic retirement.
+
 - [x] **Step 3: Remove interpret.py Act I strip hook**
 
 In `scripts/splc/interpret.py`, delete the `act.number == 1 and state.input_pos == 0: strip_reference_definitions(...)` block (and the trailing double-newline tweak **only if** Act I now owns equivalent boundary behavior; if removing the tweak regresses blanks, keep a one-line comment and a focused test proving Act I matches oracle blank handling).
@@ -317,6 +319,8 @@ uv run python -m scripts.splc && uv run python scripts/assemble.py
 ```
 
 Evidence (2026-07-19, grok-implement): Act III resolution at `ACT_III_START` via `scripts/splc/act3_link_resolve.py` (PARA/HEADER payloads rewritten using Act I Rosalind table; oracle-aligned, no `rewrite_task3_markdown`). Act I title strip fixed for internal `"` (rfind, same-line + next-line). Gates: `tests/test_act3_links_pure.py` **24 passed**; spikes/token/act1/mdtest/slice3/validate/generated/literary **193 passed** combined; `splc` + assemble **clean** (`git diff --exit-code` on generated fragments).
+
+**Provisional (Amendment A2):** Step 2 is **IR-helper complete only**. `interpret.py` short-circuits `ACT_III_START` into `apply_act3_link_resolution`; generated SPL still seeds traverse without a pure resolve pre-pass. Existing `LYRIC_ANCHOR_*` / `LYRIC_CONSULT_*` remain Slice-1 Amps hardcodes. Task **3L** owns pure-op lowering (Amendment A2 `RESOLVE_*` pool) and intrinsic retirement.
 
 - [x] **Step 3: Full Act III pure-link gate**
 
@@ -404,6 +408,125 @@ Re-verified this iteration: pure inventory/act1/act3 + `test_mdtest` + wrapper/s
 
 ---
 
+### Task 2L: Act I pure-op lowering (retire `HECATE_REF_OPEN` intrinsic)
+
+**Files:**
+- Modify: `src_ir/act1.py` — replace A1.3 goto stubs with real two-character ops matching `scripts/splc/act1_ref_strip.py`
+- Modify: `scripts/splc/interpret.py` — remove `if sc.label == "HECATE_REF_OPEN": apply_act1_reference_strip(...)` short-circuit only after pure ops are green
+- Keep: `scripts/splc/act1_ref_strip.py` as differential oracle / unit reference (not called from `run_act` after this task)
+- Literary: **only** Amendment A1 labels (20 working already promoted + 6 spares); do not invent titles
+- Test: `tests/test_act1_references.py`; optional focused pure-shakespeare smoke on a definition-only snippet
+
+**Interfaces:**
+- Consumes: Amendment A1 stack layout + scene table; proven algorithm in `act1_ref_strip.py`
+- Produces: Pure SPL/IR ops that strip defs and build Rosalind A1.2 table without any Python Markdown assist in `run_act`
+
+**Binding semantics:** `apply_act1_reference_strip` is the oracle algorithm. Op-level IR must match its stack outcomes on every `tests/test_act1_references.py` case. Prefer incremental label/dest/title capture during parse (SPL-friendly) over re-parsing a string buffer, if byte-identical table records result.
+
+- [ ] **Step 1: Prove red under no-intrinsic Act I**
+
+Temporarily disable only the `HECATE_REF_OPEN` intrinsic in `interpret.py` (or gate it behind `USE_ACT1_REF_INTRINSIC = False` for this step) and run:
+
+```bash
+uv run pytest tests/test_act1_references.py -q
+```
+
+Expected: fail (goto stubs do not strip). Restore intrinsic if needed so other work stays green, or leave the flag false only on a branch until Step 2 completes in the same iteration. Record the red evidence in the commit message or plan checkbox.
+
+- [ ] **Step 2: Implement pure ops for A1.3 labels**
+
+Fill each `HECATE_REF_*` body with real `pop`/`push`/`branch`/`let` ops. Two participants only. Use A1 spares only for structural surprises. Regenerate + assemble after each green sub-batch if needed.
+
+```bash
+uv run pytest tests/test_act1_references.py -q
+uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+git diff --exit-code -- src/*.spl shakedown.spl debug/
+```
+
+- [ ] **Step 3: Remove Act I intrinsic permanently**
+
+Delete the `HECATE_REF_OPEN` short-circuit from `run_act`. Confirm `act1_ref_strip` is not imported from `interpret.py`. Keep the module as a test oracle if useful (`tests/` may import it for differential asserts).
+
+```bash
+uv run pytest tests/test_act1_references.py tests/test_spl_pure_inventory.py -q
+uv run pytest tests/test_mdtest.py -k "not Links and not Images and not Literal and not Basics and not Syntax" -q
+uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
+# Pure SPL smoke (definition strip only):
+printf '[foo]: /url "T"\n\npara\n' | ./shakedown | head -c 200
+# Expect no raw `[foo]:` in body HTML; do not require link resolve until Task 3L
+```
+
+- [ ] **Step 4: Commit**
+
+```bash
+git commit -m "feat: lower Act I reference strip to pure SPL ops"
+git push
+```
+
+---
+
+### Task 3L: Act III pure-op resolve pre-pass (retire `ACT_III_START` intrinsic)
+
+**Files:**
+- Modify: `src_ir/act3.py` — `ACT_III_START` → Amendment A2 `RESOLVE_*` pre-pass → existing `TRAVERSE_NEXT_TOKEN`; do **not** expand Slice-1 hardcoded `LYRIC_ANCHOR_*` Amps forest as the general solution
+- Modify: `src/30-act3-literary.toml` — install A2 pool as `[spares.*]` first; promote on use
+- Modify: `scripts/splc/interpret.py` — remove `ACT_III_START` → `apply_act3_link_resolution` short-circuit only after pure ops green
+- Keep: `scripts/splc/act3_link_resolve.py` as differential oracle
+- Test: `tests/test_act3_links_pure.py`; non-regression spikes/token/mdtest
+
+**Interfaces:**
+- Consumes: A1.2 Rosalind table from pure Act I (Task 2L); Amendment A2 scene table + literary pool; algorithm in `act3_link_resolve.py` (`_rewrite_puck_stream` + `_resolve_text`)
+- Produces: Before span traverse, PARA/HEADER text payloads on Puck resolve images-then-anchors to oracle HTML using the Rosalind table — in pure ops that `shakespeare` executes
+
+**Architecture (binding):** Pre-pass rewrite of text payloads (mirror helper), **not** generalizing hardcoded Amps `LYRIC_CONSULT_REFERENCE_*` emits. After resolve, existing span machines see HTML-bearing text as on the historical rewrite path. Leave Amps hardcode scenes in place until a later cleanup (out of scope unless they break non-Amps fixtures).
+
+**Literary:** Install all **48 working + 12 spare** A2 titles before implementing scenes (Step 1). Implementation may not invent titles. Spare exhaustion → `BLOCK[plan]`.
+
+- [ ] **Step 1: Reserve A2 literary pool + prove red without Act III intrinsic**
+
+Install Amendment A2 TOML into `src/30-act3-literary.toml` as `[spares.RESOLVE_*]`. Disable only the `ACT_III_START` intrinsic (flag or delete) and run:
+
+```bash
+uv run pytest tests/test_act3_links_pure.py -q
+uv run pytest tests/test_literary_compliance.py tests/test_splc_validate.py tests/test_splc_generated_fragments.py -q
+```
+
+Expected: act3 pure contracts red/fail without intrinsic; literary green with spares-only install.
+
+- [ ] **Step 2: Implement `RESOLVE_*` pre-pass (3a→3e order)**
+
+Wire `ACT_III_START` → `RESOLVE_OPEN` → … → `RESOLVE_DONE` → seed Juliet `STREAM_END` + `CONT_NONE` → `TRAVERSE_NEXT_TOKEN`. Promote spares → scenes as labels enter IR. Sub-gate after each witness family:
+
+```bash
+uv run pytest tests/test_act3_links_pure.py -k '<family>' -q
+uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+Families: inline links+amps → images → reference links → reference images/titles → nested/broken-line (same 3a–3e witnesses as Task 3).
+
+- [ ] **Step 3: Remove Act III intrinsic; full pure-IR gate**
+
+```bash
+uv run pytest tests/test_act3_links_pure.py tests/test_act1_references.py tests/test_spl_pure_inventory.py -q
+uv run pytest tests/test_mdtest.py -q
+uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+git diff --exit-code -- src/*.spl shakedown.spl debug/
+rg -n "apply_act1_reference_strip|apply_act3_link_resolution" scripts/splc/interpret.py
+# Expect no production short-circuit calls (comments/docstrings only)
+```
+
+- [ ] **Step 4: Commit**
+
+```bash
+git commit -m "feat: lower Act III link resolve to pure SPL ops"
+git push
+```
+
+---
+
 ### Task 5: Pure shakespeare CLI gate on all 23 fixtures
 
 **Files:**
@@ -412,7 +535,7 @@ Re-verified this iteration: pure inventory/act1/act3 + `test_mdtest` + wrapper/s
 - Test: strict harness with `--shakedown ./shakedown`
 
 **Interfaces:**
-- Consumes: Task 4 production path
+- Consumes: Task 4 production path **and Tasks 2L–3L pure-op lowering** (Amendment A2). Do **not** run Step 2 until 2L and 3L are checked complete.
 - Produces: Evidence that real `shakespeare run` matches oracle (may be `@pytest.mark.integration` with long timeout if default suite stays on IR)
 
 - [x] **Step 1: Add integration module**
@@ -430,7 +553,11 @@ Default `pytest` excludes integration (already in `pyproject.toml`).
 
 Evidence (2026-07-19, grok-implement): Added `tests/test_spl_pure_shakespeare.py` with `@pytest.mark.integration` parametrized over all 23 `_IMPLEMENTED_FIXTURES`; runs `./shakedown` and compares via `_normalize_fixture_output` / `_expected_fixture_output` (entity-normalized Auto links). Collect: `pytest -m integration --collect-only` → **23 tests collected**; default `pytest` on the module deselects all 23. ruff + pyright clean.
 
-- [ ] **Step 2: Run integration (operator or CI-with-flag)**
+- [ ] **Step 2: Run integration (after Tasks 2L and 3L)**
+
+**Precondition:** Tasks 2L and 3L complete; `interpret.py` has **no** `apply_act1_reference_strip` / `apply_act3_link_resolution` short-circuits; `./shakedown-parity` (pure IR ops) and a spot `./shakedown` ref-link smoke already agree.
+
+Prior failure (2026-07-19, before A2): 16/23 pass, 7 fail — Images, Links inline/reference/shortcut, Literal quotes in titles, Markdown Documentation Basics/Syntax — because Tasks 2–3 were helper-only. That failure class is closed by 2L+3L, not by reintroducing rewrite.
 
 ```bash
 uv run pytest tests/test_spl_pure_shakespeare.py -m integration -q --timeout=600
@@ -440,7 +567,7 @@ uv run python scripts/strict_parity_harness.py --shakedown ./shakedown
 
 Expected: `summary: 23/23 byte-identical` (Auto links per existing harness rules).
 
-If docs fixtures exceed 120s each, record times in budget.md; do **not** reintroduce rewrite.
+If docs fixtures exceed 120s each, record times in budget.md; do **not** reintroduce rewrite or interpreter Markdown intrinsics.
 
 - [ ] **Step 3: Commit evidence**
 
@@ -486,9 +613,9 @@ git push
 
 ## Plan self-review
 
-1. **Spec coverage:** Design success criteria map to Tasks 4–6; Act I/III port to Tasks 2–3; inventory to Task 1; packaging prerequisite Task 0.
-2. **Placeholders:** Task 2 Step 1 + Amendment A1 reserve exact Act I `HECATE_REF_*` titles (20 working + 6 spare), Rosalind stack layout, and red contracts. Act III titles reserved before Task 3a (Amendment A2 if needed).
-3. **Risk:** Underestimating Act III scene count → `BLOCK[plan]` with spare ledger expansion, not silent title invention. Act I spare exhaustion → same.
+1. **Spec coverage:** Design success criteria map to Tasks 4–6; Act I/III semantic ports to Tasks 2–3 (IR helper path) then pure-op Tasks **2L–3L** (Amendment A2); inventory to Task 1; packaging prerequisite Task 0.
+2. **Placeholders:** Task 2 + Amendment A1 reserve exact Act I `HECATE_REF_*` titles (20 working + 6 spare), Rosalind stack layout, and red contracts. Amendment A2 reserves Act III `RESOLVE_*` titles (48 working + 12 spare) and binds the pure-op pre-pass before Task 5 Step 2.
+3. **Risk:** Underestimating Act III scene count → `BLOCK[plan]` with spare ledger expansion, not silent title invention. Act I spare exhaustion → same. IR-helper-only completion must not be treated as pure-SPL readiness (A2 diagnosis).
 
 ## Amendment A0 (2026-07-19): Packaging dual-entry is in scope as Task 0
 
@@ -684,3 +811,349 @@ Step 1 only requires the first two lines (red refs + green literary/generated wi
 - Prefer **one unchecked step per MCO/agent iteration** with its evidence gate.
 - SPL-changing steps must name and run the literary compliance commands in Global Constraints.
 - If Act I table or Act III resolution needs tokens/participants beyond this plan, stop with `- BLOCK[plan]:` and amend; do not expand scope silently.
+- **Next unchecked step after Amendment A2:** Task **2L Step 1** (prove Act I red without intrinsic). Do not re-run Task 5 Step 2 until 2L and 3L complete.
+
+---
+
+## Amendment A2 (2026-07-19): Pure-op IR port — Act I lower + Act III `RESOLVE_*` pool
+
+**Status:** binding for Tasks **2L** and **3L**. Clears the planner-only blocker recorded after Task 5 Step 2 failed on pure `./shakedown` (7/23 link/image/docs fixtures). Does **not** open a second roadmap plan.
+
+### A2.0 Diagnosis (binding)
+
+| Path | Act I strip | Act III link/image resolve | Task 5 Step 2 |
+|---|---|---|---|
+| IR `run_act` / `./shakedown-parity` | `interpret.py` short-circuit → `apply_act1_reference_strip` on `HECATE_REF_OPEN` | short-circuit → `apply_act3_link_resolution` on `ACT_III_START` | n/a (fast double) |
+| Pure `shakespeare` / `./shakedown` | Generated `HECATE_REF_*` are **goto stubs** only | `ACT_III_START` seeds traverse; **no** resolve pre-pass; Amps `LYRIC_ANCHOR_*` hardcodes remain | **16/23** (2026-07-19) |
+
+Tasks 2–3 correctly retired `rewrite_task3_markdown` / pre-act `strip_reference_definitions` from production **call sites**, but they left **interpreter Markdown assists** that pure SPL never runs. Success criterion “SPL is the sole Markdown semantic owner” requires pure-op bodies + intrinsic retirement (Tasks 2L–3L), then re-running Task 5 Step 2.
+
+**Out of scope for A2:** new token codes; third on-stage participant; reintroducing rewrite; general rewrite of Slice-1 Amps forest scenes (they may remain as dead or Amps-only paths after the pre-pass emits HTML).
+
+### A2.1 Act I pure-op port (Task 2L)
+
+- **Labels:** Amendment A1.3 only (20 working + 6 spare). No new Act I titles in A2.
+- **Algorithm oracle:** `scripts/splc/act1_ref_strip.py` (`apply_act1_reference_strip`).
+- **Stack layout:** A1.2 unchanged (`RECORD_END = -6`, floor length 6, Hecate body orientation).
+- **Implementation bounds:**
+  1. Replace each A1.3 goto stub with real ops; keep two-character scenes and A1 companion pairs.
+  2. Prefer incremental capture of label/dest/title during the parse (mode lattice in A1.3) so SPL need not re-lex a whole capture string in one scene.
+  3. Remove `HECATE_REF_OPEN` short-circuit only after `tests/test_act1_references.py` is green with the short-circuit deleted.
+  4. Do not start Task 3L pure resolve until Act I pure strip is green (Rosalind table must exist under pure ops).
+- **Exact compliance tests (Task 2L):**
+
+```bash
+uv run pytest tests/test_act1_references.py -q
+uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+git diff --exit-code -- src/*.spl shakedown.spl debug/
+```
+
+### A2.2 Act III pure-op architecture (Task 3L)
+
+**Placement:** At `ACT_III_START`, run a **resolve pre-pass** over Puck’s token stream, then existing traverse/span:
+
+```
+ACT_III_START → RESOLVE_OPEN → … → RESOLVE_DONE
+  → push(JULIET, STREAM_END); let(LADY_MACBETH, CONT_NONE)
+  → TRAVERSE_NEXT_TOKEN  (unchanged span pipeline)
+```
+
+**Semantics oracle:** `scripts/splc/act3_link_resolve.py`:
+- Decode A1.2 records above Rosalind floor → id → (dest, title); later store wins.
+- Walk stream bottom→top pop order; copy non-text tokens; for `PARA`/`HEADER` text runs, apply `_resolve_text` (images before anchors at each index; code-line opacity; escapes; inline then reference; nested-bracket / missing-id / literal-escape rules as in the helper and `tests/test_act3_links_pure.py`).
+- Emit oracle HTML fragments into the rebuilt text payload + `TEXT_END`.
+
+**Carriers (two per scene):**
+| Role | Character |
+|---|---|
+| Stream source / rebuild peer | Puck, Juliet |
+| Mode, indent, lengths | Horatio, Romeo |
+| Reference table (copy-out/restore) | Rosalind |
+| Occasional field/tag peer if needed | Hecate or Prospero (existing field-tag pattern); no third simultaneous participant |
+
+**Do not** implement general resolution by extending hardcoded `LYRIC_ANCHOR_INLINE` / `LYRIC_CONSULT_REFERENCE_*` Amps emits. Those remain Slice-1 residuals; the pre-pass is the production general path.
+
+**No new tokens** unless a later `BLOCK[plan]` names exact codes.
+
+### A2.3 Binding Act III scene table (48 working)
+
+Derived from `_rewrite_puck_stream` + `_resolve_text` state families (stream walk × text scan × image × anchor × shared suffix × lookup × encode × finish). Each row is one IR `scene` label.
+
+| # | Label | Role | Typical pair |
+|---|---|---|---|
+| 1 | `RESOLVE_OPEN` | Enter pre-pass; init rebuild / mode | Juliet, Puck |
+| 2 | `RESOLVE_NEXT_TOKEN` | Pop next token code; branch STREAM_END / textful / other | Juliet, Puck |
+| 3 | `RESOLVE_ARITY_COPY` | Copy fixed arity payloads onto rebuild | Juliet, Puck |
+| 4 | `RESOLVE_TEXT_ENTER` | PARA/HEADER text region begins | Juliet, Puck |
+| 5 | `RESOLVE_TEXT_DRAIN` | Drain glyphs until TEXT_END into scan buffer | Romeo, Puck |
+| 6 | `RESOLVE_TEXT_END` | Close text region after resolve; push TEXT_END | Juliet, Puck |
+| 7 | `RESOLVE_COPY_OTHER` | Non-textful token fully copied → NEXT | Juliet, Puck |
+| 8 | `RESOLVE_STREAM_END` | STREAM_END seen; finalize rebuild orientation | Juliet, Puck |
+| 9 | `RESOLVE_SCAN_OPEN` | Init text scan over drained buffer | Romeo, Juliet |
+| 10 | `RESOLVE_SCAN_NEXT` | Dispatch next scan glyph | Romeo, Juliet |
+| 11 | `RESOLVE_SCAN_KEEP` | Emit one literal glyph to out buffer | Romeo, Juliet |
+| 12 | `RESOLVE_SCAN_ESCAPE` | Backslash + next glyph keep-pair | Romeo, Juliet |
+| 13 | `RESOLVE_LINE_START` | Line boundary; arm indent / code opacity | Horatio, Romeo |
+| 14 | `RESOLVE_INDENT_COUNT` | Count leading spaces/tabs for code-line | Horatio, Romeo |
+| 15 | `RESOLVE_CODE_LINE` | Opaque copy through EOL in code mode | Romeo, Juliet |
+| 16 | `RESOLVE_CODE_EXIT` | Blank line clears code mode | Horatio, Romeo |
+| 17 | `RESOLVE_BANG` | Saw `!`; test image open | Romeo, Puck |
+| 18 | `RESOLVE_ALT_OPEN` | `![` — start alt capture | Juliet, Romeo |
+| 19 | `RESOLVE_ALT_BODY` | Nested-bracket alt body | Juliet, Romeo |
+| 20 | `RESOLVE_ALT_CLOSE` | `]` closes alt; enter image suffix | Juliet, Romeo |
+| 21 | `RESOLVE_IMG_SUFFIX` | Try inline `(` then reference tail | Romeo, Juliet |
+| 22 | `RESOLVE_IMG_EMIT` | Write `<img …>` (empty-title policy per helper) | Juliet, Romeo |
+| 23 | `RESOLVE_IMG_FAIL` | Unresolved image → literal / escape path | Romeo, Juliet |
+| 24 | `RESOLVE_LB` | Saw `[` (anchor start) | Romeo, Juliet |
+| 25 | `RESOLVE_LTEXT_BODY` | Nested-bracket link text | Juliet, Romeo |
+| 26 | `RESOLVE_LTEXT_CLOSE` | `]` closes link text; enter link suffix | Romeo, Juliet |
+| 27 | `RESOLVE_LNK_SUFFIX` | Try inline then reference tail | Juliet, Romeo |
+| 28 | `RESOLVE_LNK_EMIT` | Write `<a href=…>` | Romeo, Juliet |
+| 29 | `RESOLVE_LNK_NESTED` | Nested `[` in link text recurse/reenter | Juliet, Romeo |
+| 30 | `RESOLVE_LNK_FAIL` | Missing id / non-link → escape literal markdown | Romeo, Juliet |
+| 31 | `RESOLVE_SFX_INLINE` | `(` after `]` — inline destination | Puck, Juliet |
+| 32 | `RESOLVE_DEST_ANGLE` | `<destination>` | Juliet, Romeo |
+| 33 | `RESOLVE_DEST_BARE` | Bare destination until WS/`)` | Romeo, Juliet |
+| 34 | `RESOLVE_TITLE_WS` | Whitespace before optional title | Horatio, Juliet |
+| 35 | `RESOLVE_TITLE_QUOT` | `"title"` body (rfind-compatible) | Juliet, Romeo |
+| 36 | `RESOLVE_SFX_CLOSE` | Closing `)` of inline suffix | Romeo, Juliet |
+| 37 | `RESOLVE_SFX_REF` | `[` of reference id (full/collapsed/spaced) | Puck, Juliet |
+| 38 | `RESOLVE_SFX_REF_ID` | Id body or empty collapsed; fold label | Juliet, Romeo |
+| 39 | `RESOLVE_LOOKUP_OPEN` | Start Rosalind A1.2 scan for folded id | Rosalind, Puck |
+| 40 | `RESOLVE_LOOKUP_REC` | Compare one record; non-destructively | Rosalind, Puck |
+| 41 | `RESOLVE_LOOKUP_MATCH` | Copy dest/title out; restore table | Rosalind, Juliet |
+| 42 | `RESOLVE_LOOKUP_SKIP` | Skip non-match record; continue | Rosalind, Puck |
+| 43 | `RESOLVE_LOOKUP_MISS` | Exhausted table without match | Rosalind, Romeo |
+| 44 | `RESOLVE_ESC_DEST` | Amp/angle-encode destination for emit | Romeo, Juliet |
+| 45 | `RESOLVE_ESC_TITLE` | Quote-encode title for emit | Juliet, Romeo |
+| 46 | `RESOLVE_ESC_LIT` | Escape unresolved markdown span (`*`, `_`, etc. per helper) | Puck, Juliet |
+| 47 | `RESOLVE_REBUILD` | Push resolved text glyphs + TEXT_END onto rebuild | Juliet, Romeo |
+| 48 | `RESOLVE_DONE` | Install rebuilt stream on Puck; seed traverse; → `TRAVERSE_NEXT_TOKEN` | Romeo, Juliet |
+
+**Spares (12, ≥25% of 48; unused until structural surprise):**
+`RESOLVE_SCAN_GUARD`, `RESOLVE_ALT_GUARD`, `RESOLVE_LTEXT_GUARD`, `RESOLVE_DEST_GUARD`, `RESOLVE_TITLE_GUARD`, `RESOLVE_SFX_GUARD`, `RESOLVE_LOOKUP_GUARD`, `RESOLVE_EMIT_GUARD`, `RESOLVE_CODE_GUARD`, `RESOLVE_NEST_GUARD`, `RESOLVE_ARITY_GUARD`, `RESOLVE_REVERSE_GUARD`.
+
+If the working+spare pool is exhausted, stop with `- BLOCK[plan]:` (do not invent titles).
+
+### A2.4 Ready-to-paste literary surfaces (Act III)
+
+Install **all 60** as `[spares.*]` in `src/30-act3-literary.toml` in Task 3L Step 1. Promote to `[scenes.*]` only when IR first references the label. Pastoral/Natural palette; word counts fit `bare_statement` (4–10) or `scene_of_character` (5–10). No mid-title `.` or `!`.
+
+```toml
+# --- Amendment A2 working pool (48) — install as [spares.*], promote on use ---
+[spares.RESOLVE_OPEN]
+title = "The stream opens one pure resolve."
+pattern = "bare_statement"
+[spares.RESOLVE_NEXT_TOKEN]
+title = "One mark yields its measured code."
+pattern = "bare_statement"
+[spares.RESOLVE_ARITY_COPY]
+title = "Fixed marks cross the quiet stream."
+pattern = "bare_statement"
+[spares.RESOLVE_TEXT_ENTER]
+title = "The paragraph opens its raw text."
+pattern = "bare_statement"
+[spares.RESOLVE_TEXT_DRAIN]
+title = "Romeo drains the paragraph's raw leaves."
+pattern = "scene_of_character"
+[spares.RESOLVE_TEXT_END]
+title = "Text ends with one quiet seal."
+pattern = "bare_statement"
+[spares.RESOLVE_COPY_OTHER]
+title = "Other marks keep their measured road."
+pattern = "bare_statement"
+[spares.RESOLVE_STREAM_END]
+title = "The stream ends its pure resolve."
+pattern = "bare_statement"
+[spares.RESOLVE_SCAN_OPEN]
+title = "The scan opens on raw leaves."
+pattern = "bare_statement"
+[spares.RESOLVE_SCAN_NEXT]
+title = "The next glyph seeks its path."
+pattern = "bare_statement"
+[spares.RESOLVE_SCAN_KEEP]
+title = "One honest glyph stays in daylight."
+pattern = "bare_statement"
+[spares.RESOLVE_SCAN_ESCAPE]
+title = "A backslash guards the next leaf."
+pattern = "bare_statement"
+[spares.RESOLVE_LINE_START]
+title = "A line begins beneath the hedge."
+pattern = "bare_statement"
+[spares.RESOLVE_INDENT_COUNT]
+title = "Leading spaces count the code road."
+pattern = "bare_statement"
+[spares.RESOLVE_CODE_LINE]
+title = "The code line keeps its shade."
+pattern = "bare_statement"
+[spares.RESOLVE_CODE_EXIT]
+title = "A blank line leaves the shade."
+pattern = "bare_statement"
+[spares.RESOLVE_BANG]
+title = "A bang seeks the portrait gate."
+pattern = "bare_statement"
+[spares.RESOLVE_ALT_OPEN]
+title = "Juliet opens the portrait's quiet alt."
+pattern = "scene_of_character"
+[spares.RESOLVE_ALT_BODY]
+title = "Romeo gathers the portrait's alt leaves."
+pattern = "scene_of_character"
+[spares.RESOLVE_ALT_CLOSE]
+title = "Juliet seals the portrait's alt close."
+pattern = "scene_of_character"
+[spares.RESOLVE_IMG_SUFFIX]
+title = "Romeo tries the portrait's suffix road."
+pattern = "scene_of_character"
+[spares.RESOLVE_IMG_EMIT]
+title = "Juliet emits the portrait's bright seal."
+pattern = "scene_of_character"
+[spares.RESOLVE_IMG_FAIL]
+title = "The portrait fails and stays literal."
+pattern = "bare_statement"
+[spares.RESOLVE_LB]
+title = "Romeo marks the garden's opening bracket."
+pattern = "scene_of_character"
+[spares.RESOLVE_LTEXT_BODY]
+title = "Juliet gathers the garden link's leaves."
+pattern = "scene_of_character"
+[spares.RESOLVE_LTEXT_CLOSE]
+title = "Romeo seals the garden link's close."
+pattern = "scene_of_character"
+[spares.RESOLVE_LNK_SUFFIX]
+title = "Juliet tries the garden's suffix road."
+pattern = "scene_of_character"
+[spares.RESOLVE_LNK_EMIT]
+title = "Romeo emits the garden's bright anchor."
+pattern = "scene_of_character"
+[spares.RESOLVE_LNK_NESTED]
+title = "Nested leaves reopen the garden scan."
+pattern = "bare_statement"
+[spares.RESOLVE_LNK_FAIL]
+title = "The garden link fails as literal."
+pattern = "bare_statement"
+[spares.RESOLVE_SFX_INLINE]
+title = "Puck opens the round destination path."
+pattern = "scene_of_character"
+[spares.RESOLVE_DEST_ANGLE]
+title = "Juliet reads the angle-bracketed road."
+pattern = "scene_of_character"
+[spares.RESOLVE_DEST_BARE]
+title = "Romeo keeps the bare destination road."
+pattern = "scene_of_character"
+[spares.RESOLVE_TITLE_WS]
+title = "Horatio clears the title's pale spaces."
+pattern = "scene_of_character"
+[spares.RESOLVE_TITLE_QUOT]
+title = "Juliet gathers the quoted title leaves."
+pattern = "scene_of_character"
+[spares.RESOLVE_SFX_CLOSE]
+title = "Romeo seals the round destination close."
+pattern = "scene_of_character"
+[spares.RESOLVE_SFX_REF]
+title = "Puck opens the reference identity bracket."
+pattern = "scene_of_character"
+[spares.RESOLVE_SFX_REF_ID]
+title = "Juliet folds the reference identity leaves."
+pattern = "scene_of_character"
+[spares.RESOLVE_LOOKUP_OPEN]
+title = "Rosalind opens the forest table search."
+pattern = "scene_of_character"
+[spares.RESOLVE_LOOKUP_REC]
+title = "Rosalind compares one forest road record."
+pattern = "scene_of_character"
+[spares.RESOLVE_LOOKUP_MATCH]
+title = "Rosalind matches the sought forest road."
+pattern = "scene_of_character"
+[spares.RESOLVE_LOOKUP_SKIP]
+title = "Rosalind skips one unmatched forest record."
+pattern = "scene_of_character"
+[spares.RESOLVE_LOOKUP_MISS]
+title = "The forest search finds no road."
+pattern = "bare_statement"
+[spares.RESOLVE_ESC_DEST]
+title = "Romeo encodes the destination's sharp marks."
+pattern = "scene_of_character"
+[spares.RESOLVE_ESC_TITLE]
+title = "Juliet encodes the title's quiet marks."
+pattern = "scene_of_character"
+[spares.RESOLVE_ESC_LIT]
+title = "Puck escapes the unproved literal leaves."
+pattern = "scene_of_character"
+[spares.RESOLVE_REBUILD]
+title = "Juliet rebuilds the resolved text stream."
+pattern = "scene_of_character"
+[spares.RESOLVE_DONE]
+title = "Romeo hands the pure resolve forward."
+pattern = "scene_of_character"
+# --- Amendment A2 spare pool (12) — do not use unless a new scene is required ---
+[spares.RESOLVE_SCAN_GUARD]
+title = "The pure resolve keeps one guarded scan."
+pattern = "bare_statement"
+[spares.RESOLVE_ALT_GUARD]
+title = "The portrait keeps one guarded alt."
+pattern = "bare_statement"
+[spares.RESOLVE_LTEXT_GUARD]
+title = "The garden keeps one guarded text."
+pattern = "bare_statement"
+[spares.RESOLVE_DEST_GUARD]
+title = "The destination keeps one guarded road."
+pattern = "bare_statement"
+[spares.RESOLVE_TITLE_GUARD]
+title = "The title keeps one guarded seal."
+pattern = "bare_statement"
+[spares.RESOLVE_SFX_GUARD]
+title = "The suffix keeps one guarded turn."
+pattern = "bare_statement"
+[spares.RESOLVE_LOOKUP_GUARD]
+title = "The forest keeps one guarded search."
+pattern = "bare_statement"
+[spares.RESOLVE_EMIT_GUARD]
+title = "The emit keeps one guarded bright seal."
+pattern = "bare_statement"
+[spares.RESOLVE_CODE_GUARD]
+title = "The code shade keeps one guarded line."
+pattern = "bare_statement"
+[spares.RESOLVE_NEST_GUARD]
+title = "The nested path keeps one guarded leaf."
+pattern = "bare_statement"
+[spares.RESOLVE_ARITY_GUARD]
+title = "The arity road keeps one guarded copy."
+pattern = "bare_statement"
+[spares.RESOLVE_REVERSE_GUARD]
+title = "The reverse keeps one guarded return."
+pattern = "bare_statement"
+```
+
+### A2.5 Exact compliance tests (SPL-facing Tasks 2L / 3L)
+
+After any IR/SPL/literary edit in 2L or 3L:
+
+```bash
+uv run pytest tests/test_act1_references.py tests/test_act3_links_pure.py -q
+uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+git diff --exit-code -- src/*.spl shakedown.spl debug/
+```
+
+Task 3L Step 1 only requires red act3 contracts + green literary/generated with spares-only install.
+
+Task 3L Step 3 additionally requires full `tests/test_mdtest.py` green **without** interpret short-circuits, and:
+
+```bash
+rg -n "apply_act1_reference_strip|apply_act3_link_resolution" scripts/splc/interpret.py
+# production short-circuits gone
+```
+
+### A2.6 Task 5 Step 2 precondition
+
+Re-run pure shakespeare integration **only after** 2L and 3L checkboxes are complete. Helper-green IR is not sufficient evidence for Step 2.
+
+### A2.7 Assumptions (recorded)
+
+1. Act I pure ops can realize A1.3 within the existing 20+6 labels if capture is incremental; spare exhaustion → `BLOCK[plan]`, not title invention.
+2. Act III pre-pass HTML emission matches the historical rewrite path enough that existing span/HTML protection does not regress non-link fixtures; spike dumps and Amps stay green at every 3L sub-gate.
+3. `act1_ref_strip` / `act3_link_resolve` modules may remain as **test oracles** after intrinsic retirement; they must not run from `run_act` or release wrappers.
+4. No new stream token codes are required for resolve-in-text-payload.
+5. Email autolinks remain entity-normalized only (`docs/markdown/divergences.md`).
+6. Design doc addendum A1 (same date) restates that interpreter assists are not production ownership.

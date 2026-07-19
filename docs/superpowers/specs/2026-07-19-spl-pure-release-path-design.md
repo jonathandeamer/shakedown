@@ -116,3 +116,53 @@ tests have a stable public vs harness entry story.
 - Divergences: `docs/markdown/divergences.md`  
 - Literary protocol: `docs/superpowers/notes/spl-literary-protocol.md`  
 - Correctness-first literary workflow: `docs/superpowers/notes/correctness-first-spl-workflow.md`  
+
+---
+
+## Addendum A1 (2026-07-19): Pure-op ownership vs interpreter assists
+
+**Status:** accepted with plan Amendment A2 on
+`docs/superpowers/plans/2026-07-19-spl-pure-release-path.md`.
+
+### Problem observed
+
+After Tasks 2–3 of the pure-release plan, the IR path achieved link/reference
+parity by short-circuiting two scene labels inside
+`scripts/splc/interpret.run_act`:
+
+- `HECATE_REF_OPEN` → `apply_act1_reference_strip` (Python stack machine)
+- `ACT_III_START` → `apply_act3_link_resolution` (Python stream rewrite)
+
+Generated SPL for those labels remained non-semantic (goto lattices / ordinary
+traverse entry). Pure `shakespeare run shakedown.spl` / `./shakedown` therefore
+failed 7/23 mdtest fixtures (all link/image/docs aggregates that need strip +
+resolve), while `./shakedown-parity` stayed green.
+
+That state **does not** satisfy §D1 / §5.1 or this design’s success criteria.
+Retiring `rewrite_task3_markdown` is necessary but not sufficient: **no Python
+Markdown assist may run on the production or IR double path once pure ops
+land.**
+
+### Binding rule
+
+1. **Semantic ownership** of strip and resolve is the **op-level IR** that
+   lowers to SPL scenes, not a Python helper invoked by label name.
+2. Helpers `act1_ref_strip.py` and `act3_link_resolve.py` are allowed only as
+   **differential oracles** for tests after intrinsic retirement — never as
+   `run_act` production behavior.
+3. Act III general resolution is a **pre-pass** over PARA/HEADER text payloads
+   (images then anchors) using the Act I Rosalind A1.2 table, then the existing
+   span traverse. Slice-1 hardcoded Amps forest consult/emit scenes are not the
+   general production mechanism.
+4. Literary surfaces for the Act III pre-pass are reserved in plan Amendment A2
+   (`RESOLVE_*`, 48 working + 12 spare). Act I pure lower reuses Amendment A1
+   labels only.
+5. Pure `shakespeare` integration (plan Task 5 Step 2) must not be declared
+   green until plan Tasks **2L** and **3L** remove both interpret short-circuits
+   and pass their gates.
+
+### Non-changes
+
+Architecture table (Act I strip, Act II blocks, Act III spans, Act IV emit),
+forbidden third participant, forbidden silent token invention, and the email
+autolink divergence are unchanged.

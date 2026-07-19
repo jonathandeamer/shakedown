@@ -1,6 +1,6 @@
 # Implementation Plan Roadmap
 
-**Last updated:** 2026-07-14
+**Last updated:** 2026-07-19
 **Purpose:** live index of the staged implementation plans for Shakedown,
 so any session — interactive or autonomous — can see what has shipped,
 what is in flight, and what is still pending.
@@ -63,7 +63,7 @@ gates. The win: every plan is written against ground truth.
 | 6 | Slice 3 — Medium-risk fixtures (`docs/superpowers/plans/2026-07-14-slice-3-medium-risk-fixtures.md`) | §7.6 | ~10 fixtures pass: Hard-wrapped paragraphs with list-like lines; Links (inline, reference, shortcut); Images; Literal quotes in titles; Strong and em together; Inline HTML (Simple); Inline HTML comments; Blockquotes with code blocks | §8.1 four-gate per fixture; spike snippets still pass | shipped: 2026-07-17 at commit e3d40cb |
 | 7 | Slice 4 — High-risk fixtures (`docs/superpowers/plans/2026-07-17-slice-4-high-risk-fixtures.md`) | §7.7 | Three fixtures pass: Inline HTML (Advanced); Nested blockquotes (full); Ordered and unordered lists (full) | §8.1 four-gate per fixture; spike snippets still pass | shipped: 2026-07-17 at commit 2ebb55f |
 | 8 | Slice 5 — Documentation aggregates (`docs/superpowers/plans/2026-07-18-slice-5-documentation-aggregates.md`) | §7.8 | Two aggregate fixtures pass: Markdown Documentation — Basics; Markdown Documentation — Syntax. All 23 fixtures pass or are documented divergences | §8.1 four-gate per fixture; full 23-fixture suite green | shipped: 2026-07-18 at commit 7958f66 |
-| 9 | SPL-Pure Release Path (`docs/superpowers/plans/2026-07-19-spl-pure-release-path.md`) | Architecture §D1/§5.1; design `docs/superpowers/specs/2026-07-19-spl-pure-release-path-design.md` | Production path is `shakespeare run shakedown.spl` / `./shakedown` with no Python Markdown rewrite or strip; Act I owns reference definitions; Act III owns link/image resolution; 23/23 deterministic parity | Pure CLI strict harness (or integration gate) green; `release_runtime` / IR without `rewrite_task3_markdown` or `strip_reference_definitions`; literary + regen gates | in flight |
+| 9 | SPL-Pure Release Path (`docs/superpowers/plans/2026-07-19-spl-pure-release-path.md`) | Architecture §D1/§5.1; design `docs/superpowers/specs/2026-07-19-spl-pure-release-path-design.md` (Addendum A1); plan Amendments A0–A2 | Production path is `shakespeare run shakedown.spl` / `./shakedown` with no Python Markdown rewrite, strip, or interpret-label assists; Act I pure ops own reference definitions; Act III pure `RESOLVE_*` pre-pass owns link/image resolution; 23/23 deterministic parity | Pure CLI strict harness (or integration gate) green; `release_runtime` / IR without `rewrite_task3_markdown`, `strip_reference_definitions`, or `apply_act1_reference_strip` / `apply_act3_link_resolution` short-circuits; literary + regen gates | in flight |
 
 ## How to write the next plan
 
