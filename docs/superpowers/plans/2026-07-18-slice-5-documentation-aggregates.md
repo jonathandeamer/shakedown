@@ -15,7 +15,7 @@
 - Edit generated acts only via `src_ir/*.py`; run `uv run python -m scripts.splc` then `uv run python scripts/assemble.py`. Never hand-edit generated `src/*.spl` or `shakedown.spl`.
 - Do not change expected mdtest files, add aggregate-specific normalizers, invoke Markdown.pl at runtime, or add a wrapper-side Markdown branch. `Auto links` is the sole entity-normalized mdtest comparator; strict parity is always raw bytes.
 - Per the accepted design's Amendment A1, the unchanged 133-byte `Tidyness.xhtml` is a legacy corpus artifact, not the expected output for deterministic parity.  Tidyness test evidence obtains its expected bytes from the installed local Markdown.pl only; this is test-time evidence, never production runtime behavior, and adds no normalizer.
-- New Act-II labels are limited to design Amendments A11–A13's 40 working labels and 12 unused spares, plus design Amendment A16's further 8 working labels and 4 unused spares reserved exclusively for Task 4 Step 2c's whitespace-only blank-line boundary machine (48 working labels and 16 unused spares total). A9's state rail owns mutable underline classification on Macbeth; Horatio is the Setext replay buffer and A13's code-line replay buffer. A11 authorizes Puck only as the private ATX trailing-buffer carrier and its private bit; A13 additionally authorizes Puck's private code-line floor and `saw_nonblank` value; A16 additionally authorizes Puck as the whitespace-boundary line buffer (`_PARA_WS_FLOOR`) and Horatio as its reverse-replay buffer (`_PARA_WS_REPLAY_FLOOR`), reusing `PASS_PARA_CLOSE_BLANK`/`PASS_PARA_FINAL_CLOSE` as terminal targets. Lady Macbeth/Hecate remains the sole code-line `_read()` pair; no scene gains a third participant. The 12 A11–A13 guard titles and 4 A16 guard titles are spares, never scenes. Another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
+- New Act-II labels are limited to design Amendments A11–A13's 40 working labels and 12 unused spares, plus design Amendment A16's further 8 working labels and 4 unused spares reserved exclusively for Task 4 Step 2c's whitespace-only blank-line boundary machine (48 working labels and 16 unused spares total). A9's state rail owns mutable underline classification on Macbeth; Horatio is the Setext replay buffer and A13's code-line replay buffer. A11 authorizes Puck only as the private ATX trailing-buffer carrier and its private bit; A13 additionally authorizes Puck's private code-line floor and `saw_nonblank` value. Design Amendment A17 (binding for Step 2c; supersedes A16's second-pass locus) places those eight `PASS_PARA_WS_*` labels on the **first-pass** raw path at `PASS_LISTS_RAW_AFTER_NEWLINE` with Hecate/`_read()`, Puck as `_PARA_WS_FLOOR` buffer, and Horatio as `_PARA_WS_REPLAY_FLOOR` reverse-replay; terminal targets are `PASS_LISTS_RAW_BLANK` / `PASS_LISTS_RAW_GLYPH` (not `PASS_PARA_CLOSE_BLANK` / `PASS_PARA_FINAL_CLOSE`). Lady Macbeth/Hecate remains the sole code-line `_read()` pair and is also the sole `_read()` pair inside `PASS_PARA_WS_SCAN`; no scene gains a third participant. The 12 A11–A13 guard titles and 4 A16 guard titles are spares, never scenes. Another surface, token, role, participant, or Act-III/IV capability is `- BLOCK[plan]:` with the minimal witness.
 - Every SPL change runs: `uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q`.
 - Every SPL change also preserves the release baseline with `uv run pytest tests/test_mdtest.py -k 'Amps and angle' -q`.
 
@@ -241,9 +241,9 @@
   reference resolution remain red as intended before Step 2 repairs. Full file
   run: `17 passed, 2 failed`. No production or generated SPL changed.
 
-**Step 2 combined requirements (decomposed into Steps 2a–2c by Amendments A17 and A18):** Repair only the still-red inventory categories, one category per loop iteration, in the fixed order below. Categories already green (`raw_top_level_html`, `paragraph_block_separators`, `nested_list_close_ordering`, `multi_definition_reference_resolution`) are regression guards only — do not rework them. Every production edit must preserve the existing token grammar and all shipped Spike A/B list dumps. Steps 2a and 2b add no new Act-II label, token, selector, participant, or Act-III/IV role. Step 2c is the sole exception: it is authorized to add exactly design Amendment A16's 8 working labels (of its 8 working / 4 spare pool) to the Act-II paragraph scanner, per the Global Constraints ledger update above — no other category, step, or file may draw on that pool. If a category needs a surface beyond its own authorization, record `- BLOCK[plan]:` with the smallest witness and stop. After each category repair, run that sub-step's gate and the shared Task-4 regression gate fragment before starting the next category; do not batch sub-steps in one commit.
+**Step 2 combined requirements (decomposed into Steps 2a–2c by Amendments A17 and A18; Step 2c locus corrected by plan Amendment A19 + design Amendment A17):** Repair only the still-red inventory categories, one category per loop iteration, in the fixed order below. Categories already green (`raw_top_level_html`, `paragraph_block_separators`, `nested_list_close_ordering`, `multi_definition_reference_resolution`) are regression guards only — do not rework them. Every production edit must preserve the existing token grammar and all shipped Spike A/B list dumps. Steps 2a and 2b add no new Act-II label, token, selector, participant, or Act-III/IV role. Step 2c is the sole exception: it is authorized to add exactly design Amendment A16's 8 working labels (of its 8 working / 4 spare pool), rebound by design Amendment A17 onto the first-pass raw path — no other category, step, or file may draw on that pool. If a category needs a surface beyond its own authorization, record `- BLOCK[plan]:` with the smallest witness and stop. After each category repair, run that sub-step's gate and the shared Task-4 regression gate fragment before starting the next category; do not batch sub-steps in one commit.
 
-Binding root-cause record (2026-07-19, re-verified at `53d5970`; `whitespace_only_blank_boundary` seeded 2026-07-19 by Amendment A18/design A16):
+Binding root-cause record (2026-07-19, re-verified at `53d5970`; `whitespace_only_blank_boundary` seeded 2026-07-19 by Amendment A18/design A16; **locus corrected 2026-07-19 by plan Amendment A19 / design Amendment A17** after A16 second-pass WIP failed the `CODE_BLOCK` gate):
 
 | Category | Status | Owner | First-byte symptom | Root cause |
 |---|---|---|---|---|
@@ -251,13 +251,13 @@ Binding root-cause record (2026-07-19, re-verified at `53d5970`; `whitespace_onl
 | `nested_list_close_ordering` | green | act2 | n/a (fixed in Step 2a) | Was: `PASS_LISTS_SIB_OUTDENT` skipped parent `ITEM_CLOSE` for UL sibling markers. Fix: always push `ITEM_CLOSE` after nested `LIST_CLOSE` (UL/OL unified). |
 | `multi_definition_reference_resolution` | green | wrapper rewrite (`scripts/slice3_links.py`), not a new Act-III machine | n/a (fixed in Step 2b) | Was: `_rewrite_text` short-circuited any four-space line as opaque code, so lazy continuations kept raw brackets and Act III reversed label bodies. Fix: four-space opacity only for code-block context (start / after blank / consecutive code lines); lazy continuations use the existing unresolved-ref escape path. Inventory `owning_act` is `wrapper_rewrite`. |
 | `paragraph_block_separators` | green | act2 | n/a | already byte-identical |
-| `whitespace_only_blank_boundary` | red | act2 | offset 22422 | Act I detabs `\t\n` to four spaces, so Syntax source `And then define the link:\n\t\n\t[Daring Fireball]: http://daringfireball.net/\n` becomes a spaces-only blank line followed by four-space code. `PASS_PARA_NEWLINE` recognizes only a bare `NEWLINE`/`STREAM_END`/`TEXT_END`/`BLOCKQUOTE_CLOSE` as a paragraph-closing boundary, so a line starting with a space falls through to the generic continuation branch and stays paragraph text instead of splitting into `PARA` + `CODE_BLOCK`. Fix: design Amendment A16's `PASS_PARA_WS_*` buffer-then-classify machine (Step 2c). Minimal witness: `Para:\n    \n    code line\n`. |
+| `whitespace_only_blank_boundary` | red | act2 | offset 22422 | Act I detabs `\t\n` to four spaces, so Syntax source `And then define the link:\n\t\n\t[Daring Fireball]: http://daringfireball.net/\n` becomes a spaces-only blank line followed by four-space code. **First-pass** `PASS_LISTS_RAW_AFTER_NEWLINE` treats a leading space as raw continuation (`PASS_LISTS_RAW_GLYPH`), so the blank never becomes `PASS_LISTS_RAW_BLANK` and `PASS_CODE_GATE` never runs; the second-pass PARA scanner cannot mint `CODE_BLOCK`. Fix: design Amendment A17's first-pass `PASS_PARA_WS_*` machine (reuses A16 labels; Step 2c). Minimal witness: `Para:\n    \n    code line\n`. |
 
 Authorized repairs only:
 
 1. **2a nested list:** In `src_ir/act2.py` scene `PASS_LISTS_SIB_OUTDENT`, emit `ITEM_CLOSE` for UL sibling markers on the same path the OL marker path already uses (unify: after `LIST_CLOSE` + depth decrement, always `push(ITEM_CLOSE)` then `PASS_LISTS_ITEM_BEGIN_TIGHT`). Do not add a scene, token, depth register, or kind table. Do not change nest-open, blank-line list-end, or DEEP indent paths in this sub-step unless a focused regression proves they are the same missing-`ITEM_CLOSE` one-liner. Regenerate Act II and reassemble.
 2. **2b multi-definition rewrite:** In `scripts/slice3_links.py` `_rewrite_text` only, stop treating every four-space line start as opaque code. Four-space opacity applies only when the line begins a code-block context (document start or immediately after a blank line). Lazy paragraph continuations that start with four spaces must still run the existing unresolved-reference literal escape / resolution logic on their content so `[Yahoo] [2]` becomes `\[Yahoo\] \[2\]` when no ref is registered, matching the first line's Google handling. Do not register six-space definition lines as refs; do not add Act-III scenes; do not change token grammar. Design Amendment A15 (below) records that repairing this already-shipped Slice-3 rewrite path is authorized and is not a new wrapper Markdown branch.
-3. **2c whitespace-only blank-line boundary:** In `src_ir/act2.py`, implement design Amendment A16's `PASS_PARA_WS_*` machine exactly: `PASS_PARA_NEWLINE` gains one new branch on a leading space to `PASS_PARA_WS_OPEN`, then the eight-scene Puck-buffer/Horatio-reverse-replay chain (`PASS_PARA_WS_OPEN` → `PASS_PARA_WS_SCAN` → `PASS_PARA_WS_BLANK_DROP` / `PASS_PARA_WS_REVERSE_OPEN` → `PASS_PARA_WS_TERMINATE` / `PASS_PARA_WS_REVERSE_TRANSFER` → `PASS_PARA_WS_REPLAY` → `PASS_PARA_WS_CONTINUE`) reusing `PASS_PARA_CLOSE_BLANK`/`PASS_PARA_FINAL_CLOSE` as terminal targets. Reads stay confined to `pop(MACBETH, ...)` on Macbeth's own already-recognized-PARA-span stack; no `_read()`/Hecate involvement. Install exactly the eight A16 working titles from `[spares.*]` to `[scenes.*]`; the four A16 guard titles stay spares. Do not touch Setext, ATX, code-line, raw-HTML, list, token, span, or renderer routes. Regenerate Act II and reassemble.
+3. **2c whitespace-only blank-line boundary:** In `src_ir/act2.py`, implement design Amendment A17's first-pass `PASS_PARA_WS_*` machine exactly (labels and floors from A16; pairs and terminals from A17): `PASS_LISTS_RAW_AFTER_NEWLINE` gains one new branch on a leading space (after the existing quote-mode and bare-`NEWLINE` → `PASS_LISTS_RAW_BLANK` branches) to `PASS_PARA_WS_OPEN`, then the eight-scene Puck-buffer / Horatio-reverse-replay chain (`PASS_PARA_WS_OPEN` → `PASS_PARA_WS_SCAN` → `PASS_PARA_WS_CONTINUE` / `PASS_PARA_WS_BLANK_DROP` → `PASS_PARA_WS_REVERSE_OPEN` / `PASS_PARA_WS_TERMINATE` → `PASS_PARA_WS_REVERSE_TRANSFER` → `PASS_PARA_WS_REPLAY`) with terminals `PASS_LISTS_RAW_BLANK` (whitespace-only blank → `BLOCK_START` / `CODE_GATE`) and `PASS_LISTS_RAW_GLYPH` (soft-break reverse-replay). `PASS_PARA_WS_SCAN` is the sole further `_read()` owner (Lady Macbeth + Hecate); `PASS_PARA_WS_CONTINUE` is the Hecate + Puck capture half. **Do not** add a `PASS_PARA_NEWLINE` → `PASS_PARA_WS_OPEN` branch or any second-pass Macbeth/`pop` machine under these labels. Install exactly the eight A16 working titles from `[spares.*]` to `[scenes.*]`; the four A16 guard titles stay spares. Do not touch Setext, ATX, code-line, raw-HTML, list-token grammar, span, or renderer routes. Edit the prior A16 PARA-only WIP in place into this shape (preserve red contracts and literary TOML; rewrite IR and pair-chain validator params). Regenerate Act II and reassemble.
 
 Shared Task-4 regression fragment (run after each of 2a, 2b, and 2c):
 
@@ -266,7 +266,7 @@ uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_architect
 uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py -q
 ```
 
-Expected after 2a: nested-list category green; multi-definition and whitespace-boundary may still be red; list/nested spikes and blessed dumps green; no new SPL literary surface. Expected after 2b: nested-list and multi-definition categories green; whitespace-boundary may still be red; spikes and mdtest still green. Expected after 2c: all inventory categories green (focused `syntax_category` fully green), the eight-scene A16 pair-chain and all-16-spares-absence contracts pass, and the full-Basics/full-Syntax raw-byte fixture tests remain green; spikes and mdtest still green.
+Expected after 2a: nested-list category green; multi-definition and whitespace-boundary may still be red; list/nested spikes and blessed dumps green; no new SPL literary surface. Expected after 2b: nested-list and multi-definition categories green; whitespace-boundary may still be red; spikes and mdtest still green. Expected after 2c: all inventory categories green (focused `syntax_category` fully green), the eight-scene A17 first-pass pair-chain and all-16-spares-absence contracts pass, minimal witness decodes as `PARA`+`CODE_BLOCK` (not two `PARA`s), soft-break control stays one `PARA`, and the full-Basics/full-Syntax raw-byte fixture tests remain green; spikes and mdtest still green.
 
 - [x] **Step 2a: Repair nested list close ordering (Act II).** Authority: Amendment A17. Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`; regenerate `src/20-act2-block.spl` and `shakedown.spl`.
 
@@ -301,10 +301,10 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   code_block): `8 passed`. Shared Task-4 fragment: slice5+spikes+token dumps
   `69 passed`; mdtest+spikes `54 passed, 1 skipped`. No IR/SPL change.
 
-- [ ] **Step 2c: Implement the whitespace-only blank-line boundary (Act II).** Authority: Amendment A18 (below) + design Amendment A16. Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`, `src/20-act2-literary.toml`; regenerate `src/20-act2-block.spl` and `shakedown.spl`.
+- [ ] **Step 2c: Implement the whitespace-only blank-line boundary (Act II).** Authority: plan Amendment A19 + design Amendment A17 (labels/floors/titles from design A16; first-pass locus and pair ledger from A17). Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`, `src/20-act2-literary.toml`; regenerate `src/20-act2-block.spl` and `shakedown.spl`. Preserve existing uncommitted WIP for tests/TOML; rewrite second-pass PARA IR into the A17 first-pass shape rather than discarding contracts.
 
-  1. Seed the Task-4 Step-1 inventory with the fifth `whitespace_only_blank_boundary` category row (owner `act2`; already recorded in the root-cause table above). Add focused contracts for: the exact Syntax witness, the minimal `Para:\n    \n    code line\n` witness, a positive control where the whitespace-prefixed line has trailing content (must stay joined to the paragraph, leading spaces preserved), and a positive control for an ordinary non-space-prefixed continuation (must be unaffected). Each contract checks decoded `PARA`/`CODE_BLOCK` stream shape, fast Act-IV output, release output, and installed-local Markdown.pl bytes. Add the eight-scene pair-chain and all-16-spares-absence-from-`data["scenes"]` contracts alongside the existing A9/A11/A13 ones. Prove all of these red before implementation.
-  2. Implement only design Amendment A16's `PASS_PARA_WS_*` machine as detailed in the 2c authorized-repair entry above. No token, selector, Act-III/IV role, or non-Act-II file change. Regenerate and assemble.
+  1. Keep (or finish seeding) the Task-4 Step-1 inventory fifth `whitespace_only_blank_boundary` category row (owner `act2`). Keep focused contracts for: the exact Syntax witness, the minimal `Para:\n    \n    code line\n` witness (must be `PARA`+`CODE_BLOCK`, not two `PARA`s), the soft-break control `Para:\n    still para\n` (single `PARA`, leading spaces preserved), the ordinary continuation `Para:\nnext line\n`, and optionally the bare-blank control `Para:\n\n    code line\n`. Each contract checks decoded stream shape, fast Act-IV output, release output, and installed-local Markdown.pl bytes. Pair-chain assertions must match design A17's first-pass pairs (Hecate+Puck OPEN, Lady Macbeth+Hecate SCAN `_read`, Hecate+Puck CONTINUE capture, …, Horatio+Lady Macbeth REPLAY → `PASS_LISTS_RAW_GLYPH`); all four A16 guard titles remain absent from `data["scenes"]`. Prove red on the `CODE_BLOCK` witnesses before finishing the IR rewrite if they are not already red.
+  2. Implement only design Amendment A17's first-pass `PASS_PARA_WS_*` machine as detailed in the 2c authorized-repair entry above. No second-pass `PASS_PARA_NEWLINE` branch; no token, selector, Act-III/IV role, or non-Act-II file change. Regenerate and assemble.
   3. Gate:
 
      ```bash
@@ -314,7 +314,7 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
      uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py -q
      ```
 
-     All green; `syntax_category` fully green; no regression in any other category. Commit as `feat: split paragraph on whitespace-only blank lines`; push with the required trailers.
+     All green; `syntax_category` fully green; no regression in any other category. Commit as `feat: split raw regions on whitespace-only blank lines`; push with the required trailers.
 
   After 2a, 2b, and 2c all land, Step 2 is complete. Do not enable the full Syntax fixture here — that remains Steps 3–4.
 
@@ -861,3 +861,46 @@ Any need for a ninth Act-II label beyond A16's eight, a second private floor
 pair, a token/role change, tab-specific handling in Act II (Act I already
 detabs before Act II ever sees this span), or Act III/IV behavior remains
 `- BLOCK[plan]:` with the smallest witness.
+
+## Amendment A19 (2026-07-19): first-pass locus for Step 2c (clears A16 PARA blocker)
+
+Amendment A18 authorized Step 2c under design A16's second-pass paragraph
+scanner. An implementation WIP that followed A16 exactly (Macbeth/`pop`,
+terminals `PASS_PARA_CLOSE_BLANK` / `PASS_PARA_FINAL_CLOSE`) met the soft
+"close paragraph on spaces-only line" behaviour for `Para:\n    \n` but
+**failed the Step 2c evidence gate** on the binding witness
+`Para:\n    \n    code line\n`: decoded stream stayed
+`[PARA, PARA]` and HTML stayed two paragraphs; the oracle requires
+`[PARA, CODE_BLOCK]` and `<pre><code>…`. That is not an incomplete
+implementation of A16 — A16's locus cannot emit `CODE_BLOCK` by construction.
+
+Design Amendment A17 is the accepted correction:
+
+1. Root cause is first-pass `PASS_LISTS_RAW_AFTER_NEWLINE` treating leading
+   space as raw continuation, so `PASS_LISTS_RAW_BLANK` → `BLOCK_START` →
+   `CODE_GATE` never runs for spaces-only blanks.
+2. Binding fix reuses A16's exact eight working labels and four spare titles
+   (ledger stays 48 working / 16 spare) but rebinds every scene to the
+   first-pass Hecate/`_read()` pair ledger in design A17; terminals are
+   `PASS_LISTS_RAW_BLANK` and `PASS_LISTS_RAW_GLYPH`.
+3. Second-pass `PASS_PARA_NEWLINE` → `PASS_PARA_WS_*` is not authorized.
+4. Prior uncommitted A16 PARA WIP is preserved as starting material: keep
+   tests and literary TOML, rewrite IR and validator pair-chain params in
+   place to A17.
+
+This amendment updates Global Constraints, the Step 2 combined-requirements
+paragraph, the root-cause table row, authorized repair (3), Expected-after-2c,
+and Step 2c itself. It does **not** create a second in-flight plan, change
+roadmap row 8, authorize new labels beyond A16's pool, or enable the full
+Syntax fixture (still Steps 3–4). The former `- BLOCK[plan]:` for Step 2c is
+cleared by this amendment plus design A17.
+
+Literary compliance for the Step 2c implementation remains the Global
+Constraints SPL-facing gate:
+
+```bash
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+```
+
+Any need for a ninth working label, a second floor pair, a token/role change,
+or Act III/IV behaviour remains `- BLOCK[plan]:` with the smallest witness.

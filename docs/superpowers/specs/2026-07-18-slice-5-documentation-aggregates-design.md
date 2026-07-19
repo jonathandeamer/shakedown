@@ -1145,3 +1145,134 @@ After those commands are green, run the Task-4 Syntax four-gate checkpoint
 floor pair, a token/role change, tab-specific handling (Act I already detabs
 before Act II ever sees this span), or Act III/IV behavior is
 `- BLOCK[plan]:` with the smallest witness.
+
+## Amendment A17 (2026-07-19): first-pass whitespace-only blank (supersedes A16 locus)
+
+Amendment A16 correctly characterized the oracle rule and reserved the
+eight-working / four-spare `PASS_PARA_WS_*` literary pool, but it placed the
+machine on the **wrong pass**. Implementation of A16's second-pass shape
+proved that closing a paragraph on `pop(MACBETH)` cannot mint `CODE_BLOCK`.
+
+### Corrected root cause
+
+`CODE_BLOCK` is emitted only by the first-pass indented-code gate
+(`PASS_LISTS_BLOCK_START` → `PASS_CODE_GATE`), which runs only after a raw
+region is closed by `PASS_LISTS_RAW_BLANK`. Bare blank already takes that
+path:
+
+```
+PASS_LISTS_RAW_AFTER_NEWLINE  --(HECATE is NEWLINE)-->  PASS_LISTS_RAW_BLANK
+  --> PASS_LISTS_BLOCK_START --> PASS_CODE_GATE
+```
+
+A spaces-only blank never reaches `PASS_LISTS_RAW_BLANK` because
+`PASS_LISTS_RAW_AFTER_NEWLINE` currently treats a leading space as raw
+continuation (`goto PASS_LISTS_RAW_GLYPH`). The following four-space line
+therefore stays character data inside one raw region; the second-pass
+paragraph scanner can only wrap residual regions as `PARA` tokens. Minimal
+witness:
+
+```
+Para:\n    \n    code line\n
+```
+
+- Required: `[PARA("Para:"), CODE_BLOCK("code line\n")]` and oracle HTML.
+- A16 PARA-only WIP: `[PARA("Para:"), PARA("    code line")]` — closes the
+  blank as a paragraph boundary on Macbeth's stack but never opens code.
+
+Same locus as Syntax offset 22422 after Act I detab of `\t\n` / `\t[Daring…]`.
+
+### Binding fix (option (a) from the planner blocker)
+
+**Reuse A16's exact eight working labels and four spare titles** (no ninth
+label, no second floor pair, no new token/role/participant, no Act III/IV
+change). Rebind every scene to the first-pass raw path with Hecate/`_read()`,
+mirroring Amendment A13's read/capture split so no scene exceeds two
+participants.
+
+Entry — in `PASS_LISTS_RAW_AFTER_NEWLINE`, after the existing quote-mode
+branch and the bare-`NEWLINE` → `PASS_LISTS_RAW_BLANK` branch, and before the
+catch-all `PASS_LISTS_RAW_GLYPH` fallthrough, add exactly:
+
+```
+branch(eq(val(HECATE), _SPACE), then="PASS_PARA_WS_OPEN"),
+```
+
+(Optional defensive peer: `branch(eq(val(HECATE), _TAB), then="PASS_PARA_WS_OPEN")`.
+Act I already detabs production input; either form is authorized. Do not
+enter this machine when `HORATIO > 0` has already routed to
+`PASS_QUOTE_AFTER_NEWLINE`.)
+
+First-pass pair ledger (binding; supersedes A16's Macbeth/`pop` ledger):
+
+| Label | Stage pair / anchor | Responsibility |
+|---|---|---|
+| `PASS_PARA_WS_OPEN` | Hecate + Puck / Hecate | Seed Puck's private line floor (`_PARA_WS_FLOOR`); retain the already-read leading space above it. Do **not** push the space onto Lady Macbeth's raw buffer yet. |
+| `PASS_PARA_WS_SCAN` | Lady Macbeth + Hecate / Lady Macbeth | Sole further `_read()` owner for this machine (same split as A13's `PASS_CODE_GLYPH`). On `NEWLINE` or stream end → `PASS_PARA_WS_BLANK_DROP`. Otherwise → `PASS_PARA_WS_CONTINUE` (capture/classify half). |
+| `PASS_PARA_WS_CONTINUE` | Hecate + Puck / Hecate | Capture half: push Hecate's glyph onto Puck; if it is `_SPACE` (or authorized `_TAB`), return to `PASS_PARA_WS_SCAN`; else pop that non-space glyph back off Puck (Hecate still holds it) and enter `PASS_PARA_WS_REVERSE_OPEN`. |
+| `PASS_PARA_WS_BLANK_DROP` | Hecate + Puck / Hecate | On a terminator still held in Hecate, discard buffered spaces through Puck's floor. |
+| `PASS_PARA_WS_TERMINATE` | Hecate + Lady Macbeth / Hecate (or Hecate single if validator-clean) | After the floor is cleared, `goto PASS_LISTS_RAW_BLANK` without another `_read()`. `PASS_LISTS_RAW_BLANK` already pushes Hecate's terminator and routes to `PASS_LISTS_BLOCK_START` — that is how `CODE_BLOCK` becomes reachable. |
+| `PASS_PARA_WS_REVERSE_OPEN` | Puck + Horatio / Puck | On trailing content, seed Horatio's private replay floor (`_PARA_WS_REPLAY_FLOOR`). |
+| `PASS_PARA_WS_REVERSE_TRANSFER` | Puck + Horatio / Puck | Move buffered spaces Puck→Horatio (double-reverse, same idiom as A13 `KEEP_REVERSE_*`). |
+| `PASS_PARA_WS_REPLAY` | Horatio + Lady Macbeth / Horatio | Restore kept spaces onto Lady Macbeth's raw buffer in source order; when the replay floor is reached, `goto PASS_LISTS_RAW_GLYPH` so the already-held non-space glyph in Hecate is emitted as ordinary raw content and the soft-break control `Para:\n    still para\n` stays one paragraph. |
+
+Floor constants remain A16's:
+
+- `_PARA_WS_FLOOR = sub(const(0), const(42))`
+- `_PARA_WS_REPLAY_FLOOR = sub(const(0), const(43))`
+
+Literary surfaces: **unchanged** ready-to-paste titles from A16 (eight
+working + four guards under `[spares.*]`, promote working titles to
+`[scenes.*]` only as scenes are built). No new controlled prose.
+
+### What is superseded
+
+- A16's second-pass entry on `PASS_PARA_NEWLINE` (`branch(... _SPACE →
+  PASS_PARA_WS_OPEN)` with `pop(MACBETH, ...)`) is **not** the binding
+  completion shape. Do not keep a dual first-pass + second-pass machine under
+  the same eight labels.
+- Terminal targets are **`PASS_LISTS_RAW_BLANK` / `PASS_LISTS_RAW_GLYPH`**,
+  not `PASS_PARA_CLOSE_BLANK` / `PASS_PARA_FINAL_CLOSE`.
+- Working-tree A16 PARA-only WIP (second-pass IR, Macbeth pair-chain
+  validator params, generated SPL) may be **edited in place** into this
+  first-pass shape; preserve the red contracts and literary TOML, rewrite
+  IR/pair assertions to match this ledger. Do not discard the test inventory
+  row or the four focused witnesses.
+
+### Soft-break and regression guards (unchanged witnesses)
+
+| Witness | Required stream | Required HTML family |
+|---|---|---|
+| `Para:\n    \n    code line\n` | `PARA` + `CODE_BLOCK` | `<p>…</p>\n\n<pre><code>…` |
+| Syntax detab witness at offset 22422 | `PARA` + `CODE_BLOCK` | same family |
+| `Para:\n    still para\n` | single `PARA` | one `<p>`, leading spaces preserved inside |
+| `Para:\nnext line\n` | single `PARA` | ordinary hard-wrapped paragraph |
+| `Para:\n\n    code line\n` (bare blank control) | `PARA` + `CODE_BLOCK` | must remain green |
+
+### Explicitly not authorized
+
+- A ninth Act-II working label beyond A16's eight, or drawing A16's four
+  guard titles into `data["scenes"]`.
+- A second private floor pair beyond `_PARA_WS_FLOOR` /
+  `_PARA_WS_REPLAY_FLOOR`.
+- New token, selector, Act-III/IV role, or wrapper Markdown branch.
+- Horatio mode-flag overloading of existing `PASS_LISTS_RAW_*` scenes as a
+  substitute for the eight-label machine (blocker option (c) is rejected).
+- Tab-specific Act-II detab logic (Act I already detabs).
+
+Any need beyond this ledger remains `- BLOCK[plan]:` with the smallest
+witness.
+
+### Evidence gate (plan Task 4 Step 2c)
+
+```bash
+uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py tests/test_splc_validate.py -k 'para_ws or whitespace_only or Basics or Syntax or validator' -q
+uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
+uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_architecture_spikes.py tests/test_token_dump.py -q
+uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+```
+
+All green; focused `syntax_category` fully green; pair-chain assertions must
+match this amendment's first-pass pairs (not A16's Macbeth pairs); all four
+A16 guard titles remain absent from `data["scenes"]`.
