@@ -241,7 +241,44 @@
   reference resolution remain red as intended before Step 2 repairs. Full file
   run: `17 passed, 2 failed`. No production or generated SPL changed.
 
-- [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's amended 40-working/12-spare Act-II ledger or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
+**Step 2 combined requirements (decomposed into Steps 2a–2b by Amendment A17):** Repair only the two still-red inventory categories, one category per loop iteration, in the fixed order below. Categories already green (`raw_top_level_html`, `paragraph_block_separators`) are regression guards only — do not rework them. Every production edit must preserve the existing token grammar, the Task-3 40-working/12-spare Act-II ledger, and all shipped Spike A/B list dumps. No new Act-II label, token, selector, participant, or Act-III/IV role is authorized. If a category needs any of those, record `- BLOCK[plan]:` with the smallest witness and stop. After each category repair, run that sub-step's gate and the shared Task-4 regression gate fragment before starting the next category; do not batch 2a and 2b in one commit.
+
+Binding root-cause record (2026-07-19, re-verified at `53d5970`):
+
+| Category | Status | Owner | First-byte symptom | Root cause |
+|---|---|---|---|---|
+| `raw_top_level_html` | green | act2 | n/a | already byte-identical |
+| `nested_list_close_ordering` | red | act2 | offset 192: actual `l` vs oracle `/` — emits `</ul><li>…</li></ol></li>` instead of `</ul></li>\n<li>…</li>\n</ul>` | `PASS_LISTS_SIB_OUTDENT` closes the nested list then jumps to `PASS_LISTS_ITEM_BEGIN_TIGHT` for UL markers (`*+ -`) without emitting the parent `ITEM_CLOSE`. The OL marker path already pushes `ITEM_CLOSE` before begin. Minimal same-kind witness `* parent\n    * child\n* sibling\n` reproduces the HTML defect; `1. parent\n    * child\n2. sibling\n` (OL sibling marker) already matches; list-end without a later sibling (`* parent\n    * child\n`) already matches. Decoded Act-II stream is missing parent `ITEM_CLOSE` between nested `LIST_CLOSE` and sibling `ITEM`. |
+| `multi_definition_reference_resolution` | red | wrapper rewrite (`scripts/slice3_links.py`), not a new Act-III machine | offset 63: actual `o` vs oracle `[` — second-line labels become `oohaY2or NSM3` | `rewrite_task3_markdown` leaves unresolved refs escaped on ordinary lines (`\[Google\] \[1\]`) but `_rewrite_text` short-circuits any line that merely starts with four spaces and copies it raw. Inside an open paragraph those four spaces are lazy continuation, not a code block (Markdown.pl keeps `[Yahoo] [2]` literal). Raw brackets then hit Act III's incomplete general-reference path and reverse label bodies. Definitions under six spaces are correctly not registered (they are a code block after a blank line). Reclassify the inventory `owning_act` for this category to `wrapper_rewrite` when the minimal contracts land. |
+| `paragraph_block_separators` | green | act2 | n/a | already byte-identical |
+
+Authorized repairs only:
+
+1. **2a nested list:** In `src_ir/act2.py` scene `PASS_LISTS_SIB_OUTDENT`, emit `ITEM_CLOSE` for UL sibling markers on the same path the OL marker path already uses (unify: after `LIST_CLOSE` + depth decrement, always `push(ITEM_CLOSE)` then `PASS_LISTS_ITEM_BEGIN_TIGHT`). Do not add a scene, token, depth register, or kind table. Do not change nest-open, blank-line list-end, or DEEP indent paths in this sub-step unless a focused regression proves they are the same missing-`ITEM_CLOSE` one-liner. Regenerate Act II and reassemble.
+2. **2b multi-definition rewrite:** In `scripts/slice3_links.py` `_rewrite_text` only, stop treating every four-space line start as opaque code. Four-space opacity applies only when the line begins a code-block context (document start or immediately after a blank line). Lazy paragraph continuations that start with four spaces must still run the existing unresolved-reference literal escape / resolution logic on their content so `[Yahoo] [2]` becomes `\[Yahoo\] \[2\]` when no ref is registered, matching the first line's Google handling. Do not register six-space definition lines as refs; do not add Act-III scenes; do not change token grammar. Design Amendment A15 (below) records that repairing this already-shipped Slice-3 rewrite path is authorized and is not a new wrapper Markdown branch.
+
+Shared Task-4 regression fragment (run after each of 2a and 2b):
+
+```bash
+uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_architecture_spikes.py tests/test_token_dump.py -q
+uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py -q
+```
+
+Expected after 2a: nested-list category green; multi-definition may still be red; list/nested spikes and blessed dumps green; no new SPL literary surface. Expected after 2b: both red categories green (focused `syntax_category` fully green); spikes and mdtest still green.
+
+- [ ] **Step 2a: Repair nested list close ordering (Act II).** Authority: Amendment A17. Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`; regenerate `src/20-act2-block.spl` and `shakedown.spl`.
+
+  1. Add (or keep) the minimal same-kind witness `* parent\n    * child\n* sibling\n` plus the inventory `SYNTAX_NESTED_LIST_CLOSE` witness with decoded-stream and fast/release/raw-oracle assertions. Optionally assert the positive control `1. parent\n    * child\n2. sibling\n` remains green. Prove red with `uv run pytest tests/test_slice5_documentation_aggregates.py -k 'nested_list' -q` (and any new minimal-witness test).
+  2. Implement only the `PASS_LISTS_SIB_OUTDENT` UL/OL unification above. No new label. Regenerate and assemble.
+  3. Gate: nested-list category and minimal witness green; `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q` green; Global Constraints SPL-facing gate green; multi-definition may remain red. Commit as `fix: close parent item on list outdent`; push with the required trailers.
+
+- [ ] **Step 2b: Repair multi-definition / lazy-continuation reference rewrite.** Authority: Amendment A17 + design Amendment A15. Files: `tests/test_slice5_documentation_aggregates.py` and/or focused rewrite unit tests under `tests/`, `scripts/slice3_links.py`. No IR/SPL change unless a regression forces a one-line companion fix (then re-run the SPL-facing gate).
+
+  1. Add minimal contracts for (a) the inventory multi-definition witness, (b) paragraph continuation `I get … [Google] [1] than from\n    [Yahoo] [2] or [MSN] [3].\n` with empty refs, asserting rewritten form escapes both lines' brackets, and (c) a true code-block control: blank line then four-space content must remain opaque (no false reference rewrite inside code). Prove the multi-definition category red before the rewrite change.
+  2. Implement only the `_rewrite_text` four-space context fix above. Update the inventory row's `owning_act` to `wrapper_rewrite`.
+  3. Gate: `uv run pytest tests/test_slice5_documentation_aggregates.py -k 'syntax_diff or syntax_category or multi_definition or nested_list' -q` fully green; shared Task-4 regression fragment green; no Act-II ledger growth. Commit as `fix: rewrite lazy continuation reference literals`; push with the required trailers.
+
+  After 2a and 2b both land, Step 2 is complete. Do not enable the full Syntax fixture here — that remains Steps 3–4.
 
 - [ ] **Step 3: Run the Syntax four-gate checkpoint.** Run:
 
@@ -291,7 +328,7 @@
 
 ## Plan self-review
 
-Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendments A11–A13's 40-working/12-spare Act-II ledger; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently.
+Tasks 1–2 close every skipped predecessor fixture with strict evidence; Tasks 3–4 separately gate the two §7.8 aggregates; Task 5 supplies all-fixture, raw-parity, smoke, quality, and release-performance evidence. The plan preserves the accepted architecture and reserves Amendments A11–A13's 40-working/12-spare Act-II ledger; each aggregate defect begins as a minimal general-path test and cannot expand token or literary scope silently. Amendment A17 decomposes Task 4 Step 2 into 2a (Act-II `PASS_LISTS_SIB_OUTDENT` parent `ITEM_CLOSE`) and 2b (existing Slice-3 rewrite lazy-continuation escape), each with a red witness, focused gate, and commit, so one MCO iteration cannot batch both categories or invent Act-III reference machinery.
 
 ## Amendment A1 (2026-07-18): Tidyness raw-oracle evidence reconciliation
 
@@ -709,3 +746,41 @@ reports 23 failed / 68 passed (unchanged red witnesses), and the Global
 Constraints SPL-facing gate plus `tests/test_splc_prose.py` report only the
 eight A11 entry-pair validator params red — every other default-suite test
 passes.
+
+## Amendment A17 (2026-07-19): Task 4 Step 2 category repairs
+
+This amendment is the binding completion shape for Task 4 Step 2. It does not
+authorize new Act-II labels, tokens, selectors, participants, or Act-III/IV
+roles. It freezes the Step-1 inventory's two red categories into ordered
+sub-steps 2a–2b with re-verified root causes at commit `53d5970`.
+
+**2a — `nested_list_close_ordering` (Act II only).**
+`PASS_LISTS_SIB_OUTDENT` already emits `ITEM_CLOSE` when the sibling marker is
+ordered; when the marker is unordered (`*`, `+`, or `-`) it skips that push and
+opens the next item immediately after nested `LIST_CLOSE`. Oracle HTML requires
+`</ul></li>` (or `</ol></li>`) before the next sibling `<li>`. Unify the UL path
+with the existing OL path: always push `ITEM_CLOSE` after closing the nested
+list and decrementing depth, then enter `PASS_LISTS_ITEM_BEGIN_TIGHT`. The
+minimal witness is `* parent\n    * child\n* sibling\n`. Retain Spike A
+`nested_one_level` and all architecture-spike list dumps as regressions. No
+TOML surface is reserved or promoted.
+
+**2b — `multi_definition_reference_resolution` (existing Slice-3 rewrite only).**
+Release and fast paths both run `rewrite_task3_markdown` before the IR. For the
+Syntax multi-definition witness, reference definitions are six-space indented
+code and correctly contribute zero refs. The rewrite escapes the first-line
+unresolved form to `\[Google\] \[1\]` but `_rewrite_text`'s four-space line
+short-circuit copies the lazy continuation line `    [Yahoo] [2] or [MSN] [3].`
+verbatim. Act III then mangles the raw brackets into reversed label bodies.
+Repair only the four-space short-circuit so it applies to true code-block
+context (start of input or after a blank line), not to lazy paragraph
+continuations. Lazy continuations must use the existing unresolved-reference
+escape path. This is a bug fix to the already-shipped Slice-3 rewrite, not a
+new wrapper Markdown branch; design Amendment A15 records that authorization.
+Do not invent general multi-id Act-III reference machinery in this step.
+
+Sub-step order is binding: bank the Act-II list fix in 2a before the rewrite
+fix in 2b. After both sub-steps, all four `syntax_category` rows are green and
+Step 2 may be checked off; full Syntax enablement remains Steps 3–4. Any need
+for a new label, token, or Act-III scene remains `- BLOCK[plan]:` with the
+smallest witness.

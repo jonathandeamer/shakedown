@@ -980,3 +980,44 @@ uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.
 Expected: green with all 40 Task-3 working labels present in `data["scenes"]`
 and matching IR scene labels one-to-one, and all 12 spares present only in
 `data["spares"]`.
+
+
+## Amendment A15 (2026-07-19): Syntax category repairs for Task 4 Step 2
+
+Plan Amendment A17 is binding for implementation order. This design amendment
+authorizes only the two still-red Syntax inventory categories and does not
+expand the frozen token grammar or the Task-3 Act-II 40-working/12-spare
+ledger.
+
+### Nested list close ordering (Act II)
+
+When a nested list ends and a same- or outer-level sibling item begins,
+`PASS_LISTS_SIB_OUTDENT` must emit parent `ITEM_CLOSE` after nested
+`LIST_CLOSE` for unordered sibling markers exactly as it already does for
+ordered markers. The oracle requires `</li>` after the nested list close
+before the next sibling `<li>`. No new scene, token, depth rail, or kind
+table is authorized: unify the existing UL branch with the existing OL
+`ITEM_CLOSE` push inside `PASS_LISTS_SIB_OUTDENT` only.
+
+### Multi-definition / lazy-continuation references (existing rewrite)
+
+Bounded implementation shape §3 forbids introducing a new wrapper-side
+Markdown transformation. The Slice-3 helper `scripts/slice3_links.py`
+`rewrite_task3_markdown` is already part of the shipped release and fast
+paths. Repairing a defect in that existing rewrite is authorized; adding a
+second Markdown preprocessor is not.
+
+Binding defect: `_rewrite_text` treats every line that begins with four
+spaces as opaque code. Markdown.pl treats four-space lines as lazy paragraph
+continuation when they continue an open paragraph (no intervening blank
+line). Unresolved reference forms on such continuations must receive the same
+literal-escape treatment as ordinary lines when no definition was registered.
+True code blocks remain opaque: four-space opacity applies only at document
+start or immediately after a blank line. Six-space Syntax definition lines
+that sit inside a code block after a blank line must continue to contribute
+zero reference records.
+
+Act-III general multi-id reference resolution is not authorized by this
+amendment. If the rewrite repair proves insufficient and a new Act-III scene
+or token appears necessary, stop with `- BLOCK[plan]:` and the smallest
+witness.
