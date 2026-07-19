@@ -1741,12 +1741,13 @@ ACT: Act = act(
         ),
         scene(
             "PASS_LISTS_SIB_OUTDENT",
+            # Close the nested list, drop one depth frame, then always close
+            # the parent item before opening the same- or outer-level sibling
+            # (UL and OL). Skipping ITEM_CLOSE for *+/- left parent items open
+            # and scrambled Act-IV list-kind emission (Slice-5 A17).
             push(LADY_MACBETH, const(tokens.LIST_CLOSE)),
             pop(MACBETH, recall="fallen_rampart"),
             let(MACBETH, sub(val(MACBETH), const(1))),
-            branch(eq(val(PUCK), const(42)), then="PASS_LISTS_ITEM_BEGIN_TIGHT"),
-            branch(eq(val(PUCK), const(43)), then="PASS_LISTS_ITEM_BEGIN_TIGHT"),
-            branch(eq(val(PUCK), const(45)), then="PASS_LISTS_ITEM_BEGIN_TIGHT"),
             push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_ITEM_BEGIN_TIGHT"),
         ),
@@ -2004,16 +2005,19 @@ ACT: Act = act(
             companion=HECATE,
         ),
         scene(
+            # Keep the parent item open across the nested list (same as DEEP).
+            # Parent ITEM_CLOSE is emitted on SIB_OUTDENT after nested LIST_CLOSE
+            # so UL and OL sibling outdents share one close shape (Slice-5 A17;
+            # the old soft-close here forced UL outdent to skip ITEM_CLOSE and
+            # broke deep same-kind UL nests that never soft-closed).
             "PASS_LISTS_NEST_EMIT_UL_OPEN",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_NEST_OPEN_UL"),
             companion=HECATE,
         ),
         scene(
             "PASS_LISTS_NEST_EMIT_OL_OPEN",
             push(LADY_MACBETH, const(tokens.TEXT_END)),
-            push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_NEST_OPEN_OL"),
             companion=HECATE,
         ),

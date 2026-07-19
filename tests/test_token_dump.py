@@ -121,7 +121,11 @@ def test_dump_nested_one_level_matches_blessed_p2_baseline() -> None:
     assert dump == baseline
     values = [int(line) for line in dump.decode().splitlines()]
     child_open_index = values.index(tokens.LIST_OPEN, 1)
-    assert values[child_open_index - 1] == tokens.ITEM_CLOSE
+    # Parent stays open into the nest; TEXT_END ends item text (Slice-5 A17).
+    assert values[child_open_index - 1] == tokens.TEXT_END
+    nested_close_index = values.index(tokens.LIST_CLOSE)
+    assert values[nested_close_index + 1] == tokens.ITEM_CLOSE
+    assert values[nested_close_index + 2] == tokens.LIST_ITEM
 
 
 @pytest.mark.parametrize(

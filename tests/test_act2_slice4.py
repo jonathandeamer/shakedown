@@ -526,6 +526,62 @@ def test_full_list_tab_indented_siblings_stay_in_one_nested_sublist() -> None:
     ]
 
 
+def test_ul_nested_sibling_outdent_emits_parent_item_close() -> None:
+    """Same-kind UL outdent must close the parent item (Slice-5 A17 / Step 2a)."""
+    source = "* parent\n    * child\n* sibling\n"
+    assert _decoded_triplets(source) == [
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "parent"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "child"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "sibling"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+    expected = (
+        "<ul>\n<li>parent\n<ul><li>child</li></ul></li>\n<li>sibling</li>\n</ul>\n"
+    )
+    actual = _interpret_ir(source)
+    assert actual == expected
+    oracle = subprocess.run(
+        ["perl", str(Path.home() / "markdown" / "Markdown.pl")],
+        input=source.encode(),
+        capture_output=True,
+        check=True,
+    ).stdout.decode()
+    assert actual == oracle
+
+
+def test_ol_nested_sibling_outdent_already_emits_parent_item_close() -> None:
+    """Positive control: OL sibling marker path already closed the parent item."""
+    source = "1. parent\n    * child\n2. sibling\n"
+    assert _decoded_triplets(source) == [
+        (tokens.LIST_OPEN, (2,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "parent"),
+        (tokens.LIST_OPEN, (1,), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "child"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_ITEM, (1,), None),
+        (tokens.PARA, (), "sibling"),
+        (tokens.ITEM_CLOSE, (), None),
+        (tokens.LIST_CLOSE, (), None),
+    ]
+    expected = (
+        "<ol>\n<li>parent\n<ul><li>child</li></ul></li>\n<li>sibling</li>\n</ol>\n"
+    )
+    assert _interpret_ir(source) == expected
+
+
 def test_full_list_list_ending_blank_rolls_back_to_tight_item() -> None:
     assert _decoded_triplets("* parent\n\n") == [
         (tokens.LIST_OPEN, (1,), None),
@@ -646,10 +702,10 @@ def test_full_list_plain_loose_continuation_never_enters_a10_to_a12_helpers() ->
     assert "PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE" not in labels
 
 
-# Amendment A14: the ordinary top-level nested-list branches must close the
-# parent item (TEXT_END, ITEM_CLOSE) before opening the child list, not after
-# it closes. This is the source-level IR contract behind the P2 blessed
-# nested_one_level dump.
+# Slice-5 A17: ordinary top-level nest open keeps the parent item open
+# (TEXT_END only). Parent ITEM_CLOSE is emitted after nested LIST_CLOSE on
+# SIB_OUTDENT so UL and OL sibling outdents share one close shape. This is
+# the source-level IR contract behind the re-blessed nested_one_level dump.
 _ACT2_SCENES_BY_LABEL = {sc.label: sc for sc in ACT2.scenes}
 
 
@@ -660,7 +716,7 @@ _ACT2_SCENES_BY_LABEL = {sc.label: sc for sc in ACT2.scenes}
         ("PASS_LISTS_NEST_EMIT_OL_OPEN", "PASS_LISTS_NEST_OPEN_OL"),
     ],
 )
-def test_full_list_ordinary_nest_open_closes_parent_before_child_list(
+def test_full_list_ordinary_nest_open_keeps_parent_open_for_child_list(
     open_label: str, target_label: str
 ) -> None:
     scene = _ACT2_SCENES_BY_LABEL[open_label]
@@ -670,17 +726,11 @@ def test_full_list_ordinary_nest_open_closes_parent_before_child_list(
     assert isinstance(ops[0].expr, Const)
     assert ops[0].expr.value == tokens.TEXT_END
 
-    assert isinstance(ops[1], Push)
-    assert isinstance(ops[1].expr, Const)
-    assert ops[1].expr.value == tokens.ITEM_CLOSE
-
-    assert isinstance(ops[2], Goto)
-    assert ops[2].target == target_label
+    assert isinstance(ops[1], Goto)
+    assert ops[1].target == target_label
 
 
-def test_full_list_nested_one_level_stream_closes_parent_before_child_list_open() -> (
-    None
-):
+def test_full_list_nested_one_level_stream_closes_parent_after_nested_list() -> None:
     fixture = (
         Path(__file__).parent
         / "fixtures"
@@ -692,7 +742,12 @@ def test_full_list_nested_one_level_stream_closes_parent_before_child_list_open(
     codes = [token.code for token in decoded]
 
     child_open_index = codes.index(tokens.LIST_OPEN, 1)
-    assert codes[child_open_index - 1] == tokens.ITEM_CLOSE
+    # Parent item stays open: PARA (not ITEM_CLOSE) immediately before nest.
+    assert codes[child_open_index - 1] == tokens.PARA
+    # Nested list ends, then parent ITEM_CLOSE, then the outer sibling item.
+    nested_close_index = codes.index(tokens.LIST_CLOSE)
+    assert codes[nested_close_index + 1] == tokens.ITEM_CLOSE
+    assert codes[nested_close_index + 2] == tokens.LIST_ITEM
 
 
 @pytest.mark.parametrize(

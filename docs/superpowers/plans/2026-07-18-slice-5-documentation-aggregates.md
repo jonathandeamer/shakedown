@@ -266,11 +266,22 @@ uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py -q
 
 Expected after 2a: nested-list category green; multi-definition may still be red; list/nested spikes and blessed dumps green; no new SPL literary surface. Expected after 2b: both red categories green (focused `syntax_category` fully green); spikes and mdtest still green.
 
-- [ ] **Step 2a: Repair nested list close ordering (Act II).** Authority: Amendment A17. Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`; regenerate `src/20-act2-block.spl` and `shakedown.spl`.
+- [x] **Step 2a: Repair nested list close ordering (Act II).** Authority: Amendment A17. Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`; regenerate `src/20-act2-block.spl` and `shakedown.spl`.
 
   1. Add (or keep) the minimal same-kind witness `* parent\n    * child\n* sibling\n` plus the inventory `SYNTAX_NESTED_LIST_CLOSE` witness with decoded-stream and fast/release/raw-oracle assertions. Optionally assert the positive control `1. parent\n    * child\n2. sibling\n` remains green. Prove red with `uv run pytest tests/test_slice5_documentation_aggregates.py -k 'nested_list' -q` (and any new minimal-witness test).
   2. Implement only the `PASS_LISTS_SIB_OUTDENT` UL/OL unification above. No new label. Regenerate and assemble.
   3. Gate: nested-list category and minimal witness green; `uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q` green; Global Constraints SPL-facing gate green; multi-definition may remain red. Commit as `fix: close parent item on list outdent`; push with the required trailers.
+
+  Evidence (2026-07-19): `PASS_LISTS_SIB_OUTDENT` always pushes parent
+  `ITEM_CLOSE` after nested `LIST_CLOSE` (UL/OL unified). Focused regression
+  on soft-closed shallow nest (`nested_one_level`) required the authorized
+  nest-open companion: `PASS_LISTS_NEST_EMIT_{UL,OL}_OPEN` keep the parent
+  item open (`TEXT_END` only) so outdent is the sole parent close, matching
+  the DEEP nest path. Minimal UL witness + OL control + inventory
+  `nested_list_close_ordering` green; multi-definition remains red.
+  Architecture spikes + token dumps: `47 passed` (re-blessed
+  `nested_one_level.dump`). SPL-facing gate: `223 passed`. mdtest + spikes:
+  `54 passed, 1 skipped`. Full `test_act2_slice4.py`: `61 passed`.
 
 - [ ] **Step 2b: Repair multi-definition / lazy-continuation reference rewrite.** Authority: Amendment A17 + design Amendment A15. Files: `tests/test_slice5_documentation_aggregates.py` and/or focused rewrite unit tests under `tests/`, `scripts/slice3_links.py`. No IR/SPL change unless a regression forces a one-line companion fix (then re-run the SPL-facing gate).
 
