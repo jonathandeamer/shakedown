@@ -1,7 +1,8 @@
 """Inventory pure-SPL gaps vs the slice3 Python rewrite.
 
-Witnesses for fixtures that still require ``rewrite_task3_markdown`` on the
-IR/production path until Tasks 2–5 port strip/resolve into SPL.
+After Task 4, production and IR test paths no longer call
+``rewrite_task3_markdown``. These witnesses assert pure IR matches the oracle
+for fixtures the rewrite once touched.
 """
 
 from __future__ import annotations
@@ -22,7 +23,7 @@ from tests.test_mdtest import (
     _normalize_fixture_output,
 )
 
-PURE_SPL_REWRITE_RETIRED = False  # Task 5 flips to True
+PURE_SPL_REWRITE_RETIRED = True  # Task 4: rewrite retired from production/IR paths
 
 _REWRITE_TOUCHED = (
     "Amps and angle encoding",

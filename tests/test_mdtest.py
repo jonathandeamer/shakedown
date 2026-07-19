@@ -19,12 +19,11 @@ from _pytest.mark.structures import ParameterSet
 from scripts.paths import markdown_pl as _markdown_pl_path
 from scripts.paths import mdtest_fixtures_dir
 from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
-from scripts.slice3_links import rewrite_task3_markdown
 
 REPO = Path(__file__).parent.parent
 FIXTURES_DIR = mdtest_fixtures_dir()
 MARKDOWN_PL = _markdown_pl_path()
-# Fast full-parity entry (IR + link rewrite). Public art path is ./shakedown.
+# Fast full-parity entry (IR without Python rewrite). Public art path is ./shakedown.
 BINARY = REPO / "shakedown-parity"
 
 
@@ -211,7 +210,7 @@ def _run_acts(input_text: str, through_act: int) -> str | list[int]:
     from src_ir.act3 import ACT as ACT3
     from src_ir.act4 import ACT as ACT4
 
-    state = InterpreterState(input_text=rewrite_task3_markdown(input_text))
+    state = InterpreterState(input_text=input_text)
     acts = (ACT1, ACT2, ACT3, ACT4)
     for act in acts[:through_act]:
         state = run_act(act, state, step_limit=DOCUMENTATION_STEP_LIMIT).state

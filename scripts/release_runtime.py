@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 from scripts.runtime_constants import DOCUMENTATION_STEP_LIMIT
-from scripts.slice3_links import rewrite_task3_markdown
 from scripts.splc.interpret import InterpreterState, run_act
 from src_ir.act1 import ACT as ACT1
 from src_ir.act2 import ACT as ACT2
@@ -59,11 +58,11 @@ def _run_spl(input_text: str, spl_path: Path) -> int:
 def main() -> int:
     input_text = sys.stdin.read()
     spl_path = Path(os.environ.get("SHAKEDOWN_SPL", str(DEFAULT_SPL)))
-    rewritten = rewrite_task3_markdown(input_text)
+    # Act I strip + Act III link/image resolution own Markdown transforms.
     if spl_path == DEFAULT_SPL:
-        sys.stdout.write(_run_release_ir(rewritten))
+        sys.stdout.write(_run_release_ir(input_text))
         return 0
-    return _run_spl(rewritten, spl_path)
+    return _run_spl(input_text, spl_path)
 
 
 if __name__ == "__main__":

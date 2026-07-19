@@ -351,7 +351,7 @@ Evidence (2026-07-19): Step 2 implementation already committed as `37288f9` with
 - Consumes: Tasks 2–3 green pure-IR contracts
 - Produces: No production call chain invokes `rewrite_task3_markdown` or `strip_reference_definitions`
 
-- [ ] **Step 1: Flip inventory flag and remove rewrite from IR test path**
+- [x] **Step 1: Flip inventory flag and remove rewrite from IR test path**
 
 In `tests/test_spl_pure_inventory.py`, set `PURE_SPL_REWRITE_RETIRED = True`.
 
@@ -360,6 +360,8 @@ In `tests/test_mdtest.py` `_run_acts`, stop wrapping with `rewrite_task3_markdow
 In `scripts/release_runtime.py` `main`, pass stdin (or only non-Markdown plumbing) into `_run_release_ir` **without** rewrite.
 
 Delete or gut `scripts/preprocess_input.py` production use; if the file remains, make it a deprecated thin alias that warns on stderr and writes stdin unchanged (or remove if unused).
+
+Evidence (2026-07-19, grok-implement): `PURE_SPL_REWRITE_RETIRED = True`; `_run_acts` and `release_runtime.main` feed raw stdin/input (no `rewrite_task3_markdown`); `preprocess_input` is a deprecation warning + passthrough. Gates: inventory+act1+act3 pure **41 passed**; `test_mdtest` **36 passed**; `./shakedown-parity` smoke (emphasis + ref link) green.
 
 - [ ] **Step 2: Prove suite**
 
