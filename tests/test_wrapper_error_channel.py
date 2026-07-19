@@ -85,7 +85,36 @@ def test_wrapper_fails_on_runtime_error(tmp_path: Path) -> None:
     assert b"SPL runtime error:" in result.stderr
 
 
-def test_wrapper_default_release_path_uses_shakespeare_cli(
+def test_wrapper_prefers_shakespeare_on_path(tmp_path: Path) -> None:
+    fake_shakespeare = tmp_path / "shakespeare"
+    fake_shakespeare.write_text(
+        """#!/usr/bin/env python3
+import sys
+if len(sys.argv) >= 2 and sys.argv[1] == "run":
+    sys.stdout.write("path-shakespeare\\n")
+    raise SystemExit(0)
+raise SystemExit(99)
+""",
+        encoding="utf-8",
+    )
+    fake_shakespeare.chmod(0o755)
+    fake_uv = tmp_path / "uv"
+    fake_uv.write_text("#!/bin/sh\nexit 98\n", encoding="utf-8")
+    fake_uv.chmod(0o755)
+
+    result = subprocess.run(
+        [str(WRAPPER)],
+        input=b"sample\n",
+        capture_output=True,
+        check=False,
+        env={**os.environ, "PATH": f"{tmp_path}:{os.environ['PATH']}"},
+    )
+
+    assert result.returncode == 0, result.stderr.decode()
+    assert result.stdout == b"path-shakespeare\n"
+
+
+def test_wrapper_falls_back_to_uv_when_shakespeare_missing(
     tmp_path: Path,
 ) -> None:
     calls = tmp_path / "uv-calls.log"
@@ -94,13 +123,12 @@ def test_wrapper_default_release_path_uses_shakespeare_cli(
         """#!/usr/bin/env python3
 import os
 import sys
-from pathlib import Path
 
-calls = Path(os.environ["UV_CALLS"])
+calls = __import__("pathlib").Path(os.environ["UV_CALLS"])
 calls.open("a", encoding="utf-8").write(" ".join(sys.argv[1:]) + "\\n")
 args = sys.argv[1:]
 if "shakespeare" in args and "run" in args:
-    sys.stdout.write("pipeline-output\\n")
+    sys.stdout.write("uv-shakespeare\\n")
     raise SystemExit(0)
 raise SystemExit(99)
 """,
@@ -108,6 +136,8 @@ raise SystemExit(99)
     )
     fake_uv.chmod(0o755)
 
+    # Prefer fake bin over the host, but keep /usr/bin for env/bash; omit any
+    # host `shakespeare` by not appending the full user PATH.
     result = subprocess.run(
         [str(WRAPPER)],
         input=b"sample\n",
@@ -115,13 +145,13 @@ raise SystemExit(99)
         check=False,
         env={
             **os.environ,
-            "PATH": f"{tmp_path}:{os.environ['PATH']}",
+            "PATH": f"{tmp_path}:/usr/bin:/bin",
             "UV_CALLS": str(calls),
         },
     )
 
     assert result.returncode == 0, result.stderr.decode()
-    assert result.stdout == b"pipeline-output\n"
+    assert result.stdout == b"uv-shakespeare\n"
     logged = calls.read_text(encoding="utf-8").splitlines()
     expected_cmd = f"run --directory {REPO} shakespeare run {REPO / 'shakedown.spl'}"
     assert logged == [expected_cmd]

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # Release entry: run the committed play with the shakespearelang CLI.
-# Same shape as: uv run shakespeare run shakedown.spl
 #
-# Override the play with SHAKEDOWN_SPL (used by ./shakedown-debug).
+# Prefers `shakespeare` on PATH (no project toolchain required). Falls back to
+# `uv run` so a clone with only uv can still resolve shakespearelang from
+# pyproject.toml. Override the play with SHAKEDOWN_SPL (used by ./shakedown-debug).
+#
 # The shakespeare CLI can exit 0 on SPL parse/runtime failures while still
 # printing "SPL … error:" on stderr; treat that as failure.
 set -euo pipefail
@@ -14,7 +16,11 @@ err="$(mktemp)"
 trap 'rm -f "$err"' EXIT
 
 set +e
-uv run --directory "$DIR" shakespeare run "$SPL" 2>"$err"
+if command -v shakespeare >/dev/null 2>&1; then
+  shakespeare run "$SPL" 2>"$err"
+else
+  uv run --directory "$DIR" shakespeare run "$SPL" 2>"$err"
+fi
 rc=$?
 set -e
 
