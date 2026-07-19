@@ -415,7 +415,7 @@ Re-verified this iteration: pure inventory/act1/act3 + `test_mdtest` + wrapper/s
 - Consumes: Task 4 production path
 - Produces: Evidence that real `shakespeare run` matches oracle (may be `@pytest.mark.integration` with long timeout if default suite stays on IR)
 
-- [ ] **Step 1: Add integration module**
+- [x] **Step 1: Add integration module**
 
 ```python
 # tests/test_spl_pure_shakespeare.py
@@ -427,6 +427,8 @@ def test_shakespeare_cli_matches_oracle(name: str) -> None:
 ```
 
 Default `pytest` excludes integration (already in `pyproject.toml`).
+
+Evidence (2026-07-19, grok-implement): Added `tests/test_spl_pure_shakespeare.py` with `@pytest.mark.integration` parametrized over all 23 `_IMPLEMENTED_FIXTURES`; runs `./shakedown` and compares via `_normalize_fixture_output` / `_expected_fixture_output` (entity-normalized Auto links). Collect: `pytest -m integration --collect-only` → **23 tests collected**; default `pytest` on the module deselects all 23. ruff + pyright clean.
 
 - [ ] **Step 2: Run integration (operator or CI-with-flag)**
 
