@@ -156,7 +156,15 @@
   aggregate remains raw-byte mismatched to the oracle. No production or
   generated SPL changed.
 
-- [ ] **Step 3: Implement the general block paths.** Amendments A11 and A12 are the sole binding completion shape for A9 Setext plus ATX closing hashes; do not implement, preserve, or extend the A8-shaped underline family. Before editing `src_ir/act2.py`, install A9 and A11's ready-to-paste TOML entries, yielding 33 working labels and eight unused spares. A12 adds no TOML surface. Retain A7's seed-before-transfer design and A12's one private countdown slot: finalization saves Lady Macbeth's live countdown below the existing Hecate finalized-title floor before it pops title bytes; replay removes that slot into Puck's value after the floor; bridge seeds Horatio with it below the existing restore floor; every raw or proved close restores it to Lady Macbeth before dispatch or `PASS_SETEXT_PROVED_CLOSE`. Thus title transfer never clobbers the live countdown, the terminal witness reaches `PASS_LISTS_DONE` without another `_read()`, and the positive witness preserves the next source glyph. For underline handling, enter `PASS_SETEXT_UNDERLINE_STATE_OPEN`, keep Macbeth's private state rail above unchanged list depth, and use A9's exact read/capture/classify chain. The scan alone calls `_read()` with Lady Macbeth/Hecate; capture copies only that glyph to Horatio's replay buffer; classify mutates only Macbeth's five-state rail. Valid terminal lines route through proof-stage; invalid lines through requeue-stage; EOF through EOF-state. Every exit pops the state rail before proof/requeue behavior, every goto shares a participant, and no scene names more than two characters. After a proved title restore, route only through A11's `PASS_SETEXT_PROVED_CLOSE`, which pushes `TEXT_END` and branches on the restored Lady-Macbeth countdown to `PASS_LISTS_DONE` at zero or the dispatcher at positive count without `_read()`. For ATX, use only A11's `PASS_HEADER_TRAIL_OPEN -> SCAN -> CAPTURE/DECIDE -> DROP/REPLAY -> EXIT` two-participant machine: Puck holds deferred spaces/hashes and its private `saw_hash` bit; Lady Macbeth/Hecate remains the sole `_read()` pair. Drop a deferred run only at newline after at least one hash; otherwise replay it before emitting Hecate's held non-deferred glyph or the existing header close. No path may enter `PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY_TRANSFER`, or `PASS_SETEXT_BRIDGE_TRANSFER` except from its named seed scene. Delete A8-shaped WIP scenes that use any spare label; none of A11's eight spare labels may have a Scene. Add A11 pair-chain, all-eight-spares absence, A12 countdown-slot trace/no-underflow/no-extra-read, positive-count source-preservation, and three ATX suffix fast-IR contracts while retaining the three-character rejection test, then prove the minimal Setext witness red before implementation. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Regenerate and assemble.
+**Step 3 combined requirements (decomposed into Steps 3a–3d by Amendment A16; this paragraph binds all four sub-steps):** Amendments A11 and A12 are the sole binding completion shape for A9 Setext plus ATX closing hashes; do not implement, preserve, or extend the A8-shaped underline family. Before editing `src_ir/act2.py`, install A9 and A11's ready-to-paste TOML entries, yielding 33 working labels and eight unused spares. A12 adds no TOML surface. Retain A7's seed-before-transfer design and A12's one private countdown slot: finalization saves Lady Macbeth's live countdown below the existing Hecate finalized-title floor before it pops title bytes; replay removes that slot into Puck's value after the floor; bridge seeds Horatio with it below the existing restore floor; every raw or proved close restores it to Lady Macbeth before dispatch or `PASS_SETEXT_PROVED_CLOSE`. Thus title transfer never clobbers the live countdown, the terminal witness reaches `PASS_LISTS_DONE` without another `_read()`, and the positive witness preserves the next source glyph. For underline handling, enter `PASS_SETEXT_UNDERLINE_STATE_OPEN`, keep Macbeth's private state rail above unchanged list depth, and use A9's exact read/capture/classify chain. The scan alone calls `_read()` with Lady Macbeth/Hecate; capture copies only that glyph to Horatio's replay buffer; classify mutates only Macbeth's five-state rail. Valid terminal lines route through proof-stage; invalid lines through requeue-stage; EOF through EOF-state. Every exit pops the state rail before proof/requeue behavior, every goto shares a participant, and no scene names more than two characters. After a proved title restore, route only through A11's `PASS_SETEXT_PROVED_CLOSE`, which pushes `TEXT_END` and branches on the restored Lady-Macbeth countdown to `PASS_LISTS_DONE` at zero or the dispatcher at positive count without `_read()`. For ATX, use only A11's `PASS_HEADER_TRAIL_OPEN -> SCAN -> CAPTURE/DECIDE -> DROP/REPLAY -> EXIT` two-participant machine: Puck holds deferred spaces/hashes and its private `saw_hash` bit; Lady Macbeth/Hecate remains the sole `_read()` pair. Drop a deferred run only at newline after at least one hash; otherwise replay it before emitting Hecate's held non-deferred glyph or the existing header close. No path may enter `PASS_SETEXT_FINALIZE_TRANSFER`, `PASS_SETEXT_REPLAY_TRANSFER`, or `PASS_SETEXT_BRIDGE_TRANSFER` except from its named seed scene. Delete A8-shaped WIP scenes that use any spare label; none of A11's eight spare labels may have a Scene. Add A11 pair-chain, all-eight-spares absence, A12 countdown-slot trace/no-underflow/no-extra-read, positive-count source-preservation, and three ATX suffix fast-IR contracts while retaining the three-character rejection test, then prove the minimal Setext witness red before implementation. Extend the existing generic raw-HTML admission to accept the aggregate's top-level `ul` block without altering span HTML. Regenerate and assemble.
+
+- [ ] **Step 3a: Implement A13's code-line blank-payload normalization.** Authority: Amendment A13 with A15's `[spares.*]` TOML shape; every reserved title is already parked in `src/20-act2-literary.toml` under `[spares.*]` (A16). Promote exactly the seven A13 working titles (`PASS_CODE_LINE_BLANK_DROP`, `PASS_CODE_LINE_CAPTURE_OPEN`, `PASS_CODE_LINE_CAPTURE_SCAN`, `PASS_CODE_LINE_CLOSE`, `PASS_CODE_LINE_KEEP_REPLAY`, `PASS_CODE_LINE_KEEP_REVERSE_OPEN`, `PASS_CODE_LINE_KEEP_REVERSE_TRANSFER`) from `[spares.*]` to `[scenes.*]` with title/pattern unchanged as their scenes are built; the four code-line guard titles stay spares; author no new title. First add A13's contracts and prove them red: the exact blockquote witness plus four-space-only, eight-space-only, and trailing-spaces-on-a-nonblank-line cases (each checking decoded payload, fast output, release output, and raw installed-local Markdown.pl bytes), plus the seven-scene pair-chain and spare-absence assertions, preserving the existing Code Blocks and Tabs payload contracts. Then implement only A13's one-physical-line Puck buffer / Horatio reverse-replay choreography with Hecate/Lady Macbeth as the sole reader inside the existing indented-code scanner; do not touch the Setext, ATX, raw-HTML, list, token, span, or renderer routes. Regenerate and assemble. Gate: the new code-line contracts pass, `uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py tests/test_token_dump.py -q` passes, and the Global Constraints SPL-facing gate passes except for the pre-existing red tests owned by Steps 3b–3d (the `PASS_HEADER_TRAIL_*`/`PASS_SETEXT_PROVED_CLOSE` validator params), which must not grow in number. Commit as `feat: normalize blank code payload lines`; push with the required trailers.
+
+- [ ] **Step 3b: Implement A11's ATX trailing-hash machine.** Authority: Amendment A11's ATX half; promote the seven `PASS_HEADER_TRAIL_*` working titles (`OPEN`, `SCAN`, `CAPTURE`, `DECIDE`, `DROP`, `REPLAY`, `EXIT`) from `[spares.*]` to `[scenes.*]` with title/pattern unchanged as their scenes are built (`PASS_SETEXT_PROVED_CLOSE` belongs to Step 3d, and the three header-trail guard titles stay spares); the red contracts already exist (the seven `PASS_HEADER_TRAIL_*` entry-pair validator params, both ATX suffix fast-IR contracts, and the closing-hash witnesses in `tests/test_act2_slice4.py` and `tests/test_slice5_documentation_aggregates.py`). Implement only the `PASS_HEADER_TRAIL_OPEN -> SCAN -> CAPTURE/DECIDE -> DROP/REPLAY -> EXIT` two-participant machine: Puck holds the deferred spaces/hashes run and its private `saw_hash` bit; Lady Macbeth/Hecate remains the sole `_read()` pair; drop a deferred run only at newline after at least one hash, otherwise replay it before emitting Hecate's held non-deferred glyph or the existing header close. Leave the Setext, code-line, and raw-HTML routes untouched. Regenerate and assemble. Gate: `uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py tests/test_splc_validate.py -k 'header_trail or closing_hash or suffix' -q` fully green, `uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py tests/test_token_dump.py -q` green, and the remaining red set shrinks to only Setext-, raw-HTML-, and full-fixture-owned tests. Commit as `feat: strip atx closing hashes`; push with the required trailers.
+
+- [ ] **Step 3c: Admit the top-level raw-HTML block.** Extend the existing generic raw-HTML admission so the Basics aggregate's top-level `<ul id="ProjectSubmenu">...</ul>` block decodes as the existing `RAW_HTML_HASH` role instead of `PARA`, without altering span-level HTML handling, and without a new label, token, selector, or participant. Regenerate and assemble. Gate: `uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py -k 'raw_html' -q` fully green, `uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py tests/test_token_dump.py -q` green, and the remaining red set shrinks to only Setext- and full-fixture-owned tests. Commit as `feat: admit top-level raw html block`; push with the required trailers.
+
+- [ ] **Step 3d: Implement the A9 Setext rail with A11's proved close and A12's countdown slot.** Authority: A9+A11+A12 exactly as bound by the Step 3 combined-requirements paragraph above; the red contracts already exist. Promote only the Setext working labels named by A9's state table, the retained pre-A9 finalize/replay/bridge/close family, and `PASS_SETEXT_PROVED_CLOSE` from `[spares.*]` to `[scenes.*]` with title/pattern unchanged as their scenes are built. Superseded A8-shaped titles parked in `[spares.*]` (the `PASS_SETEXT_EQUALS_CLOSE_*`/`PASS_SETEXT_DASH_CLOSE_*` restore variants, `PASS_SETEXT_CANDIDATE_GUARD`, and every other title not named by the binding amendments) are permanently spares and must never be promoted or built. A prior partial attempt is preserved as `git stash` entry `stash@{0}` (`WIP on main: 552bed0`); it may be consulted read-only via `git show 'stash@{0}:src_ir/act2.py'` as reference, but it must not be popped or applied — Amendment A14 records that it disturbed shared scenes and regressed shipped contracts, and the committed baseline is the required starting point. Implement the state-rail machine, `PASS_SETEXT_PROVED_CLOSE`, and the countdown-slot transfer discipline per the combined paragraph. Regenerate and assemble. Gate: `uv run pytest tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py tests/test_splc_validate.py -q` fully green (zero failures — this includes the full-Basics raw-byte fixture test and the phrase-emphasis full-fixture test), plus `uv run pytest tests/test_mdtest.py tests/test_architecture_spikes.py tests/test_token_dump.py -q` and the Global Constraints SPL-facing gate green. Commit as `feat: detect setext underlines`; push with the required trailers.
 
 - [ ] **Step 4: Run the Basics four-gate checkpoint.** Run:
 
@@ -585,3 +593,66 @@ amendment: the TOML-shape contradiction is resolved, and the separable
 Setext/ATX/code-line IR reconstruction described by Amendment A14 (plan) may
 now proceed using this corrected TOML shape from the start. Any need beyond
 this shape correction remains `- BLOCK[plan]:` with the smallest witness.
+
+## Amendment A16 (2026-07-19): loop-sized Step 3 decomposition and baseline record
+
+This is an execution-granularity amendment only. It decomposes Task 3 Step 3
+into Steps 3a–3d (code-line normalization, ATX trailing-hash machine,
+raw-HTML admission, Setext rail + proved close + countdown slot), each a
+single loop iteration with its own red set, focused gate, regression guard,
+conventional commit, and push. The former Step 3 checkbox text is retained
+verbatim as the "combined requirements" paragraph and remains binding for all
+four sub-steps together with A9, A11, A12, A13, A14, and A15; this amendment
+authorizes no new label, title, token, selector, participant,
+compiler/validator change, or Act-III/IV behavior, and reserves no literary
+surface. Sub-step order is binding: 3a and 3b and 3c isolate the independent
+machines first so progress is banked before 3d's Setext core; the full-Basics
+fixture test is expected to stay red until 3d completes.
+
+Baseline record at commit f459965 (2026-07-19): despite that commit's
+`feat: complete Slice-5 documentation aggregates and Act II lowering`
+subject, it lowered no Act-II scene — it installed the literary TOML ledger,
+prose phrases, and witness/validator tests only. Task 3 Step 3 remains
+unimplemented; the plan checkboxes and the failing tests, not that commit
+subject, are authoritative. The verified baseline is `uv run pytest
+tests/test_act2_slice4.py tests/test_slice5_documentation_aggregates.py
+tests/test_splc_validate.py -q` reporting 23 failed / 68 passed, with every
+failure owned by Steps 3b–3d.
+
+Disposition of A14's preserved WIP: the uncommitted `src_ir/act2.py` work
+A14 required preserving was stashed as `stash@{0}` (`WIP on main: 552bed0`,
+2026-07-18) after its durable parts (tests, TOML, prose phrases) were
+committed at e7b29bd/f459965. A14's drive-the-regression-to-zero substep is
+resolved: the committed tree carries none of the disturbed scenes, and its
+default suite is green apart from the Step-3 red witnesses recorded below. The stash is read-only
+reference for Step 3d and must never be popped or applied.
+
+`scripts/release_entry.py` no longer exists: the operator deliberately
+deleted it as orphaned, superseding the Global Constraints line that asked to
+preserve it. Do not recreate or stage it; Task 5 Step 3's warning against
+staging it stands.
+
+Reconciliation of f459965's two regressions (repaired 2026-07-19, this
+amendment's commit lineage): (1) that commit removed `ProseEngine`'s
+rejection of unpooled negative values and hardcoded a `_NEG_SPECIAL_PHRASES`
+table in `scripts/splc/prose.py`, breaking
+`test_value_phrase_rejects_unpooled_negative`; the guard is restored and the
+table removed. Negative replay floors are IR-local constants, never prose
+(design §A5 region); if an implementation genuinely needs a negative value
+atom, it is a planning-time TOML `stable_utility` entry and a `- BLOCK[plan]:`
+until one is authorized — never a Python literal. (2) That commit installed
+58 unbuilt `PASS_SETEXT_*`/`PASS_HEADER_TRAIL_*` titles as `[scenes.*]`,
+breaking both scene-ledger equality tests. All 58 are re-housed under
+`[spares.*]` unchanged. The binding TOML discipline for Steps 3a–3d is
+promote-on-implement: a title moves from `[spares.*]` to `[scenes.*]` only in
+the sub-step that builds its Scene, so `set(data["scenes"])` equals the
+generated source's scene labels at every commit boundary. The parked set
+includes superseded A8-shaped titles; they are permanently spares, and
+promoting or building any title not named by A9/A11/A13 (plus the retained
+pre-A9 family) is `- BLOCK[plan]:` with the smallest witness.
+
+Verified baseline after this reconciliation: the focused three-file command
+reports 23 failed / 68 passed (unchanged red witnesses), and the Global
+Constraints SPL-facing gate plus `tests/test_splc_prose.py` report only the
+eight A11 entry-pair validator params red — every other default-suite test
+passes.
