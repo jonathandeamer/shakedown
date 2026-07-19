@@ -296,6 +296,7 @@ ACT: Act = act(
             *_read(),
             branch(eq(val(HECATE), const(33)), then="PASS_QUOTE_GUARD"),
             branch(eq(val(HECATE), const(104)), then="PASS_QUOTE_GUARD"),
+            branch(eq(val(HECATE), const(117)), then="PASS_QUOTE_GUARD"),
             branch(eq(val(HECATE), const(100)), then="PASS_WRAP_REPLAY"),
             push(LADY_MACBETH, _HTML_OPEN),
             goto("PASS_LISTS_RAW_GLYPH"),
