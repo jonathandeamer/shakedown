@@ -1,3 +1,3 @@
 # Active blockers
 
-(none)
+- BLOCK: Task 2L Step 2 pure-op Act I strip — mode-local pure IR under two-character scenes and the A1.3 20+6 label budget cannot be completed in one iteration without a dedicated transfer-bridge choreography. Constraints: (1) remaining+glyph+lead need three registers with only two value cells per scene — use remaining-in-Horatio.value (off-stage readable) plus take helper (pop glyph / decr remaining); (2) FOLD/ENCODE/STORE (Rosalind) cannot pop Hecate (no rosalind.recall) so capture must transfer via Hecate.value bus from Puck before fold; (3) fold needs case-fold, space-collapse, and entity encode as pure character ops; (4) four-space lead reject needs lead count not buried under capture. Oracle remains scripts/splc/act1_ref_strip.py. USE_ACT1_REF_INTRINSIC stays False (Step 1 red: 6 failed, 2 passed). Do not re-enable OPEN intrinsic as a Step 2 substitute. Next: multi-iteration pure-op port or plan amendment for transfer-bridge labels.
