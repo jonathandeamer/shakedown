@@ -325,7 +325,7 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
 
   After 2a, 2b, and 2c all land, Step 2 is complete. Do not enable the full Syntax fixture here — that remains Steps 3–4.
 
-- [ ] **Step 3: Run the Syntax four-gate checkpoint.** Run:
+- [x] **Step 3: Run the Syntax four-gate checkpoint.** Run:
 
   ```bash
   uv run pytest tests/test_slice5_documentation_aggregates.py tests/test_architecture_spikes.py tests/test_token_dump.py -q
@@ -336,6 +336,18 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   ```
 
   Expected: all pass and strict parity reports `summary: 1/1 byte-identical`.
+
+  Evidence (2026-07-19): the four-gate batch reports `76 passed` for
+  slice5_documentation_aggregates/architecture_spikes/token_dump.
+  Pytest rejects the plan's literal space-containing `-k` term, so the
+  equivalent valid selector `-k Syntax` selects exactly
+  `test_mdtest[Markdown Documentation - Syntax]` and reports
+  `1 skipped, 35 deselected` (fixture still intentionally disabled until
+  Step 4 enablement, matching Task 3 Step 4's Basics pattern). Strict
+  parity reports `summary: 1/1 byte-identical` (31777/31777). Differential
+  smoke with `--require 'Markdown Documentation - Syntax'` marks Syntax
+  `byte_identical` (suite-wide 23/23 `byte_identical`). splc regeneration
+  plus assembly completes with a clean working tree (no generated drift).
 
 - [ ] **Step 4: Enable and checkpoint.** Add Syntax to `_IMPLEMENTED_FIXTURES`; commit Task-4 files as `feat: complete documentation syntax aggregate`; push with the required trailers.
 
