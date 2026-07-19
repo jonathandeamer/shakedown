@@ -509,3 +509,23 @@ def test_code_block_four_space_lines_remain_opaque_to_reference_rewrite() -> Non
     assert rewritten == _CODE_BLOCK_FOUR_SPACE_CONTROL
     assert r"\[code\]" not in rewritten
     assert "[code] [1]" in rewritten
+
+
+def test_tab_indented_code_lines_remain_opaque_to_reference_rewrite() -> None:
+    """Leading-tab code samples stay opaque (Markdown.pl alternate code indent)."""
+    source = "See:\n\n\t[link text][a]\n\t[link text][A]\n"
+    rewritten = rewrite_task3_markdown(source)
+    assert rewritten == source
+    assert r"\[link text\]" not in rewritten
+    _assert_fast_release_raw_oracle(source)
+
+
+def test_multi_parent_nested_siblings_match_fast_release_and_raw_oracle() -> None:
+    """After closing one nest, a later parent's nested siblings stay siblings.
+
+    Regression for nest-depth restore on SIB_OUTDENT: depth was clobbered to
+    the list kind so the second parent's second child opened a deeper list.
+    """
+    _assert_fast_release_raw_oracle(
+        "* a\n    * a1\n    * a2\n* b\n    * b1\n    * b2\n"
+    )

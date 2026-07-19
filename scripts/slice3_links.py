@@ -234,9 +234,11 @@ def _rewrite_text(stripped: str, refs: dict[str, ReferenceRecord]) -> str:
     index = 0
     last_explicit_label: str | None = None
     last_explicit_text: str | None = None
-    # Four-space opacity applies in code-block context: document start, after a
-    # blank line, or on consecutive four-space lines after either. Lazy
-    # paragraph continuations that start with four spaces still run rewrite.
+    # Code-block opacity (four spaces or a leading tab) applies at document
+    # start, after a blank line, or on consecutive code-indented lines after
+    # either. Lazy paragraph continuations that start with four spaces still
+    # run rewrite; a leading tab is Markdown.pl's alternate code indent and
+    # must stay opaque so brackets inside tab-indented samples are not escaped.
     in_code_block = False
     at_block_boundary = True
     while index < len(stripped):
@@ -249,7 +251,7 @@ def _rewrite_text(stripped: str, refs: dict[str, ReferenceRecord]) -> str:
             if is_blank_line:
                 in_code_block = False
                 at_block_boundary = True
-            elif stripped.startswith("    ", index):
+            elif stripped.startswith("    ", index) or stripped.startswith("\t", index):
                 if at_block_boundary or in_code_block:
                     if line_end == -1:
                         out.append(stripped[index:])

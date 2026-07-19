@@ -1745,11 +1745,21 @@ ACT: Act = act(
             # the parent item before opening the same- or outer-level sibling
             # (UL and OL). Skipping ITEM_CLOSE for *+/- left parent items open
             # and scrambled Act-IV list-kind emission (Slice-5 A17).
+            # Macbeth's value is nest depth; the stack holds list kinds. A bare
+            # pop would overwrite depth with the kind. Stash countdown and
+            # depth-1 on Lady Macbeth's stack (then restore countdown) so a
+            # later parent that opens another nest still sees the true depth
+            # (Syntax TOC multi-parent same-indent children).
             push(LADY_MACBETH, const(tokens.LIST_CLOSE)),
+            push(LADY_MACBETH, val(LADY_MACBETH)),
+            push(LADY_MACBETH, sub(val(MACBETH), const(1))),
             pop(MACBETH, recall="fallen_rampart"),
-            let(MACBETH, sub(val(MACBETH), const(1))),
+            pop(LADY_MACBETH, recall="masons_stone"),
+            let(MACBETH, val(LADY_MACBETH)),
+            pop(LADY_MACBETH, recall="masons_stone"),
             push(LADY_MACBETH, const(tokens.ITEM_CLOSE)),
             goto("PASS_LISTS_ITEM_BEGIN_TIGHT"),
+            companion=MACBETH,
         ),
         # --- Indented line inside a list (no blank): nested marker or
         # --- outdented continuation (up to four spaces stripped).

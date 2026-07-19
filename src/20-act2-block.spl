@@ -3735,11 +3735,23 @@ Macbeth:
 Macbeth:
  Remember the sum of a furry black cat and a black cat.
 
+Macbeth:
+ Remember yourself.
+
+Macbeth:
+ Remember the difference between myself and a kingdom.
+
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
 
+Macbeth:
+ @LIT.characters.macbeth.recall.masons_stone
+
 Lady Macbeth:
- You are as bold as the difference between yourself and a hero.
+ You are as villainous as myself.
+
+Macbeth:
+ @LIT.characters.macbeth.recall.masons_stone
 
 Macbeth:
  Remember the difference between a normal little furry black cat and a cat.
