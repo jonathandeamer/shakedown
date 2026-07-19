@@ -12,7 +12,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Protocol
 
-from scripts.slice3_links import strip_reference_definitions
 from scripts.splc.ir import (
     Act,
     BinOp,
@@ -204,11 +203,12 @@ def run_act(
     IR-level validation in `scripts.splc.validate`. `HaltAct` ends the act;
     running off the end of a scene's ops without a jump cannot happen because
     every scene is validated as terminal.
+
+    Act I reference stripping is owned by ``HECATE_REF_OPEN`` (via
+    ``scripts.splc.act1_ref_strip``) after normalize reverse — not a pre-act
+    Python ``strip_reference_definitions`` hook. Blank collapse and the final
+    double-newline body boundary are part of that Act I path (Amendment A1.2).
     """
-    if act.number == 1 and state.input_pos == 0:
-        state.input_text, _ = strip_reference_definitions(state.input_text)
-        if state.input_text.endswith("\n\n"):
-            state.input_text = state.input_text[:-1]
     by_label = {sc.label: sc for sc in act.scenes}
     label = act.scenes[0].label
     step = 0
@@ -217,8 +217,7 @@ def run_act(
         if observer is not None:
             observer.on_scene(sc.label, state)
         # Amendment A1: Act I reference strip after normalize reverse.
-        # Stack state machine lives in act1_ref_strip (not the pre-act
-        # strip_reference_definitions hook). Jumps to ACT_I_DONE when done.
+        # Stack state machine lives in act1_ref_strip. Jumps to ACT_I_DONE.
         if sc.label == "HECATE_REF_OPEN":
             from scripts.splc.act1_ref_strip import apply_act1_reference_strip
 

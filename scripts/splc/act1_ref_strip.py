@@ -6,11 +6,10 @@ bootstrap floor.
 
 This module is the executable semantics for ``HECATE_REF_OPEN`` in the IR
 interpreter. It deliberately does **not** call
-``scripts.slice3_links.strip_reference_definitions`` so Act I tests that
-patch that hook to identity still exercise this path. A pure op-level IR
-port of the same state machine remains the Task 2 end state for pure
-``shakespeare`` execution; this module is the proven algorithm those ops
-must match.
+``scripts.slice3_links.strip_reference_definitions``; Act I owns strip on
+the production IR path. A pure op-level IR port of the same state machine
+remains the end state for pure ``shakespeare`` execution; this module is
+the proven algorithm those ops must match.
 """
 
 from __future__ import annotations

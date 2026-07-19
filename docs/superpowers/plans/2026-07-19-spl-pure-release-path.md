@@ -240,11 +240,13 @@ Regenerate and assemble.
 
 Evidence (2026-07-19, grok-implement): Wired `HECATE_REF_*` after normalize reverse; promoted 20 A1 working titles to `[scenes.*]`. Strip+table semantics land in `scripts/splc/act1_ref_strip.py` and run when the IR interpreter enters `HECATE_REF_OPEN` (A1.2 body + Rosalind records; does not call `strip_reference_definitions`, so identity-patched Act I contracts exercise this path). A1.3 labels are a reachable lattice for lowering; pure op-level bodies that replace the OPEN intrinsic remain follow-on work before Task 5 pure `shakespeare`. Gates: `tests/test_act1_references.py` **8 passed**; literary/generated `75 passed`; non-link mdtest + spikes/token `67 passed, 16 deselected`; `splc` + assemble regenerated `src/10-act1-preprocess.spl` / `shakedown.spl`.
 
-- [ ] **Step 3: Remove interpret.py Act I strip hook**
+- [x] **Step 3: Remove interpret.py Act I strip hook**
 
 In `scripts/splc/interpret.py`, delete the `act.number == 1 and state.input_pos == 0: strip_reference_definitions(...)` block (and the trailing double-newline tweak **only if** Act I now owns equivalent boundary behavior; if removing the tweak regresses blanks, keep a one-line comment and a focused test proving Act I matches oracle blank handling).
 
-- [ ] **Step 4: Gates**
+Evidence (2026-07-19, grok-implement): Removed the pre-act `strip_reference_definitions` import/hook and the trailing double-newline tweak from `run_act`. Act I owns strip+blank boundary via `HECATE_REF_OPEN` / `act1_ref_strip` (A1.2). Updated `tests/test_act1_references.py` to call the production IR path without identity-patching the retired hook.
+
+- [x] **Step 4: Gates**
 
 ```bash
 uv run pytest tests/test_act1_references.py -q
@@ -257,7 +259,9 @@ git diff --exit-code -- src/*.spl shakedown.spl debug/
 
 Note: default `test_mdtest` still uses rewrite; raw inventory xfails remain. Act I tests must pass without Python strip.
 
-- [ ] **Step 5: Commit**
+Evidence (2026-07-19, grok-implement): `test_act1_references` **8 passed**; non-link mdtest **22 passed, 14 deselected**; spikes/token/validate/generated/literary **114 passed**; `splc` + assemble with `git diff --exit-code` on generated fragments **clean**.
+
+- [x] **Step 5: Commit**
 
 ```bash
 git commit -m "feat: strip reference definitions in Act I"

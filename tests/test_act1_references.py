@@ -2,15 +2,14 @@
 
 Task 2 of docs/superpowers/plans/2026-07-19-spl-pure-release-path.md
 (Amendment A1): after Act I, definition lines are absent from the body
-stream and Rosalind holds a case-folded reference table. Tests run the
-fast IR interpreter **without** Python ``strip_reference_definitions``
-so red failures prove SPL does not yet own the strip.
+stream and Rosalind holds a case-folded reference table. The IR
+interpreter no longer pre-strips via Python ``strip_reference_definitions``;
+Act I owns strip at ``HECATE_REF_OPEN``.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from unittest.mock import patch
 
 from scripts.slice3_links import ReferenceRecord, strip_reference_definitions
 from scripts.splc.interpret import InterpreterState, run_act
@@ -109,17 +108,9 @@ def _decode_rosalind_table(stack: list[int]) -> dict[str, ReferenceRecord]:
 
 
 def _run_act1_without_python_strip(input_text: str) -> Act1RefView:
-    """Act I only, with interpret.py's strip hook forced to identity."""
-
-    def _identity_strip(text: str) -> tuple[str, dict[str, ReferenceRecord]]:
-        return text, {}
-
-    with patch(
-        "scripts.splc.interpret.strip_reference_definitions",
-        side_effect=_identity_strip,
-    ):
-        state = InterpreterState(input_text=input_text)
-        run_act(ACT1, state, step_limit=STEP_LIMIT)
+    """Act I only — production interpret path has no Python strip hook."""
+    state = InterpreterState(input_text=input_text)
+    run_act(ACT1, state, step_limit=STEP_LIMIT)
     body = "".join(chr(code) for code in reversed(state.stacks[HECATE]))
     refs = _decode_rosalind_table(list(state.stacks[ROSALIND]))
     return Act1RefView(body=body, body_count=state.values[HORATIO], refs=refs)
