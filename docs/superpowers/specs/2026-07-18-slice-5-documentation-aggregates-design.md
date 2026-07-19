@@ -941,3 +941,42 @@ including the A4 scan entry, and run:
 ```bash
 uv run pytest tests/test_splc_generated_fragments.py tests/test_spl_parse_smoke.py tests/test_splc_validate.py tests/test_literary_compliance.py tests/test_literary_toml_schema.py tests/test_assemble.py tests/test_codegen_html.py -q
 ```
+
+## Amendment A14 (2026-07-19): spare labels live under `[spares.*]`, not `[scenes.*]`
+
+Every ready-to-paste spare block above (A9's five, A11's eight, A13's four —
+17 titles total across the binding 40-working/12-spare Task-3 ledger) is
+written as `[scenes.LABEL]`. `scripts/literary_surfaces.load_literary_surfaces`
+recursively merges every `*-literary.toml` file into one `data["scenes"]`
+table, and `tests/test_literary_compliance.py`'s
+`test_scene_titles_have_toml_entries_and_match_source` and
+`test_scene_ledger_matches_source_scene_labels` both assert
+`set(source_scene_labels) == set(data["scenes"])`. A spare has no IR `Scene`
+by design (`test_act2_a11_spare_labels_are_not_implemented_as_scenes`), so any
+`[scenes.LABEL]` spare entry makes that equality fail. This was verified
+empirically: appending one spare `[scenes.PASS_SETEXT_RETURN_GUARD]` entry
+with no matching IR scene fails both compliance tests.
+
+This amendment is Task-3-Step-3-scoped and non-behavioral: every spare entry
+in every amendment above must be installed under a sibling top-level table,
+`[spares.LABEL]`, instead of `[scenes.LABEL]`, keeping the same `title` and
+`pattern` keys. `load_literary_surfaces` merges `[spares.*]` into
+`data["spares"]` exactly as it does `data["scenes"]`, but no test asserts
+`data["spares"]` against IR scene labels, so the scene-ledger equality holds
+with zero spares present in `data["scenes"]`. This does not exempt any spare
+from its no-IR-scene test, does not add a token/selector/participant, and does
+not change which twelve titles are reserved as spares or which forty are
+working labels. Any future amendment that assigns a spare to working-label
+status must move its entry from `[spares.LABEL]` to `[scenes.LABEL]` at the
+same time it adds the IR `Scene`.
+
+The exact required regression command, run once for the full spare set
+before any Task-3-Step-3 IR edit:
+
+```bash
+uv run pytest tests/test_literary_compliance.py tests/test_literary_toml_schema.py -q
+```
+
+Expected: green with all 40 Task-3 working labels present in `data["scenes"]`
+and matching IR scene labels one-to-one, and all 12 spares present only in
+`data["spares"]`.

@@ -551,3 +551,37 @@ minimal failing witness and stop.
 a substitute for a real blocker: if the regression search in fact surfaces an
 architecture question, record a fresh, specific `- BLOCK[plan]:` line rather
 than reinstating the generic one.
+
+## Amendment A15 (2026-07-19): spare TOML entries move to `[spares.*]`
+
+This amendment clears the outstanding `- BLOCK[plan]:` recorded against Task
+3 Step 3: the accepted design's ready-to-paste spare blocks for A9 (five
+labels), A11 (eight labels), and A13 (four labels) each write
+`[scenes.LABEL]`, but `scripts/literary_surfaces.load_literary_surfaces`
+merges every such entry into one `data["scenes"]` table, and
+`tests/test_literary_compliance.py`'s `test_scene_titles_have_toml_entries_and_match_source`
+and `test_scene_ledger_matches_source_scene_labels` both require
+`set(source_scene_labels) == set(data["scenes"])`. A spare label has no IR
+`Scene`, so any `[scenes.LABEL]` spare entry fails both tests — verified
+empirically by appending one such entry and observing both failures, then
+reverting cleanly.
+
+Design Amendment A14 is now binding for all of Task 3 Step 3: every spare
+title in the accepted design (17 across A9/A11/A13, converging on the
+40-working/12-spare ledger) is installed as `[spares.LABEL]`, not
+`[scenes.LABEL]`, with the same `title`/`pattern` keys. This is a TOML-shape
+correction only — it authorizes no new label, token, selector, participant,
+compiler/validator change, or Act-III/IV behavior, and it does not change
+which titles are spares versus working labels. Step 3 must install every
+spare under `[spares.*]` from the start (not `[scenes.*]` followed by a
+later move), run `uv run pytest tests/test_literary_compliance.py
+tests/test_literary_toml_schema.py -q` after each amendment's spare block is
+added, and keep the existing eight-/twelve-spare absence-from-`data["scenes"]`
+IR contracts required by A9/A11/A13 — those contracts remain meaningful
+because `[spares.*]` entries never appear in `data["scenes"]`.
+
+Both `- BLOCK[plan]:` lines in `.agent/blockers.md` are cleared by this
+amendment: the TOML-shape contradiction is resolved, and the separable
+Setext/ATX/code-line IR reconstruction described by Amendment A14 (plan) may
+now proceed using this corrected TOML shape from the start. Any need beyond
+this shape correction remains `- BLOCK[plan]:` with the smallest witness.
