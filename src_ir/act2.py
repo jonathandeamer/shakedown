@@ -74,6 +74,11 @@ _CODE_LINE_NONBLANK = const(1)
 _HEADER_TRAIL_FLOOR = sub(const(0), const(42))
 _HEADER_TRAIL_SAW_HASH = const(1)
 
+# Amendment A16/A17: private floors for whitespace-only blank-line boundary.
+# Prefer recipe-simple negatives (ops ≤ 4) that do not collide with A9/A11/A13.
+_PARA_WS_FLOOR = sub(const(0), const(36))
+_PARA_WS_REPLAY_FLOOR = sub(const(0), const(46))
+
 # Amendment A9/A11/A12: Setext private floors, close discriminators, and
 # underline-state rail values. None is a stream token or Act-III input.
 _SETEXT_CANDIDATE_FLOOR = sub(const(0), const(30))
@@ -787,6 +792,10 @@ ACT: Act = act(
                 eq(val(HECATE), _NEWLINE),
                 then="PASS_HEADER_CLOSE",
             ),
+            # A17 first-pass: a spaces-only next line is a blank boundary, not
+            # soft-break. Failed-setext resume holds the look-ahead in Hecate
+            # exactly like PASS_LISTS_RAW_AFTER_NEWLINE after _read().
+            branch(eq(val(HECATE), _SPACE), then="PASS_PARA_WS_OPEN"),
             goto("PASS_LISTS_RAW_GLYPH"),
             companion=HECATE,
         ),
@@ -1308,7 +1317,107 @@ ACT: Act = act(
             *_read("blank_glyph"),
             branch(gt(val(HORATIO), const(0)), then="PASS_QUOTE_AFTER_NEWLINE"),
             branch(eq(val(HECATE), _NEWLINE), then="PASS_LISTS_RAW_BLANK"),
+            # A17: spaces-only blank is a first-pass raw boundary (not soft-break).
+            # Skip when Horatio holds raw-HTML mode (-2): reverse-replay would
+            # clobber that mode flag, and indented HTML body lines must stay raw.
+            branch(
+                eq(val(HORATIO), _RAW_HTML_MODE),
+                then="PASS_LISTS_RAW_GLYPH",
+            ),
+            branch(eq(val(HECATE), _SPACE), then="PASS_PARA_WS_OPEN"),
             goto("PASS_LISTS_RAW_GLYPH"),
+        ),
+        # --- Amendment A17: first-pass whitespace-only blank-line boundary.
+        # Labels/floors from A16; locus is PASS_LISTS_RAW_AFTER_NEWLINE with
+        # Hecate/_read(). Puck buffers provisional spaces above _PARA_WS_FLOOR;
+        # Horatio reverse-replays only when the line has trailing content.
+        # Terminals: PASS_LISTS_RAW_BLANK (mint CODE_BLOCK via BLOCK_START) and
+        # PASS_LISTS_RAW_GLYPH (soft-break continuation).
+        scene(
+            "PASS_PARA_WS_OPEN",
+            push(PUCK, _PARA_WS_FLOOR),
+            push(PUCK, val(HECATE)),
+            goto("PASS_PARA_WS_SCAN"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_PARA_WS_SCAN",
+            *_read(),
+            branch(eq(val(HECATE), _NEWLINE), then="PASS_PARA_WS_BLANK_DROP"),
+            branch(eq(val(HECATE), _END), then="PASS_PARA_WS_BLANK_DROP"),
+            goto("PASS_PARA_WS_CONTINUE"),
+            companion=HECATE,
+        ),
+        scene(
+            "PASS_PARA_WS_CONTINUE",
+            push(PUCK, val(HECATE)),
+            branch(eq(val(HECATE), _SPACE), then="PASS_PARA_WS_SCAN"),
+            pop(PUCK, recall="replay_glyph"),
+            goto("PASS_PARA_WS_REVERSE_OPEN"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_PARA_WS_BLANK_DROP",
+            # Discard buffered spaces (self-goto loop, same idiom as A13
+            # code-line blank drop). Floor → TERMINATE → RAW_BLANK.
+            pop(PUCK, recall="kept_tally"),
+            branch(
+                eq(val(PUCK), _PARA_WS_FLOOR),
+                then="PASS_PARA_WS_TERMINATE",
+            ),
+            goto("PASS_PARA_WS_BLANK_DROP"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            # Blank-path terminal: stage pair matches BLANK_DROP's leave so the
+            # branch above is consistent; goto RAW_BLANK (shared with bare
+            # blank) is pair-safe under goto rules.
+            "PASS_PARA_WS_TERMINATE",
+            goto("PASS_LISTS_RAW_BLANK"),
+            anchor=HECATE,
+            companion=PUCK,
+        ),
+        scene(
+            "PASS_PARA_WS_REVERSE_OPEN",
+            push(HORATIO, _PARA_WS_REPLAY_FLOOR),
+            goto("PASS_PARA_WS_REVERSE_TRANSFER"),
+            anchor=PUCK,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_PARA_WS_REVERSE_TRANSFER",
+            # Double-reverse spaces onto Horatio, discard the Puck floor, then
+            # prime Horatio's value with the first restored space so REPLAY
+            # never pushes the replay floor onto Lady Macbeth.
+            pop(PUCK, recall="replay_glyph"),
+            push(HORATIO, val(PUCK)),
+            branch(
+                gt(val(PUCK), const(0)),
+                then="PASS_PARA_WS_REVERSE_TRANSFER",
+            ),
+            pop(HORATIO, recall="replay_glyph"),
+            pop(HORATIO, recall="kept_measure"),
+            goto("PASS_PARA_WS_REPLAY"),
+            anchor=PUCK,
+            companion=HORATIO,
+        ),
+        scene(
+            "PASS_PARA_WS_REPLAY",
+            # Horatio's value is the current space. Push it, load the next;
+            # more spaces loop via self-branch; floor falls through to
+            # RAW_GLYPH with Hecate still holding the non-space look-ahead.
+            push(LADY_MACBETH, val(HORATIO)),
+            pop(HORATIO, recall="kept_measure"),
+            branch(
+                gt(val(HORATIO), const(0)),
+                then="PASS_PARA_WS_REPLAY",
+            ),
+            goto("PASS_LISTS_RAW_GLYPH"),
+            anchor=HORATIO,
+            companion=LADY_MACBETH,
         ),
         scene(
             "PASS_QUOTE_EOF_GATE",

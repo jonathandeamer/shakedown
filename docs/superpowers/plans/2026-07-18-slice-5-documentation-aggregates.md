@@ -301,7 +301,7 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   code_block): `8 passed`. Shared Task-4 fragment: slice5+spikes+token dumps
   `69 passed`; mdtest+spikes `54 passed, 1 skipped`. No IR/SPL change.
 
-- [ ] **Step 2c: Implement the whitespace-only blank-line boundary (Act II).** Authority: plan Amendment A19 + design Amendment A17 (labels/floors/titles from design A16; first-pass locus and pair ledger from A17). Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`, `src/20-act2-literary.toml`; regenerate `src/20-act2-block.spl` and `shakedown.spl`. Preserve existing uncommitted WIP for tests/TOML; rewrite second-pass PARA IR into the A17 first-pass shape rather than discarding contracts.
+- [x] **Step 2c: Implement the whitespace-only blank-line boundary (Act II).** Authority: plan Amendment A19 + design Amendment A17 (labels/floors/titles from design A16; first-pass locus and pair ledger from A17). Files: `tests/test_slice5_documentation_aggregates.py` and/or `tests/test_act2_slice4.py` (minimal witnesses), `src_ir/act2.py`, `src/20-act2-literary.toml`; regenerate `src/20-act2-block.spl` and `shakedown.spl`. Preserve existing uncommitted WIP for tests/TOML; rewrite second-pass PARA IR into the A17 first-pass shape rather than discarding contracts.
 
   1. Keep (or finish seeding) the Task-4 Step-1 inventory fifth `whitespace_only_blank_boundary` category row (owner `act2`). Keep focused contracts for: the exact Syntax witness, the minimal `Para:\n    \n    code line\n` witness (must be `PARA`+`CODE_BLOCK`, not two `PARA`s), the soft-break control `Para:\n    still para\n` (single `PARA`, leading spaces preserved), the ordinary continuation `Para:\nnext line\n`, and optionally the bare-blank control `Para:\n\n    code line\n`. Each contract checks decoded stream shape, fast Act-IV output, release output, and installed-local Markdown.pl bytes. Pair-chain assertions must match design A17's first-pass pairs (Hecate+Puck OPEN, Lady Macbeth+Hecate SCAN `_read`, Hecate+Puck CONTINUE capture, …, Horatio+Lady Macbeth REPLAY → `PASS_LISTS_RAW_GLYPH`); all four A16 guard titles remain absent from `data["scenes"]`. Prove red on the `CODE_BLOCK` witnesses before finishing the IR rewrite if they are not already red.
   2. Implement only design Amendment A17's first-pass `PASS_PARA_WS_*` machine as detailed in the 2c authorized-repair entry above. No second-pass `PASS_PARA_NEWLINE` branch; no token, selector, Act-III/IV role, or non-Act-II file change. Regenerate and assemble.
@@ -315,6 +315,13 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
      ```
 
      All green; `syntax_category` fully green; no regression in any other category. Commit as `feat: split raw regions on whitespace-only blank lines`; push with the required trailers.
+
+  Evidence (2026-07-19): A17 first-pass `PASS_PARA_WS_*` machine on
+  `PASS_LISTS_RAW_AFTER_NEWLINE` (plus failed-setext look-ahead handoff and
+  raw-HTML mode skip so Horatio's mode flag is not clobbered). Eight working
+  titles promoted; four guards stay spares. Floors use recipe-simple -36/-46.
+  Focused gate: `47 passed`. SPL-facing: `233 passed`. Task-4 fragment:
+  `76 passed`. mdtest+spikes: `54 passed, 1 skipped`.
 
   After 2a, 2b, and 2c all land, Step 2 is complete. Do not enable the full Syntax fixture here — that remains Steps 3–4.
 

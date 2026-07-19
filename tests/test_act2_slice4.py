@@ -895,3 +895,89 @@ def test_code_line_blank_payload_matches_fast_release_and_raw_oracle(
     )
     assert release.returncode == 0, release.stderr.decode()
     assert release.stdout == expected
+
+
+# --- Amendment A16: whitespace-only blank-line boundary (paragraph scanner). ---
+
+PARA_WS_MINIMAL_BLANK = "Para:\n    \n    code line\n"
+PARA_WS_PREFIXED_CONTINUATION = "Para:\n    still para\n"
+PARA_WS_ORDINARY_CONTINUATION = "Para:\nnext line\n"
+PARA_WS_SYNTAX_WITNESS = (
+    "And then define the link:\n\t\n\t[Daring Fireball]: http://daringfireball.net/\n"
+)
+
+
+@pytest.mark.parametrize(
+    ("source", "expected_roles"),
+    [
+        (
+            PARA_WS_MINIMAL_BLANK,
+            [tokens.PARA, tokens.CODE_BLOCK],
+        ),
+        (
+            PARA_WS_SYNTAX_WITNESS,
+            [tokens.PARA, tokens.CODE_BLOCK],
+        ),
+        (
+            PARA_WS_PREFIXED_CONTINUATION,
+            [tokens.PARA],
+        ),
+        (
+            PARA_WS_ORDINARY_CONTINUATION,
+            [tokens.PARA],
+        ),
+    ],
+    ids=[
+        "minimal_blank",
+        "syntax_witness",
+        "prefixed_continuation",
+        "ordinary_continuation",
+    ],
+)
+def test_para_ws_decoded_stream_shape(source: str, expected_roles: list[int]) -> None:
+    decoded = decode_stream(_act2_stream(source))
+    assert [token.code for token in decoded] == expected_roles
+    if expected_roles == [tokens.PARA, tokens.CODE_BLOCK]:
+        assert decoded[0].text == (
+            "Para:" if source == PARA_WS_MINIMAL_BLANK else "And then define the link:"
+        )
+        assert decoded[1].text is not None
+        assert "code line" in decoded[1].text or "Daring Fireball" in decoded[1].text
+    else:
+        assert decoded[0].text is not None
+        assert "\n" in decoded[0].text or decoded[0].text.startswith("Para:")
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        PARA_WS_MINIMAL_BLANK,
+        PARA_WS_SYNTAX_WITNESS,
+        PARA_WS_PREFIXED_CONTINUATION,
+        PARA_WS_ORDINARY_CONTINUATION,
+    ],
+    ids=[
+        "minimal_blank",
+        "syntax_witness",
+        "prefixed_continuation",
+        "ordinary_continuation",
+    ],
+)
+def test_para_ws_matches_fast_release_and_raw_oracle(source: str) -> None:
+    from tests.test_mdtest import BINARY
+
+    input_bytes = source.encode()
+    expected = _oracle_html(source).encode()
+
+    fast_actual = _interpret_ir(source)
+    assert isinstance(fast_actual, str)
+    assert fast_actual.encode() == expected
+
+    release = subprocess.run(
+        [str(BINARY)],
+        input=input_bytes,
+        capture_output=True,
+        check=False,
+    )
+    assert release.returncode == 0, release.stderr.decode()
+    assert release.stdout == expected

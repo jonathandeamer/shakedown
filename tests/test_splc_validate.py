@@ -514,3 +514,63 @@ def test_act2_a13_spare_labels_are_not_implemented_as_scenes() -> None:
         "PASS_CODE_LINE_CLOSE_GUARD",
     ):
         assert label not in _ACT2_SCENES_BY_LABEL
+
+
+@pytest.mark.parametrize(
+    ("label", "expected"),
+    [
+        # Design Amendment A17 first-pass pair ledger (supersedes A16 Macbeth pairs).
+        ("PASS_PARA_WS_OPEN", (Char.HECATE, Char.PUCK)),
+        ("PASS_PARA_WS_SCAN", (Char.LADY_MACBETH, Char.HECATE)),
+        ("PASS_PARA_WS_CONTINUE", (Char.HECATE, Char.PUCK)),
+        ("PASS_PARA_WS_BLANK_DROP", (Char.HECATE, Char.PUCK)),
+        # TERMINATE is the blank-path goto bridge (Hecate+Puck matches
+        # BLANK_DROP); soft-break REPLAY gotos RAW_GLYPH directly.
+        ("PASS_PARA_WS_TERMINATE", (Char.HECATE, Char.PUCK)),
+        ("PASS_PARA_WS_REVERSE_OPEN", (Char.PUCK, Char.HORATIO)),
+        ("PASS_PARA_WS_REVERSE_TRANSFER", (Char.PUCK, Char.HORATIO)),
+        ("PASS_PARA_WS_REPLAY", (Char.HORATIO, Char.LADY_MACBETH)),
+    ],
+)
+def test_act2_a17_entry_pairs_use_only_the_authorized_scene_pairs(
+    label: str, expected: tuple[Char, Char]
+) -> None:
+    from scripts.splc.validate import participants
+
+    assert participants(_ACT2_SCENES_BY_LABEL[label], ACT2.anchor) == expected
+
+
+def test_act2_a16_spare_labels_are_not_implemented_as_scenes() -> None:
+    for label in (
+        "PASS_PARA_WS_RETURN_GUARD",
+        "PASS_PARA_WS_FLOOR_GUARD",
+        "PASS_PARA_WS_REPLAY_GUARD",
+        "PASS_PARA_WS_CONTINUE_GUARD",
+    ):
+        assert label not in _ACT2_SCENES_BY_LABEL
+
+
+def test_act2_all_sixteen_guard_spares_are_absent_from_scenes() -> None:
+    """A11+A13+A16 guard titles (12+4) must never appear as live scenes."""
+    for label in (
+        # A9/A11 setext + header-trail guards
+        "PASS_SETEXT_RETURN_GUARD",
+        "PASS_SETEXT_LEVEL_GUARD",
+        "PASS_SETEXT_REPLAY_GUARD",
+        "PASS_SETEXT_DISPATCH_GUARD",
+        "PASS_SETEXT_ATX_GUARD",
+        "PASS_HEADER_TRAIL_RETURN_GUARD",
+        "PASS_HEADER_TRAIL_FLOOR_GUARD",
+        "PASS_HEADER_TRAIL_CLOSE_GUARD",
+        # A13 code-line guards
+        "PASS_CODE_LINE_RETURN_GUARD",
+        "PASS_CODE_LINE_FLOOR_GUARD",
+        "PASS_CODE_LINE_REPLAY_GUARD",
+        "PASS_CODE_LINE_CLOSE_GUARD",
+        # A16 paragraph whitespace-boundary guards
+        "PASS_PARA_WS_RETURN_GUARD",
+        "PASS_PARA_WS_FLOOR_GUARD",
+        "PASS_PARA_WS_REPLAY_GUARD",
+        "PASS_PARA_WS_CONTINUE_GUARD",
+    ):
+        assert label not in _ACT2_SCENES_BY_LABEL

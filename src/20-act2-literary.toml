@@ -899,6 +899,7 @@ underline_warrant = "Recall the measured line warrant."
 underline_byte = "Recall the measured underline mark."
 restored_glyph = "Recall the restored title letter."
 saved_countdown = "Recall the saved line measure."
+kept_measure = "Recall the kept line's restored measure."
 
 [characters.hecate.recall]
 trail_glyph = "Recall the deferred border mark."
@@ -907,15 +908,19 @@ saved_countdown = "Recall the saved line measure."
 underline_warrant = "Recall the measured line warrant."
 underline_byte = "Recall the measured underline mark."
 candidate_glyph = "Recall the unmarked candidate letter."
+replay_glyph = "Recall the sealed passage letter."
 
 [characters.puck.recall]
 trail_glyph = "Recall the deferred border mark."
 replay_glyph = "Recall the sealed passage letter."
 title_glyph = "Recall the sealed title letter."
 saved_countdown = "Recall the saved line measure."
+staged_stone = "Recall the doubtful line's staged mark."
 
 [characters.macbeth.recall]
 underline_warrant = "Recall the measured line warrant."
+replay_glyph = "Recall the sealed passage letter."
+kept_tally = "Recall the idle line's kept tally."
 
 [characters.horatio.recall]
 underline_byte = "Recall the measured underline mark."
@@ -923,6 +928,7 @@ restored_glyph = "Recall the restored title letter."
 saved_countdown = "Recall the saved line measure."
 underline_warrant = "Recall the measured line warrant."
 replay_glyph = "Recall the sealed passage letter."
+kept_measure = "Recall the kept line's restored measure."
 [scenes.PASS_WRAP_DOT]
 title = "Macbeth weighs the wandering numbered stroke."
 pattern = "scene_of_character"
@@ -1259,6 +1265,46 @@ title = "The kept code mark keeps one guarded passage."
 pattern = "bare_statement"
 [spares.PASS_CODE_LINE_CLOSE_GUARD]
 title = "The final code measure keeps one guarded seal."
+pattern = "bare_statement"
+
+# Slice 5 Act-II A16 whitespace-boundary working pool (8 additional labels)
+[scenes.PASS_PARA_WS_OPEN]
+title = "Macbeth grants Puck the first idle mark of a doubtful line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_SCAN]
+title = "Macbeth offers Puck each further mark of the doubtful line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_BLANK_DROP]
+title = "Puck lets the doubtful line's idle marks fall away."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_TERMINATE]
+title = "Macbeth judges the doubtful line's true ending alone."
+pattern = "bare_statement"
+[scenes.PASS_PARA_WS_REVERSE_OPEN]
+title = "Puck sets Horatio's floor for the kept doubtful line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_REVERSE_TRANSFER]
+title = "Puck entrusts Horatio each kept mark of the line."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_REPLAY]
+title = "Horatio restores the kept line to Lady Macbeth in order."
+pattern = "cross_character"
+[scenes.PASS_PARA_WS_CONTINUE]
+title = "Lady Macbeth receives the mark that proved the line alive."
+pattern = "cross_character"
+
+# Slice 5 Act-II A16 spare pool (4; all unused)
+[spares.PASS_PARA_WS_RETURN_GUARD]
+title = "The doubtful line keeps one guarded return."
+pattern = "bare_statement"
+[spares.PASS_PARA_WS_FLOOR_GUARD]
+title = "The doubtful line's chamber keeps one guarded floor."
+pattern = "bare_statement"
+[spares.PASS_PARA_WS_REPLAY_GUARD]
+title = "The kept mark keeps one guarded passage."
+pattern = "bare_statement"
+[spares.PASS_PARA_WS_CONTINUE_GUARD]
+title = "The line's revival keeps one guarded measure."
 pattern = "bare_statement"
 
 # Slice 5 Act-II active IR helper scenes

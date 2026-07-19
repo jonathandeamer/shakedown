@@ -74,6 +74,11 @@ SYNTAX_PARAGRAPH_BLOCK_SEPARATORS = (
     "\n"
     '<h2 id="overview">Overview</h2>\n'
 )
+# Task 4 Step 2c / design A16: whitespace-only line is a blank-line boundary.
+# Syntax uses a tab-only line that Act I detabs to four spaces.
+SYNTAX_WHITESPACE_ONLY_BLANK_BOUNDARY = (
+    "And then define the link:\n\t\n\t[Daring Fireball]: http://daringfireball.net/\n"
+)
 
 
 @dataclass(frozen=True)
@@ -113,6 +118,11 @@ SYNTAX_DIFF_CATEGORIES: tuple[SyntaxDiffCategory, ...] = (
     SyntaxDiffCategory(
         name="paragraph_block_separators",
         source_witness=SYNTAX_PARAGRAPH_BLOCK_SEPARATORS,
+        owning_act="act2",
+    ),
+    SyntaxDiffCategory(
+        name="whitespace_only_blank_boundary",
+        source_witness=SYNTAX_WHITESPACE_ONLY_BLANK_BOUNDARY,
         owning_act="act2",
     ),
 )
@@ -398,9 +408,10 @@ def test_tidyness_exact_fixture_matches_fast_release_and_raw_oracle() -> None:
 def test_syntax_diff_category_inventory_records_first_difference() -> None:
     """Compare release Syntax bytes to the local oracle and record the inventory.
 
-    The helper captures the first differing offset plus a minimal contiguous
-    source witness. Seeded categories must remain exact substrings of the
-    Syntax fixture so later repairs stay tied to real aggregate evidence.
+    Seeded categories must remain exact substrings of the Syntax fixture so
+    later repairs stay tied to real aggregate evidence. After Step 2c the
+    inventory is complete and full Syntax may already be byte-identical; the
+    category witnesses remain as regression guards either way.
     """
     input_path, _ = _fixture_paths("Markdown Documentation - Syntax")
     source = input_path.read_text()
@@ -409,27 +420,15 @@ def test_syntax_diff_category_inventory_records_first_difference() -> None:
     oracle = _oracle_bytes(input_bytes)
     release = _release_bytes(input_bytes)
     difference = _first_byte_difference(oracle, release)
-    assert difference is not None, (
-        "Syntax is already byte-identical; inventory is empty"
-    )
 
-    minimal_witness = _minimal_contiguous_source_witness(
-        source,
-        oracle=oracle,
-        release=release,
-        difference=difference,
-    )
-    assert minimal_witness
-    assert minimal_witness == source[: len(minimal_witness)]
-    assert source.startswith(minimal_witness) or minimal_witness in source
-
-    # Inventory seed: exactly the four observed categories, each a contiguous
+    # Inventory: exactly the five observed categories, each a contiguous
     # witness drawn from the Syntax source.
     assert [category.name for category in SYNTAX_DIFF_CATEGORIES] == [
         "raw_top_level_html",
         "nested_list_close_ordering",
         "multi_definition_reference_resolution",
         "paragraph_block_separators",
+        "whitespace_only_blank_boundary",
     ]
     for category in SYNTAX_DIFF_CATEGORIES:
         assert category.source_witness
@@ -442,8 +441,22 @@ def test_syntax_diff_category_inventory_records_first_difference() -> None:
             "wrapper_rewrite",
         }
 
-    # The recorded first difference and minimal witness stay available to Step 2
-    # category repairs via this assertion surface (offset must be stable shape).
+    if difference is None:
+        # Full Syntax matches the oracle; inventory rows stay regression guards.
+        return
+
+    minimal_witness = _minimal_contiguous_source_witness(
+        source,
+        oracle=oracle,
+        release=release,
+        difference=difference,
+    )
+    assert minimal_witness
+    assert minimal_witness == source[: len(minimal_witness)]
+    assert source.startswith(minimal_witness) or minimal_witness in source
+
+    # The recorded first difference and minimal witness stay available while
+    # any residual mismatch remains (offset must be stable shape).
     assert difference.offset >= 0
     assert difference.oracle_slice != difference.actual_slice or len(oracle) != len(
         release
@@ -529,3 +542,33 @@ def test_multi_parent_nested_siblings_match_fast_release_and_raw_oracle() -> Non
     _assert_fast_release_raw_oracle(
         "* a\n    * a1\n    * a2\n* b\n    * b1\n    * b2\n"
     )
+
+
+# --- Task 4 Step 2c / design A16: whitespace-only blank-line boundary. ---
+
+# Minimal witness (no tab): spaces-only line splits PARA from CODE_BLOCK.
+PARA_WS_MINIMAL_BLANK = "Para:\n    \n    code line\n"
+# Positive control: whitespace-prefixed line with trailing content stays joined.
+PARA_WS_PREFIXED_CONTINUATION = "Para:\n    still para\n"
+# Positive control: ordinary non-space-prefixed continuation is unaffected.
+PARA_WS_ORDINARY_CONTINUATION = "Para:\nnext line\n"
+
+
+def test_whitespace_only_syntax_witness_matches_fast_release_and_raw_oracle() -> None:
+    """Exact Syntax detabbed-tab witness is raw-byte-identical to Markdown.pl."""
+    _assert_fast_release_raw_oracle(SYNTAX_WHITESPACE_ONLY_BLANK_BOUNDARY)
+
+
+def test_para_ws_minimal_blank_matches_fast_release_and_raw_oracle() -> None:
+    """Spaces-only blank line between paragraph and indented code splits blocks."""
+    _assert_fast_release_raw_oracle(PARA_WS_MINIMAL_BLANK)
+
+
+def test_para_ws_prefixed_continuation_matches_fast_release_and_raw_oracle() -> None:
+    """Leading spaces with trailing content stay inside the paragraph."""
+    _assert_fast_release_raw_oracle(PARA_WS_PREFIXED_CONTINUATION)
+
+
+def test_para_ws_ordinary_continuation_matches_fast_release_and_raw_oracle() -> None:
+    """Non-space-prefixed continuation lines remain joined paragraphs."""
+    _assert_fast_release_raw_oracle(PARA_WS_ORDINARY_CONTINUATION)

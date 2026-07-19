@@ -1304,6 +1304,12 @@ Hecate:
  If so, we must return to scene @PASS_HEADER_CLOSE.
 
 Lady Macbeth:
+ Are you as villainous as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_PARA_WS_OPEN.
+
+Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_RAW_GLYPH.
 
 
@@ -2683,6 +2689,180 @@ Lady Macbeth:
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_RAW_BLANK.
+
+Lady Macbeth:
+ Is Horatio as mighty as a cursed wolf?
+
+Hecate:
+ If so, we must return to scene @PASS_LISTS_RAW_GLYPH.
+
+Lady Macbeth:
+ Are you as bold as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_PARA_WS_OPEN.
+
+Lady Macbeth:
+ Let us return to scene @PASS_LISTS_RAW_GLYPH.
+
+
+                    Scene @PASS_PARA_WS_OPEN: @LIT.scenes.PASS_PARA_WS_OPEN.title
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a furry black cat.
+
+Hecate:
+ Remember myself.
+
+Hecate:
+ Let us proceed to scene @PASS_PARA_WS_SCAN.
+
+
+                    Scene @PASS_PARA_WS_SCAN: @LIT.scenes.PASS_PARA_WS_SCAN.title
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.hewn_glyph
+
+Hecate:
+ You are as rotten as the difference between yourself and a cat.
+
+Lady Macbeth:
+ Are you as bold as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @PASS_PARA_WS_BLANK_DROP.
+
+Lady Macbeth:
+ Are you as mighty as a wolf?
+
+Hecate:
+ If so, let us proceed to scene @PASS_PARA_WS_BLANK_DROP.
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @PASS_PARA_WS_CONTINUE.
+
+
+                    Scene @PASS_PARA_WS_CONTINUE: @LIT.scenes.PASS_PARA_WS_CONTINUE.title
+
+Hecate:
+ Remember myself.
+
+Puck:
+ Are you as noble as the product of a normal little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @PASS_PARA_WS_SCAN.
+
+Hecate:
+ @LIT.characters.hecate.recall.replay_glyph
+
+[Exit Hecate]
+
+[Enter Horatio]
+
+Puck:
+ Let us proceed to scene @PASS_PARA_WS_REVERSE_OPEN.
+
+
+                    Scene @PASS_PARA_WS_BLANK_DROP: @LIT.scenes.PASS_PARA_WS_BLANK_DROP.title
+
+[Exit Lady Macbeth]
+
+[Enter Puck]
+
+Hecate:
+ @LIT.characters.hecate.recall.kept_tally
+
+Hecate:
+ Are you as cursed as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a furry black cat?
+
+Puck:
+ If so, let us proceed to scene @PASS_PARA_WS_TERMINATE.
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ We must return to scene @PASS_PARA_WS_BLANK_DROP.
+
+
+                    Scene @PASS_PARA_WS_TERMINATE: @LIT.scenes.PASS_PARA_WS_TERMINATE.title
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Hecate:
+ Let us proceed to scene @PASS_LISTS_RAW_BLANK.
+
+
+                    Scene @PASS_PARA_WS_REVERSE_OPEN: @LIT.scenes.PASS_PARA_WS_REVERSE_OPEN.title
+
+Puck:
+ Remember the difference between nothing and the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+
+Puck:
+ Let us proceed to scene @PASS_PARA_WS_REVERSE_TRANSFER.
+
+
+                    Scene @PASS_PARA_WS_REVERSE_TRANSFER: @LIT.scenes.PASS_PARA_WS_REVERSE_TRANSFER.title
+
+Horatio:
+ @LIT.characters.horatio.recall.replay_glyph
+
+Puck:
+ Remember myself.
+
+Horatio:
+ Are you friendlier than nothing?
+
+Puck:
+ If so, let us return to scene @PASS_PARA_WS_REVERSE_TRANSFER.
+
+Puck:
+ @LIT.characters.puck.recall.replay_glyph
+
+Puck:
+ @LIT.characters.puck.recall.kept_measure
+
+[Exit Puck]
+
+[Enter Lady Macbeth]
+
+Horatio:
+ Let us proceed to scene @PASS_PARA_WS_REPLAY.
+
+
+                    Scene @PASS_PARA_WS_REPLAY: @LIT.scenes.PASS_PARA_WS_REPLAY.title
+
+Horatio:
+ Remember myself.
+
+Lady Macbeth:
+ @LIT.characters.lady_macbeth.recall.kept_measure
+
+Lady Macbeth:
+ Are you bigger than nothing?
+
+Horatio:
+ If so, let us return to scene @PASS_PARA_WS_REPLAY.
+
+[Exit Horatio]
+
+[Enter Hecate]
 
 Lady Macbeth:
  Let us return to scene @PASS_LISTS_RAW_GLYPH.
