@@ -229,7 +229,17 @@
 
 **Interfaces:** Every repair consumes/emits the existing stream grammar. The test inventory records `(category, source witness, first differing byte, owning act)` so a later failure cannot silently become a fixture-specific patch.
 
-- [ ] **Step 1: Turn the Syntax diff into a finite category inventory.** Add a helper test that compares real release bytes with the local oracle and records the first difference plus the minimal contiguous source witness. Seed it with the observed categories: raw top-level HTML (`h2`/`h3` with attributes), nested list close ordering, multi-definition reference resolution, and paragraph/block separators. Require each category to have a fast-IR, release, and strict oracle assertion before changing production behavior.
+- [x] **Step 1: Turn the Syntax diff into a finite category inventory.** Add a helper test that compares real release bytes with the local oracle and records the first difference plus the minimal contiguous source witness. Seed it with the observed categories: raw top-level HTML (`h2`/`h3` with attributes), nested list close ordering, multi-definition reference resolution, and paragraph/block separators. Require each category to have a fast-IR, release, and strict oracle assertion before changing production behavior.
+
+  Evidence (2026-07-19): `tests/test_slice5_documentation_aggregates.py` adds
+  `_first_byte_difference`, `_minimal_contiguous_source_witness`, the four-row
+  `SYNTAX_DIFF_CATEGORIES` inventory (contiguous Syntax substrings), and
+  parametrized fast-IR/release/raw-oracle assertions per category. Focused gate
+  `pytest ... -k 'syntax_diff or syntax_category'` reports `3 passed, 2 failed`:
+  the inventory helper and the currently green raw-HTML plus paragraph/block
+  separator witnesses pass; nested list close ordering and multi-definition
+  reference resolution remain red as intended before Step 2 repairs. Full file
+  run: `17 passed, 2 failed`. No production or generated SPL changed.
 
 - [ ] **Step 2: Repair one evidenced category at a time.** For each red category, write its minimal test, prove it red, modify the owning existing IR route, regenerate, and run the Task-4 gate below before beginning another category. Do not add a label beyond Task 3's amended 40-working/12-spare Act-II ledger or change token grammar. If one category needs either, record `- BLOCK[plan]:` with the witness and stop.
 
