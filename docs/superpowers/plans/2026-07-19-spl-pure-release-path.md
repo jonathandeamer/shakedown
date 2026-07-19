@@ -292,7 +292,7 @@ git push
 
 **Literary:** Reserve Act III working+spare titles **before** 3a (Amendment A2 in plan file if counts exceed initial estimate). Prefer reusing existing `LYRIC_*` machines; only promote new labels when reuse is impossible.
 
-- [ ] **Step 1: Write red pure-IR contracts for 3a–3e**
+- [x] **Step 1: Write red pure-IR contracts for 3a–3e**
 
 Each contract: raw Markdown in → Act IV HTML out via IR **without** `rewrite_task3_markdown`, compared to `perl $SHAKEDOWN_MARKDOWN_PL` or `_expected_fixture_output` for a minimal slice.
 
@@ -301,6 +301,8 @@ Run to confirm red:
 ```bash
 uv run pytest tests/test_act3_links_pure.py -q
 ```
+
+Evidence (2026-07-19, grok-implement): Added `tests/test_act3_links_pure.py` with pure-IR (no `rewrite_task3_markdown`) vs local Markdown.pl contracts for witnesses 3a–3e. Gate: `uv run pytest tests/test_act3_links_pure.py -q` → **21 failed, 3 passed** (red: angle-bracket dest unwrap, multi-space titles, empty `title=""`, reference links/images, title quotes, nested brackets, broken-line link text; green already: simple amp inline, amp angle dest, titled inline image).
 
 - [ ] **Step 2: Implement resolution (3a→3e)**
 
