@@ -388,12 +388,19 @@ README: state that parity entry is IR-only acceleration, semantically equal to `
 
 Evidence (2026-07-19, grok-implement): `./shakedown-parity` already exec'd pure `scripts.release_runtime` (no rewrite); updated entry header, README, and `strict_parity_harness` docstring to state pure-IR acceleration semantically equal to `./shakedown`. Smoke: emphasis + ref-link `cmp` green; `rg` shows no production rewrite/strip calls in `release_runtime`/`interpret`/`preprocess_input` (comments only); `tests/test_wrapper_error_channel.py` + `tests/test_strict_parity_harness.py` **10 passed**.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git commit -m "fix!: retire slice3 Python rewrite from production paths"
 git push
 ```
+
+Evidence (2026-07-19, grok-implement): Task 4 production retirement already on `main` across:
+- `9757103` `fix!: retire slice3 Python rewrite from IR and release paths` (Step 1)
+- `def09de` docs Step 2 suite proof
+- `4eba5df` docs Step 3 parity-entry alignment
+
+Re-verified this iteration: pure inventory/act1/act3 + `test_mdtest` + wrapper/strict harness **87 passed**; `./shakedown-parity` emphasis + ref-link `cmp` green; production scripts have rewrite/strip only in comments. No further code changes; working tree was clean at handoff. Checkbox only.
 
 ---
 
