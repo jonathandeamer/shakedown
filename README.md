@@ -8,12 +8,12 @@ and Line* — that reads Markdown on stdin and writes HTML on stdout.
 
 ## Quick demo
 
-Requires [uv](https://docs.astral.sh/uv/) (pulls `shakespearelang` from
-`pyproject.toml`).
+You only need the [shakespearelang](https://github.com/zmbc/shakespearelang)
+CLI on your `PATH` and the committed play. **uv is not required** for this.
 
 ```bash
-uv sync
-echo 'Hello *world*' | uv run shakespeare run shakedown.spl
+pip install 'shakespearelang>=0.6'   # or pipx, etc. — any install of the CLI
+echo 'Hello *world*' | shakespeare run shakedown.spl
 ```
 
 Expected:
@@ -22,8 +22,9 @@ Expected:
 <p>Hello <em>world</em></p>
 ```
 
-Same thing via the release wrapper (resolves the CLI through `uv`, fails on SPL
-parse/runtime errors that the bare CLI sometimes exits `0` for):
+Same via the release wrapper (uses `shakespeare` on `PATH` if present, otherwise
+falls back to `uv run` from this project; treats SPL parse/runtime errors on
+stderr as failure even when the CLI exits `0`):
 
 ```bash
 echo 'Hello *world*' | ./shakedown
@@ -33,33 +34,59 @@ Cold start is slow (each run boots a fresh interpreter). That is expected.
 
 ## Dependencies
 
+### To run the play (demo)
+
 | Need | Role |
 |---|---|
-| **uv** + Python ≥ 3.12 | Project env; `shakespearelang` is declared in `pyproject.toml` |
-| **`shakespearelang`** | SPL interpreter (`shakespeare run`) — installed by `uv sync` |
+| **`shakespeare` CLI** | From the [`shakespearelang`](https://github.com/zmbc/shakespearelang) package (`pip install shakespearelang`, etc.) |
 | **Committed `shakedown.spl`** | The play / release artefact (no assemble step to *run*) |
 
-Optional, for the full test / oracle suite only:
+No Markdown test suite, no `Markdown.pl`, and no uv are required for the quick
+demo above.
 
-| Need | Default path | Override |
+### To run the full test / oracle suite
+
+Neither the classic fixtures nor the Perl oracle are vendored in this repo.
+Obtain them upstream, put them anywhere on disk, then point the harnesses at
+those paths.
+
+| Resource | Upstream | What to use |
 |---|---|---|
-| Markdown.mdtest fixtures (23 pairs) | `~/mdtest/Markdown.mdtest` | `SHAKEDOWN_MDTEST` |
-| `Markdown.pl` oracle | `~/markdown/Markdown.pl` | `SHAKEDOWN_MARKDOWN_PL` |
-| **perl** | on `PATH` | — |
+| **Behavior target / project** | [Daring Fireball – Markdown](https://daringfireball.net/projects/markdown/) | Gruber’s original Markdown; we match **`Markdown.pl`** behaviour (not CommonMark) |
+| **Oracle binary** | Same project (`Markdown.pl` from the Markdown distribution) | A local `Markdown.pl` on disk; run with **perl** on `PATH` |
+| **Fixture corpus** | [michelf/mdtest](https://github.com/michelf/mdtest) → [`Markdown.mdtest/`](https://github.com/michelf/mdtest/tree/master/Markdown.mdtest) | The classic 23-pair suite (`.text` + `.xhtml`/`.html`). Other suites in that repo (PHP Markdown, Extra) are out of scope |
+
+**Example setup** (paths are yours to choose):
 
 ```bash
-export SHAKEDOWN_MDTEST=/path/to/Markdown.mdtest
+git clone https://github.com/michelf/mdtest.git /path/to/mdtest
+# Download or copy Markdown.pl from the Markdown project into e.g. /path/to/Markdown.pl
+
+export SHAKEDOWN_MDTEST=/path/to/mdtest/Markdown.mdtest
 export SHAKEDOWN_MARKDOWN_PL=/path/to/Markdown.pl
+
 uv run pytest tests/test_mdtest.py
 uv run python scripts/strict_parity_harness.py
 ```
+
+| Env var | Meaning |
+|---|---|
+| `SHAKEDOWN_MDTEST` | Directory of `*.text` / expected HTML pairs (`Markdown.mdtest`) |
+| `SHAKEDOWN_MARKDOWN_PL` | Path to the `Markdown.pl` executable script |
+
+If unset, tools fall back to a local convenience layout used on the original
+dev machine — `~/mdtest/Markdown.mdtest` and `~/markdown/Markdown.pl`. That is
+**not** required; prefer the env vars on any new checkout.
+
+This project is an independent port. “Markdown” names the language and oracle;
+it does not imply endorsement by the Markdown project or MDTest authors.
 
 ## Entry points
 
 | Command | What it does |
 |---|---|
-| **`uv run shakespeare run shakedown.spl`** | **Primary.** Run the committed play with the SPL CLI. |
-| **`./shakedown`** | Same play, via `uv` + error handling. No assembly. |
+| **`shakespeare run shakedown.spl`** | **Primary.** Run the committed play with any install of the SPL CLI. |
+| **`./shakedown`** | Same play + error handling; `shakespeare` on `PATH`, else `uv run`. No assembly. |
 | **`./shakedown-dev`** | Rebuild `shakedown.spl` from `src/` (via `scripts/assemble.py`), then `./shakedown`. |
 | **`./shakedown-debug`** | Assemble with the Act IV token-dump fragment; run that play (`SHAKEDOWN_SPL`). |
 
@@ -81,6 +108,9 @@ commit. The **public artefact** remains the play; the parity entry is test
 infrastructure, not a second Markdown dialect.
 
 ## Develop
+
+Contributor tooling uses [uv](https://docs.astral.sh/uv/) and `pyproject.toml`
+(tests, ruff, pyright, assemble). That is separate from the demo path above.
 
 ```bash
 uv sync
