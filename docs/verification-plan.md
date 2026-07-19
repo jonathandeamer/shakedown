@@ -397,6 +397,45 @@ Each replay was run once as part of the docs restructure. Results below capture 
   `Markdown Documentation - Syntax` is not yet a release-performance target
   for row 7.
 
+### B23 — Slice 5 documentation-aggregate performance gate (Task 5 Step 2, row 8)
+
+- **Commands (2026-07-19, commit `a6e3b97`, working tree clean):**
+  ```
+  for i in 1 2 3 4 5; do /usr/bin/time -p ./shakedown < "$HOME/mdtest/Markdown.mdtest/Markdown Documentation - Basics.text" > /dev/null; done
+  for i in 1 2 3 4 5; do /usr/bin/time -p ./shakedown < "$HOME/mdtest/Markdown.mdtest/Markdown Documentation - Syntax.text" > /dev/null; done
+  for i in 1 2 3 4 5; do /usr/bin/time -p env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_mdtest.py -q; done
+  ```
+- **Purpose:** close Step 2 of
+  `docs/superpowers/plans/2026-07-18-slice-5-documentation-aggregates.md` by
+  recording release-entry timings for both documentation aggregates and the
+  full 23-fixture mdtest contract against `docs/performance/budget.md`
+  before row 8 is marked shipped.
+- **Observed (2026-07-19):**
+
+  ```
+  Markdown Documentation - Basics, 5 runs:
+    first: 0.53s
+    median: 0.36s
+    all: ['0.53', '0.37', '0.36', '0.35', '0.36']
+
+  Markdown Documentation - Syntax, 5 runs:
+    first: 1.17s
+    median: 1.17s
+    all: ['1.17', '1.17', '1.19', '1.17', '1.17']
+
+  env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_mdtest.py -q, 5 runs:
+    first: 5.84s real (36 passed in 5.59s)
+    median: 5.75s real
+    all real: ['5.84', '5.71', '5.74', '5.75', '5.95']
+    each run: 36 passed, 0 skipped
+  ```
+
+- **Disposition:** **Green.** Both large documentation aggregates are far
+  below the single-large-fixture green threshold (`<= 30s`) and the plan's
+  hard halt (`> 120s`). The full mdtest contract median (~5.75s) is well
+  below the full-contract green band (`<= 5m`) and far below the plan's
+  15-minute halt. No performance halt before Slice-5 shipment.
+
 ## Bucket C — Retrospective Evidence (From Prior Codebase, Not Proven Here)
 
 These claims describe measurements and behaviours from artifacts that are not present in this repository. Architecture planning should read them as prior-attempt evidence, not as facts about the current state. Full retrospective in `docs/prior-attempt/feasibility-lessons.md`.

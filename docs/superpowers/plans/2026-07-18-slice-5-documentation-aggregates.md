@@ -399,7 +399,7 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   deselected`; ruff check/format-check clean; pyright `0 errors`. No
   production IR/SPL change.
 
-- [ ] **Step 2: Record the Slice-5 performance evidence.** Run each command five times, recording first-run and median with date, exact command, fixture, and clean/dirty status in the established performance documents:
+- [x] **Step 2: Record the Slice-5 performance evidence.** Run each command five times, recording first-run and median with date, exact command, fixture, and clean/dirty status in the established performance documents:
 
   ```bash
   /usr/bin/time -p ./shakedown < "$HOME/mdtest/Markdown.mdtest/Markdown Documentation - Basics.text"
@@ -408,6 +408,14 @@ Expected after 2a: nested-list category green; multi-definition and whitespace-b
   ```
 
   Expected: no single-large-fixture run exceeds 120 seconds and the full contract does not exceed 15 minutes; otherwise record the performance halt before shipment.
+
+  Evidence (2026-07-19): five cold runs each at commit `a6e3b97` with a
+  clean working tree. Basics first 0.53s / median 0.36s; Syntax first
+  1.17s / median 1.17s; full mdtest contract first 5.84s real / median
+  5.75s real (`36 passed` every run). Recorded as B23 in
+  `docs/verification-plan.md` and the Slice-5 baseline bullet in
+  `docs/performance/budget.md`. All green vs large-fixture and full-
+  contract planning thresholds; no performance halt.
 
 - [ ] **Step 3: Mark shipped and checkpoint.** Change roadmap row 8 to `shipped: 2026-07-18 at commit <final-sha>` only after Steps 1–2. Commit completion evidence and roadmap as `feat: complete documentation aggregates`; push with the exact provenance trailers. Do not stage `scripts/release_entry.py`.
 

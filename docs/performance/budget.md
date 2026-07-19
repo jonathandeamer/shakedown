@@ -120,6 +120,16 @@ whether the cost is debuggable in the run-loop.
   0.11s for `Ordered and unordered lists`; the full `uv run pytest -q` suite
   completed in 228.75s (3:48), all green against the planning thresholds
   (B22).
+- **Slice 5 documentation-aggregate gate (2026-07-19, commit `a6e3b97`,
+  clean tree):** five cold `./shakedown` runs each of the two §7.8 aggregates
+  plus five runs of the full mdtest contract (B23):
+  - `Markdown Documentation - Basics`: first 0.53s, median 0.36s
+  - `Markdown Documentation - Syntax`: first 1.17s, median 1.17s
+  - `env UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/test_mdtest.py -q`:
+    first 5.84s real, median 5.75s real (36 passed, 0 skipped each run)
+  - All three series are green against the planning thresholds (large
+    fixture `<= 30s` green / `> 120s` red; full contract `<= 5m` green /
+    `> 15m` red). No performance halt before Slice-5 shipment.
 
 ### Historical / retrospective context
 
