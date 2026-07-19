@@ -41,6 +41,14 @@ coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
 
 [[planning]]
+name = "grok-plan"
+provider = "grok"
+model = "grok-4.5"
+quota_group = "grok"
+coauthor_name = "Grok"
+coauthor_email = "noreply@x.ai"
+
+[[planning]]
 name = "kimi-k3-plan"
 provider = "kimi-k3"
 display_model = "k3"
@@ -98,6 +106,14 @@ model = "gpt-5.6-sol"
 quota_group = "codex"
 coauthor_name = "OpenAI Codex"
 coauthor_email = "noreply@openai.com"
+
+[[implementation]]
+name = "grok-implement"
+provider = "grok"
+model = "grok-4.5"
+quota_group = "grok"
+coauthor_name = "Grok"
+coauthor_email = "noreply@x.ai"
 
 [[implementation]]
 name = "kimi-coding-implement"

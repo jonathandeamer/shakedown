@@ -11,7 +11,7 @@ This document provides a detailed reference for the MCO-backed autonomous roadma
 The entry point for the loop is the [agent-loop](file:///Users/jonathan/shakedown/agent-loop) script in the repository root. This script executes the [main](file:///Users/jonathan/shakedown/scripts/mco_loop.py#L884) function of [mco_loop.py](file:///Users/jonathan/shakedown/scripts/mco_loop.py):
 
 * **Configuration**: Defined in [agent-loop.toml](file:///Users/jonathan/shakedown/agent-loop.toml). Specifies loop timeouts, pauses, cooldowns, and the executor list.
-* **Secrets**: Loaded from the path configured under `[loop].env_file` (e.g. `~/hn-qotd/evals/.env`). Only pre-approved API keys (`XAI_API_KEY`, `OPENROUTER_API_KEY`) are permitted to load to prevent credential leakage.
+* **Secrets**: Loaded from the path configured under `[loop].env_file` (repo-root `.env`). Only the pre-approved API key `OPENROUTER_API_KEY` is permitted to load to prevent credential leakage. Grok Build CLI auth is OAuth (`grok login`), not an env key.
 
 ---
 
@@ -88,11 +88,31 @@ Unresponsive free models cannot block the loop:
 * true hangs are bounded by MCO's 900 s stall timeout (`backend_failure`)
   and the 5-hour Python supervisor cap (`supervisor_timeout`).
 
-Grok and all xAI configuration were removed on 2026-07-12 because the xAI
-team has no credits and none will be purchased; `XAI_API_KEY` is no longer
-allowlisted, and the operator may delete the stale key from the git-ignored
-repo-root `.env`. Grok may return only with restored credits and a fresh
-verification run.
+The old Pi-over-xAI-API Grok path (`pi-grok-stateless` / `grok-build-0.1` /
+`XAI_API_KEY`) was removed on 2026-07-12. It has been replaced by the Grok
+Build CLI subscription path below; the API key remains unallowlisted.
+
+### Grok Build CLI Pool
+
+MCO's built-in `grok` adapter was wired into the loop on 2026-07-19. It
+drives the local `grok` binary (Grok Build TUI / CLI, OAuth via
+`grok login` under the operator account — no `.env` key):
+
+* `grok-plan` (`provider = "grok"`, `model = "grok-4.5"`) sits in
+  `[[planning]]` after codex-sol and before kimi-k3.
+* `grok-implement` (same provider/model) sits in `[[implementation]]`
+  after the trusted claude/codex rungs and before kimi-for-coding / the free
+  OpenRouter pool.
+
+MCO constructs
+`grok --no-auto-update -p <prompt> --output-format plain --permission-mode bypassPermissions`
+when the loop passes `--execution-mode yolo`. Each invocation is a fresh
+single-turn `-p` run (no `--resume` / `--continue`). Both executors share
+the `grok` quota group — one subscription, one cooldown blast radius. The
+group is not in `TRUSTED_RETRY_GROUPS`, so the loop skips it while cooling
+and never waits on it, same as Kimi and OpenRouter. There is no project
+shim in `.mco/agents.yaml`; the built-in adapter is used deliberately so
+yolo permission mapping stays with MCO rather than being reimplemented.
 
 ### Kimi Subscription Pool
 
@@ -100,9 +120,9 @@ Two Kimi Code CLI shims were added on 2026-07-19, backed by the operator's
 Kimi subscription (OAuth under `~/.kimi-code`, no `.env` key required):
 
 * `kimi-k3` (alias `kimi-code/k3`, the K3 flagship) sits at the end of the
-  `[[planning]]` pool, after codex-sol.
+  `[[planning]]` pool, after grok-plan.
 * `kimi-for-coding` (alias `kimi-code/kimi-for-coding`, K2.7 Coding) sits in
-  `[[implementation]]` between the trusted claude/codex entries and the free
+  `[[implementation]]` after grok-implement and ahead of the free
   OpenRouter fallback pool.
 
 Both shims run `kimi --output-format text -m <alias> -p`; MCO appends the

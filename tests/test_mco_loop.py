@@ -1000,6 +1000,7 @@ def test_live_config_has_role_scoped_model_order() -> None:
         ("claude-sonnet", None),
         ("claude-opus", None),
         ("codex", "gpt-5.6-sol"),
+        ("grok", "grok-4.5"),
         ("kimi-k3", None),
     ]
     assert [item.provider for item in config.implementation] == [
@@ -1007,6 +1008,7 @@ def test_live_config_has_role_scoped_model_order() -> None:
         "codex",
         "claude-opus",
         "codex",
+        "grok",
         "kimi-for-coding",
         "pi-nemotron-ultra-stateless",
         "pi-gpt-oss-stateless",
@@ -1020,6 +1022,7 @@ def test_live_config_has_role_scoped_model_order() -> None:
         (None, "gpt-5.4"),
         (None, None),
         (None, "gpt-5.6-sol"),
+        (None, "grok-4.5"),
         (None, None),
         (None, None),
         (None, None),
@@ -1076,11 +1079,14 @@ def test_pi_shims_are_stateless_and_write_capable() -> None:
             assert "--no-session" in line
             assert "--print" in line
             assert "--tools read,bash,edit,write" in line
-    for remnant in ("grok", "xai", "nemotron-4-340b", "agy-"):
+    for remnant in ("xai", "nemotron-4-340b", "agy-", "pi-grok"):
         assert remnant not in text.lower()
+    # Grok Build is MCO's built-in CLI adapter (OAuth), not a project Pi/xAI shim.
+    assert 'provider = "grok"' in (mco_loop.REPO / "agent-loop.toml").read_text()
 
 
 def test_xai_key_is_no_longer_allowlisted() -> None:
+    """CLI Grok uses OAuth; the old XAI_API_KEY path stays unallowlisted."""
     assert mco_loop.ALLOWED_SECRET_NAMES == ("OPENROUTER_API_KEY",)
 
 
@@ -1821,10 +1827,18 @@ def test_planning_pool_never_falls_through_to_implementation_only_models() -> No
     selected, next_ready = mco_loop.available_executor(config.planning, state, now=100)
 
     assert selected is not None
+    assert selected.provider == "grok"
+    assert next_ready is None
+
+    state["cooldowns"] = {"codex": 200, "claude": 200, "grok": 200}
+
+    selected, next_ready = mco_loop.available_executor(config.planning, state, now=100)
+
+    assert selected is not None
     assert selected.provider == "kimi-k3"
     assert next_ready is None
 
-    state["cooldowns"] = {"codex": 200, "claude": 200, "kimi": 200}
+    state["cooldowns"] = {"codex": 200, "claude": 200, "grok": 200, "kimi": 200}
 
     selected, next_ready = mco_loop.available_executor(config.planning, state, now=100)
 
