@@ -1548,8 +1548,10 @@ def completion_gates() -> tuple[bool, str]:
             False,
             f"full pytest failed:\n{details}",
         )
+    # Scope to the 23 parametrized fixture nodes only. tests/test_mdtest.py also
+    # hosts slice contract/enablement helpers that inflate the module count past 23.
     mdtest_result = subprocess.run(
-        ["uv", "run", "pytest", "tests/test_mdtest.py", "-q"],
+        ["uv", "run", "pytest", "tests/test_mdtest.py::test_mdtest", "-q"],
         cwd=REPO,
         capture_output=True,
         text=True,

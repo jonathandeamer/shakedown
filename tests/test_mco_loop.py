@@ -2143,7 +2143,12 @@ def test_completion_requires_pytest_mdtest_and_deterministic_parity(
     def fake_run(command, **kwargs):
         calls.append(command)
         result = Result()
-        if command[:4] == ["uv", "run", "pytest", "tests/test_mdtest.py"]:
+        if command[:4] == [
+            "uv",
+            "run",
+            "pytest",
+            "tests/test_mdtest.py::test_mdtest",
+        ]:
             result.stdout = "23 passed in 1.0s"
         elif "scripts/strict_parity_harness.py" in command:
             result.stdout = "summary: 22/22 byte-identical"
@@ -2163,7 +2168,13 @@ def test_completion_requires_pytest_mdtest_and_deterministic_parity(
     assert "mdtest 23/23" in detail
     assert "22/22" in detail
     assert calls[0] == ["uv", "run", "pytest", "-q"]
-    assert calls[1] == ["uv", "run", "pytest", "tests/test_mdtest.py", "-q"]
+    assert calls[1] == [
+        "uv",
+        "run",
+        "pytest",
+        "tests/test_mdtest.py::test_mdtest",
+        "-q",
+    ]
     assert "Auto links" not in calls[2]
 
 
