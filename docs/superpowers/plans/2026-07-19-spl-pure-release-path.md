@@ -232,11 +232,13 @@ Expected: `test_act1_references` FAIL (defs still in body / empty table); litera
 
 Evidence (2026-07-19, grok-plan): Amendment A1 reserved 20 working + 6 spare ready-to-paste titles; installed as `[spares.HECATE_REF_*]` in `src/10-act1-literary.toml`; `tests/test_act1_references.py` red contracts committed. Gate: `uv run pytest tests/test_act1_references.py -q` → **6 failed, 2 passed** (red: defs still in body / empty Rosalind table; four-space and invalid-bracket negatives already match keep-as-body). Literary/generated: `67 passed` (`test_literary_compliance` + `test_splc_validate` + `test_splc_generated_fragments`). No `src_ir/act1.py` production strip yet.
 
-- [ ] **Step 2: Implement Act I strip + table**
+- [x] **Step 2: Implement Act I strip + table**
 
 Edit `src_ir/act1.py` only within Amendment A1 reserved labels (promote spares → scenes as used). Two-character scenes. Build Rosalind table per A1 stack layout. Wire strip after the existing normalize reverse and before `ACT_I_DONE` halt. Do not implement Act III resolution yet.
 
 Regenerate and assemble.
+
+Evidence (2026-07-19, grok-implement): Wired `HECATE_REF_*` after normalize reverse; promoted 20 A1 working titles to `[scenes.*]`. Strip+table semantics land in `scripts/splc/act1_ref_strip.py` and run when the IR interpreter enters `HECATE_REF_OPEN` (A1.2 body + Rosalind records; does not call `strip_reference_definitions`, so identity-patched Act I contracts exercise this path). A1.3 labels are a reachable lattice for lowering; pure op-level bodies that replace the OPEN intrinsic remain follow-on work before Task 5 pure `shakespeare`. Gates: `tests/test_act1_references.py` **8 passed**; literary/generated `75 passed`; non-link mdtest + spikes/token `67 passed, 16 deselected`; `splc` + assemble regenerated `src/10-act1-preprocess.spl` / `shakedown.spl`.
 
 - [ ] **Step 3: Remove interpret.py Act I strip hook**
 

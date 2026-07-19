@@ -360,7 +360,7 @@ Hecate:
  Are you as cursed as nothing?
 
 Horatio:
- If so, let us proceed to scene @ACT_I_DONE.
+ If so, let us proceed to scene @HECATE_REF_OPEN.
 
 Horatio:
  If not, let us proceed to scene @HECATE_OPEN_REVERSE_POP.
@@ -402,6 +402,166 @@ Hecate:
 
 Hecate:
  We must return to scene @HECATE_REVERSE_CHECK.
+
+
+                    Scene @HECATE_REF_OPEN: @LIT.scenes.HECATE_REF_OPEN.title
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_NEXT.
+
+
+                    Scene @HECATE_REF_NEXT: @LIT.scenes.HECATE_REF_NEXT.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_LEAD.
+
+
+                    Scene @HECATE_REF_LEAD: @LIT.scenes.HECATE_REF_LEAD.title
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_FOUR_SPACE.
+
+
+                    Scene @HECATE_REF_FOUR_SPACE: @LIT.scenes.HECATE_REF_FOUR_SPACE.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_BRACKET.
+
+
+                    Scene @HECATE_REF_BRACKET: @LIT.scenes.HECATE_REF_BRACKET.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_LABEL.
+
+
+                    Scene @HECATE_REF_LABEL: @LIT.scenes.HECATE_REF_LABEL.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_COLON.
+
+
+                    Scene @HECATE_REF_COLON: @LIT.scenes.HECATE_REF_COLON.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_URL_WS.
+
+
+                    Scene @HECATE_REF_URL_WS: @LIT.scenes.HECATE_REF_URL_WS.title
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_ANGLE.
+
+
+                    Scene @HECATE_REF_ANGLE: @LIT.scenes.HECATE_REF_ANGLE.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_URL.
+
+
+                    Scene @HECATE_REF_URL: @LIT.scenes.HECATE_REF_URL.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_TITLE.
+
+
+                    Scene @HECATE_REF_TITLE: @LIT.scenes.HECATE_REF_TITLE.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_TITLE_NL.
+
+
+                    Scene @HECATE_REF_TITLE_NL: @LIT.scenes.HECATE_REF_TITLE_NL.title
+
+[Exit Puck]
+
+[Enter Rosalind]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_FOLD.
+
+
+                    Scene @HECATE_REF_FOLD: @LIT.scenes.HECATE_REF_FOLD.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_ENCODE.
+
+
+                    Scene @HECATE_REF_ENCODE: @LIT.scenes.HECATE_REF_ENCODE.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_STORE.
+
+
+                    Scene @HECATE_REF_STORE: @LIT.scenes.HECATE_REF_STORE.title
+
+[Exit Rosalind]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_KEEP.
+
+
+                    Scene @HECATE_REF_KEEP: @LIT.scenes.HECATE_REF_KEEP.title
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_REPLAY.
+
+
+                    Scene @HECATE_REF_REPLAY: @LIT.scenes.HECATE_REF_REPLAY.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_NL.
+
+
+                    Scene @HECATE_REF_NL: @LIT.scenes.HECATE_REF_NL.title
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_REVERSE.
+
+
+                    Scene @HECATE_REF_REVERSE: @LIT.scenes.HECATE_REF_REVERSE.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_FINISH.
+
+
+                    Scene @HECATE_REF_FINISH: @LIT.scenes.HECATE_REF_FINISH.title
+
+Hecate:
+ Let us proceed to scene @ACT_I_DONE.
 
 
                     Scene @ACT_I_DONE: @LIT.scenes.ACT_I_DONE.title

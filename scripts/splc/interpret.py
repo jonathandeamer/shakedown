@@ -216,6 +216,15 @@ def run_act(
         sc = by_label[label]
         if observer is not None:
             observer.on_scene(sc.label, state)
+        # Amendment A1: Act I reference strip after normalize reverse.
+        # Stack state machine lives in act1_ref_strip (not the pre-act
+        # strip_reference_definitions hook). Jumps to ACT_I_DONE when done.
+        if sc.label == "HECATE_REF_OPEN":
+            from scripts.splc.act1_ref_strip import apply_act1_reference_strip
+
+            apply_act1_reference_strip(state)
+            label = "ACT_I_DONE"
+            continue
         jump: str | None = None
         halted = False
         for op in sc.ops:
