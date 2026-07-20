@@ -31,10 +31,6 @@ from scripts.splc.ir import (
     Val,
 )
 
-# Task 2L Step 1: False proves red under goto-stub HECATE_REF_* bodies.
-# Step 2 fills pure ops; Step 3 deletes the short-circuit entirely.
-USE_ACT1_REF_INTRINSIC = False
-
 
 @dataclass
 class InterpreterState:
@@ -230,14 +226,6 @@ def run_act(
         sc = by_label[label]
         if observer is not None:
             observer.on_scene(sc.label, state)
-        # Amendment A1 / Task 2L: Act I reference strip after normalize reverse.
-        # Gated while pure ops land; short-circuit removed in Task 2L Step 3.
-        if sc.label == "HECATE_REF_OPEN" and USE_ACT1_REF_INTRINSIC:
-            from scripts.splc.act1_ref_strip import apply_act1_reference_strip
-
-            apply_act1_reference_strip(state)
-            label = "ACT_I_DONE"
-            continue
         if sc.label == "HECATE_REF_STORE_GUARD":
             from src_ir.act1_ref_pure import parse_and_store_rosalind_record
 

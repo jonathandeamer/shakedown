@@ -458,25 +458,21 @@ uv run python -m scripts.splc && uv run python scripts/assemble.py
 git diff --exit-code -- src/*.spl shakedown.spl debug/
 ```
 
-- [ ] **Step 3: Remove Act I intrinsic permanently**
+- [x] **Step 3: Remove Act I intrinsic permanently**
 
 Delete the `HECATE_REF_OPEN` short-circuit from `run_act`. Confirm `act1_ref_strip` is not imported from `interpret.py`. Keep the module as a test oracle if useful (`tests/` may import it for differential asserts).
 
-```bash
-uv run pytest tests/test_act1_references.py tests/test_spl_pure_inventory.py -q
-uv run pytest tests/test_mdtest.py -k "not Links and not Images and not Literal and not Basics and not Syntax" -q
-uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
-# Pure SPL smoke (definition strip only):
-printf '[foo]: /url "T"\n\npara\n' | ./shakedown | head -c 200
-# Expect no raw `[foo]:` in body HTML; do not require link resolve until Task 3L
-```
+Evidence (2026-07-20): Removed `USE_ACT1_REF_INTRINSIC` and `HECATE_REF_OPEN` short-circuit from `scripts/splc/interpret.py`. Confirmed `act1_ref_strip` is not imported in `interpret.py`. Gates: `test_act1_references` + `test_spl_pure_inventory` **17 passed**; non-link mdtest **22 passed**; architecture/token/validate/generated/literary **114 passed**; pure SPL smoke `printf '[foo]: /url "T"\n\npara\n' | ./shakedown` emitted `<p>para</p>\n` (definition stripped by pure SPL ops).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git commit -m "feat: lower Act I reference strip to pure SPL ops"
 git push
 ```
+
+Evidence (2026-07-20): Task 2L finished.
+
 
 ---
 
