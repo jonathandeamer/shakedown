@@ -824,7 +824,7 @@ Step 1 only requires the first two lines (red refs + green literary/generated wi
 - Prefer **one unchecked step per MCO/agent iteration** with its evidence gate.
 - SPL-changing steps must name and run the literary compliance commands in Global Constraints.
 - If Act I table or Act III resolution needs tokens/participants beyond this plan, stop with `- BLOCK[plan]:` and amend; do not expand scope silently.
-- **Next unchecked step after Amendment A4 / Step 2b:** Task **2L Step 2c** (A3.2 line machine: `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP`). Then 2d → 2e, one per iteration. Do not re-run Task 5 Step 2 until 2L and 3L complete.
+- **Next unchecked step after Amendment A4 / Step 2c:** Task **2L Step 2d** (candidate capture + replay per A4.3). Then 2e, one per iteration. Do not re-run Task 5 Step 2 until 2L and 3L complete.
 
 ---
 
@@ -1515,9 +1515,17 @@ red set in the commit body, not in `.agent/blockers.md`.
   `test_literary_compliance` **67 passed**; `splc` + assemble regenerated all five
   fragments with `git diff --exit-code` clean (additive recall keys do not change
   generated SPL until a scene references them, per A4.8.3).
-- [ ] **Step 2c — line machine.** `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP` per A3.2's
+- [x] **Step 2c — line machine.** `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP` per A3.2's
   self-loop mapping, still keeping every line as body. Success: same 2 passed, no
   regression; `HECATE_REF_LEAD` correctly counts 0–3 and rejects on the fourth space.
+  Evidence (2026-07-20, grok-implement): Line-start dispatcher on `NEXT` (NL / SP /
+  other→KEEP); `LEAD_GUARD` ov+=1 bridge; `LEAD` accepts spaces and re-takes;
+  `LABEL_GUARD` routes 4th space to `FOUR_SPACE` else back to `LEAD_GUARD`;
+  `REPLAY_GUARD` line-end NL bridge; `NL` resets ov. Trailing-NL temporarily on
+  `FOLD`/`STORE`/`ENCODE` until 2e. Promoted spares `LEAD_GUARD`, `LABEL_GUARD`,
+  `REPLAY_GUARD`. Keep-all body preserved. Gate: `tests/test_act1_references.py`
+  **2 passed, 6 failed** (unchanged red set); literary/validate/generated **67
+  passed**; `splc` + assemble regenerated Act I / `shakedown.spl`.
 - [ ] **Step 2d — candidate capture + replay.** `BRACKET`/`LABEL`/`COLON`/`URL_WS`/
   `URL_GUARD`/`ANGLE`/`URL`/`TITLE`/`TITLE_NL`/`REPLAY` per A4.3. Success:
   well-formed definition lines vanish from the body (`test_simple_definition_*`,

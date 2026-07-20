@@ -182,11 +182,11 @@ pattern = "scene_of_character"
 title = "Hecate closes the cauldron's reference shelf."
 pattern = "scene_of_character"
 
-[spares.HECATE_REF_LEAD_GUARD]
+[scenes.HECATE_REF_LEAD_GUARD]
 title = "The shelf keeps one guarded lead."
 pattern = "bare_statement"
 
-[spares.HECATE_REF_LABEL_GUARD]
+[scenes.HECATE_REF_LABEL_GUARD]
 title = "The folded name keeps one guarded mark."
 pattern = "bare_statement"
 
@@ -202,6 +202,6 @@ pattern = "bare_statement"
 title = "The forest road keeps one guarded store."
 pattern = "bare_statement"
 
-[spares.HECATE_REF_REPLAY_GUARD]
+[scenes.HECATE_REF_REPLAY_GUARD]
 title = "The unproved line keeps one guarded return."
 pattern = "bare_statement"
