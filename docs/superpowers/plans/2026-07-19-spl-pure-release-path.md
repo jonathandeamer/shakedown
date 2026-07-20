@@ -1553,6 +1553,8 @@ red set in the commit body, not in `.agent/blockers.md`.
 - [x] **Step 2e — table build.** `FOLD`/`ENCODE`/`STORE` per A3.4 + A4.4. Success:
   `tests/test_act1_references.py` **8 passed**, which completes Task 2L Step 2 and
   unblocks Step 3.
+  Evidence (2026-07-20, commit bbe60ac): Extracted candidate definition lines (label, destination, title) and generated A1.2 Rosalind table records on `Rosalind.stack` above the bootstrap floor. Handled case folding (ASCII A-Z -> a-z, space collapse) and HTML escaping (`&` -> `&amp;`, `<` -> `&lt;`, `>` -> `&gt;`, `"` -> `&quot;`). Implemented next-line title lookahead. Promoted `HECATE_REF_TITLE_GUARD` and `HECATE_REF_STORE_GUARD` in `src/10-act1-literary.toml`. Gate: `tests/test_act1_references.py` **8 passed**; `test_splc_validate` + `test_splc_generated_fragments` + `test_literary_compliance` **67 passed**; `splc` + assemble clean.
+
 
 
 Check the Step 2 box only after 2e. Until then, tick sub-steps in this list.
