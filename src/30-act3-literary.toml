@@ -1005,3 +1005,246 @@ pattern = "scene_of_character"
 [scenes.LYRIC_GOTO_EMPHASIS_SEEK_TAIL]
 title = "Puck bears the wandering star to Hecate."
 pattern = "scene_of_character"
+
+# --- Amendment A2 working pool (48) — install as [spares.*], promote on use ---
+[spares.RESOLVE_OPEN]
+title = "The stream opens one pure resolve."
+pattern = "bare_statement"
+
+[spares.RESOLVE_NEXT_TOKEN]
+title = "One mark yields its measured code."
+pattern = "bare_statement"
+
+[spares.RESOLVE_ARITY_COPY]
+title = "Fixed marks cross the quiet stream."
+pattern = "bare_statement"
+
+[spares.RESOLVE_TEXT_ENTER]
+title = "The paragraph opens its raw text."
+pattern = "bare_statement"
+
+[spares.RESOLVE_TEXT_DRAIN]
+title = "Romeo drains the paragraph's raw leaves."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_TEXT_END]
+title = "Text ends with one quiet seal."
+pattern = "bare_statement"
+
+[spares.RESOLVE_COPY_OTHER]
+title = "Other marks keep their measured road."
+pattern = "bare_statement"
+
+[spares.RESOLVE_STREAM_END]
+title = "The stream ends its pure resolve."
+pattern = "bare_statement"
+
+[spares.RESOLVE_SCAN_OPEN]
+title = "The scan opens on raw leaves."
+pattern = "bare_statement"
+
+[spares.RESOLVE_SCAN_NEXT]
+title = "The next glyph seeks its path."
+pattern = "bare_statement"
+
+[spares.RESOLVE_SCAN_KEEP]
+title = "One honest glyph stays in daylight."
+pattern = "bare_statement"
+
+[spares.RESOLVE_SCAN_ESCAPE]
+title = "A backslash guards the next leaf."
+pattern = "bare_statement"
+
+[spares.RESOLVE_LINE_START]
+title = "A line begins beneath the hedge."
+pattern = "bare_statement"
+
+[spares.RESOLVE_INDENT_COUNT]
+title = "Leading spaces count the code road."
+pattern = "bare_statement"
+
+[spares.RESOLVE_CODE_LINE]
+title = "The code line keeps its shade."
+pattern = "bare_statement"
+
+[spares.RESOLVE_CODE_EXIT]
+title = "A blank line leaves the shade."
+pattern = "bare_statement"
+
+[spares.RESOLVE_BANG]
+title = "A bang seeks the portrait gate."
+pattern = "bare_statement"
+
+[spares.RESOLVE_ALT_OPEN]
+title = "Juliet opens the portrait's quiet alt."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_ALT_BODY]
+title = "Romeo gathers the portrait's alt leaves."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_ALT_CLOSE]
+title = "Juliet seals the portrait's alt close."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_IMG_SUFFIX]
+title = "Romeo tries the portrait's suffix road."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_IMG_EMIT]
+title = "Juliet emits the portrait's bright seal."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_IMG_FAIL]
+title = "The portrait fails and stays literal."
+pattern = "bare_statement"
+
+[spares.RESOLVE_LB]
+title = "Romeo marks the garden's opening bracket."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LTEXT_BODY]
+title = "Juliet gathers the garden link's leaves."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LTEXT_CLOSE]
+title = "Romeo seals the garden link's close."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LNK_SUFFIX]
+title = "Juliet tries the garden's suffix road."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LNK_EMIT]
+title = "Romeo emits the garden's bright anchor."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LNK_NESTED]
+title = "Nested leaves reopen the garden scan."
+pattern = "bare_statement"
+
+[spares.RESOLVE_LNK_FAIL]
+title = "The garden link fails as literal."
+pattern = "bare_statement"
+
+[spares.RESOLVE_SFX_INLINE]
+title = "Puck opens the round destination path."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_DEST_ANGLE]
+title = "Juliet reads the angle-bracketed road."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_DEST_BARE]
+title = "Romeo keeps the bare destination road."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_TITLE_WS]
+title = "Horatio clears the title's pale spaces."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_TITLE_QUOT]
+title = "Juliet gathers the quoted title leaves."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_SFX_CLOSE]
+title = "Romeo seals the round destination close."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_SFX_REF]
+title = "Puck opens the reference identity bracket."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_SFX_REF_ID]
+title = "Juliet folds the reference identity leaves."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LOOKUP_OPEN]
+title = "Rosalind opens the forest table search."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LOOKUP_REC]
+title = "Rosalind compares one forest road record."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LOOKUP_MATCH]
+title = "Rosalind matches the sought forest road."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LOOKUP_SKIP]
+title = "Rosalind skips one unmatched forest record."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_LOOKUP_MISS]
+title = "The forest search finds no road."
+pattern = "bare_statement"
+
+[spares.RESOLVE_ESC_DEST]
+title = "Romeo encodes the destination's sharp marks."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_ESC_TITLE]
+title = "Juliet encodes the title's quiet marks."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_ESC_LIT]
+title = "Puck escapes the unproved literal leaves."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_REBUILD]
+title = "Juliet rebuilds the resolved text stream."
+pattern = "scene_of_character"
+
+[spares.RESOLVE_DONE]
+title = "Romeo hands the pure resolve forward."
+pattern = "scene_of_character"
+
+# --- Amendment A2 spare pool (12) — do not use unless a new scene is required ---
+[spares.RESOLVE_SCAN_GUARD]
+title = "The pure resolve keeps one guarded scan."
+pattern = "bare_statement"
+
+[spares.RESOLVE_ALT_GUARD]
+title = "The portrait keeps one guarded alt."
+pattern = "bare_statement"
+
+[spares.RESOLVE_LTEXT_GUARD]
+title = "The garden keeps one guarded text."
+pattern = "bare_statement"
+
+[spares.RESOLVE_DEST_GUARD]
+title = "The destination keeps one guarded road."
+pattern = "bare_statement"
+
+[spares.RESOLVE_TITLE_GUARD]
+title = "The title keeps one guarded seal."
+pattern = "bare_statement"
+
+[spares.RESOLVE_SFX_GUARD]
+title = "The suffix keeps one guarded turn."
+pattern = "bare_statement"
+
+[spares.RESOLVE_LOOKUP_GUARD]
+title = "The forest keeps one guarded search."
+pattern = "bare_statement"
+
+[spares.RESOLVE_EMIT_GUARD]
+title = "The emit keeps one guarded bright seal."
+pattern = "bare_statement"
+
+[spares.RESOLVE_CODE_GUARD]
+title = "The code shade keeps one guarded line."
+pattern = "bare_statement"
+
+[spares.RESOLVE_NEST_GUARD]
+title = "The nested path keeps one guarded leaf."
+pattern = "bare_statement"
+
+[spares.RESOLVE_ARITY_GUARD]
+title = "The arity road keeps one guarded copy."
+pattern = "bare_statement"
+
+[spares.RESOLVE_REVERSE_GUARD]
+title = "The reverse keeps one guarded return."
+pattern = "bare_statement"
+

@@ -31,6 +31,8 @@ from scripts.splc.ir import (
     Val,
 )
 
+USE_ACT3_RESOLVE_INTRINSIC = False
+
 
 @dataclass
 class InterpreterState:
@@ -233,7 +235,7 @@ def run_act(
 
         # Task 3: resolve raw links/images on the token stream before scan.
         # Runs once at act entry; scene ops then seed Juliet and traverse.
-        if sc.label == "ACT_III_START":
+        if sc.label == "ACT_III_START" and USE_ACT3_RESOLVE_INTRINSIC:
             from scripts.splc.act3_link_resolve import apply_act3_link_resolution
 
             apply_act3_link_resolution(state)

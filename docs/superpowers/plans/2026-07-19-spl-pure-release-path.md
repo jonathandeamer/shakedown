@@ -493,16 +493,10 @@ Evidence (2026-07-20): Task 2L finished.
 
 **Literary:** Install all **48 working + 12 spare** A2 titles before implementing scenes (Step 1). Implementation may not invent titles. Spare exhaustion → `BLOCK[plan]`.
 
-- [ ] **Step 1: Reserve A2 literary pool + prove red without Act III intrinsic**
+- [x] **Step 1: Reserve A2 literary pool + prove red without Act III intrinsic**
 
-Install Amendment A2 TOML into `src/30-act3-literary.toml` as `[spares.RESOLVE_*]`. Disable only the `ACT_III_START` intrinsic (flag or delete) and run:
+Installed Amendment A2 TOML into `src/30-act3-literary.toml` as `[spares.RESOLVE_*]` (48 working + 12 spares). Added `USE_ACT3_RESOLVE_INTRINSIC = False` flag in `scripts/splc/interpret.py`. Gate: `test_act3_links_pure` **21 failed, 3 passed** (red baseline proved without intrinsic); literary/validate/generated **67 passed**.
 
-```bash
-uv run pytest tests/test_act3_links_pure.py -q
-uv run pytest tests/test_literary_compliance.py tests/test_splc_validate.py tests/test_splc_generated_fragments.py -q
-```
-
-Expected: act3 pure contracts red/fail without intrinsic; literary green with spares-only install.
 
 - [ ] **Step 2: Implement `RESOLVE_*` pre-pass (3a→3e order)**
 
