@@ -1,7 +1,3 @@
 # Active blockers
 
-(none — the Task 2L Step 2 planner-only blocker recorded 2026-07-20 was cleared the
-same day by Amendment A3 in `docs/superpowers/plans/2026-07-19-spl-pure-release-path.md`,
-which binds exact register ownership, sub-mode-to-label folding, and the `title_nl`
-backtrack/fold string-op decomposition. Task 2L Step 2 is unblocked for mechanical
-implementation against A3.1–A3.6; no second in-flight plan was created.)
+- BLOCK: Task 2L Step 2 pure-op Act I strip unfinished under Amendment A3. `USE_ACT1_REF_INTRINSIC` remains False; `tests/test_act1_references.py` is red (6 failed, 2 passed — defs still in body / empty Rosalind table). Scaffold only: `src_ir/act1_ref_pure.py` holds the A1.3 goto lattice wired from `src_ir/act1.py` via `build_ref_scenes()`; literary/validate green. Full pure-op bodies (parse lattice, `HECATE_REF_URL_GUARD` url_ws_nl, title_nl backtrack, fold/encode/store, replay orientation, finish newline normalize) with strict two-character stage pairs and consistent branch entry pairs did not reach the Step 2 evidence gate in this iteration. Not a plan gap — continue Step 2 implementation against A3.1–A3.6 and `scripts/splc/act1_ref_strip.py`. Do not re-enable the Act I intrinsic to “fix” green.

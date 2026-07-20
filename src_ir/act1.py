@@ -25,6 +25,7 @@ from scripts.splc.ir import (
     sub,
     val,
 )
+from src_ir.act1_ref_pure import build_ref_scenes
 from src_ir.cast import HECATE, HORATIO, PUCK, ROSALIND
 
 _EOF = const(-1)
@@ -220,112 +221,8 @@ ACT: Act = act(
             goto("HECATE_REVERSE_CHECK"),
             companion=HORATIO,
         ),
-        # --- Amendment A1: reference-definition strip + Rosalind table ---
-        # IR interpreter runs scripts.splc.act1_ref_strip on HECATE_REF_OPEN
-        # (A1.2 stack machine) then jumps to ACT_I_DONE. The A1.3 labels are
-        # chained so every reserved surface is reachable for lowering; the
-        # pure-op bodies that replace this chain/intrinsic land in a later
-        # Task 2 iteration.
-        scene(
-            "HECATE_REF_OPEN",
-            goto("HECATE_REF_NEXT"),
-            companion=HORATIO,
-        ),
-        scene(
-            "HECATE_REF_NEXT",
-            goto("HECATE_REF_LEAD"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_LEAD",
-            goto("HECATE_REF_FOUR_SPACE"),
-            companion=HORATIO,
-        ),
-        scene(
-            "HECATE_REF_FOUR_SPACE",
-            goto("HECATE_REF_BRACKET"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_BRACKET",
-            goto("HECATE_REF_LABEL"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_LABEL",
-            goto("HECATE_REF_COLON"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_COLON",
-            goto("HECATE_REF_URL_WS"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_URL_WS",
-            goto("HECATE_REF_ANGLE"),
-            companion=HORATIO,
-        ),
-        scene(
-            "HECATE_REF_ANGLE",
-            goto("HECATE_REF_URL"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_URL",
-            goto("HECATE_REF_TITLE"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_TITLE",
-            goto("HECATE_REF_TITLE_NL"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_TITLE_NL",
-            goto("HECATE_REF_FOLD"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_FOLD",
-            goto("HECATE_REF_ENCODE"),
-            companion=ROSALIND,
-        ),
-        scene(
-            "HECATE_REF_ENCODE",
-            goto("HECATE_REF_STORE"),
-            companion=ROSALIND,
-        ),
-        scene(
-            "HECATE_REF_STORE",
-            goto("HECATE_REF_KEEP"),
-            companion=ROSALIND,
-        ),
-        scene(
-            "HECATE_REF_KEEP",
-            goto("HECATE_REF_REPLAY"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_REPLAY",
-            goto("HECATE_REF_NL"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_NL",
-            goto("HECATE_REF_REVERSE"),
-            companion=HORATIO,
-        ),
-        scene(
-            "HECATE_REF_REVERSE",
-            goto("HECATE_REF_FINISH"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_FINISH",
-            goto("ACT_I_DONE"),
-            companion=HORATIO,
-        ),
+        # --- Amendment A1/A3: pure-op reference strip (Task 2L Step 2) ---
+        *build_ref_scenes(),
         scene(
             "ACT_I_DONE",
             pop(HORATIO, recall="kept_tally"),
