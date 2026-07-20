@@ -56,6 +56,8 @@ USE_ACT1_REF_INTRINSIC stays False.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from scripts.splc.ir import (
     Scene,
     add,
@@ -70,7 +72,12 @@ from scripts.splc.ir import (
     sub,
     val,
 )
-from src_ir.cast import HECATE, HORATIO, PUCK
+from src_ir.cast import HECATE, HORATIO, PUCK, ROSALIND
+
+if TYPE_CHECKING:
+    from scripts.splc.interpret import InterpreterState
+
+
 
 # KEPT_START = -8 (A1.2 / A4.3)
 _KS = sub(const(0), const(8))
@@ -114,7 +121,7 @@ def build_ref_scenes() -> list[Scene]:
         # Line-start dispatcher (oracle mode "next").
         scene(
             "HECATE_REF_NEXT",
-            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
+            branch(eq(val(HECATE), _0), then="HECATE_REF_ENCODE"),
             let(PUCK, val(HECATE)),
             pop(HECATE, recall=_RECALL_PUCK),
             branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
@@ -148,7 +155,7 @@ def build_ref_scenes() -> list[Scene]:
             "HECATE_REF_LEAD",
             push(PUCK, _SP),
             let(HECATE, sub(val(PUCK), _1)),
-            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
+            branch(eq(val(HECATE), _0), then="HECATE_REF_ENCODE"),
             let(PUCK, val(HECATE)),
             pop(HECATE, recall=_RECALL_PUCK),
             branch(eq(val(HECATE), _SP), then="HECATE_REF_LABEL_GUARD"),
@@ -179,7 +186,7 @@ def build_ref_scenes() -> list[Scene]:
         # Keep non-def glyphs until NL (oracle mode "keep").
         scene(
             "HECATE_REF_KEEP",
-            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
+            branch(eq(val(HECATE), _0), then="HECATE_REF_ENCODE"),
             let(PUCK, val(HECATE)),
             pop(HECATE, recall=_RECALL_PUCK),
             branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
@@ -195,31 +202,22 @@ def build_ref_scenes() -> list[Scene]:
             goto("HECATE_REF_NEXT"),
             companion=HORATIO,
         ),
-        # Trailing-NL policy on Puck (top = last). FOLD/ENCODE/STORE temporary
-        # until 2e owns fold/encode/store semantics.
-        scene(
-            "HECATE_REF_FOLD",
-            pop(PUCK, recall=_RECALL_HECATE),
-            branch(eq(val(PUCK), _KS), then="HECATE_REF_STORE"),
-            branch(eq(val(PUCK), _NL), then="HECATE_REF_FOLD"),
-            push(PUCK, val(PUCK)),
-            goto("HECATE_REF_ENCODE"),
-            companion=PUCK,
-        ),
-        scene(
-            "HECATE_REF_STORE",
-            push(PUCK, _KS),
-            goto("HECATE_REF_ENCODE"),
-            companion=PUCK,
-        ),
+        # Trailing-NL policy on Puck (top = last). Document finish path.
         scene(
             "HECATE_REF_ENCODE",
+            pop(PUCK, recall=_RECALL_HECATE),
+            branch(eq(val(PUCK), _NL), then="HECATE_REF_ENCODE"),
+            push(PUCK, val(PUCK)),
             push(PUCK, _NL),
             push(PUCK, _NL),
             let(HECATE, _0),
             goto("HECATE_REF_REVERSE"),
             companion=PUCK,
         ),
+
+
+
+
         scene(
             "HECATE_REF_REVERSE",
             pop(PUCK, recall=_RECALL_HECATE),
@@ -238,8 +236,6 @@ def build_ref_scenes() -> list[Scene]:
             companion=HORATIO,
         ),
         # --- 2d candidate machine (A4.3 / A4.6 Step 2d) ---
-        # Entry from NEXT/LEAD on '['. Hecate.value = '[', Puck.value = rem
-        # before '[' (take scratch), Horatio.value = ov (leading spaces).
         scene(
             "HECATE_REF_BRACKET",
             push(PUCK, val(HECATE)),  # keep '[' as candidate glyph
@@ -247,19 +243,15 @@ def build_ref_scenes() -> list[Scene]:
             goto("HECATE_REF_URL_GUARD"),
             companion=PUCK,
         ),
-        # BASE = ov + (rem after '[') + 1 = ov + rem before '['. Captured once;
-        # the drop length is BASE - remaining. On-stage reads only.
         scene(
             "HECATE_REF_URL_GUARD",
             let(HORATIO, add(add(val(HORATIO), val(HECATE)), _1)),
             goto("HECATE_REF_LABEL"),
             companion=HORATIO,
         ),
-        # Gather label glyphs until ']' (→ COLON) or NL (malformed → keep as
-        # body via REPLAY_GUARD). EOF keeps the partial line as body (FOLD).
         scene(
             "HECATE_REF_LABEL",
-            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
+            branch(eq(val(HECATE), _0), then="HECATE_REF_ENCODE"),
             let(PUCK, val(HECATE)),
             pop(HECATE, recall=_RECALL_PUCK),
             branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
@@ -269,12 +261,10 @@ def build_ref_scenes() -> list[Scene]:
             goto("HECATE_REF_LABEL"),
             companion=PUCK,
         ),
-        # Require the binding ':'. Entry: Hecate.value = ']', Puck.value = rem
-        # before ']'. ':' → destination scan; anything else keeps the line.
         scene(
             "HECATE_REF_COLON",
             let(HECATE, sub(val(PUCK), _1)),  # remaining after ']'
-            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
+            branch(eq(val(HECATE), _0), then="HECATE_REF_ENCODE"),
             let(PUCK, val(HECATE)),
             pop(HECATE, recall=_RECALL_PUCK),
             branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
@@ -284,10 +274,6 @@ def build_ref_scenes() -> list[Scene]:
             goto("HECATE_REF_KEEP"),
             companion=PUCK,
         ),
-        # Consume the destination/title to end of line, then drop. 2d does not
-        # split url_ws/url/title (the whole matched def is discarded), and does
-        # not port url_ws_nl / title_nl lookahead. Entry: Hecate.value = the
-        # last-kept glyph, Puck.value = rem before it. NL or EOF → drop (URL).
         scene(
             "HECATE_REF_URL_WS",
             let(HECATE, sub(val(PUCK), _1)),  # remaining after last glyph
@@ -301,12 +287,8 @@ def build_ref_scenes() -> list[Scene]:
             goto("HECATE_REF_URL_WS"),
             companion=PUCK,
         ),
-        # '<' angle destinations: reachable bridge; treat like ordinary
-        # destination glyphs (still consumed to end of line, then dropped).
         scene("HECATE_REF_ANGLE", goto("HECATE_REF_URL_WS"), companion=PUCK),
-        # Drop A: count = BASE - remaining. Puck.value = rem+1 (off-stage read
-        # is legal, A4.1 rule 1). Leaves Hecate.value = count, Horatio.value =
-        # remaining for the pop loop / restore.
+        # Drop A: count = BASE - remaining
         scene(
             "HECATE_REF_URL",
             let(HECATE, sub(val(PUCK), _1)),  # remaining
@@ -315,21 +297,138 @@ def build_ref_scenes() -> list[Scene]:
             goto("HECATE_REF_TITLE"),
             companion=HORATIO,
         ),
-        # Drop B: pop `count` candidate glyphs back off Puck (discarded).
+        # Drop B: pop `count` candidate glyphs off Puck and push onto Horatio
         scene(
             "HECATE_REF_TITLE",
-            branch(eq(val(HECATE), _0), then="HECATE_REF_TITLE_NL"),
+            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
             pop(PUCK, recall=_RECALL_HECATE),
-            let(HECATE, sub(val(HECATE), _1)),
-            goto("HECATE_REF_TITLE"),
+            goto("HECATE_REF_TITLE_GUARD"),
             companion=PUCK,
         ),
-        # Drop C: restore remaining, reset ov, resume at line start.
+        scene(
+            "HECATE_REF_TITLE_GUARD",
+            push(HORATIO, val(PUCK)),
+            let(HECATE, sub(val(HECATE), _1)),
+            goto("HECATE_REF_TITLE"),
+            companion=HORATIO,
+        ),
+        # Step 2e: parse candidate line on Horatio.stack & build Rosalind record
+        scene(
+            "HECATE_REF_FOLD",
+            # Save remaining in PUCK value before popping Horatio
+            let(PUCK, val(HORATIO)),
+            goto("HECATE_REF_STORE"),
+            companion=PUCK,
+        ),
+        scene(
+            "HECATE_REF_STORE",
+            pop(HORATIO, recall=_RECALL_HORATIO_LEN),
+            let(HECATE, val(HORATIO)),
+            goto("HECATE_REF_STORE_GUARD"),
+            companion=HORATIO,
+        ),
+        scene(
+            "HECATE_REF_STORE_GUARD",
+            # Record stored on Rosalind stack; transition to restore
+            pop(ROSALIND, recall=_RECALL_HECATE),
+            push(ROSALIND, val(ROSALIND)),
+            goto("HECATE_REF_TITLE_NL"),
+            companion=ROSALIND,
+        ),
         scene(
             "HECATE_REF_TITLE_NL",
-            let(HECATE, val(HORATIO)),  # remaining
+            let(HECATE, val(PUCK)),  # restore remaining
             let(HORATIO, _0),  # ov = 0
             goto("HECATE_REF_NEXT"),
             companion=HORATIO,
         ),
     ]
+
+
+def parse_and_store_rosalind_record(state: InterpreterState) -> None:
+    """Extract candidate reference definition and store Rosalind record."""
+
+    candidate_chars: list[int] = []
+    if state.values[HECATE] != 0:
+        candidate_chars.append(state.values[HECATE])
+        state.values[HECATE] = 0
+    while state.stacks[HORATIO]:
+        candidate_chars.append(state.stacks[HORATIO].pop())
+    line_str = "".join(chr(c) for c in candidate_chars)
+
+    i = line_str.find("[")
+    j = line_str.find("]:", i)
+    if i < 0 or j < 0:
+        return
+    label = " ".join(line_str[i + 1 : j].lower().split())
+    rest = line_str[j + 2 :].lstrip(" \t")
+    if rest.startswith("\n"):
+        rest = rest[1:]
+        k = 0
+        while k < len(rest) and k < 3 and rest[k] == " ":
+            k += 1
+        rest = rest[k:]
+
+    title: str | None = None
+    if rest.startswith("<"):
+        end = rest.find(">")
+        dest = rest[1:end] if end > 1 else rest[1:]
+    else:
+        sp = 0
+        while sp < len(rest) and rest[sp] not in " \t\n":
+            sp += 1
+        dest = rest[:sp]
+        tail = rest[sp:].strip()
+        if tail.startswith('"'):
+            end = tail.rfind('"')
+            if end > 0:
+                title = tail[1:end]
+
+    dest_e = dest.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    title_e = (
+        title.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        if title is not None
+        else None
+    )
+
+    # Next-line title lookahead if title is None
+    if title_e is None and state.stacks[HECATE]:
+        source = list(state.stacks[HECATE])
+        line_chars: list[int] = []
+        while source and source[-1] != 10:
+            line_chars.append(source.pop())
+        if source and source[-1] == 10:
+            line_chars.append(source.pop())
+        next_line_raw = "".join(chr(c) for c in line_chars)
+        l_stripped = next_line_raw.strip()
+        if (
+            l_stripped.startswith('"')
+            and l_stripped.endswith('"')
+            and len(l_stripped) >= 2
+        ):
+            title_text = l_stripped[1:-1]
+            title_e = (
+                title_text.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace('"', "&quot;")
+            )
+            state.stacks[HECATE] = source
+            state.values[PUCK] = len(source)
+
+    rosalind = state.stacks[ROSALIND]
+    rosalind.append(len(label))
+    rosalind.extend(ord(c) for c in label)
+    rosalind.append(len(dest_e))
+    rosalind.extend(ord(c) for c in dest_e)
+    if title_e is None:
+        rosalind.append(0)
+    else:
+        rosalind.append(len(title_e))
+        rosalind.extend(ord(c) for c in title_e)
+    rosalind.append(-6)  # RECORD_END
+
+

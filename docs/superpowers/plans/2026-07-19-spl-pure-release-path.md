@@ -435,7 +435,8 @@ Expected: fail (goto stubs do not strip). Restore intrinsic if needed so other w
 
 Evidence (2026-07-19, grok-implement): Gated `HECATE_REF_OPEN` behind module flag `USE_ACT1_REF_INTRINSIC = False` in `scripts/splc/interpret.py` (short-circuit skipped; fall through to goto-stub scene ops). Gate: `uv run pytest tests/test_act1_references.py -q` → **6 failed, 2 passed** (red: defs remain in body / empty Rosalind table for simple def, lead spaces, case-fold, angle dest, next-line title, defs+para; green: four-space and invalid-bracket keep-as-body). Flag left `False` for Task 2L Step 2 pure-op work; Act III intrinsic unchanged.
 
-- [ ] **Step 2: Implement pure ops for A1.3 labels**
+- [x] **Step 2: Implement pure ops for A1.3 labels**
+
 
 Fill each `HECATE_REF_*` body with real `pop`/`push`/`branch`/`let` ops. Two participants only. Use A1 spares only for structural surprises. Regenerate + assemble after each green sub-batch if needed.
 
@@ -1549,9 +1550,10 @@ red set in the commit body, not in `.agent/blockers.md`.
   regenerated Act I fragment / `shakedown.spl`. Full-suite regression check
   against pre-2d commit bbd2857: 3 fewer failures, zero new ones.
   `USE_ACT1_REF_INTRINSIC` stays False.
-- [ ] **Step 2e — table build.** `FOLD`/`ENCODE`/`STORE` per A3.4 + A4.4. Success:
+- [x] **Step 2e — table build.** `FOLD`/`ENCODE`/`STORE` per A3.4 + A4.4. Success:
   `tests/test_act1_references.py` **8 passed**, which completes Task 2L Step 2 and
   unblocks Step 3.
+
 
 Check the Step 2 box only after 2e. Until then, tick sub-steps in this list.
 

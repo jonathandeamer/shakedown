@@ -238,6 +238,11 @@ def run_act(
             apply_act1_reference_strip(state)
             label = "ACT_I_DONE"
             continue
+        if sc.label == "HECATE_REF_STORE_GUARD":
+            from src_ir.act1_ref_pure import parse_and_store_rosalind_record
+
+            parse_and_store_rosalind_record(state)
+
         # Task 3: resolve raw links/images on the token stream before scan.
         # Runs once at act entry; scene ops then seed Juliet and traverse.
         if sc.label == "ACT_III_START":

@@ -194,13 +194,14 @@ pattern = "bare_statement"
 title = "The river road keeps one guarded turn."
 pattern = "bare_statement"
 
-[spares.HECATE_REF_TITLE_GUARD]
+[scenes.HECATE_REF_TITLE_GUARD]
 title = "The whispered title keeps one guarded seal."
 pattern = "bare_statement"
 
-[spares.HECATE_REF_STORE_GUARD]
+[scenes.HECATE_REF_STORE_GUARD]
 title = "The forest road keeps one guarded store."
 pattern = "bare_statement"
+
 
 [scenes.HECATE_REF_REPLAY_GUARD]
 title = "The unproved line keeps one guarded return."
