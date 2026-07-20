@@ -1526,12 +1526,29 @@ red set in the commit body, not in `.agent/blockers.md`.
   `REPLAY_GUARD`. Keep-all body preserved. Gate: `tests/test_act1_references.py`
   **2 passed, 6 failed** (unchanged red set); literary/validate/generated **67
   passed**; `splc` + assemble regenerated Act I / `shakedown.spl`.
-- [ ] **Step 2d — candidate capture + replay.** `BRACKET`/`LABEL`/`COLON`/`URL_WS`/
+- [x] **Step 2d — candidate capture + replay.** `BRACKET`/`LABEL`/`COLON`/`URL_WS`/
   `URL_GUARD`/`ANGLE`/`URL`/`TITLE`/`TITLE_NL`/`REPLAY` per A4.3. Success:
   well-formed definition lines vanish from the body (`test_simple_definition_*`,
   `test_up_to_three_leading_spaces_*`, `test_defs_plus_paragraph_*` pass); the
   Rosalind table may still be empty, so `test_label_case_fold`,
   `test_angle_bracket_destination` and `test_title_on_next_line` stay red.
+  Evidence (2026-07-20, claude-implement, commit 719a37e): candidate glyphs ride
+  on Puck like kept body; drop length recovered arithmetically as
+  `BASE - remaining` (BASE = `ov + saved_rem`, captured once at BRACKET) — no
+  per-glyph counter, no cross-stack flush, fits the 10-label budget by
+  collapsing url_ws/url/title into one consume-to-EOL loop and splitting the
+  drop across URL/TITLE/TITLE_NL. Promoted spare `HECATE_REF_URL_GUARD`.
+  Gate: `tests/test_act1_references.py` **2 passed, 6 failed** — the three
+  target tests now pass every body assertion (defs stripped, `body ==
+  expected_body`, count matches) and fail only on the still-empty Rosalind
+  table (2e); `test_four_leading_spaces_are_not_definitions` and
+  `test_invalid_bracket_line_remains_body` stay green; `test_label_case_fold`,
+  `test_angle_bracket_destination`, `test_title_on_next_line` stay red as
+  anticipated (`url_ws_nl`/next-line-title lookahead intentionally not
+  ported). literary/validate/generated **67 passed**; `splc` + assemble
+  regenerated Act I fragment / `shakedown.spl`. Full-suite regression check
+  against pre-2d commit bbd2857: 3 fewer failures, zero new ones.
+  `USE_ACT1_REF_INTRINSIC` stays False.
 - [ ] **Step 2e — table build.** `FOLD`/`ENCODE`/`STORE` per A3.4 + A4.4. Success:
   `tests/test_act1_references.py` **8 passed**, which completes Task 2L Step 2 and
   unblocks Step 3.
