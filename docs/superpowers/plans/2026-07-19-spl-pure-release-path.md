@@ -439,6 +439,13 @@ Evidence (2026-07-19, grok-implement): Gated `HECATE_REF_OPEN` behind module fla
 
 Fill each `HECATE_REF_*` body with real `pop`/`push`/`branch`/`let` ops. Two participants only. Use A1 spares only for structural surprises. Regenerate + assemble after each green sub-batch if needed.
 
+Register/label choreography is bound by **Amendment A3** (A3.1–A3.6 below): exact
+register ownership per oracle state variable, sub-mode-to-label folding (including the
+one authorized spare promotion, `HECATE_REF_URL_GUARD`), the `title_nl` backtrack
+realization via `Puck` as idle scratch, and the `fold`/`encode` string-op decomposition.
+This closes the `BLOCK[plan]` recorded 2026-07-20 — Step 2 is mechanical translation
+against A3, not further design.
+
 ```bash
 uv run pytest tests/test_act1_references.py -q
 uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
@@ -1159,3 +1166,167 @@ Re-run pure shakespeare integration **only after** 2L and 3L checkboxes are comp
 4. No new stream token codes are required for resolve-in-text-payload.
 5. Email autolinks remain entity-normalized only (`docs/markdown/divergences.md`).
 6. Design doc addendum A1 (same date) restates that interpreter assists are not production ownership.
+
+---
+
+## Amendment A3 (2026-07-20): Act I strip transfer-bridge register/label choreography
+
+**Resolves the `- BLOCK[plan]:` recorded 2026-07-20** (Task 2L Step 2, re-verified by
+claude-implement): the fear that each Act I scene's `companion` field caps the whole
+strip pass at "two value cells" and therefore cannot hold `apply_act1_reference_strip`'s
+mode selector, `remaining` counter, growing `horatio` buffer, `ov`/`pv` counters, and
+`title_nl` backtrack. That fear conflates the **on-stage-at-once** limit (exactly one
+`companion`, per `docs/spl/reference.md` "maximum two characters on stage") with the
+**total addressable register budget**, which is much larger:
+
+- Every character (`Hecate`, `Horatio`, `Puck`, `Rosalind`) has its own persistent
+  `value` scalar **and** its own `stack`, independently of who is on stage — confirmed
+  by `docs/spl/reference.md` line 79 ("Character name → that character's current value,
+  even if off stage") and line 383 ("Characters retain values off-stage"). `let`/`branch`
+  expressions in `src_ir/act1.py` already read `val(X)` for characters that are not the
+  scene's `companion` (e.g. `HECATE_LINE_STRIP_SECOND_REFERENCE` at
+  `src_ir/act1.py:176` reads `val(ROSALIND)` while `companion=HORATIO`). Only `push`/`pop`
+  (stack ops) and the assignment target of `let` require the target to be the on-stage
+  listener; **arithmetic/comparison reads of any character's value are unrestricted.**
+- Scene labels are FSM states, not registers. A1.3's 20 labels do not need a 1:1 mapping
+  to the oracle's `mode` strings — one label's op sequence may contain several `branch`
+  ops (already the pattern at `HECATE_NORMALIZE_LINE`, two branches before its `goto`)
+  and may `goto` **itself** to consume more than one glyph per conceptual mode (already
+  the pattern at `HECATE_DETAB_COLUMN_TWO`/`_FOUR`, which loop until `ROSALIND == 0`).
+  So `mode` needs **zero** dedicated storage: it is which label is executing, and
+  self-loop is free.
+
+This amendment assigns exact register ownership so Step 2 is mechanical translation of
+`scripts/splc/act1_ref_strip.py`'s Python state into `src_ir/act1.py` ops — no further
+choreography invention is authorized or required.
+
+### A3.1 Register ownership (binding for Task 2L Step 2)
+
+| Oracle state | SPL owner | Notes |
+|---|---|---|
+| `remaining` | `Hecate.value` | Decremented on every glyph pop from `Hecate.stack`, mirroring the existing `Horatio value = length` idiom (A1.2). Checked `== 0` before each pop to avoid a runtime error on empty-stack `Recall`. |
+| `mode` (17-way) | scene label + internal `branch` | No storage. Oracle sub-modes without a dedicated A1.3 row — `url_ws_nl`, `title_body`, `title_tail`, the colon-fail tail, the label mid-capture branch — are internal branches/self-loops inside their parent label's own scene (mapping in A3.2). |
+| `horatio` (growing capture buffer) | `Horatio.stack` | Push in read order (top = most recently captured glyph), matching A1.2's existing plan for Horatio as capture scratch. |
+| `ov` (lead-space / overflow counter) | `Horatio.value` | Distinct slot from `Horatio.stack`; both live on the same character simultaneously (value and stack are independent per `docs/spl/reference.md` "Each character has: a value, a stack"). |
+| `pv` (keep-rest-of-capture flag) | `Puck.value` | Read only in the `HECATE_REF_REPLAY` scene body. |
+| `puck` (persistent rebuild/kept-body accumulator) | `Puck.stack` | Same physical stack as the A3.3 backtrack scratch below — safe because their live ranges never overlap (proof in A3.3). |
+| Rosalind table records (A1.2) | `Rosalind.stack` above the floor | Unchanged from A1.2. |
+| fold/encode loop scratch | `Rosalind.value` | Used only while `Rosalind` is the on-stage companion during `HECATE_REF_FOLD`/`HECATE_REF_ENCODE`. |
+
+No new characters, no new token codes, no third on-stage participant. This closes risk
+row "Act I table needs a third simultaneous participant" as **not triggered**.
+
+### A3.2 Sub-mode folding (closes the "15 modes vs 20 labels" gap)
+
+Each row states which A1.3 label absorbs the oracle sub-mode, and how:
+
+| Oracle sub-mode | Absorbing label | Mechanism |
+|---|---|---|
+| `next` | `HECATE_REF_NEXT` | unchanged 1:1 |
+| `lead` | `HECATE_REF_LEAD` | self-`goto` until `ov == 3` or non-space/non-`[` glyph (matches oracle's per-glyph `while`) |
+| `label` | `HECATE_REF_LABEL` | self-`goto` until `]` or NL |
+| `colon` (incl. fail tail) | `HECATE_REF_COLON` | one `branch` on `g == ':'`; fail path falls straight through to the existing `HECATE_REF_REPLAY` goto target, no new label |
+| `url_ws` **and** `url_ws_nl` | `HECATE_REF_URL_WS` (+ spare `HECATE_REF_URL_GUARD` promoted) | `url_ws` self-loops in `HECATE_REF_URL_WS`; on NL it transitions to the promoted `HECATE_REF_URL_GUARD` scene, which self-loops the post-NL lead-space count (`ov` reset to 0 first) and re-checks the `<`/other-glyph branch, mirroring `url_ws_nl` exactly |
+| `angle` | `HECATE_REF_ANGLE` | self-`goto` until `>` or NL |
+| `url` | `HECATE_REF_URL` | self-`goto` until WS/NL/EOF |
+| `title`, `title_body`, `title_tail` | `HECATE_REF_TITLE` | `title` and `title_tail` are the pre-quote scan (self-loop until `"`, NL, or non-title glyph); once `"` is seen, the **same label** self-loops in `title_body` behavior gated by a 0/1 "in-quote" flag stored in an unused low bit of `Horatio.value` (bounded because `ov` is always 0–3 at that point in the oracle — the in-quote flag can safely occupy `ov`'s next power-of-four band, e.g. `ov + 4` while capturing, `ov` restored to its original value at `HECATE_REF_FOLD` entry) |
+| `title_nl` (incl. save/restore) | `HECATE_REF_TITLE_NL` | see A3.3 |
+| `replay` | `HECATE_REF_REPLAY` | unchanged 1:1, reads `Puck.value` for `pv` |
+| `keep` | `HECATE_REF_KEEP` | self-`goto` until NL, matches oracle |
+| `fold` (incl. `rfind`, label case-fold, dest/title split) | `HECATE_REF_FOLD` → `HECATE_REF_ENCODE` → `HECATE_REF_STORE` | see A3.4 |
+| `finish` | `HECATE_REF_FINISH` | unchanged 1:1 |
+
+Only **one** spare (`HECATE_REF_URL_GUARD`) is authorized for promotion by this
+amendment. The remaining five spares (`HECATE_REF_LEAD_GUARD`,
+`HECATE_REF_LABEL_GUARD`, `HECATE_REF_TITLE_GUARD`, `HECATE_REF_STORE_GUARD`,
+`HECATE_REF_REPLAY_GUARD`) stay reserved; promoting any of them requires a further
+`BLOCK[plan]` amendment, not mid-task invention — Step 2 must not need them if A3.1–A3.4
+are followed.
+
+### A3.3 `title_nl` backtrack: Puck as idle scratch (no save-array primitive needed)
+
+SPL has no "snapshot a stack" primitive, only destructive `pop` and additive `push`. The
+oracle's `save_src`/`save_rem`/`save_h` Python snapshot is realized as follows, using the
+fact that `Puck.stack` is **not touched** by the oracle between `url`/`title` ending and
+`fold` starting (the oracle only appends to `puck` in `keep`/`replay`/`next`-on-NL, none
+of which run while `title_nl` is in progress):
+
+1. On entry to `HECATE_REF_TITLE_NL`, pop up to 3 lead-space glyphs from `Hecate`,
+   pushing each one onto `Puck.stack` as it is read (Puck is idle here, see above).
+2. If the next glyph is not `"`, the candidate is rejected: pop everything just pushed
+   back off `Puck.stack` and push it onto `Hecate.stack` in the same pop order. Because
+   `Puck` is LIFO, popping it and re-pushing onto `Hecate` glyph-by-glyph exactly
+   reverses the reversal — `Hecate`'s top glyph after restore is the same glyph that was
+   its top before `HECATE_REF_TITLE_NL` ran. Then `goto HECATE_REF_FOLD` (matches
+   oracle: `source = save_src; ...; mode = "fold"`).
+3. If the next glyph is `"`, continue popping `Hecate` glyphs onto `Puck.stack` (not
+   `Horatio.stack`) until NL or EOF — `Puck` remains the tentative holding area.
+4. Apply the oracle's accept test (`line.startswith('"')` is already guaranteed by step
+   2's branch; `line.rfind('"') > 0` and no trailing non-whitespace after the closing
+   quote) using the backward-scan idiom from A3.4 directly on `Puck.stack` (top = last
+   glyph read = correct direction for a reverse scan).
+   - **Accept:** transfer `Puck.stack` (pop each glyph, push onto `Horatio.stack`) —
+     this reverses orientation exactly once, which is required because `Horatio.stack`
+     must hold the captured title in forward order for `HECATE_REF_FOLD`'s reverse-scan
+     step (A3.4) to consume correctly. `goto HECATE_REF_FOLD`.
+   - **Reject:** restore per step 2 (pop `Puck.stack` back onto `Hecate.stack`,
+     including the lead-space glyphs already there from step 1), then
+     `goto HECATE_REF_FOLD` with `Horatio.stack` unchanged (matches oracle:
+     `horatio = save_h`).
+
+`Puck.stack`'s permanent kept-body role and its transient A3.3 scratch role never
+overlap in time because the oracle machine is single-threaded and `title_nl` cannot be
+entered while a `replay`/`keep` flush to `Puck` is in progress. This is the same
+non-overlap argument the existing `HECATE_REVERSE_POP` scene already relies on
+(`src_ir/act1.py:210-216`, which pops `Puck` into `Hecate` using the identical
+reverse-then-restore idiom for the whole-document normalize reversal).
+
+### A3.4 `fold`/`encode` string ops: pop direction *is* the scan direction
+
+The oracle's `fold` mode does `rfind`, `lstrip`, `startswith`, and slicing on an
+assembled Python string. On the SPL stack model these decompose without inventing new
+primitives, because popping a stack **is** a backward scan over what was pushed:
+
+- **Backward scan (`rfind`, trailing-whitespace check):** pop directly from
+  `Horatio.stack` (or `Puck.stack` per A3.3) glyph by glyph from the end — this is
+  exactly `rfind`'s direction. No reversal needed.
+- **Forward scan (label fold, `]:` search, `<dest>`/bare-dest split, `"title"` slice):**
+  reverse `Horatio.stack` onto `Rosalind.stack` (or a scratch character on stage) first
+  using the same `HECATE_REVERSE_POP` idiom already proven at
+  `src_ir/act1.py:210-216`, then pop forward from there.
+- **Case-fold (`a-z` from `A-Z`) and whitespace collapse:** per-glyph `branch` +
+  `let` while popping forward, matching `scripts/slice3_links._normalize_label`
+  character-for-character; no string buffer needed.
+- **Entity-escaping (`&`→`&amp;`, `<`→`&lt;`, `>`→`&gt;`, `"`→`&quot;`):** reuse the
+  exact `_entity()` idiom already implemented for Act III
+  (`src_ir/act3.py:115-121`, e.g. `LYRIC_BUFFER_ENTITY_AMP` at
+  `src_ir/act3.py:465-470`) — a `let`+`push` pair per output glyph on the
+  currently-on-stage accumulator character, gated by a `branch` per input glyph.
+- Record assembly (`label_len`, `label_glyphs…`, `dest_len`, …, `RECORD_END`) pushes
+  directly onto `Rosalind.stack` per A1.2's layout as each length becomes known — no
+  Python-side length precomputation needed since SPL can push the count once the
+  matching forward scan completes and the glyphs are already on the target stack below
+  it.
+
+### A3.5 Step 2 implementation bounds (supersedes the blocker)
+
+- Task 2L Step 2 is now mechanical: for each of the 20 A1.3 labels (+ the one promoted
+  `HECATE_REF_URL_GUARD` spare from A3.2), replace its goto stub with the `push`/`pop`/
+  `let`/`branch`/`goto` ops implied by A3.1–A3.4, checked glyph-for-glyph against
+  `scripts/splc/act1_ref_strip.py`.
+  `USE_ACT1_REF_INTRINSIC` stays `False` for the duration.
+- Do not promote any of the five remaining spares; hitting a genuine gap not covered by
+  A3.1–A3.4 is a new `BLOCK[plan]`, not silent invention.
+- Gates are unchanged from A1.5 / A1.6: `tests/test_act1_references.py`,
+  `tests/test_splc_validate.py`, `tests/test_splc_generated_fragments.py`,
+  `tests/test_literary_compliance.py`, then regen + assemble with a clean
+  `git diff --exit-code -- src/*.spl shakedown.spl debug/`.
+
+### A3.6 Assumption recorded
+
+The `ov`/in-quote-flag co-encoding in `HECATE_REF_TITLE` (A3.2) assumes the oracle never
+needs `ov`'s pre-quote value once quote-capture starts (confirmed: `ov` is not read again
+after `mode = "title_body"` is entered in `apply_act1_reference_strip`). If Step 2
+implementation finds a path where this is false, use a second bit band instead of
+stopping — this is an arithmetic detail within A3.1's assigned register, not a new
+choreography, and does not require a further plan amendment.
