@@ -824,7 +824,7 @@ Step 1 only requires the first two lines (red refs + green literary/generated wi
 - Prefer **one unchecked step per MCO/agent iteration** with its evidence gate.
 - SPL-changing steps must name and run the literary compliance commands in Global Constraints.
 - If Act I table or Act III resolution needs tokens/participants beyond this plan, stop with `- BLOCK[plan]:` and amend; do not expand scope silently.
-- **Next unchecked step after Amendment A4 / Step 2a:** Task **2L Step 2b** (A4.4 Rosalind recall prose in `src/literary.toml`). Then 2c → 2d → 2e, one per iteration. Do not re-run Task 5 Step 2 until 2L and 3L complete.
+- **Next unchecked step after Amendment A4 / Step 2b:** Task **2L Step 2c** (A3.2 line machine: `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP`). Then 2d → 2e, one per iteration. Do not re-run Task 5 Step 2 until 2L and 3L complete.
 
 ---
 
@@ -1506,8 +1506,15 @@ red set in the commit body, not in `.agent/blockers.md`.
   Gate: `tests/test_act1_references.py` **2 passed, 6 failed** (body unreversed;
   defs still present); literary/validate/generated **67 passed**; `splc` + assemble
   regenerated Act I fragment / `shakedown.spl`. `USE_ACT1_REF_INTRINSIC` stays False.
-- [ ] **Step 2b — recall prose + literary promotion.** Paste A4.4 into
+- [x] **Step 2b — recall prose + literary promotion.** Paste A4.4 into
   `src/literary.toml`. Gate: literary/validate/generated green; no IR behaviour change.
+  Evidence (2026-07-20, claude-implement): pasted all five A4.4 recall keys verbatim
+  into `[characters.rosalind.recall]` in `src/literary.toml`. Gate:
+  `tests/test_act1_references.py` **2 passed, 6 failed** (unchanged from 2a baseline —
+  no IR behaviour change); `test_splc_validate` + `test_splc_generated_fragments` +
+  `test_literary_compliance` **67 passed**; `splc` + assemble regenerated all five
+  fragments with `git diff --exit-code` clean (additive recall keys do not change
+  generated SPL until a scene references them, per A4.8.3).
 - [ ] **Step 2c — line machine.** `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP` per A3.2's
   self-loop mapping, still keeping every line as body. Success: same 2 passed, no
   regression; `HECATE_REF_LEAD` correctly counts 0–3 and rejects on the fourth space.

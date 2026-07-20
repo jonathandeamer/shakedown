@@ -84,6 +84,11 @@ palette = "pastoral_natural"
 voice_register = "witty_agile_cross_register"
 blurb = "Rosalind, keeper of references, agile of tongue across the Forest of Arden."
 [characters.rosalind.recall]
+forest_record_seal = "Recall the forest record's seal."
+forest_record_glyph = "Recall the forest record's glyph."
+forest_record_measure = "Recall the forest record's measure."
+folded_forest_name = "Recall the folded forest name."
+kept_forest_road = "Recall the kept forest road."
 [characters.rosalind.stable_utility]
 v1 = "a tree"
 v2 = "a green tree"
