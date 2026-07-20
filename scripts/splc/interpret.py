@@ -31,8 +31,6 @@ from scripts.splc.ir import (
     Val,
 )
 
-USE_ACT3_RESOLVE_INTRINSIC = False
-
 
 @dataclass
 class InterpreterState:
@@ -232,13 +230,11 @@ def run_act(
             from src_ir.act1_ref_pure import parse_and_store_rosalind_record
 
             parse_and_store_rosalind_record(state)
+        elif sc.label == "RESOLVE_OPEN":
+            from src_ir.act3_resolve_pure import resolve_puck_stream
 
-        # Task 3: resolve raw links/images on the token stream before scan.
-        # Runs once at act entry; scene ops then seed Juliet and traverse.
-        if sc.label == "RESOLVE_OPEN":
-            from scripts.splc.act3_link_resolve import apply_act3_link_resolution
+            resolve_puck_stream(state)
 
-            apply_act3_link_resolution(state)
         jump: str | None = None
         halted = False
         for op in sc.ops:

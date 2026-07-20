@@ -7,6 +7,8 @@ to rewrite Puck's token stream using Rosalind's reference table.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from scripts.splc.ir import (
     Scene,
     const,
@@ -25,7 +27,21 @@ from src_ir.cast import (
     ROSALIND,
 )
 
+if TYPE_CHECKING:
+    from scripts.splc.interpret import InterpreterState
+
 CONT_NONE = 0
+
+
+def resolve_puck_stream(state: InterpreterState) -> None:
+    """Resolve links and images on Puck's token stream using Rosalind refs."""
+    from scripts.splc.act3_link_resolve import (
+        _decode_rosalind_refs,
+        _rewrite_puck_stream,
+    )
+
+    refs = _decode_rosalind_refs(state.stacks[ROSALIND])
+    state.stacks[PUCK] = _rewrite_puck_stream(state.stacks[PUCK], refs)
 
 
 def build_resolve_scenes() -> list[Scene]:
