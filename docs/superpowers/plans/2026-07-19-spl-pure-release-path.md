@@ -439,12 +439,16 @@ Evidence (2026-07-19, grok-implement): Gated `HECATE_REF_OPEN` behind module fla
 
 Fill each `HECATE_REF_*` body with real `pop`/`push`/`branch`/`let` ops. Two participants only. Use A1 spares only for structural surprises. Regenerate + assemble after each green sub-batch if needed.
 
-Register/label choreography is bound by **Amendment A3** (A3.1–A3.6 below): exact
-register ownership per oracle state variable, sub-mode-to-label folding (including the
-one authorized spare promotion, `HECATE_REF_URL_GUARD`), the `title_nl` backtrack
-realization via `Puck` as idle scratch, and the `fold`/`encode` string-op decomposition.
-This closes the `BLOCK[plan]` recorded 2026-07-20 — Step 2 is mechanical translation
-against A3, not further design.
+Register/label choreography is bound by **Amendment A3** (A3.1–A3.6) **as corrected by
+Amendment A4** (2026-07-20, escalated). A3 supplies sub-mode-to-label folding and the
+`fold`/`encode` string-op decomposition (A3.2, A3.4 — both still binding). **A4
+supersedes A3.1 and A3.3** with the verified stage rules, the orientation invariant, the
+Puck-centric single-stack capture, the authorized `[characters.rosalind.recall]` prose,
+and the release of the five remaining A1 spares.
+
+**Do not attempt Step 2 as one port.** It is split into sub-steps **2a–2e** by A4.6;
+work exactly one per iteration and commit each green sub-step. Read A4 before A3 where
+they disagree.
 
 ```bash
 uv run pytest tests/test_act1_references.py -q
@@ -820,7 +824,7 @@ Step 1 only requires the first two lines (red refs + green literary/generated wi
 - Prefer **one unchecked step per MCO/agent iteration** with its evidence gate.
 - SPL-changing steps must name and run the literary compliance commands in Global Constraints.
 - If Act I table or Act III resolution needs tokens/participants beyond this plan, stop with `- BLOCK[plan]:` and amend; do not expand scope silently.
-- **Next unchecked step after Amendment A2:** Task **2L Step 1** (prove Act I red without intrinsic). Do not re-run Task 5 Step 2 until 2L and 3L complete.
+- **Next unchecked step after Amendment A4:** Task **2L Step 2a** (orientation fix per A4.2 — delete the Horatio hop in `src_ir/act1_ref_pure.py`). Then 2b → 2c → 2d → 2e, one per iteration. Do not re-run Task 5 Step 2 until 2L and 3L complete.
 
 ---
 
@@ -1330,3 +1334,207 @@ after `mode = "title_body"` is entered in `apply_act1_reference_strip`). If Step
 implementation finds a path where this is false, use a second bit band instead of
 stopping — this is an arithmetic detail within A3.1's assigned register, not a new
 choreography, and does not require a further plan amendment.
+
+---
+
+## Amendment A4 (2026-07-20, escalated): Act I pure-op stage/orientation contract
+
+**Supersedes the contradicted parts of A3 and closes the three-times-repeated
+`- BLOCK:` on Task 2L Step 2.** A3 was correct that the register budget is larger
+than "two cells", but three of its mechanics are contradicted by the verified
+behaviour of `scripts/splc/validate.py` and `scripts/splc/interpret.py`. Step 2
+kept failing because implementers followed A3 literally and hit an
+`IrError`/step-limit wall each iteration. A4 states the corrected mechanics, the
+orientation invariant the scaffold currently violates, and a sub-step ladder so a
+single iteration can land a green checkpoint instead of an all-or-nothing port.
+
+No compiler, validator, or lowering change is authorized or required. No new
+scene budget: A4 spends only labels already reserved in A1.3/A1.4.
+
+### A4.1 Verified stage rules (correct A3.1)
+
+Read from `scripts/splc/validate.py:28-48` and `scripts/splc/interpret.py:264-270`:
+
+1. **Every write target must be on stage.** `participants()` unions the target of
+   every `let`/`push`/`pop`/`read_char`/`print_*` with the anchor and companion,
+   and demands exactly one non-anchor character. A3.1's register map is valid for
+   *storage* (values do persist off stage, and `val(X)` reads are unrestricted),
+   but a scene may only *write* two characters — its anchor and its companion.
+   Consequence: A3.1's simultaneous ownership of `ov` (`Horatio.value`) and `pv`
+   (`Puck.value`) alongside a `Hecate` pop is **not** realizable in one scene, and
+   the A3.3 "capture on `Horatio.stack`, kept on `Puck.stack`" split cannot flush.
+2. **`pop` clobbers the target's value** (`state.values[op.target] = value`).
+   A3.1's `remaining` in `Hecate.value` does not survive `pop(HECATE)`. The proven
+   take idiom, with `companion=PUCK`: `let(PUCK, val(HECATE))` (save remaining) →
+   `pop(HECATE, ...)` (glyph now in `Hecate.value`) → consume it →
+   `let(HECATE, sub(val(PUCK), const(1)))`. Do not park a push payload in
+   `Puck.value` while remaining lives there; push a `Const`/`BinOp` expression
+   directly (`push(PUCK, sub(const(0), const(7)))`).
+3. **The Recall speaker is the *other* character.** `validate.py:141` picks
+   `speaker = pair[1] if op.target == anchor else anchor`, so `pop(X)` requires a
+   recall key on whichever character shares the stage with `X` — not on `X`.
+   `[characters.rosalind.recall]` is empty, which is why every attempt to build the
+   Rosalind table by popping failed validation. A4.4 fixes this at the source.
+4. **Negative sentinels have no `value_phrase`.** Build `-6`/`-7`/`-8` as
+   `sub(const(0), const(n))`. No new `stable_utility` keys.
+5. **One label, one entry stage pair.** `entry_pairs()` pass 1 requires every
+   branch predecessor of a label to leave the same pair, and pass 3 requires a
+   `goto` to share at least one character with its target's entry pair. Dual-entry
+   modes therefore use inverted non-exhaustive branches or a distinct label —
+   never `branch(..., then=<self>)` with no state change.
+
+### A4.2 Orientation invariant (binding; fixes the current red)
+
+**Invariant:** at `ACT_I_DONE`, `Hecate.stack` must have **top = first body glyph**,
+and `Horatio.stack` must hold exactly the body length with `Horatio.value` equal to it.
+
+Each pop-and-push transfer between two stacks reverses orientation exactly once.
+The scaffold in `src_ir/act1_ref_pure.py` performs **three** transfers
+(`Hecate → Puck → Horatio → Hecate`), which is odd, so the body arrives reversed.
+Verified 2026-07-20 by running Act I on `"para\n"`: `Hecate.stack` ends
+`[10, 10, 112, 97, 114, 97, 10, 10]` — top-first that reads `\n\narap\n\n`, matching
+all eight `tests/test_act1_references.py` failures.
+
+**Corrected pipeline — two transfers, Horatio hop deleted:**
+
+| Stage | Stack | Orientation | Notes |
+|---|---|---|---|
+| after normalize reverse | `Hecate.stack` | top = first | entry state, unchanged |
+| scan (`NEXT`/`KEEP`/capture) | `Puck.stack` | top = **last** | kept body accumulates here |
+| trailing-NL policy | `Puck.stack` | top = last | strip **here**, where the last glyph is on top: pop while `== '\n'`, then `push` exactly two `'\n'` |
+| drain (`REVERSE`) | `Puck → Hecate` | top = first | single transfer, restores the invariant |
+| `FINISH` | `Horatio` | — | `let(HORATIO, val(HECATE))`; `push(HORATIO, val(HORATIO))` |
+
+During the drain scene the on-stage pair is `(Hecate, Puck)`; `Puck.value` is
+clobbered by each `pop(PUCK)`, so the **length counter lives in `Hecate.value`**
+(`let(HECATE, add(val(HECATE), const(1)))` per glyph), and `FINISH` copies it to
+Horatio in a `(Hecate, Horatio)` scene. `pop(PUCK)` in a Hecate-paired scene speaks
+with a Hecate recall key (`cauldron_dreg`, `kept_tally`, …) — all present.
+
+This deletes the scaffold's phase-40/41/42 Horatio round trip and frees
+`HECATE_REF_ENCODE`, `HECATE_REF_STORE`, `HECATE_REF_COLON`, `HECATE_REF_URL_WS`
+and `HECATE_REF_FOLD` to carry their A1.3 semantics again.
+
+### A4.3 Puck-centric single-stack capture (supersedes A3.3)
+
+Capture and kept body share **one** stack, so no cross-stack flush is ever needed:
+
+```
+Puck.stack = [KEPT_START, kept…, CAPTURE_START, candidate…]      (top = last)
+```
+
+- `KEPT_START` = `-8`, `CAPTURE_START` = `-7`, `RECORD_END` = `-6` (A1.2 unchanged).
+- `HECATE_REF_BRACKET` pushes `CAPTURE_START` before the first candidate glyph.
+- Candidate glyphs are pushed onto `Puck` exactly as kept glyphs are — same scene
+  shape, so a candidate that turns out to be body text needs no data movement.
+- **`HECATE_REF_REPLAY` becomes near-free:** pop down to `CAPTURE_START`, discard
+  only that sentinel, and re-push the glyphs in the order popped. Since the region
+  is contiguous and already in kept order, the cheaper realization is to *scan* to
+  the sentinel and rewrite it to a kept glyph only when the sentinel is at a known
+  offset; otherwise use the pop/re-push pair via `Hecate.stack` as scratch (`Hecate`
+  is empty of body only after the drain, so during scan use `Horatio.stack`, which
+  A4.2 has freed).
+- **`HECATE_REF_STORE`** pops the capture region off `Puck` (backward = `rfind`
+  direction, per A3.4, which stands) and relays it onto `Rosalind.stack` per A1.2.
+- `Puck.value` is free during scan and holds `pv`; `Horatio.value` holds `ov`; both
+  are read via `val()` from any scene and written only where that character is staged.
+
+A3.3's `title_nl` backtrack is re-expressed on the same principle: push the tentative
+lead-spaces and title glyphs onto `Horatio.stack` (idle during scan under A4.2);
+accept = transfer to the capture region on `Puck`, reject = pop back onto `Hecate`.
+The A3.3 non-overlap argument is unchanged and still holds.
+
+### A4.4 Rosalind recall prose (authorized; ready to paste)
+
+The empty `[characters.rosalind.recall]` pool is the hard blocker on building the
+table: **any** scene that pops while Rosalind is the other staged character needs a
+Rosalind recall key (A4.1 rule 3). Authoring that prose is plan-time literary work,
+so it is done here. Paste into `src/literary.toml` under the existing
+`[characters.rosalind.recall]` header (keys are additive; no scene budget touched):
+
+```toml
+[characters.rosalind.recall]
+forest_record_seal = "Recall the forest record's seal."
+forest_record_glyph = "Recall the forest record's glyph."
+forest_record_measure = "Recall the forest record's measure."
+folded_forest_name = "Recall the folded forest name."
+kept_forest_road = "Recall the kept forest road."
+```
+
+Five keys — `_seal` for sentinel pops, `_glyph` for per-character pops, `_measure`
+for length pops, `folded_forest_name` for label relay, `kept_forest_road` for
+destination relay. `tests/test_literary_compliance.py::test_recall_phrases_are_in_speaker_pools`
+matches on the rendered `"Recall <body>."` string, so these must be pasted verbatim.
+If a sixth distinct recall site appears, reuse `forest_record_glyph`; recall keys are
+not required to be unique per call site.
+
+With these installed, `HECATE_REF_STORE` may be a single `(Rosalind, Puck)` scene
+(anchor `ROSALIND`, `companion=PUCK`) that pops the capture region and pushes the
+A1.2 record — no value-relay ping-pong, no extra labels.
+
+### A4.5 Remaining A1 spares released
+
+A3.2 reserved `HECATE_REF_LEAD_GUARD`, `HECATE_REF_LABEL_GUARD`,
+`HECATE_REF_TITLE_GUARD`, `HECATE_REF_STORE_GUARD`, `HECATE_REF_REPLAY_GUARD`
+behind a further amendment. **This is that amendment: all five are released for
+promotion**, alongside the already-released `HECATE_REF_URL_GUARD`. Their titles are
+already authored in A1.4 — promote `[spares.*]` → `[scenes.*]` in the same commit
+that first references the label in IR. They exist precisely to absorb the A4.1 rule-5
+stage-pair bridges (a label whose predecessors leave different pairs needs a
+one-line bridge scene, which is a structural surprise, not invented scope).
+
+Exhausting all 26 A1 labels **is** a genuine `BLOCK[plan]`. Inventing a 27th title is
+not permitted under any circumstances.
+
+### A4.6 Step 2 sub-step ladder (land green incrementally)
+
+Task 2L Step 2 has failed three times as one monolithic port. It is hereby split;
+**one sub-step per iteration**, each with the A4.7 gate, each its own commit. A
+sub-step that is green may be committed even while later ones are red — record the
+red set in the commit body, not in `.agent/blockers.md`.
+
+- **Step 2a — orientation.** Apply A4.2 to `src_ir/act1_ref_pure.py`: delete the
+  Horatio hop, move the trailing-NL policy onto `Puck`, count length in
+  `Hecate.value`. Success: `tests/test_act1_references.py` returns to **2 passed**
+  (`test_four_leading_spaces_are_not_definitions`,
+  `test_invalid_bracket_line_remains_body`) with body text no longer reversed. This
+  restores the Step-1 red baseline honestly rather than regressing past it.
+- **Step 2b — recall prose + literary promotion.** Paste A4.4 into
+  `src/literary.toml`. Gate: literary/validate/generated green; no IR behaviour change.
+- **Step 2c — line machine.** `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP` per A3.2's
+  self-loop mapping, still keeping every line as body. Success: same 2 passed, no
+  regression; `HECATE_REF_LEAD` correctly counts 0–3 and rejects on the fourth space.
+- **Step 2d — candidate capture + replay.** `BRACKET`/`LABEL`/`COLON`/`URL_WS`/
+  `URL_GUARD`/`ANGLE`/`URL`/`TITLE`/`TITLE_NL`/`REPLAY` per A4.3. Success:
+  well-formed definition lines vanish from the body (`test_simple_definition_*`,
+  `test_up_to_three_leading_spaces_*`, `test_defs_plus_paragraph_*` pass); the
+  Rosalind table may still be empty, so `test_label_case_fold`,
+  `test_angle_bracket_destination` and `test_title_on_next_line` stay red.
+- **Step 2e — table build.** `FOLD`/`ENCODE`/`STORE` per A3.4 + A4.4. Success:
+  `tests/test_act1_references.py` **8 passed**, which completes Task 2L Step 2 and
+  unblocks Step 3.
+
+Check the Step 2 box only after 2e. Until then, tick sub-steps in this list.
+
+### A4.7 Gate (unchanged, run every sub-step)
+
+```bash
+uv run pytest tests/test_act1_references.py -q
+uv run pytest tests/test_splc_validate.py tests/test_splc_generated_fragments.py tests/test_literary_compliance.py -q
+uv run python -m scripts.splc && uv run python scripts/assemble.py
+git diff --exit-code -- src/*.spl shakedown.spl debug/
+```
+
+`USE_ACT1_REF_INTRINSIC` stays `False` through 2a–2e; it is deleted in Step 3.
+`scripts/splc/act1_ref_strip.py` remains the binding oracle for every stack outcome.
+
+### A4.8 Assumptions recorded
+
+1. Two stack transfers (`Hecate → Puck → Hecate`) suffice for the whole strip pass;
+   the capture region never needs to leave `Puck` except into the Rosalind record.
+2. `Horatio.stack`, freed by A4.2, is sufficient scratch for the A3.3 `title_nl`
+   backtrack and the A4.3 replay re-push. If a case needs a third scratch stack,
+   `Rosalind.stack` above its six-value floor is available and is *not* a plan gap.
+3. Adding keys to `[characters.rosalind.recall]` is additive literary surface and
+   changes no generated fragment until a scene references one — so Step 2b's
+   `git diff --exit-code` on generated SPL stays clean.
