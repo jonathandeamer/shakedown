@@ -1180,7 +1180,7 @@ def mco_command(
         "--max-provider-parallelism",
         "1",
         "--stall-timeout",
-        "300",
+        "1500" if executor.provider.startswith("claude-") else "300",
         "--review-hard-timeout",
         "3600",
         "--artifact-base",
