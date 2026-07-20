@@ -498,17 +498,10 @@ Evidence (2026-07-20): Task 2L finished.
 Installed Amendment A2 TOML into `src/30-act3-literary.toml` as `[spares.RESOLVE_*]` (48 working + 12 spares). Added `USE_ACT3_RESOLVE_INTRINSIC = False` flag in `scripts/splc/interpret.py`. Gate: `test_act3_links_pure` **21 failed, 3 passed** (red baseline proved without intrinsic); literary/validate/generated **67 passed**.
 
 
-- [ ] **Step 2: Implement `RESOLVE_*` pre-pass (3a→3e order)**
+- [x] **Step 2: Implement `RESOLVE_*` pre-pass (3a→3e order)**
 
-Wire `ACT_III_START` → `RESOLVE_OPEN` → … → `RESOLVE_DONE` → seed Juliet `STREAM_END` + `CONT_NONE` → `TRAVERSE_NEXT_TOKEN`. Promote spares → scenes as labels enter IR. Sub-gate after each witness family:
-
-```bash
-uv run pytest tests/test_act3_links_pure.py -k '<family>' -q
-uv run pytest tests/test_architecture_spikes.py tests/test_token_dump.py -q
-uv run python -m scripts.splc && uv run python scripts/assemble.py
-```
-
-Families: inline links+amps → images → reference links → reference images/titles → nested/broken-line (same 3a–3e witnesses as Task 3).
+Wired `ACT_III_START` → `RESOLVE_OPEN` → … → `RESOLVE_DONE` → seed Juliet `STREAM_END` + `CONT_NONE` → `TRAVERSE_NEXT_TOKEN`. Implemented 48 `RESOLVE_*` IR scenes in `src_ir/act3_resolve_pure.py` imported into `src_ir/act3.py`. Promoted 48 working `RESOLVE_*` titles from `[spares.*]` to `[scenes.*]` in `src/30-act3-literary.toml`.
+Gates: `tests/test_act3_links_pure.py` **24 passed** (0 failed) with `USE_ACT3_RESOLVE_INTRINSIC = False`; `test_splc_validate` + `test_splc_generated_fragments` + `test_literary_compliance` **67 passed**; `splc` + assemble regenerated `src/30-act3-span.spl` and `shakedown.spl` with `git diff --exit-code` clean.
 
 - [ ] **Step 3: Remove Act III intrinsic; full pure-IR gate**
 

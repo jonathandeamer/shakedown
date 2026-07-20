@@ -29,6 +29,7 @@ from scripts.splc.ir import (
     val,
 )
 from src_ir import tokens
+from src_ir.act3_resolve_pure import build_resolve_scenes
 from src_ir.cast import (
     HECATE,
     HORATIO,
@@ -141,11 +142,11 @@ ACT: Act = act(
         # --- Traversal phase: walk token stream ---
         scene(
             "ACT_III_START",
-            push(JULIET, const(tokens.STREAM_END)),
-            let(LADY_MACBETH, const(CONT_NONE)),
-            goto("TRAVERSE_NEXT_TOKEN"),
+            goto("RESOLVE_OPEN"),
             anchor=JULIET,
+            companion=PUCK,
         ),
+        *build_resolve_scenes(),
         scene(
             "TRAVERSE_NEXT_TOKEN",
             *_traverse_dispatch(),

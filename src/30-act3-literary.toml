@@ -1006,196 +1006,196 @@ pattern = "scene_of_character"
 title = "Puck bears the wandering star to Hecate."
 pattern = "scene_of_character"
 
-# --- Amendment A2 working pool (48) — install as [spares.*], promote on use ---
-[spares.RESOLVE_OPEN]
+# --- Amendment A2 working pool (48) — promoted to [scenes.*] ---
+[scenes.RESOLVE_OPEN]
 title = "The stream opens one pure resolve."
 pattern = "bare_statement"
 
-[spares.RESOLVE_NEXT_TOKEN]
+[scenes.RESOLVE_NEXT_TOKEN]
 title = "One mark yields its measured code."
 pattern = "bare_statement"
 
-[spares.RESOLVE_ARITY_COPY]
+[scenes.RESOLVE_ARITY_COPY]
 title = "Fixed marks cross the quiet stream."
 pattern = "bare_statement"
 
-[spares.RESOLVE_TEXT_ENTER]
+[scenes.RESOLVE_TEXT_ENTER]
 title = "The paragraph opens its raw text."
 pattern = "bare_statement"
 
-[spares.RESOLVE_TEXT_DRAIN]
+[scenes.RESOLVE_TEXT_DRAIN]
 title = "Romeo drains the paragraph's raw leaves."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_TEXT_END]
+[scenes.RESOLVE_TEXT_END]
 title = "Text ends with one quiet seal."
 pattern = "bare_statement"
 
-[spares.RESOLVE_COPY_OTHER]
+[scenes.RESOLVE_COPY_OTHER]
 title = "Other marks keep their measured road."
 pattern = "bare_statement"
 
-[spares.RESOLVE_STREAM_END]
+[scenes.RESOLVE_STREAM_END]
 title = "The stream ends its pure resolve."
 pattern = "bare_statement"
 
-[spares.RESOLVE_SCAN_OPEN]
+[scenes.RESOLVE_SCAN_OPEN]
 title = "The scan opens on raw leaves."
 pattern = "bare_statement"
 
-[spares.RESOLVE_SCAN_NEXT]
+[scenes.RESOLVE_SCAN_NEXT]
 title = "The next glyph seeks its path."
 pattern = "bare_statement"
 
-[spares.RESOLVE_SCAN_KEEP]
+[scenes.RESOLVE_SCAN_KEEP]
 title = "One honest glyph stays in daylight."
 pattern = "bare_statement"
 
-[spares.RESOLVE_SCAN_ESCAPE]
+[scenes.RESOLVE_SCAN_ESCAPE]
 title = "A backslash guards the next leaf."
 pattern = "bare_statement"
 
-[spares.RESOLVE_LINE_START]
+[scenes.RESOLVE_LINE_START]
 title = "A line begins beneath the hedge."
 pattern = "bare_statement"
 
-[spares.RESOLVE_INDENT_COUNT]
+[scenes.RESOLVE_INDENT_COUNT]
 title = "Leading spaces count the code road."
 pattern = "bare_statement"
 
-[spares.RESOLVE_CODE_LINE]
+[scenes.RESOLVE_CODE_LINE]
 title = "The code line keeps its shade."
 pattern = "bare_statement"
 
-[spares.RESOLVE_CODE_EXIT]
+[scenes.RESOLVE_CODE_EXIT]
 title = "A blank line leaves the shade."
 pattern = "bare_statement"
 
-[spares.RESOLVE_BANG]
+[scenes.RESOLVE_BANG]
 title = "A bang seeks the portrait gate."
 pattern = "bare_statement"
 
-[spares.RESOLVE_ALT_OPEN]
+[scenes.RESOLVE_ALT_OPEN]
 title = "Juliet opens the portrait's quiet alt."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_ALT_BODY]
+[scenes.RESOLVE_ALT_BODY]
 title = "Romeo gathers the portrait's alt leaves."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_ALT_CLOSE]
+[scenes.RESOLVE_ALT_CLOSE]
 title = "Juliet seals the portrait's alt close."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_IMG_SUFFIX]
+[scenes.RESOLVE_IMG_SUFFIX]
 title = "Romeo tries the portrait's suffix road."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_IMG_EMIT]
+[scenes.RESOLVE_IMG_EMIT]
 title = "Juliet emits the portrait's bright seal."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_IMG_FAIL]
+[scenes.RESOLVE_IMG_FAIL]
 title = "The portrait fails and stays literal."
 pattern = "bare_statement"
 
-[spares.RESOLVE_LB]
+[scenes.RESOLVE_LB]
 title = "Romeo marks the garden's opening bracket."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LTEXT_BODY]
+[scenes.RESOLVE_LTEXT_BODY]
 title = "Juliet gathers the garden link's leaves."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LTEXT_CLOSE]
+[scenes.RESOLVE_LTEXT_CLOSE]
 title = "Romeo seals the garden link's close."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LNK_SUFFIX]
+[scenes.RESOLVE_LNK_SUFFIX]
 title = "Juliet tries the garden's suffix road."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LNK_EMIT]
+[scenes.RESOLVE_LNK_EMIT]
 title = "Romeo emits the garden's bright anchor."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LNK_NESTED]
+[scenes.RESOLVE_LNK_NESTED]
 title = "Nested leaves reopen the garden scan."
 pattern = "bare_statement"
 
-[spares.RESOLVE_LNK_FAIL]
+[scenes.RESOLVE_LNK_FAIL]
 title = "The garden link fails as literal."
 pattern = "bare_statement"
 
-[spares.RESOLVE_SFX_INLINE]
+[scenes.RESOLVE_SFX_INLINE]
 title = "Puck opens the round destination path."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_DEST_ANGLE]
+[scenes.RESOLVE_DEST_ANGLE]
 title = "Juliet reads the angle-bracketed road."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_DEST_BARE]
+[scenes.RESOLVE_DEST_BARE]
 title = "Romeo keeps the bare destination road."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_TITLE_WS]
+[scenes.RESOLVE_TITLE_WS]
 title = "Horatio clears the title's pale spaces."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_TITLE_QUOT]
+[scenes.RESOLVE_TITLE_QUOT]
 title = "Juliet gathers the quoted title leaves."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_SFX_CLOSE]
+[scenes.RESOLVE_SFX_CLOSE]
 title = "Romeo seals the round destination close."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_SFX_REF]
+[scenes.RESOLVE_SFX_REF]
 title = "Puck opens the reference identity bracket."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_SFX_REF_ID]
+[scenes.RESOLVE_SFX_REF_ID]
 title = "Juliet folds the reference identity leaves."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LOOKUP_OPEN]
+[scenes.RESOLVE_LOOKUP_OPEN]
 title = "Rosalind opens the forest table search."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LOOKUP_REC]
+[scenes.RESOLVE_LOOKUP_REC]
 title = "Rosalind compares one forest road record."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LOOKUP_MATCH]
+[scenes.RESOLVE_LOOKUP_MATCH]
 title = "Rosalind matches the sought forest road."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LOOKUP_SKIP]
+[scenes.RESOLVE_LOOKUP_SKIP]
 title = "Rosalind skips one unmatched forest record."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_LOOKUP_MISS]
+[scenes.RESOLVE_LOOKUP_MISS]
 title = "The forest search finds no road."
 pattern = "bare_statement"
 
-[spares.RESOLVE_ESC_DEST]
+[scenes.RESOLVE_ESC_DEST]
 title = "Romeo encodes the destination's sharp marks."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_ESC_TITLE]
+[scenes.RESOLVE_ESC_TITLE]
 title = "Juliet encodes the title's quiet marks."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_ESC_LIT]
+[scenes.RESOLVE_ESC_LIT]
 title = "Puck escapes the unproved literal leaves."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_REBUILD]
+[scenes.RESOLVE_REBUILD]
 title = "Juliet rebuilds the resolved text stream."
 pattern = "scene_of_character"
 
-[spares.RESOLVE_DONE]
+[scenes.RESOLVE_DONE]
 title = "Romeo hands the pure resolve forward."
 pattern = "scene_of_character"
 

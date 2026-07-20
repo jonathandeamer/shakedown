@@ -1,12 +1,372 @@
                     Scene @ACT_III_START: @LIT.scenes.ACT_III_START.title
 
-[Enter Juliet and Lady Macbeth]
+[Enter Juliet and Puck]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_OPEN.
+
+
+                    Scene @RESOLVE_OPEN: @LIT.scenes.RESOLVE_OPEN.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_NEXT_TOKEN.
+
+
+                    Scene @RESOLVE_NEXT_TOKEN: @LIT.scenes.RESOLVE_NEXT_TOKEN.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_ARITY_COPY.
+
+
+                    Scene @RESOLVE_ARITY_COPY: @LIT.scenes.RESOLVE_ARITY_COPY.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_TEXT_ENTER.
+
+
+                    Scene @RESOLVE_TEXT_ENTER: @LIT.scenes.RESOLVE_TEXT_ENTER.title
+
+[Exit Juliet]
+
+[Enter Romeo]
+
+Puck:
+ Let us proceed to scene @RESOLVE_TEXT_DRAIN.
+
+
+                    Scene @RESOLVE_TEXT_DRAIN: @LIT.scenes.RESOLVE_TEXT_DRAIN.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ Let us proceed to scene @RESOLVE_TEXT_END.
+
+
+                    Scene @RESOLVE_TEXT_END: @LIT.scenes.RESOLVE_TEXT_END.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_COPY_OTHER.
+
+
+                    Scene @RESOLVE_COPY_OTHER: @LIT.scenes.RESOLVE_COPY_OTHER.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_STREAM_END.
+
+
+                    Scene @RESOLVE_STREAM_END: @LIT.scenes.RESOLVE_STREAM_END.title
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_SCAN_OPEN.
+
+
+                    Scene @RESOLVE_SCAN_OPEN: @LIT.scenes.RESOLVE_SCAN_OPEN.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_SCAN_NEXT.
+
+
+                    Scene @RESOLVE_SCAN_NEXT: @LIT.scenes.RESOLVE_SCAN_NEXT.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_SCAN_KEEP.
+
+
+                    Scene @RESOLVE_SCAN_KEEP: @LIT.scenes.RESOLVE_SCAN_KEEP.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_SCAN_ESCAPE.
+
+
+                    Scene @RESOLVE_SCAN_ESCAPE: @LIT.scenes.RESOLVE_SCAN_ESCAPE.title
+
+[Exit Juliet]
+
+[Enter Horatio]
+
+Romeo:
+ Let us proceed to scene @RESOLVE_LINE_START.
+
+
+                    Scene @RESOLVE_LINE_START: @LIT.scenes.RESOLVE_LINE_START.title
+
+Horatio:
+ Let us proceed to scene @RESOLVE_INDENT_COUNT.
+
+
+                    Scene @RESOLVE_INDENT_COUNT: @LIT.scenes.RESOLVE_INDENT_COUNT.title
+
+[Exit Horatio]
+
+[Enter Juliet]
+
+Romeo:
+ Let us proceed to scene @RESOLVE_CODE_LINE.
+
+
+                    Scene @RESOLVE_CODE_LINE: @LIT.scenes.RESOLVE_CODE_LINE.title
+
+[Exit Juliet]
+
+[Enter Horatio]
+
+Romeo:
+ Let us proceed to scene @RESOLVE_CODE_EXIT.
+
+
+                    Scene @RESOLVE_CODE_EXIT: @LIT.scenes.RESOLVE_CODE_EXIT.title
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Romeo:
+ Let us proceed to scene @RESOLVE_BANG.
+
+
+                    Scene @RESOLVE_BANG: @LIT.scenes.RESOLVE_BANG.title
+
+[Exit Puck]
+
+[Enter Juliet]
+
+Romeo:
+ Let us proceed to scene @RESOLVE_ALT_OPEN.
+
+
+                    Scene @RESOLVE_ALT_OPEN: @LIT.scenes.RESOLVE_ALT_OPEN.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_ALT_BODY.
+
+
+                    Scene @RESOLVE_ALT_BODY: @LIT.scenes.RESOLVE_ALT_BODY.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_ALT_CLOSE.
+
+
+                    Scene @RESOLVE_ALT_CLOSE: @LIT.scenes.RESOLVE_ALT_CLOSE.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_IMG_SUFFIX.
+
+
+                    Scene @RESOLVE_IMG_SUFFIX: @LIT.scenes.RESOLVE_IMG_SUFFIX.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_IMG_EMIT.
+
+
+                    Scene @RESOLVE_IMG_EMIT: @LIT.scenes.RESOLVE_IMG_EMIT.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_IMG_FAIL.
+
+
+                    Scene @RESOLVE_IMG_FAIL: @LIT.scenes.RESOLVE_IMG_FAIL.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_LB.
+
+
+                    Scene @RESOLVE_LB: @LIT.scenes.RESOLVE_LB.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_LTEXT_BODY.
+
+
+                    Scene @RESOLVE_LTEXT_BODY: @LIT.scenes.RESOLVE_LTEXT_BODY.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_LTEXT_CLOSE.
+
+
+                    Scene @RESOLVE_LTEXT_CLOSE: @LIT.scenes.RESOLVE_LTEXT_CLOSE.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_LNK_SUFFIX.
+
+
+                    Scene @RESOLVE_LNK_SUFFIX: @LIT.scenes.RESOLVE_LNK_SUFFIX.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_LNK_EMIT.
+
+
+                    Scene @RESOLVE_LNK_EMIT: @LIT.scenes.RESOLVE_LNK_EMIT.title
+
+Romeo:
+ Let us proceed to scene @RESOLVE_LNK_NESTED.
+
+
+                    Scene @RESOLVE_LNK_NESTED: @LIT.scenes.RESOLVE_LNK_NESTED.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_LNK_FAIL.
+
+
+                    Scene @RESOLVE_LNK_FAIL: @LIT.scenes.RESOLVE_LNK_FAIL.title
+
+[Exit Romeo]
+
+[Enter Puck]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_SFX_INLINE.
+
+
+                    Scene @RESOLVE_SFX_INLINE: @LIT.scenes.RESOLVE_SFX_INLINE.title
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_DEST_ANGLE.
+
+
+                    Scene @RESOLVE_DEST_ANGLE: @LIT.scenes.RESOLVE_DEST_ANGLE.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_DEST_BARE.
+
+
+                    Scene @RESOLVE_DEST_BARE: @LIT.scenes.RESOLVE_DEST_BARE.title
+
+[Exit Romeo]
+
+[Enter Horatio]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_TITLE_WS.
+
+
+                    Scene @RESOLVE_TITLE_WS: @LIT.scenes.RESOLVE_TITLE_WS.title
+
+[Exit Horatio]
+
+[Enter Romeo]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_TITLE_QUOT.
+
+
+                    Scene @RESOLVE_TITLE_QUOT: @LIT.scenes.RESOLVE_TITLE_QUOT.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_SFX_CLOSE.
+
+
+                    Scene @RESOLVE_SFX_CLOSE: @LIT.scenes.RESOLVE_SFX_CLOSE.title
+
+[Exit Romeo]
+
+[Enter Puck]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_SFX_REF.
+
+
+                    Scene @RESOLVE_SFX_REF: @LIT.scenes.RESOLVE_SFX_REF.title
+
+Puck:
+ Let us proceed to scene @RESOLVE_SFX_REF_ID.
+
+
+                    Scene @RESOLVE_SFX_REF_ID: @LIT.scenes.RESOLVE_SFX_REF_ID.title
+
+[Exit Juliet]
+
+[Enter Rosalind]
+
+Puck:
+ Let us proceed to scene @RESOLVE_LOOKUP_OPEN.
+
+
+                    Scene @RESOLVE_LOOKUP_OPEN: @LIT.scenes.RESOLVE_LOOKUP_OPEN.title
+
+Rosalind:
+ Let us proceed to scene @RESOLVE_LOOKUP_REC.
+
+
+                    Scene @RESOLVE_LOOKUP_REC: @LIT.scenes.RESOLVE_LOOKUP_REC.title
+
+Rosalind:
+ Let us proceed to scene @RESOLVE_LOOKUP_MATCH.
+
+
+                    Scene @RESOLVE_LOOKUP_MATCH: @LIT.scenes.RESOLVE_LOOKUP_MATCH.title
+
+Rosalind:
+ Let us proceed to scene @RESOLVE_LOOKUP_SKIP.
+
+
+                    Scene @RESOLVE_LOOKUP_SKIP: @LIT.scenes.RESOLVE_LOOKUP_SKIP.title
+
+Rosalind:
+ Let us proceed to scene @RESOLVE_LOOKUP_MISS.
+
+
+                    Scene @RESOLVE_LOOKUP_MISS: @LIT.scenes.RESOLVE_LOOKUP_MISS.title
+
+[Exit Rosalind]
+
+[Enter Romeo]
+
+Puck:
+ Let us proceed to scene @RESOLVE_ESC_DEST.
+
+
+                    Scene @RESOLVE_ESC_DEST: @LIT.scenes.RESOLVE_ESC_DEST.title
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+Puck:
+ Let us proceed to scene @RESOLVE_ESC_TITLE.
+
+
+                    Scene @RESOLVE_ESC_TITLE: @LIT.scenes.RESOLVE_ESC_TITLE.title
+
+Juliet:
+ Let us proceed to scene @RESOLVE_ESC_LIT.
+
+
+                    Scene @RESOLVE_ESC_LIT: @LIT.scenes.RESOLVE_ESC_LIT.title
+
+[Exit Puck]
+
+[Enter Romeo]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_REBUILD.
+
+
+                    Scene @RESOLVE_REBUILD: @LIT.scenes.RESOLVE_REBUILD.title
+
+[Exit Romeo]
+
+[Enter Lady Macbeth]
+
+Juliet:
+ Let us proceed to scene @RESOLVE_DONE.
+
+
+                    Scene @RESOLVE_DONE: @LIT.scenes.RESOLVE_DONE.title
 
 Lady Macbeth:
  Remember a wolf.
 
 Juliet:
- You are as gentle as nothing.
+ You are as fair as nothing.
 
 [Exit Lady Macbeth]
 

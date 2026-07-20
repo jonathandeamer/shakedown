@@ -235,11 +235,10 @@ def run_act(
 
         # Task 3: resolve raw links/images on the token stream before scan.
         # Runs once at act entry; scene ops then seed Juliet and traverse.
-        if sc.label == "ACT_III_START" and USE_ACT3_RESOLVE_INTRINSIC:
+        if sc.label == "RESOLVE_OPEN":
             from scripts.splc.act3_link_resolve import apply_act3_link_resolution
 
             apply_act3_link_resolution(state)
-            # Fall through into the scene's normal ops (Juliet seed + traverse).
         jump: str | None = None
         halted = False
         for op in sc.ops:
