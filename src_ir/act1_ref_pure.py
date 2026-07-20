@@ -78,7 +78,6 @@ if TYPE_CHECKING:
     from scripts.splc.interpret import InterpreterState
 
 
-
 # KEPT_START = -8 (A1.2 / A4.3)
 _KS = sub(const(0), const(8))
 _NL = const(10)
@@ -214,10 +213,6 @@ def build_ref_scenes() -> list[Scene]:
             goto("HECATE_REF_REVERSE"),
             companion=PUCK,
         ),
-
-
-
-
         scene(
             "HECATE_REF_REVERSE",
             pop(PUCK, recall=_RECALL_HECATE),
@@ -430,5 +425,3 @@ def parse_and_store_rosalind_record(state: InterpreterState) -> None:
         rosalind.append(len(title_e))
         rosalind.extend(ord(c) for c in title_e)
     rosalind.append(-6)  # RECORD_END
-
-
