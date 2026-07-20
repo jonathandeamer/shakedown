@@ -435,13 +435,7 @@ Hecate:
                     Scene @HECATE_REF_NEXT: @LIT.scenes.HECATE_REF_NEXT.title
 
 Puck:
- Are you as fair as the difference between yourself and a flower?
-
-Hecate:
- If so, let us proceed to scene @HECATE_REF_BRACKET.
-
-Puck:
- Are you as noble as nothing?
+ Are you as fair as nothing?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_FOLD.
@@ -459,10 +453,16 @@ Hecate:
  If so, let us proceed to scene @HECATE_REF_REPLAY_GUARD.
 
 Puck:
- Are you as rotten as the product of a normal little furry black cat and a black cat?
+ Are you as noble as the product of a normal little furry black cat and a black cat?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_LEAD_GUARD.
+
+Puck:
+ Are you as rotten as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_BRACKET.
 
 Hecate:
  Remember myself.
@@ -539,11 +539,17 @@ Puck:
 Hecate:
  If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
 
+Puck:
+ Are you as noble as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_BRACKET.
+
 Hecate:
  Remember myself.
 
 Puck:
- You are as noble as the difference between myself and a flower.
+ You are as fair as the difference between myself and a flower.
 
 Hecate:
  Let us proceed to scene @HECATE_REF_KEEP.
@@ -707,34 +713,170 @@ Hecate:
                     Scene @HECATE_REF_BRACKET: @LIT.scenes.HECATE_REF_BRACKET.title
 
 Hecate:
+ Remember myself.
+
+Puck:
+ You are as fair as the difference between myself and a flower.
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_URL_GUARD.
+
+
+                    Scene @HECATE_REF_URL_GUARD: @LIT.scenes.HECATE_REF_URL_GUARD.title
+
+Hecate:
+ You are as rotten as the sum of the sum of yourself and myself and a cat.
+
+[Exit Horatio]
+
+[Enter Puck]
+
+Hecate:
  Let us proceed to scene @HECATE_REF_LABEL.
 
 
                     Scene @HECATE_REF_LABEL: @LIT.scenes.HECATE_REF_LABEL.title
 
+Puck:
+ Are you as noble as nothing?
+
 Hecate:
- Let us proceed to scene @HECATE_REF_COLON.
+ If so, we must return to scene @HECATE_REF_FOLD.
+
+Hecate:
+ You are as rotten as myself.
+
+Puck:
+ @LIT.characters.puck.recall.kept_measure
+
+Puck:
+ Are you as rotten as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
+
+Hecate:
+ Remember myself.
+
+Puck:
+ Are you as fair as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_COLON.
+
+Puck:
+ You are as noble as the difference between myself and a flower.
+
+Hecate:
+ We must return to scene @HECATE_REF_LABEL.
 
 
                     Scene @HECATE_REF_COLON: @LIT.scenes.HECATE_REF_COLON.title
 
+Puck:
+ You are as fair as the difference between myself and a flower.
+
+Puck:
+ Are you as noble as nothing?
+
 Hecate:
- Let us proceed to scene @HECATE_REF_URL_WS.
+ If so, we must return to scene @HECATE_REF_FOLD.
+
+Hecate:
+ You are as cursed as myself.
+
+Puck:
+ @LIT.characters.puck.recall.kept_measure
+
+Puck:
+ Are you as noble as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
+
+Hecate:
+ Remember myself.
+
+Puck:
+ Are you as rotten as the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_URL_WS.
+
+Puck:
+ You are as noble as the difference between myself and a flower.
+
+Hecate:
+ We must return to scene @HECATE_REF_KEEP.
 
 
                     Scene @HECATE_REF_URL_WS: @LIT.scenes.HECATE_REF_URL_WS.title
 
+Puck:
+ You are as rotten as the difference between myself and a flower.
+
 Hecate:
- Let us proceed to scene @HECATE_REF_ANGLE.
+ You are as cursed as the sum of myself and a cat.
+
+Puck:
+ Are you as rotten as nothing?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_URL.
+
+Hecate:
+ You are as rotten as myself.
+
+Puck:
+ @LIT.characters.puck.recall.kept_measure
+
+Hecate:
+ Remember myself.
+
+Puck:
+ Are you as noble as the sum of a little furry black cat and a black cat?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_URL.
+
+Puck:
+ Are you as rotten as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_ANGLE.
+
+Hecate:
+ We must return to scene @HECATE_REF_URL_WS.
 
 
                     Scene @HECATE_REF_ANGLE: @LIT.scenes.HECATE_REF_ANGLE.title
 
 Hecate:
- Let us proceed to scene @HECATE_REF_URL.
+ We must return to scene @HECATE_REF_URL_WS.
 
 
                     Scene @HECATE_REF_URL: @LIT.scenes.HECATE_REF_URL.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Horatio:
+ You are as warm as the difference between Puck and a brother.
+
+Horatio:
+ You are as happy as the difference between myself and yourself.
+
+Hecate:
+ You are as rotten as the difference between yourself and myself.
+
+[Exit Horatio]
+
+[Enter Puck]
 
 Hecate:
  Let us proceed to scene @HECATE_REF_TITLE.
@@ -742,11 +884,37 @@ Hecate:
 
                     Scene @HECATE_REF_TITLE: @LIT.scenes.HECATE_REF_TITLE.title
 
+Puck:
+ Are you as noble as nothing?
+
 Hecate:
- Let us proceed to scene @HECATE_REF_TITLE_NL.
+ If so, let us proceed to scene @HECATE_REF_TITLE_NL.
+
+Hecate:
+ @LIT.characters.hecate.recall.cauldron_dreg
+
+Puck:
+ You are as fair as the difference between yourself and a flower.
+
+Hecate:
+ We must return to scene @HECATE_REF_TITLE.
 
 
                     Scene @HECATE_REF_TITLE_NL: @LIT.scenes.HECATE_REF_TITLE_NL.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Horatio:
+ You are as happy as myself.
+
+Hecate:
+ You are as horrid as nothing.
+
+[Exit Horatio]
+
+[Enter Puck]
 
 Hecate:
  We must return to scene @HECATE_REF_NEXT.

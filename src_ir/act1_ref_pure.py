@@ -1,26 +1,56 @@
-"""Pure-op Act I reference strip (Task 2L Step 2c / Amendment A4.6).
+"""Pure-op Act I reference strip (Task 2L Step 2d / Amendment A4.6).
 
 Step 2c — line machine: NEXT / LEAD / FOUR_SPACE / NL / KEEP per A3.2
-self-loop mapping, still keeping every line as body (no definition strip yet).
+self-loop mapping, keeping every line as body.
+
+Step 2d — candidate capture + drop (this file): a line that opens with '['
+(optionally after 1–3 leading spaces) is scanned as a candidate reference
+definition; a well-formed candidate (matched `[label]:` + a destination that
+runs to end of line) is **dropped** from the body, a malformed one is kept
+as ordinary body. The Rosalind table is NOT built yet (2e owns fold/store),
+so a matched candidate is discarded rather than recorded.
+
+Capture model (A4.3, refined to the blockers.md `capture_len` counter that
+needs no mid-stack sentinel): candidate glyphs are pushed onto Puck exactly
+like kept body glyphs. A drop pops the whole candidate region back off Puck;
+a keep leaves the glyphs in place. The region length is never counted per
+glyph — it is recovered at drop time as ``BASE - remaining`` where
+``BASE = ov + saved_remaining`` is captured once at BRACKET (A4.1 rule 1
+lets a scene read an off-stage character's value, so Puck.value is legible
+from the (Hecate, Horatio) drop scenes).
 
 Pipeline (two transfers only — A4.2):
   after normalize reverse: Hecate.stack top = first
-  scan (line machine, keep-all): Puck.stack top = last (+ KEPT_START base)
+  scan (line machine + candidate machine): Puck.stack top = last (+ KEPT_START base)
   trailing-NL policy: FOLD/ENCODE/STORE (temporary homes until 2e owns them)
   drain: REVERSE Puck → Hecate top = first; length in Hecate.value
   FINISH: Horatio.value/stack = length
 
-Registers (A4.1 / A4.3):
-  Hecate.value = remaining source count
-  Horatio.value = ov (leading-space count at line start; 0 after NL)
-  Puck.stack = kept body (top = last); Puck.value = take-idiom rem scratch
+Registers (A4.1):
+  Hecate.value = remaining source count (also the drop-loop counter)
+  Horatio.value = ov (leading-space count); repurposed to BASE, then rem,
+    inside the candidate/drop scenes (ov is only needed pre-candidate)
+  Puck.stack = kept body + in-flight candidate (top = last);
+    Puck.value = take-idiom rem scratch
 
-A4.5 spares promoted for stage-pair bridges:
-  LEAD_GUARD  — ov += 1, then LEAD (accept space)
-  LABEL_GUARD — lead saw SP: ov==3 → FOUR_SPACE else LEAD_GUARD
-  REPLAY_GUARD — push NL + rem-- + goto NL (line-end bridge)
+Candidate scenes (A4.6 Step 2d), all within the 26-title budget (A4.5):
+  BRACKET   — keep '[', hand to URL_GUARD                         (Hecate,Puck)
+  URL_GUARD — BASE = ov + rem + 1 (promoted A1 spare)             (Hecate,Horatio)
+  LABEL     — gather label glyphs; ']' → COLON, NL → keep as body (Hecate,Puck)
+  COLON     — require ':'; ':' → URL_WS, else keep as body        (Hecate,Puck)
+  URL_WS    — consume destination/title to end of line, then drop (Hecate,Puck)
+  ANGLE     — reachable bridge for '<' destinations → URL_WS      (Hecate,Puck)
+  URL       — drop A: count = BASE - remaining                    (Hecate,Horatio)
+  TITLE     — drop B: pop `count` candidate glyphs off Puck       (Hecate,Puck)
+  TITLE_NL  — drop C: restore remaining, ov = 0, → NEXT           (Hecate,Horatio)
 
-REPLAY seeds KEPT_START (2d reclaims REPLAY for capture flush).
+title_nl's next-line-title lookahead is intentionally NOT ported (2d allows
+test_title_on_next_line to stay red): a def line whose destination ends the
+line is dropped and scanning resumes fresh, so a following "-quoted line is
+left in the body. REPLAY keeps its 2c cold-entry KEPT_START seed — the
+counter capture needs no dedicated flush scene, and OPEN (a (Hecate,Horatio)
+scene) cannot push the seed onto Puck itself.
+
 USE_ACT1_REF_INTRINSIC stays False.
 """
 
@@ -46,6 +76,10 @@ from src_ir.cast import HECATE, HORATIO, PUCK
 _KS = sub(const(0), const(8))
 _NL = const(10)
 _SP = const(32)
+_LB = const(91)  # '['
+_RB = const(93)  # ']'
+_COL = const(58)  # ':'
+_LT = const(60)  # '<'
 _0 = const(0)
 _1 = const(1)
 _3 = const(3)
@@ -80,17 +114,14 @@ def build_ref_scenes() -> list[Scene]:
         # Line-start dispatcher (oracle mode "next").
         scene(
             "HECATE_REF_NEXT",
-            # Never-true chain keeps unreached 2d labels in entry_pairs.
-            branch(
-                eq(val(HECATE), sub(val(HECATE), _1)),
-                then="HECATE_REF_BRACKET",
-            ),
             branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
             let(PUCK, val(HECATE)),
             pop(HECATE, recall=_RECALL_PUCK),
             branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
             branch(eq(val(HECATE), _SP), then="HECATE_REF_LEAD_GUARD"),
-            # '[' or other: keep as body (2d branches '[' → BRACKET).
+            # 2d: '[' opens a candidate reference definition.
+            branch(eq(val(HECATE), _LB), then="HECATE_REF_BRACKET"),
+            # Other: keep as body.
             push(PUCK, val(HECATE)),
             let(HECATE, sub(val(PUCK), _1)),
             goto("HECATE_REF_KEEP"),
@@ -122,7 +153,9 @@ def build_ref_scenes() -> list[Scene]:
             pop(HECATE, recall=_RECALL_PUCK),
             branch(eq(val(HECATE), _SP), then="HECATE_REF_LABEL_GUARD"),
             branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
-            # Non-space (incl. '['): keep as body for 2c.
+            # 2d: '[' after 1–3 leading spaces opens a candidate definition.
+            branch(eq(val(HECATE), _LB), then="HECATE_REF_BRACKET"),
+            # Other non-space: keep as body.
             push(PUCK, val(HECATE)),
             let(HECATE, sub(val(PUCK), _1)),
             goto("HECATE_REF_KEEP"),
@@ -204,13 +237,99 @@ def build_ref_scenes() -> list[Scene]:
             goto("ACT_I_DONE"),
             companion=HORATIO,
         ),
-        # Never-taken 2d chain (entered only via rem == rem-1 from NEXT).
-        scene("HECATE_REF_BRACKET", goto("HECATE_REF_LABEL"), companion=PUCK),
-        scene("HECATE_REF_LABEL", goto("HECATE_REF_COLON"), companion=PUCK),
-        scene("HECATE_REF_COLON", goto("HECATE_REF_URL_WS"), companion=PUCK),
-        scene("HECATE_REF_URL_WS", goto("HECATE_REF_ANGLE"), companion=PUCK),
-        scene("HECATE_REF_ANGLE", goto("HECATE_REF_URL"), companion=PUCK),
-        scene("HECATE_REF_URL", goto("HECATE_REF_TITLE"), companion=PUCK),
-        scene("HECATE_REF_TITLE", goto("HECATE_REF_TITLE_NL"), companion=PUCK),
-        scene("HECATE_REF_TITLE_NL", goto("HECATE_REF_NEXT"), companion=PUCK),
+        # --- 2d candidate machine (A4.3 / A4.6 Step 2d) ---
+        # Entry from NEXT/LEAD on '['. Hecate.value = '[', Puck.value = rem
+        # before '[' (take scratch), Horatio.value = ov (leading spaces).
+        scene(
+            "HECATE_REF_BRACKET",
+            push(PUCK, val(HECATE)),  # keep '[' as candidate glyph
+            let(HECATE, sub(val(PUCK), _1)),  # remaining after '['
+            goto("HECATE_REF_URL_GUARD"),
+            companion=PUCK,
+        ),
+        # BASE = ov + (rem after '[') + 1 = ov + rem before '['. Captured once;
+        # the drop length is BASE - remaining. On-stage reads only.
+        scene(
+            "HECATE_REF_URL_GUARD",
+            let(HORATIO, add(add(val(HORATIO), val(HECATE)), _1)),
+            goto("HECATE_REF_LABEL"),
+            companion=HORATIO,
+        ),
+        # Gather label glyphs until ']' (→ COLON) or NL (malformed → keep as
+        # body via REPLAY_GUARD). EOF keeps the partial line as body (FOLD).
+        scene(
+            "HECATE_REF_LABEL",
+            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
+            let(PUCK, val(HECATE)),
+            pop(HECATE, recall=_RECALL_PUCK),
+            branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
+            push(PUCK, val(HECATE)),  # keep label glyph
+            branch(eq(val(HECATE), _RB), then="HECATE_REF_COLON"),
+            let(HECATE, sub(val(PUCK), _1)),
+            goto("HECATE_REF_LABEL"),
+            companion=PUCK,
+        ),
+        # Require the binding ':'. Entry: Hecate.value = ']', Puck.value = rem
+        # before ']'. ':' → destination scan; anything else keeps the line.
+        scene(
+            "HECATE_REF_COLON",
+            let(HECATE, sub(val(PUCK), _1)),  # remaining after ']'
+            branch(eq(val(HECATE), _0), then="HECATE_REF_FOLD"),
+            let(PUCK, val(HECATE)),
+            pop(HECATE, recall=_RECALL_PUCK),
+            branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
+            push(PUCK, val(HECATE)),  # keep glyph
+            branch(eq(val(HECATE), _COL), then="HECATE_REF_URL_WS"),
+            let(HECATE, sub(val(PUCK), _1)),  # non-':' kept as body
+            goto("HECATE_REF_KEEP"),
+            companion=PUCK,
+        ),
+        # Consume the destination/title to end of line, then drop. 2d does not
+        # split url_ws/url/title (the whole matched def is discarded), and does
+        # not port url_ws_nl / title_nl lookahead. Entry: Hecate.value = the
+        # last-kept glyph, Puck.value = rem before it. NL or EOF → drop (URL).
+        scene(
+            "HECATE_REF_URL_WS",
+            let(HECATE, sub(val(PUCK), _1)),  # remaining after last glyph
+            let(PUCK, add(val(HECATE), _1)),  # rem+1: EOF-safe rem for the drop
+            branch(eq(val(HECATE), _0), then="HECATE_REF_URL"),
+            let(PUCK, val(HECATE)),
+            pop(HECATE, recall=_RECALL_PUCK),
+            push(PUCK, val(HECATE)),  # keep glyph (candidate; dropped on match)
+            branch(eq(val(HECATE), _NL), then="HECATE_REF_URL"),
+            branch(eq(val(HECATE), _LT), then="HECATE_REF_ANGLE"),
+            goto("HECATE_REF_URL_WS"),
+            companion=PUCK,
+        ),
+        # '<' angle destinations: reachable bridge; treat like ordinary
+        # destination glyphs (still consumed to end of line, then dropped).
+        scene("HECATE_REF_ANGLE", goto("HECATE_REF_URL_WS"), companion=PUCK),
+        # Drop A: count = BASE - remaining. Puck.value = rem+1 (off-stage read
+        # is legal, A4.1 rule 1). Leaves Hecate.value = count, Horatio.value =
+        # remaining for the pop loop / restore.
+        scene(
+            "HECATE_REF_URL",
+            let(HECATE, sub(val(PUCK), _1)),  # remaining
+            let(HECATE, sub(val(HORATIO), val(HECATE))),  # count = BASE - rem
+            let(HORATIO, sub(val(HORATIO), val(HECATE))),  # rem = BASE - count
+            goto("HECATE_REF_TITLE"),
+            companion=HORATIO,
+        ),
+        # Drop B: pop `count` candidate glyphs back off Puck (discarded).
+        scene(
+            "HECATE_REF_TITLE",
+            branch(eq(val(HECATE), _0), then="HECATE_REF_TITLE_NL"),
+            pop(PUCK, recall=_RECALL_HECATE),
+            let(HECATE, sub(val(HECATE), _1)),
+            goto("HECATE_REF_TITLE"),
+            companion=PUCK,
+        ),
+        # Drop C: restore remaining, reset ov, resume at line start.
+        scene(
+            "HECATE_REF_TITLE_NL",
+            let(HECATE, val(HORATIO)),  # remaining
+            let(HORATIO, _0),  # ov = 0
+            goto("HECATE_REF_NEXT"),
+            companion=HORATIO,
+        ),
     ]

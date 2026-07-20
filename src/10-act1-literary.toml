@@ -190,7 +190,7 @@ pattern = "bare_statement"
 title = "The folded name keeps one guarded mark."
 pattern = "bare_statement"
 
-[spares.HECATE_REF_URL_GUARD]
+[scenes.HECATE_REF_URL_GUARD]
 title = "The river road keeps one guarded turn."
 pattern = "bare_statement"
 
