@@ -824,7 +824,7 @@ Step 1 only requires the first two lines (red refs + green literary/generated wi
 - Prefer **one unchecked step per MCO/agent iteration** with its evidence gate.
 - SPL-changing steps must name and run the literary compliance commands in Global Constraints.
 - If Act I table or Act III resolution needs tokens/participants beyond this plan, stop with `- BLOCK[plan]:` and amend; do not expand scope silently.
-- **Next unchecked step after Amendment A4:** Task **2L Step 2a** (orientation fix per A4.2 — delete the Horatio hop in `src_ir/act1_ref_pure.py`). Then 2b → 2c → 2d → 2e, one per iteration. Do not re-run Task 5 Step 2 until 2L and 3L complete.
+- **Next unchecked step after Amendment A4 / Step 2a:** Task **2L Step 2b** (A4.4 Rosalind recall prose in `src/literary.toml`). Then 2c → 2d → 2e, one per iteration. Do not re-run Task 5 Step 2 until 2L and 3L complete.
 
 ---
 
@@ -1493,24 +1493,31 @@ Task 2L Step 2 has failed three times as one monolithic port. It is hereby split
 sub-step that is green may be committed even while later ones are red — record the
 red set in the commit body, not in `.agent/blockers.md`.
 
-- **Step 2a — orientation.** Apply A4.2 to `src_ir/act1_ref_pure.py`: delete the
+- [x] **Step 2a — orientation.** Apply A4.2 to `src_ir/act1_ref_pure.py`: delete the
   Horatio hop, move the trailing-NL policy onto `Puck`, count length in
   `Hecate.value`. Success: `tests/test_act1_references.py` returns to **2 passed**
   (`test_four_leading_spaces_are_not_definitions`,
   `test_invalid_bracket_line_remains_body`) with body text no longer reversed. This
   restores the Step-1 red baseline honestly rather than regressing past it.
-- **Step 2b — recall prose + literary promotion.** Paste A4.4 into
+  Evidence (2026-07-20, grok-implement): keep-all pipeline with two transfers only
+  (`Hecate → Puck → Hecate`); trailing-NL strip/pad on `Puck`; length in
+  `Hecate.value` during drain; `HECATE_REF_FINISH` copies length to Horatio.
+  Unreached A1.3 labels retained via never-true `rem == rem-1` branch chain.
+  Gate: `tests/test_act1_references.py` **2 passed, 6 failed** (body unreversed;
+  defs still present); literary/validate/generated **67 passed**; `splc` + assemble
+  regenerated Act I fragment / `shakedown.spl`. `USE_ACT1_REF_INTRINSIC` stays False.
+- [ ] **Step 2b — recall prose + literary promotion.** Paste A4.4 into
   `src/literary.toml`. Gate: literary/validate/generated green; no IR behaviour change.
-- **Step 2c — line machine.** `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP` per A3.2's
+- [ ] **Step 2c — line machine.** `NEXT`/`LEAD`/`FOUR_SPACE`/`NL`/`KEEP` per A3.2's
   self-loop mapping, still keeping every line as body. Success: same 2 passed, no
   regression; `HECATE_REF_LEAD` correctly counts 0–3 and rejects on the fourth space.
-- **Step 2d — candidate capture + replay.** `BRACKET`/`LABEL`/`COLON`/`URL_WS`/
+- [ ] **Step 2d — candidate capture + replay.** `BRACKET`/`LABEL`/`COLON`/`URL_WS`/
   `URL_GUARD`/`ANGLE`/`URL`/`TITLE`/`TITLE_NL`/`REPLAY` per A4.3. Success:
   well-formed definition lines vanish from the body (`test_simple_definition_*`,
   `test_up_to_three_leading_spaces_*`, `test_defs_plus_paragraph_*` pass); the
   Rosalind table may still be empty, so `test_label_case_fold`,
   `test_angle_bracket_destination` and `test_title_on_next_line` stay red.
-- **Step 2e — table build.** `FOLD`/`ENCODE`/`STORE` per A3.4 + A4.4. Success:
+- [ ] **Step 2e — table build.** `FOLD`/`ENCODE`/`STORE` per A3.4 + A4.4. Success:
   `tests/test_act1_references.py` **8 passed**, which completes Task 2L Step 2 and
   unblocks Step 3.
 

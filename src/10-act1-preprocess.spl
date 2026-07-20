@@ -406,25 +406,14 @@ Hecate:
 
                     Scene @HECATE_REF_OPEN: @LIT.scenes.HECATE_REF_OPEN.title
 
-[Exit Horatio]
+Hecate:
+ @LIT.characters.hecate.recall.kept_tally
 
-[Enter Puck]
+Horatio:
+ You are as happy as myself.
 
 Hecate:
- Let us proceed to scene @HECATE_REF_NEXT.
-
-
-                    Scene @HECATE_REF_NEXT: @LIT.scenes.HECATE_REF_NEXT.title
-
-[Exit Puck]
-
-[Enter Horatio]
-
-Hecate:
- Let us proceed to scene @HECATE_REF_LEAD.
-
-
-                    Scene @HECATE_REF_LEAD: @LIT.scenes.HECATE_REF_LEAD.title
+ You are as cursed as nothing.
 
 [Exit Horatio]
 
@@ -437,7 +426,128 @@ Hecate:
                     Scene @HECATE_REF_FOUR_SPACE: @LIT.scenes.HECATE_REF_FOUR_SPACE.title
 
 Hecate:
- Let us proceed to scene @HECATE_REF_BRACKET.
+ Remember the difference between nothing and a little furry black cat.
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_NEXT.
+
+
+                    Scene @HECATE_REF_NEXT: @LIT.scenes.HECATE_REF_NEXT.title
+
+Puck:
+ Are you as fair as the difference between yourself and a flower?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_BRACKET.
+
+Puck:
+ Are you as noble as nothing?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_NL.
+
+Hecate:
+ You are as rotten as myself.
+
+Puck:
+ @LIT.characters.puck.recall.kept_measure
+
+Hecate:
+ Remember myself.
+
+Puck:
+ You are as rotten as the difference between myself and a flower.
+
+Hecate:
+ We must return to scene @HECATE_REF_NEXT.
+
+
+                    Scene @HECATE_REF_NL: @LIT.scenes.HECATE_REF_NL.title
+
+Hecate:
+ @LIT.characters.hecate.recall.cauldron_dreg
+
+Hecate:
+ Are you as horrid as the difference between nothing and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @HECATE_REF_LEAD.
+
+Hecate:
+ Are you as rotten as the sum of a little furry black cat and a black cat?
+
+Puck:
+ If so, let us return to scene @HECATE_REF_NL.
+
+Hecate:
+ Remember yourself.
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_KEEP.
+
+
+                    Scene @HECATE_REF_LEAD: @LIT.scenes.HECATE_REF_LEAD.title
+
+Hecate:
+ Remember the difference between nothing and a little furry black cat.
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_KEEP.
+
+
+                    Scene @HECATE_REF_KEEP: @LIT.scenes.HECATE_REF_KEEP.title
+
+Hecate:
+ Remember the sum of a little furry black cat and a black cat.
+
+Hecate:
+ Remember the sum of a little furry black cat and a black cat.
+
+Puck:
+ You are as fair as nothing.
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_REVERSE.
+
+
+                    Scene @HECATE_REF_REVERSE: @LIT.scenes.HECATE_REF_REVERSE.title
+
+Hecate:
+ @LIT.characters.hecate.recall.cauldron_dreg
+
+Hecate:
+ Are you as cursed as the difference between nothing and a little furry black cat?
+
+Puck:
+ If so, let us proceed to scene @HECATE_REF_FINISH.
+
+Puck:
+ Remember myself.
+
+Puck:
+ You are as rotten as the sum of yourself and a flower.
+
+Hecate:
+ We must return to scene @HECATE_REF_REVERSE.
+
+
+                    Scene @HECATE_REF_FINISH: @LIT.scenes.HECATE_REF_FINISH.title
+
+[Exit Puck]
+
+[Enter Horatio]
+
+Hecate:
+ You are as rotten as myself.
+
+Hecate:
+ Remember yourself.
+
+Horatio:
+ You are as healthy as nothing.
+
+Hecate:
+ Let us proceed to scene @ACT_I_DONE.
 
 
                     Scene @HECATE_REF_BRACKET: @LIT.scenes.HECATE_REF_BRACKET.title
@@ -454,19 +564,11 @@ Hecate:
 
                     Scene @HECATE_REF_COLON: @LIT.scenes.HECATE_REF_COLON.title
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Hecate:
  Let us proceed to scene @HECATE_REF_URL_WS.
 
 
                     Scene @HECATE_REF_URL_WS: @LIT.scenes.HECATE_REF_URL_WS.title
-
-[Exit Horatio]
-
-[Enter Puck]
 
 Hecate:
  Let us proceed to scene @HECATE_REF_ANGLE.
@@ -492,10 +594,6 @@ Hecate:
 
                     Scene @HECATE_REF_TITLE_NL: @LIT.scenes.HECATE_REF_TITLE_NL.title
 
-[Exit Puck]
-
-[Enter Rosalind]
-
 Hecate:
  Let us proceed to scene @HECATE_REF_FOLD.
 
@@ -514,54 +612,14 @@ Hecate:
 
                     Scene @HECATE_REF_STORE: @LIT.scenes.HECATE_REF_STORE.title
 
-[Exit Rosalind]
-
-[Enter Puck]
-
-Hecate:
- Let us proceed to scene @HECATE_REF_KEEP.
-
-
-                    Scene @HECATE_REF_KEEP: @LIT.scenes.HECATE_REF_KEEP.title
-
 Hecate:
  Let us proceed to scene @HECATE_REF_REPLAY.
 
 
                     Scene @HECATE_REF_REPLAY: @LIT.scenes.HECATE_REF_REPLAY.title
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Hecate:
- Let us proceed to scene @HECATE_REF_NL.
-
-
-                    Scene @HECATE_REF_NL: @LIT.scenes.HECATE_REF_NL.title
-
-[Exit Horatio]
-
-[Enter Puck]
-
-Hecate:
- Let us proceed to scene @HECATE_REF_REVERSE.
-
-
-                    Scene @HECATE_REF_REVERSE: @LIT.scenes.HECATE_REF_REVERSE.title
-
-[Exit Puck]
-
-[Enter Horatio]
-
-Hecate:
- Let us proceed to scene @HECATE_REF_FINISH.
-
-
-                    Scene @HECATE_REF_FINISH: @LIT.scenes.HECATE_REF_FINISH.title
-
-Hecate:
- Let us proceed to scene @ACT_I_DONE.
+ We must return to scene @HECATE_REF_NEXT.
 
 
                     Scene @ACT_I_DONE: @LIT.scenes.ACT_I_DONE.title
