@@ -88,6 +88,7 @@ _COL = const(58)  # ':'
 _LT = const(60)  # '<'
 _0 = const(0)
 _1 = const(1)
+_2 = const(2)
 _3 = const(3)
 
 # pop(HECATE) with companion=PUCK → speaker is Puck
@@ -235,12 +236,30 @@ def build_ref_scenes() -> list[Scene]:
             "HECATE_REF_BRACKET",
             push(PUCK, val(HECATE)),  # keep '[' as candidate glyph
             let(HECATE, sub(val(PUCK), _1)),  # remaining after '['
+            goto("HECATE_REF_LABEL_FIRST"),
+            companion=PUCK,
+        ),
+        scene(
+            "HECATE_REF_LABEL_FIRST",
+            # rem == 0 → EOF: keep as body
+            branch(eq(val(HECATE), _0), then="HECATE_REF_ENCODE"),
+            let(PUCK, val(HECATE)),
+            pop(HECATE, recall=_RECALL_PUCK),
+            branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
+            push(PUCK, val(HECATE)),
+            # If the popped character is ']' (_RB), it's an empty label.
+            # Reject by going to HECATE_REF_ANGLE, which sets HECATE to
+            # remaining count and goes to HECATE_REF_KEEP.
+            branch(eq(val(HECATE), _RB), then="HECATE_REF_ANGLE"),
+            # Otherwise, set HECATE to remaining count and goto
+            # HECATE_REF_URL_GUARD to compute BASE
+            let(HECATE, sub(val(PUCK), _1)),
             goto("HECATE_REF_URL_GUARD"),
             companion=PUCK,
         ),
         scene(
             "HECATE_REF_URL_GUARD",
-            let(HORATIO, add(add(val(HORATIO), val(HECATE)), _1)),
+            let(HORATIO, add(add(val(HORATIO), val(HECATE)), _2)),
             goto("HECATE_REF_LABEL"),
             companion=HORATIO,
         ),
@@ -278,11 +297,16 @@ def build_ref_scenes() -> list[Scene]:
             pop(HECATE, recall=_RECALL_PUCK),
             push(PUCK, val(HECATE)),  # keep glyph (candidate; dropped on match)
             branch(eq(val(HECATE), _NL), then="HECATE_REF_URL"),
-            branch(eq(val(HECATE), _LT), then="HECATE_REF_ANGLE"),
+            branch(eq(val(HECATE), _LT), then="HECATE_REF_URL_WS"),
             goto("HECATE_REF_URL_WS"),
             companion=PUCK,
         ),
-        scene("HECATE_REF_ANGLE", goto("HECATE_REF_URL_WS"), companion=PUCK),
+        scene(
+            "HECATE_REF_ANGLE",
+            let(HECATE, sub(val(PUCK), _1)),
+            goto("HECATE_REF_KEEP"),
+            companion=PUCK,
+        ),
         # Drop A: count = BASE - remaining
         scene(
             "HECATE_REF_URL",

@@ -207,7 +207,7 @@ pattern = "bare_statement"
 title = "The unproved line keeps one guarded return."
 pattern = "bare_statement"
 
-[spares.HECATE_REF_LABEL_FIRST]
+[scenes.HECATE_REF_LABEL_FIRST]
 title = "The empty name forfeits the shelf."
 pattern = "bare_statement"
 
