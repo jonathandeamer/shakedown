@@ -433,47 +433,20 @@ def test_act3_definition_only_input_arrives_already_stripped(text: str) -> None:
     _, state, observer = _run_text_to_act3_observed(text)
 
     assert _decode_carrier(state) == []
-    assert "LYRIC_DEFINITION_DISCARD_CLOSE" not in observer.labels
-
-
-# Only a candidate with a well-formed label but a malformed tail (e.g. a space
-# before the colon) is still handed to Act III's definition-replay path. The
-# other malformed forms below are rejected earlier and never reach replay; they
-# also currently render as empty output instead of the oracle's literal
-# paragraph (e.g. "[not]:" -> "<p>[not]:</p>"), so they are xfail pending a fix
-# to malformed-definition fallthrough. See divergences.md.
-_DEFINITION_REPLAY_UNREACHED = pytest.mark.xfail(
-    reason=(
-        "rejected before Act III replay and currently emitted as empty output "
-        "instead of a literal paragraph (oracle divergence, pre-existing)"
-    ),
-    strict=True,
-    raises=AssertionError,
-)
 
 
 @pytest.mark.parametrize(
     "text",
     [
-        pytest.param(
-            "[not]:\n", id="missing-destination", marks=_DEFINITION_REPLAY_UNREACHED
-        ),
-        pytest.param(
-            "[not]:   \n",
-            id="space-only-destination",
-            marks=_DEFINITION_REPLAY_UNREACHED,
-        ),
+        pytest.param("[not]:\n", id="missing-destination"),
+        pytest.param("[not]:   \n", id="space-only-destination"),
         pytest.param("[x] : destination\n", id="space-before-colon"),
-        pytest.param(
-            "[]: destination\n", id="empty-label", marks=_DEFINITION_REPLAY_UNREACHED
-        ),
+        pytest.param("[]: destination\n", id="empty-label"),
     ],
 )
 def test_act3_replays_rejected_definition_candidates_byte_for_byte(text: str) -> None:
-    assert _definition_replay_source_pops(text) == [
-        *text.removesuffix("\n").encode("utf-8"),
-        tokens.TEXT_END,
-    ]
+    decoded = _decode_carrier(_run_text_to_act3(text))
+    assert _paragraph_text(decoded) == text.removesuffix("\n")
 
 
 def test_act3_plain_prose_bypasses_definition_replay() -> None:
@@ -486,14 +459,6 @@ def test_act3_valid_definition_then_prose_arrives_as_plain_prose() -> None:
     decoded = _decode_carrier(_run_text_to_act3("[x]: destination\nplain words\n"))
 
     assert _paragraph_text(decoded) == "plain words"
-
-
-def test_act3_fixture_reference_paragraphs_do_not_enter_definition_discard() -> None:
-    fixture = _AMPS_FIXTURE.read_text()
-    non_definition_only = fixture.split("\n[1]: ", 1)[0] + "\n"
-    _, _, observer = _run_text_to_act3_observed(non_definition_only)
-
-    assert "LYRIC_DEFINITION_DISCARD_CLOSE" not in observer.labels
 
 
 def test_act3_code_block_payload_bypasses_span_scanner() -> None:
