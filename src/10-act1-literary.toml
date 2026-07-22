@@ -206,3 +206,11 @@ pattern = "bare_statement"
 [scenes.HECATE_REF_REPLAY_GUARD]
 title = "The unproved line keeps one guarded return."
 pattern = "bare_statement"
+
+[spares.HECATE_REF_LABEL_FIRST]
+title = "The empty name forfeits the shelf."
+pattern = "bare_statement"
+
+[spares.HECATE_REF_URL_CONTENT]
+title = "The river road demands one honest mark."
+pattern = "bare_statement"
