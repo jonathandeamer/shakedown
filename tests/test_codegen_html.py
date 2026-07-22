@@ -50,6 +50,30 @@ def test_emit_value_uses_compact_large_value_recipes(value: int) -> None:
     assert _max_atom_repetition(phrase) <= 3
 
 
+def test_no_atom_phrase_maps_to_two_values_across_families() -> None:
+    """Guard the `_all_atom_to_value` decode assumption.
+
+    The reverse phrase->value map merges every value-atom family with
+    first-family-wins `setdefault`. That is only sound while each atom phrase
+    denotes a single magnitude across all families; a family that reused
+    another family's phrase for a different value would silently corrupt
+    decode. Fail loudly here instead.
+    """
+    from scripts.codegen_html import _SURFACES, _atoms_for
+
+    raw_families = _SURFACES.data.get("value_atoms")
+    assert isinstance(raw_families, dict)
+
+    phrase_to_value: dict[str, int] = {}
+    for family in sorted(raw_families):
+        for value, phrase in _atoms_for(family).items():
+            prior = phrase_to_value.setdefault(phrase, value)
+            assert prior == value, (
+                f"atom phrase {phrase!r} denotes {prior} and {value} across "
+                f"families; ambiguous decode (family {family!r})"
+            )
+
+
 def test_parse_value_phrase_understands_compact_arithmetic() -> None:
     assert parse_value_phrase("the square of a normal little furry black cat") == 256
     assert (
