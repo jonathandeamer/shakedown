@@ -484,11 +484,8 @@ Juliet:
 
 [Enter Puck]
 
-Puck:
- Remember a wolf.
-
 Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_UNWIND.
+ Let us proceed to scene @LYRIC_POP_GLYPH.
 
 
                     Scene @TRAVERSE_OPEN_TEXT: @LIT.scenes.TRAVERSE_OPEN_TEXT.title
@@ -577,30 +574,6 @@ Romeo:
 
 Romeo:
  Let us return to scene @LYRIC_BUFFER_UNWIND.
-
-
-                    Scene @LYRIC_DEFINITION_UNWIND: @LIT.scenes.LYRIC_DEFINITION_UNWIND.title
-
-Puck:
- @LIT.characters.puck.recall.returned_petal
-
-Puck:
- Are you as rotten as a wolf?
-
-Romeo:
- If so, let us proceed to scene @LYRIC_POP_GLYPH.
-
-Romeo:
- Remember myself.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_UNWIND_KEEP.
-
-
-                    Scene @LYRIC_DEFINITION_UNWIND_KEEP: @LIT.scenes.LYRIC_DEFINITION_UNWIND_KEEP.title
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_UNWIND.
 
 
                     Scene @LYRIC_SCAN_NEXT: @LIT.scenes.LYRIC_SCAN_NEXT.title
@@ -987,10 +960,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -1008,10 +977,6 @@ Puck:
 
 Puck:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -1529,7 +1494,7 @@ Hecate:
 
 [Exit Hecate]
 
-[Enter Horatio]
+[Enter Puck]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -1616,7 +1581,7 @@ Romeo:
 
 [Exit Hecate]
 
-[Enter Horatio]
+[Enter Puck]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -2590,7 +2555,7 @@ Juliet:
 
 [Exit Lady Macbeth]
 
-[Enter Horatio]
+[Enter Puck]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -2603,10 +2568,6 @@ Puck:
 
 Puck:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -2853,10 +2814,6 @@ Puck:
 
 Juliet:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -4023,28 +3980,111 @@ Romeo:
 
                     Scene @LYRIC_REGION_FALLBACK: @LIT.scenes.LYRIC_REGION_FALLBACK.title
 
+[Exit Horatio]
+
 [Exit Puck]
 
-[Enter Juliet]
+[Enter Juliet and Romeo]
+
+Romeo:
+ Remember the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day.
 
 Juliet:
- @LIT.characters.juliet.recall.held_label_glyph
+ Remember a wolf.
 
-Juliet:
- Are you as fair as a wolf?
+[Exit Juliet]
+
+[Enter Horatio]
+
+Romeo:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK_LOOP.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_LOOP: @LIT.scenes.LYRIC_REGION_FALLBACK_LOOP.title
+
+Romeo:
+ @LIT.characters.romeo.recall.brackets_first_petal
+
+Romeo:
+ Are you as lovely as a wolf?
 
 Horatio:
- If so, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK_END.
 
 Horatio:
  Remember myself.
 
+Romeo:
+ Let us return to scene @LYRIC_REGION_FALLBACK_LOOP.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_END: @LIT.scenes.LYRIC_REGION_FALLBACK_END.title
+
+[Exit Horatio]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.sheltered_next_glyph
+
+Juliet:
+ Are you as lovely as a wolf?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK_FINAL.
+
+Romeo:
+ Remember myself.
+
 [Exit Juliet]
+
+[Enter Horatio]
+
+Romeo:
+ Let us return to scene @LYRIC_REGION_FALLBACK_END.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_FINAL: @LIT.scenes.LYRIC_REGION_FALLBACK_FINAL.title
+
+[Exit Romeo]
 
 [Enter Puck]
 
-Horatio:
- Let us return to scene @LYRIC_REGION_FALLBACK.
+Juliet:
+ Are you as sweet as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK_TEXT_END.
+
+Puck:
+ Remember the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet flower and a flower.
+
+Puck:
+ Remember myself.
+
+Juliet:
+ Are you as lovely as yourself?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+Puck:
+ If not, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_TEXT_END: @LIT.scenes.LYRIC_REGION_FALLBACK_TEXT_END.title
+
+Juliet:
+ Remember nothing.
+
+Juliet:
+ Are you as fair as yourself?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+Puck:
+ If not, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
                     Scene @LYRIC_RESUME_DISPATCH: @LIT.scenes.LYRIC_RESUME_DISPATCH.title
@@ -4701,10 +4741,6 @@ Puck:
 Puck:
  Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -4954,10 +4990,6 @@ Puck:
 Puck:
  Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5100,10 +5132,6 @@ Puck:
 Puck:
  Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5137,10 +5165,6 @@ Puck:
 
 Puck:
  Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and a sweet lovely pretty flower.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -5212,10 +5236,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5268,10 +5288,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5299,10 +5315,6 @@ Puck:
 
 Puck:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -5350,10 +5362,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5382,21 +5390,15 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
                     Scene @LYRIC_RETURN_TO_SCAN: @LIT.scenes.LYRIC_RETURN_TO_SCAN.title
 
-[Exit Horatio]
-
 [Exit Juliet]
 
-[Enter Puck and Romeo]
+[Enter Romeo]
 
 Romeo:
  Let us return to scene @LYRIC_POP_GLYPH.

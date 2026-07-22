@@ -18,15 +18,21 @@ pattern = "scene_of_character"
 title = "Romeo opens the garden ledger's quiet gate."
 pattern = "scene_of_character"
 
-
-[scenes.LYRIC_DEFINITION_UNWIND]
+[scenes.LYRIC_REGION_FALLBACK_LOOP]
 title = "Juliet returns the garden ledger in order."
 pattern = "scene_of_character"
 
-[scenes.LYRIC_DEFINITION_UNWIND_KEEP]
+[scenes.LYRIC_REGION_FALLBACK_END]
 title = "Romeo restores one garden leaf to daylight."
 pattern = "scene_of_character"
 
+[scenes.LYRIC_REGION_FALLBACK_FINAL]
+title = "Juliet demands one honest witness."
+pattern = "scene_of_character"
+
+[scenes.LYRIC_REGION_FALLBACK_TEXT_END]
+title = "Juliet seals the garden gate."
+pattern = "scene_of_character"
 
 [scenes.LYRIC_AMP_POP_NEXT]
 title = "The ampersand tests its old name."

@@ -13,6 +13,12 @@
 - **The SPL is the deliverable.** Correctness is judged on `./shakedown` output and `tests/test_mdtest.py`. No Python-intrinsic-only change resolves any bug; every fix must survive a regen and run on the real binary.
 - **Oracle is the judge.** `~/markdown/Markdown.pl` is ground truth. Definition-strip rule: `^[ ]{0,3}\[(.+)\]:` (non-empty label, colon immediately after `]`) **and** a non-empty URL `<?(\S+?)>?`.
 - **Literary protocol.** Any new scene requires a scene-title reserved in `src/10-act1-literary.toml` up front (Task 0). Implementation agents never invent titles. All 26 existing Act I ref titles are consumed; Task 0 authors exactly two new ones.
+- **SPL Literary Protocol Compliance:** This plan complies with the requirements in `docs/superpowers/notes/spl-literary-protocol.md`. The compliance validation requires verifying the following tests:
+  - `tests/test_literary_compliance.py`
+  - `tests/test_literary_toml_schema.py`
+  - `tests/test_assemble.py`
+  - `tests/test_codegen_html.py`
+  - `tests/test_mdtest.py -k 'Amps and angle'`
 - **SPL structural rules.** Two-person-per-scene rule; ≤4 arithmetic operators per statement.
 - **Regen command (run after any `src_ir/` change):** `uv run python -m scripts.splc && uv run python scripts/assemble.py`.
 - **Branch:** `fix/malformed-reference-definitions` (already created, based on the ampersand-PR tip so the three `xfail(strict=True)` markers form the seam this plan closes).

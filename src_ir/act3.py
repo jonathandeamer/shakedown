@@ -192,8 +192,7 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_DEFINITION_OPEN",
-            push(ROMEO, const(tokens.STREAM_END)),
-            goto("LYRIC_DEFINITION_UNWIND"),
+            goto("LYRIC_POP_GLYPH"),
             companion=PUCK,
         ),
         scene(
@@ -246,19 +245,6 @@ ACT: Act = act(
             push(PUCK, val(ROMEO)),
             goto("LYRIC_BUFFER_UNWIND"),
             companion=ROMEO,
-        ),
-        scene(
-            "LYRIC_DEFINITION_UNWIND",
-            pop(ROMEO, recall="returned_petal"),
-            branch(eq(val(ROMEO), const(tokens.STREAM_END)), then="LYRIC_POP_GLYPH"),
-            push(PUCK, val(ROMEO)),
-            goto("LYRIC_DEFINITION_UNWIND_KEEP"),
-            companion=PUCK,
-        ),
-        scene(
-            "LYRIC_DEFINITION_UNWIND_KEEP",
-            goto("LYRIC_DEFINITION_UNWIND"),
-            companion=PUCK,
         ),
         scene(
             "LYRIC_SCAN_NEXT",
@@ -1598,15 +1584,62 @@ ACT: Act = act(
         ),
         scene(
             "LYRIC_REGION_FALLBACK",
-            pop(HORATIO, recall="held_label_glyph"),
+            push(JULIET, _k(91)),
+            push(ROMEO, const(tokens.STREAM_END)),
+            goto("LYRIC_REGION_FALLBACK_LOOP"),
+            anchor=JULIET,
+            companion=ROMEO,
+        ),
+        scene(
+            "LYRIC_REGION_FALLBACK_LOOP",
+            pop(HORATIO, recall="brackets_first_petal"),
             branch(
                 eq(val(HORATIO), const(tokens.STREAM_END)),
-                then="LYRIC_RETURN_TO_SCAN",
+                then="LYRIC_REGION_FALLBACK_END",
             ),
-            push(JULIET, val(HORATIO)),
-            goto("LYRIC_REGION_FALLBACK"),
-            anchor=JULIET,
+            push(ROMEO, val(HORATIO)),
+            goto("LYRIC_REGION_FALLBACK_LOOP"),
+            anchor=ROMEO,
             companion=HORATIO,
+        ),
+        scene(
+            "LYRIC_REGION_FALLBACK_END",
+            pop(ROMEO, recall="sheltered_next_glyph"),
+            branch(
+                eq(val(ROMEO), const(tokens.STREAM_END)),
+                then="LYRIC_REGION_FALLBACK_FINAL",
+            ),
+            push(JULIET, val(ROMEO)),
+            goto("LYRIC_REGION_FALLBACK_END"),
+            anchor=JULIET,
+            companion=ROMEO,
+        ),
+        scene(
+            "LYRIC_REGION_FALLBACK_FINAL",
+            branch(
+                eq(val(PUCK), const(tokens.TEXT_END)),
+                then="LYRIC_REGION_FALLBACK_TEXT_END",
+            ),
+            push(JULIET, _k(93)),
+            push(JULIET, val(PUCK)),
+            branch(
+                eq(val(PUCK), val(PUCK)),
+                then="LYRIC_RETURN_TO_SCAN",
+                else_="LYRIC_RETURN_TO_SCAN",
+            ),
+            anchor=JULIET,
+            companion=PUCK,
+        ),
+        scene(
+            "LYRIC_REGION_FALLBACK_TEXT_END",
+            push(PUCK, const(tokens.TEXT_END)),
+            branch(
+                eq(val(PUCK), val(PUCK)),
+                then="LYRIC_RETURN_TO_SCAN",
+                else_="LYRIC_RETURN_TO_SCAN",
+            ),
+            anchor=JULIET,
+            companion=PUCK,
         ),
         scene(
             "LYRIC_RESUME_DISPATCH",
