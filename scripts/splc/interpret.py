@@ -46,6 +46,7 @@ class InterpreterState:
     input_text: str = ""
     input_pos: int = 0
     output: list[str] = field(default_factory=list)
+    resolve_short_circuit: bool = True
 
     def output_text(self) -> str:
         return "".join(self.output)
@@ -230,7 +231,7 @@ def run_act(
             from src_ir.act1_ref_pure import parse_and_store_rosalind_record
 
             parse_and_store_rosalind_record(state)
-        elif sc.label == "RESOLVE_OPEN":
+        elif sc.label == "RESOLVE_OPEN" and state.resolve_short_circuit:
             from src_ir.act3_resolve_pure import resolve_puck_stream
 
             resolve_puck_stream(state)

@@ -220,6 +220,7 @@ def _rewrite_puck_stream(
         i += 1
         if code == tokens.STREAM_END:
             out_pop.append(code)
+            out_pop.extend(seq[i:])
             break
         arity = tokens.ARITY.get(code)
         if arity is None:

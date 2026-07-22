@@ -3,7 +3,7 @@
 [Enter Lady Macbeth and Horatio]
 
 Horatio:
- You are as healthy as myself.
+ You are as honest as myself.
 
 Horatio:
  Remember a beggar.
@@ -44,7 +44,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLOCK_BLANK.
@@ -60,7 +60,7 @@ Hecate:
 [Enter Horatio]
 
 Lady Macbeth:
- Is Hecate as villainous as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Is Hecate as villainous as the difference between the product of a brave bold mighty noble hero and a bold noble hero and a bold noble hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_WRAP_DOT.
@@ -72,7 +72,7 @@ Lady Macbeth:
                     Scene @PASS_HEADER_GUARD: @LIT.scenes.PASS_HEADER_GUARD.title
 
 Lady Macbeth:
- Is Hecate as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat?
+ Is Hecate as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a noble hero and a hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_HEADER_OPEN.
@@ -116,19 +116,19 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_TEXT_OPEN.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_TEXT_OPEN.
 
 Lady Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat?
+ Are you as mighty as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_MORE.
@@ -148,7 +148,7 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- Are you worse than the sum of a furry black cat and a black cat?
+ Are you worse than the sum of a bold noble hero and a noble hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_HEADER_COUNT.
@@ -179,7 +179,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_REPLAY_SPACE.
@@ -206,13 +206,13 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_CLOSE.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_TRAIL_OPEN.
@@ -256,19 +256,19 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_TRAIL_DECIDE.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_TRAIL_CAPTURE.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_TRAIL_CAPTURE.
@@ -291,7 +291,7 @@ Hecate:
  Remember myself.
 
 Puck:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as fair as the product of a fair sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, we must return to scene @PASS_HEADER_TRAIL_SCAN.
@@ -344,7 +344,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.trail_glyph
 
 Lady Macbeth:
- Are you as bold as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as bold as the difference between nothing and the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HEADER_TRAIL_EXIT.
@@ -367,7 +367,7 @@ Puck:
 [Enter Hecate]
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HEADER_CLOSE.
@@ -424,7 +424,7 @@ Hecate:
  Remember myself.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_STATE_OPEN.
@@ -531,31 +531,31 @@ Hecate:
                     Scene @PASS_SETEXT_UNDERLINE_CLASSIFY: @LIT.scenes.PASS_SETEXT_UNDERLINE_CLASSIFY.title
 
 Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a proud rich noble kingdom and a proud kingdom?
 
 Hecate:
  If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_PROOF_STAGE.
 
 Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a proud rich noble mighty kingdom and a proud kingdom?
 
 Hecate:
  If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE.
 
 Macbeth:
- Are you as mighty as the sum of a little furry black cat and a cat?
+ Are you as mighty as the sum of a proud rich noble kingdom and a kingdom?
 
 Hecate:
  If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_SPACE.
 
 Macbeth:
- Are you as mighty as the difference between the product of a normal little furry black cat and a furry black cat and the sum of a black cat and a cat?
+ Are you as mighty as the difference between the product of a proud rich noble mighty kingdom and a proud rich kingdom and the sum of a proud kingdom and a kingdom?
 
 Hecate:
  If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_EQ.
 
 Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as mighty as the sum of the product of a proud rich noble mighty kingdom and a proud kingdom and the sum of a proud rich noble kingdom and the sum of a proud rich kingdom and a kingdom?
 
 Hecate:
  If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_CLASSIFY_DASH.
@@ -689,7 +689,7 @@ Hecate:
 [Enter Horatio]
 
 Horatio:
- Are you as healthy as nothing?
+ Are you as happy as nothing?
 
 Macbeth:
  If so, let us proceed to scene @PASS_SETEXT_UNDERLINE_REQUEUE_STAGE.
@@ -710,7 +710,7 @@ Macbeth:
  @LIT.characters.macbeth.recall.underline_warrant
 
 Horatio:
- You are as happy as myself.
+ You are as loving as myself.
 
 Macbeth:
  @LIT.characters.macbeth.recall.underline_warrant
@@ -722,7 +722,7 @@ Horatio:
  If so, let us proceed to scene @PASS_SETEXT_EQUALS.
 
 Macbeth:
- Are you as mighty as the sum of a black cat and a cat?
+ Are you as mighty as the sum of a proud kingdom and a kingdom?
 
 Horatio:
  If so, let us proceed to scene @PASS_SETEXT_EQUALS.
@@ -734,7 +734,7 @@ Horatio:
  If so, let us proceed to scene @PASS_SETEXT_DASH.
 
 Macbeth:
- Are you as villainous as a furry black cat?
+ Are you as villainous as a proud rich kingdom?
 
 Horatio:
  If so, let us proceed to scene @PASS_SETEXT_DASH.
@@ -817,7 +817,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.underline_byte
 
 Lady Macbeth:
- Are you as mighty as the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a cat?
+ Are you as mighty as the difference between nothing and the difference between the product of a brave bold mighty noble hero and a noble hero and a hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_SETEXT_EQUALS_POST_DISCARD.
@@ -840,7 +840,7 @@ Hecate:
  You are as cursed as a cat.
 
 Horatio:
- You are as healthy as nothing.
+ You are as honest as nothing.
 
 [Exit Horatio]
 
@@ -860,7 +860,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.underline_byte
 
 Lady Macbeth:
- Are you as villainous as the difference between nothing and the difference between the product of a normal little furry black cat and a black cat and a cat?
+ Are you as villainous as the difference between nothing and the difference between the product of a brave bold mighty noble hero and a noble hero and a hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_SETEXT_DASH_POST_DISCARD.
@@ -883,7 +883,7 @@ Hecate:
  You are as rotten as a black cat.
 
 Horatio:
- You are as warm as nothing.
+ You are as healthy as nothing.
 
 [Exit Horatio]
 
@@ -908,7 +908,7 @@ Horatio:
  Remember myself.
 
 Horatio:
- You are as happy as the sum of yourself and a brother.
+ You are as honest as the sum of yourself and a brother.
 
 Hecate:
  We must return to scene @PASS_SETEXT_REQUEUE.
@@ -936,7 +936,7 @@ Lady Macbeth:
  Remember myself.
 
 Lady Macbeth:
- Remember the difference between nothing and the product of a normal little furry black cat and a black cat.
+ Remember the difference between nothing and the product of a brave bold mighty noble hero and a noble hero.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_SETEXT_FINALIZE_TRANSFER.
@@ -1030,7 +1030,7 @@ Puck:
  @LIT.characters.puck.recall.title_glyph
 
 Puck:
- Are you as fair as the difference between nothing and the product of a normal little furry black cat and a black cat?
+ Are you as fair as the difference between nothing and the product of a fair sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, let us proceed to scene @PASS_SETEXT_REPLAY_TRANSFER_DONE.
@@ -1064,7 +1064,7 @@ Puck:
  Remember myself.
 
 Puck:
- Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat.
+ Remember the difference between nothing and the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
  Let us proceed to scene @PASS_SETEXT_BRIDGE_TRANSFER.
@@ -1076,19 +1076,19 @@ Horatio:
  @LIT.characters.horatio.recall.replay_glyph
 
 Horatio:
- Are you as healthy as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a cat?
+ Are you as honest as the difference between nothing and the sum of the product of a happy healthy warm honest brother and a happy brother and a brother?
 
 Puck:
  If so, let us proceed to scene @PASS_SETEXT_CLOSE.
 
 Horatio:
- Are you as happy as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a black cat?
+ Are you as loving as the difference between nothing and the sum of the product of a happy healthy warm honest brother and a happy brother and a happy brother?
 
 Puck:
  If so, let us proceed to scene @PASS_SETEXT_EQUALS_CLOSE.
 
 Horatio:
- Are you as healthy as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat?
+ Are you as honest as the difference between nothing and the sum of the product of a happy healthy warm honest brother and a happy brother and the sum of a happy brother and a brother?
 
 Puck:
  If so, let us proceed to scene @PASS_SETEXT_DASH_CLOSE.
@@ -1122,7 +1122,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.restored_glyph
 
 Lady Macbeth:
- Are you as bold as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat?
+ Are you as bold as the difference between nothing and the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold noble hero and a hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_SETEXT_EQUALS_CLOSE_POST_RESTORE.
@@ -1140,7 +1140,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.saved_countdown
 
 Horatio:
- You are as happy as myself.
+ You are as loving as myself.
 
 Lady Macbeth:
  You are as bold as nothing.
@@ -1152,7 +1152,7 @@ Lady Macbeth:
  If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
 
 Horatio:
- Are you as warm as nothing?
+ Are you as healthy as nothing?
 
 Lady Macbeth:
  If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
@@ -1186,7 +1186,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.restored_glyph
 
 Lady Macbeth:
- Are you as villainous as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat?
+ Are you as villainous as the difference between nothing and the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold noble hero and a hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_SETEXT_DASH_CLOSE_POST_RESTORE.
@@ -1216,7 +1216,7 @@ Lady Macbeth:
  If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
 
 Horatio:
- Are you as warm as nothing?
+ Are you as healthy as nothing?
 
 Lady Macbeth:
  If so, let us proceed to scene @PASS_SETEXT_PROVED_CLOSE.
@@ -1238,7 +1238,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.restored_glyph
 
 Lady Macbeth:
- Are you as mighty as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a cat?
+ Are you as mighty as the difference between nothing and the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold noble hero and a hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_SETEXT_CLOSE_COUNTDOWN.
@@ -1298,13 +1298,13 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_HEADER_CLOSE.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_PARA_WS_OPEN.
@@ -1335,7 +1335,7 @@ Lady Macbeth:
                     Scene @PASS_HEADER_REPLAY_HASHES: @LIT.scenes.PASS_HEADER_REPLAY_HASHES.title
 
 Horatio:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat.
+ Remember the sum of the product of a happy healthy warm honest brother and a happy brother and the sum of a happy brother and a brother.
 
 Lady Macbeth:
  Are you as mighty as a hero?
@@ -1370,7 +1370,7 @@ Lady Macbeth:
 [Enter Horatio]
 
 Horatio:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat.
+ Remember the sum of the product of a happy healthy warm honest brother and a happy brother and the sum of a happy brother and a brother.
 
 Lady Macbeth:
  Are you as mighty as a hero?
@@ -1392,7 +1392,7 @@ Lady Macbeth:
                     Scene @PASS_HEADER_REPLAY_SPACE_DONE: @LIT.scenes.PASS_HEADER_REPLAY_SPACE_DONE.title
 
 Horatio:
- Remember the product of a normal little furry black cat and a black cat.
+ Remember the product of a happy healthy warm honest brother and a happy brother.
 
 Lady Macbeth:
  You are as mighty as nothing.
@@ -1418,25 +1418,25 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and a cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_GUARD.
 
 Lady Macbeth:
- Are you as bold as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat?
+ Are you as bold as the sum of the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a bold mighty noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_GUARD.
 
 Lady Macbeth:
- Are you as mighty as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as mighty as the difference between the product of a brave bold mighty noble hero and a bold mighty noble hero and the sum of a bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_GUARD.
 
 Lady Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
+ Are you as mighty as the sum of the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a bold noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_WRAP_REPLAY.
@@ -1457,7 +1457,7 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_WRAP_GUARD.
@@ -1481,7 +1481,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a black cat?
+ Are you as bold as the difference between the product of a brave bold mighty noble hero and a bold mighty noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_REPLAY.
@@ -1508,13 +1508,13 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the difference between the product of a normal little furry black cat and a furry black cat and a black cat?
+ Are you as mighty as the difference between the product of a brave bold mighty noble hero and a bold noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_FINISH.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HTML_BLOCK_ATTR.
@@ -1545,7 +1545,7 @@ Horatio:
  Remember the difference between a miserable beggar and a brother.
 
 Horatio:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a happy healthy warm honest brother and a happy healthy brother and a happy healthy brother.
 
 Horatio:
  Remember Hecate.
@@ -1571,19 +1571,19 @@ Horatio:
  Remember the difference between a miserable beggar and a brother.
 
 Horatio:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a happy healthy warm honest brother and a happy healthy brother and a happy healthy brother.
 
 Horatio:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+ Remember the sum of the product of a happy healthy warm honest brother and the sum of a happy healthy brother and a happy brother and a happy healthy brother.
 
 Horatio:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+ Remember the sum of the product of a happy healthy warm honest brother and the sum of a happy healthy brother and a happy brother and the sum of a happy healthy warm brother and a brother.
 
 Horatio:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a black cat.
+ Remember the difference between the product of a happy healthy warm honest brother and a happy healthy warm brother and the sum of a happy healthy warm brother and a happy brother.
 
 Horatio:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a black cat.
+ Remember the difference between the product of a happy healthy warm honest brother and a happy healthy brother and a happy brother.
 
 Lady Macbeth:
  You are as mighty as a cursed wolf.
@@ -1606,16 +1606,16 @@ Horatio:
  Remember the difference between a miserable beggar and a brother.
 
 Horatio:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a happy healthy warm honest brother and a happy healthy brother and a happy healthy brother.
 
 Horatio:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+ Remember the sum of the product of a happy healthy warm honest brother and the sum of a happy healthy brother and a happy brother and a happy healthy brother.
 
 Horatio:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+ Remember the sum of the product of a happy healthy warm honest brother and the sum of a happy healthy brother and a happy brother and the sum of a happy healthy warm brother and a brother.
 
 Horatio:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a black cat.
+ Remember the difference between the product of a happy healthy warm honest brother and a happy healthy warm brother and the sum of a happy healthy warm brother and a happy brother.
 
 Horatio:
  Remember Hecate.
@@ -1644,7 +1644,7 @@ Horatio:
  @LIT.characters.horatio.recall.held_label_glyph
 
 Horatio:
- You are as healthy as myself.
+ You are as honest as myself.
 
 Horatio:
  Remember nothing.
@@ -1666,25 +1666,25 @@ Lady Macbeth:
  You are as villainous as nothing.
 
 Lady Macbeth:
- Is Hecate as bold as the product of a normal little furry black cat and a black cat?
+ Is Hecate as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_SAVE.
 
 Lady Macbeth:
- Is Hecate as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Is Hecate as mighty as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_MARKER_SAVE.
 
 Lady Macbeth:
- Is Hecate as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Is Hecate as bold as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_MARKER_SAVE.
 
 Lady Macbeth:
- Is Hecate as villainous as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+ Is Hecate as villainous as the difference between the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_MARKER_SAVE.
@@ -1700,31 +1700,31 @@ Lady Macbeth:
                     Scene @PASS_HR_SAVE: @LIT.scenes.PASS_HR_SAVE.title
 
 Lady Macbeth:
- Is Hecate as bold as the sum of a little furry black cat and a black cat?
+ Is Hecate as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_PAIR_RETURN.
 
 Lady Macbeth:
- Is Hecate as mighty as the product of a normal little furry black cat and a black cat?
+ Is Hecate as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_PAIR_RETURN.
 
 Lady Macbeth:
- Is Hecate as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Is Hecate as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_MARKER_SAVE.
 
 Lady Macbeth:
- Is Hecate as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Is Hecate as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_MARKER_SAVE.
 
 Lady Macbeth:
- Is Hecate as bold as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+ Is Hecate as bold as the difference between the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @PASS_HR_MARKER_SAVE.
@@ -1743,13 +1743,13 @@ Lady Macbeth:
  You are as villainous as the sum of yourself and a hero.
 
 Lady Macbeth:
- Are you as villainous as a furry black cat?
+ Are you as villainous as a bold noble hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_CODE_BLANK.
 
 Lady Macbeth:
- Are you as mighty as the difference between nothing and the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as mighty as the difference between nothing and the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_BLOCK_FINISH.
@@ -1777,13 +1777,13 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_CODE_CONTINUE.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_CODE_GATE.
@@ -1799,10 +1799,10 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as villainous as the difference between nothing and the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+ You are as villainous as the difference between nothing and the sum of the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a bold noble hero.
 
 Lady Macbeth:
- Remember the sum of a little furry black cat and a black cat.
+ Remember the sum of a bold mighty noble hero and a noble hero.
 
 [Exit Horatio]
 
@@ -1853,7 +1853,7 @@ Hecate:
  If so, let us proceed to scene @PASS_HR_CONFIRM.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HR_SPACE.
@@ -1877,7 +1877,7 @@ Hecate:
  If so, let us proceed to scene @PASS_HR_CONFIRM.
 
 Lady Macbeth:
- Is Puck as bold as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+ Is Puck as bold as the difference between the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HR_REPLAY.
@@ -1924,13 +1924,13 @@ Hecate:
  If so, we must return to scene @PASS_HR_CONFIRM.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_HR_SPACE.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HR_EMIT.
@@ -1969,7 +1969,7 @@ Lady Macbeth:
 [Enter Hecate]
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_CODE_GATE.
@@ -2038,19 +2038,19 @@ Hecate:
  If so, let us proceed to scene @PASS_CODE_REPLAY.
 
 Lady Macbeth:
- Is Puck as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Is Puck as bold as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
 
 Lady Macbeth:
- Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Is Puck as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_HR_FALLBACK_LIST_HANDOFF.
 
 Lady Macbeth:
- Is Puck as villainous as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+ Is Puck as villainous as the difference between the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_CODE_REPLAY.
@@ -2066,7 +2066,7 @@ Lady Macbeth:
 [Enter Macbeth]
 
 Macbeth:
- Remember a furry black cat.
+ Remember a proud rich kingdom.
 
 Macbeth:
  Remember a kingdom.
@@ -2148,7 +2148,7 @@ Lady Macbeth:
 [Enter Macbeth]
 
 Macbeth:
- Remember the sum of a black cat and a cat.
+ Remember the sum of a proud kingdom and a kingdom.
 
 Lady Macbeth:
  You are as mighty as nothing.
@@ -2176,7 +2176,7 @@ Horatio:
  If so, let us proceed to scene @PASS_CODE_LINE_CAPTURE_OPEN.
 
 Horatio:
- Remember the sum of a little furry black cat and a black cat.
+ Remember the sum of a happy healthy warm brother and a happy brother.
 
 Lady Macbeth:
  Let us return to scene @PASS_CODE_OPEN.
@@ -2236,7 +2236,7 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_CODE_LINE_BLANK_DROP.
@@ -2255,13 +2255,13 @@ Hecate:
  Remember myself.
 
 Puck:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as fair as the product of a fair sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, we must return to scene @PASS_CODE_GLYPH.
 
 Puck:
- Are you as rotten as the sum of a little furry black cat and a cat?
+ Are you as rotten as the sum of a sweet lovely pretty flower and a flower?
 
 Hecate:
  If so, we must return to scene @PASS_CODE_GLYPH.
@@ -2309,7 +2309,7 @@ Hecate:
 [Enter Horatio]
 
 Puck:
- Remember the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat.
+ Remember the difference between nothing and the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely pretty flower and a flower.
 
 Puck:
  Let us proceed to scene @PASS_CODE_LINE_KEEP_REVERSE_TRANSFER.
@@ -2318,7 +2318,7 @@ Puck:
                     Scene @PASS_CODE_LINE_KEEP_REVERSE_TRANSFER: @LIT.scenes.PASS_CODE_LINE_KEEP_REVERSE_TRANSFER.title
 
 Horatio:
- Are you as warm as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Are you as healthy as the difference between nothing and the sum of the product of a happy healthy warm honest brother and a happy brother and a happy healthy warm brother?
 
 Puck:
  If so, let us proceed to scene @PASS_CODE_LINE_KEEP_REPLAY.
@@ -2327,7 +2327,7 @@ Horatio:
  @LIT.characters.horatio.recall.replay_glyph
 
 Horatio:
- Are you as warm as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Are you as warm as the difference between nothing and the sum of the product of a happy healthy warm honest brother and a happy brother and a happy healthy warm brother?
 
 Puck:
  If so, let us proceed to scene @PASS_CODE_LINE_KEEP_REPLAY.
@@ -2349,7 +2349,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.kept_measure
 
 Lady Macbeth:
- Are you as bold as the difference between nothing and the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as bold as the difference between nothing and the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_CODE_LINE_CLOSE.
@@ -2368,7 +2368,7 @@ Horatio:
                     Scene @PASS_CODE_LINE_CLOSE: @LIT.scenes.PASS_CODE_LINE_CLOSE.title
 
 Horatio:
- Is Hecate as healthy as the sum of a little furry black cat and a black cat?
+ Is Hecate as honest as the sum of a happy healthy warm brother and a happy brother?
 
 Lady Macbeth:
  If so, let us proceed to scene @PASS_CODE_LINE_END.
@@ -2384,10 +2384,10 @@ Lady Macbeth:
                     Scene @PASS_CODE_LINE_END: @LIT.scenes.PASS_CODE_LINE_END.title
 
 Horatio:
- Remember the sum of a little furry black cat and a black cat.
+ Remember the sum of a happy healthy warm brother and a happy brother.
 
 Lady Macbeth:
- You are as villainous as the difference between nothing and the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+ You are as villainous as the difference between nothing and the sum of the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a bold noble hero.
 
 Lady Macbeth:
  Remember a wolf.
@@ -2439,25 +2439,25 @@ Lady Macbeth:
                     Scene @PASS_LISTS_GATE_UNORDERED: @LIT.scenes.PASS_LISTS_GATE_UNORDERED.title
 
 Lady Macbeth:
- Are you as villainous as the difference between the product of a little furry black cat and a little furry black cat and a noble hero?
+ Are you as villainous as the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_CONTAINERS_QUOTE.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_MARK_SAVE_UL.
 
 Lady Macbeth:
- Are you as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as bold as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_MARK_SAVE_UL.
 
 Lady Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as mighty as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_MARK_SAVE_UL.
@@ -2481,13 +2481,13 @@ Hecate:
  If so, let us proceed to scene @PASS_LISTS_RAW_GLYPH.
 
 Lady Macbeth:
- Are you more villainous than the product of a normal little furry black cat and the sum of a black cat and a cat?
+ Are you more villainous than the product of a brave bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, we must return to scene @PASS_SETEXT_CANDIDATE.
 
 Lady Macbeth:
- Are you bigger than the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a cat?
+ Are you bigger than the sum of the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, we must return to scene @PASS_SETEXT_CANDIDATE.
@@ -2526,13 +2526,13 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_OPEN_UL.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_OPEN_UL.
@@ -2567,7 +2567,7 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
+ Are you as mighty as the difference between the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_MARK_TEST_OL.
@@ -2589,13 +2589,13 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_OPEN_OL.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_OPEN_OL.
@@ -2627,7 +2627,7 @@ Puck:
  Remember myself.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a sweet flower.
 
 [Exit Puck]
 
@@ -2643,7 +2643,7 @@ Hecate:
  Remember myself.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_RAW_AFTER_NEWLINE.
@@ -2685,7 +2685,7 @@ Hecate:
  If so, let us proceed to scene @PASS_QUOTE_AFTER_NEWLINE.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_RAW_BLANK.
@@ -2697,7 +2697,7 @@ Hecate:
  If so, we must return to scene @PASS_LISTS_RAW_GLYPH.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_PARA_WS_OPEN.
@@ -2735,7 +2735,7 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_PARA_WS_BLANK_DROP.
@@ -2760,7 +2760,7 @@ Hecate:
  Remember myself.
 
 Puck:
- Are you as noble as the product of a normal little furry black cat and a black cat?
+ Are you as noble as the product of a fair sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, we must return to scene @PASS_PARA_WS_SCAN.
@@ -2812,7 +2812,7 @@ Hecate:
                     Scene @PASS_PARA_WS_REVERSE_OPEN: @LIT.scenes.PASS_PARA_WS_REVERSE_OPEN.title
 
 Puck:
- Remember the difference between nothing and the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the difference between nothing and the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
  Let us proceed to scene @PASS_PARA_WS_REVERSE_TRANSFER.
@@ -2912,7 +2912,7 @@ Lady Macbeth:
 [Enter Puck]
 
 Lady Macbeth:
- Is Hecate as mighty as the sum of a little furry black cat and a black cat?
+ Is Hecate as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_QUOTE_BLANK.
@@ -2992,7 +2992,7 @@ Lady Macbeth:
 [Enter Macbeth]
 
 Macbeth:
- Remember a furry black cat.
+ Remember a proud rich kingdom.
 
 Macbeth:
  Remember a kingdom.
@@ -3014,7 +3014,7 @@ Lady Macbeth:
 [Enter Macbeth]
 
 Macbeth:
- Remember a furry black cat.
+ Remember a proud rich kingdom.
 
 Macbeth:
  Remember a proud kingdom.
@@ -3042,19 +3042,19 @@ Hecate:
  Remember a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_ITEM_SKIP_SPACES.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_ITEM_SKIP_SPACES.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_LIST_END.
@@ -3078,19 +3078,19 @@ Hecate:
  Remember a black cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_ITEM_SKIP_SPACES.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_ITEM_SKIP_SPACES.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_LIST_END.
@@ -3114,19 +3114,19 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_ITEM_SKIP_SPACES.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_ITEM_SKIP_SPACES.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_LIST_END.
@@ -3144,7 +3144,7 @@ Lady Macbeth:
                     Scene @PASS_LISTS_ITEM_GLYPH: @LIT.scenes.PASS_LISTS_ITEM_GLYPH.title
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_ITEM_LINE_END.
@@ -3224,19 +3224,19 @@ Lady Macbeth:
                     Scene @PASS_LISTS_ITEM_LINE_CLASSIFY: @LIT.scenes.PASS_LISTS_ITEM_LINE_CLASSIFY.title
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_LOOSE_PROVISION.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_1.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_TAB_GUARD.
@@ -3308,7 +3308,7 @@ Macbeth:
  @LIT.characters.macbeth.recall.masons_stone
 
 Lady Macbeth:
- Is Horatio as mighty as the difference between nothing and the sum of a normal little furry black cat and a furry black cat?
+ Is Horatio as mighty as the difference between nothing and the sum of a brave bold mighty noble hero and a bold noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_CONTAINERS_DEPTH_SKIP_SUBTREE.
@@ -3333,7 +3333,7 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as bold as the difference between nothing and the sum of a normal little furry black cat and a furry black cat.
+ You are as bold as the difference between nothing and the sum of a brave bold mighty noble hero and a bold noble hero.
 
 [Exit Horatio]
 
@@ -3358,7 +3358,7 @@ Lady Macbeth:
  Remember myself.
 
 Macbeth:
- Are you as mighty as a furry black cat?
+ Are you as mighty as a proud rich kingdom?
 
 Lady Macbeth:
  If so, let us proceed to scene @PASS_CONTAINERS_DEPTH_SKIP_SUBTREE_CLOSE.
@@ -3374,7 +3374,7 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as bold as the difference between nothing and the sum of a normal little furry black cat and the sum of a furry black cat and a cat.
+ You are as bold as the difference between nothing and the sum of a brave bold mighty noble hero and the sum of a bold noble hero and a hero.
 
 [Exit Horatio]
 
@@ -3387,7 +3387,7 @@ Lady Macbeth:
                     Scene @PASS_CONTAINERS_EOF: @LIT.scenes.PASS_CONTAINERS_EOF.title
 
 Lady Macbeth:
- Is Horatio as mighty as the difference between nothing and the sum of a normal little furry black cat and the sum of a black cat and a cat?
+ Is Horatio as mighty as the difference between nothing and the sum of a brave bold mighty noble hero and the sum of a noble hero and a hero?
 
 Macbeth:
  If so, let us return to scene @PASS_CONTAINERS_DEPTH_SKIP_TAIL.
@@ -3411,7 +3411,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
 
 Lady Macbeth:
- Is Horatio as villainous as the difference between nothing and the sum of a normal little furry black cat and the sum of a furry black cat and a cat?
+ Is Horatio as villainous as the difference between nothing and the sum of a brave bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_CONTAINERS_CLOSE_SKIP_SUBTREE.
@@ -3435,7 +3435,7 @@ Macbeth:
  Remember myself.
 
 Lady Macbeth:
- Are you as mighty as the sum of a furry black cat and a black cat?
+ Are you as mighty as the sum of a bold noble hero and a noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_CONTAINERS_CLOSE_SKIP_SUBTREE_CLOSE.
@@ -3657,7 +3657,7 @@ Lady Macbeth:
                     Scene @PASS_CONTAINERS_BOUNDARY: @LIT.scenes.PASS_CONTAINERS_BOUNDARY.title
 
 Lady Macbeth:
- Are you as villainous as the difference between the product of a little furry black cat and a little furry black cat and a noble hero?
+ Are you as villainous as the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_CONTINUE_PREFIX.
@@ -3669,19 +3669,19 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_CONTAINERS_BOUNDARY.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, we must return to scene @PASS_CONTAINERS_BOUNDARY.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_LIST_END.
@@ -3693,19 +3693,19 @@ Lady Macbeth:
                     Scene @PASS_LISTS_LINE_HEAD: @LIT.scenes.PASS_LISTS_LINE_HEAD.title
 
 Lady Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_SAVE_UL.
 
 Lady Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as mighty as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_SAVE_UL.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_SAVE_UL.
@@ -3717,13 +3717,13 @@ Lady Macbeth:
                     Scene @PASS_LISTS_LINE_HEAD_ORDERED: @LIT.scenes.PASS_LISTS_LINE_HEAD_ORDERED.title
 
 Lady Macbeth:
- Are you more villainous than the product of a normal little furry black cat and the sum of a black cat and a cat?
+ Are you more villainous than the product of a brave bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_JOIN_LINE.
 
 Lady Macbeth:
- Are you bigger than the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a cat?
+ Are you bigger than the sum of the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_JOIN_LINE.
@@ -3771,13 +3771,13 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_EMIT.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_EMIT.
@@ -3812,7 +3812,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
+ Are you as bold as the difference between the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_TEST_OL.
@@ -3834,13 +3834,13 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_EMIT.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_SIB_EMIT.
@@ -3856,7 +3856,7 @@ Lady Macbeth:
                     Scene @PASS_LISTS_LAZY_REPLAY_SAVED: @LIT.scenes.PASS_LISTS_LAZY_REPLAY_SAVED.title
 
 Puck:
- Remember the sum of a little furry black cat and a black cat.
+ Remember the sum of a sweet lovely pretty flower and a sweet flower.
 
 Puck:
  Remember myself.
@@ -3872,13 +3872,13 @@ Lady Macbeth:
                     Scene @PASS_LISTS_LAZY_REPLAY_SAVED_DOT: @LIT.scenes.PASS_LISTS_LAZY_REPLAY_SAVED_DOT.title
 
 Puck:
- Remember the sum of a little furry black cat and a black cat.
+ Remember the sum of a sweet lovely pretty flower and a sweet flower.
 
 Puck:
  Remember myself.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a sweet flower.
 
 [Exit Puck]
 
@@ -3898,7 +3898,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Are you bigger than a hero?
@@ -3913,7 +3913,7 @@ Macbeth:
                     Scene @PASS_LISTS_SIB_OUTDENT: @LIT.scenes.PASS_LISTS_SIB_OUTDENT.title
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Macbeth:
  Remember yourself.
@@ -3934,7 +3934,7 @@ Macbeth:
  @LIT.characters.macbeth.recall.masons_stone
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us return to scene @PASS_LISTS_ITEM_BEGIN_TIGHT.
@@ -3949,7 +3949,7 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_2.
@@ -3980,7 +3980,7 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_TAB_GUARD.
@@ -4008,7 +4008,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_3.
@@ -4026,7 +4026,7 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_4.
@@ -4067,31 +4067,31 @@ Lady Macbeth:
                     Scene @PASS_LISTS_INDENT_CLASSIFY_FOUR: @LIT.scenes.PASS_LISTS_INDENT_CLASSIFY_FOUR.title
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_INDENT_1.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLANK.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_FOUR_ROUTE_UL.
 
 Lady Macbeth:
- Are you as bold as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as bold as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_FOUR_ROUTE_UL.
 
 Lady Macbeth:
- Are you as mighty as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as mighty as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_FOUR_ROUTE_UL.
@@ -4119,13 +4119,13 @@ Lady Macbeth:
                     Scene @PASS_LISTS_INDENT_ORDERED_FOUR: @LIT.scenes.PASS_LISTS_INDENT_ORDERED_FOUR.title
 
 Lady Macbeth:
- Are you more villainous than the product of a normal little furry black cat and the sum of a black cat and a cat?
+ Are you more villainous than the product of a brave bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_FOUR_GUARD.
 
 Lady Macbeth:
- Are you more bold than the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a cat?
+ Are you more bold than the sum of the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_FOUR_GUARD.
@@ -4176,25 +4176,25 @@ Lady Macbeth:
                     Scene @PASS_LISTS_INDENT_CLASSIFY: @LIT.scenes.PASS_LISTS_INDENT_CLASSIFY.title
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLANK.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_REPLAY_GUARD.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_REPLAY_GUARD.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_REPLAY_GUARD.
@@ -4216,13 +4216,13 @@ Lady Macbeth:
                     Scene @PASS_LISTS_INDENT_ORDERED: @LIT.scenes.PASS_LISTS_INDENT_ORDERED.title
 
 Lady Macbeth:
- Are you more villainous than the product of a normal little furry black cat and the sum of a black cat and a cat?
+ Are you more villainous than the product of a brave bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_CONTINUE_GUARD.
 
 Lady Macbeth:
- Are you bigger than the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a cat?
+ Are you bigger than the sum of the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_CONTINUE_GUARD.
@@ -4279,10 +4279,10 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
@@ -4358,13 +4358,13 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_NEST_EMIT_UL.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_NEST_EMIT_UL.
@@ -4392,13 +4392,13 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_DEEP_EMIT_UL.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_DEEP_EMIT_UL.
@@ -4462,7 +4462,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
+ Are you as bold as the difference between the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_NEST_TEST_OL.
@@ -4490,7 +4490,7 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
+ Are you as mighty as the difference between the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_DEEP_TEST_OL.
@@ -4518,13 +4518,13 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_NEST_EMIT_OL.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_NEST_EMIT_OL.
@@ -4552,13 +4552,13 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_DEEP_EMIT_OL.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_DEEP_EMIT_OL.
@@ -4734,7 +4734,7 @@ Lady Macbeth:
 [Enter Macbeth]
 
 Macbeth:
- Remember a furry black cat.
+ Remember a proud rich kingdom.
 
 Macbeth:
  Remember a kingdom.
@@ -4756,7 +4756,7 @@ Lady Macbeth:
 [Enter Macbeth]
 
 Macbeth:
- Remember a furry black cat.
+ Remember a proud rich kingdom.
 
 Macbeth:
  Remember a proud kingdom.
@@ -4786,7 +4786,7 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_BLANK.
@@ -4805,13 +4805,13 @@ Lady Macbeth:
  You are as bold as nothing.
 
 Lady Macbeth:
- Is Hecate as mighty as the product of a normal little furry black cat and a black cat?
+ Is Hecate as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @PASS_LISTS_BLANK_INDENT_1.
 
 Lady Macbeth:
- Is Hecate as bold as the sum of a little furry black cat and a cat?
+ Is Hecate as bold as the sum of a bold mighty noble hero and a hero?
 
 Puck:
  If so, let us return to scene @PASS_LISTS_INDENT_TAB.
@@ -4827,19 +4827,19 @@ Lady Macbeth:
                     Scene @PASS_LISTS_BLANK_HEAD: @LIT.scenes.PASS_LISTS_BLANK_HEAD.title
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BSIB_SAVE_UL.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BSIB_SAVE_UL.
 
 Lady Macbeth:
- Are you as villainous as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as villainous as the sum of the product of a brave bold mighty noble hero and a noble hero and the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BSIB_SAVE_UL.
@@ -4851,13 +4851,13 @@ Lady Macbeth:
                     Scene @PASS_LISTS_BLANK_HEAD_ORDERED: @LIT.scenes.PASS_LISTS_BLANK_HEAD_ORDERED.title
 
 Lady Macbeth:
- Are you worse than the product of a normal little furry black cat and the sum of a black cat and a cat?
+ Are you worse than the product of a brave bold mighty noble hero and the sum of a noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLANK_ROLLBACK_GOTO.
 
 Lady Macbeth:
- Are you more bold than the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and the sum of a little furry black cat and a cat?
+ Are you more bold than the sum of the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLANK_ROLLBACK_GOTO.
@@ -4896,13 +4896,13 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_GUARD.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_INDENT_GUARD.
@@ -4943,7 +4943,7 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
+ Are you as villainous as the difference between the product of a brave bold mighty noble hero and the sum of a noble hero and a hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BSIB_TEST_OL.
@@ -4971,13 +4971,13 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BSIB_EMIT.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BSIB_EMIT.
@@ -5012,7 +5012,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Are you bigger than a hero?
@@ -5035,7 +5035,7 @@ Lady Macbeth:
 [Enter Horatio]
 
 Lady Macbeth:
- You are as villainous as the difference between nothing and the sum of a normal little furry black cat and the sum of a black cat and a cat.
+ You are as villainous as the difference between nothing and the sum of a brave bold mighty noble hero and the sum of a noble hero and a hero.
 
 Lady Macbeth:
  Is Macbeth more bold than a hero?
@@ -5064,10 +5064,10 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
@@ -5086,13 +5086,13 @@ Lady Macbeth:
                     Scene @PASS_LISTS_BSIB_OUTDENT: @LIT.scenes.PASS_LISTS_BSIB_OUTDENT.title
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  You are as bold as the difference between yourself and a hero.
@@ -5132,13 +5132,13 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_FULL_GUARD.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_NEST_GUARD.
@@ -5167,13 +5167,13 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Macbeth:
- Remember the sum of a black cat and a cat.
+ Remember the sum of a proud kingdom and a kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
@@ -5208,7 +5208,7 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLANK_INDENT_2.
@@ -5232,13 +5232,13 @@ Hecate:
  You are as horrid as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLANK_INDENT_3.
 
 Lady Macbeth:
- Are you as mighty as the difference between the product of a little furry black cat and a little furry black cat and a noble hero?
+ Are you as mighty as the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_QUOTE_GUARD.
@@ -5262,7 +5262,7 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_LISTS_BLANK_INDENT_4.
@@ -5402,7 +5402,7 @@ Horatio:
  Remember nothing.
 
 Horatio:
- Remember the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the sum of a happy healthy brother and the sum of a happy brother and a brother.
 
 Lady Macbeth:
  You are as bold as the sum of Macbeth and a hero.
@@ -5444,7 +5444,7 @@ Horatio:
  Remember nothing.
 
 Horatio:
- Remember the sum of a furry black cat and the sum of a black cat and a cat.
+ Remember the sum of a happy healthy brother and the sum of a happy brother and a brother.
 
 Lady Macbeth:
  You are as villainous as the sum of yourself and a hero.
@@ -5466,13 +5466,13 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_FINISH_OPTIONAL.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_PREFIX_OPTIONAL.
@@ -5494,13 +5494,13 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as bold as the product of a normal little furry black cat and a black cat?
+ Are you as bold as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_RAW_GLYPH.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_RAW_GLYPH.
@@ -5516,7 +5516,7 @@ Lady Macbeth:
                     Scene @PASS_QUOTE_PREFIX_CLASSIFY: @LIT.scenes.PASS_QUOTE_PREFIX_CLASSIFY.title
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_PREFIX_BLANK.
@@ -5571,7 +5571,7 @@ Lady Macbeth:
  You are as mighty as nothing.
 
 Lady Macbeth:
- Is Hecate as mighty as the difference between the product of a little furry black cat and a little furry black cat and a noble hero?
+ Is Hecate as mighty as the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us return to scene @PASS_QUOTE_NEST_DEPTH.
@@ -5600,7 +5600,7 @@ Lady Macbeth:
  You are as bold as nothing.
 
 Lady Macbeth:
- Is Hecate as villainous as the sum of a little furry black cat and a black cat?
+ Is Hecate as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Horatio:
  If so, let us return to scene @PASS_QUOTE_LIST_BLANK.
@@ -5649,7 +5649,7 @@ Horatio:
  Remember nothing.
 
 Horatio:
- Remember a little furry black cat.
+ Remember a happy healthy warm brother.
 
 Lady Macbeth:
  You are as mighty as the difference between yourself and a hero.
@@ -5706,13 +5706,13 @@ Horatio:
  If so, let us return to scene @PASS_QUOTE_LIST_CLEAR.
 
 Horatio:
- Are you as healthy as nothing?
+ Are you as honest as nothing?
 
 Lady Macbeth:
  If so, let us return to scene @PASS_QUOTE_BLANK_DONE.
 
 Lady Macbeth:
- Is Hecate as villainous as the sum of a little furry black cat and a black cat?
+ Is Hecate as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Horatio:
  If so, let us return to scene @PASS_QUOTE_PREFIX_REPLAY.
@@ -5734,13 +5734,13 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the product of a normal little furry black cat and a black cat?
+ Are you as mighty as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_RAW_GLYPH.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_RAW_GLYPH.
@@ -5756,7 +5756,7 @@ Lady Macbeth:
                     Scene @PASS_QUOTE_CONTINUE_CLASSIFY: @LIT.scenes.PASS_QUOTE_CONTINUE_CLASSIFY.title
 
 Lady Macbeth:
- Is Hecate as mighty as the difference between the product of a little furry black cat and a little furry black cat and a noble hero?
+ Is Hecate as mighty as the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero?
 
 Horatio:
  If so, let us proceed to scene @PASS_QUOTE_TOP_CONTINUE_CLASSIFY.
@@ -5782,13 +5782,13 @@ Lady Macbeth:
 [Enter Hecate]
 
 Lady Macbeth:
- Are you as mighty as the difference between the product of a little furry black cat and a little furry black cat and a noble hero?
+ Are you as mighty as the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_GATE_UNORDERED.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, let us proceed to scene @PASS_QUOTE_TOP_CONTINUE_BLANK.
@@ -5819,13 +5819,13 @@ Horatio:
  Remember nothing.
 
 Horatio:
- Remember a little furry black cat.
+ Remember a happy healthy warm brother.
 
 Lady Macbeth:
  You are as mighty as nothing.
 
 Horatio:
- Are you as healthy as nothing?
+ Are you as honest as nothing?
 
 Lady Macbeth:
  If so, let us proceed to scene @FRAME_STAGE_SIDE_POP.
@@ -5847,19 +5847,19 @@ Hecate:
  You are as cursed as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_BLANK.
 
 Lady Macbeth:
- Are you as villainous as the product of a normal little furry black cat and a black cat?
+ Are you as villainous as the product of a brave bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_INDENT_1.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Hecate:
  If so, we must return to scene @PASS_LISTS_INDENT_TAB_GUARD.
@@ -5892,7 +5892,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL.
@@ -5904,7 +5904,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL_REPLAY.
@@ -5916,7 +5916,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL_REPLAY_DOT.
@@ -5932,7 +5932,7 @@ Macbeth:
  Remember nothing.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_LISTS_CLOSE_ALL.
@@ -5950,7 +5950,7 @@ Macbeth:
  If so, let us proceed to scene @PASS_LISTS_CLOSE_ALL_DONE.
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
@@ -5965,7 +5965,7 @@ Macbeth:
  If so, let us proceed to scene @PASS_LISTS_CLOSE_ALL_DONE.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us return to scene @PASS_LISTS_CLOSE_ALL.
@@ -6014,7 +6014,7 @@ Macbeth:
  If so, let us proceed to scene @PASS_LISTS_CLOSE_REPLAY_DONE.
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
@@ -6029,7 +6029,7 @@ Macbeth:
  If so, let us proceed to scene @PASS_LISTS_CLOSE_REPLAY_DONE.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us return to scene @PASS_LISTS_CLOSE_ALL_REPLAY.
@@ -6060,7 +6060,7 @@ Macbeth:
  If so, let us proceed to scene @PASS_LISTS_CLOSE_REPLAY_DOT_DONE.
 
 Macbeth:
- Remember the sum of a furry black cat and a black cat.
+ Remember the sum of a proud rich kingdom and a proud kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.fallen_rampart
@@ -6075,7 +6075,7 @@ Macbeth:
  If so, let us proceed to scene @PASS_LISTS_CLOSE_REPLAY_DOT_DONE.
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us return to scene @PASS_LISTS_CLOSE_ALL_REPLAY_DOT.
@@ -6372,7 +6372,7 @@ Macbeth:
  If so, let us proceed to scene @FRAME_REVERSE_OPEN.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Macbeth:
  If so, let us return to scene @PASS_PARA_NEXT.
@@ -6384,31 +6384,31 @@ Macbeth:
  If so, let us return to scene @PASS_PARA_NEXT.
 
 Lady Macbeth:
- Are you as villainous as the sum of a black cat and a cat?
+ Are you as villainous as the sum of a noble hero and a hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_COPY_CLOSE.
 
 Lady Macbeth:
- Are you as bold as a furry black cat?
+ Are you as bold as a bold noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_COPY_OPEN.
 
 Lady Macbeth:
- Are you as mighty as the sum of a furry black cat and a black cat?
+ Are you as mighty as the sum of a bold noble hero and a noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_COPY_CLOSE.
 
 Lady Macbeth:
- Are you as mighty as the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as mighty as the sum of a bold noble hero and the sum of a noble hero and a hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_COPY_CLOSE.
 
 Lady Macbeth:
- Are you as mighty as a little furry black cat?
+ Are you as mighty as a bold mighty noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_COPY_CLOSE.
@@ -6426,13 +6426,13 @@ Macbeth:
  If so, let us proceed to scene @PASS_PARA_ITEM_OPEN.
 
 Lady Macbeth:
- Are you as mighty as the difference between a normal little furry black cat and a cat?
+ Are you as mighty as the difference between a brave bold mighty noble hero and a hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_ITEM_CLOSE.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_BLOCK_BOUNDARY.
@@ -6465,7 +6465,7 @@ Lady Macbeth:
                     Scene @PASS_QUOTE_CODE: @LIT.scenes.PASS_QUOTE_CODE.title
 
 Macbeth:
- Remember the sum of a little furry black cat and a black cat.
+ Remember the sum of a proud rich noble kingdom and a proud kingdom.
 
 Lady Macbeth:
  Let us proceed to scene @PASS_BLOCK_REPLAY.
@@ -6502,7 +6502,7 @@ Hecate:
  You are as rotten as the difference between yourself and a cat.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Hecate:
  If so, we must return to scene @PASS_CODE_CONTINUE.
@@ -6524,7 +6524,7 @@ Lady Macbeth:
                     Scene @PASS_PARA_COPY_OPEN: @LIT.scenes.PASS_PARA_COPY_OPEN.title
 
 Macbeth:
- Remember a furry black cat.
+ Remember a proud rich kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.staged_stone
@@ -6563,7 +6563,7 @@ Lady Macbeth:
                     Scene @PASS_PARA_ITEM_OPEN: @LIT.scenes.PASS_PARA_ITEM_OPEN.title
 
 Macbeth:
- Remember the sum of a furry black cat and a cat.
+ Remember the sum of a proud rich kingdom and a kingdom.
 
 Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.staged_stone
@@ -6587,7 +6587,7 @@ Lady Macbeth:
                     Scene @PASS_PARA_ITEM_CLOSE: @LIT.scenes.PASS_PARA_ITEM_CLOSE.title
 
 Macbeth:
- Remember the difference between a normal little furry black cat and a cat.
+ Remember the difference between a proud rich noble mighty kingdom and a kingdom.
 
 Lady Macbeth:
  Let us return to scene @PASS_PARA_NEXT.
@@ -6611,7 +6611,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.staged_stone
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a black cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_NEWLINE.
@@ -6641,7 +6641,7 @@ Lady Macbeth:
  @LIT.characters.lady_macbeth.recall.staged_stone
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_CLOSE_BLANK.
@@ -6659,13 +6659,13 @@ Macbeth:
  If so, let us proceed to scene @PASS_PARA_CLOSE_BLANK.
 
 Lady Macbeth:
- Are you as mighty as a little furry black cat?
+ Are you as mighty as a bold mighty noble hero?
 
 Macbeth:
  If so, let us proceed to scene @PASS_PARA_CLOSE_BLANK.
 
 Macbeth:
- Remember the sum of a little furry black cat and a black cat.
+ Remember the sum of a proud rich noble kingdom and a proud kingdom.
 
 Macbeth:
  Remember myself.

@@ -39,7 +39,7 @@ Hecate:
  Remember yourself.
 
 Rosalind:
- You are as fair as nothing.
+ You are as warm as nothing.
 
 Hecate:
  You are as cursed as nothing.
@@ -211,7 +211,7 @@ Hecate:
                     Scene @HECATE_DETAB_COLUMN_FOUR: @LIT.scenes.HECATE_DETAB_COLUMN_FOUR.title
 
 Rosalind:
- You are as warm as the sum of yourself and a tree.
+ You are as happy as the sum of yourself and a tree.
 
 Hecate:
  You are as rotten as the difference between yourself and a cat.
@@ -288,7 +288,7 @@ Hecate:
 [Enter Rosalind]
 
 Rosalind:
- You are as warm as nothing.
+ You are as happy as nothing.
 
 Hecate:
  Are you as rotten as nothing?
@@ -410,7 +410,7 @@ Hecate:
  @LIT.characters.hecate.recall.kept_tally
 
 Horatio:
- You are as happy as myself.
+ You are as warm as myself.
 
 Hecate:
  You are as cursed as nothing.
@@ -447,19 +447,19 @@ Puck:
  @LIT.characters.puck.recall.kept_measure
 
 Puck:
- Are you as noble as the sum of a little furry black cat and a black cat?
+ Are you as noble as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_REPLAY_GUARD.
 
 Puck:
- Are you as noble as the product of a normal little furry black cat and a black cat?
+ Are you as noble as the product of a fair sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_LEAD_GUARD.
 
 Puck:
- Are you as rotten as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat?
+ Are you as rotten as the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_BRACKET.
@@ -528,19 +528,19 @@ Puck:
  @LIT.characters.puck.recall.kept_measure
 
 Puck:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as fair as the product of a fair sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_LABEL_GUARD.
 
 Puck:
- Are you as noble as the sum of a little furry black cat and a black cat?
+ Are you as noble as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
 
 Puck:
- Are you as noble as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat?
+ Are you as noble as the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_BRACKET.
@@ -594,7 +594,7 @@ Puck:
  @LIT.characters.puck.recall.kept_measure
 
 Puck:
- Are you as fair as the sum of a little furry black cat and a black cat?
+ Are you as fair as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
@@ -683,7 +683,7 @@ Hecate:
  Remember yourself.
 
 Horatio:
- You are as healthy as nothing.
+ You are as honest as nothing.
 
 Hecate:
  Let us proceed to scene @ACT_I_DONE.
@@ -733,7 +733,7 @@ Puck:
  @LIT.characters.puck.recall.kept_measure
 
 Puck:
- Are you as rotten as the sum of a little furry black cat and a black cat?
+ Are you as rotten as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
@@ -742,7 +742,7 @@ Hecate:
  Remember myself.
 
 Puck:
- Are you as fair as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat?
+ Are you as fair as the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet flower and a flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_COLON.
@@ -772,7 +772,7 @@ Puck:
  @LIT.characters.puck.recall.kept_measure
 
 Puck:
- Are you as noble as the sum of a little furry black cat and a black cat?
+ Are you as noble as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
@@ -781,7 +781,7 @@ Hecate:
  Remember myself.
 
 Puck:
- Are you as rotten as the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat?
+ Are you as rotten as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and the sum of a sweet lovely flower and a sweet flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_URL_WS.
@@ -817,13 +817,13 @@ Hecate:
  Remember myself.
 
 Puck:
- Are you as noble as the sum of a little furry black cat and a black cat?
+ Are you as noble as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_URL.
 
 Puck:
- Are you as rotten as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as rotten as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_ANGLE.
@@ -845,10 +845,10 @@ Hecate:
 [Enter Horatio]
 
 Horatio:
- You are as warm as the difference between Puck and a brother.
+ You are as healthy as the difference between Puck and a brother.
 
 Horatio:
- You are as happy as the difference between myself and yourself.
+ You are as loving as the difference between myself and yourself.
 
 Hecate:
  You are as rotten as the difference between yourself and myself.
@@ -915,7 +915,7 @@ Hecate:
  @LIT.characters.hecate.recall.kept_tally
 
 Horatio:
- You are as healthy as myself.
+ You are as happy as myself.
 
 [Exit Horatio]
 
@@ -944,7 +944,7 @@ Hecate:
                     Scene @HECATE_REF_TITLE_NL: @LIT.scenes.HECATE_REF_TITLE_NL.title
 
 Horatio:
- You are as happy as Puck.
+ You are as loving as Puck.
 
 Hecate:
  You are as horrid as nothing.

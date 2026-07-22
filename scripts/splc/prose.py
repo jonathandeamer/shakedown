@@ -47,7 +47,11 @@ class ProseEngine:
                 f"no stable_utility phrase for negative value {n} "
                 f"(speaker {speaker.value})"
             )
-        return emit_value(n)
+        families = self._data.get("value_atoms")
+        family = speaker.toml_key
+        if not isinstance(families, dict) or family not in families:
+            family = "default"
+        return emit_value(n, family=family)
 
     def _pick(self, pool: list[str], seed: str) -> str:
         return random.Random(seed).choice(pool)

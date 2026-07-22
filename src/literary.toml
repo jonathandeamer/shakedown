@@ -27,6 +27,68 @@ v4 = "a furry black cat"
 v8 = "a little furry black cat"
 v16 = "a normal little furry black cat"
 
+# Per-character fallback families consumed by the splc prose engine: when a
+# speaker's stable_utility has no entry for a value, compounds are built from
+# the speaker's own family instead of the default (Hecate's) cat chain. Every
+# family keeps v0 = "nothing" (Critical canonical) and the same magnitudes as
+# the default family so decomposition stays value-identical.
+
+[value_atoms.horatio]
+v0 = "nothing"
+v1 = "a brother"
+v2 = "a happy brother"
+v4 = "a happy healthy brother"
+v8 = "a happy healthy warm brother"
+v16 = "a happy healthy warm honest brother"
+
+[value_atoms.puck]
+v0 = "nothing"
+v1 = "a flower"
+v2 = "a sweet flower"
+v4 = "a sweet lovely flower"
+v8 = "a sweet lovely pretty flower"
+v16 = "a fair sweet lovely pretty flower"
+
+[value_atoms.lady_macbeth]
+v0 = "nothing"
+v1 = "a hero"
+v2 = "a noble hero"
+v4 = "a bold noble hero"
+v8 = "a bold mighty noble hero"
+v16 = "a brave bold mighty noble hero"
+
+[value_atoms.macbeth]
+v0 = "nothing"
+v1 = "a kingdom"
+v2 = "a proud kingdom"
+v4 = "a proud rich kingdom"
+v8 = "a proud rich noble kingdom"
+v16 = "a proud rich noble mighty kingdom"
+
+[value_atoms.romeo]
+v0 = "nothing"
+v1 = "a morning"
+v2 = "a sunny morning"
+v4 = "a sunny golden morning"
+v8 = "a sweet sunny golden morning"
+v16 = "a lovely sunny sweet golden morning"
+
+[value_atoms.juliet]
+v0 = "nothing"
+v1 = "a rose"
+v2 = "a sweet rose"
+v4 = "a sweet lovely rose"
+v8 = "a sweet gentle lovely rose"
+v16 = "a fair sweet gentle lovely rose"
+
+[value_atoms.prospero]
+v0 = "nothing"
+v1 = "an angel"
+v2 = "a noble angel"
+v4 = "a fine noble angel"
+v8 = "a fine golden noble angel"
+v16 = "a brave fine golden noble angel"
+
 
 
 
@@ -97,7 +159,7 @@ v0 = "nothing"
 [characters.rosalind.soft_variation]
 greater_than = ["friendlier than", "jollier than", "nicer than"]
 less_than = ["smaller than", "punier than"]
-equality = ["as fair as", "as warm as", "as happy as"]
+equality = ["as fair as", "as warm as", "as happy as", "as lovely as", "as gentle as"]
 goto_forward = ["Let us proceed to"]
 goto_backward = ["Let us return to"]
 
@@ -120,7 +182,7 @@ v0 = "nothing"
 [characters.horatio.soft_variation]
 greater_than = ["friendlier than", "nicer than"]
 less_than = ["smaller than", "punier than"]
-equality = ["as warm as", "as healthy as", "as happy as"]
+equality = ["as warm as", "as healthy as", "as happy as", "as honest as", "as loving as"]
 goto_forward = ["Let us proceed to"]
 goto_backward = ["Let us return to"]
 
@@ -294,7 +356,7 @@ v0 = "nothing"
 [characters.romeo.soft_variation]
 greater_than = ["more sweet than", "nicer than"]
 less_than = ["smaller than", "punier than"]
-equality = ["as sunny as", "as golden as", "as fair as"]
+equality = ["as sunny as", "as golden as", "as fair as", "as sweet as", "as lovely as", "as warm as"]
 goto_forward = ["Let us proceed to"]
 goto_backward = ["Let us return to"]
 
@@ -323,7 +385,7 @@ v0 = "nothing"
 [characters.juliet.soft_variation]
 greater_than = ["more gentle than", "friendlier than"]
 less_than = ["smaller than", "punier than"]
-equality = ["as fair as", "as gentle as", "as sweet as"]
+equality = ["as fair as", "as gentle as", "as sweet as", "as lovely as", "as beautiful as"]
 goto_forward = ["Let us proceed to"]
 goto_backward = ["Let us return to"]
 
@@ -344,7 +406,7 @@ v0 = "nothing"
 [characters.prospero.soft_variation]
 greater_than = ["more noble than", "more peaceful than"]
 less_than = ["smaller than", "punier than"]
-equality = ["as honest as", "as noble as"]
+equality = ["as honest as", "as noble as", "as peaceful as", "as mighty as", "as golden as", "as rich as"]
 goto_forward = ["We shall proceed to"]
 goto_backward = ["We shall return to"]
 
