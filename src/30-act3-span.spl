@@ -484,17 +484,8 @@ Juliet:
 
 [Enter Puck]
 
-Puck:
- Remember a wolf.
-
 Romeo:
- @LIT.characters.romeo.recall.brackets_first_petal
-
-Puck:
- Remember myself.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_LEAF_GUARD.
+ Let us proceed to scene @LYRIC_POP_GLYPH.
 
 
                     Scene @TRAVERSE_OPEN_TEXT: @LIT.scenes.TRAVERSE_OPEN_TEXT.title
@@ -583,361 +574,6 @@ Romeo:
 
 Romeo:
  Let us return to scene @LYRIC_BUFFER_UNWIND.
-
-
-                    Scene @LYRIC_DEFINITION_LEAF_GUARD: @LIT.scenes.LYRIC_DEFINITION_LEAF_GUARD.title
-
-Romeo:
- Are you as warm as the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_LINE_OPEN.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_UNWIND.
-
-
-                    Scene @LYRIC_DEFINITION_DRAIN: @LIT.scenes.LYRIC_DEFINITION_DRAIN.title
-
-Romeo:
- @LIT.characters.romeo.recall.links_second_petal
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as golden as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_DRAIN_CLOSE.
-
-Romeo:
- Are you as warm as the sum of a sweet sunny golden morning and a sunny morning?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_GARDEN_GUARD.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_DRAIN_KEEP.
-
-
-                    Scene @LYRIC_DEFINITION_DRAIN_KEEP: @LIT.scenes.LYRIC_DEFINITION_DRAIN_KEEP.title
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_DRAIN.
-
-
-                    Scene @LYRIC_DEFINITION_DRAIN_CLOSE: @LIT.scenes.LYRIC_DEFINITION_DRAIN_CLOSE.title
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_DISCARD_DRAIN.
-
-
-                    Scene @LYRIC_DEFINITION_UNWIND: @LIT.scenes.LYRIC_DEFINITION_UNWIND.title
-
-Puck:
- @LIT.characters.puck.recall.returned_petal
-
-Puck:
- Are you as rotten as a wolf?
-
-Romeo:
- If so, let us proceed to scene @LYRIC_POP_GLYPH.
-
-Romeo:
- Remember myself.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_UNWIND_KEEP.
-
-
-                    Scene @LYRIC_DEFINITION_UNWIND_KEEP: @LIT.scenes.LYRIC_DEFINITION_UNWIND_KEEP.title
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_UNWIND.
-
-
-                    Scene @LYRIC_DEFINITION_GARDEN_GUARD: @LIT.scenes.LYRIC_DEFINITION_GARDEN_GUARD.title
-
-Romeo:
- @LIT.characters.romeo.recall.links_third_petal
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as lovely as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_DISCARD_DRAIN.
-
-Romeo:
- Are you as lovely as the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_LINE_OPEN.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-
-                    Scene @LYRIC_DEFINITION_LINE_OPEN: @LIT.scenes.LYRIC_DEFINITION_LINE_OPEN.title
-
-Romeo:
- @LIT.characters.romeo.recall.links_fourth_petal
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as golden as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Are you as sunny as the sum of a sweet sunny golden morning and a sunny morning?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Are you as fair as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_LABEL_FIRST.
-
-
-                    Scene @LYRIC_DEFINITION_LABEL_FIRST: @LIT.scenes.LYRIC_DEFINITION_LABEL_FIRST.title
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_LABEL_REST.
-
-
-                    Scene @LYRIC_DEFINITION_LABEL_REST: @LIT.scenes.LYRIC_DEFINITION_LABEL_REST.title
-
-Romeo:
- @LIT.characters.romeo.recall.links_closing_petal
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as fair as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_COLON.
-
-Romeo:
- Are you as lovely as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Are you as sweet as the sum of a sweet sunny golden morning and a sunny morning?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_LABEL_REST.
-
-
-                    Scene @LYRIC_DEFINITION_COLON: @LIT.scenes.LYRIC_DEFINITION_COLON.title
-
-Romeo:
- @LIT.characters.romeo.recall.links_following_air
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as warm as the difference between the product of a lovely sunny sweet golden morning and a sunny golden morning and the sum of a sunny golden morning and a sunny morning?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_DESTINATION.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-
-                    Scene @LYRIC_DEFINITION_DESTINATION: @LIT.scenes.LYRIC_DEFINITION_DESTINATION.title
-
-Romeo:
- @LIT.characters.romeo.recall.inline_paths_first_gate
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as warm as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Are you as warm as the sum of a sweet sunny golden morning and a sunny morning?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Are you as warm as the product of a lovely sunny sweet golden morning and a sunny morning?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_DESTINATION_TAIL.
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_DRAIN.
-
-
-                    Scene @LYRIC_DEFINITION_DESTINATION_TAIL: @LIT.scenes.LYRIC_DEFINITION_DESTINATION_TAIL.title
-
-Romeo:
- @LIT.characters.romeo.recall.inline_paths_next_gate
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as warm as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Are you as lovely as the sum of a sweet sunny golden morning and a sunny morning?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
-
-Romeo:
- Are you as fair as the product of a lovely sunny sweet golden morning and a sunny morning?
-
-Puck:
- If so, let us return to scene @LYRIC_DEFINITION_DESTINATION_TAIL.
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_DRAIN.
-
-
-                    Scene @LYRIC_DEFINITION_DISCARD_DRAIN: @LIT.scenes.LYRIC_DEFINITION_DISCARD_DRAIN.title
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_DISCARD_KEEP.
-
-
-                    Scene @LYRIC_DEFINITION_DISCARD_KEEP: @LIT.scenes.LYRIC_DEFINITION_DISCARD_KEEP.title
-
-Puck:
- @LIT.characters.puck.recall.returned_petal
-
-Puck:
- Are you as noble as a wolf?
-
-Romeo:
- If so, let us proceed to scene @LYRIC_DEFINITION_DISCARD_CLOSE.
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_DISCARD_KEEP.
-
-
-                    Scene @LYRIC_DEFINITION_DISCARD_CLOSE: @LIT.scenes.LYRIC_DEFINITION_DISCARD_CLOSE.title
-
-[Exit Romeo]
-
-[Enter Juliet]
-
-Puck:
- @LIT.characters.puck.recall.returned_petal
-
-Juliet:
- Let us return to scene @TRAVERSE_NEXT_TOKEN.
-
-
-                    Scene @LYRIC_DEFINITION_REPLAY_BEGIN: @LIT.scenes.LYRIC_DEFINITION_REPLAY_BEGIN.title
-
-Romeo:
- Are you as warm as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_REPLAY_POP.
-
-
-                    Scene @LYRIC_DEFINITION_REPLAY_POP: @LIT.scenes.LYRIC_DEFINITION_REPLAY_POP.title
-
-Romeo:
- @LIT.characters.romeo.recall.bracketed_paths_next_gate
-
-Puck:
- Remember myself.
-
-Romeo:
- Are you as lovely as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
-
-Romeo:
- Let us proceed to scene @LYRIC_DEFINITION_REPLAY_KEEP.
-
-
-                    Scene @LYRIC_DEFINITION_REPLAY_KEEP: @LIT.scenes.LYRIC_DEFINITION_REPLAY_KEEP.title
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_REPLAY_POP.
-
-
-                    Scene @LYRIC_DEFINITION_REPLAY_CLOSE: @LIT.scenes.LYRIC_DEFINITION_REPLAY_CLOSE.title
-
-Puck:
- @LIT.characters.puck.recall.returned_petal
-
-Puck:
- Are you as fair as a wolf?
-
-Romeo:
- If so, let us proceed to scene @LYRIC_POP_GLYPH.
-
-Romeo:
- Remember myself.
-
-Romeo:
- Let us return to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
-
-
-                    Scene @LYRIC_DEFINITION_REPLAY_GUARD: @LIT.scenes.LYRIC_DEFINITION_REPLAY_GUARD.title
-
-Juliet:
- @LIT.characters.juliet.recall.kept_charge
-
-Juliet:
- Are you as fair as nothing?
-
-Puck:
- If so, let us proceed to scene @LYRIC_DEFINITION_CHAMBER_GUARD.
-
-Puck:
- Remember myself.
-
-Juliet:
- Let us return to scene @LYRIC_DEFINITION_REPLAY_GUARD.
-
-
-                    Scene @LYRIC_DEFINITION_CHAMBER_GUARD: @LIT.scenes.LYRIC_DEFINITION_CHAMBER_GUARD.title
-
-Puck:
- Remember nothing.
-
-Juliet:
- Let us return to scene @TRAVERSE_NEXT_TOKEN.
 
 
                     Scene @LYRIC_SCAN_NEXT: @LIT.scenes.LYRIC_SCAN_NEXT.title
@@ -1324,10 +960,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -1345,10 +977,6 @@ Puck:
 
 Puck:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -1866,7 +1494,7 @@ Hecate:
 
 [Exit Hecate]
 
-[Enter Horatio]
+[Enter Puck]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -1953,7 +1581,7 @@ Romeo:
 
 [Exit Hecate]
 
-[Enter Horatio]
+[Enter Puck]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -2927,7 +2555,7 @@ Juliet:
 
 [Exit Lady Macbeth]
 
-[Enter Horatio]
+[Enter Puck]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -2940,10 +2568,6 @@ Puck:
 
 Puck:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -3190,10 +2814,6 @@ Puck:
 
 Juliet:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -4360,28 +3980,111 @@ Romeo:
 
                     Scene @LYRIC_REGION_FALLBACK: @LIT.scenes.LYRIC_REGION_FALLBACK.title
 
+[Exit Horatio]
+
 [Exit Puck]
 
-[Enter Juliet]
+[Enter Juliet and Romeo]
+
+Romeo:
+ Remember the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day.
 
 Juliet:
- @LIT.characters.juliet.recall.held_label_glyph
+ Remember a wolf.
 
-Juliet:
- Are you as fair as a wolf?
+[Exit Juliet]
+
+[Enter Horatio]
+
+Romeo:
+ Let us proceed to scene @LYRIC_REGION_FALLBACK_LOOP.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_LOOP: @LIT.scenes.LYRIC_REGION_FALLBACK_LOOP.title
+
+Romeo:
+ @LIT.characters.romeo.recall.brackets_first_petal
+
+Romeo:
+ Are you as lovely as a wolf?
 
 Horatio:
- If so, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK_END.
 
 Horatio:
  Remember myself.
 
+Romeo:
+ Let us return to scene @LYRIC_REGION_FALLBACK_LOOP.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_END: @LIT.scenes.LYRIC_REGION_FALLBACK_END.title
+
+[Exit Horatio]
+
+[Enter Juliet]
+
+Juliet:
+ @LIT.characters.juliet.recall.sheltered_next_glyph
+
+Juliet:
+ Are you as lovely as a wolf?
+
+Romeo:
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK_FINAL.
+
+Romeo:
+ Remember myself.
+
 [Exit Juliet]
+
+[Enter Horatio]
+
+Romeo:
+ Let us return to scene @LYRIC_REGION_FALLBACK_END.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_FINAL: @LIT.scenes.LYRIC_REGION_FALLBACK_FINAL.title
+
+[Exit Romeo]
 
 [Enter Puck]
 
-Horatio:
- Let us return to scene @LYRIC_REGION_FALLBACK.
+Juliet:
+ Are you as sweet as nothing?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_REGION_FALLBACK_TEXT_END.
+
+Puck:
+ Remember the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet flower and a flower.
+
+Puck:
+ Remember myself.
+
+Juliet:
+ Are you as lovely as yourself?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+Puck:
+ If not, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+
+                    Scene @LYRIC_REGION_FALLBACK_TEXT_END: @LIT.scenes.LYRIC_REGION_FALLBACK_TEXT_END.title
+
+Juliet:
+ Remember nothing.
+
+Juliet:
+ Are you as fair as yourself?
+
+Puck:
+ If so, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
+
+Puck:
+ If not, let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
                     Scene @LYRIC_RESUME_DISPATCH: @LIT.scenes.LYRIC_RESUME_DISPATCH.title
@@ -5038,10 +4741,6 @@ Puck:
 Puck:
  Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5291,10 +4990,6 @@ Puck:
 Puck:
  Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5437,10 +5132,6 @@ Puck:
 Puck:
  Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5474,10 +5165,6 @@ Puck:
 
 Puck:
  Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and a sweet lovely pretty flower.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -5549,10 +5236,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5605,10 +5288,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5636,10 +5315,6 @@ Puck:
 
 Puck:
  Remember yourself.
-
-[Exit Puck]
-
-[Enter Horatio]
 
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
@@ -5687,10 +5362,6 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
@@ -5719,21 +5390,15 @@ Puck:
 Puck:
  Remember yourself.
 
-[Exit Puck]
-
-[Enter Horatio]
-
 Juliet:
  Let us proceed to scene @LYRIC_RETURN_TO_SCAN.
 
 
                     Scene @LYRIC_RETURN_TO_SCAN: @LIT.scenes.LYRIC_RETURN_TO_SCAN.title
 
-[Exit Horatio]
-
 [Exit Juliet]
 
-[Enter Puck and Romeo]
+[Enter Romeo]
 
 Romeo:
  Let us return to scene @LYRIC_POP_GLYPH.
