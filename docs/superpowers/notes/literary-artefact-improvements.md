@@ -18,17 +18,27 @@ faithful Markdown.pl port. Ordered by rough impact.
 
 ## Backlog
 
-### 1. Stage the emotional beats the titles already promise  → IN PROGRESS (this spike)
+### 1. Stage the emotional beats the titles already promise  → 2 of 3 done
 `dramatic_moments` (`lyrical_pair_as_one`, `lady_macbeth_death_exit`,
-`hecate_final_exit`) name real dramatic beats, but the staging is bare
-`[Exit]/[Enter]/[Exeunt]`. Scene CCLXXXII "Romeo and Juliet part as one bright
-rose" resolves to three stage directions and no dialogue. The title writes a
-check the stage doesn't cash.
-- **Seam:** dead-after-Act variables + `let(...)` render as equality lines built
-  from the speaker's own atoms, addressed to the companion. Inert, value-safe.
-- This spike prototypes the R&J "as one" exit; if it lands, extend to Lady
-  Macbeth's death handoff (`FRAME_REVERSE_OPEN`) and Hecate's final exit
-  (`ACT_I_DONE`).
+`hecate_final_exit`) name real dramatic beats, but the staging was bare
+`[Exit]/[Enter]/[Exeunt]`. The title wrote a check the stage didn't cash.
+- **Seam:** a variable that is dead from the insertion point onward + `let(...)`
+  render as equality lines built from the *speaker's* own atoms and comparator
+  bank. Inert, value-safe. `let(target)` is spoken by the anchor when
+  `target != anchor`, and by the companion when `target == anchor` — pick the
+  target to pick the speaker.
+- **DONE — R&J "as one" exit** (`ACT_III_DONE`, `src_ir/act3.py`): four-line
+  duet on the two lovers' dead-in-Act-IV scalars. Terminal scene, trivially safe.
+- **DONE — Lady Macbeth death exit** (`FRAME_REVERSE_OPEN`, `src_ir/act2.py`):
+  three-line fall (noble hero → cursed wolf → nothing) via `let(PUCK, ...)`.
+  This is a *mid-act handoff*, not terminal, so safety needed a real argument:
+  the lines set Puck's SCALAR, not the stack that `FRAME_REVERSE_POP` drains,
+  and Act III overwrites Puck's scalar with a `pop` before its first read, so
+  the incoming scalar is dead. Lady Macbeth speaks (target PUCK != anchor).
+- **TODO — Hecate's final exit** (`ACT_I_DONE`): same seam; verify which scalar
+  is dead across the Act I→II boundary before choosing the speaker/target.
+  The mid-act (non-terminal) safety argument from the Lady Macbeth beat is the
+  template — do not assume terminal-scene triviality.
 
 ### 2. Even out the scene-title voice
 The `SCRIBE_QUOTE_CODE_*` chamber titles are atmospheric ("Prospero enters the
