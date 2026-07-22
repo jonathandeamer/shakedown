@@ -1622,6 +1622,13 @@ ACT: Act = act(
             ),
             push(JULIET, _k(93)),
             push(JULIET, val(PUCK)),
+            # Unconditional jump written as an always-true branch (both arms
+            # target LYRIC_RETURN_TO_SCAN) rather than a plain goto: the stage
+            # validator infers each scene's (anchor, companion) pair by
+            # propagating it through control flow, and a bare goto from this
+            # (JULIET, PUCK) stage would force LYRIC_RETURN_TO_SCAN onto a pair
+            # that conflicts with its other predecessors. The branch keeps the
+            # transfer local so stage inference stays consistent.
             branch(
                 eq(val(PUCK), val(PUCK)),
                 then="LYRIC_RETURN_TO_SCAN",
@@ -1633,6 +1640,8 @@ ACT: Act = act(
         scene(
             "LYRIC_REGION_FALLBACK_TEXT_END",
             push(PUCK, const(tokens.TEXT_END)),
+            # Always-true branch used as an unconditional jump; see
+            # LYRIC_REGION_FALLBACK_FINAL for why a plain goto is unsafe here.
             branch(
                 eq(val(PUCK), val(PUCK)),
                 then="LYRIC_RETURN_TO_SCAN",
