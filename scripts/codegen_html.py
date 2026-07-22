@@ -23,6 +23,12 @@ _ATOM_BY_VALUE = _atoms_for("default")
 
 
 def _all_atom_to_value() -> dict[str, int]:
+    # Reverse map for decoding phrases back to values. Families are merged in
+    # sorted order with setdefault (first family wins) so the result is
+    # deterministic. This assumes each atom phrase maps to a single value across
+    # all families: distinct nouns per family keep magnitudes unambiguous, and
+    # the shared "nothing" -> 0 is idempotent. A future family that reuses
+    # another family's phrase for a different value would break this decode.
     merged: dict[str, int] = {}
     raw_families = _SURFACES.data.get("value_atoms")
     if isinstance(raw_families, dict):

@@ -249,8 +249,11 @@ def _run_to_act3_with_prefix(stem: str) -> tuple[_CarrierBoundary, InterpreterSt
 
 def _run_to_act3_observed(
     stem: str,
+    *,
+    resolve_short_circuit: bool = True,
 ) -> tuple[_CarrierBoundary, InterpreterState, _SceneObserver]:
     state = _run_to_act2(stem)
+    state.resolve_short_circuit = resolve_short_circuit
     state.stacks[Char.PUCK] = list(_BORROWED_PREFIX) + state.stacks[Char.PUCK]
     borrowed = StackSnapshot(char=Char.PUCK, values=_BORROWED_PREFIX)
     boundary = _CarrierBoundary(
@@ -284,7 +287,9 @@ def _run_text_to_act3(text: str) -> InterpreterState:
 
 
 def _definition_replay_source_pops(text: str) -> list[int]:
-    state = InterpreterState(input_text=text)
+    # Definition replay is a scene the compiled play only walks when the resolve
+    # pre-pass is not short-circuited, so exercise it in that mode explicitly.
+    state = InterpreterState(input_text=text, resolve_short_circuit=False)
     state = run_act(ACT1, state, step_limit=STEP_LIMIT).state
     state = run_act(ACT2, state, step_limit=STEP_LIMIT).state
     observer = _observer()
@@ -293,7 +298,6 @@ def _definition_replay_source_pops(text: str) -> list[int]:
         run_act(ACT3, state, step_limit=STEP_LIMIT, observer=observer)
     except _DefinitionReplayObserved:
         return observer.replay_source_pops
-    print(f"LABELS VISITED: {observer.labels}")
     raise AssertionError("definition replay source boundary was not observed")
 
 
@@ -432,26 +436,38 @@ def test_act3_definition_only_input_arrives_already_stripped(text: str) -> None:
     assert "LYRIC_DEFINITION_DISCARD_CLOSE" not in observer.labels
 
 
+# Only a candidate with a well-formed label but a malformed tail (e.g. a space
+# before the colon) is still handed to Act III's definition-replay path. The
+# other malformed forms below are rejected earlier and never reach replay; they
+# also currently render as empty output instead of the oracle's literal
+# paragraph (e.g. "[not]:" -> "<p>[not]:</p>"), so they are xfail pending a fix
+# to malformed-definition fallthrough. See divergences.md.
+_DEFINITION_REPLAY_UNREACHED = pytest.mark.xfail(
+    reason=(
+        "rejected before Act III replay and currently emitted as empty output "
+        "instead of a literal paragraph (oracle divergence, pre-existing)"
+    ),
+    strict=True,
+    raises=AssertionError,
+)
+
+
 @pytest.mark.parametrize(
     "text",
     [
-        "[not]:\n",
-        "[not]:   \n",
-        "[x] : destination\n",
-        "[]: destination\n",
+        pytest.param(
+            "[not]:\n", id="missing-destination", marks=_DEFINITION_REPLAY_UNREACHED
+        ),
+        pytest.param(
+            "[not]:   \n",
+            id="space-only-destination",
+            marks=_DEFINITION_REPLAY_UNREACHED,
+        ),
+        pytest.param("[x] : destination\n", id="space-before-colon"),
+        pytest.param(
+            "[]: destination\n", id="empty-label", marks=_DEFINITION_REPLAY_UNREACHED
+        ),
     ],
-    ids=[
-        "missing-destination",
-        "space-only-destination",
-        "space-before-colon",
-        "empty-label",
-    ],
-)
-@pytest.mark.skip(
-    reason=(
-        "Bypassed because the RESOLVE_* pre-pass handles link/image "
-        "resolution, making definition replay obsolete."
-    )
 )
 def test_act3_replays_rejected_definition_candidates_byte_for_byte(text: str) -> None:
     assert _definition_replay_source_pops(text) == [
@@ -748,14 +764,10 @@ def test_act3_terminal_emphasis_match_uses_resume_close() -> None:
     assert _paragraph_text(_decode_carrier(state)).endswith("</strong>")
 
 
-@pytest.mark.skip(
-    reason=(
-        "Obsolete because the RESOLVE_* pre-pass handles link/image "
-        "resolution, making delayed title draining obsolete."
-    )
-)
 def test_act3_link_and_image_titles_follow_delayed_drain_order() -> None:
-    _, _, observer = _run_to_act3_observed("links_images_protected")
+    _, _, observer = _run_to_act3_observed(
+        "links_images_protected", resolve_short_circuit=False
+    )
 
     labels = observer.labels
     link_requeue = labels.index("LYRIC_REQUEUE_OPEN")
@@ -818,14 +830,10 @@ def test_act3_matched_emphasis_requeue_preserves_parent_lookahead() -> None:
     assert requeue_entry == "LYRIC_REQUEUE_OPEN"
 
 
-@pytest.mark.skip(
-    reason=(
-        "Obsolete because the RESOLVE_* pre-pass handles link/image "
-        "resolution, making label/alt requeue obsolete."
-    )
-)
 def test_act3_label_and_alt_requeue_contains_payload_only() -> None:
-    _, _, observer = _run_to_act3_observed("links_images_protected")
+    _, _, observer = _run_to_act3_observed(
+        "links_images_protected", resolve_short_circuit=False
+    )
 
     labels = observer.labels
     pushes = observer.puck_pushes
