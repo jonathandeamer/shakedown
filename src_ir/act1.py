@@ -226,6 +226,21 @@ ACT: Act = act(
         scene(
             "ACT_I_DONE",
             pop(HORATIO, recall="kept_tally"),
+            # Stage Hecate's final exit (phase_exit): her preprocessing done and
+            # her tally kept, the witch-queen leaves the witness with a parting
+            # curse in her own incantatory register (cursed / rotten / horrid).
+            # These let(HORATIO, val(HORATIO)) lines are identity no-ops: they
+            # write Horatio's own current value back, so the kept_tally carrier
+            # that Act II reads at ACT_II_START (let(LADY_MACBETH, val(HORATIO)))
+            # is preserved and emitted HTML is unchanged. Hecate is the speaker
+            # because the target (HORATIO) differs from the Act I anchor.
+            # See docs/superpowers/notes/literary-artefact-improvements.md (1).
+            # Two lines, not three: the comparator is a deterministic
+            # seed-pick and no run of three consecutive op-seeds yields three
+            # distinct phrases here, so a two-blow curse (cursed / horrid)
+            # keeps the phrases distinct.
+            let(HORATIO, val(HORATIO)),
+            let(HORATIO, val(HORATIO)),
             halt_act(),
         ),
     ],

@@ -18,7 +18,7 @@ faithful Markdown.pl port. Ordered by rough impact.
 
 ## Backlog
 
-### 1. Stage the emotional beats the titles already promise  → 2 of 3 done
+### 1. Stage the emotional beats the titles already promise  → DONE (3 of 3)
 `dramatic_moments` (`lyrical_pair_as_one`, `lady_macbeth_death_exit`,
 `hecate_final_exit`) name real dramatic beats, but the staging was bare
 `[Exit]/[Enter]/[Exeunt]`. The title wrote a check the stage didn't cash.
@@ -35,10 +35,23 @@ faithful Markdown.pl port. Ordered by rough impact.
   the lines set Puck's SCALAR, not the stack that `FRAME_REVERSE_POP` drains,
   and Act III overwrites Puck's scalar with a `pop` before its first read, so
   the incoming scalar is dead. Lady Macbeth speaks (target PUCK != anchor).
-- **TODO — Hecate's final exit** (`ACT_I_DONE`): same seam; verify which scalar
-  is dead across the Act I→II boundary before choosing the speaker/target.
-  The mid-act (non-terminal) safety argument from the Lady Macbeth beat is the
-  template — do not assume terminal-scene triviality.
+- **DONE — Hecate's final exit** (`ACT_I_DONE`, `src_ir/act1.py`): a two-line
+  parting curse in her incantatory register. This boundary was the hardest:
+  Horatio's scalar is the Act I→II *carrier* (`ACT_II_START` reads
+  `val(HORATIO)` first), so it is NOT dead, and Horatio is the only non-anchor
+  on stage. Solution: `let(HORATIO, val(HORATIO))` identity no-ops — Hecate
+  speaks (target != anchor) while the carrier value is written back unchanged.
+  Rendered "as X as yourself" because the expr addresses the addressee. Trimmed
+  to two lines because the deterministic comparator seed-pick yields no
+  all-distinct consecutive triple for Hecate's 3-phrase equality bank.
+
+**Seam summary for future beats:** to give a *character their own voice*,
+`let(other_on_stage, expr)` with the character as anchor. `expr` must not change
+any live value — either a scalar dead from here on (prove it: dead across every
+later act, writes-before-reads count as dead) or `val(target)` identity no-op
+(renders "as X as yourself", preserves a live carrier). Comparators are
+`random.Random("<SCENE>:<op_index>").choice(bank)` — check for phrase collisions
+in the rendered output and adjust line count / ordering.
 
 ### 2. Even out the scene-title voice
 The `SCRIBE_QUOTE_CODE_*` chamber titles are atmospheric ("Prospero enters the
