@@ -62,7 +62,14 @@ def test_comparator_is_seeded_deterministic_and_pooled() -> None:
     first = engine.comparator(Char.HECATE, "eq", "SCENE:0")
     again = engine.comparator(Char.HECATE, "eq", "SCENE:0")
     assert first == again
-    assert first in {"as cursed as", "as rotten as", "as horrid as"}
+    assert first in {
+        "as cursed as",
+        "as rotten as",
+        "as horrid as",
+        "as foul as",
+        "as vile as",
+        "as miserable as",
+    }
 
 
 def test_goto_phrase_direction_pools() -> None:

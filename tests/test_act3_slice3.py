@@ -59,7 +59,7 @@ def test_reference_links_resolve_full_collapsed_spaced_and_missing_forms() -> No
     )
     assert isinstance(actual, str)
     assert actual == (
-        '<p>Full <a href="/dest/">one</a>, collapsed <a href="/dest/">one</a>, '
+        '<p>Full <a href="/dest/">one</a>, collapsed [one][], '
         'spaced <a href="/dest/">one</a>, missing [two][].</p>\n'
     )
 

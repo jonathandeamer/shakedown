@@ -26,7 +26,7 @@ PROSPERO_EQUALITY_RE = re.compile(r"\bYou are (as [a-z-]+ as)\b")
 BAD_BIG_CAT_RE = re.compile(r"\ba big(?: big){3,} cat\b")
 VALUE_ATOM_RE = re.compile(
     r"\b(?:a|an)\s+(?P<adjectives>[a-z][a-z' -]*?)\s+"
-    r"(?P<noun>cat|flower|day|rose|hero|angel|tree|brother)\b",
+    r"(?P<noun>cat|flower|day|rose|hero|angel|tree|brother|kingdom|morning)\b",
     re.IGNORECASE,
 )
 ACT_ROMAN = {"act1": "I", "act2": "II", "act3": "III", "act4": "IV"}

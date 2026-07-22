@@ -382,7 +382,7 @@ Juliet:
  @LIT.characters.juliet.recall.nights_next_word
 
 Juliet:
- Are you as fair as a wolf?
+ Are you as gentle as a wolf?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_REVERSE.
@@ -391,37 +391,37 @@ Puck:
  Remember myself.
 
 Juliet:
- Are you as sweet as a rose?
+ Are you as beautiful as a rose?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_OPEN_TEXT.
 
 Juliet:
- Are you as gentle as a sweet rose?
+ Are you as lovely as a sweet rose?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_TEXT.
 
 Juliet:
- Are you as fair as a furry black cat?
+ Are you as gentle as a sweet lovely rose?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_NEXT.
 
 Juliet:
- Are you as fair as the sum of a furry black cat and a cat?
+ Are you as gentle as the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_PAYLOAD_NEXT.
 
 Juliet:
- Are you as gentle as the sum of a little furry black cat and a cat?
+ Are you as lovely as the sum of a sweet gentle lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_CODE_TEXT.
 
 Juliet:
- Are you as gentle as the sum of a little furry black cat and a black cat?
+ Are you as sweet as the sum of a sweet gentle lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @TRAVERSE_COPY_CODE_TEXT.
@@ -469,7 +469,7 @@ Puck:
  Remember myself.
 
 Juliet:
- Are you as gentle as nothing?
+ Are you as sweet as nothing?
 
 Puck:
  If so, let us return to scene @TRAVERSE_NEXT_TOKEN.
@@ -522,7 +522,7 @@ Romeo:
  @LIT.characters.romeo.recall.buffered_first_glyph
 
 Romeo:
- Are you as fair as nothing?
+ Are you as warm as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_BUFFER_DRAIN_CLOSE.
@@ -559,7 +559,7 @@ Juliet:
  @LIT.characters.juliet.recall.buffered_last_glyph
 
 Juliet:
- Are you as sweet as a wolf?
+ Are you as beautiful as a wolf?
 
 Romeo:
  If so, let us return to scene @LYRIC_DEFINITION_OPEN.
@@ -588,7 +588,7 @@ Romeo:
                     Scene @LYRIC_DEFINITION_LEAF_GUARD: @LIT.scenes.LYRIC_DEFINITION_LEAF_GUARD.title
 
 Romeo:
- Are you as fair as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
+ Are you as warm as the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_LINE_OPEN.
@@ -606,13 +606,13 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as sunny as nothing?
+ Are you as golden as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_DRAIN_CLOSE.
 
 Romeo:
- Are you as fair as the sum of a little furry black cat and a black cat?
+ Are you as warm as the sum of a sweet sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_GARDEN_GUARD.
@@ -666,13 +666,13 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as fair as nothing?
+ Are you as lovely as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_DISCARD_DRAIN.
 
 Romeo:
- Are you as fair as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
+ Are you as lovely as the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_LINE_OPEN.
@@ -690,19 +690,19 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as sunny as nothing?
+ Are you as golden as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
 
 Romeo:
- Are you as sunny as the sum of a little furry black cat and a black cat?
+ Are you as sunny as the sum of a sweet sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
+ Are you as fair as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
@@ -726,19 +726,19 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
+ Are you as fair as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_COLON.
 
 Romeo:
- Are you as fair as nothing?
+ Are you as lovely as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
 
 Romeo:
- Are you as golden as the sum of a little furry black cat and a black cat?
+ Are you as sweet as the sum of a sweet sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
@@ -756,7 +756,7 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as fair as the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat?
+ Are you as warm as the difference between the product of a lovely sunny sweet golden morning and a sunny golden morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_DESTINATION.
@@ -774,19 +774,19 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as fair as nothing?
+ Are you as warm as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
 
 Romeo:
- Are you as fair as the sum of a little furry black cat and a black cat?
+ Are you as warm as the sum of a sweet sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
 
 Romeo:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as warm as the product of a lovely sunny sweet golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_DESTINATION_TAIL.
@@ -804,19 +804,19 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as fair as nothing?
+ Are you as warm as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
 
 Romeo:
- Are you as fair as the sum of a little furry black cat and a black cat?
+ Are you as lovely as the sum of a sweet sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_BEGIN.
 
 Romeo:
- Are you as golden as the product of a normal little furry black cat and a black cat?
+ Are you as fair as the product of a lovely sunny sweet golden morning and a sunny morning?
 
 Puck:
  If so, let us return to scene @LYRIC_DEFINITION_DESTINATION_TAIL.
@@ -862,7 +862,7 @@ Juliet:
                     Scene @LYRIC_DEFINITION_REPLAY_BEGIN: @LIT.scenes.LYRIC_DEFINITION_REPLAY_BEGIN.title
 
 Romeo:
- Are you as fair as nothing?
+ Are you as warm as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
@@ -880,7 +880,7 @@ Puck:
  Remember myself.
 
 Romeo:
- Are you as fair as nothing?
+ Are you as lovely as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEFINITION_REPLAY_CLOSE.
@@ -946,19 +946,19 @@ Romeo:
  @LIT.characters.romeo.recall.buffered_first_glyph
 
 Romeo:
- Are you as fair as a wolf?
+ Are you as warm as a wolf?
 
 Puck:
  If so, let us proceed to scene @LYRIC_BUFFER_CLOSE.
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
+ Are you as warm as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_BUFFER_ENTITY_AMP.
 
 Romeo:
- Are you as sunny as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as golden as the difference between the product of a lovely sunny sweet golden morning and a sunny golden morning and a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_BUFFER_ENTITY_ANGLE.
@@ -994,31 +994,31 @@ Puck:
 [Enter Juliet]
 
 Puck:
- You are as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ You are as fair as the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ You are as rotten as the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as noble as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ You are as noble as the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ You are as fair as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as rotten as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ You are as rotten as the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
@@ -1038,25 +1038,25 @@ Puck:
 [Enter Juliet]
 
 Puck:
- You are as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ You are as noble as the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a fair sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as noble as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ You are as noble as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as noble as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ You are as noble as the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
@@ -1091,49 +1091,49 @@ Puck:
  You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as golden as nothing?
+ Are you as fair as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_TEXT_END_DISPATCH.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as sweet as the difference between the product of a lovely sunny sweet golden morning and a sunny golden morning and a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ANGLE_TEST.
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and a black cat and a cat?
+ Are you as fair as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_IMAGE_TEST.
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as golden as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_OPEN.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and a summer's day?
+ Are you as sweet as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_OPEN.
 
 Romeo:
- Are you as sunny as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
+ Are you as sunny as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning and a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_TEST.
 
 Romeo:
- Are you as sunny as the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as sunny as the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_RUN.
 
 Romeo:
- Are you as golden as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
+ Are you as sweet as the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_POP_AFTER_OPEN.
@@ -1149,37 +1149,37 @@ Puck:
 [Enter Lady Macbeth]
 
 Puck:
- Are you as noble as a little furry black cat?
+ Are you as noble as a sweet lovely pretty flower?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
 
 Puck:
- Are you as noble as the sum of a little furry black cat and a cat?
+ Are you as noble as the sum of a sweet lovely pretty flower and a flower?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
 
 Puck:
- Are you as noble as the sum of a little furry black cat and a black cat?
+ Are you as noble as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
 
 Puck:
- Are you as rotten as the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as rotten as the sum of a sweet lovely pretty flower and the sum of a sweet flower and a flower?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
 
 Puck:
- Are you as rotten as the sum of a little furry black cat and a furry black cat?
+ Are you as rotten as the sum of a sweet lovely pretty flower and a sweet lovely flower?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
 
 Puck:
- Are you as noble as the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as noble as the sum of a sweet lovely pretty flower and the sum of a sweet lovely flower and a flower?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_RESUME_DISPATCH.
@@ -1203,103 +1203,103 @@ Puck:
  You are as fair as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as nothing?
+ Are you as warm as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_FALLBACK.
 
 Romeo:
- Are you as fair as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
+ Are you as warm as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning and a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as sweet as the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat?
+ Are you as sunny as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as sunny as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and a summer's day?
+ Are you as sunny as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as fair as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a furry black cat and a summer's day?
+ Are you as lovely as the difference between the product of a lovely sunny sweet golden morning and a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a sunny summer's day and a summer's day?
+ Are you as sweet as the difference between the product of a lovely sunny sweet golden morning and a sweet sunny golden morning and the sum of a sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as fair as the product of the difference between a little furry black cat and a summer's day and the sum of a little furry black cat and the sum of a furry black cat and a summer's day?
+ Are you as warm as the product of the difference between a sweet sunny golden morning and a summer's day and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
+ Are you as fair as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny summer's day and the sum of a sunny summer's day and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Are you as sunny as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a sweet sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as sunny as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as fair as the difference between the product of a little furry black cat and a little furry black cat and a sunny summer's day?
+ Are you as lovely as the difference between the product of a sweet sunny golden morning and a sweet sunny golden morning and a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and a black cat and the sum of a black cat and a cat?
+ Are you as fair as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sunny morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as sweet as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and the sum of a sunny morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as fair as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and the sum of a sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat?
+ Are you as fair as the difference between the product of a lovely sunny sweet golden morning and the sum of a sunny morning and a morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a cat?
+ Are you as sunny as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ESCAPE_GLYPH.
@@ -1335,7 +1335,7 @@ Juliet:
                     Scene @LYRIC_ESCAPE_LITERAL: @LIT.scenes.LYRIC_ESCAPE_LITERAL.title
 
 Puck:
- You are as fair as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+ You are as fair as the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
@@ -1361,7 +1361,7 @@ Juliet:
 [Enter Juliet]
 
 Puck:
- You are as noble as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat.
+ You are as noble as the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
@@ -1397,7 +1397,7 @@ Romeo:
  @LIT.characters.romeo.recall.silver_measures_leaf
 
 Romeo:
- Are you as sunny as the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as golden as the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_COUNT_MORE.
@@ -1413,7 +1413,7 @@ Romeo:
 [Enter Hecate]
 
 Romeo:
- You are as sunny as the sum of yourself and a summer's day.
+ You are as golden as the sum of yourself and a summer's day.
 
 [Exit Hecate]
 
@@ -1429,7 +1429,7 @@ Puck:
  Remember a wolf.
 
 Romeo:
- Are you as golden as nothing?
+ Are you as sweet as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_FALLBACK.
@@ -1453,13 +1453,13 @@ Romeo:
  @LIT.characters.romeo.recall.sought_moonlit_glyph
 
 Romeo:
- Are you as fair as nothing?
+ Are you as warm as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_FALLBACK.
 
 Romeo:
- Are you as fair as the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as lovely as the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_CAND_OPEN.
@@ -1475,7 +1475,7 @@ Romeo:
 [Enter Macbeth]
 
 Romeo:
- You are as golden as a summer's day.
+ You are as fair as a summer's day.
 
 [Exit Macbeth]
 
@@ -1491,7 +1491,7 @@ Romeo:
  @LIT.characters.romeo.recall.answering_measures_leaf
 
 Romeo:
- Are you as sunny as the product of a normal little furry black cat and the sum of a furry black cat and a black cat?
+ Are you as golden as the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_CAND_MORE.
@@ -1507,7 +1507,7 @@ Romeo:
 [Enter Macbeth]
 
 Romeo:
- You are as golden as the sum of yourself and a summer's day.
+ You are as sweet as the sum of yourself and a summer's day.
 
 [Exit Macbeth]
 
@@ -1520,7 +1520,7 @@ Romeo:
                     Scene @LYRIC_CODE_COMPARE: @LIT.scenes.LYRIC_CODE_COMPARE.title
 
 Romeo:
- Is Macbeth as sunny as Hecate?
+ Is Macbeth as golden as Hecate?
 
 Puck:
  If so, let us proceed to scene @LYRIC_CODE_MATCH.
@@ -1536,16 +1536,16 @@ Puck:
 [Enter Macbeth]
 
 Romeo:
- Are you as fair as nothing?
+ Are you as warm as nothing?
 
 Macbeth:
  If so, let us proceed to scene @LYRIC_CODE_CAND_DONE.
 
 Macbeth:
- Remember the product of a normal little furry black cat and the sum of a furry black cat and a black cat.
+ Remember the product of a proud rich noble mighty kingdom and the sum of a proud rich kingdom and a proud kingdom.
 
 Romeo:
- You are as golden as the difference between yourself and a summer's day.
+ You are as fair as the difference between yourself and a summer's day.
 
 [Exit Macbeth]
 
@@ -1676,19 +1676,19 @@ Juliet:
  @LIT.characters.juliet.recall.sheltered_first_glyph
 
 Juliet:
- Are you as sweet as the product of a normal little furry black cat and a black cat?
+ Are you as beautiful as the product of a fair sweet gentle lovely rose and a sweet rose?
 
 Hecate:
  If so, we must return to scene @LYRIC_CODE_HEAD.
 
 Juliet:
- Are you as sweet as the sum of a little furry black cat and a cat?
+ Are you as beautiful as the sum of a sweet gentle lovely rose and a rose?
 
 Hecate:
  If so, we must return to scene @LYRIC_CODE_HEAD.
 
 Juliet:
- Are you as gentle as a wolf?
+ Are you as lovely as a wolf?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_CODE_CLOSE.
@@ -1700,19 +1700,19 @@ Juliet:
                     Scene @LYRIC_CODE_GLYPH: @LIT.scenes.LYRIC_CODE_GLYPH.title
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and a sweet rose and the sum of a sweet lovely rose and a sweet rose?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_CODE_AMP.
 
 Juliet:
- Are you as gentle as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as lovely as the difference between the product of a fair sweet gentle lovely rose and a sweet lovely rose and a sweet lovely rose?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_CODE_LT.
 
 Juliet:
- Are you as sweet as the difference between the product of a little furry black cat and a little furry black cat and a sweet rose?
+ Are you as beautiful as the difference between the product of a sweet gentle lovely rose and a sweet gentle lovely rose and a sweet rose?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_CODE_GT.
@@ -1914,7 +1914,7 @@ Romeo:
 [Enter Hecate and Juliet]
 
 Juliet:
- Are you as fair as nothing?
+ Are you as gentle as nothing?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_CODE_TICKS_DONE.
@@ -1969,223 +1969,223 @@ Juliet:
  @LIT.characters.juliet.recall.field_first_glyph
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and a sweet gentle lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AUTOLINK_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a black cat and a cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a rose?
+ Are you as lovely as the difference between the product of the sum of a sweet rose and a rose and a fair sweet gentle lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and a cat?
+ Are you as sweet as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and a black cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a black cat and a cat?
+ Are you as sweet as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and a sweet lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as fair as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet lovely rose and the sum of a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and a little furry black cat?
+ Are you as gentle as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and a sweet gentle lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and a cat?
+ Are you as gentle as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet gentle lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and a black cat?
+ Are you as fair as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet gentle lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet gentle lovely rose and the sum of a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and a furry black cat?
+ Are you as sweet as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet gentle lovely rose and a sweet lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a furry black cat and the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and a sweet lovely rose and the sum of a sweet gentle lovely rose and the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a cat and a black cat?
+ Are you as lovely as the difference between the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a cat and a cat?
+ Are you as beautiful as the difference between the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the product of a normal little furry black cat and the sum of a furry black cat and a cat?
+ Are you as gentle as the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a black cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a black cat and a cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and the sum of a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat?
+ Are you as gentle as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and a sweet lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a furry black cat and a cat?
+ Are you as sweet as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a furry black cat and a black cat?
+ Are you as gentle as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and the sum of a sweet lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as lovely as the difference between the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and the sum of a sweet gentle lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a little furry black cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and a sweet gentle lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and the sum of a sweet gentle lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and the sum of a little furry black cat and a black cat?
+ Are you as gentle as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a rose and the sum of a sweet gentle lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a black cat?
+ Are you as fair as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat?
+ Are you as fair as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and the sum of a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a furry black cat?
+ Are you as fair as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and a sweet lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and the sum of a sweet lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as fair as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet rose and the difference between a little furry black cat and a rose?
+ Are you as fair as the sum of the product of a fair sweet gentle lovely rose and the sum of a sweet lovely rose and a sweet rose and the difference between a sweet gentle lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a rose and the sum of a rose and a sweet rose?
+ Are you as beautiful as the sum of the product of a fair sweet gentle lovely rose and the difference between a sweet gentle lovely rose and a rose and the sum of a rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_OPEN.
@@ -2211,7 +2211,7 @@ Hecate:
  Remember yourself.
 
 Juliet:
- You are as fair as a rose.
+ You are as gentle as a rose.
 
 [Exit Hecate]
 
@@ -2284,7 +2284,7 @@ Hecate:
  Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
 
 Juliet:
- You are as sweet as a sweet rose.
+ You are as beautiful as a sweet rose.
 
 [Exit Hecate]
 
@@ -2387,7 +2387,7 @@ Macbeth:
  Remember a curse.
 
 Romeo:
- You are as sunny as nothing.
+ You are as golden as nothing.
 
 [Exit Macbeth]
 
@@ -2403,43 +2403,43 @@ Romeo:
  @LIT.characters.romeo.recall.field_first_glyph
 
 Romeo:
- Are you as sunny as nothing?
+ Are you as golden as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_SOURCE_END.
 
 Romeo:
- Is Prospero as fair as a summer's day?
+ Is Prospero as lovely as a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_HTML_FALLBACK.
 
 Romeo:
- Is Prospero as golden as a sunny summer's day?
+ Is Prospero as sweet as a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AUTOLINK_FALLBACK.
 
 Romeo:
- Is Prospero as sunny as a furry black cat?
+ Is Prospero as sunny as a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEST_FALLBACK.
 
 Romeo:
- Is Prospero as golden as the sum of a furry black cat and a black cat?
+ Is Prospero as sweet as the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEST_FALLBACK.
 
 Romeo:
- Is Prospero as golden as the sum of a furry black cat and a cat?
+ Is Prospero as sweet as the sum of a sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_TITLE_FALLBACK.
 
 Romeo:
- Is Prospero as sunny as the sum of a furry black cat and the sum of a black cat and a cat?
+ Is Prospero as golden as the sum of a sunny golden morning and the sum of a sunny morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_TITLE_FALLBACK.
@@ -2451,7 +2451,7 @@ Romeo:
                     Scene @LYRIC_HTML_FALLBACK: @LIT.scenes.LYRIC_HTML_FALLBACK.title
 
 Romeo:
- Are you as fair as the difference between the product of a little furry black cat and a little furry black cat and a sunny summer's day?
+ Are you as lovely as the difference between the product of a sweet sunny golden morning and a sweet sunny golden morning and a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
@@ -2463,7 +2463,7 @@ Romeo:
                     Scene @LYRIC_AUTOLINK_FALLBACK: @LIT.scenes.LYRIC_AUTOLINK_FALLBACK.title
 
 Romeo:
- Are you as sunny as the difference between the product of a little furry black cat and a little furry black cat and a sunny summer's day?
+ Are you as sunny as the difference between the product of a sweet sunny golden morning and a sweet sunny golden morning and a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
@@ -2475,19 +2475,19 @@ Romeo:
                     Scene @LYRIC_DEST_FALLBACK: @LIT.scenes.LYRIC_DEST_FALLBACK.title
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Are you as lovely as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a sweet sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEST_BALANCE.
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as lovely as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEST_BALANCE.
 
 Romeo:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as lovely as the product of a lovely sunny sweet golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
@@ -2499,7 +2499,7 @@ Romeo:
                     Scene @LYRIC_TITLE_FALLBACK: @LIT.scenes.LYRIC_TITLE_FALLBACK.title
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+ Are you as lovely as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_CLOSE_DISPATCH.
@@ -2514,7 +2514,7 @@ Puck:
  Remember myself.
 
 Romeo:
- Is Prospero as fair as a sunny summer's day?
+ Is Prospero as warm as a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AUTOLINK_TEXT_KEEP.
@@ -2547,7 +2547,7 @@ Romeo:
 [Enter Macbeth]
 
 Macbeth:
- Is Puck as villainous as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Is Puck as villainous as the sum of the product of a proud rich noble mighty kingdom and a proud kingdom and a proud rich noble kingdom?
 
 Romeo:
  If so, let us proceed to scene @LYRIC_FIELD_REV_KEEP.
@@ -2559,7 +2559,7 @@ Macbeth:
  If so, let us proceed to scene @LYRIC_DEST_CLOSE_PAIR.
 
 Romeo:
- You are as fair as the difference between yourself and a summer's day.
+ You are as lovely as the difference between yourself and a summer's day.
 
 Macbeth:
  Remember Puck.
@@ -2585,7 +2585,7 @@ Romeo:
                     Scene @LYRIC_FIELD_REV_KEEP: @LIT.scenes.LYRIC_FIELD_REV_KEEP.title
 
 Romeo:
- You are as sunny as the sum of yourself and a summer's day.
+ You are as golden as the sum of yourself and a summer's day.
 
 Macbeth:
  Remember Puck.
@@ -2651,7 +2651,7 @@ Juliet:
  @LIT.characters.juliet.recall.fields_first_glyph
 
 Juliet:
- Are you as fair as a wolf?
+ Are you as gentle as a wolf?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_DRAIN_CLOSE.
@@ -2663,25 +2663,25 @@ Juliet:
                     Scene @LYRIC_FIELD_GLYPH: @LIT.scenes.LYRIC_FIELD_GLYPH.title
 
 Juliet:
- Is Prospero as fair as a rose?
+ Is Prospero as gentle as a rose?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_PLAIN.
 
 Juliet:
- Are you as gentle as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
+ Are you as lovely as the sum of the product of a fair sweet gentle lovely rose and a sweet rose and the sum of a sweet lovely rose and a sweet rose?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_AMP.
 
 Juliet:
- Are you as gentle as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as lovely as the difference between the product of a fair sweet gentle lovely rose and a sweet lovely rose and a sweet lovely rose?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_LT.
 
 Juliet:
- Are you as fair as the difference between the product of a little furry black cat and a little furry black cat and a sweet rose?
+ Are you as fair as the difference between the product of a sweet gentle lovely rose and a sweet gentle lovely rose and a sweet rose?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_GT.
@@ -2801,7 +2801,7 @@ Juliet:
  @LIT.characters.juliet.recall.fields_next_glyph
 
 Juliet:
- Are you as gentle as a wolf?
+ Are you as lovely as a wolf?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_DRAIN_CLOSE.
@@ -2823,25 +2823,25 @@ Puck:
  If so, let us proceed to scene @LYRIC_FIELD_TITLE_RESTORE.
 
 Juliet:
- Is Prospero as gentle as a sweet rose?
+ Is Prospero as lovely as a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AUTOLINK_CLOSE.
 
 Juliet:
- Is Prospero as sweet as the sum of a black cat and a cat?
+ Is Prospero as beautiful as the sum of a sweet rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AUTOLINK_CLOSE.
 
 Juliet:
- Is Prospero as gentle as the sum of a furry black cat and a cat?
+ Is Prospero as lovely as the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_TITLE_ENTRY_PAIR.
 
 Juliet:
- Is Prospero as fair as the sum of a little furry black cat and a furry black cat?
+ Is Prospero as gentle as the sum of a sweet gentle lovely rose and a sweet lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REGION_RESUME.
@@ -2869,19 +2869,19 @@ Hecate:
 [Enter Prospero]
 
 Juliet:
- Are you as sweet as the sum of a black cat and a cat?
+ Are you as beautiful as the sum of a sweet rose and a rose?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_AUTOLINK_TEXT_DONE.
 
 Prospero:
- Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+ Remember the sum of the product of a brave fine golden noble angel and a noble angel and a noble angel.
 
 Prospero:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a noble angel.
+ Remember the difference between the product of a fine golden noble angel and a fine golden noble angel and a noble angel.
 
 Juliet:
- You are as sweet as the sum of a black cat and a cat.
+ You are as fair as the sum of a sweet rose and a rose.
 
 [Exit Juliet]
 
@@ -2911,19 +2911,19 @@ Hecate:
 [Enter Lady Macbeth]
 
 Lady Macbeth:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a brave bold mighty noble hero and a bold noble hero and a bold noble hero.
 
 Lady Macbeth:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a hero.
+ Remember the difference between the product of the sum of a noble hero and a hero and a brave bold mighty noble hero and a hero.
 
 Lady Macbeth:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a brave bold mighty noble hero and the sum of a bold noble hero and a noble hero and a hero.
 
 Lady Macbeth:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a noble hero.
+ Remember the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero.
 
 Juliet:
- You are as sweet as nothing.
+ You are as beautiful as nothing.
 
 [Exit Lady Macbeth]
 
@@ -2936,7 +2936,7 @@ Juliet:
                     Scene @LYRIC_FIELD_TITLE_RESTORE: @LIT.scenes.LYRIC_FIELD_TITLE_RESTORE.title
 
 Puck:
- You are as rotten as the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ You are as rotten as the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 Puck:
  Remember yourself.
@@ -3027,7 +3027,7 @@ Juliet:
  @LIT.characters.juliet.recall.fields_first_glyph
 
 Juliet:
- Are you as sweet as a wolf?
+ Are you as gentle as a wolf?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_FIELD_LITERAL_POP_PAIR.
@@ -3089,7 +3089,7 @@ Puck:
  If so, let us proceed to scene @LYRIC_REGION_FALLBACK.
 
 Horatio:
- Are you as warm as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a happy brother and the sum of a happy brother and a brother?
+ Are you as warm as the difference between the product of a happy healthy warm honest brother and the sum of a happy healthy brother and a happy brother and the sum of a happy brother and a brother?
 
 Puck:
  If so, let us proceed to scene @LYRIC_DEST_OPEN.
@@ -3111,7 +3111,7 @@ Romeo:
  @LIT.characters.romeo.recall.field_first_glyph
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Are you as golden as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a sweet sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REGION_TAG_OPEN.
@@ -3160,7 +3160,7 @@ Hecate:
  Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
 
 Juliet:
- You are as gentle as a furry black cat.
+ You are as sweet as a sweet lovely rose.
 
 [Exit Juliet]
 
@@ -3180,13 +3180,13 @@ Juliet:
  @LIT.characters.juliet.recall.held_alt_glyph
 
 Juliet:
- Are you as sweet as the product of the difference between a little furry black cat and a rose and the sum of a little furry black cat and the sum of a furry black cat and a rose?
+ Are you as beautiful as the product of the difference between a sweet gentle lovely rose and a rose and the sum of a sweet gentle lovely rose and the sum of a sweet lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ALT_OPEN.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and a flower.
 
 Juliet:
  Remember yourself.
@@ -3224,13 +3224,13 @@ Horatio:
  @LIT.characters.horatio.recall.held_alt_glyph
 
 Horatio:
- Are you as healthy as nothing?
+ Are you as honest as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REGION_FALLBACK.
 
 Horatio:
- Are you as happy as the difference between the product of a normal little furry black cat and the sum of a furry black cat and a happy brother and the sum of a happy brother and a brother?
+ Are you as honest as the difference between the product of a happy healthy warm honest brother and the sum of a happy healthy brother and a happy brother and the sum of a happy brother and a brother?
 
 Puck:
  If so, let us proceed to scene @LYRIC_IMAGE_DEST_START.
@@ -3252,7 +3252,7 @@ Romeo:
  @LIT.characters.romeo.recall.field_first_glyph
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Are you as golden as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a sweet sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_IMAGE_DEST_OPEN.
@@ -3304,7 +3304,7 @@ Hecate:
  Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
 
 Juliet:
- You are as gentle as the sum of a furry black cat and a black cat.
+ You are as lovely as the sum of a sweet lovely rose and a sweet rose.
 
 [Exit Juliet]
 
@@ -3317,13 +3317,13 @@ Hecate:
                     Scene @LYRIC_FIELD_TITLE_TEST: @LIT.scenes.LYRIC_FIELD_TITLE_TEST.title
 
 Juliet:
- Is Prospero as gentle as a furry black cat?
+ Is Prospero as lovely as a sweet lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_TITLE_OPEN.
 
 Juliet:
- Is Prospero as gentle as the sum of a furry black cat and a black cat?
+ Is Prospero as lovely as the sum of a sweet lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_TITLE_OPEN.
@@ -3339,13 +3339,13 @@ Puck:
                     Scene @LYRIC_TITLE_OPEN: @LIT.scenes.LYRIC_TITLE_OPEN.title
 
 Juliet:
- Are you as sweet as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as gentle as the sum of the product of a fair sweet gentle lovely rose and a sweet rose and the sum of a sweet gentle lovely rose and a rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_UNTERMINATED.
 
 Juliet:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as gentle as the product of a fair sweet gentle lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_TITLE_CLOSE.
@@ -3368,7 +3368,7 @@ Romeo:
  @LIT.characters.romeo.recall.field_first_glyph
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a black cat?
+ Are you as sunny as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_UNTERMINATED_PAIR.
@@ -3398,13 +3398,13 @@ Juliet:
 [Enter Prospero]
 
 Prospero:
- Are you as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as peaceful as the sum of the product of a brave fine golden noble angel and a noble angel and the sum of a fine golden noble angel and an angel?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REQUEUE_OPEN.
 
 Puck:
- Are you as rotten as the sum of a furry black cat and a black cat?
+ Are you as rotten as the sum of a sweet lovely flower and a sweet flower?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_FIELD_UNTERMINATED_IMAGE.
@@ -3440,7 +3440,7 @@ Juliet:
 [Enter Hecate]
 
 Prospero:
- You are as honest as the sum of a furry black cat and the sum of a black cat and a cat.
+ You are as noble as the sum of a fine noble angel and the sum of a noble angel and an angel.
 
 Hecate:
  We must return to scene @LYRIC_FIELD_RETRY.
@@ -3476,7 +3476,7 @@ Hecate:
  Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
 
 Juliet:
- You are as fair as the sum of a furry black cat and a cat.
+ You are as gentle as the sum of a sweet lovely rose and a rose.
 
 [Exit Juliet]
 
@@ -3496,7 +3496,7 @@ Romeo:
  @LIT.characters.romeo.recall.field_first_glyph
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as sunny as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_FIELD_TITLE_REQUEUE_PAIR.
@@ -3538,43 +3538,43 @@ Puck:
  Remember yourself.
 
 Lady Macbeth:
- Is Prospero as bold as the sum of a little furry black cat and a black cat?
+ Is Prospero as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LABEL_FALLBACK.
 
 Lady Macbeth:
- Is Prospero as villainous as the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Is Prospero as villainous as the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LABEL_FALLBACK.
 
 Lady Macbeth:
- Is Prospero as villainous as the sum of a little furry black cat and the sum of a black cat and a cat?
+ Is Prospero as villainous as the sum of a bold mighty noble hero and the sum of a noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LABEL_FALLBACK.
 
 Lady Macbeth:
- Is Prospero as bold as a furry black cat?
+ Is Prospero as bold as a bold noble hero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LABEL_REQUEUE.
 
 Lady Macbeth:
- Is Prospero as villainous as the sum of a furry black cat and a cat?
+ Is Prospero as villainous as the sum of a bold noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LABEL_REQUEUE.
 
 Lady Macbeth:
- Is Prospero as mighty as the sum of a furry black cat and a black cat?
+ Is Prospero as mighty as the sum of a bold noble hero and a noble hero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ALT_REQUEUE.
 
 Lady Macbeth:
- Is Prospero as bold as the sum of a furry black cat and the sum of a black cat and a cat?
+ Is Prospero as bold as the sum of a bold noble hero and the sum of a noble hero and a hero?
 
 Puck:
  If so, let us proceed to scene @LYRIC_ALT_REQUEUE.
@@ -3590,13 +3590,13 @@ Lady Macbeth:
 [Enter Juliet]
 
 Lady Macbeth:
- Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+ Remember the sum of the product of a brave bold mighty noble hero and a noble hero and a noble hero.
 
 Lady Macbeth:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a noble hero.
+ Remember the difference between the product of a bold mighty noble hero and a bold mighty noble hero and a noble hero.
 
 Juliet:
- You are as gentle as a little furry black cat.
+ You are as lovely as a sweet gentle lovely rose.
 
 [Exit Juliet]
 
@@ -3628,28 +3628,28 @@ Puck:
 [Enter Juliet and Prospero]
 
 Prospero:
- Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+ Remember the sum of the product of a brave fine golden noble angel and a noble angel and a noble angel.
 
 Prospero:
- Remember the product of a normal little furry black cat and a black cat.
+ Remember the product of a brave fine golden noble angel and a noble angel.
 
 Prospero:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a brave fine golden noble angel and the sum of a fine noble angel and a noble angel and an angel.
 
 Prospero:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+ Remember the difference between the product of a brave fine golden noble angel and a fine golden noble angel and the sum of a brave fine golden noble angel and a fine noble angel.
 
 Prospero:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a brave fine golden noble angel and a fine golden noble angel and the sum of a fine golden noble angel and a fine noble angel.
 
 Prospero:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of an angel and a noble angel.
+ Remember the difference between the product of a fine golden noble angel and a fine golden noble angel and the sum of an angel and a noble angel.
 
 Prospero:
- Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+ Remember the sum of the product of a brave fine golden noble angel and a noble angel and a noble angel.
 
 Juliet:
- Are you as sweet as the sum of a furry black cat and the sum of a black cat and a cat?
+ Are you as beautiful as the sum of a sweet lovely rose and the sum of a sweet rose and a rose?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_ALT_REQUEUE_WITH_TITLE.
@@ -3665,7 +3665,7 @@ Prospero:
                     Scene @LYRIC_ALT_REQUEUE_SELECT: @LIT.scenes.LYRIC_ALT_REQUEUE_SELECT.title
 
 Prospero:
- You are as honest as the sum of a little furry black cat and a cat.
+ You are as noble as the sum of a fine golden noble angel and an angel.
 
 [Exit Prospero]
 
@@ -3697,7 +3697,7 @@ Puck:
 [Enter Lady Macbeth and Puck]
 
 Puck:
- You are as fair as the sum of a little furry black cat and a furry black cat.
+ You are as fair as the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Lady Macbeth:
  Remember nothing.
@@ -3719,7 +3719,7 @@ Lady Macbeth:
  Remember nothing.
 
 Puck:
- Are you as rotten as the sum of a little furry black cat and the sum of a black cat and a cat?
+ Are you as rotten as the sum of a sweet lovely pretty flower and the sum of a sweet flower and a flower?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_REQUEUE_TRIPLE_CLOSE.
@@ -3757,7 +3757,7 @@ Horatio:
 [Enter Romeo]
 
 Romeo:
- Is Lady Macbeth as golden as the sum of a little furry black cat and the sum of a black cat and a cat?
+ Is Lady Macbeth as fair as the sum of a sweet sunny golden morning and the sum of a sunny morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REQUEUE_TRIPLE_OPEN.
@@ -3783,7 +3783,7 @@ Romeo:
                     Scene @LYRIC_REQUEUE_TRIPLE_OPEN: @LIT.scenes.LYRIC_REQUEUE_TRIPLE_OPEN.title
 
 Romeo:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+ Remember the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a sunny morning.
 
 [Exit Puck]
 
@@ -3800,7 +3800,7 @@ Romeo:
 [Enter Romeo]
 
 Romeo:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a black cat.
+ Remember the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a sunny morning.
 
 [Exit Romeo]
 
@@ -3822,7 +3822,7 @@ Hecate:
  You are as horrid as Puck.
 
 Prospero:
- You are as noble as an angel.
+ You are as peaceful as an angel.
 
 [Exit Prospero]
 
@@ -3896,13 +3896,13 @@ Puck:
 [Enter Romeo]
 
 Romeo:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as lovely as the product of a lovely sunny sweet golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
 
 Romeo:
- Are you as fair as the sum of a little furry black cat and a cat?
+ Are you as warm as the sum of a sweet sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_SOURCE_END.
@@ -4004,13 +4004,13 @@ Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_MATCH_MORE.
 
 Romeo:
- Is Macbeth as golden as Hecate?
+ Is Macbeth as sweet as Hecate?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_MATCH.
 
 Romeo:
- Are you as fair as nothing?
+ Are you as lovely as nothing?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_SOURCE_END.
@@ -4056,13 +4056,13 @@ Horatio:
                     Scene @LYRIC_EMPHASIS_REPLAY: @LIT.scenes.LYRIC_EMPHASIS_REPLAY.title
 
 Horatio:
- Are you as warm as a brother?
+ Are you as healthy as a brother?
 
 Macbeth:
  If so, let us proceed to scene @LYRIC_EMPHASIS_CAND_KEEP_LOOKAHEAD.
 
 Horatio:
- You are as healthy as the difference between yourself and a brother.
+ You are as honest as the difference between yourself and a brother.
 
 Macbeth:
  Remember Prospero.
@@ -4139,13 +4139,13 @@ Puck:
                     Scene @LYRIC_EMPHASIS_MATCH_STRONG: @LIT.scenes.LYRIC_EMPHASIS_MATCH_STRONG.title
 
 Puck:
- Is Hecate as rotten as the sum of a black cat and a cat?
+ Is Hecate as rotten as the sum of a sweet flower and a flower?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_EMPHASIS_TRIPLE_CLOSE.
 
 Puck:
- You are as noble as the sum of a little furry black cat and the sum of a furry black cat and a cat.
+ You are as noble as the sum of a sweet lovely pretty flower and the sum of a sweet lovely flower and a flower.
 
 [Exit Prospero]
 
@@ -4158,28 +4158,28 @@ Puck:
                     Scene @LYRIC_EMPHASIS_MATCH_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_MATCH_OUTPUT.title
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet flower and the difference between a little furry black cat and a flower.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the difference between a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 [Exit Juliet]
 
@@ -4192,7 +4192,7 @@ Puck:
                     Scene @LYRIC_EMPHASIS_TRIPLE_CLOSE: @LIT.scenes.LYRIC_EMPHASIS_TRIPLE_CLOSE.title
 
 Puck:
- You are as noble as the sum of a little furry black cat and the sum of a black cat and a cat.
+ You are as noble as the sum of a sweet lovely pretty flower and the sum of a sweet flower and a flower.
 
 [Exit Prospero]
 
@@ -4205,28 +4205,28 @@ Puck:
                     Scene @LYRIC_EMPHASIS_TRIPLE_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_TRIPLE_OUTPUT.title
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet flower and the difference between a little furry black cat and a flower.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the difference between a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 [Exit Juliet]
 
@@ -4243,7 +4243,7 @@ Puck:
 [Enter Prospero]
 
 Puck:
- You are as noble as the sum of a little furry black cat and a black cat.
+ You are as noble as the sum of a sweet lovely pretty flower and a sweet flower.
 
 [Exit Prospero]
 
@@ -4256,16 +4256,16 @@ Puck:
                     Scene @LYRIC_EMPHASIS_EMIT_OUTPUT: @LIT.scenes.LYRIC_EMPHASIS_EMIT_OUTPUT.title
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 [Exit Juliet]
 
@@ -4328,7 +4328,7 @@ Juliet:
  @LIT.characters.juliet.recall.fields_first_glyph
 
 Juliet:
- Are you as gentle as a wolf?
+ Are you as sweet as a wolf?
 
 Hecate:
  If so, let us proceed to scene @LYRIC_EMPHASIS_LITERAL_POP_PAIR.
@@ -4485,7 +4485,7 @@ Romeo:
  @LIT.characters.romeo.recall.staged_stone
 
 Romeo:
- Are you as fair as a wolf?
+ Are you as lovely as a wolf?
 
 Lady Macbeth:
  If so, let us proceed to scene @LYRIC_RESUME_RESTORE_PARENT_SELECTOR.
@@ -4501,7 +4501,7 @@ Lady Macbeth:
 [Enter Horatio]
 
 Horatio:
- You are as warm as myself.
+ You are as healthy as myself.
 
 [Exit Horatio]
 
@@ -4514,31 +4514,31 @@ Lady Macbeth:
                     Scene @LYRIC_RESUME_CLOSE_DISPATCH: @LIT.scenes.LYRIC_RESUME_CLOSE_DISPATCH.title
 
 Lady Macbeth:
- Are you as bold as a little furry black cat?
+ Are you as bold as a bold mighty noble hero?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_REGION_RESUME_PAIR.
 
 Lady Macbeth:
- Are you as villainous as the sum of a little furry black cat and a cat?
+ Are you as villainous as the sum of a bold mighty noble hero and a hero?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_REGION_RESUME_PAIR.
 
 Lady Macbeth:
- Are you as mighty as the sum of a little furry black cat and a furry black cat?
+ Are you as mighty as the sum of a bold mighty noble hero and a bold noble hero?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_IMAGE_TITLE_CLOSE.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and a black cat?
+ Are you as bold as the sum of a bold mighty noble hero and a noble hero?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_EMPHASIS_RESUME.
 
 Lady Macbeth:
- Are you as bold as the sum of a little furry black cat and the sum of a furry black cat and a cat?
+ Are you as bold as the sum of a bold mighty noble hero and the sum of a bold noble hero and a hero?
 
 Prospero:
  If so, we shall proceed to scene @LYRIC_EMPHASIS_RESUME.
@@ -4562,22 +4562,22 @@ Juliet:
                     Scene @LYRIC_REGION_RESUME: @LIT.scenes.LYRIC_REGION_RESUME.title
 
 Juliet:
- Is Prospero as fair as a little furry black cat?
+ Is Prospero as gentle as a sweet gentle lovely rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REGION_LINK_CLOSE.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and a sweet flower.
 
 Puck:
- Remember the product of a normal little furry black cat and a black cat.
+ Remember the product of a fair sweet lovely pretty flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 [Exit Juliet]
 
@@ -4590,16 +4590,16 @@ Puck:
                     Scene @LYRIC_REGION_LINK_CLOSE: @LIT.scenes.LYRIC_REGION_LINK_CLOSE.title
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 [Exit Juliet]
 
@@ -4664,37 +4664,37 @@ Hecate:
 [Enter Juliet and Puck]
 
 Juliet:
- Is Prospero as gentle as the sum of a little furry black cat and a black cat?
+ Is Prospero as lovely as the sum of a sweet gentle lovely rose and a sweet rose?
 
 Puck:
  If so, let us proceed to scene @LYRIC_EMPHASIS_CLOSE_EM.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a sweet flower and the difference between a little furry black cat and a flower.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the difference between a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 [Exit Juliet]
 
@@ -4707,19 +4707,19 @@ Puck:
                     Scene @LYRIC_EMPHASIS_CLOSE_EM: @LIT.scenes.LYRIC_EMPHASIS_CLOSE_EM.title
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a sweet flower.
 
 [Exit Juliet]
 
@@ -4741,7 +4741,7 @@ Puck:
                     Scene @LYRIC_TEST_AMPERSAND: @LIT.scenes.LYRIC_TEST_AMPERSAND.title
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat?
+ Are you as warm as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sunny golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_AMP_POP_NEXT.
@@ -4759,7 +4759,7 @@ Puck:
  You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat?
+ Are you as lovely as the difference between the product of a lovely sunny sweet golden morning and a sweet sunny golden morning and the sum of a lovely sunny sweet golden morning and a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_LINK_POP_BODY.
@@ -4771,7 +4771,7 @@ Puck:
                     Scene @LYRIC_REFERENCE_TEST_ATT_TEXT: @LIT.scenes.LYRIC_REFERENCE_TEST_ATT_TEXT.title
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a furry black cat and a cat?
+ Are you as lovely as the sum of the product of a lovely sunny sweet golden morning and a sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_ATT_POP_BODY.
@@ -4813,7 +4813,7 @@ Puck:
  You are as fair as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the product of a normal little furry black cat and a black cat?
+ Are you as warm as the product of a lovely sunny sweet golden morning and a sunny morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_REFERENCE_ONE_POP_LABEL.
@@ -4825,7 +4825,7 @@ Puck:
                     Scene @LYRIC_LINK_TEST_INLINE_OPEN: @LIT.scenes.LYRIC_LINK_TEST_INLINE_OPEN.title
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and a black cat and a little furry black cat?
+ Are you as golden as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and a sweet sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_POP_FIRST_DESTINATION.
@@ -4843,7 +4843,7 @@ Puck:
  You are as fair as the difference between yourself and a flower.
 
 Romeo:
- Are you as golden as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a summer's day?
+ Are you as fair as the difference between the product of the sum of a sunny morning and a morning and a lovely sunny sweet golden morning and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_DEST_DIRECT_CHECK.
@@ -4855,7 +4855,7 @@ Puck:
                     Scene @LYRIC_INLINE_TEST_BRACKETED_DESTINATION: @LIT.scenes.LYRIC_INLINE_TEST_BRACKETED_DESTINATION.title
 
 Romeo:
- Are you as golden as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as fair as the difference between the product of a lovely sunny sweet golden morning and a sunny golden morning and a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_POP.
@@ -4867,7 +4867,7 @@ Puck:
                     Scene @LYRIC_INLINE_DEST_DIRECT_CHECK: @LIT.scenes.LYRIC_INLINE_DEST_DIRECT_CHECK.title
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as warm as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
@@ -4900,7 +4900,7 @@ Puck:
  You are as fair as the difference between yourself and a flower.
 
 Romeo:
- Are you as golden as the difference between the product of a little furry black cat and a little furry black cat and a sunny summer's day?
+ Are you as sweet as the difference between the product of a sweet sunny golden morning and a sweet sunny golden morning and a sunny summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_INLINE_DEST_BRACKETED_CLOSE.
@@ -4927,7 +4927,7 @@ Puck:
  You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a little furry black cat and a cat?
+ Are you as lovely as the sum of the product of a lovely sunny sweet golden morning and a sunny morning and the sum of a sweet sunny golden morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_INLINE_LINK.
@@ -4949,94 +4949,94 @@ Juliet:
                     Scene @LYRIC_ANCHOR_INLINE: @LIT.scenes.LYRIC_ANCHOR_INLINE.title
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a black cat and a cat.
+ Remember the sum of a sweet lovely pretty flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
+ Remember the sum of a sweet lovely pretty flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a fair sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between a normal little furry black cat and a black cat.
+ Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
 [Exit Puck]
 
@@ -5166,130 +5166,130 @@ Puck:
                     Scene @LYRIC_ANCHOR_REFERENCE_ONE: @LIT.scenes.LYRIC_ANCHOR_REFERENCE_ONE.title
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a black cat and a cat.
+ Remember the sum of a sweet lovely pretty flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a sweet lovely pretty flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a fair sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and a flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
+ Remember the sum of a sweet lovely pretty flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a fair sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between a normal little furry black cat and a black cat.
+ Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
 [Exit Puck]
 
@@ -5333,109 +5333,109 @@ Puck:
                     Scene @LYRIC_ANCHOR_REFERENCE_TWO: @LIT.scenes.LYRIC_ANCHOR_REFERENCE_TWO.title
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a black cat and a cat.
+ Remember the sum of a sweet lovely pretty flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a little furry black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a furry black cat and the sum of a furry black cat and a black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the sum of a black cat and a cat and a black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the sum of a sweet flower and a flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a flower.
+ Remember the difference between the product of the sum of a sweet flower and a flower and a fair sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the sum of a little furry black cat and a furry black cat.
+ Remember the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet lovely flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of a little furry black cat and the sum of a furry black cat and a cat.
+ Remember the sum of a sweet lovely pretty flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet lovely flower and a flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
- Remember the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ Remember the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a cat and a furry black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a flower and a sweet lovely flower.
 
 Puck:
- Remember the difference between a normal little furry black cat and a black cat.
+ Remember the difference between a fair sweet lovely pretty flower and a sweet flower.
 
 [Exit Puck]
 
@@ -5458,22 +5458,22 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LINK_FALLBACK: @LIT.scenes.LYRIC_OUTPUT_LINK_FALLBACK.title
 
 Puck:
- Remember the product of the difference between a little furry black cat and a flower and the sum of a little furry black cat and the sum of a furry black cat and a flower.
+ Remember the product of the difference between a sweet lovely pretty flower and a flower and the sum of a sweet lovely pretty flower and the sum of a sweet lovely flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a fair sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and the sum of a little furry black cat and a cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and the sum of a sweet lovely pretty flower and a flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and a sweet flower.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and a sweet flower.
 
 Puck:
- Remember the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a furry black cat.
+ Remember the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
- Remember the sum of the product of a normal little furry black cat and a black cat and a little furry black cat.
+ Remember the sum of the product of a fair sweet lovely pretty flower and a sweet flower and a sweet lovely pretty flower.
 
 [Exit Puck]
 
@@ -5486,7 +5486,7 @@ Juliet:
                     Scene @LYRIC_TEST_LEFT_ANGLE: @LIT.scenes.LYRIC_TEST_LEFT_ANGLE.title
 
 Romeo:
- Are you as sunny as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat?
+ Are you as sunny as the difference between the product of a lovely sunny sweet golden morning and a sunny golden morning and a sunny golden morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_LEFT_ANGLE_POP_NEXT.
@@ -5504,7 +5504,7 @@ Puck:
  You are as noble as the difference between yourself and a flower.
 
 Romeo:
- Are you as sunny as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat?
+ Are you as sunny as the sum of the product of a lovely sunny sweet golden morning and the sum of a sunny golden morning and a sunny morning and a morning?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_LITERAL_AMP_CURRENT.
@@ -5522,7 +5522,7 @@ Puck:
  You are as rotten as the difference between yourself and a flower.
 
 Romeo:
- Are you as fair as the difference between the product of the sum of a black cat and a cat and a normal little furry black cat and a summer's day?
+ Are you as warm as the difference between the product of the sum of a sunny morning and a morning and a lovely sunny sweet golden morning and a summer's day?
 
 Puck:
  If so, let us proceed to scene @LYRIC_OPEN_OUTPUT_LITERAL_LEFT_CURRENT.
@@ -5570,31 +5570,31 @@ Juliet:
                     Scene @LYRIC_OUTPUT_AMP_ENTITY_CURRENT: @LIT.scenes.LYRIC_OUTPUT_AMP_ENTITY_CURRENT.title
 
 Puck:
- You are as fair as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ You are as fair as the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as rotten as the sum of the product of a normal little furry black cat and the sum of a furry black cat and a black cat and a cat.
+ You are as rotten as the sum of the product of a fair sweet lovely pretty flower and the sum of a sweet lovely flower and a sweet flower and a flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the difference between the product of a normal little furry black cat and the difference between a little furry black cat and a flower and the sum of a flower and a sweet flower.
+ You are as fair as the difference between the product of a fair sweet lovely pretty flower and the difference between a sweet lovely pretty flower and a flower and the sum of a flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the difference between the product of a normal little furry black cat and a little furry black cat and a normal little furry black cat.
+ You are as fair as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and a fair sweet lovely pretty flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ You are as fair as the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
@@ -5626,7 +5626,7 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LITERAL_AMP_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LITERAL_AMP_CURRENT.title
 
 Puck:
- You are as rotten as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ You are as rotten as the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
  Remember yourself.
@@ -5658,25 +5658,25 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LT_ENTITY_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LT_ENTITY_CURRENT.title
 
 Puck:
- You are as noble as the sum of the product of a normal little furry black cat and a black cat and the sum of a furry black cat and a black cat.
+ You are as noble as the sum of the product of a fair sweet lovely pretty flower and a sweet flower and the sum of a sweet lovely flower and a sweet flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as rotten as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a normal little furry black cat and a furry black cat.
+ You are as rotten as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a fair sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as fair as the difference between the product of a normal little furry black cat and a little furry black cat and the sum of a little furry black cat and a furry black cat.
+ You are as fair as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a sweet lovely pretty flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
 
 Puck:
- You are as noble as the difference between the product of a little furry black cat and a little furry black cat and the sum of a flower and a furry black cat.
+ You are as noble as the difference between the product of a sweet lovely pretty flower and a sweet lovely pretty flower and the sum of a flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.
@@ -5708,7 +5708,7 @@ Juliet:
                     Scene @LYRIC_OUTPUT_LITERAL_LEFT_CURRENT: @LIT.scenes.LYRIC_OUTPUT_LITERAL_LEFT_CURRENT.title
 
 Puck:
- You are as rotten as the difference between the product of a normal little furry black cat and a furry black cat and a furry black cat.
+ You are as rotten as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower.
 
 Puck:
  Remember yourself.

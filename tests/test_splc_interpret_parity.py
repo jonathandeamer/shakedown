@@ -29,7 +29,7 @@ STEP_LIMIT = 200_000
 
 
 def _fast_dump(input_text: str) -> bytes:
-    state = InterpreterState(input_text=input_text)
+    state = InterpreterState(input_text=input_text, resolve_short_circuit=False)
     for act_module in (ACT1, ACT2, ACT3, DEBUG_ACT):
         result = run_act(act_module, state, step_limit=STEP_LIMIT)
         state = result.state
