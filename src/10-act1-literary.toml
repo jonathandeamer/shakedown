@@ -211,6 +211,6 @@ pattern = "bare_statement"
 title = "The empty name forfeits the shelf."
 pattern = "bare_statement"
 
-[spares.HECATE_REF_URL_CONTENT]
+[scenes.HECATE_REF_URL_CONTENT]
 title = "The river road demands one honest mark."
 pattern = "bare_statement"

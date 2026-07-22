@@ -841,10 +841,46 @@ Puck:
  Are you as rotten as nothing?
 
 Hecate:
- If so, let us proceed to scene @HECATE_REF_URL.
+ If so, we must return to scene @HECATE_REF_KEEP.
 
 Hecate:
  You are as rotten as myself.
+
+Puck:
+ @LIT.characters.puck.recall.kept_measure
+
+Puck:
+ Are you as rotten as the sum of a sweet lovely pretty flower and a sweet flower?
+
+Hecate:
+ If so, we must return to scene @HECATE_REF_REPLAY_GUARD.
+
+Hecate:
+ Remember myself.
+
+Puck:
+ Are you as rotten as the product of a fair sweet lovely pretty flower and a sweet flower?
+
+Hecate:
+ If so, we must return to scene @HECATE_REF_URL_WS.
+
+Hecate:
+ Let us proceed to scene @HECATE_REF_URL_CONTENT.
+
+
+                    Scene @HECATE_REF_URL_CONTENT: @LIT.scenes.HECATE_REF_URL_CONTENT.title
+
+Puck:
+ You are as noble as the difference between myself and a flower.
+
+Puck:
+ Are you as noble as nothing?
+
+Hecate:
+ If so, let us proceed to scene @HECATE_REF_URL.
+
+Hecate:
+ You are as horrid as myself.
 
 Puck:
  @LIT.characters.puck.recall.kept_measure
@@ -853,19 +889,13 @@ Hecate:
  Remember myself.
 
 Puck:
- Are you as noble as the sum of a sweet lovely pretty flower and a sweet flower?
+ Are you as rotten as the sum of a sweet lovely pretty flower and a sweet flower?
 
 Hecate:
  If so, let us proceed to scene @HECATE_REF_URL.
 
-Puck:
- Are you as rotten as the difference between the product of a fair sweet lovely pretty flower and a sweet lovely flower and a sweet lovely flower?
-
 Hecate:
- If so, we must return to scene @HECATE_REF_URL_WS.
-
-Hecate:
- We must return to scene @HECATE_REF_URL_WS.
+ We must return to scene @HECATE_REF_URL_CONTENT.
 
 
                     Scene @HECATE_REF_ANGLE: @LIT.scenes.HECATE_REF_ANGLE.title

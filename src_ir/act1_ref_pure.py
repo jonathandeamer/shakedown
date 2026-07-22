@@ -292,13 +292,25 @@ def build_ref_scenes() -> list[Scene]:
             "HECATE_REF_URL_WS",
             let(HECATE, sub(val(PUCK), _1)),  # remaining after last glyph
             let(PUCK, add(val(HECATE), _1)),  # rem+1: EOF-safe rem for the drop
+            branch(eq(val(HECATE), _0), then="HECATE_REF_KEEP"),
+            let(PUCK, val(HECATE)),
+            pop(HECATE, recall=_RECALL_PUCK),
+            branch(eq(val(HECATE), _NL), then="HECATE_REF_REPLAY_GUARD"),
+            push(PUCK, val(HECATE)),  # keep glyph (candidate)
+            branch(eq(val(HECATE), _SP), then="HECATE_REF_URL_WS"),
+            goto("HECATE_REF_URL_CONTENT"),
+            companion=PUCK,
+        ),
+        scene(
+            "HECATE_REF_URL_CONTENT",
+            # At least one URL glyph has been seen; consume to end of line, then drop.
+            let(HECATE, sub(val(PUCK), _1)),
             branch(eq(val(HECATE), _0), then="HECATE_REF_URL"),
             let(PUCK, val(HECATE)),
             pop(HECATE, recall=_RECALL_PUCK),
             push(PUCK, val(HECATE)),  # keep glyph (candidate; dropped on match)
             branch(eq(val(HECATE), _NL), then="HECATE_REF_URL"),
-            branch(eq(val(HECATE), _LT), then="HECATE_REF_URL_WS"),
-            goto("HECATE_REF_URL_WS"),
+            goto("HECATE_REF_URL_CONTENT"),
             companion=PUCK,
         ),
         scene(
