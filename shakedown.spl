@@ -1054,6 +1054,12 @@ Hecate:
 Hecate:
  Recall the kept tally.
 
+Hecate:
+ You are as cursed as yourself.
+
+Hecate:
+ You are as horrid as yourself.
+
 [Exeunt]
 
 
@@ -7763,6 +7769,15 @@ Lady Macbeth:
  Remember a wolf.
 
 Lady Macbeth:
+ You are as mighty as a noble hero.
+
+Lady Macbeth:
+ You are as villainous as a cursed wolf.
+
+Lady Macbeth:
+ You are as bold as nothing.
+
+Lady Macbeth:
  Let us proceed to scene CCCXXIII.
 
 
@@ -13242,6 +13257,18 @@ Juliet:
 [Exit Puck]
 
 [Enter Romeo]
+
+Romeo:
+ You are as lovely as a summer's day.
+
+Juliet:
+ You are as beautiful as a rose.
+
+Romeo:
+ You are as fair as a sunny summer's day.
+
+Juliet:
+ You are as gentle as a sweet rose.
 
 [Exeunt]
 

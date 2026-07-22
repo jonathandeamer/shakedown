@@ -2958,7 +2958,20 @@ ACT: Act = act(
         # --- Final reverse onto Puck (P1 scenes, unchanged labels/titles).
         scene(
             "FRAME_REVERSE_OPEN",
+            # Stage Lady Macbeth's death exit (phase_handoff): her block work
+            # done, she speaks a three-line fall to the silent messenger who
+            # inherits her stones -- hero -> cursed wolf -> nothing, the
+            # "signifying nothing" register -- as her stack is about to be
+            # drained empty and she exits at ACT_II_DONE. These let(PUCK) lines
+            # are dead stores: they set Puck's SCALAR (not the stack drained by
+            # FRAME_REVERSE_POP), and Act III overwrites Puck's scalar with a
+            # pop before ever reading it, so emitted HTML is unchanged. Lady
+            # Macbeth is the speaker because the target differs from the anchor.
+            # See docs/superpowers/notes/literary-artefact-improvements.md (1).
             push(PUCK, const(tokens.STREAM_END)),
+            let(PUCK, const(2)),
+            let(PUCK, const(-2)),
+            let(PUCK, const(0)),
             goto("FRAME_REVERSE_POP"),
         ),
         scene(

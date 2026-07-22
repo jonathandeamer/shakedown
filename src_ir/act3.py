@@ -2161,6 +2161,18 @@ ACT: Act = act(
         ),
         scene(
             "ACT_III_DONE",
+            # Stage the "part as one" beat the scene title promises: a four-line
+            # farewell duet. Each lover speaks in their own atom family and
+            # equality bank (let() on the anchor is spoken by the companion, and
+            # vice versa), deepening rose -> sweet rose. These are dead stores:
+            # ROMEO and JULIET are never read in Act IV, this is Act III's
+            # terminal scene, and no I/O or shared stack is touched, so emitted
+            # HTML is unchanged. See docs/superpowers/notes/
+            # literary-artefact-improvements.md (item 1).
+            let(JULIET, const(1)),
+            let(ROMEO, const(1)),
+            let(JULIET, const(2)),
+            let(ROMEO, const(2)),
             halt_act(),
             anchor=JULIET,
             companion=ROMEO,
